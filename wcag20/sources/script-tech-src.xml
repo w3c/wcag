@@ -1,0 +1,3524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE spec SYSTEM "xmlspec.dtd">
+<spec status="final" w3c-doctype="wgnote">
+	<header>
+		<title>Client-side Scripting Techniques</title>
+		<w3c-designation>WCAG20-SCRIPT-TECHS</w3c-designation>
+		<w3c-doctype>W3C Working Group Note</w3c-doctype>
+		<pubdate>
+			<day>3</day>
+			<month>January</month>
+			<year>2012</year>
+		</pubdate>
+		<publoc> <loc href="http://www.w3.org/WAI/GL/sources/script-tech-src.xml">http://www.w3.org/WAI/GL/sources/script-tech-src.xml</loc> </publoc>
+		<latestloc>
+			<loc href="http://www.w3.org/WAI/GL/sources/script-tech-src.xml">http://www.w3.org/WAI/GL/sources/script-tech-src.xml</loc>
+		</latestloc>
+		<authlist>
+			<author>
+				<name>Becky Gibson, IBM</name>
+			</author>
+		</authlist>
+		<status>
+			<p/>
+		</status>
+		<abstract>
+			<p>This document is part of a series of documents published by the W3C
+Web Accessibility Initiative (WAI) to support WCAG 2.0.</p>
+		</abstract>
+		<langusage>
+			<language id="en-US"/>
+		</langusage>
+		<revisiondesc>
+			<p/>
+		</revisiondesc>
+	</header>
+	<body>
+		<!-- techniques -->
+		<div1 id="client-side-script">
+			<head>Client-side Scripting Techniques</head>
+			<technique id="SCR1">
+				<short-name>Allowing the user to extend the default time limit
+        </short-name>
+				<applicability>
+					<p>
+            Time limits that are controlled by client-side scripting.
+</p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="time-limits-required-behaviors"
+						relationship="sufficient"/>
+				</applies-to>
+				<description>
+					<p>The objective of this technique is to allow user to extend the default time limit by providing a mechanism to extend the time when scripts provide functionality that has default time limits. In order to allow the user to request a longer time limit, the script can provide a form (for example) allowing the user to enter a larger time limit or indicating that more time is needed. If the user is being warned that a time limit is about to expire (see <specref
+						ref="SCR16"
+						/>), this form can be made available from the warning dialog. The user can extend the time limit to at least 10 times the default time limit, either by allowing the user to indicate how much additional time is needed or by repeatedly allowing the user to extend the time limit.</p>
+				</description>
+				<examples>
+					<ulist>
+						<item>
+							<p>
+A Web page contains current stock market statistics and is set to refresh periodically. When the user is warned prior to refreshing the first time, the user is provided with an option to extend the time period between refreshes. 
+    </p>
+						</item>
+						<item>
+							<p>
+In an online chess game, each player is given a time limit for completing each move. When the player is warned that time is almost up for this move, the user is provided with an option to increase the time.
+    </p>
+						</item>
+					</ulist>
+				</examples>
+				<resources>
+					<see-also>
+						<olist>
+							<item>
+								<p> <loc href="http://www.phpbuilder.com/tips/item.php?id=141">PHPBuilder Time-out Info</loc> </p>
+							</item>
+						</olist>
+					</see-also>
+				</resources>
+				<related-techniques>
+					<relatedtech idref="SCR16"/>
+				</related-techniques>
+				<tests>
+					<procedure>
+						<olist>
+							<item>
+								<p>
+On a Web page that uses scripts to enforce a time limit, wait until the time limit has expired.
+    </p>
+							</item>
+							<item>
+								<p>
+Determine if an option was provided to extend the time limit.
+    </p>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>
+#2 is true and more time is provided to complete the interaction.
+    </p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="SCR2">
+				<short-name>Using redundant keyboard and mouse event handlers</short-name>
+				<applicability>
+					<p>HTML and XHTML with scripting support. </p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="keyboard-operation-keyboard-operable"
+						relationship="sufficient"/>
+					<success-criterion idref="keyboard-operation-all-funcs"
+						relationship="sufficient"/>
+				</applies-to>
+				<description>
+					<p>The objective of this technique is to demonstrate using device independent events to change a decorative image in response to a mouse or focus event. Use the <code><![CDATA[onmouseover]]></code> and onmouseout events to change a decorative image when the mouse moves on top of or away from an element on the page. Also, use the <code><![CDATA[onfocus]]></code> and <code><![CDATA[onblur]]></code> events to change the image when the element receives and loses focus.</p>
+					<p>The example below has a decorative image in front of an anchor element. When the user mouses over the anchor tag, the decorative image in front of the anchor is changed. When the mouse moves off of the anchor, the image is changed back to its original version. The same image change effect occurs when the user gives keyboard focus to the anchor element. When focus is received the image changes, when focus is lost the image is changed back. This is accomplished by attaching <code><![CDATA[onmouseover]]></code>, <code><![CDATA[onmouseout]]></code>, <code><![CDATA[onfocus]]></code> and <code><![CDATA[onblur]]></code> event handlers to the anchor element. The event handler is a JavaScript function called updateImage(), which changes the src attribute of the image. The updateImage() is called in response to the onmouseover, onmouseout, onfocus, and onblur events.</p>
+					<p>Each image is given a unique id. This unique id is passed to updateImage() along with a boolean value indicating which image is to be used: <code><![CDATA[updateImage(imgId, isOver);]]></code>. The boolean value of true is passed when the mouse is over the anchor element or it has focus. A false value is passed when the mouse moves off of the anchor element or it loses focus. The updateImage() function uses the image id to load the image and then changes the src attribue based on the boolean value. Note that since the image is for decorative purposes, it has a null alt attribute. </p>
+					<note>
+						<p>It is best to use images that are similar in size and to specify the height and width attributes on the image element. This will prevent any changes to the layout of the page when the image is updated. This example uses images which are identical in size. </p>
+					</note>
+				</description>
+				<examples>
+					<eg-group>
+						<code><![CDATA[
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+ <html lang="en">
+ <head>
+ <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+ <title>Changing Image Source in a Device Independent Manner</title>
+ <script type="text/javascript">
+ /* This function will change the image src of an image element.
+  * param imgId - the id of the image object to change
+  * param isOver - true when mouse is over or object has focus,
+  *                false when mouse move out or focus is lost
+ */
+ function updateImage(imgId, isOver) {
+   var theImage = document.getElementById(imgId);
+   if (theImage != null) { //could use a try/catch block for user agents supporting at least JavaScript 1.4
+                           // These browsers support try/catch - NetScape 6, IE 5, Mozilla, Firefox
+      if (isOver) {
+        theImage.setAttribute("src","yellowplus.gif");
+      }
+      else {
+        theImage.setAttribute("src","greyplus.gif");
+      }
+   }
+ }
+ </script>
+ </head>
+ <body>
+ <p>Mouse over or tab to the links below and see the image change.</p>
+ <a href="http://www.w3.org/wai" onmouseover="updateImage('wai', true);" onfocus="updateImage('wai', true);"
+   onmouseout="updateImage('wai',false);" onblur="updateImage('wai',false);">
+ <img src="greyplus.gif" border="0" alt="" id="wai">
+   W3C Web Accessibility Initiative</a> &
+ <a href="http://www.w3.org/International/" onmouseover="updateImage('i18n', true);" 
+   onfocus="updateImage('i18n',true);" onmouseout="updateImage('i18n',false);"
+   onblur="updateImage('i18n',false);">
+   <img src="greyplus.gif" border="0" alt="" id="i18n">
+   W3C Internationalization</a>
+ </body>
+ </html>
+]]></code>
+					</eg-group>
+				</examples>
+				<tests>
+					<procedure>
+						<p>Load the Web page and test the events using a mouse and via the keyboard. </p>
+						<olist>
+							<item>
+								<p>Check that the "standard" image is displayed as expected when the Web page is loaded. </p>
+							</item>
+							<item>
+								<p>Using the Mouse </p>
+								<olist>
+									<item>
+										<p>Move the mouse over the element containing the event handlers (in this example it is an anchor element). Check that the image changes to the expected image.</p>
+									</item>
+									<item>
+										<p>Move the mouse off of the element. Check that the image changes back to the "standard" image. </p>
+									</item>
+								</olist>
+							</item>
+							<item>
+								<p>Using the Keyboard </p>
+								<olist>
+									<item>
+										<p>Use the keyboard to set focus to the element containing the event handlers. Check that the image changes to the expected image. </p>
+									</item>
+									<item>
+										<p>Use the keyboard to remove focus from the element (generally by moving focus to another element). Check that the image changes to the "standard" image.</p>
+									</item>
+								</olist>
+							</item>
+							<item>
+								<p>Verify that the layout of other elements on the page is not affected when the image is changed. </p>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>All of the steps for the above checks are true. </p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="SCR14">
+				<short-name>Using scripts to make nonessential alerts optional</short-name>
+				<applicability>
+					<p>Scripting technologies which use scripting alerts for non-emergency communication.</p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="time-limits-postponed"
+						relationship="sufficient"/>
+				</applies-to>
+				<description>
+					<p>The objective of this technique is to display a dialog containing a message (alert) to the user.  When the alert is displayed, it receives focus and the user must activate the OK button on the dialog to dismiss it. Since these alerts cause focus to change they may distract the user, especially when used for non-emergency information. Alerts for non-emergency purposes such as displaying a quote of the day, helpful usage tip, or count down to a particular event, are not presented unless the user enables them through an option provided in the Web page.</p>
+					<p>This technique assigns a global JavaScript variable to store the user preference for displaying alerts. The default value is false. A wrapper function is created to check the value of this variable before displaying an alert. All calls to display an alert are made to this wrapper function rather than calling the alert() function directly. Early in the page, a button is provided for the user to enable the display of alerts on the page. This technique works on a visit by visit basis.     Each time the page is loaded, alerts will be disabled and the user must manually enable them. Alternatively, the author could use cookies to store user preferences across sessions.</p>
+				</description>
+				<examples>
+					<eg-group>
+						<description>
+							<p>The script below will display a quote in an alert box every ten seconds, if the user selects the "Turn Alerts On" button. The user can turn the quotes off again by choosing "Turn Alerts Off".</p>
+						</description>
+						<code><![CDATA[
+<script type="text/javascript">
+var bDoAlerts = false;  // global variable which specifies whether to 
+                                       // display alerts or not
+/* function to enable/disable alerts.
+ * param boolean bOn - true to enable alerts, false to disable them.
+*/
+function modifyAlerts(isEnabled) {
+   bDoAlerts = isEnabled;
+}
+/* wrapper function for displaying alerts.  Checks the value of bDoAlerts
+*and only calls the alert() function when bDoAlerts is true.
+*/
+function doAlert(aMessage) {
+    if (bDoAlerts) {
+       alert(aMessage);
+    }
+}
+// example usage - a loop to display famous quotes.
+var gCounter = -1;  // global to store counter
+// quotes variable would be initialized with famous quotations
+var quotes = new Array("quote 1", "quote 2", "quote 3", "quote 4", "quote 5");
+function showQuotes() {
+   if (++gCounter &gt;= quotes.length) {
+     gCounter = 0;
+   }
+   doAlert(quotes[gCounter]);
+   setTimeout("showQuotes();", 10000);
+}
+showQuotes();
+</script>
+]]></code>
+						<description>
+							<p>Within the body of the page, include a way to turn the alerts on and off. Below is one example:</p>
+						</description>
+						<code><![CDATA[
+<body>
+<p>Press the button below to enable the display of famous quotes 
+using an alert box<br />
+<button id="enableBtn" type="button" onclick="modifyAlerts(true);">
+Turn Alerts On</button><br />
+<button id="disableBtn" type="button" onclick="modifyAlerts(false);">
+Turn Alerts Off</button></p>
+]]></code>
+						<description>
+							<p>Here is a working example of this code: <loc
+								xmlns:xlink="http://www.w3.org/1999/xlink" href="enablealerts.html" linktype="examples">Demonstration of Alerts</loc>.</p>
+						</description>
+					</eg-group>
+				</examples>
+				<tests>
+					<procedure>
+						<p>For a Web page that supports non-emergency interruptions using a JavaScript alert:</p>
+						<olist>
+							<item>
+								<p>Load the Web page and verify that no non-emergency alerts are displayed.</p>
+							</item>
+							<item>
+								<p>Verify there is a mechanism to activate the non-emergency alerts.</p>
+							</item>
+							<item>
+								<p>Activate the non-emergency alerts and verify that the alerts are displayed.</p>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>For a Web page that supports non-emergency interruptions using a JavaScript alert, checks 1, 2, and 3 above are true.</p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="SCR16">
+				<short-name>Providing a script that warns the user a time limit is about to expire</short-name>
+				<applicability>
+					<p>
+Time limits exist that are controlled by script.
+</p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="time-limits-required-behaviors"
+						relationship="sufficient"/>
+				</applies-to>
+				<description>
+					<p>
+The objective of this technique is to notify users that they are almost out of time to complete an interaction. When scripts provide functionality that has time limits, the script can include functionality to warn the user of imminent time limits and provide a mechanism to request more time. 20 seconds or more before the time limit occurs, the script provides a confirm dialog that states that a time limit is imminent and asks if the user needs more time. If the user answers "yes" then the time limit is reset. If the user answers "no" or does not respond, the time limit is allowed to expire.
+</p>
+					<p>
+This technique involves time limits set with the <code><![CDATA[window.setTimeout()]]></code> method. If, for example, the time limit is set to expire in 60 seconds, you can set the time limit for 40 seconds and provide the confirm dialog. When the confirm dialog appears, a new time limit is set for the remaining 20 seconds. Upon expiry of the "grace period time limit" the action that would have been taken at the expiry of the 60 second time limit in the original design is taken.
+</p>
+				</description>
+				<examples>
+					<eg-group>
+						<description>
+							<p>
+A page of stock market quotes uses script to refresh the page every five minutes in order to ensure the latest statistics remain available. 20 seconds before the five minute period expires, a confirm dialog appears asking if the user needs more time before the page refreshes. This allows the user to be aware of the impending refresh and to avoid it if desired.
+</p>
+						</description>
+						<code><![CDATA[
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Stock Market Quotes</title>
+<script type="text/javascript">
+<!--
+function timeControl() {
+	// set timer for 4 min 40 sec, then ask user to confirm.
+	setTimeout('userCheck()', 280000);
+}
+function userCheck() {
+	// set page refresh for 20 sec
+	var id=setTimeout('pageReload()', 20000);
+	// If user selects "OK" the timer is reset 
+	// else the page will refresh from the server.
+	if (confirm("This page is set to refresh in 20 seconds. 
+	Would you like more time?"))
+	{
+	clearTimeout(id);
+	timeControl();
+	}
+}
+function pageReload() {
+	window.location.reload(true);
+}
+timeControl();
+-->
+</script>
+</head>
+<body>
+<h1>Stock Market Quotes</h1>
+...etc...
+</body>
+</html>
+]]></code>
+					</eg-group>
+				</examples>
+				<related-techniques>
+					<relatedtech idref="SCR1"/>
+				</related-techniques>
+				<tests>
+					<procedure>
+						<p>
+On a Web page that has a time limit controlled by a script: </p>
+						<olist>
+							<item>
+								<p>
+load the page and start a timer that is 20 seconds less than the time limit.
+    </p>
+							</item>
+							<item>
+								<p>
+when the timer expires, check that a confirmation dialog is displayed warning of the impending time limit.
+    </p>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>
+#2 is true.
+    </p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="SCR18">
+				<short-name>Providing client-side validation and alert</short-name>
+				<applicability>
+					<p>Content that validates user input.</p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="minimize-error-identified"
+						relationship="sufficient"/>
+					<success-criterion idref="minimize-error-suggestions"
+						relationship="sufficient"/>
+					<success-criterion idref="minimize-error-reversible"
+						relationship="sufficient"/>
+				</applies-to>
+				<description>
+					<p>The objective of this technique is to validate user input as values are entered for each field, by means of client-side scripting. If errors are found, an alert dialog describes the nature of the error in text. Once the user dismisses the alert dialog, it is helpful if the script positions the keyboard focus on the field where the error occurred.</p>
+				</description>
+				<examples>
+					<eg-group>
+						<description>
+							<p>The following script will check that a valid date has been entered in the form control.</p>
+						</description>
+						<code><![CDATA[
+<label for="date">Date:</label>
+<input type="text" name="date" id="date" 
+onchange="if(isNaN(Date.parse(this.value))) 
+alert('This control is not a valid date. 
+Please re-enter the value.');" />
+]]></code>
+					</eg-group>
+				</examples>
+				<related-techniques>
+					<relatedtech idref="G89"/>
+				</related-techniques>
+				<tests>
+					<procedure>
+						<p>For form fields that require specific input:</p>
+						<olist>
+							<item>
+								<p>enter invalid data</p>
+							</item>
+							<item>
+								<p>determine if an alert describing the error is provided.</p>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>#2 is true</p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="SCR19">
+				<short-name>Using an onchange event on a select element without causing a change of
+                    context</short-name>
+				<applicability>
+					<p> HTML and XHTML with support for scripting. This technique uses the try/catch
+                        construct of JavaScript 1.4. </p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="consistent-behavior-unpredictable-change"/>
+					<success-criterion
+						idref="consistent-behavior-no-extreme-changes-context"
+						relationship="sufficient"/>
+				</applies-to>
+				<ua-issues>
+					<ua-issue name="" version="">
+						<p>This technique has been tested on Windows XP using JAWS 7.0 and WindowEyes 5.5 with both Firefox 1.5 and IE 6. Note that JavaScript must be enabled in the browser. </p>
+					</ua-issue>
+				</ua-issues>
+				<description>
+					<p> The objective of this technique is to demonstrate how to correctly use an
+                        onchange event with a select element to update other elements on the Web page. This technique will not cause a change of context. When there are one
+                        or more select elements on the Web page, an onchange event on one, can
+                        update the options in another select element on the Web page. All of the
+                        data required by the select elements is included within the Web page. </p>
+					<p> It is important to note that the select item which is modified is after the
+                        trigger select element in the reading order of the Web page. This ensures
+                        that assistive technologies will pick up the change and users will encounter
+                        the new data when the modified element receives focus. This technique relies
+                        on JavaScript support in the user agent. </p>
+				</description>
+				<examples>
+					<eg-group>
+						<description>
+							<p> This example contains two select elements. When an item is selected
+                                in the first select, the choices in the other select are updated
+                                appropriately. The first select element contains a list of
+                                continents. The second select element will contain a partial list of
+                                countries located in the selected continent. There is an onchange
+                                event associated with the continent select. When the continent
+                                selection changes, the items in the country select are modified
+                                using JavaScript via the Document Object Model (DOM). All of the
+                                data required, the list of countries and continents, is included
+                                within the Web page. </p>
+							<p>Overview of the code below</p>
+							<ulist>
+								<item>
+									<p> countryLists array variable which contains the list of
+                                        countries for each continent in the trigger select element.
+                                    </p>
+								</item>
+								<item>
+									<p> countryChange() function which is called by the onchange
+                                        event of the continent select element. </p>
+								</item>
+								<item>
+									<p> The XHTML code to create the select elements in the body of
+                                        the Web page. </p>
+								</item>
+							</ulist>
+						</description>
+						<code><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
+  <head> 
+    <meta http-equiv="content-type" content="text/xhtml; charset=utf-8" /> 
+    <title>Dynamic Select Statements</title> 
+<script type="text/javascript">
+ //<![CDATA[ 
+ // array of possible countries in the same order as they appear in the country selection list 
+ var countryLists = new Array(4) 
+ countryLists["empty"] = ["Select a Country"]; 
+ countryLists["North America"] = ["Canada", "United States", "Mexico"]; 
+ countryLists["South America"] = ["Brazil", "Argentina", "Chile", "Ecuador"]; 
+ countryLists["Asia"] = ["Russia", "China", "Japan"]; 
+ countryLists["Europe"]= ["Britain", "France", "Spain", "Germany"]; 
+ /* CountryChange() is called from the onchange event of a select element. 
+ * param selectObj - the select object which fired the on change event. 
+ */ 
+ function countryChange(selectObj) { 
+ // get the index of the selected option 
+ var idx = selectObj.selectedIndex; 
+ // get the value of the selected option 
+ var which = selectObj.options[idx].value; 
+ // use the selected option value to retrieve the list of items from the countryLists array 
+ cList = countryLists[which]; 
+ // get the country select element via its known id 
+ var cSelect = document.getElementById("country"); 
+ // remove the current options from the country select 
+ var len=cSelect.options.length; 
+ while (cSelect.options.length > 0) { 
+ cSelect.remove(0); 
+ } 
+ var newOption; 
+ // create new options 
+ for (var i=0; i<cList.length; i++) { 
+ newOption = document.createElement("option"); 
+ newOption.value = cList[i];  // assumes option string and value are the same 
+ newOption.text=cList[i]; 
+ // add the new option 
+ try { 
+ cSelect.add(newOption);  // this will fail in DOM browsers but is needed for IE 
+ } 
+ catch (e) { 
+ cSelect.appendChild(newOption); 
+ } 
+ } 
+ } 
+//]]]]><![CDATA[>
+</script>
+</head>
+<body>
+  <noscript>This page requires JavaScript be available and enabled to function properly</noscript>
+  <h1>Dynamic Select Statements</h1>
+  <label for="continent">Select Continent</label>
+  <select id="continent" onchange="countryChange(this);">
+    <option value="empty">Select a Continent</option>
+    <option value="North America">North America</option>
+    <option value="South America">South America</option>
+    <option value="Asia">Asia</option>
+    <option value="Europe">Europe</option>
+  </select>
+  <br/>
+  <label for="country">Select a country</label>
+  <select id="country">
+    <option value="0">Select a country</option>
+  </select>
+</body>
+ </html>]]></code>
+						<description>
+							<p> Here is a working example: <loc
+								xmlns:xlink="http://www.w3.org/1999/xlink" href="dynselect.html"
+								linktype="examples">Dynamic
+                                    Select</loc> </p>
+						</description>
+					</eg-group>
+				</examples>
+				<resources>
+					<see-also>
+						<ulist>
+							<item>
+								<p><loc href="http://usability.com.au/2008/09/accessible-forms-using-wcag-2-0/">Accessible Forms using WCAG 2.0</loc></p>
+							</item>
+						</ulist>
+					</see-also>
+				</resources>
+				<related-techniques/>
+				<tests>
+					<procedure>
+						<olist>
+							<item>
+								<p> Navigate to the trigger select element (in this example, the one
+                                    to select continents) and change the value of the select. </p>
+							</item>
+							<item>
+								<p> Navigate to the select element that is updated by the trigger
+                                    (in this example, the one to select countries). </p>
+							</item>
+							<item>
+								<p> Check that the matching option values are displayed in the other
+                                    select element. </p>
+							</item>
+							<item>
+								<p> Navigate to the trigger select element, navigate through the
+                                    options but do not change the value. </p>
+							</item>
+							<item>
+								<p> Check that the matching option values are still displayed in the
+                                    associated element. </p>
+							</item>
+						</olist>
+						<p>It is recommended that the select elements are tested with an assistive
+                            technology to verify that the changes to the associated element are
+                            recognized. </p>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p> Step #3 and #5 are true. </p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="SCR20">
+				<short-name>Using both keyboard and other device-specific functions</short-name>
+				<applicability>
+					<p>Applies to all content that uses Script to implement functionality.</p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="keyboard-operation-keyboard-operable"
+						relationship="sufficient"/>
+					<success-criterion idref="keyboard-operation-all-funcs"
+						relationship="sufficient"/>
+				</applies-to>
+				<description>
+					<p>
+                        The objective of this technique is to illustrate the use of both keyboard-specific and mouse-specific events with code that has a scripting function associated with an event. Using both keyboard-specific and mouse-specific events together ensures that content can be operated by a wide range of devices. For example, a script may perform the same action when a keypress is detected that is performed when a mouse button is clicked. This technique goes beyond the Success Criterion requirement for keyboard access by including not only keyboard access but access using other devices as well. 
+                    </p>
+					<p>
+            In JavaScript, commonly used event handlers include, onblur, onchange, onclick, ondblclick, onfocus, onkeydown, onkeypress, onkeyup, onload, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onreset, onselect, onsubmit, onunload. Some mouse-specific functions have a logical corresponding keyboard-specific function (such as 'onmouseover' and 'onfocus'). A keyboard event handler should be provided that executes the same function as the mouse event handler.
+                    </p>
+					<p>
+                        The following table suggests keyboard event handlers to pair mouse event handlers.
+                    </p>
+					<table border="1" cellspacing="0">
+						<caption>Device Handler Correspondences</caption>
+						<tbody>
+							<tr>
+								<th scope="col" rowspan="1" colspan="1">Use...</th>
+								<th scope="col" rowspan="1" colspan="1">...with</th>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"> <code><![CDATA[mousedown]]></code> </td>
+								<td rowspan="1" colspan="1"> <code><![CDATA[keydown]]></code>
+								</td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"> <code><![CDATA[mouseup]]></code> </td>
+								<td rowspan="1" colspan="1"> <code><![CDATA[keyup]]></code>
+								</td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"> <code><![CDATA[click 
+								]]></code> <sup>[1]</sup> </td>
+								<td rowspan="1" colspan="1"> <code><![CDATA[keypress 
+								]]></code> <sup>[2]</sup> </td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"> <code><![CDATA[mouseover]]></code> </td>
+								<td rowspan="1" colspan="1"> <code><![CDATA[focus]]></code>
+								</td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"> <code><![CDATA[mouseout]]></code> </td>
+								<td rowspan="1" colspan="1"> <code><![CDATA[blur]]></code> </td>
+							</tr>
+						</tbody>
+					</table>
+					<p>
+						<sup>1</sup> Although <code>click</code> is in principle a mouse event handler, most HTML and XHTML user agents also process this event when a native HTML control (e.g. a button or a link) is activated, regardless of whether it was activated with the mouse or the keyboard. In practice, therefore, it is not necessary to duplicate this event when adding handlers to natively focusable HTML elements. However, it is necessary when adding handlers to other events, such as in Example 2 below.</p>
+					<p>
+						<sup>2</sup> Since the <code>keypress</code> event handler reacts to any key, the event handler function should check first to ensure the Enter key was pressed before proceeding to handle the event. Otherwise, the event handler will run each time the user presses any key, even the tab key to leave the control, and this is usually not desirable.
+                    </p>
+					<p>
+                    Some mouse-specific functions (such as <code><![CDATA[dblclick]]></code> and <code><![CDATA[mousemove]]></code>) do  not have a corresponding keyboard-specific function. This means that some functions may need  to be implemented differently for each device (for example, including a series of buttons to execute, via keyboard, the equivalent mouse-specific functions implemented).</p>
+				</description>
+				<examples>
+					<eg-group>
+						<description>
+							<p>In this example of an image link, the image is changed when the user positions the pointer over the image. To provide keyboard users with a similar experience, the image is also changed when the user tabs to it.
+                            </p>
+						</description>
+						<code><![CDATA[
+<a href="menu.php" onmouseover="swapImageOn('menu')" onfocus="swapImageOn('menu')" 
+onmouseout="swapImageOff('menu')" onblur="swapImageOff('menu')"> 
+<img id="menu" src="menu_off.gif" alt="Menu" /> 
+</a>]]></code>
+					</eg-group>
+					<eg-group>
+						<description>
+							<p>
+								This example shows a custom image control for which both the mouse and the keyboard can be used to activate the function. The mouse event <code><![CDATA[onclick]]></code> is duplicated by an appropriate keyboard event <code><![CDATA[onkeypress]]></code>. The <code><![CDATA[tabindex]]></code> attribute ensures that the keyboard will have a tab stop on the image. Note that in this example, the <code><![CDATA[nextPage()]]></code> function should check that the keyboard key pressed was Enter, otherwise it will respond to all keyboard actions while the image has focus, which is not the desired behavior.</p>
+						</description>
+						<code><![CDATA[
+<img onclick="nextPage();" onkeypress="nextPage();" tabindex="0" src="arrow.gif" 
+alt="Go to next page"> ]]></code>
+						<description>
+							<note>
+								<p>This example uses tabindex on an <code><![CDATA[img]]></code> element. Even though this is currently invalid, it is provided as a transitional technique to make this function work. Custom controls like this should also use WAI-ARIA to expose the role and state of the control.</p>
+							</note>
+						</description>
+					</eg-group>
+				</examples>
+				<resources>
+					<see-also>
+						<ulist>
+							<item>
+								<p> <loc href="http://webaim.org/techniques/javascript/">Overview of Creating Accessible JavaScript</loc> </p>
+							</item>
+						</ulist>
+					</see-also>
+				</resources>
+				<related-techniques>
+					<relatedtech idref="G90"/>
+				</related-techniques>
+				<tests>
+					<procedure>
+						<olist>
+							<item>
+								<p>
+                                Find all interactive functionality
+                            </p>
+							</item>
+							<item>
+								<p>
+                                Check that all interactive functionality can be accessed using the keyboard alone
+                            </p>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>
+                                #2 is true
+                            </p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="SCR21">
+				<short-name>Using functions of the Document Object Model (DOM) to add content to a page</short-name>
+				<applicability>
+					<p>ECMAScript used inside HTML and XHTML</p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="content-structure-separation-programmatic"
+						relationship="sufficient"/>
+				</applies-to>
+				<ua-issues>
+					<ua-issue name="" version="">
+						<p>This example was successfully tested on Windows XP with IE 6 and Firefox 1.5.0.1 using both JAWS 7 and WindowEyes 5.5. Note that when adding new content onto a page, the screen readers may not automatically speak the new content.  In order to insure that new content is spoken, set focus to the new element or make certain that it is added below the current location and will be encountered as the user continues to traverse the page.
+</p>
+					</ua-issue>
+				</ua-issues>
+				<description>
+					<p>The objective of this technique is to demonstrate how to use functions of the Document Object Model (DOM) to add content to a page instead of using <code><![CDATA[document.write]]></code> or <code><![CDATA[object.innerHTML]]></code>. The <code><![CDATA[document.write()]]></code> method does not work with XHTML when served with the correct MIME type (application/xhtml+xml), and the <code><![CDATA[innerHTML]]></code> property is not part of the DOM specification and thus should be avoided.  If the DOM functions are used to add the content, user agents can access the DOM to retrieve the content. The <code><![CDATA[createElement()]]></code> function can be used to create elements within the DOM.  The <code><![CDATA[createTextNode()]]></code> is used to create text associated with elements.  The <code><![CDATA[appendChild()]]></code>, <code><![CDATA[removeChild()]]></code>, <code><![CDATA[insertBefore()]]></code> and <code><![CDATA[replaceChild()]]></code> functions are used to add and remove elements and nodes. Other DOM functions are used to assign attributes to the created elements.</p>
+					<note>
+						<p>When adding focusable elements into the document, do not add <code><![CDATA[tabindex]]></code> attributes to explicitly set the tab order as this can cause problems when adding focusable elements into the middle of a document. Let the default tab order be assigned to the new element by not explicitly setting a <code><![CDATA[tabindex]]></code> attribute.</p>
+					</note>
+				</description>
+				<examples>
+					<eg-group>
+						<description>
+							<p>This example demonstrates use of client-side scripting to validate a form. If errors are found appropriate error messages are displayed.  The example uses the DOM functions to add error notification consisting of a title, a short paragraph explaining that an error has occurred, and a list of errors in an ordered list. The content of the title is written as a link so that it can be used to draw the user's attention to the error using the focus method. Each item in the list is also written as a link that places the focus onto the form field in error when the link is followed.</p>
+							<p>For simplicity, the example just validates two text fields, but can easily be extended to become a generic form handler. Client-side validation should not be the sole means of validation , and should be backed up with server-side validation. The benefit of client-side validation is that you can provide immediate feedback to the user to save them waiting for the errors to come back from the server, and it helps reduce unnecessary traffic to the server.</p>
+							<p>Here is the script that adds the event handlers to the form. If scripting is enabled, the validateNumbers() function will be called to perform client-side validation before the form is submitted to the server. If scripting is not enabled, the form will be immediately submitted to the server, so validation should also be implemented on the server. 
+              </p>
+						</description>
+						<code role="html401"><![CDATA[
+window.onload = initialise;
+function initialise()
+{
+  // Ensure we're working with a relatively standards compliant user agent
+  if (!document.getElementById || !document.createElement || !document.createTextNode)
+    return;
+
+  // Add an event handler for the number form
+  var objForm = document.getElementById('numberform');
+  objForm.onsubmit= function(){return validateNumbers(this);};
+}
+]]></code>
+						<description>
+							<p>Here is the validation function.  Note the use of the createElement(), createTextNode(), and appendChild() DOM functions to create the error message elements.</p>
+						</description>
+						<code role="html401"><![CDATA[
+function validateNumbers(objForm)
+{
+  // Test whether fields are valid
+  var bFirst = isNumber(document.getElementById('num1').value);
+  var bSecond = isNumber(document.getElementById('num2').value);
+  // If not valid, display errors
+  if (!bFirst || !bSecond)
+  {
+    var objExisting = document.getElementById('validationerrors');
+    var objNew = document.createElement('div');
+    var objTitle = document.createElement('h2');
+    var objParagraph = document.createElement('p');
+    var objList = document.createElement('ol');
+    var objAnchor = document.createElement('a');
+    var strID = 'firsterror';
+    var strError;
+    // The heading element will contain a link so that screen readers
+    // can use it to place focus - the destination for the link is 
+    // the first error contained in a list
+    objAnchor.appendChild(document.createTextNode('Errors in Submission'));
+    objAnchor.setAttribute('href', '#firsterror');
+    objTitle.appendChild(objAnchor);
+    objParagraph.appendChild(document.createTextNode('Please review the following'));
+    objNew.setAttribute('id', 'validationerrors');
+    objNew.appendChild(objTitle);
+    objNew.appendChild(objParagraph);
+    // Add each error found to the list of errors
+    if (!bFirst)
+    {
+      strError = 'Please provide a numeric value for the first number';
+      objList.appendChild(addError(strError, '#num1', objForm, strID));
+      strID = '';
+    }
+    if (!bSecond)
+    {
+      strError = 'Please provide a numeric value for the second number';
+      objList.appendChild(addError(strError, '#num2', objForm, strID));
+      strID = '';
+    }
+    // Add the list to the error information
+    objNew.appendChild(objList);
+    // If there were existing errors, replace them with the new lot,
+    // otherwise add the new errors to the start of the form
+    if (objExisting)
+      objExisting.parentNode.replaceChild(objNew, objExisting);
+    else
+    {
+      var objPosition = objForm.firstChild;
+      objForm.insertBefore(objNew, objPosition);
+    }
+    // Place focus on the anchor in the heading to alert
+    // screen readers that the submission is in error
+    objAnchor.focus();
+    // Do not submit the form
+    objForm.submitAllowed = false;
+    return false;
+  }
+  return true;
+}
+
+// Function to validate a number
+function isNumber(strValue)
+{
+  return (!isNaN(strValue) && strValue.replace(/^\s+|\s+$/, '') !== '');
+} 
+]]></code>
+						<description>
+							<p>Below are the helper functions to create the error message and to set focus to the associated form field.</p>
+						</description>
+						<code role="html401"><![CDATA[
+// Function to create a list item containing a link describing the error
+// that points to the appropriate form field
+function addError(strError, strFragment, objForm, strID)
+{
+  var objAnchor = document.createElement('a');
+  var objListItem = document.createElement('li');
+  objAnchor.appendChild(document.createTextNode(strError));
+  objAnchor.setAttribute('href', strFragment);
+  objAnchor.onclick = function(event){return focusFormField(this, event, objForm);};
+  objAnchor.onkeypress = function(event){return focusFormField(this, event, objForm);};
+  // If strID has a value, this is the first error in the list
+  if (strID.length > 0)
+    objAnchor.setAttribute('id', strID);
+  objListItem.appendChild(objAnchor);
+  return objListItem;
+}
+
+// Function to place focus to the form field in error
+function focusFormField(objAnchor, objEvent, objForm)
+{
+  // Allow keyboard navigation over links
+  if (objEvent && objEvent.type == 'keypress')
+    if (objEvent.keyCode != 13 && objEvent.keyCode != 32)
+      return true;
+  // set focus to the form control
+  var strFormField = objAnchor.href.match(/[^#]\w*$/);
+  objForm[strFormField].focus();
+  return false;
+}]]></code>
+						<description>
+							<p>Here is the HTML for the example form.</p>
+						</description>
+						<code role="html401"><![CDATA[
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>ECMAScript Form Validation</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<script type="text/javascript" src="validate.js"></script>
+</head>
+<body>
+<h1>Form Validation</h1>
+<form id="numberform" method="post" action="form.php">
+<fieldset>
+<legend>Numeric Fields</legend>
+<p>
+<label for="num1">Enter first number</label>
+<input type="text" size="20" name="num1" id="num1">
+</p>
+<p>
+<label for="num2">Enter second number</label>
+<input type="text" size="20" name="num2" id="num2">
+</p>
+</fieldset>
+<p>
+<input type="submit" name="submit" value="Submit Form">
+</p>
+</form>
+</body>
+</html>
+]]></code>
+						<description>
+							<p>This example is limited to client-side scripting, and should be backed up with server-side validation. The example is limited to the creation of error messages when client-side scripting is available. 
+              </p>
+							<p>Here is a link to a working example: <loc
+								xmlns:xlink="http://www.w3.org/1999/xlink" href="ex1.html"
+								linktype="examples">Form Validation</loc> </p>
+						</description>
+					</eg-group>
+				</examples>
+				<resources>
+					<see-also>
+						<ulist>
+							<item>
+								<p>HTML 4.01  <loc href="http://www.webreference.com/js/column44/index.html">The Document Object Model, More methods</loc> from Webreference.com
+									</p>
+							</item>
+							<item>
+								<p><loc href="http://usability.com.au/2008/09/accessible-forms-using-wcag-2-0/">Accessible Forms using WCAG 2.0</loc></p>
+							</item>
+						</ulist>
+					</see-also>
+				</resources>
+				<related-techniques/>
+				<tests>
+					<procedure>
+						<p>For pages that dynamically create new content:</p>
+						<olist>
+							<item>
+								<p>Examine the source code and check that the new content is not created using document.write(), innerHTML, outerHTML, innerText or outerText.</p>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>Check #1 is true.</p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="SCR22">
+				<short-name>Using scripts to control blinking and stop it in five seconds or less</short-name>
+				<applicability>
+					<p>Technologies that support script-controlled blinking of content.</p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="time-limits-pause" relationship="sufficient"
+					/>
+				</applies-to>
+				<description>
+					<p>The objective of this technique is to control blinking with script so it can be set to stop in less than five seconds by the script. Script is used to start the blinking effect of content, control the toggle between visible and hidden states, and also stop the effect at five seconds or less. The <code><![CDATA[setTimeout()]]></code> function can be used to toggle blinking content between visible and hidden states, and stop when the number of iterations by the time between them adds up to nearly five seconds.</p>
+				</description>
+				<examples>
+					<eg-group>
+						<description>
+							<p>This example uses JavaScript to control blinking of some HTML and XHTML content. JavaScript creates the blinking effect by changing the visibility status of the content. It controls the start of the effect and stops it within five seconds.</p>
+						</description>
+						<code><![CDATA[
+...
+<div id="blink1" class="highlight">New item!</div>
+<script type="text/javascript">
+<!--
+// blink "on" state
+function show()
+{
+	if (document.getElementById)
+	document.getElementById("blink1").style.visibility = "visible";
+}
+// blink "off" state
+function hide()
+{
+	if (document.getElementById)
+	document.getElementById("blink1").style.visibility = "hidden";
+}
+// toggle "on" and "off" states every 450 ms to achieve a blink effect
+// end after 4500 ms (less than five seconds)
+for(var i=900; i < 4500; i=i+900)
+{
+	setTimeout("hide()",i);
+	setTimeout("show()",i+450);
+}
+-->
+</script>
+...
+            ]]></code>
+						<description>
+							<p>Here is a working example of this code: <loc
+								xmlns:xlink="http://www.w3.org/1999/xlink" href="ex1.html"
+								linktype="examples">Using script to control blinking</loc>.</p>
+						</description>
+					</eg-group>
+				</examples>
+				<tests>
+					<procedure>
+						<p>For each instance of blinking content:</p>
+						<olist>
+							<item>
+								<p>Start a timer for 5 seconds at the start of the blink effect.</p>
+							</item>
+							<item>
+								<p>When the timer expires, determine if the blinking has stopped.</p>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>For each instance of blinking content, #2 is true.</p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="SCR24">
+				<short-name>Using progressive enhancement to open new windows on user request</short-name>
+				<applicability>
+					<p> HTML 4.01 and XHTML 1.0 </p>
+				</applicability>
+				<applies-to>
+					<success-criterion
+						idref="consistent-behavior-no-extreme-changes-context"
+						relationship="sufficient"/>
+				</applies-to>
+				<description>
+					<p> The objective of this technique is to avoid confusion that may be caused by
+                        the appearance of new windows that were not requested by the user. Suddenly
+                        opening new windows can disorient or be missed completely by some users.
+                        If the document type does not allow the <code><![CDATA[target]]></code> attribute (it
+                        does not exist in HTML 4.01 Strict or XHTML 1.0 Strict) or if the developer
+                        prefers not to use it, new windows can be opened with ECMAScript. The
+                        example below demonstrates how to open new windows with script: it adds an
+                        event handler to a link (<code><![CDATA[a]]></code> element) and warns the user that the
+                        content will open in a new window. </p>
+				</description>
+				<examples>
+					<eg-group>
+						<head/>
+						<description>
+							<p>Markup:</p>
+							<p> The script is included in the head of the document, and the link has
+                                an id that can be used as a hook by the script. </p>
+						</description>
+						<code><![CDATA[
+<script type="text/javascript" src="popup.js"></script>
+…
+<a href="help.html" id="newwin">Show Help</a]]></code>
+						<description>
+							<p>Script:</p>
+						</description>
+						<code><![CDATA[ 
+// Use traditional event model whilst support for event registration
+// amongst browsers is poor.
+window.onload = addHandlers;
+
+function addHandlers()
+{
+  var objAnchor = document.getElementById('newwin');
+
+  if (objAnchor)
+  {
+    objAnchor.firstChild.data = objAnchor.firstChild.data + ' (opens in a new window)';
+    objAnchor.onclick = function(event){return launchWindow(this, event);}
+    // UAAG requires that user agents handle events in a device-independent manner
+    // but only some browsers do this, so add keyboard event to be sure
+    objAnchor.onkeypress = function(event){return launchWindow(this, event);}
+  }
+}
+
+function launchWindow(objAnchor, objEvent)
+{
+  var iKeyCode, bSuccess=false;
+
+  // If the event is from a keyboard, we only want to open the
+  // new window if the user requested the link (return or space)
+  if (objEvent && objEvent.type == 'keypress')
+  {
+    if (objEvent.keyCode)
+      iKeyCode = objEvent.keyCode;
+    else if (objEvent.which)
+      iKeyCode = objEvent.which;
+
+    // If not carriage return or space, return true so that the user agent
+    // continues to process the action
+    if (iKeyCode != 13 && iKeyCode != 32)
+      return true;
+  }
+
+  bSuccess = window.open(objAnchor.href);
+
+  // If the window did not open, allow the browser to continue the default
+  // action of opening in the same window
+  if (!bSuccess)
+    return true;
+
+  // The window was opened, so stop the browser processing further
+  return false;
+}]]></code>
+					</eg-group>
+				</examples>
+				<resources>
+					<see-also>
+						<ulist>
+							<item>
+								<p><loc href="http://en.wikipedia.org/wiki/Progressive_enhancement">Wikipedia: Progressive Enhancement</loc></p>
+							</item>
+						</ulist>
+					</see-also>
+				</resources>
+				<related-techniques>
+					<relatedtech idref="H83"/>
+				</related-techniques>
+				<tests>
+					<procedure>
+						<olist>
+							<item>
+								<p> Activate each link in the document to check if it opens a new window. </p>
+							</item>
+							<item>
+								<p>For each link that opens a new window, check that it uses script to accomplish each of the following:</p>
+								<olist>
+									<item>
+										<p>indicates that the link will open in a new window,</p>
+									</item>
+									<item>
+										<p>uses device-independent event handlers, and</p>
+									</item>
+									<item>
+										<p>allows the browser to open the content in the same window if a new window was not opened.</p>
+									</item>
+								</olist>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p> #2 is true. </p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="SCR26">
+				<short-name>Inserting dynamic content into the Document Object Model immediately following its trigger element</short-name>
+				<applicability>
+					<p>HTML and XHTML, script</p>
+				</applicability>
+				<applies-to>
+					<!--success-criterion idref="keyboard-operation-keyboard-operable"/-->
+					<success-criterion idref="navigation-mechanisms-focus-order"
+						relationship="sufficient"/>
+					<!--success-criterion idref="navigation-mechanisms-focus-visible"/-->
+				</applies-to>
+				<description>
+					<p>The objective of this technique is to place inserted user interface elements into the Document Object Model (DOM) in such a way that the tab order and screen-reader reading order are set correctly by the default behavior of the user agent. This technique can be used for any user interface element that is hidden and shown, such as menus and dialogs.</p>
+					<p>The reading order in a screen-reader is based on the order of the HTML or XHTML elements in the Document Object Model, as is the default tab order. This technique inserts new content into the DOM immediately following the element that was activated to trigger the script. The triggering element must be a link or a button, and the script must be called from its onclick event. These elements are natively focusable, and their onclick event is device independent. Focus remains on the activated element and the new content, inserted after it, becomes the next thing in both the tab order and screen-reader reading order.</p>
+					<p>Note that this technique works for synchronous updates. For asynchronous updates (sometimes called AJAX), an additional technique is needed to inform the assistive technology that the asynchronous content has been inserted. </p>
+				</description>
+				<examples>
+					<eg-group>
+						<description>
+							<p>This example creates a menu when a link is clicked and inserts it after the link. The onclick event of the link is used to call the ShowHide script, passing in an ID for the new menu as a parameter.</p>
+						</description>
+						<code role="xhtml"><![CDATA[<a href="#" onclick="ShowHide('foo',this)">Toggle</a>]]></code>
+						<description>
+							<p>The ShowHide script creates a div containing the new menu, and inserts a link into it. The last line is the core of the script. It finds the parent of the element that triggered the script, and appends the div it created as a new child to it. This causes the new div to be in the DOM after the link. When the user hits tab, the focus will go to the first focusable item in the menu, the link we created.</p>
+						</description>
+						<code role="script"><![CDATA[function ShowHide(id,src)
+{
+	var el = document.getElementById(id);
+	if (!el)
+	{
+		el = document.createElement("div");
+		el.id = id;
+		var link = document.createElement("a");
+		link.href = "javascript:void(0)";
+		link.appendChild(document.createTextNode("Content"));
+		el.appendChild(link);
+		src.parentElement.appendChild(el);
+	}
+	else
+	{
+		el.style.display = ('none' == el.style.display ? 'block' : 'none');
+	}
+}]]></code>
+						<description>
+							<p>CSS is used to make the div and link look like a menu.</p>
+						</description>
+					</eg-group>
+				</examples>
+				<tests>
+					<procedure>
+						<olist>
+							<item>
+								<p>Find all areas of the page that trigger dialogs that are not pop-up windows.</p>
+							</item>
+							<item>
+								<p>Check that the dialogs are triggered from the click event of a button or a link.</p>
+							</item>
+							<item>
+								<p>Using a tool that allows you to inspect the DOM generated by script, check that the dialog is next in the DOM.</p>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>#2 and #3 are true.</p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="SCR27">
+				<short-name>Reordering page sections using the Document Object Model</short-name>
+				<applicability>
+					<p>HTML and XHTML, script</p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="navigation-mechanisms-focus-order"
+						relationship="sufficient"/>
+				</applies-to>
+				<description>
+					<p>The objective of this technique is to provide a mechanism for re-ordering component which is both highly usable and accessible. The two most common mechanisms for reordering are to send users to a set-up page where they can number components, or to allow them to drag and drop components to the desired location. The drag and drop method is much more usable, as it allows the user to arrange the items in place, one at a time, and get a feeling for the results. Unfortunately, drag and drop relies on the use of a mouse. This technique allows users to interact with a menu on the components to reorder them in place in a device independent way. It can be used in place of, or in conjunction with drag and drop reordering functionality.</p>
+					<p>The menu is a list of links using the device-independent onclick event to trigger scripts which re-order the content. The content is re-ordered in the Document Object Model (DOM), not just visually, so that it is in the correct order for all devices. </p>
+				</description>
+				<examples>
+					<eg-group>
+						<description>
+							<p>This example does up and down reordering. This approach can also be used for two-dimensional reordering by adding left and right options.</p>
+							<p>The components in this example are list items in an unordered list. Unordered lists are a very good semantic model for sets of similar items, like these components. The menu approach can also be used for other types of groupings.</p>
+							<p>The modules are list items, and each module, in addition to content in div elements, contains a menu represented as a nested list. </p>
+						</description>
+						<code role="xhtml"><![CDATA[<ul id="swapper">
+    <li id="black">
+        <div class="module">
+            <div class="module_header">
+                <!-- menu link -->
+                <a href="#" onclick="ToggleMenu(event);">menu</a>
+                <!-- menu -->
+                <ul class="menu">
+                    <li><a href="#" onclick="OnMenuClick(event)" 
+                        onkeypress="OnMenuKeypress(event);">up</a></li>
+                    <li><a href="#" onclick="OnMenuClick(event)" 
+                        onkeypress="OnMenuKeypress(event);">down</a></li>
+                </ul>
+            </div>
+            <div class="module_body">
+                Text in the black module
+            </div>
+        </div>
+    </li>
+    ...
+</ul>]]></code>
+						<description>
+							<p>Since we've covered the showing and hiding of menus in the simple tree samples, we'll focus here just on the code that swaps the modules. Once we harmonize the events and cancel the default link action, we go to work. First, we set a bunch of local variables for the elements with which we'll be working: the menu, the module to be reordered, the menuLink. Then, after checking the reorder direction, we try to grab the node to swap. If we find one, we then call swapNode() to swap our two modules, and PositionElement() to move the absolutely-positioned menu along with the module, and then set focus back on the menu item which launched the whole thing.</p>
+						</description>
+						<code role="script"><![CDATA[function MoveNode(evt,dir)
+{
+    HarmonizeEvent(evt);
+    evt.preventDefault();
+
+    var src = evt.target;
+    var menu = src.parentNode.parentNode;
+    var module = menu.parentNode.parentNode.parentNode;
+    var menuLink = module.getElementsByTagName("a")[0];
+    var swap = null;
+    
+    switch(dir)
+    {
+        case 'up':
+        {
+            swap = module.previousSibling;
+            while (swap && swap.nodeType != 1)
+            {
+                swap = swap.previousSibling;
+            }
+            break;
+        }
+        case 'down':
+        {
+            swap = module.nextSibling;
+            while (swap && swap.nodeType != 1)
+            {
+                swap = swap.nextSibling;
+            }
+            break;
+        }
+    }
+    if (swap && swap.tagName == node.tagName)
+    {
+        module.swapNode(swap);
+        PositionElement(menu,menuLink,false,true);
+    }
+    src.focus();
+}]]></code>
+						<description>
+							<p>The CSS for the node swap is not much different than that of our previous tree samples, with some size and color adjustment for the modules and the small menu.</p>
+						</description>
+						<code role="css"><![CDATA[ul#swapper { margin:0px; padding:0px; list-item-style:none; }
+ul#swapper li { padding:0; margin:1em; list-style:none; height:5em; width:15em; 
+    border:1px solid black; }
+ul#swapper li a { color:white; text-decoration:none; font-size:90%; }
+
+ul#swapper li div.module_header { text-align:right; padding:0 0.2em; }
+ul#swapper li div.module_body { padding:0.2em; }
+
+ul#swapper ul.menu { padding:0; margin:0; list-style:none; background-color:#eeeeee; 
+    height:auto; position:absolute; text-align:left; border:1px solid gray; display:none; }
+ul#swapper ul.menu li { height:auto; border:none; margin:0; text-align:left; 
+    font-weight:normal; width:5em; }
+ul#swapper ul.menu li a { text-decoration:none; color:black; padding:0 0.1em; 
+    display:block; width:100%; }
+]]></code>
+					</eg-group>
+				</examples>
+				<tests>
+					<procedure>
+						<olist>
+							<item>
+								<p>Find all components in the Web Unit which can be reordered via drag and drop.</p>
+							</item>
+							<item>
+								<p>Check that there is also a mechanism to reorder them using menus build of lists of links.</p>
+							</item>
+							<item>
+								<p>Check that the menus are contained within the reorderable items in the DOM.</p>
+							</item>
+							<item>
+								<p>Check that scripts for reordering are triggered only from the onclick event of links.</p>
+							</item>
+							<item>
+								<p>Check that items are reordered in the DOM, not only visually.</p>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>#2 through #5 are true.</p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="SCR28">
+				<short-name>Using an expandable and collapsible menu to bypass block of content</short-name>
+				<applicability>
+					<p>Technologies that provide client side scripting.</p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="navigation-mechanisms-skip"
+						relationship="sufficient"/>
+				</applies-to>
+				<description>
+					<p>This technique allows users to skip repeated material by placing that material in a menu that can be expanded or collapsed under user control. The user can skip the repeated material by collapsing the menu. The user invokes a user interface control to hide or remove the elements of the menu. The resources section lists several techniques for menus, toolbars and trees, any of which can be used to provide a mechanism for skipping navigation.</p>
+					<note>
+						<p>Similiar approaches can be implemented using server-side scripting and reloading a modified version of the Web page.</p>
+					</note>
+				</description>
+				<examples>
+					<eg-group>
+						<description>
+							<p>The navigation links at top of a Web page are all entries in a menu implemented using HTML, CSS, and Javascript. When the navigation bar is expanded, the navigation links are available to the user. When the navigation bar is collapsed, the links are not available.</p>
+						</description>
+						<code><![CDATA[
+...
+
+  <script type="text/javascript">
+  function toggle(id){
+    var n = document.getElementById(id);
+    n.style.display =  (n.style.display != 'none' ? 'none' : '' );
+  }
+  </script>
+
+...
+
+  <a href="#" onclick="toggle('navbar')">Toggle Navigation Bar</a>
+
+  <ul id="navbar">
+  <li><a href="http://target1.html">Link 1</a></li>
+  <li><a href="http://target2.html">Link 2</a></li>
+  <li><a href="http://target3.html">Link 3</a></li>
+  <li><a href="http://target4.html">Link 4</a></li>
+  </ul>
+
+...
+]]></code>
+						<description>
+							<p>Here is a working example of this code: <loc
+								xmlns:xlink="http://www.w3.org/1999/xlink" href="toggle-navbar.html" linktype="examples">Toggle navigation bar with a link</loc>.</p>
+						</description>
+					</eg-group>
+					<eg-group>
+						<description>
+							<p>The table of contents for a set of Web pages is repeated near the beginning of each Web page. A button at the beginning of the table of contents lets the user remove or restore it on the page.</p>
+						</description>
+						<code><![CDATA[
+...
+
+   <script type="text/javascript">
+  function toggle(id){
+    var n = document.getElementById(id);
+    n.style.display =  (n.style.display != 'none' ? 'none' : '' );
+  }
+  </script>
+
+  ...
+
+  <button onclick="return toggle('toc');">Toggle Table of Contents</button>
+  <div id="toc">
+    ...
+  </div>
+
+...
+]]></code>
+						<description>
+							<p>Here is a working example of this code: <loc
+								xmlns:xlink="http://www.w3.org/1999/xlink" href="toggle-toc.html" linktype="examples">Toggle table of contents with a button</loc>.</p>
+						</description>
+					</eg-group>
+				</examples>
+				<resources>
+					<see-also>
+						<ulist>
+							<item>
+								<p><loc href="http://www.bobbyvandersluis.com/articles/unobtrusive_show_hide/index.html">Unobtrusive show/hide behavior reloaded</loc></p>
+							</item>
+							<item>
+								<p><loc href="http://www.dustindiaz.com/seven-togglers/">Seven ways to toggle an element with JavaScript</loc></p>
+							</item>
+						</ulist>
+					</see-also>
+				</resources>
+				<related-techniques>
+					<relatedtech idref="H69"/>
+					<relatedtech idref="H50"/>
+					<relatedtech idref="H70"/>
+					<!--  @@  the following were unaccepted wiki drafts at the time this tech was xmlized
+                    # Using lists and links to make a click menu
+                    # Using lists and links to make a hover menu
+                    # Using lists and links to make a toolbar
+                    # Using lists and links to make a menu bar
+                    # Using lists and links to make a tree control -->
+				</related-techniques>
+				<tests>
+					<procedure>
+						<olist>
+							<item>
+								<p>Check that some user interface control allows the repeated content to be expanded or collapsed.</p>
+							</item>
+							<item>
+								<p>Check that when the content is expanded, it is included in the programmatically determined content at a logical place in the reading order.</p>
+							</item>
+							<item>
+								<p>Check that when the content is collapsed, it is not part of the programmatically determined content.</p>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>All checks above are true.</p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="SCR29">
+				<short-name>Adding keyboard-accessible actions to static HTML elements</short-name>
+				<applicability>
+					<p>HTML and XHTML, Script</p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="keyboard-operation-keyboard-operable"
+						relationship="sufficient"/>
+					<success-criterion idref="keyboard-operation-all-funcs"
+						relationship="sufficient"/>
+				</applies-to>
+				<ua-issues>
+					<ua-issue name="" version="">
+						<p><loc href="http://www.w3.org/TR/html4/interact/forms.html#adef-tabindex">HTML 4.01</loc> only defines the tabindex attribute for <code><![CDATA[a]]></code>, <code><![CDATA[area]]></code>, <code><![CDATA[button]]></code>, <code><![CDATA[input]]></code>, <code><![CDATA[object]]></code>, <code><![CDATA[select]]></code>, and <code><![CDATA[textarea]]></code>, and limits its value to the range between 0 and 32767. The use of <code><![CDATA[tabindex]]></code> with other element types and the tabindex value -1 is supported in Internet Explorer 5.01 and higher, and Firefox 1.5 and higher, Opera 9.5 and higher and Camino. Note that modifying focus through script can cause unpredictable behavior in screen readers that use a virtual cursor. 
+                </p>
+					</ua-issue>
+				</ua-issues>
+				<description>
+					<p>The objective of this technique is to demonstrate how to provide keyboard access to a user interface control that is implemented by actions to static HTML elements such as <code><![CDATA[div]]></code> or <code><![CDATA[span]]></code>. This technique ensures that the element is focusable by setting the <code><![CDATA[tabindex]]></code> attribute, and it ensures that the action can be triggered from the keyboard by providing an <code><![CDATA[onkeyup]]></code> or <code><![CDATA[onkeypress]]></code> handler in addition to an <code><![CDATA[onclick]]></code> handler. </p>
+					<p>When the <code><![CDATA[tabindex]]></code> attribute has the value 0, the element can be focused via the keyboard and is included in the tab order of the document. When the <code><![CDATA[tabindex]]></code> attribute has the value -1, the element cannot be tabbed to, but focus can be set programmatically, using <code><![CDATA[element.focus()]]></code>.</p>
+					<p>Because static HTML elements do not have actions associated with them, it is not possible to provide a backup implementation or explanation in environments in which scripting is not available. This technique should only be used in environments in which client-side scripting can be relied upon.</p>
+					<note>
+						<p> Such user interface controls must still satisfy Success Criterion 4.1.2. Applying this technique without also providing role, name, and state information about the user interface control will results in Failure F59, Failure of Success Criterion 4.1.2 due to using script to make div or span a user interface control in HTML.</p>
+					</note>
+				</description>
+				<examples>
+					<eg-group>
+						<head> Adding a JavaScript action to a div element</head>
+						<description>
+							<p>The <code><![CDATA[div]]></code> element on the page is given a unique <code><![CDATA[id]]></code> attribute and a <code><![CDATA[tabindex]]></code> attribute with value 0.  A script uses the Document Object Model (DOM) to find the <code><![CDATA[div]]></code> element by its id and add the <code><![CDATA[onclick]]></code> handler and the <code><![CDATA[onkeyup]]></code> handler. The <code><![CDATA[onkeyup]]></code> handler will invoke the action when the Enter key is pressed. Note that the <code><![CDATA[div]]></code> element must be loaded into the DOM before it can be found and modified. This is usually accomplished by calling the script from the <code><![CDATA[onload]]></code> event of the <code><![CDATA[body]]></code> element.  The script to add the event handlers will only execute if the user agent supports and has JavaScript enabled.   </p>
+						</description>
+						<code><![CDATA[
+...
+<script type="text/javascript">
+ // this is the function to perform the action. This simple example toggles a message.
+ function doSomething(event) {
+   var msg=document.getElementById("message");
+   msg.style.display = msg.style.display=="none" ? "" : "none";
+   //return false from the function to make certain that the href of the link does not get invoked
+   return false;
+ }
+ // this is the function to perform the action when the Enter key has been pressed.  
+ function doSomethingOnEnter(event) {
+   var key = 0;
+   // Determine the key pressed, depending on whether window.event or the event object is in use
+   if (window.event) {
+     key = window.event.keyCode;
+   } else if (event) {
+     key = event.keyCode;
+   }
+   // Was the Enter key pressed?
+   if (key == 13) {
+     return doSomething(event);
+   } 
+   // The event has not been handled, so return true
+   return true;
+ }
+ // This setUpActions() function must be called to set the onclick and onkeyup event handlers onto the existing 
+ // div element. This function must be called after the div element with id="active" has been loaded into the DOM.
+ // In this example the setUpActions() function is called from the onload event for the body element.
+ function setUpActions() {
+   // get the div object
+   var active=document.getElementById("active");
+   // assign the onclick handler to the object.
+   // It is important to return false from the onclick handler to prevent the href attribute
+   // from being followed after the function returns.
+   active.onclick=doSomething;
+   // assign the onkeyup handler to the object.
+   active.onkeyup=doSomethingOnEnter;
+ }
+ </script>
+
+ <body onload="setUpActions();">
+ <p>Here is the link to modify with a javascript action:</p>
+ <div>
+  <span id="active" tabindex="0">Do Something</span>
+ </div>
+ <div id="message">Hello, world!</div>
+...
+]]></code>
+						<description>
+							<p>Here is a working example of this code: <loc
+								xmlns:xlink="http://www.w3.org/1999/xlink" href="action-on-div.html" linktype="examples">Creating Divs with Actions using JavaScript</loc>.</p>
+						</description>
+					</eg-group>
+				</examples>
+				<resources>
+					<see-also>
+						<ulist>
+							<item>
+								<p>HTML 4.01 <loc href="http://www.w3.org/TR/REC-html40/interact/scripts.html">Scripts</loc></p>
+							</item>
+							<item>
+								<p>HTML 4.01 <loc href="http://www.w3.org/TR/REC-html40/interact/forms.html#h-17.11">Giving focus to an element</loc></p>
+							</item>
+							<item>
+								<p>Accessible Rich Internet Applications (WAI-ARIA) Version 1.0 <loc
+									xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/TR/wai-aria/states_and_properties#global_states">Global States and Properties</loc></p>
+							</item>
+							<item>
+								<p>WAI-ARIA Primer, <loc
+									xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/TR/wai-aria-primer/#focus">Provision of the keyboard or input focus</loc></p>
+							</item>
+							<item>
+								<p><loc href="http://www.w3.org/DOM/DOMTR">Document Object Model (DOM) Technical Reports</loc></p>
+							</item>
+							<item>
+								<p><loc href="http://wiki.codetalks.org/wiki/index.php/Main_Page">Firefox support for ARIA: Accessible Rich Internet Applications</loc></p>
+							</item>
+							<item>
+								<p><loc href="http://msdn.microsoft.com/en-us/library/ms534654(VS.85).aspx">Internet Explorer, HTML and DHTML Reference, tabIndex Property</loc></p>
+							</item>
+						</ulist>
+					</see-also>
+				</resources>
+				<related-techniques>
+					<relatedtech idref="SCR20"/>
+					<relatedtech idref="SCR24"/>
+					<relatedtech idref="SCR35"/>
+					<relatedtech idref="F59"/>
+				</related-techniques>
+				<tests>
+					<procedure>
+						<p>In a user agent that supports Scripting:</p>
+						<olist>
+							<item>
+								<p>Click on the control with the mouse</p>
+							</item>
+							<item>
+								<p>Check that the scripting action executes properly</p>
+							</item>
+							<item>
+								<p>Check that it is possible to navigate to and give focus to the control via the keyboard</p>
+							</item>
+							<item>
+								<p>Set keyboard focus to the control</p>
+							</item>
+							<item>
+								<p>Check that pressing ENTER invokes the scripting action.</p>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>All of the checks are true</p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="SCR30">
+				<short-name>Using scripts to change the link text</short-name>
+				<applicability>
+					<p>Client-side scripting used with HTML and XHTML</p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="navigation-mechanisms-refs"
+						relationship="sufficient"/>
+					<success-criterion idref="navigation-mechanisms-link"
+						relationship="sufficient"/>
+				</applies-to>
+				<description>
+					<p>The purpose of this technique is to allow users to choose to have additional information added to the text of links so that the links can be understood out of context.</p>
+					<p>Some users prefer to have links that are self-contained, where there is no need to explore the context of the link. Other users find including the context information in each link to be repetitive and to reduce their ability to use a site. Among users of assistive technology, the feedback to the working group on which is preferable has been divided. This technique allows users to pick the approach that works best for them.</p>
+					<p>A link is provided near the beginning of the page that will expand the link text of the links on the page so that no additional context is needed to understand the purpose of any link. It must always be possible to understand the purpose of the expansion link directly from its link text.</p>
+					<p>This technique expands the links only for the current page view. It is also possible, and in some cases would be advisable, to save this preference in a cookie or server-side user profile, so that users would only have to make the selection once per site. </p>
+				</description>
+				<examples>
+					<eg-group>
+						<description>
+							<p>This example uses Javascript to add contextual information directly to the text of a link. The link class is used to determine which additional text to add. When the "Expand Links" link is activated, each link on the page is tested to see whether additional text should be added.</p>
+						</description>
+						<code><![CDATA[
+...
+<script type="text/javascript">
+var expanded = false;
+var linkContext = {
+	"hist":" version of The History of the Web",
+	"cook":" version of Cooking for Nerds"
+};
+
+function doExpand() {
+	var links = document.links;
+	
+	for each (link in links) {
+		var cn = link.className;
+		if (linkContext[cn]) {
+			span = link.appendChild(document.createElement("span"));
+			span.setAttribute("class", "linkexpansion");
+			span.appendChild(document.createTextNode(linkContext[cn]));
+		}
+	}
+	objUpdate = document.getElementById('expand');
+	if (objUpdate)
+	{
+		objUpdate.childNodes[0].nodeValue = "Collapse links";
+	}
+	expanded = true;
+}
+
+function doCollapse() {
+	objUpdate = document.getElementById('expand');
+	var spans = document.getElementsByTagName("span");
+	var span;
+
+	// go backwards through the set as removing from the front changes indices
+	// and messes up the process
+	for (i = spans.length - 1; i >= 0; i--) {
+		span = spans[i];
+		if (span.getAttribute("class") == "linkexpansion")
+			span.parentNode.removeChild(span);
+	}
+	if (objUpdate)
+	{
+		objUpdate.childNodes[0].nodeValue = "Expand links";
+	}
+	expanded = false;
+}
+
+function toggle() {
+	if (expanded) doCollapse();
+	else doExpand();
+}
+</script>
+
+...
+
+<h1>Books for download</h1>
+<p><button id="expand" onclick="toggle();">Expand Links</button></p>
+<ul>
+	<li>The History of the Web: <a href="history.docx" class="hist">Word</a>, <a href="history.pdf" class="hist">PDF</a>, <a href="history.html" class="hist">HTML</a> </li>
+
+	<li>Cooking for Nerds: <a href="history.docx" class="cook">Word</a>, <a href="history.pdf" class="cook">PDF</a>, <a href="history.html" class="cook">HTML</a> </li>
+</ul>
+
+...
+]]></code>
+						<description>
+							<p>Here is a working example of this code: <loc
+								xmlns:xlink="http://www.w3.org/1999/xlink" href="expand-links"
+								linktype="examples">Providing link expansions on demand</loc>.</p>
+						</description>
+					</eg-group>
+				</examples>
+				<related-techniques>
+					<relatedtech idref="G91"/>
+					<relatedtech idref="H30"/>
+					<relatedtech idref="H33"/>
+					<relatedtech idref="C7"/>
+				</related-techniques>
+				<tests>
+					<procedure>
+						<olist>
+							<item>
+								<p>Check that there is a link near the beginning of the page to expand links</p>
+							</item>
+							<item>
+								<p>Check that the link identified in step 1 can be identified from link text alone</p>
+							</item>
+							<item>
+								<p>Find any links on the page that cannot be identified from link text alone</p>
+							</item>
+							<item>
+								<p>Activate the control identified in step 1</p>
+							</item>
+							<item>
+								<p>Check that the purpose of the links identified in step 3 can now be identified from link text alone</p>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>Checks #1, #2, and #5 are true</p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="SCR31">
+				<short-name>Using script to change the background color or border of the element with focus</short-name>
+				<applicability>
+					<p>HTML and XHTML, CSS, Script</p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="navigation-mechanisms-focus-visible"
+						relationship="sufficient"/>
+				</applies-to>
+				<ua-issues>
+					<ua-issue name="" version="">
+						<p>This technique can be used on user agents that don't support the <code><![CDATA[:focus]]></code> pseudoclass but do support script, including Microsoft Internet Explorer.</p>
+					</ua-issue>
+				</ua-issues>
+				<description>
+					<p>This purpose of this technique is to allow the author to use JavaScript to apply CSS, in order to make the focus indicator more visible than it would ordinarily be. When an element receives focus, the background color or border is changed to make it visually distinct. When the element loses focus, it returns to its normal styling. This technique can be used on any HTML user agent that supports Script and CSS, regardless of whether it supports the :focus pseudoclass.</p>
+				</description>
+				<examples>
+					<eg-group>
+						<description>
+							<p>In this example, when the link receives focus, its background turns yellow. When it loses focus, the yellow is removed. Note that if the link had a background color to begin with, you would use that color rather than "" in the script.</p>
+						</description>
+						<code><![CDATA[
+...
+<script>
+ function toggleFocus(el)
+ {
+  el.style.backgroundColor =  el.style.backgroundColor=="yellow" ? "inherit" : "yellow";
+ }
+</script>
+
+...
+
+<a href="example.html" onfocus="toggleFocus(this)" onblur="toggleFocus(this)">focus me</a>
+...
+]]></code>
+					</eg-group>
+				</examples>
+				<related-techniques>
+					<relatedtech idref="C15"/>
+				</related-techniques>
+				<tests>
+					<procedure>
+						<olist>
+							<item>
+								<p>Tab to each element in the page</p>
+							</item>
+							<item>
+								<p>Check that the focus indicator is visible</p>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>Step #2 is true</p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="SCR32">
+				<short-name>Providing client-side validation and adding error text via the DOM</short-name>
+				<applicability>
+					<p>Script used with HTML or XHTML.</p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="minimize-error-identified"
+						relationship="sufficient"/>
+					<success-criterion idref="minimize-error-suggestions"
+						relationship="sufficient"/>
+				</applies-to>
+				<description>
+					<p>The objective of this technique is to demonstrate the display of an error message when client side validation of a form field has failed. Anchor elements are used to display the error messages in a list and are inserted above the fields to be validated. Anchor elements are used in the error messages so that focus can be placed on the error message(s), drawing the user's attention to it. The <att>href</att> of the anchor elements contain an in-page link which references the fields where error(s) have been found. </p>
+					<p>In a deployed application, if Javascript is turned off, client side validation will not occur. Therefore, this technique would only be sufficient in situations where scripting is relied upon for conformance or when server side validation techniques are also used to catch any errors and return the page with information about the fields with errors. </p>
+				</description>
+				<examples>
+					<eg-group>
+						<description>
+							<p>This example validates required fields as well as fields where a specific format is required. When an error is identified, the script inserts a list of error messages into the DOM and moves focus to them.</p>
+							<graphic
+								source="working-examples/SCR32/form2.jpg"
+								alt="Screenshot showing the error messages for several fields that were not filled out correctly. Error messages appear as a list of links near the top of the form."/>
+							<p><emph role="strong">HTML and Javascript code </emph></p>
+							<p>Here is the HTML for the example form: </p>
+						</description>
+						<code><![CDATA[
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title>Form Validation</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link href="css/validate.css" rel="stylesheet" type="text/css"/>
+        <script type="text/javascript" src="scripts/validate.js"/>
+    </head>
+    <body>
+
+        <h1>Form Validation</h1>
+
+        <p>The following form is validated before being submitted if scripting is available,
+            otherwise the form is validated on the server. All fields are required, except those
+            marked optional. If errors are found in the submission, the form is cancelled and 
+            a list of errors is displayed at the top of the form.</p>
+
+        <p> Please enter your details below. </p>
+
+        <h2>Validating Form</h2>
+
+        <form id="personalform" method="post" action="index.php">
+            <div class="validationerrors"/>
+            <fieldset>
+                <legend>Personal Details</legend>
+                <p>
+                    <label for="forename">Please enter your forename</label>
+                    <input type="text" size="20" name="forename" id="forename" class="string"
+                        value=""/>
+                </p>
+                <p>
+                    <label for="age">Please enter your age</label>
+                    <input type="text" size="20" name="age" id="age" class="number" value=""/>
+                </p>
+                <p>
+                    <label for="email">Please enter your email address</label>
+                    <input type="text" size="20" name="email" id="email" class="email" value=""/>
+                </p>
+            </fieldset>
+            <p>
+                <input type="submit" name="signup" value="Sign up"/>
+            </p>
+        </form>
+        <h2>Second Form</h2>
+        <form id="secondform" method="post" action="index.php#focuspoint">
+            <div class="validationerrors"/>
+            <fieldset>
+                <legend>Second Form Details</legend>
+                <p>
+                    <label for="suggestion">Enter a suggestion</label>
+                    <input type="text" size="20" name="suggestion" id="suggestion" 
+                      class="string" value=""/>
+                </p>
+                <p>
+                    <label for="optemail">Please enter your email address (optional)</label>
+                    <input type="text" size="20" name="optemail" id="optemail"
+                        class="optional email" value=""/>
+                </p>
+                <p>
+                    <label for="rating">Please rate this suggestion</label>
+                    <input type="text" size="20" name="rating" id="rating" 
+                      class="number" value=""/>
+                </p>
+                <p>
+                    <label for="jibberish">Enter some jibberish (optional)</label>
+                    <input type="text" size="20" name="jibberish" id="jibberish" value=""/>
+                </p>
+
+            </fieldset>
+            <p>
+                <input type="submit" name="submit" value="Add Suggestion"/>
+            </p>
+        </form>
+    </body>
+</html>                      ]]></code>
+						<description>
+							<p>Here is the Javascript which performs the validation and inserts the error messages: </p>
+						</description>
+						<code><![CDATA[
+window.onload = initialise;
+
+function initialise()
+{
+   var objForms = document.getElementsByTagName('form');
+   var iCounter;
+
+   // Attach an event handler for each form
+   for (iCounter=0; iCounter<objForms.length; iCounter++)
+   {
+      objForms[iCounter].onsubmit = function(){return validateForm(this);};
+   }
+}
+
+
+// Event handler for the form
+function validateForm(objForm)
+{
+   var arClass = [];
+   var iErrors = 0;
+   var objField = objForm.getElementsByTagName('input');
+   var objLabel = objForm.getElementsByTagName('label');
+   var objList = document.createElement('ol');
+   var objError, objExisting, objNew, objTitle, objParagraph, objAnchor, objPosition;
+   var strLinkID, iFieldCounter, iClassCounter, iCounter;
+
+   // Get the id or name of the form, to make a unique
+   // fragment identifier
+   if (objForm.id)
+   {
+      strLinkID = objForm.id + 'ErrorID';
+   }
+   else
+   {
+      strLinkID = objForm.name + 'ErrorID';
+   }
+
+   // Iterate through input form controls, looking for validation classes
+   for (iFieldCounter=0; iFieldCounter<objField.length; iFieldCounter++)
+   {
+      // Get the class for the field, and look for the appropriate class
+      arClass = objField[iFieldCounter].className.split(' ');
+      for (iClassCounter=0; iClassCounter<arClass.length; iClassCounter++)
+      {
+         switch (arClass[iClassCounter])
+         {
+            case 'string':
+               if (!isString(objField[iFieldCounter].value, arClass))
+               {
+                  if (iErrors === 0)
+                  {
+                     logError(objField[iFieldCounter], objLabel, objList, strLinkID);
+                  }
+                  else
+                  {
+                     logError(objField[iFieldCounter], objLabel, objList, '');
+                  }
+                  iErrors++;
+               }
+               break;
+            case 'number':
+               if (!isNumber(objField[iFieldCounter].value, arClass))
+               {
+                  if (iErrors === 0)
+                  {
+                     logError(objField[iFieldCounter], objLabel, objList, strLinkID);
+                  }
+                  else
+                  {
+                     logError(objField[iFieldCounter], objLabel, objList, '');
+                  }
+                  iErrors++;
+               }
+               break;
+
+            case 'email' :
+               if (!isEmail(objField[iFieldCounter].value, arClass))
+               {
+                  if (iErrors === 0)
+                  {
+                     logError(objField[iFieldCounter], objLabel, objList, strLinkID);
+                  }
+                  else
+                  {
+                     logError(objField[iFieldCounter], objLabel, objList, '');
+                  }
+                  iErrors++;
+               }
+               break;
+         }
+      }
+   }
+
+   if (iErrors > 0)
+   {
+      // If not valid, display error messages
+      objError = objForm.getElementsByTagName('div');
+      
+      // Look for existing errors
+      for (iCounter=0; iCounter<objError.length; iCounter++)
+      {
+         if (objError[iCounter].className == 'validationerrors')
+         {
+            objExisting = objError[iCounter];
+         }
+      }
+
+      objNew = document.createElement('div');
+      objTitle = document.createElement('h2');
+      objParagraph = document.createElement('p');
+      objAnchor = document.createElement('a');
+
+      if (iErrors == 1)
+      {
+         objAnchor.appendChild(document.createTextNode('1 Error in Submission'));
+      }
+      else
+      {
+         objAnchor.appendChild(document.createTextNode(iErrors + ' Errors in Submission'));
+      }
+      objAnchor.href = '#' + strLinkID;
+      objAnchor.className = 'submissionerror';
+
+      objTitle.appendChild(objAnchor);
+      objParagraph.appendChild(document.createTextNode('Please review the following'));
+      objNew.className = 'validationerrors';
+
+      objNew.appendChild(objTitle);
+      objNew.appendChild(objParagraph);
+      objNew.appendChild(objList);
+      
+      // If there were existing error, replace them with the new lot,
+      // otherwise add the new errors to the start of the form
+      if (objExisting)
+      {
+         objExisting.parentNode.replaceChild(objNew, objExisting);
+      }
+      else
+      {
+         objPosition = objForm.firstChild;
+         objForm.insertBefore(objNew, objPosition);
+      }
+
+      // Allow for latency
+      setTimeout(function() { objAnchor.focus(); }, 50);
+      
+      // Don't submit the form
+      objForm.submitAllowed = false;
+      return false;
+   }
+
+   // Submit the form
+   return true;
+}
+
+// Function to add a link in a list item that points to problematic field control
+function addError(objList, strError, strID, strErrorID)
+{
+   var objListItem = document.createElement('li');
+   var objAnchor = document.createElement('a');
+   
+   // Fragment identifier to the form control
+   objAnchor.href='#' + strID;
+
+   // Make this the target for the error heading
+   if (strErrorID.length > 0)
+   {
+      objAnchor.id = strErrorID;
+   }
+
+   // Use the label prompt for the error message
+   objAnchor.appendChild(document.createTextNode(strError));
+   // Add keyboard and mouse events to set focus to the form control
+   objAnchor.onclick = function(event){return focusFormField(this, event);};
+   objAnchor.onkeypress = function(event){return focusFormField(this, event);};
+   objListItem.appendChild(objAnchor);
+   objList.appendChild(objListItem);
+}
+
+function focusFormField(objAnchor, objEvent)
+{
+   var strFormField, objForm;
+
+   // Allow keyboard navigation over links
+   if (objEvent && objEvent.type == 'keypress')
+   {
+      if (objEvent.keyCode != 13 && objEvent.keyCode != 32)
+      {
+         return true;
+      }
+   }
+
+   // set focus to the form control
+   strFormField = objAnchor.href.match(/[^#]\w*$/);
+   objForm = getForm(strFormField);
+   objForm[strFormField].focus();
+   return false;
+}
+
+// Function to return the form element from a given form field name
+function getForm(strField)
+{
+   var objElement = document.getElementById(strField);
+
+   // Find the appropriate form
+   do
+   {
+      objElement = objElement.parentNode;
+   } while (!objElement.tagName.match(/form/i) && objElement.parentNode);
+
+   return objElement;
+}
+
+// Function to log the error in a list
+function logError(objField, objLabel, objList, strErrorID)
+{
+   var iCounter, strError;
+
+   // Search the label for the error prompt
+   for (iCounter=0; iCounter<objLabel.length; iCounter++)
+   {
+      if (objLabel[iCounter].htmlFor == objField.id)
+      {
+         strError = objLabel[iCounter].firstChild.nodeValue;
+      }
+   }
+
+   addError(objList, strError, objField.id, strErrorID);
+}
+
+// Validation routines - add as required
+
+function isString(strValue, arClass)
+{
+   var bValid = (typeof strValue == 'string' && strValue.replace(/^\s*|\s*$/g, '') 
+     !== '' && isNaN(strValue));
+
+   return checkOptional(bValid, strValue, arClass);
+}
+
+function isEmail(strValue, arClass)
+{
+   var objRE = /^[\w-\.\']{1,}\@([\da-zA-Z\-]{1,}\.){1,}[\da-zA-Z\-]{2,}$/;
+   var bValid = objRE.test(strValue);
+
+   return checkOptional(bValid, strValue, arClass);
+}
+
+function isNumber(strValue, arClass)
+{
+   var bValid = (!isNaN(strValue) && strValue.replace(/^\s*|\s*$/g, '') !== '');
+
+   return checkOptional(bValid, strValue, arClass);
+}
+
+function checkOptional(bValid, strValue, arClass)
+{
+   var bOptional = false;
+   var iCounter;
+
+   // Check if optional
+   for (iCounter=0; iCounter<arClass.length; iCounter++)
+   {
+      if (arClass[iCounter] == 'optional')
+      {
+         bOptional = true;
+      }
+   }
+
+   if (bOptional && strValue.replace(/^\s*|\s*$/g, '') === '')
+   {
+      return true;
+   }
+
+   return bValid;
+   }
+   ]]></code>
+						<description>
+							<p>Here is a working example of this technique implemented using PHP, Javascript, CSS and XHTML: <loc
+								xmlns:xlink="http://www.w3.org/1999/xlink" href="index.php"
+								linktype="examples">Form Validation Example</loc>.</p>
+						</description>
+					</eg-group>
+				</examples>
+				<related-techniques>
+					<relatedtech idref="G83"/>
+					<relatedtech idref="G85"/>
+					<relatedtech idref="SCR18"/>
+				</related-techniques>
+				<tests>
+					<procedure>
+						<p>Create error messages using anchor tags and appropriate scripting via the technique above. </p>
+						<olist>
+							<item>
+								<p>Load the page.</p>
+							</item>
+							<item>
+								<p>Enter a valid value in the field(s) associated with an error message and verify that no error messages are displayed. </p>
+							</item>
+							<item>
+								<p>Enter an invalid value in the field(s) associated with an error message and verify that the correct error message for the field is displayed. </p>
+							</item>
+							<item>
+								<p>Verify that the error messages receive focus.</p>
+							</item>
+							<item>
+								<p>Enter a valid value in the field(s) associated with the displayed error message and verify that the error message is removed. </p>
+							</item>
+							<item>
+								<p>Repeat for all fields with associated error messages created via anchor tags. </p>
+							</item>
+						</olist>
+						<note>
+							<p>It is recommended that you also run the above procedure using an assistive technology. </p>
+						</note>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>Checks #2, #3, #4, and #5 are all true.</p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="SCR33">
+				<short-name>Using script to scroll content, and providing a mechanism to pause it</short-name>
+				<applicability>
+					<p>Technologies that support script-controlled scrolling of content. </p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="time-limits-required-behaviors"
+						relationship="sufficient"/>
+					<success-criterion idref="time-limits-pause" relationship="sufficient"
+					/>
+				</applies-to>
+				<description>
+					<p>The objective of this technique is to provide a way for users to stop scrolling content when the scrolling is created by a script. Scrolling content can be difficult or impossible to read by users with low vision or with cognitive disabilities. The movement can also be distracting for some people making it difficult for them to concentrate on other parts of the Web page. </p>
+				</description>
+				<examples>
+					<eg-group>
+						<description>
+							<p>In this example CSS and Javascript are used to visually present some text in a scrolling format. A link is included to pause the scrolling movement. </p>
+							<p>This implementation will display the full text and omit the link when Javascript or CSS are unsupported or inactive. </p>
+							<p>The following code is an amended version of webSemantic's Accessible Scroller (as at July 2008). </p>
+							<p>The XHTML component: </p>
+						</description>
+						<code><![CDATA[
+...
+<div id="scroller">
+<p id="tag">This text will scroll and a Pause/Scroll link will be present 
+when Javascript and CSS are supported and active.</p>
+</div>
+...
+]]></code>
+						<description>
+							<p>The CSS component: </p>
+						</description>
+						<code><![CDATA[
+...
+body {font:1em verdana,sans-serif; color:#000; margin:0}
+
+/* position:relative and overflow:hidden are required */
+#scroller { position:relative; overflow:hidden; width:15em; border:1px solid #008080; }
+
+/* add formatting for the scrolling text */
+#tag { margin:2px 0; }
+
+/* #testP must also contain all text-sizing properties of #tag  */
+#testP { visibility:hidden; position:absolute; white-space:nowrap; } 
+
+/* used as a page top marker and to limit width */
+#top { width:350px; margin:auto; }
+...
+]]></code>
+						<description>
+							<p>The JavaScript component: </p>
+						</description>
+						<code><![CDATA[
+var speed=50        // speed of scroller
+var step=3          // smoothness of movement
+var StartActionText= "Scroll"  // Text for start link
+var StopActionText = "Pause"   // Text for stop link
+
+var x, scroll, divW, sText=""
+
+function onclickIE(idAttr,handler,call){
+  if ((document.all)&&(document.getElementById)){idAttr[handler]="Javascript:"+call}
+}
+
+function addLink(id,call,txt){
+  var e=document.createElement('a')
+  e.setAttribute('href',call)
+  var linktext=document.createTextNode(txt)
+  e.appendChild(linktext)
+  document.getElementById(id).appendChild(e)
+}
+
+function getElementStyle() {
+    var elem = document.getElementById('scroller');
+    if (elem.currentStyle) {
+        return elem.currentStyle.overflow;
+    } else if (window.getComputedStyle) {
+        var compStyle = window.getComputedStyle(elem, '');
+        return compStyle.getPropertyValue("overflow");
+    }
+    return "";
+}
+
+function addControls(){
+// test for CSS support first 
+// test for the overlow property value set in style element or external file
+if (getElementStyle()=="hidden") {
+  var f=document.createElement('div');
+  f.setAttribute('id','controls');
+  document.getElementById('scroller').parentNode.appendChild(f);
+  addLink('controls','Javascript:clickAction(0)',StopActionText);
+  onclickIE(document.getElementById('controls').childNodes[0],"href",'clickAction(0)');
+  document.getElementById('controls').style.display='block';
+  }
+}
+
+function stopScroller(){clearTimeout(scroll)}
+
+function setAction(callvalue,txt){
+  var c=document.getElementById('controls')
+  c.childNodes[0].setAttribute('href','Javascript:clickAction('+callvalue+')')
+  onclickIE(document.getElementById('controls').childNodes[0],"href",'clickAction
+
+('+callvalue+')')
+  c.childNodes[0].firstChild.nodeValue=txt
+}
+
+function clickAction(no){
+  switch(no) {
+    case 0:
+      stopScroller();
+      setAction(1,StartActionText);
+      break;
+    case 1:
+      startScroller();
+      setAction(0,StopActionText);
+  }
+}
+
+function startScroller(){
+  document.getElementById('tag').style.whiteSpace='nowrap'
+  var p=document.createElement('p')
+  p.id='testP'
+  p.style.fontSize='25%' //fix for mozilla. multiply by 4 before using
+  x-=step
+  if (document.getElementById('tag').className) p.className=document.getElementById
+
+('tag').className
+  p.appendChild(document.createTextNode(sText))
+  document.body.appendChild(p)
+  pw=p.offsetWidth
+  document.body.removeChild(p)
+  if (x<(pw*4)*-1){x=divW}
+  document.getElementById('tag').style.left=x+'px'
+  scroll=setTimeout('startScroller()',speed)
+}
+
+function initScroller(){
+  if (document.getElementById && document.createElement && document.body.appendChild) {
+    addControls();
+    divW=document.getElementById('scroller').offsetWidth;
+    x=divW;
+    document.getElementById('tag').style.position='relative';
+    document.getElementById('tag').style.left=divW+'px';
+    var ss=document.getElementById('tag').childNodes;
+    for (i=0;i<ss.length;i++) {sText+=ss[i].nodeValue+" "};
+    scroll=setTimeout('startScroller()',speed);
+  }
+}
+
+function addLoadEvent(func) {
+  if (!document.getElementById | !document.getElementsByTagName) return
+  var oldonload = window.onload
+  if (typeof window.onload != 'function') {
+    window.onload = func;
+  } else {
+    window.onload = function() {
+      oldonload()
+      func()
+    }
+  }
+}
+
+addLoadEvent(initScroller)
+]]></code>
+						<description>
+							<p>A working example of this code, <loc
+								xmlns:xlink="http://www.w3.org/1999/xlink" href="Overview.html"
+								linktype="examples">Example of using script to scroll content and providing a mechanism to pause it</loc>, is available.</p>
+						</description>
+					</eg-group>
+				</examples>
+				<resources>
+					<see-also>
+						<ulist>
+							<item>
+								<p><loc href="http://www.websemantics.co.uk/tutorials/accessible_scroller/">webSemantics Accessible Scroller</loc></p>
+							</item>
+						</ulist>
+					</see-also>
+				</resources>
+				<related-techniques>
+					<relatedtech idref="G4"/>
+				</related-techniques>
+				<tests>
+					<procedure>
+						<olist>
+							<item>
+								<p>Check that a mechanism is provided to pause the scrolling content. </p>
+							</item>
+							<item>
+								<p>Use the pause mechanism to pause the scrolling content. </p>
+							</item>
+							<item>
+								<p>Check that the scrolling has stopped and does not restart by itself. </p>
+							</item>
+							<item>
+								<p>Check that a mechanism is provided to restart the paused content. </p>
+							</item>
+							<item>
+								<p>Use the restart mechanism provided to restart the scrolling content. </p>
+							</item>
+							<item>
+								<p>Check that the scrolling has resumed from the point where it was stopped. </p>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>Checks #3 and #6 are true. </p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="SCR34">
+				<short-name>Calculating size and position in a way that scales with text size</short-name>
+				<applicability>
+					<p>Client-side scripting.</p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="visual-audio-contrast-scale"
+						relationship="sufficient"/>
+					<success-criterion idref="visual-audio-contrast-visual-presentation"
+						relationship="sufficient"/>
+				</applies-to>
+				<ua-issues>
+					<ua-issue name="" version="">
+						<p>Calculating size and position can be complex and different browsers can produce different results. This can occur when the CSS styling mixes padding, margins and widths for an object, or when it mixes an offset and plain value, e.g., offsetWidth and width. Some of these behave differently in reaction to zooming. See <loc
+							xmlns:xlink="http://www.w3.org/1999/xlink" href="http://msdn.microsoft.com/en-us/library/bb250395(VS.85).aspx#cssenhancements_topic3">MSDN: Fix the Box Instead of Thinking Outside It</loc> for an explanation of the way that Internet Explorer 6 and later differ from earlier versions of Internet Explorer. </p>
+					</ua-issue>
+				</ua-issues>
+				<description>
+					<p>The objective of this technique is to calculate the size and position of elements in a way that will scale appropriately as the text size is scaled. </p>
+					<p>There are four properties in JavaScript that help determine the size and position of elements: </p>
+					<ulist>
+						<item>
+							<p><code><![CDATA[offsetHeight]]></code> (the height of the element in pixels) </p>
+						</item>
+						<item>
+							<p><code><![CDATA[offsetWidth]]></code> (the width of the element in pixels) </p>
+						</item>
+						<item>
+							<p><code><![CDATA[offsetLeft]]></code> (the distance of the element from the left of its parent (offsetParent) in pixels) </p>
+						</item>
+						<item>
+							<p><code><![CDATA[offsetTop]]></code> (the distance of the element from the top of its parent (offsetParent) in pixels) </p>
+						</item>
+					</ulist>
+					<p>Calculating the height and width using <code><![CDATA[offsetHeight]]></code> and <code><![CDATA[offsetWidth]]></code> is straightforward, but when calculating an object's left and top position as absolute values, we need to consider the parent element. The <code><![CDATA[calculatePosition]]></code> function below iterates through all of an element's parent nodes to give a final value. The function takes two parameters; <code><![CDATA[objElement]]></code> (the name of the element in question), and the offset property (<code><![CDATA[offsetLeft]]></code> or <code><![CDATA[offsetTop]]></code>): </p>
+				</description>
+				<examples>
+					<eg-group>
+						<description>
+							<p>The Javascript function:</p>
+						</description>
+						<code><![CDATA[
+function calculatePosition(objElement, strOffset)
+{
+    var iOffset = 0;
+
+    if (objElement.offsetParent)
+    {
+        do 
+        {
+            iOffset += objElement[strOffset];
+            objElement = objElement.offsetParent;
+        } while (objElement);
+    }
+
+    return iOffset;
+}
+
+]]></code>
+						<description>
+							<p>The following example illustrates using the function above by aligning an object beneath a reference object, the same distance from the left: </p>
+						</description>
+						<code><![CDATA[
+// Get a reference object
+var objReference = document.getElementById('refobject');
+// Get the object to be aligned
+var objAlign = document.getElementById('lineup');
+
+objAlign.style.position = 'absolute';
+objAlign.style.left = calculatePosition(objReference, 'offsetLeft') + 'px';
+objAlign.style.top = calculatePosition(objReference, 'offsetTop') + objReference.offsetHeight + 'px'; 
+]]></code>
+					</eg-group>
+				</examples>
+				<resources>
+					<see-also>
+						<ulist>
+							<item>
+								<p><loc href="http://msdn.microsoft.com/en-us/library/bb250395(VS.85).aspx#cssenhancements_topic3">MSDN: Fix the Box Instead of Thinking Outside It</loc></p>
+							</item>
+						</ulist>
+					</see-also>
+				</resources>
+				<related-techniques>
+					<relatedtech idref="C12"/>
+					<relatedtech idref="C14"/>
+					<relatedtech idref="C17"/>
+					<relatedtech idref="C20"/>
+					<relatedtech idref="C24"/>
+					<relatedtech idref="C26"/>
+				</related-techniques>
+				<tests>
+					<procedure>
+						<olist>
+							<item>
+								<p>Open a page that is designed to adjust container sizes as text size changes. </p>
+							</item>
+							<item>
+								<p>Increase the text size up to 200% using the browser's text size adjustment (not the zoom feature). </p>
+							</item>
+							<item>
+								<p>Examine the text to ensure the text container size is adjusted to accommodate the size of the text. </p>
+							</item>
+							<item>
+								<p>Ensure that no text is "clipped" or has disappeared as a result of the increase in text size. </p>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>Checks #3 and #4 are true.</p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="SCR35">
+				<short-name>Making actions keyboard accessible by using the onclick event of anchors and buttons</short-name>
+				<applicability>
+					<p>Script used with HTML or XHTML.</p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="keyboard-operation-keyboard-operable"
+						relationship="sufficient"/>
+					<success-criterion idref="keyboard-operation-all-funcs"
+						relationship="sufficient"/>
+				</applies-to>
+				<description>
+					<p>The objective of this technique is to demonstrate how to invoke a scripting function in a way that is keyboard accessible by attaching it to a keyboard-accessible control. In order to ensure that scripted actions can be invoked from the keyboard, they are associated with "natively actionable" HTML elements (links and buttons). The onclick event of these elements is device independent. While "onclick" sounds like it is tied to the mouse, the onclick event is actually mapped to the default action of a link or button. The default action occurs when the user clicks the element with a mouse, but it also occurs when the user focuses the element and hits enter or space, and when the element is triggered via the accessibility API.</p>
+					<p>This technique relies on client-side scripting. However, it is beneficial to provide a backup implementation or explanation for environments in which scripting is not available.  When using anchor elements to invoke a JavaScript action, a backup implementation or explanation is provided via the <att>href</att> attribute. When using buttons, it is provided via a form post. </p>
+				</description>
+				<examples>
+					<eg-group>
+						<description>
+							<p>Link that runs a script and has no fallback for non-scripted browsers. This approach should only be used when script is relied upon as an Accessibility Supported Technology.</p>
+							<p>Even though we do not want to navigate from this link, we must use the href attribute on the <el>a</el> element in order to make this a true link and get the proper eventing. In this case, we're using "#" as the link target, but you could use anything. This link will never be navigated.</p>
+							<p>The "return false;" at the end of the doStuff() event handling function tells the browser not to navigate to the URI. Without it, the page would refresh after the script ran. </p>
+						</description>
+						<code><![CDATA[
+<script> 
+function doStuff()
+ {
+  //do stuff
+    return false;
+  }
+</script>
+<a href="#" onclick="return doStuff();">do stuff</a>
+]]></code>
+					</eg-group>
+					<eg-group>
+						<description>
+							<p>Link that runs script, but navigates to another page when script is not available. This approach can be used to create sites that don't rely on script, if and only if the navigation target provides the same functionality as the script. This example is identical to the example 1, except that its href is now set to a real page, dostuff.htm. Dostuff.htm must provide the same functionality as the script.The "return false;" at the end of the doStuff() event handling function tells the browser not to navigate to the URI. Without it, the browser would navigate to dostuff.htm after the script ran.</p>
+						</description>
+						<code><![CDATA[
+<script> 
+function doStuff() 
+ {  
+  //do stuff  
+  return false; 
+ }
+</script>
+<a href="dostuff.htm" onclick="return doStuff();">do stuff</a>
+]]></code>
+						<description>
+							<p>A working example of this code is available. Refer to <loc
+								xmlns:xlink="http://www.w3.org/1999/xlink" href="jslink.html"
+								linktype="examples">Creating Action Links using JavaScript</loc>.</p>
+						</description>
+					</eg-group>
+					<eg-group>
+						<description>
+							<p>Button that runs a script and falls back to a form post for users without script. This approach can be used by sites that do not rely on script, if and only if the form post provides the same functionality as the script. The onsubmit="return false;" prevents the form from submitting. </p>
+						</description>
+						<code><![CDATA[
+<script>
+  function doStuff()
+ {
+     //do stuff
+ }
+</script>
+<form action="doStuff.aspx" onsubmit="return false;">
+ <input type="submit" value="Do Stuff" onclick="doStuff();" />
+</form>
+]]></code>
+						<description>
+							<p>A working example of this code is available. Refer to <loc
+								xmlns:xlink="http://www.w3.org/1999/xlink" href="jsbutton.html"
+								linktype="examples">Creating Action Buttons using JavaScript</loc>.</p>
+						</description>
+					</eg-group>
+					<eg-group>
+						<description>
+							<p>Button that runs a script, implemented with <code><![CDATA[input type="image"]]></code>. Note that an alt attribute must be added to the <el>input</el> to provide a text equivalent for the image. This approach should only be used when script is relied upon. </p>
+						</description>
+						<code><![CDATA[
+<script>
+  function doStuff()
+  {
+     //do stuff
+   return false;
+  }
+</script>
+<input  type="image"  src="stuff.gif"  alt="Do stuff"  onclick="return doStuff();" />
+]]></code>
+					</eg-group>
+					<eg-group>
+						<description>
+							<p>Button that runs a script, implemented with <code><![CDATA[input type="submit"]]></code>, <code><![CDATA[input type="reset"]]></code> or <code><![CDATA[input type="button"]]></code>. This approach should only be used when script is relied upon.  </p>
+						</description>
+						<code><![CDATA[
+<input type="submit" onclick="return doStuff();" value=”Do Stuff” />
+]]></code>
+					</eg-group>
+					<eg-group>
+						<description>
+							<p>Button that runs a script, implemented with <el>button</el>…<el>/button</el>. This is valuable when you want more control over the look of your button. In this particular example, the button contains both an icon and some text. This approach should only be used when script is relied upon. </p>
+						</description>
+						<code><![CDATA[
+<button onclick="return doStuff();">
+ <img src="stuff.gif" alt="stuff icon">
+ Do Stuff
+</button>
+]]></code>
+					</eg-group>
+				</examples>
+				<resources>
+					<see-also>
+						<ulist>
+							<item>
+								<p><loc href="http://www.w3.org/TR/REC-html40/interact/scripts.html">HTML 4.01 Scripts</loc></p>
+							</item>
+							<item>
+								<p><loc href="http://www.w3.org/TR/REC-html40/interact/forms.html">HTML 4.01 Forms</loc></p>
+							</item>
+							<item>
+								<p><loc href="http://www.w3.org/TR/REC-html40/struct/links.html">HTML 4.01 Links</loc></p>
+							</item>
+							<item>
+								<p><loc href="http://www.w3.org/DOM/DOMTR">Document Object Model (DOM) Technical Reports</loc></p>
+							</item>
+						</ulist>
+					</see-also>
+				</resources>
+				<related-techniques>
+					<relatedtech idref="G90"/>
+					<relatedtech idref="G108"/>
+					<relatedtech idref="H91"/>
+					<relatedtech idref="SCR20"/>
+					<relatedtech idref="SCR24"/>
+					<relatedtech idref="F42"/>
+					<relatedtech idref="F59"/>
+				</related-techniques>
+				<tests>
+					<procedure>
+						<p>For all script actions associated with <el>a</el>, <el>button</el>, or <el>input</el> elements: </p>
+						<olist>
+							<item>
+								<p>In a user agent that supports Scripting </p>
+								<ulist>
+									<item>
+										<p>Click on the control with the mouse. </p>
+									</item>
+									<item>
+										<p>Check that the scripting action executes properly. </p>
+									</item>
+									<item>
+										<p>If the control is an anchor element, check that the URI in the <att>href</att> attribute of the anchor element is not invoked. </p>
+									</item>
+									<item>
+										<p>Check that it is possible to navigate to and give focus to the control via the keyboard.</p>
+									</item>
+									<item>
+										<p>Set keyboard focus to the control.</p>
+									</item>
+									<item>
+										<p>Check that pressing ENTER invokes the scripting action. </p>
+									</item>
+									<item>
+										<p>If the control is an anchor element, check that the URI in the <att>href</att> attribute of the anchor element is not invoked. </p>
+									</item>
+								</ulist>
+							</item>
+							<item>
+								<p>In a user agent that does not support Scripting </p>
+								<ulist>
+									<item>
+										<p>Click on the control with the mouse.</p>
+									</item>
+									<item>
+										<p>If the control is an anchor element, check that the URI in the <att>href</att> attribute of the anchor element is invoked. </p>
+									</item>
+									<item>
+										<p>Check that it is possible to navigate to and give focus to the control via the keyboard.</p>
+									</item>
+									<item>
+										<p>Set keyboard focus to the control.</p>
+									</item>
+									<item>
+										<p>If the control is an anchor element, check that pressing ENTER invokes the URI of the anchor element's <att>href</att> attribute.</p>
+									</item>
+								</ulist>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>All of the above checks are true. </p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="SCR36">
+				<short-name>Providing a mechanism to allow users to display moving, scrolling, or auto-updating text in a static window or area</short-name>
+				<applicability>
+					<p>Any technology that moves, blinks, or updates text and can create a static block of text. </p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="time-limits-required-behaviors"
+						relationship="sufficient"/>
+				</applies-to>
+				<description>
+					<p>Some Web pages display scrolling text because there is limited space available. Scrolling the text in a small text window makes the content available for users who can read quickly enough, but causes problems for users who read more slowly or use assistive technology. This technique provides a mechanism to stop the movement and make the entire block of text available statically. The text may be made available in a separate window or in a (larger) section of the page. Users can then read the text at their own speed. </p>
+					<p>This technique does not apply when the text that is moving can not be displayed all at once on the screen (e.g., a long chat conversation).</p>
+					<note>
+						<p>This technique can be used in combination with a style switching technique to present a page that is a <loc
+							xmlns:xlink="http://www.w3.org/1999/xlink" href="conforming-alternate-versiondef" linktype="glossary">conforming alternate version</loc> for non-conforming content. Refer to <loc
+							xmlns:xlink="http://www.w3.org/1999/xlink" href="C29"
+							linktype="css">C29: Using a style switcher to provide a conforming alternate version</loc> and <loc
+							xmlns:xlink="http://www.w3.org/1999/xlink" href="conformance"
+							locn-note="uc-conforming-alt-versions-head"
+							linktype="understanding">Understanding Conforming Alternate Versions</loc> for more information. </p>
+					</note>
+				</description>
+				<examples>
+					<eg-group>
+						<head>Expanding Scrolling Text in Place </head>
+						<description>
+							<p>A large block of text is scrolled through a small marquee area of the page. A button lets the user stop the scrolling and display the entire block of text. </p>
+							<note>
+								<p>This code example requires that both CSS and JavaScript be turned on and available. </p>
+							</note>
+							<p>The CSS component:</p>
+						</description>
+						<code role="css"><![CDATA[#scrollContainer {
+        visibility: visible;
+        overflow: hidden;
+        top: 50px; left: 10px;
+        background-color: darkblue;
+      }
+      .scrolling {
+        position: absolute;
+        width: 200px;
+        height: 50px;
+      }
+      .notscrolling {
+        width: 500px;
+        margin:10px;
+      }
+      #scrollingText {
+        top: 0px;
+        color: white;
+      }
+      .scrolling #scrollingText {
+        position: absolute;
+      }
+      </a>    ]]></code>
+						<description>
+							<p>The script and HTML content:</p>
+						</description>
+						<code role="css"><![CDATA[<script type="text/javascript">
+
+      var tid;
+      function init() {
+        var st = document.getElementById('scrollingText');
+        st.style.top = '0px';
+        initScrolling();
+      }
+      function initScrolling () {
+        tid = setInterval('scrollText()', 300);
+      }
+      function scrollText () {
+        var st = document.getElementById('scrollingText');
+        if (parseInt(st.style.top) > (st.offsetHeight*(-1) + 8)) {
+          st.style.top = (parseInt(st.style.top) - 5) + 'px';
+        } else {
+          var sc = document.getElementById('scrollContainer');
+          st.style.top = parseInt(sc.offsetHeight) + 8 + 'px';
+        }
+      }
+      function toggle() {
+        var scr = document.getElementById('scrollContainer');
+        if (scr.className == 'scrolling') {
+          scr.className = 'notscrolling';
+          clearInterval(tid);
+           document.getElementById('scrollButton').value="Shrink";
+        } else {
+          scr.className = 'scrolling';
+          initScrolling();
+          document.getElementById('scrollButton').value="Expand";
+        }
+      }
+  <input type="button" id="scrollButton" value="Expand" onclick="toggle()" />
+  <div id="scrollContainer" class="scrolling">
+    <div id="scrollingText" class="on">
+    .... Text to be scrolled ...
+    </div>
+  </div>
+...
+]]></code>
+						<description>
+							<p>Here is a working example of this code: <loc
+								xmlns:xlink="http://www.w3.org/1999/xlink" href="scrolltext.html" linktype="examples">Expanding Scrolling Text in Place</loc>.</p>
+						</description>
+					</eg-group>
+				</examples>
+				<related-techniques>
+					<relatedtech idref="G4"/>
+					<relatedtech idref="G187"/>
+					<relatedtech idref="SCR33"/>
+					<relatedtech idref="SCR22"/>
+				</related-techniques>
+				<tests/>
+			</technique>
+			<technique id="SCR37">
+				<short-name>Creating Custom Dialogs in a Device Independent Way</short-name>
+				<applicability>
+					<p>HTML and XHTML used with script.</p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="navigation-mechanisms-focus-order"
+						relationship="sufficient"/>
+				</applies-to>
+				<description>
+					<p>Site designers often want to create dialogs that do not use the pop-up windows supplied by the browser. This is typically accomplished by enclosing the dialog contents in a <el>div</el> and placing the <el>div</el> above the page content using z-order and absolute positioning in CSS. </p>
+					<p>To be accessible, these dialogs must follow a few simple rules. </p>
+					<olist>
+						<item>
+							<p>Trigger the script that launches the dialog from the <code><![CDATA[onclick]]></code> event of a link or button.</p>
+						</item>
+						<item>
+							<p>Place the dialog <el>div</el> into the Document Object Model (DOM) immediately after the element that triggered it. The triggering element will maintain focus, and inserting the dialog content after that element will make the content inside the dialog next in the screen-reader reading order and next in the tab order. The dialog can still be absolutely positioned to be elsewhere on the page visually. This can be done either by creating the dialog in the HTML and hiding it with CSS, as in the example below, or by inserting it immediately after the triggering element with script. </p>
+						</item>
+						<item>
+							<p>Ensure that the HTML inside the dialog div meets the same accessibility standard as other content.</p>
+						</item>
+					</olist>
+					<p>It is also nice, but not always necessary, to make the launching link toggle the dialog open and closed, and to close the dialog when the keyboard focus leaves it. </p>
+				</description>
+				<examples>
+					<eg-group>
+						<head>An options button that opens a dialog</head>
+						<description>
+							<p>The HTML for this example includes a triggering Element, in this case a button, and a div that acts as the frame for the dialog. </p>
+							<p>The triggering element is a button and the script is triggered from the onclick event. This sends the appropriate events to the operating system so that assistive technology is aware of the change in the DOM. </p>
+							<p>In this example, the Submit and Reset buttons inside the dialog simply hide the <el>div</el>. </p>
+						</description>
+						<code role="xhtml1"><![CDATA[...
+<button onclick="TogglePopup(event,true)"
+	name="pop0001">Options</button>
+
+<div class="popover" id="pop0001">
+  <h3>Edit Sort Information</h3>
+  <form action="default.htm" onsubmit="this.parentNode.style.display='none'; return false;" onreset="this.parentNode.style.display='none'; return false;">
+    <fieldset>
+      <legend>Sort Order</legend> 
+      <input type="radio" name="order" id="order_alpha" /><label for="order_alpha">Alphabetical</label>
+      <input type="radio" name="order" id="order_default" checked="true" /><label for="order_default">Default</label>
+    </fieldset>
+<div class="buttons">
+  <input type="submit" value="OK" />
+  <input type="reset" value="Cancel" />
+</div>
+</form>
+
+</div>
+...
+]]></code>
+						<description>
+							<p>The <el>div</el>, heading and <el>form</el> elements are styled with CSS to look like a dialog. </p>
+						</description>
+						<code role="css"><![CDATA[...
+a { color:blue; }
+a.clickPopup img { border:none; width:0; }
+
+div.popover { position:absolute; display:none; border:1px outset; background-color:beige; font-size:80%; background-color:#eeeeee; color:black; }
+div.popover h3 { margin:0; padding:0.1em 0.5em; background-color:navy; color:white; }
+#pop0001 { width:20em; }
+#pop0001 form { margin:0; padding:0.5em; }
+#pop0001 fieldset { margin-bottom:0.3em; padding-bottom:0.5em; }
+#pop0001 input, #pop0001 label { vertical-align:middle; }
+#pop0001 div.buttons { text-align:right; }
+#pop0001 div.buttons input { width:6em; }
+...
+]]></code>
+						<description>
+							<p>The script toggles the display of the popup <el>div</el>, showing it and hiding it. </p>
+						</description>
+						<code role="css"><![CDATA[...
+function TogglePopup(evt,show)
+{
+	HarmonizeEvent(evt);
+	var src = evt.target;
+	if ("click" == evt.type)
+	{
+		evt.returnValue = false;
+	}
+	var popID = src.getAttribute("name");
+	if (popID)
+	{
+		var popup = document.getElementById(popID);
+		if (popup)
+		{
+			if (true == show)
+			{
+				popup.style.display = "block";
+			}
+			else if (false == show)
+			{
+				popup.style.display = "none";
+			}
+			else
+			{
+				popup.style.display = "block" == popup.style.display ? "none" : "block";
+			}
+			if ("block" == popup.style.display)
+			{
+				//window.alert(document.documentElement.scrollHeight);
+				popup.style.top = ((document.documentElement.offsetHeight - popup.offsetHeight) / 2 ) + 'px';
+				popup.style.left = ((document.documentElement.offsetWidth - popup.offsetWidth) / 2) + 'px';
+			}
+		}
+	}
+}
+
+function SubmitForm(elem)
+{ 
+	elem.parentNode.style.display='none'; 
+	return false;
+}
+
+function ResetForm(elem)
+{ 
+	elem.parentNode.style.display='none'; 
+	return false;
+}
+...
+]]></code>
+						<description>
+							<p>A working example, <loc
+								xmlns:xlink="http://www.w3.org/1999/xlink" href="default.htm"
+								linktype="examples">An options button that opens a dialog</loc>, is available. </p>
+						</description>
+					</eg-group>
+				</examples>
+				<resources>
+					<see-also>
+						<ulist>
+							<item>
+								<p><loc href="http://www.w4a.info/2007/prog/8-shelly.pdf">W4A Paper: Accessibility for Simple to Moderate-Complexity DHTML Web Sites</loc>  by Cynthia C. Shelly and George Young, Microsoft Corporation. (PDF Format)</p>
+							</item>
+							<item>
+								<p>Microsoft Developer Network Whitepaper:<loc
+									xmlns:xlink="http://www.w3.org/1999/xlink" href="http://download.microsoft.com/download/0/f/5/0f5e941c-c495-401a-9031-eab8315da35e/writing_accessible_web_applications.doc"> Writing Accessible Web Applications</loc> by Cynthia C. Shelly and George Young. (Microsoft Word Format)</p>
+							</item>
+							<item>
+								<p><loc href="http://msdn.microsoft.com/en-us/library/ms695716.aspx">Microsoft Active Accessibility 2.0 SDK</loc>. Includes Inspect32.exe and other MSAA tools.</p>
+							</item>
+							<item><p><loc href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd318521(v=vs.85).aspx">Instructions for the Inspect tool</loc></p></item>
+							<item><p><loc href="http://www.eramp.com/david/name-role-value-using-inspect.htm">Using the Inspect tool to find name Name, Role and Value for Javascript</loc></p></item>
+							<item>
+								<p><loc href="http://www.microsoft.com/en-us/download/details.aspx?id=18359">Microsoft Internet Explorer Developer Toolbar.</loc>. Allows examination of script-generated DOM in Microsoft Internet Explorer</p>
+							</item>
+							<item>
+								<p><loc href="http://getfirebug.com/">Firebug</loc>. Allows examination of script-generated DOM in Firefox. </p>
+							</item>
+						</ulist>
+					</see-also>
+				</resources>
+				<related-techniques>
+					<relatedtech idref="SCR26"/>
+					<relatedtech idref="G59"/>
+					<!-- @@ Inserting Inline Error Messages  -->
+				</related-techniques>
+				<tests>
+					<procedure>
+						<olist>
+							<item>
+								<p>Find all areas of the page that trigger dialogs that are not pop-up windows. </p>
+							</item>
+							<item>
+								<p>Check that the dialogs can be opened by tabbing to the area and hitting enter. </p>
+							</item>
+							<item>
+								<p>Check that, once opened, the dialog is next in the tab order. </p>
+							</item>
+							<item>
+								<p>Check that the dialogs are triggered from the click event of a button or a link. </p>
+							</item>
+							<item>
+								<p>Using a tool that allows you to inspect the DOM generated by script, check that the dialog is next in the DOM. </p>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>Checks #2, #3, #4 and #5 are true. </p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+		</div1>
+	</body>
+	<back>
+		<div1 id="placeholders">
+			<!-- note: this can be updated using /misc/id-list.xslt (requires cut and paste)-->
+			<head/>
+			<p id="UNKNOWN">place holder for idref</p>
+			<p id="cc1">placeholder for cc1</p>
+			<p id="cc2">placeholder for cc2</p>
+			<p id="cc3">placeholder for cc3</p>
+			<p id="cc4">placeholder for cc4</p>
+			<p id="cc5">placeholder for cc5</p>
+			<p id="text-equiv">placeholder for text-equiv</p>
+			<p id="text-equiv-all">placeholder for text-equiv-all</p>
+			<p id="media-equiv">placeholder for media-equiv</p>
+			<p id="media-equiv-av-only-alt">placeholder for media-equiv-av-only-alt</p>
+			<p id="media-equiv-captions">placeholder for media-equiv-captions</p>
+			<p id="media-equiv-audio-desc">placeholder for media-equiv-audio-desc</p>
+			<p id="media-equiv-real-time-captions">placeholder for media-equiv-real-time-captions</p>
+			<p id="media-equiv-audio-desc-only">placeholder for media-equiv-audio-desc-only</p>
+			<p id="media-equiv-sign">placeholder for media-equiv-sign</p>
+			<p id="media-equiv-extended-ad">placeholder for media-equiv-extended-ad</p>
+			<p id="media-equiv-text-doc">placeholder for media-equiv-text-doc</p>
+			<p id="media-equiv-live-audio-only">placeholder for media-equiv-live-audio-only</p>
+			<p id="content-structure-separation">placeholder for content-structure-separation</p>
+			<p id="content-structure-separation-programmatic">placeholder for content-structure-separation-programmatic</p>
+			<p id="content-structure-separation-sequence">placeholder for content-structure-separation-sequence</p>
+			<p id="content-structure-separation-understanding">placeholder for content-structure-separation-understanding</p>
+			<p id="visual-audio-contrast">placeholder for visual-audio-contrast</p>
+			<p id="visual-audio-contrast-without-color">placeholder for visual-audio-contrast-without-color</p>
+			<p id="visual-audio-contrast-dis-audio">placeholder for visual-audio-contrast-dis-audio</p>
+			<p id="visual-audio-contrast-contrast">placeholder for visual-audio-contrast-contrast</p>
+			<p id="visual-audio-contrast-scale">placeholder for visual-audio-contrast-scale</p>
+			<p id="visual-audio-contrast-text-presentation">placeholder for visual-audio-contrast-text-presentation</p>
+			<p id="visual-audio-contrast7">placeholder for visual-audio-contrast7</p>
+			<p id="visual-audio-contrast-noaudio">placeholder for visual-audio-contrast-noaudio</p>
+			<p id="visual-audio-contrast-visual-presentation">placeholder for visual-audio-contrast-visual-presentation</p>
+			<p id="visual-audio-contrast-text-images">placeholder for visual-audio-contrast-text-images</p>
+			<p id="keyboard-operation">placeholder for keyboard-operation</p>
+			<p id="keyboard-operation-keyboard-operable">placeholder for keyboard-operation-keyboard-operable</p>
+			<p id="keyboard-operation-trapping">placeholder for keyboard-operation-trapping</p>
+			<p id="keyboard-operation-all-funcs">placeholder for keyboard-operation-all-funcs</p>
+			<p id="time-limits">placeholder for time-limits</p>
+			<p id="time-limits-required-behaviors">placeholder for time-limits-required-behaviors</p>
+			<p id="time-limits-pause">placeholder for time-limits-pause</p>
+			<p id="time-limits-no-exceptions">placeholder for time-limits-no-exceptions</p>
+			<p id="time-limits-postponed">placeholder for time-limits-postponed</p>
+			<p id="time-limits-server-timeout">placeholder for time-limits-server-timeout</p>
+			<p id="seizure">placeholder for seizure</p>
+			<p id="seizure-does-not-violate">placeholder for seizure-does-not-violate</p>
+			<p id="seizure-three-times">placeholder for seizure-three-times</p>
+			<p id="navigation-mechanisms">placeholder for navigation-mechanisms</p>
+			<p id="navigation-mechanisms-skip">placeholder for navigation-mechanisms-skip</p>
+			<p id="navigation-mechanisms-title">placeholder for navigation-mechanisms-title</p>
+			<p id="navigation-mechanisms-focus-order">placeholder for navigation-mechanisms-focus-order</p>
+			<p id="navigation-mechanisms-refs">placeholder for navigation-mechanisms-refs</p>
+			<p id="navigation-mechanisms-mult-loc">placeholder for navigation-mechanisms-mult-loc</p>
+			<p id="navigation-mechanisms-descriptive">placeholder for navigation-mechanisms-descriptive</p>
+			<p id="navigation-mechanisms-focus-visible">placeholder for navigation-mechanisms-focus-visible</p>
+			<p id="navigation-mechanisms-location">placeholder for navigation-mechanisms-location</p>
+			<p id="navigation-mechanisms-link">placeholder for navigation-mechanisms-link</p>
+			<p id="navigation-mechanisms-headings">placeholder for navigation-mechanisms-headings</p>
+			<p id="meaning">placeholder for meaning</p>
+			<p id="meaning-doc-lang-id">placeholder for meaning-doc-lang-id</p>
+			<p id="meaning-other-lang-id">placeholder for meaning-other-lang-id</p>
+			<p id="meaning-idioms">placeholder for meaning-idioms</p>
+			<p id="meaning-located">placeholder for meaning-located</p>
+			<p id="meaning-supplements">placeholder for meaning-supplements</p>
+			<p id="meaning-pronunciation">placeholder for meaning-pronunciation</p>
+			<p id="consistent-behavior">placeholder for consistent-behavior</p>
+			<p id="consistent-behavior-receive-focus">placeholder for consistent-behavior-receive-focus</p>
+			<p id="consistent-behavior-unpredictable-change">placeholder for consistent-behavior-unpredictable-change</p>
+			<p id="consistent-behavior-consistent-locations">placeholder for consistent-behavior-consistent-locations</p>
+			<p id="consistent-behavior-consistent-functionality">placeholder for consistent-behavior-consistent-functionality</p>
+			<p id="consistent-behavior-no-extreme-changes-context">placeholder for consistent-behavior-no-extreme-changes-context</p>
+			<p id="minimize-error">placeholder for minimize-error</p>
+			<p id="minimize-error-identified">placeholder for minimize-error-identified</p>
+			<p id="minimize-error-cues">placeholder for minimize-error-cues</p>
+			<p id="minimize-error-suggestions">placeholder for minimize-error-suggestions</p>
+			<p id="minimize-error-reversible">placeholder for minimize-error-reversible</p>
+			<p id="minimize-error-context-help">placeholder for minimize-error-context-help</p>
+			<p id="minimize-error-reversible-all">placeholder for minimize-error-reversible-all</p>
+			<p id="ensure-compat">placeholder for ensure-compat</p>
+			<p id="ensure-compat-parses">placeholder for ensure-compat-parses</p>
+			<p id="ensure-compat-rsv">placeholder for ensure-compat-rsv</p>
+			<p id="G1">placeholder for G1</p>
+			<p id="G4">placeholder for G4</p>
+			<p id="G5">placeholder for G5</p>
+			<p id="G8">placeholder for G8</p>
+			<p id="G9">placeholder for G9</p>
+			<p id="G10">placeholder for G10</p>
+			<p id="G11">placeholder for G11</p>
+			<p id="G13">placeholder for G13</p>
+			<p id="G14">placeholder for G14</p>
+			<p id="G15">placeholder for G15</p>
+			<p id="G17">placeholder for G17</p>
+			<p id="G18">placeholder for G18</p>
+			<p id="G19">placeholder for G19</p>
+			<p id="G21">placeholder for G21</p>
+			<p id="G53">placeholder for G53</p>
+			<p id="G54">placeholder for G54</p>
+			<p id="G55">placeholder for G55</p>
+			<p id="G56">placeholder for G56</p>
+			<p id="G57">placeholder for G57</p>
+			<p id="G58">placeholder for G58</p>
+			<p id="G59">placeholder for G59</p>
+			<p id="G60">placeholder for G60</p>
+			<p id="G61">placeholder for G61</p>
+			<p id="G62">placeholder for G62</p>
+			<p id="G63">placeholder for G63</p>
+			<p id="G64">placeholder for G64</p>
+			<p id="G65">placeholder for G65</p>
+			<p id="G68">placeholder for G68</p>
+			<p id="G69">placeholder for G69</p>
+			<p id="G70">placeholder for G70</p>
+			<p id="G71">placeholder for G71</p>
+			<p id="G73">placeholder for G73</p>
+			<p id="G74">placeholder for G74</p>
+			<p id="G75">placeholder for G75</p>
+			<p id="G76">placeholder for G76</p>
+			<p id="G78">placeholder for G78</p>
+			<p id="G79">placeholder for G79</p>
+			<p id="G80">placeholder for G80</p>
+			<p id="G81">placeholder for G81</p>
+			<p id="G82">placeholder for G82</p>
+			<p id="G83">placeholder for G83</p>
+			<p id="G84">placeholder for G84</p>
+			<p id="G85">placeholder for G85</p>
+			<p id="G86">placeholder for G86</p>
+			<p id="G87">placeholder for G87</p>
+			<p id="G88">placeholder for G88</p>
+			<p id="G89">placeholder for G89</p>
+			<p id="G90">placeholder for G90</p>
+			<p id="G91">placeholder for G91</p>
+			<p id="G92">placeholder for G92</p>
+			<p id="G93">placeholder for G93</p>
+			<p id="G94">placeholder for G94</p>
+			<p id="G95">placeholder for G95</p>
+			<p id="G96">placeholder for G96</p>
+			<p id="G97">placeholder for G97</p>
+			<p id="G98">placeholder for G98</p>
+			<p id="G99">placeholder for G99</p>
+			<p id="G100">placeholder for G100</p>
+			<p id="G101">placeholder for G101</p>
+			<p id="G102">placeholder for G102</p>
+			<p id="G103">placeholder for G103</p>
+			<p id="G105">placeholder for G105</p>
+			<p id="G107">placeholder for G107</p>
+			<p id="G108">placeholder for G108</p>
+			<p id="G110">placeholder for G110</p>
+			<p id="G111">placeholder for G111</p>
+			<p id="G112">placeholder for G112</p>
+			<p id="G115">placeholder for G115</p>
+			<p id="G117">placeholder for G117</p>
+			<p id="G120">placeholder for G120</p>
+			<p id="G121">placeholder for G121</p>
+			<p id="G122">placeholder for G122</p>
+			<p id="G123">placeholder for G123</p>
+			<p id="G124">placeholder for G124</p>
+			<p id="G125">placeholder for G125</p>
+			<p id="G126">placeholder for G126</p>
+			<p id="G127">placeholder for G127</p>
+			<p id="G128">placeholder for G128</p>
+			<p id="G130">placeholder for G130</p>
+			<p id="G131">placeholder for G131</p>
+			<p id="G133">placeholder for G133</p>
+			<p id="G134">placeholder for G134</p>
+			<p id="G135">placeholder for G135</p>
+			<p id="G136">placeholder for G136</p>
+			<p id="G138">placeholder for G138</p>
+			<p id="G139">placeholder for G139</p>
+			<p id="G140">placeholder for G140</p>
+			<p id="G141">placeholder for G141</p>
+			<p id="G142">placeholder for G142</p>
+			<p id="G143">placeholder for G143</p>
+			<p id="G144">placeholder for G144</p>
+			<p id="G145">placeholder for G145</p>
+			<p id="G146">placeholder for G146</p>
+			<p id="G147">placeholder for G147</p>
+			<p id="G148">placeholder for G148</p>
+			<p id="G149">placeholder for G149</p>
+			<p id="G150">placeholder for G150</p>
+			<p id="G151">placeholder for G151</p>
+			<p id="G152">placeholder for G152</p>
+			<p id="G153">placeholder for G153</p>
+			<p id="G155">placeholder for G155</p>
+			<p id="G156">placeholder for G156</p>
+			<p id="G157">placeholder for G157</p>
+			<p id="G158">placeholder for G158</p>
+			<p id="G159">placeholder for G159</p>
+			<p id="G160">placeholder for G160</p>
+			<p id="G161">placeholder for G161</p>
+			<p id="G162">placeholder for G162</p>
+			<p id="G163">placeholder for G163</p>
+			<p id="G164">placeholder for G164</p>
+			<p id="G165">placeholder for G165</p>
+			<p id="G166">placeholder for G166</p>
+			<p id="G167">placeholder for G167</p>
+			<p id="G168">placeholder for G168</p>
+			<p id="G169">placeholder for G169</p>
+			<p id="G170">placeholder for G170</p>
+			<p id="G171">placeholder for G171</p>
+			<p id="G172">placeholder for G172</p>
+			<p id="G173">placeholder for G173</p>
+			<p id="G174">placeholder for G174</p>
+			<p id="G175">placeholder for G175</p>
+			<p id="G176">placeholder for G176</p>
+			<p id="G177">placeholder for G177</p>
+			<p id="G178">placeholder for G178</p>
+			<p id="G179">placeholder for G179</p>
+			<p id="G180">placeholder for G180</p>
+			<p id="G181">placeholder for G181</p>
+			<p id="G182">placeholder for G182</p>
+			<p id="G183">placeholder for G183</p>
+			<p id="G184">placeholder for G184</p>
+			<p id="G185">placeholder for G185</p>
+			<p id="G186">placeholder for G186</p>
+			<p id="G187">placeholder for G187</p>
+			<p id="G188">placeholder for G188</p>
+			<p id="G189">placeholder for G189</p>
+			<p id="G190">placeholder for G190</p>
+			<p id="G191">placeholder for G191</p>
+			<p id="G192">placeholder for G192</p>
+			<p id="G193">placeholder for G193</p>
+			<p id="G194">placeholder for G194</p>
+			<p id="G195">placeholder for G195</p>
+			<p id="G196">placeholder for G196</p>
+			<p id="G197">placeholder for G197</p>
+			<p id="G198">placeholder for G198</p>
+			<p id="H2">placeholder for H2</p>
+			<p id="H4">placeholder for H4</p>
+			<p id="H24">placeholder for H24</p>
+			<p id="H25">placeholder for H25</p>
+			<p id="H27">placeholder for H27</p>
+			<p id="H28">placeholder for H28</p>
+			<p id="H30">placeholder for H30</p>
+			<p id="H32">placeholder for H32</p>
+			<p id="H33">placeholder for H33</p>
+			<p id="H34">placeholder for H34</p>
+			<p id="H35">placeholder for H35</p>
+			<p id="H36">placeholder for H36</p>
+			<p id="H37">placeholder for H37</p>
+			<p id="H39">placeholder for H39</p>
+			<p id="H40">placeholder for H40</p>
+			<p id="H42">placeholder for H42</p>
+			<p id="H43">placeholder for H43</p>
+			<p id="H44">placeholder for H44</p>
+			<p id="H45">placeholder for H45</p>
+			<p id="H46">placeholder for H46</p>
+			<p id="H48">placeholder for H48</p>
+			<p id="H49">placeholder for H49</p>
+			<p id="H50">placeholder for H50</p>
+			<p id="H51">placeholder for H51</p>
+			<p id="H53">placeholder for H53</p>
+			<p id="H54">placeholder for H54</p>
+			<p id="H56">placeholder for H56</p>
+			<p id="H57">placeholder for H57</p>
+			<p id="H58">placeholder for H58</p>
+			<p id="H59">placeholder for H59</p>
+			<p id="H60">placeholder for H60</p>
+			<p id="H62">placeholder for H62</p>
+			<p id="H63">placeholder for H63</p>
+			<p id="H64">placeholder for H64</p>
+			<p id="H65">placeholder for H65</p>
+			<p id="H67">placeholder for H67</p>
+			<p id="H69">placeholder for H69</p>
+			<p id="H70">placeholder for H70</p>
+			<p id="H71">placeholder for H71</p>
+			<p id="H73">placeholder for H73</p>
+			<p id="H74">placeholder for H74</p>
+			<p id="H75">placeholder for H75</p>
+			<p id="H76">placeholder for H76</p>
+			<p id="H77">placeholder for H77</p>
+			<p id="H78">placeholder for H78</p>
+			<p id="H79">placeholder for H79</p>
+			<p id="H80">placeholder for H80</p>
+			<p id="H81">placeholder for H81</p>
+			<p id="H82">placeholder for H82</p>
+			<p id="H83">placeholder for H83</p>
+			<p id="H84">placeholder for H84</p>
+			<p id="H85">placeholder for H85</p>
+			<p id="H86">placeholder for H86</p>
+			<p id="H87">placeholder for H87</p>
+			<p id="H88">placeholder for H88</p>
+			<p id="H89">placeholder for H89</p>
+			<p id="H90">placeholder for H90</p>
+			<p id="H91">placeholder for H91</p>
+			<p id="C6">placeholder for C6</p>
+			<p id="C7">placeholder for C7</p>
+			<p id="C8">placeholder for C8</p>
+			<p id="C9">placeholder for C9</p>
+			<p id="C12">placeholder for C12</p>
+			<p id="C13">placeholder for C13</p>
+			<p id="C14">placeholder for C14</p>
+			<p id="C15">placeholder for C15</p>
+			<p id="C16">placeholder for C16</p>
+			<p id="C17">placeholder for C17</p>
+			<p id="C18">placeholder for C18</p>
+			<p id="C19">placeholder for C19</p>
+			<p id="C20">placeholder for C20</p>
+			<p id="C21">placeholder for C21</p>
+			<p id="C22">placeholder for C22</p>
+			<p id="C23">placeholder for C23</p>
+			<p id="C24">placeholder for C24</p>
+			<p id="C25">placeholder for C25</p>
+			<p id="C26">placeholder for C26</p>
+			<p id="C27">placeholder for C27</p>
+			<p id="C28">placeholder for C28</p>
+			<p id="C29">placeholder for C29</p>
+			<p id="C30">placeholder for C30</p>
+			<p id="SVR1">placeholder for SVR1</p>
+			<p id="SVR2">placeholder for SVR2</p>
+			<p id="SVR3">placeholder for SVR3</p>
+			<p id="SVR4">placeholder for SVR4</p>
+			<p id="SM1">placeholder for SM1</p>
+			<p id="SM2">placeholder for SM2</p>
+			<p id="SM6">placeholder for SM6</p>
+			<p id="SM7">placeholder for SM7</p>
+			<p id="SM11">placeholder for SM11</p>
+			<p id="SM12">placeholder for SM12</p>
+			<p id="SM13">placeholder for SM13</p>
+			<p id="SM14">placeholder for SM14</p>
+			<p id="T1">placeholder for T1</p>
+			<p id="T2">placeholder for T2</p>
+			<p id="T3">placeholder for T3</p>
+			<p id="ARIA1">placeholder for ARIA1</p>
+			<p id="ARIA2">placeholder for ARIA2</p>
+			<p id="ARIA3">placeholder for ARIA3</p>
+			<p id="ARIA4">placeholder for ARIA4</p>
+			<p id="F1">placeholder for F1</p>
+			<p id="F2">placeholder for F2</p>
+			<p id="F3">placeholder for F3</p>
+			<p id="F4">placeholder for F4</p>
+			<p id="F7">placeholder for F7</p>
+			<p id="F8">placeholder for F8</p>
+			<p id="F9">placeholder for F9</p>
+			<p id="F10">placeholder for F10</p>
+			<p id="F12">placeholder for F12</p>
+			<p id="F13">placeholder for F13</p>
+			<p id="F14">placeholder for F14</p>
+			<p id="F15">placeholder for F15</p>
+			<p id="F16">placeholder for F16</p>
+			<p id="F17">placeholder for F17</p>
+			<p id="F19">placeholder for F19</p>
+			<p id="F20">placeholder for F20</p>
+			<p id="F22">placeholder for F22</p>
+			<p id="F23">placeholder for F23</p>
+			<p id="F24">placeholder for F24</p>
+			<p id="F25">placeholder for F25</p>
+			<p id="F26">placeholder for F26</p>
+			<p id="F30">placeholder for F30</p>
+			<p id="F31">placeholder for F31</p>
+			<p id="F32">placeholder for F32</p>
+			<p id="F33">placeholder for F33</p>
+			<p id="F34">placeholder for F34</p>
+			<p id="F36">placeholder for F36</p>
+			<p id="F37">placeholder for F37</p>
+			<p id="F38">placeholder for F38</p>
+			<p id="F39">placeholder for F39</p>
+			<p id="F40">placeholder for F40</p>
+			<p id="F41">placeholder for F41</p>
+			<p id="F42">placeholder for F42</p>
+			<p id="F43">placeholder for F43</p>
+			<p id="F44">placeholder for F44</p>
+			<p id="F46">placeholder for F46</p>
+			<p id="F47">placeholder for F47</p>
+			<p id="F48">placeholder for F48</p>
+			<p id="F49">placeholder for F49</p>
+			<p id="F50">placeholder for F50</p>
+			<p id="F52">placeholder for F52</p>
+			<p id="F54">placeholder for F54</p>
+			<p id="F55">placeholder for F55</p>
+			<p id="F58">placeholder for F58</p>
+			<p id="F59">placeholder for F59</p>
+			<p id="F60">placeholder for F60</p>
+			<p id="F61">placeholder for F61</p>
+			<p id="F62">placeholder for F62</p>
+			<p id="F63">placeholder for F63</p>
+			<p id="F65">placeholder for F65</p>
+			<p id="F66">placeholder for F66</p>
+			<p id="F67">placeholder for F67</p>
+			<p id="F68">placeholder for F68</p>
+			<p id="F69">placeholder for F69</p>
+			<p id="F70">placeholder for F70</p>
+			<p id="F71">placeholder for F71</p>
+			<p id="F72">placeholder for F72</p>
+			<p id="F73">placeholder for F73</p>
+			<p id="F74">placeholder for F74</p>
+			<p id="F75">placeholder for F75</p>
+			<p id="F76">placeholder for F76</p>
+			<p id="F77">placeholder for F77</p>
+			<p id="F78">placeholder for F78</p>
+			<p id="F79">placeholder for F79</p>
+			<p id="F80">placeholder for F80</p>
+			<p id="F81">placeholder for F81</p>
+			<p id="F82">placeholder for F82</p>
+			<p id="F83">placeholder for F83</p>
+			<p id="F84">placeholder for F84</p>
+			<p id="F85">placeholder for F85</p>
+			<p id="F86">placeholder for F86</p>
+			<p id="F87">placeholder for F87</p>
+			<p id="F88">placeholder for F88</p>
+			<p id="F89">placeholder for F89</p>
+		</div1>
+	</back>
+</spec>
