@@ -251,23 +251,23 @@
 						<description>
 							<p>The following example fails because the information conveyed by using the CSS <code><![CDATA[font-weight]]></code> property to change to a bold font is not conveyed through semantic markup or stated explicitly in the text.</p>
 							<p>Here is a CSS class to specify bold:</p>
-						</description>
-						<code role="html401"><![CDATA[
+						
+						<codeblock><![CDATA[
 .yell {
   font-weight:bold;
   text-transform: uppercase;
 }
-]]></code>
-						<description>
+]]></codeblock>
+						
 							<p>And here is the corresponding HTML:</p>
-						</description>
-						<code role="html401"><![CDATA[
+						<codeblock role="html401"><![CDATA[
 <p>
  "I said, <span class="yell">no</span>, not before dinner!", 
  was the exasperated response when Timmy asked his mother for the 
  fourth time for an ice cream cone. 
  </p>
-]]></code>
+]]></codeblock>
+                            </description>
 					</eg-group>
 				</examples>
 				<resources/>
@@ -2351,13 +2351,12 @@ Tuesday   Pancakes       vegetable soup  Caesar salad
 					</procedure>
 					<expected-results>
 						<p> If step #3 is false, then this failure condition applies and content
-                            fails the Success Criterion. </p>
+                            fails the Success Criterion.</p>
 					</expected-results>
 				</tests>
 			</technique>
 			<technique id="F38">
-				<short-name>Failure of Success Criterion 1.1.1 due to omitting the alt-attribute for non-text
-                    content used for decorative purposes only in HTML</short-name>
+				<short-name>Failure of Success Criterion 1.1.1 due to not marking up decorative images in HTML in a way that allows assistive technology to ignore them</short-name>
 				<applicability>
 					<p>HTML and XHTML</p>
 				</applicability>
@@ -2369,13 +2368,13 @@ Tuesday   Pancakes       vegetable soup  Caesar salad
                         should be ignored by AT. If there is no alt attribute at all assistive
                         technologies are not able to ignore the non-text content. The alt attribute
                         must be provided and have a null value (i.e., <code><![CDATA[alt=""]]></code> ) to avoid a failure of this Success Criterion. </p>
-					
+					<p>This describes a failure condition for text alternatives for images that should be ignored by assistive technology (AT). If an image has the attribute <code>role="presentation"</code>, it will be ignored by AT. However, if it does not have <code>role="presentation"</code>, and if there is no <att>alt</att> attribute at all assistive technologies are not able to ignore the image. For decorative images which need to be ignored by AT, either <code>role="presentation"</code> must be used or the alt attribute must be provided and have a null value (i.e., <code><![CDATA[alt=""]]></code>) to avoid a failure of this Success Criterion.</p>
 				</description>
 				<examples>
 					<ulist>
 						<item>
-							<p>Failure Example 1: Decorative images that have no <att>alt</att>
-                                attribute </p>
+							<p>Decorative images that have no <att>alt</att>
+                                attribute and no <att>role</att> attribute</p>
 						</item>
 					</ulist>
 				</examples>
@@ -2383,26 +2382,20 @@ Tuesday   Pancakes       vegetable soup  Caesar salad
 				<related-techniques/>
 				<tests>
 					<procedure>
-						<olist>
-							<item>
-								<p> Identify any <code><![CDATA[img]]></code> and <code><![CDATA[applet]]></code> elements
-                                    that are used for purely decorative content; </p>
+						<p>For any <el>img</el> element that is used for purely decorative content:</p>
+                        <olist>
+                            <item>
+								<p>Check whether the element has no <att>role</att> attribute or has a <att>role</att> attribute value that is not <attval>presentation</attval>.</p>
 							</item>
 							<item>
-								<p> Check that the <code><![CDATA[alt]]></code> attribute for these elements
-                                    exists. </p>
-							</item>
-							<item>
-								<p> Check that the <code><![CDATA[alt]]></code> attribute for these elements is
-                                    null. </p>
+								<p>Check whether the element has no <att>alt</att> attribute or has an <att>alt</att> attribute with a value that is not null.</p>
 							</item>
 						</olist>
 					</procedure>
 					<expected-results>
 						<ulist>
 							<item>
-								<p> if step #2 or step #3 is false, this failure condition applies and
-                                    content fails the Success Criterion. </p>
+								<p>If step #1 is true and if step #2 is true, this failure condition applies and content fails the Success Criterion.</p>
 							</item>
 						</ulist>
 					</expected-results>
@@ -2411,7 +2404,7 @@ Tuesday   Pancakes       vegetable soup  Caesar salad
 			<technique id="F39">
 				<short-name>Failure of Success Criterion 1.1.1 due to providing a text alternative that is not null (e.g., alt="spacer" or alt="image") for images that should be ignored by assistive technology</short-name>
 				<applicability>
-					<p> Applies to HTML and XHTML. </p>
+					<p> Applies to HTML and XHTML.</p>
 				</applicability>
 				<applies-to>
 					<success-criterion idref="text-equiv-all" relationship="failure"/>
@@ -2857,6 +2850,7 @@ View the results of the survey.
                         long as the layout table does not include improper structural markup such as
                             <code><![CDATA[<th>]]></code> or <code><![CDATA[<caption>]]></code>
                         elements.</p>
+                    <p>Note: Though an element's semantic meaning is generally exposed to AT, the WAI-ARIA presentation role can be used to suppress the native semantics of an element so that they are not mapped to the accessibility API. Setting an element's <att>role (@@ code or att?  linked?)<<att>role (@@ code or att?  linked?)</att> to presentation may avoid this failure by hiding that element's semantics from the user.</p>
 				</description>
 				<examples>
 					<eg-group role="failure">
@@ -2895,7 +2889,7 @@ View the results of the survey.
 ]]></code>
 					</eg-group>
 					<eg-group role="failure">
-						<head>Using <code><![CDATA[blockquote]]></code> elements to provide additional
+						<head>Using <el>blockquote</el> elements to provide additional
                             indentation</head>
 						<description>
 							<p>The following example uses <code><![CDATA[blockquote]]></code> for text that is
@@ -2938,16 +2932,14 @@ introduced by this practice below.</p>
 					<procedure>
 						<olist>
 							<item>
-								<p>Check that each element's semantic meaning is appropriate for the
-                                    content of the element.</p>
+								<p>Check that the element's semantic meaning is exposed to assistive technology and appropriate for the content of the element.</p>
 							</item>
 						</olist>
 					</procedure>
 					<expected-results>
 						<ulist>
 							<item>
-								<p>If check #1 is false, then this failure condition applies and the
-                                    content fails the Success Criterion.</p>
+								<p>If check #1 is false then this failure condition applies.</p>
 							</item>
 						</ulist>
 					</expected-results>
@@ -3938,10 +3930,9 @@ public void doGet (HttpServletRequest request, HttpServletResponse response)
 				</tests>
 			</technique>
 			<technique id="F59">
-				<short-name>Failure of Success Criterion 4.1.2 due to using script to make div or span a user
-                    interface control in HTML</short-name>
+				<short-name>Failure of Success Criterion 4.1.2 due to using script to make div or span a user interface control in HTML without providing a role for the control</short-name>
 				<applicability>
-					<p> HTML and XHTML with scripting </p>
+					<p> HTML and XHTML</p>
 				</applicability>
 				<applies-to>
 					<success-criterion idref="ensure-compat-rsv" relationship="failure"/>
@@ -3952,33 +3943,24 @@ public void doGet (HttpServletRequest request, HttpServletResponse response)
                         technology. Assistive technologies rely on knowledge of the role and current
                         state of a component in order to provide that information to the user. Many
                         HTML elements have well defined roles, such as links, buttons, text fields,
-                        etc. Generic elements such as <code><![CDATA[div]]></code> and <code><![CDATA[span]]></code> do not
+                        etc. Generic elements such as <el>div</el> and <el>span</el> do not
                         have any predefined roles. When these generic elements are used to create
                         user interface controls in HTML the assistive technology may not have the
                         necessary information to describe and interact with the control. </p>
-					<p> See the resources section below for links to specifications which describe
-                        mechanisms to provide the necessary role and state information to create
-                        fully accessible user interface controls. </p>
+					<p> The W3C Candidate Recommendation "<loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA) 1.0</loc>" describes mechanisms to provide the necessary role and state information to create fully accessible user interface controls.</p>
 				</description>
 				<examples>
 					<eg-group>
 						<description>
-							<p>The following example fails because it creates a checkbox using a
-                                span and an image.</p>
-						</description>
-						<code><![CDATA[
+						<p>The following example fails because it creates a checkbox using a span and an image.</p>
+						<codeblock><![CDATA[
   <p> 
   <span  onclick="toggleCheckbox('chkbox')"> 
   <img src="unchecked.gif"  id="chkbox" alt=""> Include Signature 
   </span> 
-  </p>]]></code>
-					</eg-group>
-					<eg-group>
-						<description>
-							<p> Here is the scripting code which changes the image source when the
-                                    <code><![CDATA[span]]></code> is clicked with the mouse. </p>
-						</description>
-						<code><![CDATA[ 
+  </p>]]></codeblock>
+						<p>Here is the scripting code which changes the image source when the <el>span</el> is clicked with the mouse.</p>
+						<codeblock><![CDATA[ 
   var CHECKED = "check.gif"; 
   var UNCHECKED = "unchecked.gif"; 
   function toggleCheckbox(imgId) { 
@@ -3991,12 +3973,8 @@ public void doGet (HttpServletRequest request, HttpServletResponse response)
   theImg.src = CHECKED; 
   // additional code to implement checked action 
   } 
-  } ]]></code>
-						<description>
-							<p> A checkbox created in this manner will not work with assistive
-                                technology since there is no information that identifies it as a
-                                checkbox. In addition, this example is also not operable from the
-                                keyboard and would fail guideline 2.1. </p>
+  } ]]></codeblock>
+							<p> A checkbox created in this manner will not work with assistive technology since there is no information that identifies it as a checkbox. In addition, this example is also not operable from the keyboard and would fail guideline 2.1.</p>
 						</description>
 					</eg-group>
 				</examples>
@@ -4004,35 +3982,32 @@ public void doGet (HttpServletRequest request, HttpServletResponse response)
 					<see-also>
 						<ulist>
 							<item>
-								<p> <loc
-									href="http://www.w3.org/WAI/PF/roadmap/DHTMLRoadmap040506.html">Dynamic Accessible Web Content Roadmap</loc> </p>
+								<p><loc ref="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA) 1.0</loc></p>
 							</item>
 							<item>
-								<p> <loc
-									href="http://wiki.codetalks.org/wiki/index.php/Main_Page">Accessible DHTML</loc> </p>
+								<p><loc ref="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
 							</item>
-						</ulist>
+                        </ulist>
 					</see-also>
 				</resources>
 				<related-techniques>
 					<relatedtech idref="F42"/>
+					<relatedtech idref="@@"/><!-- http://www.w3.org/WAI/GL/wiki/Using_a_WAI-ARIA_role_to_expose_the_role_of_a_user_interface_component -->
 				</related-techniques>
 				<tests>
 					<procedure>
 						<olist>
 							<item>
-								<p> Examine the source code for elements which have event handlers
-                                    assigned within the markup or via scripting. </p>
+								<p>Examine the parsed source code for elements which have event handlers assigned within the mark-up or via scripting (indicating that the element is a user interface control).</p>
 							</item>
-							<item>
-								<p> If those elements are acting as user interface controls, check
-                                    that the role of the control is defined. </p>
+							<item>Check if the role of the control is already defined natively in the mark-up language.</item>
+                            <item>
+								<p>Check if another valid method, such as the assignment of a fitting WAI-ARIA role, has been used to define the role of the control.</p>
 							</item>
 						</olist>
 					</procedure>
 					<expected-results>
-						<p>If check #2 is false and the created user interface control does not have
-                            role information, this failure condition applies. </p>
+						<p>If check #2 AND check #3 are false, the failure condition applies.</p>
 					</expected-results>
 				</tests>
 			</technique>
@@ -4274,35 +4249,39 @@ public void doGet (HttpServletRequest request, HttpServletResponse response)
 			<technique id="F63">
 				<short-name>Failure of Success Criterion 2.4.4 due to providing link context only in content that is not related to the link</short-name>
 				<applicability>
-					<p>All technologies.</p>
+					<p>HTML and XHTML</p>
 				</applicability>
 				<applies-to>
 					<success-criterion idref="navigation-mechanisms-refs" relationship="failure"/>
 				</applies-to>
 				<description>
-					<p>This describes a failure condition when the context needed for understanding the purpose of a link is located in content that is not programmatically determined link context.  If the context for the link is not in the same sentence, paragraph, list item, or table cell as the link, then the user will not be able to find out where the link is going with any ease. If the user must leave the link to search for the context, the context is not programmatically determined link context and this failure condition occurs.</p>
+					<p>This describes a failure condition when the context needed for understanding the purpose of a link is located in content that is not programmatically determined link context.  If the context for the link is not provided in one of the following ways:</p>
+                    <ul>
+                    <li>in the same sentence, paragraph, list item, or table cell as the link</li>
+                    <li>in the preceding heading</li>
+                    <li>via a suitable ARIA property such as <att>aria-label</att> or <att>aria-labelledby</att></li>
+                    </ul>
+                    <p>then the user will not be able to find out where the link is going with any ease. If the user must leave the link to search for the context, the context is not programmatically determined link context and this failure condition occurs.</p>
 				</description>
 				<examples>
 					<eg-group role="failure">
-						<head>A News Service</head>
+						<head>A Link in an Adjacent Paragraph</head>
 						<description>
 							<p>
-A news service lists the first few sentences of an article in a paragraph. The next paragraph contains the link "Read More...". Because the link is not in the same paragraph as the lead sentence, the user cannot easily discover what the link will let him read more about.
-</p>
-						</description>
-						<code><![CDATA[
+A news service lists the first few sentences of an article in a paragraph. The next paragraph contains the link "Read More...". Because the link is not in the same paragraph as the lead sentence, the user cannot easily discover what the link will let the user read more about.</p>
+						<codeblock><![CDATA[
 <p>A British businessman has racked up 2 million flyer miles and plans to 
 travel on the world's first commercial tourism flights to space.</p>
 
 <p><a href="ff.html">Read More...</a></p>
-]]></code>
-					</eg-group>
+]]></codeblock>
+                        </description>
+                        </eg-group>
 					<eg-group role="failure">
-						<head>Downloading a Free Player</head>
+						<head>A Link in an Adjacent Cell Within a Layout Table</head>
 						<description>
 							<p>An audio site provides links to where its player can be downloaded. The information about what would be downloaded by the link is in the preceding row of the layout table, which is not programmatically determined context for the link.</p>
-						</description>
-						<code><![CDATA[
+						<codeblock><![CDATA[
  <table>
    <tr> 
        <td>Play music from your browser</td>
@@ -4314,58 +4293,43 @@ travel on the world's first commercial tourism flights to space.</p>
        </td>
    </tr>
  </table>
-]]></code>
-					</eg-group>
-					<eg-group role="failure">
-						<head>Using a Definitions List</head>
-						<description>
-							<p>
-                In HTML and XHTML, definition lists provide a programmatic association between the term and its definition. So theoretically, a link provided in a definition could use the definition term as its context. However, support is particularly bad for definitions lists, and there would be no way for users of today's assistive technology to discover the context using a definition list alone. Definition lists are a useful mechanism for providing associative relationships, but at this moment in time could not be considered sufficient for <loc
-								href="navigation-mechanisms-refs" linktype="guideline">Success Criterion 2.4.2</loc>.</p>
-						</description>
-						<code><![CDATA[
-<dl>
-    <dt>Harry Potter and the Chamber of Secrets</dt>
-    <dd>Story of a boy with magical powers who has to face Lord Voldemort.</dd>
-    <dd><a href="potter.php?id=123">Buy now</a></dd>
-    <dt>Harry Potter and the Goblet of Fire</dt>
-    <dd>Harry finds himself selected as an underaged competitor in a dangerous multi-wizardry school competition.</dd>
-    <dd><a href="potter.php?id=124">Buy now</a></dd>
-    <dt>Harry Potter and the Prisoner of Azkaban</dt>
-    <dd>
-Something wicked this way comes. It's Harry's third year at Hogwarts; 
-not only does he have a new "Defense Against the Dark Arts" teacher, 
-but there is also trouble brewing. Convicted murderer Sirius Black has 
-escaped the Wizards' Prison and is coming after Harry.
-    </dd>
-    <dd><a href="potter.php?id=125">Buy now</a></dd>
-</dl>            
-]]></code>
+]]></codeblock>
+                        </description>
 					</eg-group>
 				</examples>
-				<resources/>
-				<related-techniques/>
-				<tests>
-					<procedure>
-						<olist>
+				<resources>
+					<see-also>
+						<ulist>
 							<item>
-								<p>
-Locate content needed to understand how link text describes the purpose of the link.
-    </p>
+								<p><loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA) 1.0</loc></p>
 							</item>
 							<item>
+								<p><loc href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc></p>
+							</item>
+						</ulist>
+					</see-also>
+                </resources>
+				<related-techniques>
+                    <relatedtech idref="@@"/><!-- Using aria-label for link purpose -->
+                    <relatedtech idref="@@"/><!-- Using aria-labelledby for link purpose -->
+                </related-techniques>
+				<tests>
+					<procedure>
+                        <p>Locate links where some additional link context is needed to understand the purpose of the link. For each link:</p>
+                        <olist>
+							<item>
 								<p>
-Check whether the content is contained in the same sentence, paragraph, list item, or table cell, or in the preceding heading.
-    </p>
+Check whether the context is contained in the same sentence, paragraph, list item, table cell, associated table headers, or preceding heading.</p>
+							</item>
+							<item>
+								<p>Check whether the link context can be programmatically determined in some other way, for example, by using a WAI-ARIA property such as <att>aria-label</att>, <att>aria-labelledby</att> or <att>aria-describedby</att> on the link to provide sufficient context</p>
 							</item>
 						</olist>
 					</procedure>
 					<expected-results>
 						<ulist>
 							<item>
-								<p>
-If check 2 is false, the content fails the Success Criterion.
-    </p>
+								<p>If check #1 AND check #2 are false, the content fails the Success Criterion.</p>
 							</item>
 						</ulist>
 					</expected-results>
