@@ -123,7 +123,7 @@
 				</div3>
 			</div2>
 			<technique id="ARIA1">
-				<short-name>Using the aria-describedby property to provide a descriptive label for input controls</short-name>
+				<short-name>Using the aria-describedby property to provide a descriptive label for user interface controls</short-name>
 				<applicability>
 					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
 					<ednote>
@@ -132,183 +132,148 @@
 				</applicability>
 				<applies-to>
 					<success-criterion idref="content-structure-separation-programmatic" relationship="sufficient"/>
-					<success-criterion idref="navigation-mechanisms-title" relationship="sufficient"/>
-					<success-criterion idref="navigation-mechanisms-refs" relationship="sufficient"/>
 					<success-criterion idref="minimize-error-cues" relationship="sufficient"/>
 				</applies-to>
 				<ua-issues>
 					<ua-issue name="" version="">
 						<p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
 					</ua-issue>
-					<ua-issue name="Internet Explorer" version="8">
-						<p>IE 8 only supports <prop>aria-labelledby</prop> with a single id value and it partially supports <prop>aria-describedby</prop>.</p>
-					</ua-issue>
 				</ua-issues>
 				<description>
-					<p>The purpose of this technique is to demonstrate how to use the   WAI-ARIA <loc href="http://www.w3.org/TR/wai-aria/states_and_properties#aria-describedby">aria-describedby</loc> property to provide programmatically   determined, descriptive information about a user interface element. The   aria-describedby property may be used to attach descriptive information   to one or more elements through the use of an id reference list. The id   reference list contains one or more unique element ids. </p>
-					<p>Refer to <loc href="http://www.w3.org/TR/wai-aria-primer/#ariahtml">Supporting   ARIA in XHTML and HTML 4.01</loc> for information on how to provide   WAI-ARIA States and Properties with XHTML and HTML. WAI-ARIA States and   Properties is compatible with other languages as well; refer to   documentation in those languages. </p>
+					<p>The purpose of this technique is to demonstrate how to use the   WAI-ARIA <loc href="http://www.w3.org/TR/wai-aria/states_and_properties#aria-describedby">aria-describedby</loc> property to provide programmatically   determined, descriptive information about a user interface element. The <att>aria-describedby</att> property may be used to attach descriptive information to one or more elements through the use of an id reference list. The id reference list contains one or more unique element ids. </p>
+					<p>Refer to <loc href="http://www.w3.org/TR/wai-aria-primer/#ariahtml">Supporting ARIA in XHTML and HTML 4.01</loc> for information on how to provide WAI-ARIA States and Properties with XHTML and HTML. WAI-ARIA States and Properties is compatible with other languages as well; refer to documentation in those languages. </p>
 					<note>
-						<p>At this time, WAI-ARIA is a Working Draft. This technique   is provided as an advisory technique for organizations that wish to   experiment with achieving WCAG conformance using WAI-ARIA. When WAI-ARIA   becomes a formal specification and is supported in user agents, it is   anticipated that this technique will become a sufficient technique. </p>
+						<p>The <att>aria-describedby</att> property is not designed to reference descriptions on an external resource — since it is an ID, it must reference an element in the same DOM document.</p>
 					</note>
 				</description>
 				<examples>
 					<eg-group>
-						<head>XHTML</head>
+						<head>Using aria-describedby property to describe a Close button's action</head>
 						<description>
-							<p>This example is coded in XHTML with a MIME type of   application:xhtml+xml. This MIME type is not supported in all user   agents. The aria-describedby property is added directly   into the XHTML markup, and no additional scripting is needed. </p>
-						</description>
-						<code xml:space="preserve"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1
- For Accessible Adaptable Applications//EN"
-  "http://www.w3.org/WAI/ARIA/schemata/xhtml-aria-1.dtd">
- <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
- <head>
- <meta http-equiv="content-type" content="application:xhtml+xml; charset=utf-8" />
- <title>Demonstration of aria-describedby property</title>
- <style type="text/css">
- div.form p { clear:left; margin: 0.3em 0;}
- .left {
-   float:left;
-   width:400px;
- }
- .right {
-   width:100px;
-   text-align:right;
- }
- </style>
- </head>
- <body>
- <p>The buttons on this page use the Accessible Rich Internet Applications aria-describedby property 
- to provide more detailed information about the button action</p>
- <div class="form">
- <p><span class="left" id="fontDesc" >Select the font faces and sizes to be used on this page</span>
- <span class="right"><button id="fontB" onclick="doAction('Fonts');" aria-describedby="fontDesc">
- Fonts </button></span></p>
- <p><span class="left" id="colorDesc" >Select the colors to be used on this page</span>
- <span class="right"><button id="colorB" onclick="doAction('Colors');" aria-describedby="colorDesc">
- Colors </button></span></p>
- <p><span class="left" id="customDesc" >Customize the layout and styles used on this page</span>
- <span class="right"><button id="customB" onclick="doAction('Customize');" aria-describedby="customDesc"> 
- Customize </button></span></p>
- </div>
- </body>
- </html>
-]]></code>
+							<p>A button that functions as a 'close' button on a dialog is described elsewhere in the document. The <att>aria-describedby</att> property is used to associate the description with the link. This example taken from @@ (from where?)</p>
+						<codeblock xml:space="preserve"><![CDATA[<button aria-label="Close" aria-describedby="descriptionClose" 
+    onclick="myDialog.close()">X</button>
+
+...
+
+<div id="descriptionClose">Closing this window will discard any information entered and 
+return you back to the main page</div>
+]]></codeblock>
+                            </description>
+                        </eg-group>
+					<eg-group>
+						<head>Using aria-describedby to associate instructions with form fields</head>
+						<description>
+							<p>Sample form field using <att>aria-describedby</att> to associate instructions with form fields while there is a form label.</p>
+						<codeblock xml:space="preserve"><![CDATA[ <form> 
+<label for="fname">First name</label>  
+<input name="" type="text" id="fname" aria-describedby="int2"> 
+<p id="int2">A  bit of instructions for this field linked with aria-describedby. </p>
+</form>
+]]></codeblock>
+                            <p><loc href="http://3needs.org/en/testing/code/aria-describedby-close.html">Working version of example 2</loc></p>
+                        </description>
 					</eg-group>
 					<eg-group>
-						<head>HTML</head>
+						<head>Using aria-describedby property to provide more detailed information about the button</head>
 						<description>
-							<p>This example uses scripting to add an aria-describedby   property to buttons on a page. The example creates a buttonIds array   variable to hold the ids of the elements that contain description text.   The setDescribedBy() function is called from the onload   event of the window object. </p>
-							<p>The setDescribedBy() function loops through all of   the button elements and calls setAttribute() on each button   element to set the aria-describedby property. Each   button's aria-describedby property is set to the id   of the element containing its descriptive text. </p>
-							<p>Using a user agent and/or assistive technology which supports   WAI-ARIA, the description will be provided when the user interface   controls receive focus. </p>
-						</description>
-						<code xml:space="preserve"><![CDATA[ <head>
- <meta http-equiv="content-type" content="text/xhtml; charset=utf-8" />
- <title>Demonstration of aria-describedby property</title>
- <style type="text/css">
- div.form p { clear:left; margin: 0.3em 0;}
-.left {
-  float:left;
-  width:400px;
-}
-.right {
-	width:100px;
-	text-align:right;
-}
- </style>
- <script type="text/javascript">
- //<![CDATA[
-
- // array entries for each button on the page that associates the button id 
- // with the id of the element containing the text which describes the button
- var buttonIds = new Array();
- buttonIds["fontB"]= "fontDesc";
- buttonIds["colorB"] = "colorDesc";
- buttonIds["customB"] = "customDesc";
-
- // function that is run after the page has loaded to set the aria-describedBy
- // property on each of the elements referenced by the array of id values
- function setDescribedBy(){
-	if (buttonIds){
-		var buttons = document.getElementsByTagName("button");
-		if (buttons){
-			var buttonId;
-			for(var i=0; i<buttons.length; i++){
-				buttonId = buttons[i].id;
-				if (buttonId && buttonIds[buttonId]){
-					buttons[i].setAttribute("aria-describedby", buttonIds[buttonId]);
-				}
-			}
-		}
-	}
- }
-
- // simulated action function - currently just displays an alert
- function doAction(theAction){
-	alert("Perform the " + theAction + " action");
- }
-
- window.onload=setDescribedBy;
-
-//]]]]><![CDATA[>
- </script>
- </head>
- <body>
- <p>The buttons on this page use the Accessible Rich Internet Applications 
- aria-describedby property to provide more detailed information 
- about the button action.
- </p>
- <div class="form">
- <p><span class="left" id="fontDesc" >Select the font faces and sizes to be used on this page</span>
-    <span class="right"><button id="fontB" onclick="doAction('Fonts');"> Fonts </button></span>
- </p>
- <p><span class="left" id="colorDesc" >Select the colors to be used on this page</span>
-    <span class="right"><button id="colorB" onclick="doAction('Colors');"> Colors </button></span>
- </p>
- <p><span class="left" id="customDesc" >Customize the layout and styles used on this page</span>
-    <span class="right"><button id="customB" onclick="doAction('Customize');"> Customize </button></span>
- </p>
- </div>
- </body>
-]]></code>
+						<codeblock xml:space="preserve"><![CDATA[<p><span id="fontDesc">Select the font faces and sizes to be used on this page</span>
+ <button id="fontB" onclick="doAction('Fonts');" aria-describedby="fontDesc"> Fonts </button>
+</p>
+<p><span id="colorDesc">Select the colors to be used on this page</span>
+ <button id="colorB" onclick="doAction('Colors');" aria-describedby="colorDesc"> Colors </button>
+</p>
+<p><span id="customDesc">Customize the layout and styles used on this page</span>
+ <button id="customB" onclick="doAction('Customize');" aria-describedby="customDesc"> Customize </button>
+</p>
+]]></codeblock>
+                        </description>
 					</eg-group>
-				</examples>
+					<eg-group>
+						<head>Using aria-describedby associate tooltips with form fields</head>
+                            <description>
+                                <p>The following code snippet from the <loc href="http://test.cita.uiuc.edu/aria/tooltip/tooltip1.php">iCITA</loc> site shows how to use <att>aria-describedby</att> and the onfocus="tooltipShow() function to display the tooltip when focus is placed on an element.</p>
+                            <codeblock xml:space="preserve"><![CDATA[<html lang="en-us"">  
+<head>    
+   <title>inline: Tooltip Example 1</title>      
+   <link rel="stylesheet" href="css/tooltip1_inline.css"  type="text/css">    
+   <script type="text/javascript" src="js/tooltip1_inline.js"></script>    
+   <script type="text/javascript" src="../js/widgets_inline.js"></script>
+   <script type="text/javascript" src="../js/globals.js"></script>          
+   <link rel="icon" href="http://www.cites.uiuc.edu/favicon.ico" type="image/x-icon">    
+   <link rel="shortcut icon" href="http://www.cites.uiuc.edu/favicon.ico" type="image/x-icon"> 
+</head>
+   ...   
+
+   <body onload="initApp()">
+
+   <div id="container">
+
+   <h1>Tooltip Example 1</h1>
+     <h2>Create Account</h2>
+   <div class="text">
+   <label for="first">First Name:</label> 
+
+   <input type="text"  id="first" name="first" size="20" 
+          onmouseover="tooltipShow(event, this, 'tp1');"     
+          onfocus="tooltipShow(event, this,  'tp1');" 
+          aria-describedby="tp1"  		 
+          aria-required="false"/>
+
+   <div id="tp1" role="tooltip" aria-hidden="true">Your first name is optional. </div>    
+   </div>
+]]></codeblock>
+                        </description>
+					</eg-group>
+                </examples>
 				<resources>
 					<see-also>
 						<ulist>
 							<item>
-								<p>
-									<loc href="http://www.w3.org/WAI/intro/aria">WAI-ARIA   Overview</loc>
-								</p>
+								<p><loc href="http://www.w3.org/WAI/intro/aria">WAI-ARIA   Overview</loc></p>
+							</item>
+							<item>
+								<p><loc ref="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
+							</item>
+                            <item>
+								<p> <loc
+									href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc> </p>
+							</item>
+							<item>
+								<p><loc ref="https://developer.mozilla.org/en-US/docs/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-describedby_attribute">Using the aria-describedby attribute (MDN)</loc></p>
+							</item>
+							<item>
+								<p><loc ref="http://www.w3.org/TR/aria-in-html/">Using WAI-ARIA in HTML</loc> </p>
 							</item>
 						</ulist>
 					</see-also>
 				</resources>
-				<related-techniques>
+<related-techniques>
 					<relatedtech idref="ARIA2"/>
+					<relatedtech idref="@@"/><!-- using aria-describedby for link purpose -->
 				</related-techniques>
 				<tests>
 					<procedure>
 						<olist>
 							<item>
-								<p> Check that there is an input control having an aria-describedby   attribute that references one or more elements via unique id. </p>
+								<p>Check that there is a user interface control having an <att>aria-describedby</att> attribute that references one or more elements via unique id.</p>
 							</item>
 							<item>
-								<p> Check that the referenced element or elements provide   additional information about the input control. </p>
+								<p> Check that the referenced element or elements provide   additional information about the user interface control. </p>
 							</item>
 						</olist>
 					</procedure>
 					<expected-results>
 						<ulist>
 							<item>
-								<p> #1 and #2 are true. </p>
+								<p>Checks #1 and #2 are true. </p>
 							</item>
 						</ulist>
 					</expected-results>
 				</tests>
 			</technique>
 			<technique id="ARIA2">
-				<short-name>Identifying required fields with the   aria-required property</short-name>
+				<short-name>Identifying a required field with the aria-required property</short-name>
 				<applicability>
 					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
 					<ednote>
@@ -317,8 +282,6 @@
 				</applicability>
 				<applies-to>
 					<success-criterion idref="content-structure-separation-programmatic" relationship="sufficient"/>
-					<success-criterion idref="minimize-error-cues" relationship="sufficient"/>
-					<success-criterion idref="minimize-error-suggestions" relationship="sufficient"/>
 				</applies-to>
 				<ua-issues>
 					<ua-issue name="" version="">
@@ -326,92 +289,105 @@
 					</ua-issue>
 				</ua-issues>
 				<description>
-					<p>The objective of this technique is to indicate in a programmatically   determinable way that the completion of a user input field is mandatory.   The WAI-ARIA <loc href="http://www.w3.org/TR/wai-aria/states_and_properties#aria-required">
-							<prop>aria-required</prop>
-						</loc> property indicates that user input is   required before submission. The <prop>aria-required</prop> property can have values   of <attval>true</attval> or <attval>false</attval>. For example, if a user must fill in an address   field, then <prop>aria-required</prop> is set to <attval>true</attval>. </p>
-					<note>
-						<p>The fact that the element is required is often visually   presented (such as a sign or symbol after the control). Using the <prop>aria-required</prop>   property in addition to the visual presentation makes it much easier   for user agents to pass on this important information to the user in a   user agent-specific manner.  Refer to <loc href="http://www.w3.org/TR/wai-aria-primer/#ariahtml">Supporting   ARIA in XHTML and HTML 4.01</loc> for information on how to provide   WAI-ARIA States and Properties with XHTML and HTML. WAI-ARIA States and   Properties is compatible with other languages as well; refer to   documentation in those languages. </p>
-						<p>At this time, WAI-ARIA is a Working Draft. This technique   is provided as an advisory technique for organizations that wish to   experiment with achieving WCAG conformance using WAI-ARIA. When WAI-ARIA   becomes a formal specification and is supported in user agents, it is   anticipated that this technique will become a sufficient technique. </p>
-					</note>
+					<p>The objective of this technique is to indicate in a programmatically determined way that the completion of a user input field is mandatory for successful submission of a form when there is a visual cue to this effect.</p>
+                    <p>The fact that the element is required is often visually presented (via a text or non-text symbol, or text indicating input is required or color / styling) but this is not programmatically determinable as part of the field's name.</p>
+                        <p>The WAI-ARIA <prop>aria-required</prop> property indicates that user input is required before submission. The <prop>aria-required</prop> property can have values of <attval>true</attval> or <attval>false</attval>. For example, if a user must fill in an address field, then aria-required is set to <attval>true</attval>.</p>
+                        <note>						
+						<p>Note: Use of <code>aria-required="true"</code> might be beneficial even when an asterisk or other text symbol is programmatically associated with the field as it may reinforce its <prop>required</prop> property for some assistive technology users.</p>
+					   </note>
 				</description>
 				<examples>
 					<eg-group>
-						<head>A required text input field in XHTML</head>
+						<head/>
 						<description>
-							<p>The following example shows an XHTML document using the <prop>aria-required</prop>   property to indicate that a form field must be submitted. The mandatory   nature of the field is also indicated in the label as a fallback for   user agents that do not support WAI-ARIA. </p>
-						</description>
-						<code xml:space="preserve"><![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 
-    For Accessible Adaptable Applications//EN"
-  "http://www.w3.org/WAI/ARIA/schemata/xhtml-aria-1.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" 
-          xml:lang="en">
-  <head>
-    <title>Required Input</title>
-  </head>
-  <body>
-    <h1>Required Input</h1>
-    <p>The following form input field must be completed by the user
-    before the form can be submitted.</p>
-    <form action="http://example.com/submit">
-      <p>
-        <label for="test">Test (required)</label>
-        <input name="ariaexample" id="example" aria-required="true" aria-label="Test"/>
-      </p>
-      <p>
-        <input type="submit" value="Submit" />
-      </p>
-    </form>
-  </body>
-</html>
-		]]></code>
+							<p>The <prop>required</prop> property is indicated by an asterisk placed next to the label element:</p>
+						<codeblock xml:space="preserve"><![CDATA[
+<form action="#" method="post"  id="login1" onsubmit="return errorCheck1()">
+  <p>Note: [*]denotes mandatory field</p> 
+  <p>
+    <label for="usrname">Login name: </label> 
+    <input type="text" name="usrname" id="usrname" aria-required="true"/>[*]
+  </p>
+  <p>
+    <label for="pwd">Password</label> 
+    <input type="password" name="pwd" id="pwd" size="12" aria-required="true" />[*]
+  </p> 
+  <p>
+    <input type="submit" value="Login" id="next_btn" name="next_btn"/>
+  </p>
+ 
+</form>		]]></codeblock>
+                        </description>
 					</eg-group>
 					<eg-group>
-						<head>Adding <prop>aria-required</prop> property via script</head>
+						<head/>
 						<description>
-							<p>This example uses scripting to add the <prop>aria-required</prop>   property to a form element. The required property is assigned using the <function>setAttribute()</function>   API. </p>
-							<p>The array variable, <var>requiredIds</var>, is created with the   ids of the elements which need to be marked as required. The <function>setRequired()</function>   function is called from the <event>onload</event> event of the <obj>window</obj>   object. </p>
-							<p>The <function>setRequired()</function> function loops through all of the   ids provided, retrieves the element and assigns the aria-required   property of true using the setAttribute() function. </p>
-							<p>When this page is accessed using Firefox 3.0 or later and a   screen reader that supports WAI-ARIA, the screen reader will speak   "required" when reading the label for the input fields. </p>
-						</description>
-						<code xml:space="preserve"><![CDATA[<head>
- <script type="text/javascript">
- //<![CDATA[
- 
- // array or ids on the required fields on this page
- var requiredIds = new Array( "firstName", "lastName");
- 
- // function that is run after the page has loaded to set the aria-required property on each of the 
- //elements in requiredIds array of id values
- function setRequired(){
- 	if (requiredIds){
- 		var field;
- 		for (var i = 0; i< requiredIds.length; i++){
- 			field = document.getElementById(requiredIds[i]);
- 			field.setAttribute("aria-required", "true");
- 		}
- 	}
- }
- window.onload=setRequired;
-//]]]]><![CDATA[>
- </script>
- </head>
- <body>
- <p>Please enter the following data.  Required fields have been programmatically identified 
- as required and  marked with an asterisk (*) following the field label.</p>
- <form action="submit.php">
- <p>
- <label for="firstName">First Name *: </label><input type="text" name="firstName" 
-    id="firstName" value="" />
- <label for="lastName">Last Name *: </label><input type="text" name="lastName" 
-    id="lastName"  value="" />
- </p>
- </form>
- </body>
-]]></code>
+							<p>The <prop>required</prop> property is indicated by the word "required" placed next to the <el>label</el> element:</p>
+						<codeblock xml:space="preserve"><![CDATA[<head>
+<form action="#" method="post" id="step1" onsubmit="return errorCheck2()">
+  <p>
+    <label for="fname">First name: </label> 
+    <input type="text" id="fname" aria-required="true" />
+    [required]
+  </p>
+  <p>
+    <label for="mname">Middle name: </label> 
+    <input type="text" id="mname" />
+  </p>
+  <p>
+    <label for="lname">Last name: </label> 
+    <input type="text" id="lname" aria-required="true" />
+    [required]
+  </p>
+  <p>
+    <label for="email">Email address: </label> 
+    <input type="text" id="email" aria-required="true" />
+    [required]
+  </p>
+  <p>
+    <label for="zip_post">Zip / Postal code: </label> 
+    <input type="text" id="zip_post" size="6" aria-required="true" />
+  </p>
+  <p>
+    <input type="submit" value="Next Step" id="step_btn" name="step_btn" />
+  </p>
+</form> ]]></codeblock>
+                        </description>
 					</eg-group>
-				</examples>
+					<eg-group>
+						<head/>
+						<description>
+							<p>Required fields are indicated by a red border around the fields and a star icon rendered via CSS using <code role="css">content:before</code>. This example also uses custom radio buttons with <code>role=radio</code> but the script to make the span actually work like radio buttons is not included in this example. The CSS properties are available below the form.
+</p>
+						<codeblock xml:space="preserve"><![CDATA[<head>
+<form action="#" method="post" id="alerts1">
+  <label for="acctnum" data-required="true">Account Number</label>
+  <input size="12" type="text"
+      aria-required="true" name="acctnum" />
+
+ <p id="radio_label">Please send an alert when balance exceeds $3,000.</p>
+ 
+ <ul  id="rg" role="radiogroup" aria-labelledby="radio_label">
+    <li id="rb1" role="radio" aria-required="true">Yes</li>
+    <li id="rb2" role="radio" aria-required="true">No</li>
+ </ul>	
+</form> 
+ ]]></codeblock>
+						<codeblock xml:space="preserve"><![CDATA[<head>
+[aria-required=true] {
+  border: red thin solid;
+} 
+[aria-required=true]:before {
+  content: url('/iconStar.gif');
+}
+
+[data-required=true]:after {
+  content: url('/iconStar.gif');
+}
+ ]]></codeblock>                            
+                        </description>
+					</eg-group>
+                </examples>
 				<resources>
 					<see-also>
 						<ulist>
@@ -419,6 +395,13 @@
 								<p>
 									<loc href="http://www.w3.org/WAI/intro/aria">WAI-ARIA   Overview</loc>
 								</p>
+							</item>
+							<item>
+								<p><loc ref="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
+							</item>
+                            <item>
+								<p> <loc
+									href="http://www.deque.com/aria-requiredtrue-wcag-2-compliance-practice">Aria-required=true: WCAG 2 Compliance versus Best Practice</loc></p>
 							</item>
 						</ulist>
 					</see-also>
@@ -430,28 +413,17 @@
 				-->
 				<tests>
 					<procedure>
-						<olist>
+                        <p>For each element where the aria-required attribute is present:</p>
+                        <olist>
 							<item>
-								<p> Access a page with mandatory form fields in a user agent that   supports the Accessible Rich Internet Applications specification. </p>
-							</item>
-							<item>
-								<p> Leaving mandatory form fields empty, attempt to submit the   form. </p>
-							</item>
-							<item>
-								<p> Check that that the user agent notifies of the missing   information. </p>
-							</item>
-							<item>
-								<p> Provide values for the mandatory fields. </p>
-							</item>
-							<item>
-								<p> Check that the user agent allows form submission to proceed. </p>
+								<p>Check whether the value of the <att>aria-required</att> attribute is the correct required state of the user interface component.</p>
 							</item>
 						</olist>
 					</procedure>
 					<expected-results>
 						<ulist>
 							<item>
-								<p>#3 and #5 are true</p>
+								<p>Check #1 is true</p>
 							</item>
 						</ulist>
 					</expected-results>
