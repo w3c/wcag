@@ -1259,8 +1259,97 @@ return you back to the main page</div>
 					</expected-results>
 				</tests>
 			</technique>            
+			<technique id="ARIA10">
+				<short-name>Using aria-labelledby to provide a text alternative for non-text content</short-name>
+				<applicability>
+					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="text-equiv-all" relationship="sufficient"/>
+				</applies-to>
+				<ua-issues>
+					<ua-issue name="" version="">
+						<p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
+					</ua-issue>
+				</ua-issues>
+				<description>
+					<p>The purpose of this technique is to provide a short description for an element that can be read by assistive technologies (AT) by using the <att>aria-labelledby</att> attribute. The <att>aria-labelledby</att> attribute associates an element with text that is visible elsewhere on the page by using an ID reference value that matches the ID attribute of the labeling element. Assistive technology such as screen readers use the text of the element identified by the value of the <att>aria-labelledby</att> attribute as the text alternative for the element with the attribute.</p>
+					<note>
+						<p>When using <att>aria-labelledby</att> attribute on an <el>img</el> element, the absence of an <att>alt</att> attribute will cause validation failures for HTML 4 and earlier and XHTML. If <att>alt</att> is provided, it must contain the same text as the <att>aria-labelledby</att> target. Do not use <code>alt=""</code>, which would cause some assistive techology to ignore the image completely.</p>
+					</note>
+				</description>
+				<examples>
+					<eg-group>
+						<head></head>
+						<description>
+							<p>This example shows how to use the <att>aria-labelledby</att> attribute to provide a short text description for an image, using a piece of text that is visible on the page.</p>
+						<codeblock xml:space="preserve"><![CDATA[<img src="sunflowers.jpg" aria-labelledby="flower_id">
 
+...
 
+<span id="flower_id">Van Gogh's oil painting of sunflowers</span>
+hangs in Amsterdam's Van Gogh museum.]]></codeblock>
+                            </description>
+                    </eg-group>
+                    
+					<eg-group>
+						<head></head>
+						<description>
+							<p>This example shows how to use the <att>aria-labelledby</att> attribute to provide a short text description for a read-only complex graphic of an star rating pattern; the graphic is composed of several image elements. The text alternative for the graphic is the label, visible on the page beneath the star pattern.</p>
+						<codeblock xml:space="preserve"><![CDATA[<div role="img" aria-labelledby="star_id">
+<img src="fullstar.png" alt=""/>
+<img src="fullstar.png" alt=""/>
+<img src="fullstar.png" alt=""/>
+<img src="fullstar.png" alt=""/>
+<img src="emptystar.png" alt=""/>
+</div>
+
+<div id="star_id">4 of 5</div>]]></codeblock>
+                            </description>
+                    </eg-group>
+                    
+                </examples>
+				<resources>
+					<see-also>
+						<ulist>
+                            <item>
+								<p> <loc
+									href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc> </p>
+							</item>
+							<item>
+								<p><loc ref="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
+							</item>
+						</ulist>
+					</see-also>
+				</resources>
+<related-techniques>
+					<relatedtech idref="H37"/>
+				</related-techniques>
+				<tests>
+					<procedure>
+						<olist>
+							<item>
+								<p>Examine each element where the <att>aria-labelledby</att> attribute is present.</p>
+							</item>
+							<item>
+								<p>Check whether the value of the <att>aria-labelledby</att> attribute is the id of an element on the web page.</p>
+							</item>
+							<item>
+								<p>Determine that the text of the element identified by the <att>aria-labelledby</att> attribute accurately labels the element, provides a description of its purpose, or provides equivalent information.</p>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>#2 and #3 are true.</p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+
+            
             
         </div1>
 	</body>
