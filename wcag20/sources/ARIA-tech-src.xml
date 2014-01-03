@@ -1348,6 +1348,216 @@ hangs in Amsterdam's Van Gogh museum.]]></codeblock>
 					</expected-results>
 				</tests>
 			</technique>
+			<technique id="ARIA11">
+				<short-name>Using ARIA landmarks to identify regions of a page</short-name>
+				<applicability>
+					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
+					<ednote>
+						<edtext>OPTIONAL@@@</edtext>
+					</ednote>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="content-structure-separation-programmatic" relationship="sufficient"/>
+					<success-criterion idref="navigation-mechanisms-skip" relationship="sufficient"/>
+				</applies-to>
+				<ua-issues>
+					<ua-issue name="" version="">
+						<p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
+					</ua-issue>
+				</ua-issues>
+				<description>
+<p>The purpose of this technique is to provide programmatic access to sections of a web page.  Landmark roles (or "landmarks") programmatically identify sections of a page. Landmarks help assistive technology (AT) users orient themselves to a page and help them navigate easily to various sections of a page. 
+</p><p>They also provide an easy way for users of assistive technology to skip over blocks of content that are repeated on multiple pages and notify them of programmatic structure of a page. For instance, if there is a common navigation menu found on every page, landmark roles (or "landmarks") can be used to skip over it and navigate from section to section. This will save assistive technology users and keyboard users the trouble and time of tabbing through a large amount of content to find what they are really after, much like a traditional "skip links" mechanism. (Refer to User Agent Notes above for specifics of AT support). A blind user who may be familiar with a news site's menu, and is only interested in getting to the top story could easily navigate to the "main" landmark, and bypass dozens of menu links. In another circumstance, a user who is blind may want to quickly find a navigation menu, and can do so by jumping to the navigation landmark. 
+</p><p>Landmarks also can help sighted keyboard-only users navigate to sections of a page using a <loc href="http://blog.paciellogroup.com/2013/07/enabling-landmark-based-keyboard-navigation-in-firefox/" class="external text">browser plugin</loc>. 
+</p><p>Landmarks are inserted into the page using the role attribute on an element that marks the section. The value of the attribute is the name of the landmark. These role values are listed below:
+</p>
+<ulist><item><p>banner: A region that contains the prime heading or internal title of a page.
+</p></item><item><p>complementary: Any section of the document that supports the main content, yet is separate and meaningful on its own.
+</p></item><item><p>contentinfo:  A region that contains information about the parent document such as copyrights and links to privacy statements.
+</p></item><item><p>form: A region of the document that represents a collection of form-associated elements, some of which can represent editable values that can be submitted to a server for processing.
+</p></item><item><p>main: Main content in a document. In almost all cases a page will have only one role="main".
+</p></item><item><p>navigation: A collection of links suitable for use when navigating the document or related documents.
+</p></item><item><p>search: The search tool of a Web document.
+</p></item><item><p>application: A region declared as a web application, as opposed to a web document. (note: The role of application should only be used with caution because it gives a signal to screen reading software to turn off normal web navigation controls. Simple widgets should generally not be given the application role, nor should an entire web page be given the application role, unless it is not to be used at all like a web page, and not without much user testing with assistive technology.)
+</p></item></ulist>
+<p>There are cases when a particular landmark role could be used more than once on a page, such as on primary and secondary navigation menus. In these cases, identical roles should be disambiguated from each other using a valid technique for labelling regions (see examples below).
+</p><p>Landmarks should supplement native semantic markup such as HTML headings, lists and other structural markup. Landmarks are interpretable by WAI-ARIA-aware assistive technologies and are not exposed by browsers directly to users.
+</p><p>It is a best practice to include ALL content on the page in landmarks, so that screen reader users who rely on them to navigate from section to section do not lose track of content.
+</p>
+				</description>
+				<examples>
+					<eg-group>
+						<head></head>
+						<description>
+							<p>The following example shows how landmarks might be added to an HTML4 or XHTML 1.0 document:</p>
+						<codeblock xml:space="preserve"><![CDATA[<div id="header" role="banner">A banner image and introductory title</div>
+<div id="sitelookup" role="search">....</div>
+<div id="nav" role="navigation">...a list of links here ... </div>
+<div id="content" role="main"> ... Ottawa is the capital of Canada ...</div>
+<div id="rightsideadvert" role="complementary">....an advertisement here...</div>
+<div id="footer" role="contentinfo">(c)The Freedom Company, 123 Freedom Way, Helpville, USA</div>]]></codeblock>
+                            </description>
+                    </eg-group>
+                    
+					<eg-group>
+						<head></head>
+						<description>
+							<p>The following example shows a best practice of how landmarks might be added to an HTML4 or XHTML 1.0 document in situations where there are more than two of the same type of landmark on the same page. For instance, if a navigation role is used multiple times on a Web page, each instance may have a unique label specified using <att>aria-labelledby</att>:
+
+</p>
+						<codeblock xml:space="preserve"><![CDATA[<div id="leftnav" role="navigaton" aria-labelledby="leftnavheading">
+<h2 id="leftnavheading">Institutional Links</h2>
+<ul><li>...a list of links here ...</li> </ul></div>
+<div id="rightnav" role="navigation" aria-labelledby="rightnavheading">
+<h2 id="rightnavheading">Related topics</h2>
+<ul><li>...a list of links here ...</li></ul></div>]]></codeblock>
+                            </description>
+                    </eg-group>
+                    
+					<eg-group>
+						<head></head>
+						<description>
+							<p>The following example shows a best practice of how landmarks might be added to an HTML4 or XHTML 1.0 document in situations where there are more than two of the same type of landmark on the same page, and there is no existing text on the page that can be referenced as the label.</p>
+						<codeblock xml:space="preserve"><![CDATA[<div id="leftnav" role="navigaton" aria-label="Primary">
+<ul><li>...a list of links here ...</li></ul> </div>
+<div id="rightnav" role="navigation" aria-label="Secondary">
+<ul><li>...a list of links here ...</li> </ul></div>]]></codeblock>
+                            </description>
+                    </eg-group>
+					<eg-group>
+						<head></head>
+						<description>
+							<p>The following example shows a search form with a "search" landmark. The search role typically goes on the form field or a div surrounding the search form.</p>
+						<codeblock xml:space="preserve"><![CDATA[<form role="search">
+<label for="56">search</label><input id="56" type="text" size="20">
+...
+</form> ]]></codeblock>
+                            </description>
+                    </eg-group>
+                </examples>
+				<resources>
+					<see-also>
+						<ulist>
+							<item>
+								<p><loc ref="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
+							</item>
+                            <item><p><loc href="http://blog.paciellogroup.com/2013/07/enabling-landmark-based-keyboard-navigation-in-firefox/">Enabling landmark-based keyboard navigation in Firefox</loc></p>
+                            </item>
+                            <item>
+                                <p><loc href="http://accessibleculture.org/articles/2011/02/not-all-aria-widgets-deserve-role-application/">Accessible Rich Internet Applications (WAI-ARIA) 1.0, Supported States and Properties</loc></p>
+                            </item>
+<item><p> <loc href="http://accessibleculture.org/articles/2011/02/not-all-aria-widgets-deserve-role-application/" class="external text">Not All ARIA Widgets Deserve role="application"</loc>
+</p></item><item><p> <loc href="http://developer.yahoo.com/blogs/ydn/aria-role-application-53608.html" class="external text">When Should You Use ARIA Role="Application"?</loc>
+</p></item>						</ulist>
+					</see-also>
+				</resources>
+<related-techniques>
+					<relatedtech idref="H69"/>
+					<relatedtech idref="SCR28"/>
+				</related-techniques>
+				<tests>
+					<procedure>
+						<olist>
+<item><p>Examine each element with a <loc href="http://www.w3.org/TR/wai-aria/roles#landmark_roles" class="external text">landmark role</loc>.
+</p></item><item><p>Examine whether the landmark role attribute is applied to the section of the page that corresponds with that role. (i.e., the "navigation" role is applied to a navigation section, the "main" role is applied to where the main content begins.)
+</p></item>
+                        </olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>#1 and #2 are true.</p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
+			<technique id="ARIA12">
+				<short-name>Using role=heading to identify headings</short-name>
+				<applicability>
+					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
+				</applicability>
+				<applies-to>
+					<success-criterion idref="content-structure-separation-programmatic" relationship="sufficient"/>
+				</applies-to>
+				<ua-issues>
+					<ua-issue name="" version="">
+						<p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
+					</ua-issue>
+				</ua-issues>
+				<description>
+<p>The purpose of this technique is to provide a way for Assistive Technologies (AT) to identify 
+a piece of content as a heading. Applying <code>role="heading"</code> to an element causes an AT (like a 
+screen reader) to treat it as though it were a heading. 
+</p><p>If there is more than one heading on the page and the heading hierarchy is defined through the 
+visual presentation, the <att>aria-level</att> attribute should be used to indicate the hierarchical level of 
+the heading. 
+</p><p>When possible, use native heading mark-up directly. For example, it is preferable 
+to use <el>h1</el> rather than using <code>&lt;div role="heading" aria-level="1"&gt;</code>. However, the use of the 
+heading role, instead of heading mark-up, may be necessary. For example, when retrofitting a legacy site where scripts depend on the existing element hierarchy.
+</p><p>The use of the <prop>heading</prop> role and nesting levels is discussed in <loc href="http://www.w3.org/WAI/PF/aria-practices/#kbd_layout_nesting" class="external text">WAI-ARIA 1.0 Authoring Practices</loc>.
+</p>
+				</description>
+				<examples>
+					<eg-group>
+						<head></head>
+						<description>
+<p>This example demonstrates how to implement simple headings using role="heading" when retrofitting a legacy site where scripts depend on the existing element hierarchy or the level is unknown for example where web content is syndicated from various sources and there is no a priori knowledge of what the final presentation will be.
+</p>						<codeblock xml:space="preserve"><![CDATA[<div role="heading">Global News items</div>
+... a list of global news with editorial comment....
+
+<div role="heading">Local News items</div>
+... a list of local news, with editorial comment ...]]></codeblock>
+                            </description>
+                    </eg-group>
+                    
+					<eg-group>
+						<head></head>
+						<description>
+This example demonstrates how to implement a level 7 heading using role="heading" and the <att>aria-level</att> attribute. Since HTML only supports headings through level 6, there is no native element to provide these semantics.						<codeblock xml:space="preserve"><![CDATA[...
+<h5>Fruit Trees</h5>
+...
+<h6>Apples</h6>
+<p>Apples grow on trees in areas known as orchards...</p>
+...
+<div role="heading" aria-level="7">Jonagold/div>
+<p>Jonagold is a cross between the Golden Delicious and Jonathan varieties...</p>]]></codeblock>
+                            </description>
+                    </eg-group>
+                </examples>
+				<resources>
+					<see-also>
+						<ulist>
+                            <item><p><loc href="http://www.w3.org/TR/wai-aria/roles#heading">Accessible Rich Internet Applications (WAI-ARIA) 1.0, Heading in the Roles Model</loc></p>
+                            </item>
+							<item>
+								<p><loc ref="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
+							</item>
+						</ulist>
+					</see-also>
+				</resources>
+<related-techniques>
+					<relatedtech idref="H42"/>
+					<relatedtech idref="H69"/>
+					<relatedtech idref="G141"/>
+					<relatedtech idref="F2"/>
+				</related-techniques>
+				<tests>
+					<procedure>
+<olist><item><p> Examine each element with the attribute role="heading".
+</p></item><item><p> Determine whether the content of the element is appropriate as a heading.
+</p></item><item><p> If the element has an <att>aria-level</att> attribute, determine whether the value is the appropriate hierarchical level.
+</p></item></olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>#2 and #3 are true.</p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>
 
             
             
