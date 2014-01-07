@@ -266,7 +266,7 @@ BBC: This is all called in a previous XSLT, so commented out here. -->
 	<xsl:call-template name="anchor">
 				<xsl:with-param name="node" select=".."/>
 			</xsl:call-template>
-			<xsl:call-template name="anchor"/>
+			<!--<xsl:call-template name="anchor"/>-->
 	  <span class="diff-{ancestor-or-self::*/@diff}" xmlns="http://www.w3.org/1999/xhtml">
 	    <xsl:apply-templates/>
 	  </span>
@@ -280,7 +280,7 @@ BBC: This is all called in a previous XSLT, so commented out here. -->
 	<xsl:call-template name="anchor">
 				<xsl:with-param name="node" select=".."/>
 			</xsl:call-template>
-			<xsl:call-template name="anchor"/>
+			<!--<xsl:call-template name="anchor"/>-->
 	  <xsl:apply-templates/>
 	</dt>
       </xsl:otherwise>

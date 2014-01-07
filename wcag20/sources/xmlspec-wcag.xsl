@@ -624,7 +624,7 @@
         <xsl:value-of select="$node/@id"/>
       </xsl:when>
       <xsl:otherwise>
-      	<xsl:message terminate="no">Generating ID for <!-- <xsl:value-of select="$node"/> --><xsl:call-template name="genPath"/></xsl:message>
+      	<xsl:message terminate="yes">Generating ID for <!--"<xsl:value-of select="$node"/>"<xsl:text>: </xsl:text>--><xsl:call-template name="genPath"/></xsl:message>
         <xsl:value-of select="generate-id($node)"/>
       </xsl:otherwise>
     </xsl:choose>

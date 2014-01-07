@@ -1167,7 +1167,7 @@
 			<xsl:call-template name="anchor">
 				<xsl:with-param name="node" select=".."/>
 			</xsl:call-template>
-			<xsl:call-template name="anchor"/>
+			<!--<xsl:call-template name="anchor"/>-->
 			<xsl:apply-templates/>
 		</dt>
 	</xsl:template>
