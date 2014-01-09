@@ -71,7 +71,7 @@
               finishes reading the current paragraph. </p>
 					</item>
 					<item>
-					faria	<p>Properties for drag-and-drop that describe drag sources and
+						<p>Properties for drag-and-drop that describe drag sources and
               drop targets </p>
 					</item>
 					<item>
@@ -123,7 +123,7 @@
 				</div3>
 			</div2>
 			<technique id="ARIA1">
-				<short-name>Using the aria-describedby property to provide a descriptive label for user interface controls</short-name>
+				<short-name>Using the aria-describedby property to provide a descriptive label for <phrase diff="chg">user interface</phrase> controls</short-name>
 				<applicability>
 					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
 					<ednote>
@@ -138,16 +138,19 @@
 					<ua-issue name="" version="">
 						<p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
 					</ua-issue>
+					<ua-issue name="Internet Explorer" version="8" diff="del">
+						<p>IE 8 only supports <prop>aria-labelledby</prop> with a single id value and it partially supports <prop>aria-describedby</prop>.</p>
+					</ua-issue>
 				</ua-issues>
 				<description>
 					<p>The purpose of this technique is to demonstrate how to use the   WAI-ARIA <loc href="http://www.w3.org/TR/wai-aria/states_and_properties#aria-describedby">aria-describedby</loc> property to provide programmatically   determined, descriptive information about a user interface element. The <att>aria-describedby</att> property may be used to attach descriptive information to one or more elements through the use of an id reference list. The id reference list contains one or more unique element ids. </p>
 					<p>Refer to <loc href="http://www.w3.org/TR/wai-aria-primer/#ariahtml">Supporting ARIA in XHTML and HTML 4.01</loc> for information on how to provide WAI-ARIA States and Properties with XHTML and HTML. WAI-ARIA States and Properties is compatible with other languages as well; refer to documentation in those languages. </p>
 					<note>
-						<p>The <att>aria-describedby</att> property is not designed to reference descriptions on an external resource — since it is an ID, it must reference an element in the same DOM document.</p>
+						<p diff="chg">The <att>aria-describedby</att> property is not designed to reference descriptions on an external resource — since it is an ID, it must reference an element in the same DOM document.</p>
 					</note>
 				</description>
 				<examples>
-					<eg-group>
+					<eg-group diff="add">
 						<head>Using aria-describedby property to describe a Close button's action</head>
 						<description>
 							<p>A button that functions as a 'close' button on a dialog is described elsewhere in the document. The <att>aria-describedby</att> property is used to associate the description with the link.</p>
@@ -174,7 +177,7 @@ return you back to the main page</div>
                             <p><loc href="http://3needs.org/en/testing/code/aria-describedby-close.html">Working version of example 2</loc></p>
                         </description>
 					</eg-group>
-					<eg-group>
+					<eg-group diff="add">
 						<head>Using aria-describedby property to provide more detailed information about the button</head>
 						<description>
 						<codeblock xml:space="preserve"><![CDATA[<p><span id="fontDesc">Select the font faces and sizes to be used on this page</span>
@@ -189,7 +192,7 @@ return you back to the main page</div>
 ]]></codeblock>
                         </description>
 					</eg-group>
-					<eg-group>
+					<eg-group diff="add">
 						<head>Using aria-describedby to associate tooltips with form fields</head>
                             <description>
                                 <p>The following code snippet from the <loc href="http://test.cita.uiuc.edu/aria/tooltip/tooltip1.php">iCITA</loc> site shows how to use <att>aria-describedby</att> and the onfocus="tooltipShow() function to display the tooltip when focus is placed on an element.</p>
@@ -225,6 +228,126 @@ return you back to the main page</div>
 ]]></codeblock>
                         </description>
 					</eg-group>
+					<eg-group diff="del">
+						<head>XHTML</head>
+						<description>
+							<p>This example is coded in XHTML with a MIME type of   application:xhtml+xml. This MIME type is not supported in all user   agents. The aria-describedby property is added directly   into the XHTML markup, and no additional scripting is needed. </p>
+						</description>
+						<code xml:space="preserve"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1
+ For Accessible Adaptable Applications//EN"
+  "http://www.w3.org/WAI/ARIA/schemata/xhtml-aria-1.dtd">
+ <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+ <head>
+ <meta http-equiv="content-type" content="application:xhtml+xml; charset=utf-8" />
+ <title>Demonstration of aria-describedby property</title>
+ <style type="text/css">
+ div.form p { clear:left; margin: 0.3em 0;}
+ .left {
+   float:left;
+   width:400px;
+ }
+ .right {
+   width:100px;
+   text-align:right;
+ }
+ </style>
+ </head>
+ <body>
+ <p>The buttons on this page use the Accessible Rich Internet Applications aria-describedby property 
+ to provide more detailed information about the button action</p>
+ <div class="form">
+ <p><span class="left" id="fontDesc" >Select the font faces and sizes to be used on this page</span>
+ <span class="right"><button id="fontB" onclick="doAction('Fonts');" aria-describedby="fontDesc">
+ Fonts </button></span></p>
+ <p><span class="left" id="colorDesc" >Select the colors to be used on this page</span>
+ <span class="right"><button id="colorB" onclick="doAction('Colors');" aria-describedby="colorDesc">
+ Colors </button></span></p>
+ <p><span class="left" id="customDesc" >Customize the layout and styles used on this page</span>
+ <span class="right"><button id="customB" onclick="doAction('Customize');" aria-describedby="customDesc"> 
+ Customize </button></span></p>
+ </div>
+ </body>
+ </html>
+]]></code>
+					</eg-group>
+					<eg-group diff="del">
+						<head>HTML</head>
+						<description>
+							<p>This example uses scripting to add an aria-describedby   property to buttons on a page. The example creates a buttonIds array   variable to hold the ids of the elements that contain description text.   The setDescribedBy() function is called from the onload   event of the window object. </p>
+							<p>The setDescribedBy() function loops through all of   the button elements and calls setAttribute() on each button   element to set the aria-describedby property. Each   button's aria-describedby property is set to the id   of the element containing its descriptive text. </p>
+							<p>Using a user agent and/or assistive technology which supports   WAI-ARIA, the description will be provided when the user interface   controls receive focus. </p>
+						</description>
+						<code xml:space="preserve"><![CDATA[ <head>
+ <meta http-equiv="content-type" content="text/xhtml; charset=utf-8" />
+ <title>Demonstration of aria-describedby property</title>
+ <style type="text/css">
+ div.form p { clear:left; margin: 0.3em 0;}
+.left {
+  float:left;
+  width:400px;
+}
+.right {
+	width:100px;
+	text-align:right;
+}
+ </style>
+ <script type="text/javascript">
+ //<![CDATA[
+
+ // array entries for each button on the page that associates the button id 
+ // with the id of the element containing the text which describes the button
+ var buttonIds = new Array();
+ buttonIds["fontB"]= "fontDesc";
+ buttonIds["colorB"] = "colorDesc";
+ buttonIds["customB"] = "customDesc";
+
+ // function that is run after the page has loaded to set the aria-describedBy
+ // property on each of the elements referenced by the array of id values
+ function setDescribedBy(){
+	if (buttonIds){
+		var buttons = document.getElementsByTagName("button");
+		if (buttons){
+			var buttonId;
+			for(var i=0; i<buttons.length; i++){
+				buttonId = buttons[i].id;
+				if (buttonId && buttonIds[buttonId]){
+					buttons[i].setAttribute("aria-describedby", buttonIds[buttonId]);
+				}
+			}
+		}
+	}
+ }
+
+ // simulated action function - currently just displays an alert
+ function doAction(theAction){
+	alert("Perform the " + theAction + " action");
+ }
+
+ window.onload=setDescribedBy;
+
+//]]]]><![CDATA[>
+ </script>
+ </head>
+ <body>
+ <p>The buttons on this page use the Accessible Rich Internet Applications 
+ aria-describedby property to provide more detailed information 
+ about the button action.
+ </p>
+ <div class="form">
+ <p><span class="left" id="fontDesc" >Select the font faces and sizes to be used on this page</span>
+    <span class="right"><button id="fontB" onclick="doAction('Fonts');"> Fonts </button></span>
+ </p>
+ <p><span class="left" id="colorDesc" >Select the colors to be used on this page</span>
+    <span class="right"><button id="colorB" onclick="doAction('Colors');"> Colors </button></span>
+ </p>
+ <p><span class="left" id="customDesc" >Customize the layout and styles used on this page</span>
+    <span class="right"><button id="customB" onclick="doAction('Customize');"> Customize </button></span>
+ </p>
+ </div>
+ </body>
+]]></code>
+					</eg-group>
                 </examples>
 				<resources>
 					<see-also>
@@ -233,22 +356,22 @@ return you back to the main page</div>
 								<p><loc href="http://www.w3.org/WAI/intro/aria">WAI-ARIA   Overview</loc></p>
 							</item>
 							<item>
-								<p><loc ref="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
+								<p diff="add"><loc href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
 							</item>
                             <item>
-								<p> <loc
+								<p diff="add"> <loc
 									href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc> </p>
 							</item>
 							<item>
-								<p><loc ref="https://developer.mozilla.org/en-US/docs/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-describedby_attribute">Using the aria-describedby attribute (MDN)</loc></p>
+								<p diff="add"><loc href="https://developer.mozilla.org/en-US/docs/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-describedby_attribute">Using the aria-describedby attribute (MDN)</loc></p>
 							</item>
 							<item>
-								<p><loc ref="http://www.w3.org/TR/aria-in-html/">Using WAI-ARIA in HTML</loc> </p>
+								<p diff="add"><loc href="http://www.w3.org/TR/aria-in-html/">Using WAI-ARIA in HTML</loc> </p>
 							</item>
 						</ulist>
 					</see-also>
 				</resources>
-<related-techniques>
+				<related-techniques>
 					<relatedtech idref="ARIA2"/>
 					<relatedtech idref="ARIA7"/>
 				</related-techniques>
@@ -256,24 +379,24 @@ return you back to the main page</div>
 					<procedure>
 						<olist>
 							<item>
-								<p>Check that there is a user interface control having an <att>aria-describedby</att> attribute that references one or more elements via unique id.</p>
+								<p>Check that there is <phrase diff="chg">a user interface</phrase> control having an <att>aria-describedby</att> attribute that references one or more elements via unique id.</p>
 							</item>
 							<item>
-								<p> Check that the referenced element or elements provide   additional information about the user interface control. </p>
+								<p> Check that the referenced element or elements provide   additional information about the <phrase diff="chg">user interface</phrase> control. </p>
 							</item>
 						</olist>
 					</procedure>
 					<expected-results>
 						<ulist>
 							<item>
-								<p>Checks #1 and #2 are true. </p>
+								<p><phrase diff="add">Checks</phrase> #1 and #2 are true. </p>
 							</item>
 						</ulist>
 					</expected-results>
 				</tests>
 			</technique>
 			<technique id="ARIA2">
-				<short-name>Identifying a required field with the aria-required property</short-name>
+				<short-name diff="chg">Identifying a required field with the aria-required property</short-name>
 				<applicability>
 					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
 					<ednote>
@@ -289,15 +412,17 @@ return you back to the main page</div>
 					</ua-issue>
 				</ua-issues>
 				<description>
-					<p>The objective of this technique is to indicate in a programmatically determined way that the completion of a user input field is mandatory for successful submission of a form when there is a visual cue to this effect.</p>
-                    <p>The fact that the element is required is often visually presented (via a text or non-text symbol, or text indicating input is required or color / styling) but this is not programmatically determinable as part of the field's name.</p>
-                        <p>The WAI-ARIA <prop>aria-required</prop> property indicates that user input is required before submission. The <prop>aria-required</prop> property can have values of <attval>true</attval> or <attval>false</attval>. For example, if a user must fill in an address field, then aria-required is set to <attval>true</attval>.</p>
+					<p diff="chg">The objective of this technique is to indicate in a programmatically determined way that the completion of a user input field is mandatory for successful submission of a form when there is a visual cue to this effect.</p>
+                    <p diff="add">The fact that the element is required is often visually presented (via a text or non-text symbol, or text indicating input is required or color / styling) but this is not programmatically determinable as part of the field's name.</p>
+                        <p diff="add">The WAI-ARIA <prop>aria-required</prop> property indicates that user input is required before submission. The <prop>aria-required</prop> property can have values of <attval>true</attval> or <attval>false</attval>. For example, if a user must fill in an address field, then aria-required is set to <attval>true</attval>.</p>
                         <note>						
-						<p>Note: Use of <code>aria-required="true"</code> might be beneficial even when an asterisk or other text symbol is programmatically associated with the field as it may reinforce its <prop>required</prop> property for some assistive technology users.</p>
+						<p diff="add">Note: Use of <code>aria-required="true"</code> might be beneficial even when an asterisk or other text symbol is programmatically associated with the field as it may reinforce its <prop>required</prop> property for some assistive technology users.</p>
+						<p diff="del">The fact that the element is required is often visually   presented (such as a sign or symbol after the control). Using the <prop>aria-required</prop>   property in addition to the visual presentation makes it much easier   for user agents to pass on this important information to the user in a   user agent-specific manner.  Refer to <loc href="http://www.w3.org/TR/wai-aria-primer/#ariahtml">Supporting   ARIA in XHTML and HTML 4.01</loc> for information on how to provide   WAI-ARIA States and Properties with XHTML and HTML. WAI-ARIA States and   Properties is compatible with other languages as well; refer to   documentation in those languages. </p>
+						<p diff="del">At this time, WAI-ARIA is a Working Draft. This technique   is provided as an advisory technique for organizations that wish to   experiment with achieving WCAG conformance using WAI-ARIA. When WAI-ARIA   becomes a formal specification and is supported in user agents, it is   anticipated that this technique will become a sufficient technique. </p>
 					   </note>
 				</description>
 				<examples>
-					<eg-group>
+					<eg-group diff="add">
 						<head/>
 						<description>
 							<p>The <prop>required</prop> property is indicated by an asterisk placed next to the label element:</p>
@@ -319,7 +444,7 @@ return you back to the main page</div>
 </form>		]]></codeblock>
                         </description>
 					</eg-group>
-					<eg-group>
+					<eg-group diff="add">
 						<head/>
 						<description>
 							<p>The <prop>required</prop> property is indicated by the word "required" placed next to the <el>label</el> element:</p>
@@ -388,6 +513,82 @@ return you back to the main page</div>
  ]]></codeblock>                            
                         </description>
 					</eg-group>
+					<eg-group diff="del">
+						<head>A required text input field in XHTML</head>
+						<description>
+							<p>The following example shows an XHTML document using the <prop>aria-required</prop>   property to indicate that a form field must be submitted. The mandatory   nature of the field is also indicated in the label as a fallback for   user agents that do not support WAI-ARIA. </p>
+						</description>
+						<code xml:space="preserve"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 
+    For Accessible Adaptable Applications//EN"
+  "http://www.w3.org/WAI/ARIA/schemata/xhtml-aria-1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+          xml:lang="en">
+  <head>
+    <title>Required Input</title>
+  </head>
+  <body>
+    <h1>Required Input</h1>
+    <p>The following form input field must be completed by the user
+    before the form can be submitted.</p>
+    <form action="http://example.com/submit">
+      <p>
+        <label for="test">Test (required)</label>
+        <input name="ariaexample" id="example" aria-required="true" aria-label="Test"/>
+      </p>
+      <p>
+        <input type="submit" value="Submit" />
+      </p>
+    </form>
+  </body>
+</html>
+		]]></code>
+					</eg-group>
+					<eg-group diff="del">
+						<head>Adding <prop>aria-required</prop> property via script</head>
+						<description>
+							<p>This example uses scripting to add the <prop>aria-required</prop>   property to a form element. The required property is assigned using the <function>setAttribute()</function>   API. </p>
+							<p>The array variable, <var>requiredIds</var>, is created with the   ids of the elements which need to be marked as required. The <function>setRequired()</function>   function is called from the <event>onload</event> event of the <obj>window</obj>   object. </p>
+							<p>The <function>setRequired()</function> function loops through all of the   ids provided, retrieves the element and assigns the aria-required   property of true using the setAttribute() function. </p>
+							<p>When this page is accessed using Firefox 3.0 or later and a   screen reader that supports WAI-ARIA, the screen reader will speak   "required" when reading the label for the input fields. </p>
+						</description>
+						<code xml:space="preserve"><![CDATA[<head>
+ <script type="text/javascript">
+ //<![CDATA[
+ 
+ // array or ids on the required fields on this page
+ var requiredIds = new Array( "firstName", "lastName");
+ 
+ // function that is run after the page has loaded to set the aria-required property on each of the 
+ //elements in requiredIds array of id values
+ function setRequired(){
+ 	if (requiredIds){
+ 		var field;
+ 		for (var i = 0; i< requiredIds.length; i++){
+ 			field = document.getElementById(requiredIds[i]);
+ 			field.setAttribute("aria-required", "true");
+ 		}
+ 	}
+ }
+ window.onload=setRequired;
+//]]]]><![CDATA[>
+ </script>
+ </head>
+ <body>
+ <p>Please enter the following data.  Required fields have been programmatically identified 
+ as required and  marked with an asterisk (*) following the field label.</p>
+ <form action="submit.php">
+ <p>
+ <label for="firstName">First Name *: </label><input type="text" name="firstName" 
+    id="firstName" value="" />
+ <label for="lastName">Last Name *: </label><input type="text" name="lastName" 
+    id="lastName"  value="" />
+ </p>
+ </form>
+ </body>
+]]></code>
+					</eg-group>
                 </examples>
 				<resources>
 					<see-also>
@@ -398,10 +599,10 @@ return you back to the main page</div>
 								</p>
 							</item>
 							<item>
-								<p><loc ref="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
+								<p diff="add"><loc href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
 							</item>
                             <item>
-								<p> <loc
+								<p diff="add"> <loc
 									href="http://www.deque.com/aria-requiredtrue-wcag-2-compliance-practice">Aria-required=true: WCAG 2 Compliance versus Best Practice</loc></p>
 							</item>
 						</ulist>
@@ -414,8 +615,8 @@ return you back to the main page</div>
 				-->
 				<tests>
 					<procedure>
-                        <p>For each element where the aria-required attribute is present:</p>
-                        <olist>
+                        <p diff="add">For each element where the aria-required attribute is present:</p>
+                        <olist diff="chg">
 							<item>
 								<p>Check whether the value of the <att>aria-required</att> attribute is the correct required state of the user interface component.</p>
 							</item>
@@ -424,7 +625,7 @@ return you back to the main page</div>
 					<expected-results>
 						<ulist>
 							<item>
-								<p>Check #1 is true</p>
+								<p diff="chg">Check #1 is true</p>
 							</item>
 						</ulist>
 					</expected-results>
@@ -532,7 +733,7 @@ return you back to the main page</div>
 				</tests>
 			</technique>
 			-->
-			<technique id="ARIA4">
+			<technique id="ARIA4" diff="add">
 				<short-name>Using a WAI-ARIA role to expose the role of a user interface component</short-name>
 				<applicability>
 					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>.</p>
@@ -643,10 +844,10 @@ return you back to the main page</div>
                             <item><p><loc href="http://www.w3.org/TR/wai-aria-primer/">WAI-ARIA 1.0 Primer</loc></p>
                             </item>
 							<item>
-								<p><loc ref="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
+								<p><loc href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
 							</item>
 							<item>
-								<p><loc ref="http://www.w3.org/TR/aria-in-html/">Using WAI-ARIA in HTML</loc> </p>
+								<p><loc href="http://www.w3.org/TR/aria-in-html/">Using WAI-ARIA in HTML</loc> </p>
 							</item>
 						</ulist>
 					</see-also>
@@ -674,7 +875,7 @@ return you back to the main page</div>
 					</expected-results>
 				</tests>
 			</technique>
-			<technique id="ARIA5">
+			<technique id="ARIA5" diff="add">
 				<short-name>Using WAI-ARIA state and property attributes to expose the state of a user interface component</short-name>
 				<applicability>
 					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
@@ -772,10 +973,10 @@ return you back to the main page</div>
                             <item><p><loc href="http://www.w3.org/TR/wai-aria-primer/">WAI-ARIA 1.0 Primer</loc></p>
                             </item>
 							<item>
-								<p><loc ref="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
+								<p><loc href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
 							</item>
 							<item>
-								<p><loc ref="http://www.w3.org/TR/aria-in-html/">Using WAI-ARIA in HTML</loc> </p>
+								<p><loc href="http://www.w3.org/TR/aria-in-html/">Using WAI-ARIA in HTML</loc> </p>
 							</item>
 						</ulist>
 					</see-also>
@@ -809,7 +1010,7 @@ return you back to the main page</div>
 					</expected-results>
 				</tests>
 			</technique>
-			<technique id="ARIA6">
+			<technique id="ARIA6" diff="add">
 				<short-name>Using aria-label to provide labels for objects</short-name>
 				<applicability>
 					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
@@ -877,7 +1078,7 @@ return you back to the main page</div>
                             <item><p><loc href="http://www.w3.org/TR/html-aapi/#html-element-to-accessibility-api-role-mapping-matrix">HTML to Platform Accessibility APIs Implementation Guide: HTML Element to Accessibility API Role Mapping Matrix</loc></p>
                             </item>
 							<item>
-								<p><loc ref="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
+								<p><loc href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
 							</item>
 						</ulist>
 					</see-also>
@@ -904,7 +1105,7 @@ return you back to the main page</div>
 					</expected-results>
 				</tests>
 			</technique>
-			<technique id="ARIA7">
+			<technique id="ARIA7" diff="add">
 				<short-name>Using aria-labelledby for link purpose</short-name>
 				<applicability>
 					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
@@ -995,7 +1196,7 @@ return you back to the main page</div>
 					<see-also>
 						<ulist>
 							<item>
-								<p><loc ref="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc> </p>
+								<p><loc href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc> </p>
 							</item>
 						</ulist>
 					</see-also>
@@ -1020,14 +1221,14 @@ return you back to the main page</div>
 					</expected-results>
 				</tests>
 			</technique>
-			<technique id="ARIA8">
+			<technique id="ARIA8" diff="add">
 				<short-name>Using aria-label for link purpose</short-name>
 				<applicability>
 					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
 				</applicability>
 				<applies-to>
 					<success-criterion idref="navigation-mechanisms-refs" relationship="sufficient"/>
-					<success-criterion idref="navigation-mechanisms-links" relationship="sufficient"/>
+					<success-criterion idref="navigation-mechanisms-link" relationship="sufficient"/>
 				</applies-to>
 				<ua-issues>
 					<ua-issue name="" version="">
@@ -1064,10 +1265,10 @@ return you back to the main page</div>
 					<see-also>
 						<ulist>
 							<item>
-								<p><loc ref="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc> </p>
+								<p><loc href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc> </p>
 							</item>
 							<item>
-								<p><loc ref="http://www.w3.org/TR/wai-aria/roles#textalternativecomputation">WAI-ARIA Text Alternative Computation</loc></p>
+								<p><loc href="http://www.w3.org/TR/wai-aria/roles#textalternativecomputation">WAI-ARIA Text Alternative Computation</loc></p>
 							</item>
 						</ulist>
 					</see-also>
@@ -1097,7 +1298,7 @@ return you back to the main page</div>
 					</expected-results>
 				</tests>
 			</technique>
-			<technique id="ARIA9">
+			<technique id="ARIA9" diff="add">
 				<short-name>Using aria-labelledby to concatenate a label from several text nodes</short-name>
 				<applicability>
 					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
@@ -1109,7 +1310,7 @@ return you back to the main page</div>
 				<ua-issues>
 					<ua-issue name="" version="">
 						<p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
-                        <p>Note: In order to support IE, the attribute <code>tabindex="-1"</code> may need to be provided on non-interactive elements that are referenced by aria-labelledby attributes. For more details see <loc href="http://www.w3.org/TR/aria-in-html/#aria-labelledby-and-aria-describedby" class="external text">Using WAI-ARIA in HTML</loc>.
+                        <p>Note: In order to support IE, the attribute <code>tabindex="-1"</code> may need to be provided on non-interactive elements that are referenced by aria-labelledby attributes. For more details see <loc href="http://www.w3.org/TR/aria-in-html/#aria-labelledby-and-aria-describedby">Using WAI-ARIA in HTML</loc>.
 </p>
 <ulist><item><p> Full support:
 <ulist><item><p> WIN7 / FF16 / NVDA 2012.2.1 (Example 2: also reads column headers)
@@ -1284,10 +1485,10 @@ return you back to the main page</div>
 									href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc> </p>
 							</item>
 							<item>
-								<p><loc ref="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
+								<p><loc href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
 							</item>
 							<item>
-								<p><loc ref="http://www.w3.org/TR/aria-in-html/">Using WAI-ARIA in HTML</loc>: Section 2.7 aria-labelledby and aria-describedby</p>
+								<p><loc href="http://www.w3.org/TR/aria-in-html/">Using WAI-ARIA in HTML</loc>: Section 2.7 aria-labelledby and aria-describedby</p>
 							</item>
 						</ulist>
 					</see-also>
@@ -1318,7 +1519,7 @@ return you back to the main page</div>
 					</expected-results>
 				</tests>
 			</technique>            
-			<technique id="ARIA10">
+			<technique id="ARIA10" diff="add">
 				<short-name>Using aria-labelledby to provide a text alternative for non-text content</short-name>
 				<applicability>
 					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
@@ -1379,7 +1580,7 @@ hangs in Amsterdam's Van Gogh museum.]]></codeblock>
 									href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc> </p>
 							</item>
 							<item>
-								<p><loc ref="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
+								<p><loc href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
 							</item>
 						</ulist>
 					</see-also>
@@ -1410,7 +1611,7 @@ hangs in Amsterdam's Van Gogh museum.]]></codeblock>
 					</expected-results>
 				</tests>
 			</technique>
-			<technique id="ARIA11">
+			<technique id="ARIA11" diff="add">
 				<short-name>Using ARIA landmarks to identify regions of a page</short-name>
 				<applicability>
 					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
@@ -1433,7 +1634,7 @@ hangs in Amsterdam's Van Gogh museum.]]></codeblock>
 				<description>
 <p>The purpose of this technique is to provide programmatic access to sections of a web page.  Landmark roles (or "landmarks") programmatically identify sections of a page. Landmarks help assistive technology (AT) users orient themselves to a page and help them navigate easily to various sections of a page. 
 </p><p>They also provide an easy way for users of assistive technology to skip over blocks of content that are repeated on multiple pages and notify them of programmatic structure of a page. For instance, if there is a common navigation menu found on every page, landmark roles (or "landmarks") can be used to skip over it and navigate from section to section. This will save assistive technology users and keyboard users the trouble and time of tabbing through a large amount of content to find what they are really after, much like a traditional "skip links" mechanism. (Refer to User Agent Notes above for specifics of AT support). A blind user who may be familiar with a news site's menu, and is only interested in getting to the top story could easily navigate to the "main" landmark, and bypass dozens of menu links. In another circumstance, a user who is blind may want to quickly find a navigation menu, and can do so by jumping to the navigation landmark. 
-</p><p>Landmarks also can help sighted keyboard-only users navigate to sections of a page using a <loc href="http://blog.paciellogroup.com/2013/07/enabling-landmark-based-keyboard-navigation-in-firefox/" class="external text">browser plugin</loc>. 
+</p><p>Landmarks also can help sighted keyboard-only users navigate to sections of a page using a <loc href="http://blog.paciellogroup.com/2013/07/enabling-landmark-based-keyboard-navigation-in-firefox/">browser plugin</loc>. 
 </p><p>Landmarks are inserted into the page using the role attribute on an element that marks the section. The value of the attribute is the name of the landmark. These role values are listed below:
 </p>
 <ulist><item><p>banner: A region that contains the prime heading or internal title of a page.
@@ -1504,15 +1705,15 @@ hangs in Amsterdam's Van Gogh museum.]]></codeblock>
 					<see-also>
 						<ulist>
 							<item>
-								<p><loc ref="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
+								<p><loc href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
 							</item>
                             <item><p><loc href="http://blog.paciellogroup.com/2013/07/enabling-landmark-based-keyboard-navigation-in-firefox/">Enabling landmark-based keyboard navigation in Firefox</loc></p>
                             </item>
                             <item>
                                 <p><loc href="http://accessibleculture.org/articles/2011/02/not-all-aria-widgets-deserve-role-application/">Accessible Rich Internet Applications (WAI-ARIA) 1.0, Supported States and Properties</loc></p>
                             </item>
-<item><p> <loc href="http://accessibleculture.org/articles/2011/02/not-all-aria-widgets-deserve-role-application/" class="external text">Not All ARIA Widgets Deserve role="application"</loc>
-</p></item><item><p> <loc href="http://developer.yahoo.com/blogs/ydn/aria-role-application-53608.html" class="external text">When Should You Use ARIA Role="Application"?</loc>
+<item><p> <loc href="http://accessibleculture.org/articles/2011/02/not-all-aria-widgets-deserve-role-application/">Not All ARIA Widgets Deserve role="application"</loc>
+</p></item><item><p> <loc href="http://developer.yahoo.com/blogs/ydn/aria-role-application-53608.html">When Should You Use ARIA Role="Application"?</loc>
 </p></item>						</ulist>
 					</see-also>
 				</resources>
@@ -1523,7 +1724,7 @@ hangs in Amsterdam's Van Gogh museum.]]></codeblock>
 				<tests>
 					<procedure>
 						<olist>
-<item><p>Examine each element with a <loc href="http://www.w3.org/TR/wai-aria/roles#landmark_roles" class="external text">landmark role</loc>.
+<item><p>Examine each element with a <loc href="http://www.w3.org/TR/wai-aria/roles#landmark_roles">landmark role</loc>.
 </p></item><item><p>Examine whether the landmark role attribute is applied to the section of the page that corresponds with that role. (i.e., the "navigation" role is applied to a navigation section, the "main" role is applied to where the main content begins.)
 </p></item>
                         </olist>
@@ -1537,7 +1738,7 @@ hangs in Amsterdam's Van Gogh museum.]]></codeblock>
 					</expected-results>
 				</tests>
 			</technique>
-			<technique id="ARIA12">
+			<technique id="ARIA12" diff="add">
 				<short-name>Using role=heading to identify headings</short-name>
 				<applicability>
 					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
@@ -1563,7 +1764,7 @@ the heading.
 </p><p>When possible, use native heading mark-up directly. For example, it is preferable 
 to use <el>h1</el> rather than using <code>&lt;div role="heading" aria-level="1"&gt;</code>. However, the use of the 
 heading role, instead of heading mark-up, may be necessary. For example, when retrofitting a legacy site where scripts depend on the existing element hierarchy.
-</p><p>The use of the <prop>heading</prop> role and nesting levels is discussed in <loc href="http://www.w3.org/WAI/PF/aria-practices/#kbd_layout_nesting" class="external text">WAI-ARIA 1.0 Authoring Practices</loc>.
+</p><p>The use of the <prop>heading</prop> role and nesting levels is discussed in <loc href="http://www.w3.org/WAI/PF/aria-practices/#kbd_layout_nesting">WAI-ARIA 1.0 Authoring Practices</loc>.
 </p>
 				</description>
 				<examples>
@@ -1582,7 +1783,8 @@ heading role, instead of heading mark-up, may be necessary. For example, when re
 					<eg-group>
 						<head>Additional heading levels</head>
 						<description>
-This example demonstrates how to implement a level 7 heading using role="heading" and the <att>aria-level</att> attribute. Since HTML only supports headings through level 6, there is no native element to provide these semantics.						<codeblock xml:space="preserve"><![CDATA[...
+							<p>This example demonstrates how to implement a level 7 heading using role="heading" and the <att>aria-level</att> attribute. Since HTML only supports headings through level 6, there is no native element to provide these semantics.</p>
+							<codeblock xml:space="preserve"><![CDATA[...
 <h5>Fruit Trees</h5>
 ...
 <h6>Apples</h6>
@@ -1599,7 +1801,7 @@ This example demonstrates how to implement a level 7 heading using role="heading
                             <item><p><loc href="http://www.w3.org/TR/wai-aria/roles#heading">Accessible Rich Internet Applications (WAI-ARIA) 1.0, Heading in the Roles Model</loc></p>
                             </item>
 							<item>
-								<p><loc ref="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
+								<p><loc href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
 							</item>
 						</ulist>
 					</see-also>
@@ -1626,7 +1828,7 @@ This example demonstrates how to implement a level 7 heading using role="heading
 					</expected-results>
 				</tests>
 			</technique>
-			<technique id="ARIA13">
+			<technique id="ARIA13" diff="add">
 				<short-name>Using aria-labelledby to name regions and landmarks</short-name>
 				<applicability>
 					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
@@ -1675,8 +1877,8 @@ This calendar shows the game schedule for the Boston Red Sox.
                 </examples>
 				<resources>
 					<see-also>
-<ulist><item><p> <loc href="http://www.w3.org/TR/wai-aria-practices/" class="external text">WAI ARIA 1.0 Authoring Practices</loc>
-</p></item><item><p> <loc href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation" class="external text">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc>
+<ulist><item><p> <loc href="http://www.w3.org/TR/wai-aria-practices/">WAI ARIA 1.0 Authoring Practices</loc>
+</p></item><item><p> <loc href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc>
 </p></item></ulist>
                     </see-also>
 				</resources>
@@ -1691,7 +1893,7 @@ This calendar shows the game schedule for the Boston Red Sox.
 				</related-techniques>
 				<tests>
 					<procedure>
-<olist><item><p>Examine each element with attribute <code>role=region</code> or with a <loc href="http://www.w3.org/TR/wai-aria/roles#landmark_roles" class="external text">landmark role</loc>, where an <code>aria-labelledby</code> attribute is also present.
+<olist><item><p>Examine each element with attribute <code>role=region</code> or with a <loc href="http://www.w3.org/TR/wai-aria/roles#landmark_roles">landmark role</loc>, where an <code>aria-labelledby</code> attribute is also present.
 </p></item><item><p>Check that the value of the <code>aria-labelledby</code> attribute is the <code>id</code> of an element on the page. 
 </p></item><item><p>Check that the text of the element with that <code>id</code> accurately labels the section of the page.
 </p></item></olist>
@@ -1705,7 +1907,7 @@ This calendar shows the game schedule for the Boston Red Sox.
 					</expected-results>
 				</tests>
 			</technique>
-			<technique id="ARIA14">
+			<technique id="ARIA14" diff="add">
 				<short-name>Using aria-label to provide an invisible label where a visible label cannot be used</short-name>
 				<applicability>
 					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
@@ -1785,7 +1987,7 @@ This calendar shows the game schedule for the Boston Red Sox.
    This is a pop-up box.
    <button aria-label="Close" onclick="document.getElementById('box').style.display='none';" class="close-button">X</button>				
 </div>]]></codeblock>
-                            <p>Example from <loc href="http://www.oturn.net/html-techs/aria-label-2.html" class="external text">Example close button</loc>
+                            <p>Example from <loc href="http://www.oturn.net/html-techs/aria-label-2.html">Example close button</loc>
 </p>
                             </description>
                     </eg-group>
@@ -1804,8 +2006,8 @@ This calendar shows the game schedule for the Boston Red Sox.
                 </examples>
 				<resources>
 					<see-also>
-<ulist><item><p> <loc href="http://www.w3.org/TR/wai-aria-practices/" class="external text">WAI ARIA 1.0 Authoring Practices</loc>
-</p></item><item><p> <loc href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation" class="external text">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc>
+<ulist><item><p> <loc href="http://www.w3.org/TR/wai-aria-practices/">WAI ARIA 1.0 Authoring Practices</loc>
+</p></item><item><p> <loc href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc>
 </p></item></ulist>
 					</see-also>
 				</resources>
@@ -1830,7 +2032,7 @@ This calendar shows the game schedule for the Boston Red Sox.
                     </expected-results>
 				</tests>
 			</technique>
-			<technique id="ARIA15">
+			<technique id="ARIA15" diff="add">
 				<short-name>Using aria-describedby to provide descriptions of images</short-name>
 				<applicability>
 					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
@@ -1871,8 +2073,8 @@ Jean-Guy Millome, and represents ...</p>]]></codeblock>
                 </examples>
 				<resources>
 					<see-also>
-<ulist><item><p> <loc href="http://www.w3.org/TR/wai-aria-practices/" class="external text">WAI ARIA 1.0 Authoring Practices</loc>
-</p></item><item><p> <loc href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation" class="external text">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc>
+<ulist><item><p> <loc href="http://www.w3.org/TR/wai-aria-practices/">WAI ARIA 1.0 Authoring Practices</loc>
+</p></item><item><p> <loc href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc>
 </p></item></ulist>
 					</see-also>
 				</resources>
@@ -1898,7 +2100,7 @@ Jean-Guy Millome, and represents ...</p>]]></codeblock>
 					</expected-results>
 				</tests>
 			</technique>            
-			<technique id="ARIA16">
+			<technique id="ARIA16" diff="add">
 				<short-name>Using aria-labelledby to provide a name for user interface controls</short-name>
 				<applicability>
 					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
@@ -1923,8 +2125,8 @@ Jean-Guy Millome, and represents ...</p>]]></codeblock>
 </p><p>Like <att>aria-describedby</att>, <att>aria-labelledby</att> can accept multiple ids to point to other elements of the page using a space separated list. This capability makes <att>aria-labelledby</att> especially useful in situations where sighted users use information from the surrounding context to identify a control. <loc href="ARIA9">Using aria-labelledby to concatenate a label from several text nodes</loc> contains more examples of situations where names are created from several other text elements on the page.
 </p><p>While the function of aria-labelledby appears similar to the native HTML label element, there are some differences:
 </p>
-<ulist><item> <att>aria-labelledby</att> can reference more than one text element; <el>label</el> can only reference one.
-</item><item> <att>aria-labelledby</att> can be used for a variety of elements while the <el>label</el> element can only be used on form elements.
+<ulist><item><p> <att>aria-labelledby</att> can reference more than one text element; <el>label</el> can only reference one.</p>
+</item><item><p> <att>aria-labelledby</att> can be used for a variety of elements while the <el>label</el> element can only be used on form elements.</p>
 </item><item><p> Clicking on a <el>label</el> focuses the associated form field. This does not occur with <att>aria-labelledby</att>. If this behaviour is required then use <el>label</el> or implement this functionality using scripting.
 </p></item></ulist>
 <p>Note that as of December 2013, <el>label</el> has better support than <att>aria-labelledby</att>, especially in older browsers and assistive technologies.
@@ -1952,7 +2154,7 @@ Jean-Guy Millome, and represents ...</p>]]></codeblock>
 					<eg-group>
 						<head>A label from multiple sources</head>
 						<description>
-<p>The following example of <att>aria-labelledby</att> with multiple references uses the <el>label</el> element. For additional detail on concatenating multiple sources of information into a label with <att>aria-labelledby</att>, please view the technique <loc href="ARIA9" class="external text">Using ARIA labelledby to concatenate a label from several text nodes</loc>.
+<p>The following example of <att>aria-labelledby</att> with multiple references uses the <el>label</el> element. For additional detail on concatenating multiple sources of information into a label with <att>aria-labelledby</att>, please view the technique <loc href="ARIA9">Using ARIA labelledby to concatenate a label from several text nodes</loc>.
 </p>
 						<codeblock xml:space="preserve"><![CDATA[<label id="l1" for="f3">Notify me</label>
 <select name="amt" id="f3" aria-labelledby="l1 f3 l2">
@@ -1967,8 +2169,8 @@ Jean-Guy Millome, and represents ...</p>]]></codeblock>
                 </examples>
 				<resources>
 					<see-also>
-<ulist><item><p> <loc href="http://www.w3.org/TR/wai-aria-practices/" class="external text">WAI ARIA 1.0 Authoring Practices</loc>
-</p></item><item><p> <loc href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation" class="external text">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc>
+<ulist><item><p> <loc href="http://www.w3.org/TR/wai-aria-practices/">WAI ARIA 1.0 Authoring Practices</loc>
+</p></item><item><p> <loc href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc>
 </p></item></ulist>
 					</see-also>
 				</resources>
@@ -1998,7 +2200,7 @@ Jean-Guy Millome, and represents ...</p>]]></codeblock>
 					</expected-results>
 				</tests>
 			</technique>
-			<technique id="ARIA17">
+			<technique id="ARIA17" diff="add">
 				<short-name>Using grouping roles to identify related form controls</short-name>
 				<applicability>
 					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
@@ -2033,7 +2235,7 @@ Jean-Guy Millome, and represents ...</p>]]></codeblock>
    <input size="2" type="text" aria-required="true" title="Next 2 digits" />-
    <input size="4" type="text" aria-required="true" title="Last 4 digits" />
 </div>]]></codeblock>
-                            <p><loc href="http://mars.dequecloud.com/demo/form-markup.htm#tech6" class="external text">View Example</loc>
+                            <p><loc href="http://mars.dequecloud.com/demo/form-markup.htm#tech6">View Example</loc>
 </p>
                             </description>
                     </eg-group>
@@ -2102,14 +2304,14 @@ Jean-Guy Millome, and represents ...</p>]]></codeblock>
 					</expected-results>
 				</tests>
 			</technique>            
-			<technique id="ARIA18">
+			<technique id="ARIA18" diff="add">
 				<short-name>Using aria-alertdialog to Identify Errors</short-name>
 				<applicability>
 					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
 				</applicability>
 				<applies-to>
 					<success-criterion idref="minimize-error-identified" relationship="sufficient"/>
-					<success-criterion idref="minimize-error-suggestion" relationship="sufficient"/>
+					<success-criterion idref="minimize-error-suggestions" relationship="sufficient"/>
 				</applies-to>
 				<ua-issues>
 					<ua-issue name="" version="">
@@ -2141,7 +2343,7 @@ Jean-Guy Millome, and represents ...</p>]]></codeblock>
 <button>Save and Continue</button>
 <button>Return to page and correct error</button>
 </div>]]></codeblock>
-                            <p><loc href="http://pauljadam.com/demos/aria-role-alertdialog.html" class="external text">Live Example</loc>
+                            <p><loc href="http://pauljadam.com/demos/aria-role-alertdialog.html">Live Example</loc>
 </p>
                             </description>
                     </eg-group>
@@ -2150,7 +2352,7 @@ Jean-Guy Millome, and represents ...</p>]]></codeblock>
 					<see-also>
 						<ulist>
 							<item>
-								<p><loc ref="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
+								<p><loc href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
 							</item>
 						</ulist>
 					</see-also>
@@ -2176,7 +2378,7 @@ Jean-Guy Millome, and represents ...</p>]]></codeblock>
 					</expected-results>
 				</tests>
 			</technique>
-			<technique id="ARIA19">
+			<technique id="ARIA19" diff="add">
 				<short-name>Using ARIA role=alert or Live Regions to Identify Errors</short-name>
 				<applicability>
 					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
@@ -2208,7 +2410,7 @@ Jean-Guy Millome, and represents ...</p>]]></codeblock>
 				</ua-issues>
 				<description>
 <p>The purpose of this technique is to notify Assistive Technologies (AT) when an input error occurs. The <att>aria-live</att> attribute makes it possible for an AT (such as a screen reader) to be notified when error messages are injected into a Live Region container. The content within the <att>aria-live</att> region is automatically read by the AT, without the AT having to focus on the place where the text is displayed.
-</p><p>There are also a number of <loc href="http://www.w3.org/WAI/PF/aria-practices/#chobet" class="external text">special case live region roles</loc> which can be used instead of applying live region properties directly.</p>
+</p><p>There are also a number of <loc href="http://www.w3.org/WAI/PF/aria-practices/#chobet">special case live region roles</loc> which can be used instead of applying live region properties directly.</p>
 				</description>
 				<examples>
 					<eg-group>
@@ -2255,20 +2457,20 @@ $(document).ready(function(e) {
     <input type="submit" name="button" id="button" value="Submit">
   </p>
 </form>]]></codeblock>
-                            <p>A <loc href="http://pauljadam.com/demos/aria-alert-validation.html" class="external text">live example of the code</loc> can be used to demonstrate the differences in browser/AT support for this technology.
+                            <p>A <loc href="http://pauljadam.com/demos/aria-alert-validation.html">live example of the code</loc> can be used to demonstrate the differences in browser/AT support for this technology.
 </p>
                             </description>
                     </eg-group>
                 </examples>
 				<resources>
 					<see-also>
-<ulist><item><p><loc href="http://www.w3.org/TR/wai-aria-practices/" class="external text">WAI-ARIA 1.0, Authoring Practices</loc>
-</p></item><item><p><loc href="http://blog.paciellogroup.com/2012/06/html5-accessibility-chops-aria-rolealert-browser-support/" class="external text">HTML5 Accessibility Chops: ARIA role=alert browser support</loc>
-</p></item><item><p> <loc href="http://html.cita.illinois.edu/nav/form/aria/" class="external text">Form Labels, ARIA Examples (Experimental)</loc>
-</p></item><item><p> <loc href="http://www.msfw.com/accessibility/" class="external text">MSF&amp;W Accessibility</loc>
-</p></item><item><p> <loc href="http://www.w3.org/TR/2011/CR-wai-aria-20110118/states_and_properties#aria-describedby" class="external text">ARIA 1.0, Supported States and Properties, aria-describedby</loc>
-</p></item><item><p> <loc href="http://www.w3.org/TR/2011/CR-wai-aria-20110118/roles#alert" class="external text">WAI-ARIA 1.0, The Roles model, alert</loc>
-</p></item><item><p> <loc href="http://www.w3.org/TR/2011/WD-html5-20110525/" class="external text">HTML5, A vocabulary and associated APIs for HTML and XHTML</loc>
+<ulist><item><p><loc href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0, Authoring Practices</loc>
+</p></item><item><p><loc href="http://blog.paciellogroup.com/2012/06/html5-accessibility-chops-aria-rolealert-browser-support/">HTML5 Accessibility Chops: ARIA role=alert browser support</loc>
+</p></item><item><p> <loc href="http://html.cita.illinois.edu/nav/form/aria/">Form Labels, ARIA Examples (Experimental)</loc>
+</p></item><item><p> <loc href="http://www.msfw.com/accessibility/">MSF&amp;W Accessibility</loc>
+</p></item><item><p> <loc href="http://www.w3.org/TR/2011/CR-wai-aria-20110118/states_and_properties#aria-describedby">ARIA 1.0, Supported States and Properties, aria-describedby</loc>
+</p></item><item><p> <loc href="http://www.w3.org/TR/2011/CR-wai-aria-20110118/roles#alert">WAI-ARIA 1.0, The Roles model, alert</loc>
+</p></item><item><p> <loc href="http://www.w3.org/TR/2011/WD-html5-20110525/">HTML5, A vocabulary and associated APIs for HTML and XHTML</loc>
 </p></item></ulist>
 					</see-also>
 				</resources>
