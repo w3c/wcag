@@ -1119,20 +1119,9 @@
     		</a> (Silverlight)
     	</xsl:when>
     	<xsl:when test="@linktype='examples'">
-          <xsl:choose>
-              <xsl:when test="$show.diff.markup = '1'">
-                  <a href="{$techsthisversion}working-examples/{ancestor::technique/@id}/{@href}">
-                      <xsl:apply-templates/>
-                  </a>
-              </xsl:when>
-              <xsl:otherwise>
-                  <a href="working-examples/{ancestor::technique/@id}/{@href}">
-                      <xsl:apply-templates/>
-                  </a>
-              </xsl:otherwise>
-          </xsl:choose>
-          
-         
+        <a href="/WAI/GL/WCAG20/Techniques/working-examples/{ancestor::technique/@id}/{@href}">
+            <xsl:apply-templates/>
+        </a>
       </xsl:when>
       <xsl:when test="@linktype='tests'">
         <a href="test-files/{ancestor::technique/@id}/{@href}">
