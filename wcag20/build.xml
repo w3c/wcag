@@ -107,12 +107,6 @@ Enter &quot;ant -projecthelp&quot; to get list of available build tasks</echo>
 		<condition property="monolithic.nodiff">
 			<equals arg1="${monolithic}" arg2="true"/>
 		</condition>
-		<condition property="monolithic.diff">
-			<and>
-				<equals arg1="${monolithic}" arg2="true"/>
-				<equals arg1="${diffspec}" arg2="true"/>
-			</and>
-		</condition>
 		<condition property="slices.nodiff">
 			<and>
 				<equals arg1="${slices}" arg2="true"/>
@@ -189,7 +183,7 @@ Enter &quot;ant -projecthelp&quot; to get list of available build tasks</echo>
 			<param name="refs.file" expression="file:///${source.refs}"/>
 		</xslt>
 	</target>
-	<target name="guidelines.single.diff" depends="init" if="monolithic.diff">
+	<target name="guidelines.single.diff" depends="init" if="monolithic">
 		<mkdir dir="${outputdir.guidelines}"/>
 		<xslt in="${source.guidelines}" out="${outputdir.guidelines}/Overview-diff.html" style="sources/diffspec.xsl" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl">
@@ -230,7 +224,7 @@ Enter &quot;ant -projecthelp&quot; to get list of available build tasks</echo>
 			<param name="refs.file" expression="file:///${source.refs}"/>
 		</xslt>
 	</target>
-	<target name="understanding.single.diff" depends="init" if="monolithic.diff">
+	<target name="understanding.single.diff" depends="init" if="monolithic">
 		<mkdir dir="${outputdir.understanding}"/>
 		<xslt in="${source.understanding}" out="${outputdir.understanding}/complete-diff.html" style="sources/diffspec-howto.xsl" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl">
@@ -303,7 +297,7 @@ Enter &quot;ant -projecthelp&quot; to get list of available build tasks</echo>
 			<param name="refs.file" expression="file:///${source.refs}"/>
 		</xslt>
 	</target>
-	<target name="techniques.single.diff" depends="init" if="monolithic.diff">
+	<target name="techniques.single.diff" depends="init" if="monolithic">
 		<mkdir dir="${outputdir.techniques}"/>
 		<xslt in="${source.techniques}" out="${outputdir.techniques}/complete-diff.html" style="sources/diffspec-tech.xsl" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl">
@@ -391,8 +385,7 @@ Enter &quot;ant -projecthelp&quot; to get list of available build tasks</echo>
 			<factory name="net.sf.saxon.TransformerFactoryImpl">
 				<attribute name="http://saxon.sf.net/feature/xinclude-aware" value="true"/>
 			</factory>
-			<param name="show.diff.markup" expression="0" if="monolithic.nodiff"/>
-			<param name="show.diff.markup" expression="1" if="monolithic.diff"/>
+			<param name="show.diff.markup" expression="1" if="diffspec"/>
 			<param name="show.ednotes" expression="${ednotes}" if="ednotes"/>
 			<param name="guidelines.file" expression="file:///${source.guidelines}"/>
 			<param name="understanding.file" expression="file:///${source.understanding}"/>
