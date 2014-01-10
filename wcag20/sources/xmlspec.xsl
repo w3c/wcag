@@ -1862,9 +1862,7 @@
 						<!-- nop -->
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:copy>
-							<xsl:apply-templates/>
-						</xsl:copy>
+						<xsl:copy-of select="."/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:for-each>

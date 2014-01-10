@@ -317,7 +317,7 @@ BBC: added "item" here to address problems with ordered lists-->
     </xsl:choose>
   </xsl:template>
   
-    <xsl:template match="item">
+  <xsl:template match="item[ancestor-or-self::*/@diff]">
     <xsl:variable name="diffval" select="ancestor-or-self::*/@diff"/>
     <xsl:choose>
       <xsl:when test="$diffval != '' and $show.diff.markup != 0">
