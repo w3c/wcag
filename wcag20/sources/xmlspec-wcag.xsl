@@ -1390,4 +1390,8 @@
 			<p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="{$guide-src//publoc/loc[@href]}understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p>
 		</div>
 	</xsl:template>
+  
+  <!-- Only output stuff suited to the current maturity -->
+  <xsl:template match="*[@role = 'ext-review' and /spec/@status != 'ext-review']"/>
+  <xsl:template match="*[@role = 'final' and /spec/@status != 'final']"/>
 </xsl:transform>
