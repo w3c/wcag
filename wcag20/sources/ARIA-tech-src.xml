@@ -1572,32 +1572,14 @@ return you back to the main page</div>
 				<ua-issues>
 					<ua-issue name="" version="">
 						<p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
-                        <ulist><item><p> Jaws 13+ support Example 1 with IE and FF
-</p></item><item><p> NVDA 2012.3 supports both Example 1 and Example 2 with FF
-</p></item></ulist>
+                        <ulist><item><p> NVDA 2012.3 supports Example 1 with FF</p></item></ulist>
+                        <p>As of March 2014, there is much wider accessibility support for the use of the <att>alt</att> attribute than for <att>aria-labelledby</att>. The use of the <att>alt</att> attribute is best practice and strongly encouraged. Especially for elements where the <att>alt</att> attribute can be used to provide text alternatives, authors must confirm accessibility support for <att>aria-labelledby</att> before relying on this technique in place of <loc href="H37">H37: Using <att>alt</att> attributes on img elements</loc>.</p>
 					</ua-issue>
 				</ua-issues>
 				<description>
-					<ednote id="ARIA10_note"><edtext>The Working Group is still discussing whether it is appropriate to use various aria attributes to provide text alternatives for images without providing an alt attribute. This technique is included to invite public comment and help the working group come to a conclusion about this technique as well as related items (e.g. <loc href="F65" linktype="failure">F65</loc>).  Examples within ARIA10 demonstrate situations where it might be desirable just to use aria-labelledby with no alt attribute. We solicit feedback on this example and on the general issue. </edtext></ednote>
 					<p>The purpose of this technique is to provide a short description for an element that can be read by assistive technologies (AT) by using the <att>aria-labelledby</att> attribute. The <att>aria-labelledby</att> attribute associates an element with text that is visible elsewhere on the page by using an ID reference value that matches the ID attribute of the labeling element. Assistive technology such as screen readers use the text of the element identified by the value of the <att>aria-labelledby</att> attribute as the text alternative for the element with the attribute.</p>
-					<note>
-						<p>When using <att>aria-labelledby</att> attribute on an <el>img</el> element, the absence of an <att>alt</att> attribute will cause validation failures for HTML 4 and earlier and XHTML. If <att>alt</att> is provided, it must contain the same text as the <att>aria-labelledby</att> target. Do not use <code>alt=""</code>, which would cause some assistive techology to ignore the image completely.</p>
-					</note>
 				</description>
 				<examples>
-					<eg-group>
-						<head>Providing a short description for an image</head>
-						<description>
-							<p>This example shows how to use the <att>aria-labelledby</att> attribute to provide a short text description for an image, using a piece of text that is visible on the page.</p>
-						<codeblock xml:space="preserve"><![CDATA[<img src="sunflowers.jpg" aria-labelledby="flower_id">
-
-...
-
-<span id="flower_id">Van Gogh's oil painting of sunflowers</span>
-hangs in Amsterdam's Van Gogh museum.]]></codeblock>
-                            </description>
-                    </eg-group>
-                    
 					<eg-group>
 						<head>Providing a short description for a complex graphic</head>
 						<description>
@@ -1613,29 +1595,33 @@ hangs in Amsterdam's Van Gogh museum.]]></codeblock>
 <div id="star_id">4 of 5</div>]]></codeblock>
                             </description>
                     </eg-group>
-                    
-                </examples>
+                 </examples>
 				<resources>
 					<see-also>
 						<ulist>
-                            <item>
-								<p> <loc
-									href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc> </p>
-							</item>
 							<item>
 								<p><loc href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> </p>
+							</item>
+                            <item>
+								<p> <loc
+									href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc></p>
+							</item>
+                            <item>
+								<p> <loc
+									href="http://www.w3.org/TR/wai-aria/roles#textalternativecomputation">Accessible Rich Internet Applications (WAI-ARIA) 1.0, Section 5.2.7.3. Text Alternative Computation</loc></p>
 							</item>
 						</ulist>
 					</see-also>
 				</resources>
 <related-techniques>
 					<relatedtech idref="H37"/>
+					<relatedtech idref="F65"/>
 				</related-techniques>
 				<tests>
 					<procedure>
 						<olist>
 							<item>
-								<p>Examine each element where the <att>aria-labelledby</att> attribute is present.</p>
+								<p>Examine each element where the <att>aria-labelledby</att> attribute is present and the element does not support the <att>alt</att> attribute.</p>
 							</item>
 							<item>
 								<p>Check whether the value of the <att>aria-labelledby</att> attribute is the id of an element on the web page.</p>
