@@ -6,13 +6,17 @@
 	
 	<xsl:import href="../slices-techniques.xsl"/>
 	
+	<xsl:output method="html" omit-xml-declaration="yes"/>
+	
 	<xsl:template match="/">
+		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE html>
+]]></xsl:text>
 		<html>
 			<head>
-				<title>User Agent Issues for WCAG Techniques</title>
+				<title>User Agent Support Notes for WCAG Techniques</title>
 			</head>
 			<body>
-				<h1>User Agent Issues for WCAG Techniques</h1>
+				<h1>User Agent Support Notes for WCAG Techniques</h1>
 				<p>This resource contains documented user agent issues from <a href="http://www.w3.org/TR/WCAG20-TECHS/">WCAG 2.0 Techniques</a>. There is a separate page for each technology. For some technology, user agent issues are primarily documented in overall technology notes that introduce the technology and are repeated in the technology page here.</p>
 				<ul class="toc">
 					<xsl:apply-templates select="//body/div1[descendant::ua-issues/*]" mode="toc"/>
@@ -28,14 +32,19 @@
 		</li>
 	</xsl:template>
 	<xsl:template match="div1">
-		<xsl:result-document href="{@id}.html">
+		<xsl:result-document href="{@id}.html" omit-xml-declaration="yes" method="html">
+			<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE html>
+]]></xsl:text>
 			<html>
 				<head>
-					<title>User agent notes for <xsl:apply-templates select="head" mode="text"/></title>
+					<title>User Agent Support Notes for for <xsl:apply-templates select="head" mode="text"/></title>
 				</head>
 				<body>
-					<h1>User agent notes for <xsl:apply-templates select="head" mode="text"/></h1>
-					<p>This page documents user agent issues for <a href="/TR/WCAG20-TECHS/{@id}"><xsl:apply-templates select="head" mode="text"/></a>.</p>
+					<h1>User Agent Support Notes for <xsl:apply-templates select="head" mode="text"/></h1>
+					<p>This page documents user agent support notes for <a href="/TR/WCAG20-TECHS/{@id}"><xsl:apply-templates select="head" mode="text"/></a>.</p>
+					<ul class="toc">
+						<xsl:apply-templates select="//body/technique[descendant::ua-issues/*]" mode="toc"/>
+					</ul>
 					<xsl:apply-templates select="div2"/>
 					<xsl:apply-templates select="technique[ua-issues/*]"/>
 				</body>
@@ -47,6 +56,11 @@
 		<section id="{@id}"><xsl:apply-templates/></section>
 	</xsl:template>
 	
+	<xsl:template match="technique" mode="toc">
+		<li class="toc">
+			<a href="{@id}"><xsl:apply-templates select="short-name" mode="text"/></a>
+		</li>
+	</xsl:template>
 	<xsl:template match="technique">
 		<section id="{@id}">
 			<h2>
@@ -64,7 +78,7 @@
 					<xsl:apply-templates select="ua-issues/*"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<p><em>No user agent issues have been documented for technique <xsl:value-of select="@id"/>.</em></p>
+					<p><em>No user agent support notes have been documented for technique <xsl:value-of select="@id"/>.</em></p>
 				</xsl:otherwise>
 			</xsl:choose>
 		</section>
