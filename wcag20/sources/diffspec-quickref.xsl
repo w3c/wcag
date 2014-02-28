@@ -330,7 +330,7 @@ BBC: added "item" here to address problems with ordered lists-->
   </xsl:choose>
 </xsl:template>
 
-<xsl:template match="*[@diff='chg']">
+<xsl:template match="*[@diff='chg']" priority="-.5">
   <xsl:choose>
     <xsl:when test="$show.diff.markup != 0">
       <xsl:call-template name="diff-markup">
@@ -343,7 +343,7 @@ BBC: added "item" here to address problems with ordered lists-->
   </xsl:choose>
 </xsl:template>
 
-<xsl:template match="*[@diff='add']">
+<xsl:template match="*[@diff='add']" priority="-.5">
   <xsl:choose>
     <xsl:when test="$show.diff.markup != 0">
       <xsl:call-template name="diff-markup">
@@ -356,7 +356,7 @@ BBC: added "item" here to address problems with ordered lists-->
   </xsl:choose>
 </xsl:template>
 
-<xsl:template match="*[@diff='del']">
+<xsl:template match="*[@diff='del']" priority="-.5">
   <xsl:choose>
     <xsl:when test="$show.diff.markup != 0">
       <xsl:call-template name="diff-markup">

@@ -1380,11 +1380,11 @@
     </xsl:template>
 	
 	<!-- The use-id attribute allows a substitute, complete element to replace a placeholder, so common content only needs to be edited once -->
-	<xsl:template match="*[@use-id]" priority="1">
-		<xsl:apply-templates select="id(@use-id)"/>
-	</xsl:template>
-
-	<xsl:template name="techniques.informative.disclaimer">
+  <xsl:template match="*[@use-id]" priority="1">
+      <xsl:apply-templates select="id(@use-id)"/>
+  </xsl:template>
+  
+  <xsl:template name="techniques.informative.disclaimer">
 		<div>
 			<h2>Techniques are Informative</h2>
 			<p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="{$guide-src//publoc/loc[@href]}understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p>
