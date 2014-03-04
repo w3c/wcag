@@ -1381,7 +1381,17 @@
 	
 	<!-- The use-id attribute allows a substitute, complete element to replace a placeholder, so common content only needs to be edited once -->
   <xsl:template match="*[@use-id]" priority="1">
+    <xsl:variable name="copied">
       <xsl:apply-templates select="id(@use-id)"/>
+    </xsl:variable>
+    <xsl:apply-templates select="$copied" mode="copy-without-id"/>
+  </xsl:template>
+  
+  <xsl:template match="node()|@*" mode="copy-without-id">
+    <xsl:copy>
+      <xsl:apply-templates select="@*[name() != 'id']"/>
+      <xsl:copy-of select="node()"/>
+    </xsl:copy>
   </xsl:template>
   
   <xsl:template name="techniques.informative.disclaimer">

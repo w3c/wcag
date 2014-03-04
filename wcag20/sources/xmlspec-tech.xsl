@@ -1086,12 +1086,6 @@
         </dl>
     </xsl:template>
 
-	<!-- The use-id attribute allows a substitute, complete element to replace a placeholder, so common content only needs to be edited once -->
-	<!-- Copied here since the low import precedence trumps high priority, or the import chain isn't working, or something -->
-	<xsl:template match="*[@use-id]" priority="1">
-		<xsl:apply-templates select="id(@use-id)" />
-	</xsl:template>
-	
 	<xsl:template match="section">
 		<div>
 			<xsl:if test="@id">
