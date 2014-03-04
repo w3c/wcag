@@ -64,7 +64,14 @@
   						<p>On this page:</p>    
   						<ul id="navbar">
   							<xsl:for-each select="descendant::div3">
-  								<li><a href="#introduction-{@id}-head"><xsl:value-of select="head"></xsl:value-of></a></li>
+  							  <xsl:variable name="prefix">
+  							    <xsl:choose>
+  							      <xsl:when test="ancestor::div1/@id = 'intro'">introduction</xsl:when>
+  							      <xsl:when test="ancestor::div1/@id = 'understanding-techniques'">ut</xsl:when>
+  							      <xsl:otherwise><xsl:message terminate="yes">Unhandled ID prefix in frontmatter TOC</xsl:message></xsl:otherwise>
+  							    </xsl:choose>
+  							  </xsl:variable>
+  								<li><a href="#{$prefix}-{@id}-head"><xsl:value-of select="head"></xsl:value-of></a></li>
   							</xsl:for-each></ul>            
   					</div>            
   					<div class="div1">
