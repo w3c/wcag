@@ -561,6 +561,21 @@
     </h1>
   </xsl:template>
   
+  <xsl:template match="div2/head">
+    <div class="skiptarget"><a id="maincontent">-</a></div>
+    <xsl:text>
+</xsl:text>
+    <h3>
+      <xsl:call-template name="anchor">
+        <xsl:with-param name="conditional" select="0"/>
+        <xsl:with-param name="node" select=".."/>
+      </xsl:call-template>
+      <xsl:apply-templates select=".." mode="divnum"/>
+      <xsl:apply-templates/>
+    </h3>
+  </xsl:template>
+  
+  
 	<xsl:template match="short-name">
 	  <div class="skiptarget"><a id="maincontent">-</a></div>
     <xsl:text> </xsl:text>
