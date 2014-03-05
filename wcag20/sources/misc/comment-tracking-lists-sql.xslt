@@ -25,12 +25,12 @@ REPLACE INTO specSections (id, title, specId, rank) VALUES
 
 /* UNDERSTANDING */
 REPLACE INTO specSections (id, title, specId, rank) VALUES 
-<xsl:apply-templates select="//div3[@role='group1'] | //div3[@role='group2'] | //div4[@role='req']/div5 | //div4[@role='bp']/div5 | //div4[@role='additional']/div5 | //div1[@role = 'normative'] | $understanding.doc//back/inform-div1" mode="understanding"></xsl:apply-templates>
+		<xsl:apply-templates select="$understanding.doc//front/div1, //div3[@role='group1'] | //div3[@role='group2'] | //div4[@role='req']/div5 | //div4[@role='bp']/div5 | //div4[@role='additional']/div5 | //div1[@role = 'normative'] | $understanding.doc//back/inform-div1" mode="understanding"></xsl:apply-templates>
 <xsl:apply-templates select="$understanding.doc" mode="understanding"/>
 
 /* TECHNIQUES */
 REPLACE INTO specSections (id, title, specId, rank) VALUES 
-<xsl:apply-templates select="$techniques.doc//front/div1[@id = 'intro'] | $techniques.doc//body/div1/div2 | $techniques.doc//technique" mode="techniques"/>
+<xsl:apply-templates select="$techniques.doc//front/div1 | $techniques.doc//body/div1/div2 | $techniques.doc//technique" mode="techniques"/>
 	</xsl:template>
 	
 	<xsl:template match="*" mode="#all"/>
@@ -113,6 +113,13 @@ REPLACE INTO specSections (id, title, specId, rank) VALUES
 		</xsl:call-template>
 	</xsl:template>
 
+	<xsl:template match="front/div1" mode="understanding">
+		<xsl:call-template name="sql.fragment">
+			<xsl:with-param name="title"><xsl:value-of select="head"/></xsl:with-param>
+			<xsl:with-param name="spec" select="$understanding.specId"/>
+		</xsl:call-template>
+	</xsl:template>
+	
 	<xsl:template match="div1[@role = 'normative']" mode="understanding">
 		<xsl:call-template name="sql.fragment">
 			<xsl:with-param name="title">Understanding <xsl:value-of select="head"/></xsl:with-param>
