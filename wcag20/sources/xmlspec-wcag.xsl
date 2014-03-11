@@ -1119,7 +1119,7 @@
     		</a> (Silverlight)
     	</xsl:when>
     	<xsl:when test="@linktype='examples'">
-        <a href="/WAI/GL/WCAG20/Techniques/working-examples/{ancestor::technique/@id}/{@href}">
+        <a href="/WAI/WCAG20/Techniques/working-examples/{ancestor::technique/@id}/{@href}">
             <xsl:apply-templates/>
         </a>
       </xsl:when>

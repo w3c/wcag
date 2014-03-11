@@ -584,7 +584,7 @@
     <xsl:otherwise><h4 class="small-head" id="{$uanumber}"> User Agent and Assistive Technology Support Notes</h4></xsl:otherwise>
   </xsl:choose>
 			
-			<p>See <a href="/WAI/GL/WCAG20/Techniques/ua-notes/{ancestor::div1/@id}#{ancestor::technique/@id}">User Agent Support Notes for <xsl:value-of select="ancestor::technique/@id"/></a>.</p>
+			<p>See <a href="/WAI/WCAG20/Techniques/ua-notes/{ancestor::div1/@id}#{ancestor::technique/@id}">User Agent Support Notes for <xsl:value-of select="ancestor::technique/@id"/></a>.</p>
 		</div>
 	</xsl:template>
 	<xsl:template match="ua-issue">
