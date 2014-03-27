@@ -44,13 +44,13 @@
               <xsl:apply-templates select="head" mode="text"/>  | Techniques for WCAG 2.0
             </title>
             <link rel="stylesheet" type="text/css" href="slicenav.css"/>
-            <xsl:if test="$show.diff.markup != '0'">
+            <xsl:if test="$show.diff.markup != 0">
               <script type="text/javascript" src="diffmarks.js"><xsl:text> </xsl:text></script>
             </xsl:if>
             <xsl:call-template name="css"/>
           </head>
          <body class="slices">
-          <xsl:if test="$show.diff.markup != '0'">
+          <xsl:if test="$show.diff.markup != 0">
             <xsl:attribute name="onload">jscheck()</xsl:attribute>
           </xsl:if>
 <xsl:call-template name="skipnav"></xsl:call-template>
@@ -89,13 +89,13 @@
               <xsl:apply-templates select="head" mode="text"/>  | Techniques for WCAG 2.0
             </title>
             <link rel="stylesheet" type="text/css" href="slicenav.css"/>
-            <xsl:if test="$show.diff.markup != '0'">
+            <xsl:if test="$show.diff.markup != 0">
               <script type="text/javascript" src="diffmarks.js"><xsl:text> </xsl:text></script>
             </xsl:if>
             <xsl:call-template name="css"/>
           </head>
             <body class="slices">
-          <xsl:if test="$show.diff.markup != '0'">
+          <xsl:if test="$show.diff.markup != 0">
             <xsl:attribute name="onload">jscheck()</xsl:attribute>
           </xsl:if>
 <xsl:call-template name="skipnav"></xsl:call-template>
@@ -138,12 +138,12 @@
               </title>
               <xsl:call-template name="css"/>
               <link rel="stylesheet" type="text/css" href="slicenav.css"/>
-              <xsl:if test="$show.diff.markup != '0'">
+              <xsl:if test="$show.diff.markup != 0">
               <script type="text/javascript" src="diffmarks.js"><xsl:text> </xsl:text></script>
             </xsl:if>
             </head>
             <body class="slices">
-          <xsl:if test="$show.diff.markup != '0'">
+          <xsl:if test="$show.diff.markup != 0">
             <xsl:attribute name="onload">jscheck()</xsl:attribute>
           </xsl:if>
 <xsl:call-template name="skipnav"></xsl:call-template>
@@ -189,12 +189,12 @@
               </title>
               <xsl:call-template name="css"/>
               <link rel="stylesheet" type="text/css" href="slicenav.css"/>
-              <xsl:if test="$show.diff.markup != '0'">
+              <xsl:if test="$show.diff.markup != 0">
               <script type="text/javascript" src="diffmarks.js"><xsl:text> </xsl:text></script>
             </xsl:if>
             </head>
             <body class="slices">
-          <xsl:if test="$show.diff.markup != '0'">
+          <xsl:if test="$show.diff.markup != 0">
             <xsl:attribute name="onload">jscheck()</xsl:attribute>
           </xsl:if>
 <xsl:call-template name="skipnav"></xsl:call-template>
@@ -237,13 +237,13 @@
               <xsl:text> </xsl:text> | Techniques for WCAG 2.0
             </title>
             <link rel="stylesheet" type="text/css" href="slicenav.css"/>
-            <xsl:if test="$show.diff.markup != '0'">
+            <xsl:if test="$show.diff.markup != 0">
               <script type="text/javascript" src="diffmarks.js"><xsl:text> </xsl:text></script>
             </xsl:if>
             <xsl:call-template name="css"/>
           </head>
           <body class="slices">
-          <xsl:if test="$show.diff.markup != '0'">
+          <xsl:if test="$show.diff.markup != 0">
             <xsl:attribute name="onload">jscheck()</xsl:attribute>
           </xsl:if>
 <xsl:call-template name="skipnav"></xsl:call-template>
@@ -286,13 +286,13 @@
               <xsl:apply-templates select="head" mode="text"/> | Techniques for WCAG 2.0
 						</title>
             <link rel="stylesheet" type="text/css" href="slicenav.css"/>
-            <xsl:if test="$show.diff.markup != '0'">
+            <xsl:if test="$show.diff.markup != 0">
               <script type="text/javascript" src="diffmarks.js"><xsl:text> </xsl:text></script>
             </xsl:if>
             <xsl:call-template name="css"/>
           </head>
           <body class="slices">
-          <xsl:if test="$show.diff.markup != '0'">
+          <xsl:if test="$show.diff.markup != 0">
             <xsl:attribute name="onload">jscheck()</xsl:attribute>
           </xsl:if>
 <xsl:call-template name="skipnav"></xsl:call-template>
@@ -650,7 +650,7 @@
 <div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home" /></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div>
 <div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p>	</div>
 
-<xsl:if test="$show.diff.markup != '0'">
+<xsl:if test="$show.diff.markup != 0">
               <div id="diffexp">
               <p class="screenreader">This document is a draft, and is designed to show changes from a previous version. It is presently showing <span class="diff-add">added text,</span> <span class="diff-change">changed text,</span> <span class="diff-delete">deleted text,</span><span class="difftext">[start]/[end] markers,</span> <span class="issue">and Issue Numbers</span>.</p>
                 <p class="options"><a href="#" onclick="javascript:hideClass('diff-delete'); hideClass('issue'); hideClass('difftext');showClean('diff-change');showClean('diff-add')">Hide<!--Show-->&#160;All&#160;Edits</a> &#160; | &#160; <a href="#" onclick="javascript:toggleClass('diff-delete')">Toggle&#160;Deletions</a>&#160; | &#160; <a href="#"  onclick="javascript:toggleClass('issue')">Toggle&#160;Issue&#160;Numbers</a> &#160; | &#160; <a href="#" onclick="javascript:toggleClass('difftext')">Toggle<!--Hide-->&#160;[start]/[end]&#160;Markers</a> <!--&#160; | &#160; <a href="#">Show&#160;All&#160;Edits</a>-->&#160; | &#160; <a href="#" onclick="javascript:showClass('issue');showClass('diff-delete');showClass('difftext');showChange('diff-change');showAdd('diff-add')">Show&#160;All&#160;Edits</a></p><p class="state">Changes are displayed as follows:</p><ul>     <li> <span class="diff-add"><span class="difftext"> [begin add]</span> new, added text <span class="difftext">[end add] </span></span></li>     <li><span class="diff-change"><span class="difftext"> [begin change]</span> changed text <span class="difftext">[end change], </span></span></li>     <li><span class="diff-delete"><span class="difftext"> [begin delete]</span> deleted text <span class="difftext">[end delete] </span></span></li></ul>        

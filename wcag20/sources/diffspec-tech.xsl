@@ -46,7 +46,7 @@
 <xsl:param name="show.diff.markup" select="1"/>
 
 <xsl:param name="additional.title">
-  <xsl:if test="$show.diff.markup != '0'">
+  <xsl:if test="$show.diff.markup != 0">
       <xsl:text>Diff-marked Version</xsl:text>
   </xsl:if>
 </xsl:param>

@@ -606,7 +606,7 @@
 	</xsl:template>
 	
 	<xsl:template name="css">
-	    <xsl:if test="$show.diff.markup != '0'">
+	    <xsl:if test="$show.diff.markup != 0">
 	        <link xmlns="http://www.w3.org/1999/xhtml" rel="stylesheet" type="text/css" href="diffs.css" />
 	    </xsl:if>
 	    <link xmlns="http://www.w3.org/1999/xhtml" rel="stylesheet" type="text/css">
