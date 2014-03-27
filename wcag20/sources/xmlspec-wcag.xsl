@@ -1156,7 +1156,7 @@
   </xsl:template>
   <xsl:template match="altlocs">
       <!-- BBC: Suppress output of these links in diff-marked version -->
-      <!--xsl:if test="$show.diff.markup = '1'"-->
+      <!--xsl:if test="$show.diff.markup = 1"-->
     <p>
       <xsl:text>This document is also available </xsl:text>
       <xsl:text>in these non-normative formats: </xsl:text>

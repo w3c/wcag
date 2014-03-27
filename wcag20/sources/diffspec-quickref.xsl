@@ -44,10 +44,10 @@
 
 <xsl:import href="quickref.xslt"/>
 <xsl:param name="guide" select="1"/>
-<xsl:param name="show.diff.markup" select="1"/>
+<xsl:param name="show.diff.markup" select="0"/>
 
 <xsl:param name="additional.css">
-<xsl:if test="$show.diff.markup != '0'">
+<xsl:if test="$show.diff.markup != 0">
 <xsl:text>
 div.diff-add  { background-color: #FFFF99; }
 div.diff-delete  { text-decoration: line-through; }
@@ -282,7 +282,8 @@ a.HTMlink:hover {
 </xsl:param>
 
 <xsl:param name="additional.title">
-  <xsl:if test="$show.diff.markup != '0'">
+  <xsl:if test="$show.diff.markup != 0">
+    <xsl:message><xsl:value-of select="$show.diff.markup"/></xsl:message>
     <xsl:text>Review Version</xsl:text>
   </xsl:if>
 </xsl:param>
