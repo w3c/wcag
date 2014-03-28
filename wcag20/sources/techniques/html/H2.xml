@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H2">
+   <short-name>Combining adjacent image and text links for the same resource</short-name>
+   <applicability>
+      <p>HTML and XHTML documents that contain links.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+      <success-criterion idref="navigation-mechanisms-refs" relationship="sufficient"/>
+      <success-criterion idref="navigation-mechanisms-link" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to avoid unnecessary duplication that occurs when
+            adjacent text and iconic versions of a link are contained in a document. </p>
+      <p>Many kinds of links have both a text and iconic link adjacent to each other. Often the
+            text and the icon link are rendered in separate links, in part to create a slight visual
+            separation from each other. Visually they appear to be the same link, but they are
+            experienced by many people as two identical links and this can be confusing. To avoid
+            this, some authors omit alternative text from the image, but this would fail <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="text-equiv-all"
+              linktype="guideline">Success Criterion 1.1.1</loc> because the
+            text alternative would not serve the same purpose as the graphical link. The preferred
+            method to address this is to put the text and image together in one link, and provide
+            null alternative text on the image to eliminate duplication of text. </p>
+      <p>Sometimes the text and the icon link are rendered in separate, adjacent table cells to
+            facilitate page layout. Although WCAG 2 does not prohibit the use of layout tables,
+            CSS-based layouts are recommended in order to retain the defined semantic meaning of the
+            HTML table elements and to conform to the coding practice of separating presentation
+            from content. If CSS is used, this technique can be applied to combine the links. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>The icon and text are contained in the same <el>a</el> element.</p>
+         </description>
+         <code role="html401"><![CDATA[ <a href="products.html">
+   <img src="icon.gif" alt="" />
+   Products page
+ </a>      ]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>A link contains an icon and text, and the site help refers to the icon. The
+                  <el>img</el> has a text alternative which is the name used for the icon in the
+                site help, which describes clicking the home page icon.</p>
+         </description>
+         <code role="html401"><![CDATA[<a href="foo.htm">
+  <img src="house.gif" alt="home page icon"/>
+  Go to the home page
+</a>     ]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <description>
+            <p>This example demonstrates a failure to apply this technique. An icon and text link
+                are side by side. The text alternative for the image is the same as the text link
+                beside it, leading to a "stutter" effect as the link is read twice.</p>
+         </description>
+         <code role="html401"><![CDATA[<a href="products.html">
+   <img src="icon.gif" alt="Products page" />
+ </a>
+ <a href="products.html">
+   Products page
+ </a>  ]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <description>
+            <p>This example demonstrates a failure to apply this technique. An icon and text link
+                are side by side. In an attempt to remove the "stutter" the text alternative for the
+                image is null. However, now one of the links has an unknown destination, which is
+                its own link text problem.</p>
+         </description>
+         <code role="html401"><![CDATA[<a href="products.html">
+   <img src="icon.gif" alt="" />
+ </a>
+ <a href="products.html">
+   Products page
+ </a>     ]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <description>
+            <p>This example demonstrates an incorrect implementation of this technique. The icon
+                and text are contained in the same a element. However, the text alternative for the
+                icon is a duplicate of the link text, leading to a "stutter" effect as the
+                description is read twice. </p>
+         </description>
+         <code role="html401"><![CDATA[<a href="products.html">
+  <img src="products.gif" alt="Products page"/>
+  Products page
+</a>    
+            ]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html401/struct/objects.html#h-13.8">HTML 4.01 -
+                    how to specify alt text</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G91"/>
+      <relatedtech idref="G94"/>
+      <relatedtech idref="H30"/>
+      <relatedtech idref="C9"/>
+      <relatedtech idref="F89"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each <el>a</el> applying this technique:</p>
+         <olist>
+            <item>
+               <p>Check that every <el>img</el> element contained within the <el>a</el> element has a null value set for its <att>alt</att> attribute.</p>
+            </item>
+            <item>
+               <p>Check that the <el>a</el> element contains text that is a description of the image</p>
+            </item>
+         </olist>
+         <p>For each <el>a</el> in the content that is contained in a table: </p>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>All checks above are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

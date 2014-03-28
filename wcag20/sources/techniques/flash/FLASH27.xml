@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH27">
+   <short-name>Providing button labels that describe the purpose of a button</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+      <success-criterion idref="navigation-mechanisms-refs" relationship="sufficient"/>
+      <success-criterion idref="navigation-mechanisms-link" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to describe the purpose
+    				of a button by providing descriptive text as the button's accessible
+    				name. The description lets a user distinguish this button from
+    				other buttons in the Flash movie and helps the user determine
+    				whether to activate the button. An empty string is not sufficient
+    				as a button's accessible name. </p>
+      <p>For buttons with text labels, the label text will be used
+    				as a buttons accessible name. If a button is image based and
+    				does not have a text label, the button's accessible name will
+    				have to be set separately using the Accessibility panel or
+    				through scripting. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Using the label property to describe the button's purpose</head>
+         <code xml:space="preserve"><![CDATA[import fl.controls.Button;
+import fl.accessibility.ButtonAccImpl;
+
+ButtonAccImpl.enableAccessibility();
+
+var myButton:Button = new Button();
+myButton.label = "View Items in Cart";
+]]></code>
+      </eg-group>
+      <eg-group>
+         <head>Using scripting to set the accessible name for an image button using Actionscript 3.0</head>
+         <description>
+            <p>In this example, the button's <prop>label</prop> property is deliberately set to an empty string. To be perceivable to assistive technology, the button's <prop>accessibilityProperties.name</prop> property is set.</p>
+         </description>
+         <code xml:space="preserve"><![CDATA[import fl.controls.Button;
+import fl.accessibility.ButtonAccImpl;
+import flash.accessibility.*;
+import flash.system.Capabilities;
+ButtonAccImpl.enableAccessibility();
+
+var soundIsMuted = false;
+var myButton:Button = new Button();
+myButton.setStyle("icon", unmuted);
+myButton.label = "";
+myButton.x = myButton.y = 10;
+myButton.width = myButton.height = 50;
+updateAccName(myButton, "mute sound");
+myButton.setStyle("icon", unmuted);
+myButton.addEventListener(MouseEvent.CLICK, handleBtnClick);
+addChild(myButton);
+
+function handleBtnClick(e) {
+  soundIsMuted = !soundIsMuted;
+  myButton.setStyle("icon", soundIsMuted ? muted : unmuted);
+  updateAccName(myButton, soundIsMuted ? "unmute sound" : "mute sound");
+}
+
+function updateAccName(obj, newName:String) {
+  if (!obj.accessibilityProperties)
+    obj.accessibilityProperties = new AccessibilityProperties();
+  obj.accessibilityProperties.name = newName;
+  if (Capabilities.hasAccessibility)
+    Accessibility.updateProperties();
+}]]></code>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="G91"/>
+      <relatedtech idref="FLASH5"/>
+      <relatedtech idref="FLASH4"/>
+      <!--relatedtech>http://trace.wisc.edu/wcag_wiki/index.php?title=Providing_textual_identification_for_buttons_that_otherwise_rely_only_on_sensory_information_to_be_understood</relatedtech-->
+      <relatedtech idref="FLASH30"/>
+      <!--relatedtech>http://trace.wisc.edu/wcag_wiki/index.php?title=Supplementing_button_labels_with_additional_text</relatedtech-->
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each button in the Flash movie that uses this technique: </p>
+         <olist>
+            <item>
+               <p> Check that the button's label text correctly describes
+    					the button's purpose </p>
+            </item>
+            <item>
+               <p> If a button does not have a text label, confirm that descriptive
+    					text has been added as the button's accessible name. </p>
+            </item>
+            <item>
+               <p> If a button contains both label text and an accessible
+    							name, confirm that the combination of the two makes sense
+    							as a description for the button's purpose. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> Checks #1, #2, and #3 are true. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Providing_button_labels_that_describe_the_purpose_of_a_button"/>
+					</source>
+   </admin>
+</technique>

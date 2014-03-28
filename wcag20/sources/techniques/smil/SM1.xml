@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SM1">
+   <short-name>Adding extended audio description in SMIL 1.0</short-name>
+   <applicability>
+      <p> Applies whenever SMIL 1.0 player is available </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="media-equiv-audio-desc" relationship="sufficient"/>
+      <success-criterion idref="media-equiv-audio-desc-only" relationship="sufficient"/>
+      <success-criterion idref="media-equiv-extended-ad" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p> The purpose of this technique is to allow there to be more audio description than will fit into the gaps in the dialogue of the audio-visual material.</p>
+      <p>With SMIL 1.0 there is no easy way to do this but it can be done by breaking the audio and video files up into a series of files that are played sequentially. Additional audio description is then played while the audio-visual program is frozen. The last frame of the video file is frozen so that it remains on screen while the audio file plays out.</p>
+      <p>The effect is that the video appears to play through from end to end but freezes in places while a longer audio description is provided. It then continues automatically when the audio description is complete.</p>
+      <p>To turn the extended audio description on and off one could use script to switch back and forth between two SMIL scripts, one with and one without the extended audio description lines. Or script could be used to add or remove the extended audio description lines from the SMIL file so that the film clips would just play sequentially.</p>
+      <p>If scripting is not available then two versions of the video could be provided, one with and one without extended audio descriptions.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>SMIL 1.0 Video with audio descriptions that pause the main media in 4 locations to allow extended audio description</head>
+         <code><![CDATA[   
+<?xml version="1.0" encoding="UTF-8"?>
+<smil xmlns:qt="http://www.apple.com/quicktime/resources/smilextensions" 
+xmlns="http://www.w3.org/TR/REC-smil" qt:time-slider="true">
+  <head>
+    <layout>
+      <root-layout background-color="black" height="266" width="320"/>
+      <region id="videoregion" background-color="black" top="26" left="0" 
+      height="144" width="320"/>
+    </layout>
+  </head>
+  <body>
+  <par>
+   <seq>
+     <par>
+       <video src="video.rm" region="videoregion" clip-begin="0s" clip-end="5.4" 
+       dur="8.7" fill="freeze" alt="videoalt"/>   
+       <audio src="no1.wav" begin="5.4" alt="audio alt"/>
+     </par>
+     <par>
+       <video src="video.rm" region="videoregion" clip-begin="5.4" clip-end="24.1" 
+       dur="20.3" fill="freeze" alt="videoalt"/>
+       <audio src="no2.wav" begin="18.7" alt="audio alt"/>
+     </par>
+     <par>
+       <video src="video.rm" region="videoregion" clip-begin="24.1" clip-end="29.6" 
+       dur="7.7" fill="freeze" alt="videoalt"/>
+       <audio src="no3.wav" begin="5.5" alt="audio alt"/>
+     </par>
+     <par>
+       <video src="video.rm" region="videoregion" clip-begin="29.6" clip-end="34.5" 
+       dur="5.7" fill="freeze" alt="videoalt"/>
+       <audio src="no4.wav" begin="4.9" alt="audio alt"/>
+     </par>
+     <par>
+       <video src="video.rm" region="videoregion" clip-begin="77.4" alt="video alt"/>
+     </par>
+   </seq>
+  </par>
+</body>
+</smil>
+]]></code>
+         <description>
+            <p>The markup above is broken into five <code><![CDATA[<par>]]></code> segments. In each, there is a <code><![CDATA[<video>]]></code> and an <code><![CDATA[<audio>]]></code> tag (the last <code><![CDATA[<par>]]></code> has no <code><![CDATA[<audio>]]></code> tag intentionally). The convention with extended audio descriptions is that the main media pauses during the description. The way to make this happen in SMIL 1.0 is to set a "<code><![CDATA[clip-begin]]></code>" and "<code><![CDATA[clip-end]]></code>" which dictate the start and end of the video clip, and to set a duration for the clip that is longer than what is defined by the "<code><![CDATA[clip-begin]]></code>" and "<code><![CDATA[clip-end]]></code>". The <code><![CDATA[fill="freeze"]]></code> holds the last frame of the video during the extended description. The <code><![CDATA[<audio>]]></code> tag has a "<att>begin</att>" attribute with a value that is equal to the "<code><![CDATA[clip-end]]></code>" value of the preceding <code><![CDATA[<video>]]></code> tag.</p>
+            <p>To determine the values for "<code><![CDATA[clip-begin]]></code>," "<code><![CDATA[clip-end]]></code>", and "<code><![CDATA[dur]]></code>", find the start and end time of the portion of the video being described, and find out the total length of the extended audio description. The "<code><![CDATA[clip-begin]]></code>" and "<code><![CDATA[clip-end]]></code>" define their own values, but the "<att>dur</att>" value is the sum of the length of the extended description and the clip defined by the "<code><![CDATA[clip-begin]]></code>" and "<code><![CDATA[clip-end]]></code>". In the first <code><![CDATA[<par>]]></code>, the video clip starts at 0 seconds, ends at 5.4 seconds, and the description length is 3.3 seconds, so the "<att>dur</att>" value is 5.4s + 3.3s = 8.7s.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/REC-smil/">Synchronized
+                                        Multimedia Integration Language (SMIL) 1.0</loc>
+								       </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/SMIL/">Synchronized Multimedia
+                                        Integration Language (SMIL 2.0)</loc>
+								       </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/SMIL-access/">Accessibility
+                                        Features of SMIL</loc>
+								       </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://ncam.wgbh.org/invent_build/web_multimedia/accessible-digital-media-guide/guideline-h-multimedia#techH12">NCAM Rich Media Accessibility, Accessible SMIL
+                                    Templates</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="SM2"/>
+      <relatedtech idref="SM6"/>
+      <relatedtech idref="G81"/>
+      <relatedtech idref="SM11"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Play file with extended audio descriptions</p>
+            </item>
+            <item>
+               <p> Play file with audio description </p>
+            </item>
+            <item>
+               <p>Check whether video freezes in places and plays extended audio description</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> #3 is true </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

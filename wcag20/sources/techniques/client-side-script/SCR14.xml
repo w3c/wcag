@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SCR14">
+   <short-name>Using scripts to make nonessential alerts optional</short-name>
+   <applicability>
+      <p>Scripting technologies which use scripting alerts for non-emergency communication.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="time-limits-postponed" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to display a dialog containing a message (alert) to the user.  When the alert is displayed, it receives focus and the user must activate the OK button on the dialog to dismiss it. Since these alerts cause focus to change they may distract the user, especially when used for non-emergency information. Alerts for non-emergency purposes such as displaying a quote of the day, helpful usage tip, or count down to a particular event, are not presented unless the user enables them through an option provided in the Web page.</p>
+      <p>This technique assigns a global JavaScript variable to store the user preference for displaying alerts. The default value is false. A wrapper function is created to check the value of this variable before displaying an alert. All calls to display an alert are made to this wrapper function rather than calling the alert() function directly. Early in the page, a button is provided for the user to enable the display of alerts on the page. This technique works on a visit by visit basis.     Each time the page is loaded, alerts will be disabled and the user must manually enable them. Alternatively, the author could use cookies to store user preferences across sessions.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>The script below will display a quote in an alert box every ten seconds, if the user selects the "Turn Alerts On" button. The user can turn the quotes off again by choosing "Turn Alerts Off".</p>
+         </description>
+         <code><![CDATA[
+<script type="text/javascript">
+var bDoAlerts = false;  // global variable which specifies whether to 
+                                       // display alerts or not
+/* function to enable/disable alerts.
+ * param boolean bOn - true to enable alerts, false to disable them.
+*/
+function modifyAlerts(isEnabled) {
+   bDoAlerts = isEnabled;
+}
+/* wrapper function for displaying alerts.  Checks the value of bDoAlerts
+*and only calls the alert() function when bDoAlerts is true.
+*/
+function doAlert(aMessage) {
+    if (bDoAlerts) {
+       alert(aMessage);
+    }
+}
+// example usage - a loop to display famous quotes.
+var gCounter = -1;  // global to store counter
+// quotes variable would be initialized with famous quotations
+var quotes = new Array("quote 1", "quote 2", "quote 3", "quote 4", "quote 5");
+function showQuotes() {
+   if (++gCounter &gt;= quotes.length) {
+     gCounter = 0;
+   }
+   doAlert(quotes[gCounter]);
+   setTimeout("showQuotes();", 10000);
+}
+showQuotes();
+</script>
+]]></code>
+         <description>
+            <p>Within the body of the page, include a way to turn the alerts on and off. Below is one example:</p>
+         </description>
+         <code><![CDATA[
+<body>
+<p>Press the button below to enable the display of famous quotes 
+using an alert box<br />
+<button id="enableBtn" type="button" onclick="modifyAlerts(true);">
+Turn Alerts On</button><br />
+<button id="disableBtn" type="button" onclick="modifyAlerts(false);">
+Turn Alerts Off</button></p>
+]]></code>
+         <description>
+            <p>Working example of this code: <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="enablealerts.html"
+                    linktype="examples">Demonstration of Alerts</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <tests>
+      <procedure>
+         <p>For a Web page that supports non-emergency interruptions using a JavaScript alert:</p>
+         <olist>
+            <item>
+               <p>Load the Web page and verify that no non-emergency alerts are displayed.</p>
+            </item>
+            <item>
+               <p>Verify there is a mechanism to activate the non-emergency alerts.</p>
+            </item>
+            <item>
+               <p>Activate the non-emergency alerts and verify that the alerts are displayed.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>For a Web page that supports non-emergency interruptions using a JavaScript alert, checks 1, 2, and 3 above are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

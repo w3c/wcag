@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH36">
+   <short-name>Using scripts to control blinking and stop it in five seconds or less</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="time-limits-pause" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to control blinking with script
+    				so it can be set to stop in less than five seconds by the script. The
+    				ActionScript <function>setTimeout()</function> method is used to stop the MovieClip's blinking
+    				behavior in less than 5 seconds. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Stopping blinking after a timeout</head>
+         <description>
+            <p>In this example a MovieClip (blinkingTextMC) uses its timeline to
+    						generate a blinking effect. Before 5 seconds has passed, the MovieClip's
+    						<function>gotoAndStop()</function> method is called, which stops the blinking effect. </p>
+         </description>
+         <code xml:space="preserve"><![CDATA[setTimeout(stopBlinking, 4500);
+function stopBlinking() {
+  var blinkingTextMC = getChildByName('blinkingTextMC');
+  blinkingTextMC.gotoAndStop(1);
+}
+]]></code>
+         <description>
+            <p>For a demonstration, view the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="control_blinking_with_script_as3.html"
+                    linktype="examples">working version of Stopping blinking after a timeout</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="control_blinking_with_script_as3.fla"
+                    linktype="examples">source of Stopping blinking after a timeout</loc> is available. </p>
+         </description>
+      </eg-group>
+   </examples>
+   <tests>
+      <procedure>
+         <p>For each instance of blinking content: </p>
+         <olist>
+            <item>
+               <p> Start a timer for 5 seconds at the start of the blink effect. </p>
+            </item>
+            <item>
+               <p> When the timer expires, determine if the blinking has stopped. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> For each instance of blinking content, #2 is true. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Using_scripts_to_control_blinking_and_stop_it_in_five_seconds_or_less"/>
+					</source>
+   </admin>
+</technique>

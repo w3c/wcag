@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F52">
+   <short-name>Failure of Success Criterion 3.2.1 and 3.2.5 due to opening a new window as soon as a new page is loaded</short-name>
+   <applicability>
+      <p>Applies when scripting is used to open new windows. </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="consistent-behavior-receive-focus" relationship="failure"/>
+      <success-criterion idref="consistent-behavior-no-extreme-changes-context"
+                         relationship="failure"/>
+   </applies-to>
+   <description>
+      <p> Some Web sites open a new window when a page is loaded, to advertise a
+                        product or service. The objective of this technique is to ensure that pages
+                        do not disorient users by opening up one or more new windows that automatically attain focus as soon as a
+                        page is loaded. </p>
+   </description>
+   <examples>
+      <note>
+         <p>There are multiple methods by which this failure may be triggered. Two
+                            common examples that are supported differently in various versions of
+                            user agents are listed as examples below. </p>
+      </note>
+      <eg-group role="failure">
+         <head/>
+         <description>
+            <p>The following example is commonly used in HTML 4.01 to open new
+                                windows when pages are loaded.</p>
+         </description>
+         <code><![CDATA[
+window.onload = showAdvertisement;
+ function showAdvertisement()
+ {
+  window.open('advert.html', '_blank', 'height=200,width=150');
+ }]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <head/>
+         <description>
+            <p>The following example commonly used in XHTML to open new windows when
+                                pages are loaded.</p>
+         </description>
+         <code><![CDATA[
+if (window.addEventListener) { 
+    window.addEventListener("load", showAdvertisement, true);
+}
+if (window.attachEvent) {
+    window.attachEvent("onload", showAdvertisement);
+}
+function showAdvertisement()
+{
+window.open('noscript.html', '_blank', 'height=200,width=150');
+}]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also/>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G107"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> load a new page </p>
+            </item>
+            <item>
+               <p> check to see whether a new window has been opened as a result of
+                                    loading the new page </p>
+            </item>
+            <item>
+               <p>Check to see whether the new window is automatically given focus </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> If step 2 and step 3 are true, then this failure condition applies and
+                                    content fails the Success Criterion. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

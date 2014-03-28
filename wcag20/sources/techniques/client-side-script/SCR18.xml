@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SCR18">
+   <short-name>Providing client-side validation and alert</short-name>
+   <applicability>
+      <p>Content that validates user input.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="minimize-error-identified" relationship="sufficient"/>
+      <success-criterion idref="minimize-error-suggestions" relationship="sufficient"/>
+      <success-criterion idref="minimize-error-reversible" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to validate user input as values are entered for each field, by means of client-side scripting. If errors are found, an alert dialog describes the nature of the error in text. Once the user dismisses the alert dialog, it is helpful if the script positions the keyboard focus on the field where the error occurred.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>The following script will check that a valid date has been entered in the form control.</p>
+         </description>
+         <code><![CDATA[
+<label for="date">Date:</label>
+<input type="text" name="date" id="date" 
+onchange="if(isNaN(Date.parse(this.value))) 
+alert('This control is not a valid date. 
+Please re-enter the value.');" />
+]]></code>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="G89"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For form fields that require specific input:</p>
+         <olist>
+            <item>
+               <p>enter invalid data</p>
+            </item>
+            <item>
+               <p>determine if an alert describing the error is provided.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#2 is true</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

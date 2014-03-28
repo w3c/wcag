@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="G152">
+   <short-name>Setting animated gif images to stop blinking after n cycles (within 5 seconds)</short-name>
+   <applicability>
+      <p>Any technology that supports animated gif (GIF89a)</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="time-limits-pause" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to ensure that animated gif images stop blinking within five seconds. There are three aspects of the design of animated gif images that work together to determine how long the image blinks (or otherwise animates):</p>
+      <ulist>
+         <item>
+            <p>the number of
+                <emph role="bold">frames</emph>
+                in the image, which are discrete images in the animation sequence;</p>
+         </item>
+         <item>
+            <p>the
+                <emph role="bold">frame rate</emph>, which is how long each image is displayed;</p>
+         </item>
+         <item>
+            <p>the number of
+                <emph role="bold">repetitions</emph>, which is how many times the entire animation is performed;</p>
+         </item>
+      </ulist>
+      <p>At its simplest, the duration of the animation is the number of frames times the frame rate times the number of repetitions. For example, a simple blinking image with 2 frames, a frame rate of .5 seconds, and 3 repetitions will have a duration of (2 * 0.5 * 3) seconds, or exactly 3 seconds.</p>
+      <p>Many animated gif images have a constant frame rate, i.e., the amount of time each frame is displayed is the same. However, it is possible to set a different frame rate for each frame, to allow certain frames to be displayed longer than others. In this case, the duration of the animation is the sum of the frame rates times the number of repetitions. For example, a simple image with two frames, the first of which displays for .75 seconds and the second for .25 seconds, and three repetitions will have a duration of ((.75 + .25) * 3) seconds, also exactly 3 seconds.</p>
+      <p>For an image to stop blinking within 5 seconds, one of the three variables must be adjusted. Most commonly, set the number of repetitions to five seconds divided by the product of the number of frames times the frame rate (or by the sum of the frame rate). Truncate this number down to the nearest integer, do not round up to the next integer, to ensure that the image will stop within five seconds.</p>
+      <p>If even one repetition results in more than five seconds of animation, one of the other factors must be adjusted. Reduce the number of frames in the image, or increase the frame rate. Be careful when increasing the frame rate that the resulting image does not fail the requirement not to exceed the general flash or red flash thresholds; attention to this is especially important for large images.</p>
+   </description>
+   <examples>
+      <ulist>
+         <item>
+            <p>
+                <emph role="bold">A simple blinking image.</emph>
+                An image has 2 frames, a frame rate of .5 seconds, and 3 repetitions. The animation has a duration of (2 * 0.5 * 3) seconds, or exactly 3 seconds, and therefore meets the requirements of the success criterion.</p>
+         </item>
+      </ulist>
+   </examples>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Display an animated gif and time how long it animates.</p>
+            </item>
+            <item>
+               <p>Alternatively, use an image editor to determine the number of frames, the frame rate, and the number of repetitions. Calculate the product of the number of frames multiplied by the frame rate times the number of repetitions. If the frame rates are not uniform, calculate the product of the sum of the frame rates multiplied by the number of repetitions.</p>
+            </item>
+            <item>
+               <p>Using either method, the duration of animation should be less than or equal to 5 seconds.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Check #3 is true</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

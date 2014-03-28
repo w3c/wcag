@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H46">
+   <short-name>Using <el>noembed</el> with <el>embed</el>
+				</short-name>
+   <applicability>
+      <p>Documents that load plugins with the <el>embed</el> element.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+      <success-criterion idref="media-equiv-text-doc" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="general" version="">
+         <note>
+            <p>Although <el>embed</el> is widely supported in user agents - it is not a valid part
+                of HTML or XHTML.</p>
+            <!--BBC: Commenting out for now, issue response okay without this info for now. ednote>
+            <edtext>@@ add user agent notes section to reflect details about user agents that support this. Refer to <loc href="http://www.w3.org/2006/02/lc-comments-tracker/35422/understandingwcag20/786">LC-786</loc>.</edtext>
+          </ednote-->
+         </note>
+      </ua-issue>
+   </ua-issues>
+   <description id="noembed_desc">
+      <p>The objective of this technique is to provide alternative content for the
+            <el>embed</el> element in a <el>noembed</el> element. The <el>noembed</el> is rendered
+            only if the <el>embed</el> is not supported. While it can be positioned anywhere on the
+            page, it is a good idea to include it as a child element of <el>embed</el> so that it is
+            clear to assistive technologies that a text alternative is associated with the
+            <el>embed</el> element it describes.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>
+							     <el>noembed</el> is provided inside an <el>embed</el>
+						   </head>
+         <code><![CDATA[<embed src="../movies/history_of_rome.mov"
+  height="60" width="144" autostart="false">
+  <noembed>
+    <a href="../transcripts/transcript_history_rome.htm">Transcript of "The history of Rome"</a>
+  </noembed>
+</embed>]]></code>
+      </eg-group>
+      <eg-group>
+         <head>
+							     <el>noembed</el> is provided beside an <el>embed</el>
+						   </head>
+         <code><![CDATA[<embed src="moviename.swf" width="100" height="80"
+  pluginspage="http://example.com/shockwave/download/" />
+<noembed>
+  <img alt="Still from Movie" src="moviename.gif" 
+    width="100" height="80" />
+</noembed>;]]></code>
+      </eg-group>
+   </examples>
+   <resources/>
+   <related-techniques/>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Check if <el>embed</el> element has a child <el>noembed</el> element </p>
+            </item>
+            <item>
+               <p>Check if <el>embed</el> element has a <el>noembed</el> element that
+                  immediately follows it. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#1 is true or #2 is true </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F36">
+   <short-name>Failure of Success Criterion 3.2.2 due to automatically submitting a form and
+                    presenting new content without prior warning when the last field in the form is
+                    given a value</short-name>
+   <applicability>
+      <p>HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="consistent-behavior-unpredictable-change" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>Forms are frequently designed so that they submit automatically when the user
+                        has filled in all the fields, or when focus leaves the last field. There are
+                        two problems with this approach. First is that a disabled user who needs
+                        more context may move focus away from the field to the directions on how to
+                        fill in the form, or to other text, accidentally submitting the form. The
+                        other is that, with some form elements, the value of the field changes as
+                        each item is navigated with the keyboard, again accidentally submitting the
+                        form. It is better to rely on the standard form behavior of the submit
+                        button and enter key. </p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <head/>
+         <description>
+            <p> This failure example submits a form when the user leaves the last
+                                field of a three-field telephone number form. The form will submit
+                                if the user leaves the field after editing it, even navigating
+                                backwards in the tab order. Developers should not use this method to
+                                submit a form, and should instead use a submit button, or rely on
+                                the form's default behavior of submitting when the user hits enter
+                                in a text field. </p>
+         </description>
+         <code><![CDATA[ 
+<form method="get" id="form1">
+  <input type="text" name="text1" size="3" maxlength="3"> - 
+  <input type="text" name="text2" size="3" maxlength="3"> - 
+  <input type="text" name="text3" size="4" maxlength="4" onchange="form1.submit();">
+</form> ]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <head/>
+         <description>
+            <p>This is a  example that submits a form when the user
+                                selects an option from the menu when there is no warning of this behavior in advance. The form will submit as soon as an item from the menu is selected. A user using a keyboard will not be able to navigate past the first item in the menu. Blind users and users with hand tremors can easily make a mistake on which item on the dropdown menu to choose and they are taken to the wrong destination before they can correct it.  </p>
+         </description>
+         <code><![CDATA[ 
+<form method="get" id="form2">
+ <input type="text" name="text1">
+  <select name="select1" onchange="form2.submit();">
+    <option>one</option>
+    <option>two</option>
+    <option>three</option>
+    <option>four</option>
+  </select>
+</form>]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also/>
+   </resources>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Enter data in all fields on page starting at top. </p>
+            </item>
+            <item>
+               <p> Enter data in last field and exit from it (tab out of it).</p>
+            </item>
+            <item>
+               <p> Check whether leaving the last field causes change of
+                                context.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> If step #3 is true, then this failure condition applies and content
+                                    fails the Success Criterion. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>
