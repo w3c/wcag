@@ -173,7 +173,7 @@
     <!-- Create pages for techniques intro-->
     <xsl:template match="body/div1/div2">
       <xsl:variable name="prev" select="(preceding::div1[not(@diff = 'del')] | preceding::technique[not(@diff = 'del')] | preceding::div2[not(@diff = 'del')] | preceding::div1[@id!='placeholders'])[last()]"/>
-      <xsl:variable name="next" select="(following::technique[not(@diff = 'del')] | following::div2[not(@diff = 'del')] | following::inform-div1[not(@diff = 'del')])[1]"/>
+      <xsl:variable name="next" select="(following::technique[not(@diff = 'del')] | following::div2[not(@diff = 'del')])[1]"/>
     	<xsl:variable name="filename">
     		<xsl:apply-templates select="." mode="slice-techniques-filename"/>
     	</xsl:variable>
@@ -220,8 +220,8 @@
     <xsl:choose>
       <xsl:when test="$slices= '0'"/>
       <xsl:otherwise>
-    <xsl:variable name="prev" select="(preceding::technique[not(@diff = 'del')] | preceding::div2[not(@diff = 'del')] | preceding::inform-div1[not(@diff = 'del')])[last()]"/>
-    <xsl:variable name="next" select="(following::div1[not(@diff = 'del')] | following::div2[not(@diff = 'del')] | following::inform-div1[not(@diff = 'del')])[1]"/>
+    <xsl:variable name="prev" select="(preceding::technique[not(@diff = 'del')] | preceding::inform-div1[not(@diff = 'del')])[last()]"/>
+    <xsl:variable name="next" select="(following::div1[not(@diff = 'del')] | following::inform-div1[not(@diff = 'del')])[1]"/>
       	<xsl:variable name="filename">
       		<xsl:apply-templates select="." mode="slice-techniques-filename"/>
       	</xsl:variable>
@@ -304,8 +304,8 @@
               <xsl:apply-templates/>
             </div>
             <xsl:call-template name="navigation.bottom">
-              <xsl:with-param name="prev" select="(preceding::div1[not(@diff = 'del')]|preceding::inform-div1[not(@diff = 'del')])[last()]"/>
-              <xsl:with-param name="next" select="(following::div1[not(@diff = 'del')]|following::inform-div1[not(@diff = 'del')])[1]"/>
+              <xsl:with-param name="prev" select="$prev"/>
+              <xsl:with-param name="next" select="$next"/>
             </xsl:call-template>
             <xsl:call-template name="footer"></xsl:call-template>
           </body>
@@ -524,6 +524,7 @@
   <xsl:template name="href.nav">
     <xsl:param name="target" select="."/>
     <xsl:choose>
+      <xsl:when test="$target/ancestor-or-self::front or $target/ancestor-or-self::back"> <xsl:value-of select="$target/head"/></xsl:when>
       <xsl:when test="$target/@id">
         <xsl:value-of select="$target/head"/>
         <xsl:value-of select="$target/@id"/>: <xsl:value-of select="$target/short-name"/>
@@ -538,6 +539,7 @@
     <xsl:choose>
       <xsl:when test="$target/@id='references'"> <xsl:value-of select="$target/head"/></xsl:when>
       <xsl:when test="$target/@id='intro'"> <xsl:value-of select="$target/head"/></xsl:when>
+      <xsl:when test="$target/ancestor-or-self::inform-div1"> <xsl:value-of select="$target/head"/></xsl:when>
       <xsl:when test="$target/../@role='failures'">Failure <xsl:value-of select="$target/@id"/></xsl:when>
       <xsl:when test="$target/@id">
         <xsl:value-of select="$target/head"/>

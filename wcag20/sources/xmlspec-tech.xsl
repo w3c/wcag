@@ -804,7 +804,7 @@
         </h2>
       	<xsl:if test="$bytech != '1'">
       	<ul>
-      		<xsl:apply-templates select="//div1[not(@id = 'placeholders')]" mode="toc"><xsl:with-param name="local.toc.level" select="1"/></xsl:apply-templates>
+      		<xsl:apply-templates select="//div1[not(@id = 'placeholders')] | //inform-div1" mode="toc"><xsl:with-param name="local.toc.level" select="1"/></xsl:apply-templates>
       	</ul>
       		</xsl:if>
         <ul class="toc">
@@ -817,7 +817,7 @@
             	<xsl:variable name="toc.base"><xsl:if test="$bytech = '1'"><xsl:value-of select="$techsthisversion"/></xsl:if></xsl:variable>
             	<li><a href="{$toc.base}#abstract">Abstract </a></li>
             	<li><a href="{$toc.base}#status">Status of This Document </a></li>
-              <xsl:apply-templates select="//div1[not(@id = 'placeholders')]" mode="toc"/>
+              <xsl:apply-templates select="//div1[not(@id = 'placeholders')] | //inform-div1" mode="toc"/>
             </xsl:otherwise>
           </xsl:choose>
         </ul>
