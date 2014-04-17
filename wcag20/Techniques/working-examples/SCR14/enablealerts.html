@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Enable Alerts</title>
+<script type="text/javascript">
+//<![CDATA[
+
+var bDoAlerts = false;  // global variable which specifies whether to display alerts or not
+/* function to modify alerts.*/
+function modifyAlerts(isEnabled) {
+   bDoAlerts = isEnabled;
+}
+/* wrapper function for displaying alerts.  Checks the value of bDoAlerts
+*and only calls the alert() function when bDoAlerts is true.
+*/
+function doAlert(aMessage) {
+    if (bDoAlerts) {
+       alert(aMessage);
+    }
+}
+// example usage - a loop to display famous quotes.
+var gCounter = -1;  // global to store counter
+// quotes variable would be initialized with famous quotations
+var quotes = new Array("quote 1", "quote 2", "quote 3", "quote 4", "quote 5");
+function showQuotes() {
+    if (++gCounter >= quotes.length) {
+       gCounter = 0;
+    }
+    doAlert(quotes[gCounter]);
+    setTimeout("showQuotes();", 5000);
+}
+
+//]]>
+</script>
+</head>
+<body onload="showQuotes();">
+
+<p>Press the button below to enable the display of famous quotes using an alert box<br />
+<button id="enableBtn" type="button" onclick="modifyAlerts(true);">Turn Alerts On</button>&nbsp;&nbsp;
+<button id="disableBtn" type="button" onclick="modifyAlerts(false);">Turn Alerts Off</button></p>
+</body>
+</html>
