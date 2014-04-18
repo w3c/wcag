@@ -1148,7 +1148,7 @@ return you back to the main page</div>
                     <p>When associating text to a focusable element with the help of <att>aria-labelledby</att>, the target text element is given an ID which is referenced in the value of the <att>aria-labelledby</att> attribute of the focusable element.</p>
                     <p>It is also possible to use several text elements on the page as a label for a focusable element. Each of the text elements used must be given a unique ID which is referenced as a string of IDs (IDREF) in the value of the <att>aria-labelledby</att> attribute. The label text should then be concatenated following the order of IDs in the value of the <att>aria-labelledby</att> attribute.</p>
                     <p>When applied on links, <att>aria-labelledby</att> can be used to identify the purpose of a link that may be readily apparent for sighted users, but less obvious for screen reader users.</p>
-                    <p>The specified behavior of <att>aria-labelledby</att> is that the associated label text is announced instead of the link text (not in addition to the link text). When the link text itself should be included in the label text, the ID of the link should be referenced as well in the string of IDs forming the value of the <att>aria-labelledby</att> attribute.</p>
+                    <p>The specified behavior of <att>aria-labelledby</att> is that the associated label text is announced instead of the link text (not in addition to the link text). In many cases, it is important that the link text itself should be included in the label text. For instance, when speaking to a user who is blind about the contents of a page it would be helpful if were able to discern the contents of the link text. In these cases, the ID of the link should be referenced as well in the string of IDs forming the value of the <att>aria-labelledby</att> attribute. Alternatively, <att>aria-describedby</att> could be used which will provide the supplementary text which is referenced  text along with link text. </p>
                     <p>For more information on the naming hierarchy please consult the <loc href="http://www.w3.org/TR/wai-aria/roles#textalternativecomputation">ARIA specification</loc> and the <loc href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">accessible name and description calculation</loc> in the HTML to Platform Accessibility APIs Implementation Guide.</p>
 				</description>
 				<examples>
@@ -1177,7 +1177,7 @@ return you back to the main page</div>
 					<eg-group>
 						<head>Concatenating link text from multiple sources, variation</head>
 						<description>
-							<p>There may be cases where an author will placed a tag around a section of code that will be referenced.</p>
+							<p>There may be cases where an author will place a tag around a section of code that will be referenced.</p>
                             <p>Note: The use of <code>tabindex="-1"</code> on the <el>span</el> element is not meant to support focusing by scripts - here, it merely serves to ensure that some browsers (IE9, IE10) will include the <el>span</el> element in the accessibility tree, thus making it available for reference by <att>aria-labelledby</att>. For more details see <loc href="http://msdn.microsoft.com/en-us/library/ie/gg701963%28v=vs.85%29.aspx#Accessible_HTML_Elements">Accessible HTML Elements</loc>.</p>
 						<codeblock xml:space="preserve"><![CDATA[<p>Download <span id="report-title" tabindex="-1">2012 Sales Report</span>:
 <a aria-labelledby="report-title pdf" href="#" id="pdf">PDF</a> |
@@ -2485,7 +2485,69 @@ $(document).ready(function(e) {
 					</expected-results>
 				</tests>
 			</technique>            
-            
+  <technique id="ARIA20" diff="add">
+				<short-name>Using aria-describedby for link purpose</short-name>
+				<applicability>
+					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
+					
+                            
+                        </ulist>
+					</ua-issue>
+				</ua-issues>
+				<description>
+					<p>With the <att>aria-describedby</att> attribute, authors can use a visible text element on the page as a label for a focusable element (a form control or a link). For example, a "read more..." link could be associated with the text of the heading of the preceding section to make the purpose of the link unambiguous (see example 1).</p>
+		
+                    <p>When associating target text with a focusable element with the help of <att>aria-describedby</att>, the target text element is given an ID which is referenced in the value of the <att>aria-describedby</att> attribute of the focusable element.</p>
+                    <p>It is also possible to reference several text elements on the page to provide a more detailed description for a focusable element. Each of the text elements used must be given a unique ID which is referenced as a string of IDs (IDREF) in the value of the <att>aria-describedby</att> attribute. The description text should then be concatenated following the order of IDs in the value of the <att>aria-describedby</att> attribute.</p>
+                    <p>When applied on links, <att>aria-describedby</att> can be used to identify the purpose of a link that may be readily apparent for sighted users, but less obvious for screen reader users.</p>
+					<p>From the perspective of a web author, <att>aria-describedby</att> references target text exactly like <att>aria-labelledby</att>. However, unlike <att>aria-labelledby</att>, the <att>aria-describedby</att> attribute allows the link text AND the supplementary text to be read by assistive technology. This is a great advantage over <att>aria-labelledby</att> which, by default, replaces the link text, and without special attention, leaves a non-sighted user without any reasonable way of knowing what is in the actual anchor link text.</p>
+                    
+				</description>
+				<examples>
+					<eg-group>
+						<head>Providing additional information for links</head>
+						<description>
+							<p>This example should replace the "read more" link text at the end of the teaser text with the content of the <el>h2</el> heading referenced by <att>aria-labelledby</att>.</p>
+						<codeblock xml:space="preserve"><![CDATA[<h2 id="headline">Stock market makes dramatic recovery</h2>
+
+<p>After a day of heavy trading, all major market report significant imporvements</p>
+   <a href="news.html" aria-describedby="headline">Read more...</a></p>]]></codeblock>
+                            </description>
+                    </eg-group>
+                    
+					                    
+				
+                </examples>
+				<resources>
+					<see-also>
+						<ulist>
+							
+						</ulist>
+					</see-also>
+				</resources>
+<related-techniques>
+				</related-techniques>
+				<tests>
+					<procedure>
+						<p>For each link that has an <att>aria-describedby</att> attribute:</p>
+                        <olist>
+							<item>
+								<p>Check that each ID in the value of the <att>aria-describedby</att> attribute matches an ID of a text element used as part of the link purpose.</p>
+							</item>
+							<item>
+								<p>Check that the value of the <att>aria-describedby</att> combined with the link text provides the purpose of the link.</p>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>#1 is true.</p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>          
             
         </div1>
 	</body>
