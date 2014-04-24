@@ -81,7 +81,7 @@
           </xsl:call-template>
 			Advisory Techniques for Guideline <xsl:value-of select="../../head"/> (not success criteria specific)</h3>
         <div   class="textbody">
-          <p  >Specific techniques for meeting each Success Criterion for this guideline are listed in the understanding sections for each Success Criterion (listed below). If there are techniques, however, for addressing this guideline that do not fall under any of the success criteria, they are listed here. These techniques are not required or sufficient for meeting any success criteria, but can make certain types of Web content more accessible to more people.</p>
+          <p  >DAVID TEST EDIT Specific techniques for meeting each Success Criterion for this guideline are listed in the understanding sections for each Success Criterion (listed below). If there are techniques, however, for addressing this guideline that do not fall under any of the success criteria, they are listed here. These techniques are not required or sufficient for meeting any success criteria, but can make certain types of Web content more accessible to more people.</p>
           <xsl:choose>
             <xsl:when test="count(../ulist) = 0">
               <ul  >
