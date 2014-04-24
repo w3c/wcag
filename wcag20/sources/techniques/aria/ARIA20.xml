@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="ARIA20" diff="add">
+				<short-name>Using aria-describedby for link purpose</short-name>
+				<applicability>
+					<p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
+					
+                            
+                        </ulist>
+					</ua-issue>
+				</ua-issues>
+				<description>
+					<p>With the <att>aria-describedby</att> attribute, authors can use a visible text element on the page as a label for a focusable element (a form control or a link). For example, a "read more..." link could be associated with the text of the heading of the preceding section to make the purpose of the link unambiguous (see example 1).</p>
+		
+                    <p>When associating target text with a focusable element with the help of <att>aria-describedby</att>, the target text element is given an ID which is referenced in the value of the <att>aria-describedby</att> attribute of the focusable element.</p>
+                    <p>It is also possible to reference several text elements on the page to provide a more detailed description for a focusable element. Each of the text elements used must be given a unique ID which is referenced as a string of IDs (IDREF) in the value of the <att>aria-describedby</att> attribute. The description text should then be concatenated following the order of IDs in the value of the <att>aria-describedby</att> attribute.</p>
+                    <p>When applied on links, <att>aria-describedby</att> can be used to identify the purpose of a link that may be readily apparent for sighted users, but less obvious for screen reader users.</p>
+					<p>From the perspective of a web author, <att>aria-describedby</att> references target text exactly like <att>aria-labelledby</att>. However, unlike <att>aria-labelledby</att>, the <att>aria-describedby</att> attribute allows the link text AND the supplementary text to be read by assistive technology. This is a great advantage over <att>aria-labelledby</att> which, by default, replaces the link text, and without special attention, leaves a non-sighted user without any reasonable way of knowing what is in the actual anchor link text.</p>
+                    
+				</description>
+				<examples>
+					<eg-group>
+						<head>Providing additional information for links</head>
+						<description>
+							<p>This example should replace the "read more" link text at the end of the teaser text with the content of the <el>h2</el> heading referenced by <att>aria-labelledby</att>.</p>
+						<codeblock xml:space="preserve"><![CDATA[<h2 id="headline">Stock market makes dramatic recovery</h2>
+
+<p>After a day of heavy trading, all major market report significant imporvements</p>
+   <a href="news.html" aria-describedby="headline">Read more...</a></p>]]></codeblock>
+                            </description>
+                    </eg-group>
+                    
+					                    
+				
+                </examples>
+				<resources>
+					<see-also>
+						<ulist>
+							
+						</ulist>
+					</see-also>
+				</resources>
+<related-techniques>
+				</related-techniques>
+				<tests>
+					<procedure>
+						<p>For each link that has an <att>aria-describedby</att> attribute:</p>
+                        <olist>
+							<item>
+								<p>Check that each ID in the value of the <att>aria-describedby</att> attribute matches an ID of a text element used as part of the link purpose.</p>
+							</item>
+							<item>
+								<p>Check that the value of the <att>aria-describedby</att> combined with the link text provides the purpose of the link.</p>
+							</item>
+						</olist>
+					</procedure>
+					<expected-results>
+						<ulist>
+							<item>
+								<p>#1 is true.</p>
+							</item>
+						</ulist>
+					</expected-results>
+				</tests>
+			</technique>          
