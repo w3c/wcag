@@ -33,7 +33,7 @@
     <xsl:variable name="prev" select="(preceding::div1)[last()]"/>
     <xsl:variable name="next" select="(following::div1|following::inform-div1)[1]"/>
   	<xsl:variable name="filename"><xsl:apply-templates select="." mode="slice-understanding-filename"/></xsl:variable>
-  	<xsl:result-document method="xml" href="{$output.dir}/{$filename}" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="no">
+  	<xsl:result-document method="xml" href="file:///{$output.dir}/{$filename}" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="no">
   		<html>
   			<xsl:if test="/spec/header/langusage/language">
   				<xsl:attribute name="lang"><xsl:value-of select="/spec/header/langusage/language/@id"/></xsl:attribute>
@@ -92,7 +92,7 @@
     <xsl:variable name="prev" select="(preceding::div2[@role='extsrc']|preceding::div1[@id!='placeholders']|preceding::inform-div1)[last()]"/>
     <xsl:variable name="next" select="(div2[@role='extsrc']|following::div1|following::inform-div1)[1]"/>
   	<xsl:variable name="filename"><xsl:apply-templates select="." mode="slice-understanding-filename"/></xsl:variable>
-  	<xsl:result-document method="xml" href="{$output.dir}/{$filename}" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="no">
+  	<xsl:result-document method="xml" href="file:///{$output.dir}/{$filename}" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="no">
   		<html>
   			<xsl:if test="/spec/header/langusage/language">
   				<xsl:attribute name="lang"><xsl:value-of select="/spec/header/langusage/language/@id"/></xsl:attribute>
@@ -190,7 +190,7 @@
       <xsl:variable name="prev" select="(preceding::div2[@role='extsrc']|parent::div1[@id!='placeholders'])[last()]"/>
       <xsl:variable name="next" select="(following::div2[@role='extsrc']|following::div1)[1]"/>
     	<xsl:variable name="filename"><xsl:apply-templates select="." mode="slice-understanding-filename"/></xsl:variable>
-    	<xsl:result-document method="xml" href="{$output.dir}/{$filename}" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="no">
+    	<xsl:result-document method="xml" href="file:///{$output.dir}/{$filename}" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="no">
     	    <html>
     	    	<xsl:if test="/spec/header/langusage/language">
     	    		<xsl:attribute name="lang"><xsl:value-of select="/spec/header/langusage/language/@id"/></xsl:attribute>
@@ -256,7 +256,7 @@
     <xsl:variable name="prev" select="(preceding::div1|preceding::inform-div1)[last()]"/>
     <xsl:variable name="next" select="(following::div1|following::inform-div1)[1]"/>
   	<xsl:variable name="filename"><xsl:apply-templates select="." mode="slice-understanding-filename"/></xsl:variable>
-  	<xsl:result-document method="xml" href="{$output.dir}/{$filename}" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="no">
+  	<xsl:result-document method="xml" href="file:///{$output.dir}/{$filename}" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="no">
   	    <html>
   	    	<xsl:if test="/spec/header/langusage/language">
   	    		<xsl:attribute name="lang"><xsl:value-of select="/spec/header/langusage/language/@id"/></xsl:attribute>
@@ -304,7 +304,7 @@
  
   <xsl:template match="spec">
   	<xsl:variable name="filename"><xsl:apply-templates select="." mode="slice-understanding-filename"/></xsl:variable>
-  	<xsl:result-document method="xml" href="{$output.dir}/{$filename}" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="no">
+  	<xsl:result-document method="xml" href="file:///{$output.dir}/{$filename}" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="no">
   	    <html>
   	    	<xsl:if test="/spec/header/langusage/language">
   	    		<xsl:attribute name="lang"><xsl:value-of select="/spec/header/langusage/language/@id"/></xsl:attribute>
