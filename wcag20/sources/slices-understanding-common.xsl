@@ -43,6 +43,7 @@
   				<title>
   					<xsl:apply-templates select="head" mode="text"/>  | Understanding WCAG 2.0
   				</title>
+  				<xsl:call-template name="canonical-link"/>
   				<xsl:call-template name="css"/>
   				<link rel="stylesheet" type="text/css" href="slicenav.css"/>
   				<xsl:if test="$show.diff.markup != 0">
@@ -104,6 +105,7 @@
   					</xsl:if>
   					<xsl:apply-templates select="head" mode="text"/>  | Understanding WCAG 2.0
   				</title>
+  				<xsl:call-template name="canonical-link"/>
   				<xsl:call-template name="css"/>
   				<link rel="stylesheet" type="text/css" href="slicenav.css"/>
   				<xsl:if test="@id='conformance'">
@@ -200,6 +202,7 @@
     				<title>
     					Understanding Success Criterion <xsl:call-template name="sc-number"><xsl:with-param name="id" select="@id"/></xsl:call-template>  | Understanding WCAG 2.0
     				</title>
+    	    		<xsl:call-template name="canonical-link"/>
     				<xsl:call-template name="css"/>
     				<link rel="stylesheet" type="text/css" href="slicenav.css"/>
     				<xsl:if test="$show.diff.markup != 0">
@@ -266,6 +269,7 @@
   				<title>
   					<xsl:apply-templates select="head" mode="text"/>  | Understanding WCAG 2.0
   				</title>
+  	    		<xsl:call-template name="canonical-link"/>
   				<xsl:call-template name="css"/>
   				<link rel="stylesheet" type="text/css" href="slicenav.css"/>
   				<xsl:if test="$show.diff.markup != 0">
@@ -318,6 +322,7 @@
   						<xsl:apply-templates select="header/version"/>
   					</xsl:if>
   				</title>
+  	    		<xsl:call-template name="canonical-link"/>
   				<link rel="stylesheet" type="text/css" href="additional.css"/>
   				<xsl:call-template name="css"/>
   			</head>
@@ -859,12 +864,24 @@
 
 <xsl:template name="footer">
 <div class="footer">
-	<p class="copyright">This Web page is part of <a href="Overview.html">Understanding WCAG 2.0: A guide to understanding and implementing WCAG 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+	<p class="copyright">This Web page is part of <a href="Overview.html">Understanding WCAG 2.0: A guide to understanding and implementing WCAG 2.0</a><xsl:call-template name="footer-latest-version-ref"/>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
  </p>
 	<p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © <xsl:apply-templates select="//pubdate/year"/><xsl:text> </xsl:text><a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div>
 </xsl:template>
 
-    <xsl:template match="div3[@id='conformance-terms']">
+	<xsl:template name="footer-latest-version-ref">
+		<xsl:text> (see the </xsl:text>
+		<a>
+			<xsl:attribute name="href">
+				<xsl:value-of select="ancestor::spec//latestloc/loc"/>
+				<xsl:apply-templates select="." mode="slice-techniques-filename"/>
+			</xsl:attribute>
+			<xsl:text>latest version of this document</xsl:text>
+		</a>
+		<xsl:text>)</xsl:text>
+	</xsl:template>
+	
+<xsl:template match="div3[@id='conformance-terms']">
         <xsl:apply-templates></xsl:apply-templates>
     </xsl:template>
 

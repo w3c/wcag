@@ -420,6 +420,7 @@
             <title>
               <xsl:value-of select="//header/title"/>  | Techniques for WCAG 2.0
             </title>
+        		<xsl:call-template name="canonical-link"/>
             <link rel="stylesheet" type="text/css" href="slicenav.css"/>
             
             <xsl:call-template name="css"/>
@@ -464,6 +465,7 @@
                 <xsl:value-of select="$additional.title"/>
               </xsl:if>
             </title>
+        		<xsl:call-template name="canonical-link"/>
             <xsl:call-template name="css"/>
             <xsl:if test="$show.diff.markup != 0">
               <script type="text/javascript" src="diffmarks.js"><xsl:text> </xsl:text></script>

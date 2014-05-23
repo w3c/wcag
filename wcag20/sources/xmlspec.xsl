@@ -1618,6 +1618,7 @@
 						<xsl:value-of select="$additional.title"/>
 					</xsl:if>
 				</title>
+				<xsl:call-template name="canonical-link"/>
 				<xsl:call-template name="css"/>
 				<xsl:call-template name="additional-head"/>
 			</head>
@@ -2491,4 +2492,20 @@
 		<xsl:apply-templates mode="text"/>
 	</xsl:template>
 	<xsl:template match="*[@diff = 'del']" mode="text"/>
+	
+	<!-- ================================================================= -->
+	
+	<!-- Link to latest version of current page -->
+	<xsl:template name="canonical-link">
+		<link rel="canonical">
+			<xsl:attribute name="href">
+				<xsl:value-of select="ancestor-or-self::spec//latestloc/loc"/>
+				<xsl:choose>
+					<xsl:when test="$slices"><xsl:apply-templates select="." mode="slice-techniques-filename"/></xsl:when> <!-- would like to remove Overview.html and file extensions -->
+					<xsl:when test="$show.diff.markup = 1">complete-diff</xsl:when>
+					<xsl:otherwise>complete</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
+		</link>
+	</xsl:template>
 </xsl:transform>
