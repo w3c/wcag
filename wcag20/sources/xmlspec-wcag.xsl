@@ -1040,96 +1040,96 @@
     </xsl:choose></xsl:variable>
     <xsl:choose>
       <xsl:when test="@linktype='general'">
-        <a href="{$techsthisversion}{@href}{$techanchor}">
+        <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
           <xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
         </a>
       </xsl:when>
       <xsl:when test="@linktype='html'">
-        <a href="{$techsthisversion}{@href}{$techanchor}">
+        <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
           <xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
         </a>  (HTML)
 			</xsl:when>
       <xsl:when test="@linktype='guideline'">
-        <a href="{$glthisversion}#{@href}">
+        <a href="{$glthisversion}#{@href}" class="gl-ref">
           <xsl:apply-templates/>
         </a>
       </xsl:when>
       <xsl:when test="@linktype='glossary'">
-        <a href="{$glthisversion}#{@href}">
+        <a href="{$glthisversion}#{@href}" class="gl-ref">
           <xsl:apply-templates/>
         </a>
       </xsl:when>
       <xsl:when test="@linktype='understanding'">
 		<xsl:variable name="filename"><xsl:apply-templates select="$guide-src//*[@id = current()/@href]" mode="slice-understanding-filename"/></xsl:variable>
 		<xsl:variable name="fragment"><xsl:if test="@href != substring-before($filename, '.')">#<xsl:value-of select="@href"/></xsl:if><xsl:if test="@locn-note">#<xsl:value-of select="@locn-note"/></xsl:if></xsl:variable>
-        <a href="{$guidethisversion}{$filename}{$fragment}">
+        <a href="{$guidethisversion}{$filename}{$fragment}" class="understanding-ref">
           <xsl:apply-templates/>
         </a>
       </xsl:when>
       <xsl:when test="@linktype='techniques'">
       	<xsl:variable name="filename"><xsl:apply-templates select="$techs-src//*[@id = current()/@href]" mode="slice-techniques-filename"/></xsl:variable>
       	<xsl:variable name="fragment"><xsl:if test="@href != substring-before($filename, '.')">#<xsl:value-of select="@href"/></xsl:if><xsl:if test="@locn-note">#<xsl:value-of select="@locn-note"/></xsl:if></xsl:variable>
-      	<a href="{$techsthisversion}{$filename}{$fragment}">
+        <a href="{$techsthisversion}{$filename}{$fragment}" class="tech-ref">
           <xsl:apply-templates/>
         </a>
       </xsl:when>
       <xsl:when test="@linktype='text'">
-        <a href="{$techsthisversion}{@href}{$techanchor}">
+        <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
           <xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
         </a>  (Text)
 			</xsl:when>
       <xsl:when test="@linktype='css'">
-        <a href="{$techsthisversion}{@href}{$techanchor}">
+        <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
           <xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
         </a>  (CSS)
 			</xsl:when>
       <xsl:when test="@linktype='script'">
-        <a href="{$techsthisversion}{@href}{$techanchor}">
+        <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
           <xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
         </a>  (Scripting)
 			</xsl:when>
 			<xsl:when test="@linktype='aria'">
-			  <a href="{$techsthisversion}{@href}{$techanchor}">
+			  <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
           <xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
         </a>  (ARIA)
 			</xsl:when>
       <xsl:when test="@linktype='failure'">
-        <a href="{$techsthisversion}{@href}{$techanchor}">
+        <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
           <xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
         </a>
       </xsl:when>
       <xsl:when test="@linktype='smil'">
-        <a href="{$techsthisversion}{@href}{$techanchor}">
+        <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
           <xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
         </a> (SMIL)
 			</xsl:when>
     	<xsl:when test="@linktype='flash'">
-    		<a href="{$techsthisversion}{@href}{$techanchor}">
+    	  <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
     			<xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
     		</a> (Flash)
     	</xsl:when>
     	<xsl:when test="@linktype='pdf'">
-    		<a href="{$techsthisversion}{@href}{$techanchor}">
+    	  <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
     			<xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
     		</a> (PDF)
     	</xsl:when>
     	<xsl:when test="@linktype='silverlight'">
-    		<a href="{$techsthisversion}{@href}{$techanchor}">
+    	  <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
     			<xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
     		</a> (Silverlight)
     	</xsl:when>
     	<xsl:when test="@linktype='examples'">
-        <a href="/WAI/WCAG20/Techniques/working-examples/{ancestor::technique/@id}/{@href}">
+    	  <a href="/WAI/WCAG20/Techniques/working-examples/{ancestor::technique/@id}/{@href}" class="ex-ref">
             <xsl:apply-templates/>
         </a>
       </xsl:when>
       <xsl:when test="@linktype='tests'">
-        <a href="test-files/{ancestor::technique/@id}/{@href}">
+        <a href="test-files/{ancestor::technique/@id}/{@href}" class="test-ref">
           <xsl:apply-templates/>
         </a>
       </xsl:when>
       <xsl:when test="@linktype='server'">
-        <a href="{$techsthisversion}{@href}{$techanchor}">
+        <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
           <xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
         </a> (SERVER)
 			</xsl:when>

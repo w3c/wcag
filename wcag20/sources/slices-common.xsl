@@ -473,27 +473,27 @@
 		<xsl:template match="loc">
 		<xsl:choose>
 			<xsl:when test="@linktype='general'">
-				<a href="{$techs-src//publoc/loc[@href]}{@href}.html" xmlns="http://www.w3.org/1999/xhtml">
+				<a href="{$techs-src//publoc/loc[@href]}{@href}.html" xmlns="http://www.w3.org/1999/xhtml" class="tech-ref">
 					<xsl:apply-templates/>
 				</a>
 			</xsl:when>
 			<xsl:when test="@linktype='html'">
-				<a href="{$techs-src//publoc/loc[@href]}#{@href}" xmlns="http://www.w3.org/1999/xhtml">
+				<a href="{$techs-src//publoc/loc[@href]}#{@href}" xmlns="http://www.w3.org/1999/xhtml" class="tech-ref">
 					<xsl:apply-templates/>
 				</a>
 			</xsl:when>
 			<xsl:when test="@linktype='guideline'">
-				<a href="{$gl-src//publoc/loc[@href]}guidelines.html#{@href}" xmlns="http://www.w3.org/1999/xhtml">
+				<a href="{$gl-src//publoc/loc[@href]}guidelines.html#{@href}" xmlns="http://www.w3.org/1999/xhtml" class="gl-ref">
 					<xsl:apply-templates/>
 				</a>
 			</xsl:when>
 			<xsl:when test="@linktype='css'">
-				<a href="{$techs-src//publoc/loc[@href]}#{@href}" xmlns="http://www.w3.org/1999/xhtml">
+				<a href="{$techs-src//publoc/loc[@href]}#{@href}" xmlns="http://www.w3.org/1999/xhtml" class="tech-ref">
 					<xsl:apply-templates/>
 				</a>
 			</xsl:when>
 			<xsl:when test="@linktype='script'">
-				<a href="{$techs-src//publoc/loc[@href]}#{@href}" xmlns="http://www.w3.org/1999/xhtml">
+				<a href="{$techs-src//publoc/loc[@href]}#{@href}" xmlns="http://www.w3.org/1999/xhtml" class="tech-ref">
 					<xsl:apply-templates/>
 				</a>
 			</xsl:when>
