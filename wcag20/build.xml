@@ -571,9 +571,43 @@ Enter &quot;ant -projecthelp&quot; to get list of available build tasks</echo>
 		</xslt>
 	</target>
 
+	<macrodef name="git">
+		<attribute name="command" />
+		<attribute name="dir" default="" />
+		<attribute name="outputproperty" default="git.@{command}" />
+		<element name="args" optional="true" />
+		<sequential>
+			<echo message="git @{command}" />
+			<exec executable="git" dir="@{dir}" outputproperty="@{outputproperty}">
+				<arg value="@{command}" />
+				<args/>
+			</exec>
+		</sequential>
+	</macrodef>
+
 	<!-- Publish the github pages branch -->
 	<target name="gh-pages" depends="clean">
-		<antcall target="understanding">
+		<!-- Get current Origin -->
+		<git command="remote" outputproperty="git.remote">
+			<args>
+				<arg value="show"/>
+				<arg value="origin"/>
+				<arg value="-n"/>
+			</args>
+		</git>
+		<echo>TODO: Parse for remote url for clone ${git.remote}</echo>
+		<git command="clone">
+			<args>
+				<arg value="--branch"/>
+				<arg value="gh-pages"/>
+				<arg value="--reference"/>
+				<arg value=".."/>
+				<arg value="http://github.com/nschonni/wcag.git"/>
+				<arg value="Generated"/>
+			</args>
+		</git>
+		<echo>Clone? ${git.clone}</echo>
+<!-- 		<antcall target="understanding">
 			<param name="outputdir.understanding" value="Generated/Understanding"/>
 			<param name="publoc.understanding" value="http://w3c.github.io/wcag/BRANCH_NAME/Understanding"/>
 			<param name="publoc.techniques" value="http://w3c.github.io/wcag/BRANCH_NAME/Techniques"/>
@@ -582,7 +616,7 @@ Enter &quot;ant -projecthelp&quot; to get list of available build tasks</echo>
 			<param name="outputdir.techniques" value="Generated/Techniques"/>
 			<param name="publoc.understanding" value="http://w3c.github.io/wcag/BRANCH_NAME/Understanding"/>
 			<param name="publoc.techniques" value="http://w3c.github.io/wcag/BRANCH_NAME/Techniques"/>
-		</antcall>
+		</antcall> -->
 		<echo>TODO: Create index.html landing page</echo>
 		<echo>TODO: Change and add to gh-pages branch</echo>
 		<echo>TODO: Push branch?</echo>
