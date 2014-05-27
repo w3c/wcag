@@ -65,17 +65,6 @@
 	
 	<property name="outputdir.utility" location="../../../../WCAG/utility"/>
 	
-	<!--
-	<path id="saxon.classpath">
-		<fileset dir="C:\Documents\Java\saxonb9-1-0-2j">
-			<include name="saxon9.jar"/>
-			<include name="saxon9-dom.jar"/>
-			<include name="saxon9-xpath.jar"/>
-		</fileset>
-		<pathelement location="C:\Documents\Java\saxon-ant9-1\saxon9-ant.jar"/>
-	</path>
-	-->
-	
 	<filelist id="techs" description="Individual technique files" dir="sources">
 		<file name="ARIA-tech-src.xml"/>
 		<file name="html-tech-src.xml"/>
@@ -90,14 +79,6 @@
 		<file name="silverlight-tech-src.xml"/>
 		<file name="general-tech-src.xml"/>
 	</filelist>
-	
-	<!-- Saxon XSLT -->
-	<!-- This task is not needed since Saxon can be called with the transformer factory, though it provides additional features -->
-	<!--
-	<taskdef name="saxon-xslt" classname="net.sf.saxon.ant.AntTransform">
-		<classpath refid="saxon.classpath"/>
-	</taskdef>
-	-->
 	
 	<target name="usage">
 		<echo level="info">Usage: &quot;ant &lt;target&gt;&quot; to execute a build task
@@ -126,7 +107,10 @@ Enter &quot;ant -projecthelp&quot; to get list of available build tasks</echo>
 		<!-- For now, not doing CVS within the build process -->
 		<!--<cvs command="update"/>-->
 	</target>
-	<!--<target name="clean" description="Clean up any temp files"></target>-->
+
+	<target name="clean" description="Clean up any temp files">
+		<delete dir="Generated"/>
+	</target>
 	
 	<!-- === Static content === -->
 	<target name="guidelines.static" description="Copy static files for guidelines into new directory" depends="init">
@@ -588,7 +572,7 @@ Enter &quot;ant -projecthelp&quot; to get list of available build tasks</echo>
 	</target>
 
 	<!-- Publish the github pages branch -->
-	<target name="gh-pages">
+	<target name="gh-pages" depends="clean">
 		<antcall target="understanding">
 			<param name="outputdir.understanding" value="Generated/Understanding"/>
 			<param name="publoc.understanding" value="http://w3c.github.io/wcag/BRANCH_NAME/Understanding"/>
