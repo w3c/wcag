@@ -590,21 +590,24 @@ Enter &quot;ant -projecthelp&quot; to get list of available build tasks</echo>
 
 	<target name="pages.init" depends="clean" description="clean generated files and clone the repo to the generation location">
 		<!-- Get current Origin -->
-		<git command="remote" outputproperty="git.remote">
+		<!-- <git command="remote" outputproperty="git.remote">
 			<args>
 				<arg value="show"/>
 				<arg value="origin"/>
 				<arg value="-n"/>
 			</args>
-		</git>
+		</git> -->
 		<echo>TODO: Parse for remote url for clone</echo>
+
+		<!-- Running in verbose mode on Travis may cause token leak -->
+		<property environment="env"/>
 		<git command="clone">
 			<args>
 				<arg value="--branch"/>
 				<arg value="gh-pages"/>
 				<arg value="--reference"/>
 				<arg value=".."/>
-				<arg value="http://github.com/nschonni/wcag.git"/>
+				<arg value="http://${env.GH_TOKEN}@github.com/w3c/wcag.git"/>
 				<arg value="Generated"/>
 			</args>
 		</git>
