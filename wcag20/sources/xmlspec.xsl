@@ -852,7 +852,7 @@
 		<xsl:text>
 		</xsl:text>
 	  <xsl:choose>
-	    <xsl:when test="$bytech= '1'"></xsl:when>
+	    <xsl:when test="$bytech= 1"></xsl:when>
 	    <xsl:otherwise>
 		<h2>
 			<xsl:call-template name="anchor">

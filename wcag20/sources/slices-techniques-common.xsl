@@ -2,7 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml" version="2.0">
   <xsl:import href="diffspec-tech.xsl"/>
 	<xsl:param name="output.dir" select="'.'"/>
-	<xsl:param name="slices" select="'1'"/>
+	<xsl:param name="slices" select="1"/>
 	<xsl:param name="show.diff.markup" select="'0'"/>
 	
   <xsl:template name="href.target">
@@ -28,7 +28,7 @@
   <!-- create a separate page for the introduction -->
   <xsl:template match="front/div1">
   <xsl:choose>
-      <xsl:when test="$slices= '0'"/>
+      <xsl:when test="$slices= 0"/>
       <xsl:otherwise>
     <xsl:variable name="prev" select="(preceding::div1)[last()]"/>
     <xsl:variable name="next" select="(following::technique | following::div2)[1]"/>
@@ -106,16 +106,20 @@
             <!-- Need to figure out how to apply the template below with the slices parameter set to 0 -->
             <div class="div1">
             <xsl:choose>
-      <xsl:when test="$slices= '0'"><xsl:apply-templates />
+      <xsl:when test="$slices= 0"><xsl:apply-templates />
     </xsl:when>
-    <xsl:otherwise>@@ re-run build-wcag script with the bytech parameter set to "1" for each technology collection</xsl:otherwise>
+    <xsl:otherwise>
+    	<xsl:message><xsl:value-of select="$bytech"/></xsl:message>
+    	@@ re-run build-wcag script with the bytech parameter set to "1" for each technology collection</xsl:otherwise>
     </xsl:choose>
             </div>  
-            <xsl:call-template name="techniques.informative.disclaimer"/>
-            <xsl:call-template name="navigation.bottom">
-
-            </xsl:call-template>
-            <xsl:call-template name="footer"></xsl:call-template>
+            	<xsl:if test="$show.diff.markup != 0">
+            		<div class="diff-delete"><span class="difftext">[begin delete] </span>
+            			<xsl:call-template name="techniques.informative.disclaimer"/>
+            			<span class="difftext">[end delete]</span></div>
+            	</xsl:if>
+            	<xsl:call-template name="navigation.bottom"/>
+            <xsl:call-template name="footer"/>
           </body>
         </html>
   		</xsl:result-document>
@@ -161,8 +165,12 @@
                   <xsl:with-param name="just.filename" select="'1'"/>
                 </xsl:apply-templates>
               </div>
-              <xsl:apply-templates/>
-            	<xsl:call-template name="techniques.informative.disclaimer"/>
+            	<xsl:apply-templates/>
+            	<xsl:if test="$show.diff.markup != 0">
+	            	<div class="diff-delete"><span class="difftext">[begin delete] </span>
+	            	<xsl:call-template name="techniques.informative.disclaimer"/>
+	            	<span class="difftext">[end delete]</span></div>
+            	</xsl:if>
               <xsl:call-template name="navigation.bottom">
                 <xsl:with-param name="prev" select="(preceding::div1[not(@diff = 'del')] | preceding::technique[not(@diff = 'del')] | preceding::div2[not(@diff = 'del')] | preceding::div1[@id!='placeholders'])[last()]"/>
                 <xsl:with-param name="next" select="(following::technique[not(@diff = 'del')] | following::div2[not(@diff = 'del')] |following::inform-div1[not(@diff = 'del')])[1]"/>
@@ -222,7 +230,7 @@
 
 	<xsl:template match="back/div1 | back/inform-div1">
     <xsl:choose>
-      <xsl:when test="$slices= '0'"/>
+      <xsl:when test="$slices= 0"/>
       <xsl:otherwise>
     <xsl:variable name="prev" select="(preceding::technique[not(@diff = 'del')] | preceding::inform-div1[not(@diff = 'del')])[last()]"/>
     <xsl:variable name="next" select="(following::div1[not(@diff = 'del')] | following::inform-div1[not(@diff = 'del')])[1]"/>
@@ -273,7 +281,7 @@
   </xsl:template>
   <xsl:template match="inform-div1">
     <xsl:choose>
-      <xsl:when test="$slices= '0'"/>
+      <xsl:when test="$slices= 0"/>
       <xsl:otherwise>
     <xsl:variable name="prev" select="(preceding::div1[not(@diff = 'del')]|preceding::inform-div1[not(@diff = 'del')])[last()]"/>
     <xsl:variable name="next" select="(following::div1[not(@diff = 'del')]|following::inform-div1[not(@diff = 'del')])[1]"/>
@@ -592,6 +600,16 @@
 			<xsl:call-template name="copy-common-atts"/>
 			<xsl:value-of select="../@id"/><xsl:text>: </xsl:text><xsl:apply-templates/>
 		</h1>
+		<xsl:choose>
+			<xsl:when test="$show.diff.markup != 0">
+				<div class="diff-add"><span class="difftext">[begin add] </span>
+					<xsl:call-template name="techniques.information.reference"/>
+					<span class="difftext">[end add]</span></div>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="techniques.information.reference"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>  
   
   

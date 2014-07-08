@@ -3,7 +3,7 @@
   <xsl:import href="diffspec-howto.xsl"/>
 	<xsl:param name="output.dir" select="'.'"/>
 	<xsl:param name="slices" select="1"/>
-  <xsl:param name="show.diff.markup" select="'0'"/>
+  <xsl:param name="show.diff.markup" select="0"/>
   <xsl:template name="href.target">
     <xsl:param name="target" select="."/>
     <xsl:variable name="slice" select="($target/ancestor-or-self::div1 | $target/ancestor-or-self::inform-div1  | $target/ancestor-or-self::div2   | $target/ancestor-or-self::div3 | $target/ancestor-or-self::spec)[last()]"/>
