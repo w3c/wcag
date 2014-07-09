@@ -36,7 +36,7 @@
   <!-- BBC: added link to TOC -->
   <xsl:template match="header">
     <xsl:choose>
-      <xsl:when test="$bytech= '1'"></xsl:when>
+      <xsl:when test="$bytech= 1"></xsl:when>
      
       <xsl:otherwise>
     <p align="center">[<a href="#contents">contents</a>]<xsl:text> </xsl:text>
@@ -188,7 +188,7 @@
         </ul>
         
         <xsl:choose>
-          <xsl:when test="$bytech = '1'"></xsl:when>
+          <xsl:when test="$bytech = 1"></xsl:when>
           <xsl:otherwise>
             <xsl:if test="../back">
               <xsl:text>
@@ -409,7 +409,7 @@
   <!-- BBC: pulled this in to call a variation on the "css" template with custom styles -->
   <xsl:template match="spec">
     <xsl:choose>
-      <xsl:when test="$bytech = '1'">
+      <xsl:when test="$bytech = 1">
 <!--BBC: This is kind of a kludge, but it gets around the problem of having to redefine a bunch of templates to make the listing by technology work. Note that it will need to updated the CSS or other slice templates change--> 
         <html>
         	<xsl:if test="/spec/header/langusage/language">
@@ -439,7 +439,8 @@
             <ul id="navigation"><li><strong><a href="Overview#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li></ul> -->
             <div class="div1"><a name="maincontent"> </a>
               <h1 id="techs"> <xsl:value-of select="//header/title"/> for WCAG 2.0</h1>
-            	<p>This Web page lists <xsl:value-of select="//header/title"/> from <a href="Overview.html">Techniques for WCAG 2.0: Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. Technology-specific techniques do not supplant the general techniques: content developers should consider both general techniques and technology-specific techniques as they work toward conformance.</p>
+            	<p>This Web page lists <xsl:value-of select="//header/title"/> from <a href="Overview.html">Techniques for WCAG 2.0: Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. Technology-specific techniques do not replace the general techniques: content developers should consider both general techniques and technology-specific techniques as they work toward conformance.</p>
+            	<p>Publication of techniques for a specific technology does not imply that the technology can be used in all situations to create content that meets WCAG 2.0 success criteria and conformance requirements. Developers need to be aware of the limitations of specific technologies and provide content in a way that is accessible to people with disabilities. </p>
             	<p>For information about the techniques, see <a href="intro.html">Introduction to Techniques for WCAG 2.0</a>. For a list of techniques for other technologies, see the <a href="Overview.html#contents">Table of Contents</a>.</p>
             <xsl:apply-templates/>
             </div>
@@ -1403,7 +1404,14 @@
 		</div>
 	</xsl:template>
   
-  <!-- Only output stuff suited to the current maturity -->
+	<xsl:template name="techniques.information.reference">
+		<div>
+			<h2>Important Information about Techniques</h2>
+			<p>See <a href="{$guide-src//publoc/loc[@href]}understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how they relate to the normative WCAG 2.0 success criteria. The Applicability section explains the scope of the technique, and the presence of techniques for a specific technology does not imply that the technology can be used in all situations to create content that meets WCAG 2.0.</p>
+		</div>
+	</xsl:template>
+	
+	<!-- Only output stuff suited to the current maturity -->
   <xsl:template match="*[@role = 'ext-review' and /spec/@status != 'ext-review']"/>
   <xsl:template match="*[@role = 'final' and /spec/@status != 'final']"/>
 </xsl:transform>

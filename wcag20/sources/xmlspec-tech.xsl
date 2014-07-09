@@ -21,8 +21,8 @@
 	<!-- The heading level of primary sections in the technique -->
 	<xsl:variable name="headlevel">
 		<xsl:choose>
-			<xsl:when test="$slices = '1'">2</xsl:when>
-			<xsl:when test="$bytech = '1'">3</xsl:when>
+			<xsl:when test="$slices = 1">2</xsl:when>
+			<xsl:when test="$bytech = 1">3</xsl:when>
 			<xsl:otherwise>4</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
@@ -66,8 +66,8 @@
 		<xsl:call-template name="heading">
 			<xsl:with-param name="level">
 				<xsl:choose>
-          <xsl:when test="$slices='1'">2</xsl:when>
-		<xsl:when test="$bytech='1'">3</xsl:when>
+          <xsl:when test="$slices=1">2</xsl:when>
+		<xsl:when test="$bytech=1">3</xsl:when>
           <xsl:otherwise>4</xsl:otherwise>
         </xsl:choose>
       </xsl:with-param>
@@ -81,8 +81,8 @@
 
    <xsl:template match="examples">
       <xsl:choose>
-        <xsl:when test="$slices= '1'"> <h2 class="small-head" id="{../@id}-examples">Examples</h2></xsl:when>
-        <xsl:when test="$bytech='1'"> <h3 class="small-head" id="{../@id}-examples">Examples</h3></xsl:when>
+        <xsl:when test="$slices= 1"> <h2 class="small-head" id="{../@id}-examples">Examples</h2></xsl:when>
+        <xsl:when test="$bytech=1"> <h3 class="small-head" id="{../@id}-examples">Examples</h3></xsl:when>
         <xsl:otherwise> <h4 class="small-head" id="{../@id}-examples">Examples</h4></xsl:otherwise>
       </xsl:choose>
 		  
@@ -91,8 +91,8 @@
 <xsl:template match="exsubhead">
     <xsl:variable name="exsubheadnum"><xsl:value-of select="count(preceding::exsubhead)"/></xsl:variable>
 <xsl:choose>
-  <xsl:when test="$slices= '1'"><h4 id="{../../../../@id}-subhead-{$exsubheadnum}"><xsl:apply-templates></xsl:apply-templates></h4></xsl:when>
-  <xsl:when test="$bytech='1'"><h5 id="{../../../../@id}-subhead-{$exsubheadnum}"><xsl:apply-templates></xsl:apply-templates></h5></xsl:when>
+  <xsl:when test="$slices= 1"><h4 id="{../../../../@id}-subhead-{$exsubheadnum}"><xsl:apply-templates></xsl:apply-templates></h4></xsl:when>
+  <xsl:when test="$bytech=1"><h5 id="{../../../../@id}-subhead-{$exsubheadnum}"><xsl:apply-templates></xsl:apply-templates></h5></xsl:when>
   <xsl:otherwise><h6 id="{../../../../@id}-subhead-{$exsubheadnum}"><xsl:apply-templates></xsl:apply-templates></h6></xsl:otherwise>
 </xsl:choose>
 
@@ -105,9 +105,9 @@
 				<div class="failure">
 					<xsl:call-template name="copy-common-atts"/>
 					<xsl:choose>
-          <xsl:when test="$slices='1'"><h3 class="small-head" id="{../../@id}-failex{$exnumber}">
+          <xsl:when test="$slices=1"><h3 class="small-head" id="{../../@id}-failex{$exnumber}">
 					Failure Example <xsl:value-of select="$exnumber"></xsl:value-of><xsl:if test="head"><xsl:text>: </xsl:text></xsl:if><xsl:value-of select="head"></xsl:value-of></h3></xsl:when>
-					  <xsl:when test="$bytech='1'"><h4 class="small-head" id="{../../@id}-failex{$exnumber}">
+					  <xsl:when test="$bytech=1"><h4 class="small-head" id="{../../@id}-failex{$exnumber}">
 					    Failure Example <xsl:value-of select="$exnumber"></xsl:value-of><xsl:if test="head"><xsl:text>: </xsl:text></xsl:if><xsl:value-of select="head"></xsl:value-of></h4></xsl:when>
           <xsl:otherwise><h5 class="small-head" id="{../../@id}-failex{$exnumber}">
 					Failure Example <xsl:value-of select="$exnumber"></xsl:value-of><xsl:if test="head"><xsl:text>: </xsl:text></xsl:if><xsl:value-of select="head"></xsl:value-of></h5></xsl:otherwise>
@@ -120,8 +120,8 @@
 			</xsl:when>
 			<xsl:otherwise>
 			<xsl:choose>
-    <xsl:when test="$slices='1'"><h3 class="small-head" id="{../../@id}-ex{$exnumber}">Example <xsl:value-of select="$exnumber"></xsl:value-of><xsl:if test="head[@role='fail']"><xsl:text> (failure)</xsl:text></xsl:if><xsl:if test="head"><xsl:text>: </xsl:text></xsl:if> <xsl:value-of select="head"></xsl:value-of></h3></xsl:when>
-			  <xsl:when test="$bytech='1'"><h4 class="small-head" id="{../../@id}-ex{$exnumber}">Example <xsl:value-of select="$exnumber"></xsl:value-of><xsl:if test="head[@role='fail']"><xsl:text> (failure)</xsl:text></xsl:if><xsl:if test="head"><xsl:text>: </xsl:text></xsl:if> <xsl:value-of select="head"></xsl:value-of></h4></xsl:when>
+    <xsl:when test="$slices=1"><h3 class="small-head" id="{../../@id}-ex{$exnumber}">Example <xsl:value-of select="$exnumber"></xsl:value-of><xsl:if test="head[@role='fail']"><xsl:text> (failure)</xsl:text></xsl:if><xsl:if test="head"><xsl:text>: </xsl:text></xsl:if> <xsl:value-of select="head"></xsl:value-of></h3></xsl:when>
+			  <xsl:when test="$bytech=1"><h4 class="small-head" id="{../../@id}-ex{$exnumber}">Example <xsl:value-of select="$exnumber"></xsl:value-of><xsl:if test="head[@role='fail']"><xsl:text> (failure)</xsl:text></xsl:if><xsl:if test="head"><xsl:text>: </xsl:text></xsl:if> <xsl:value-of select="head"></xsl:value-of></h4></xsl:when>
     <xsl:otherwise><h5 class="small-head" id="{../../@id}-ex{$exnumber}">Example <xsl:value-of select="$exnumber"></xsl:value-of><xsl:if test="head[@role='fail']"><xsl:text> (failure)</xsl:text></xsl:if><xsl:if test="head"><xsl:text>: </xsl:text></xsl:if> <xsl:value-of select="head"></xsl:value-of></h5></xsl:otherwise>
   </xsl:choose>
 				
@@ -151,8 +151,8 @@
 			<xsl:text>-procedure</xsl:text>
 		</xsl:variable>
 					<xsl:choose>
-      <xsl:when test="$slices='1'"><h3 class="small-head" id="{$id}">Procedure</h3></xsl:when>
-	<xsl:when test="$bytech='1'"><h4 class="small-head" id="{$id}">Procedure</h4></xsl:when>
+      <xsl:when test="$slices=1"><h3 class="small-head" id="{$id}">Procedure</h3></xsl:when>
+	<xsl:when test="$bytech=1"><h4 class="small-head" id="{$id}">Procedure</h4></xsl:when>
       <xsl:otherwise><h5 class="small-head" id="{$id}">Procedure</h5></xsl:otherwise>
     </xsl:choose>
 					
@@ -161,8 +161,8 @@
 		<xsl:template match="related-techs">
 					<xsl:call-template name="copy-common-atts"/>
 					<xsl:choose>
-      <xsl:when test="$slices='1'"><h3 class="small-head" id="{../../@id}-related-techs">Related Techniques</h3></xsl:when>
-	<xsl:when test="$bytech='1'"><h3 class="small-head" id="{../../@id}-related-techs">Related Techniques</h3></xsl:when>
+      <xsl:when test="$slices=1"><h3 class="small-head" id="{../../@id}-related-techs">Related Techniques</h3></xsl:when>
+	<xsl:when test="$bytech=1"><h3 class="small-head" id="{../../@id}-related-techs">Related Techniques</h3></xsl:when>
       <xsl:otherwise><h5 class="small-head" id="{../../@id}-related-techs">Related Techniques</h5></xsl:otherwise>
     </xsl:choose>
 					
@@ -180,8 +180,8 @@
 				<xsl:text>-results</xsl:text>
 			</xsl:variable>
 			<xsl:choose>
-      <xsl:when test="$slices='1'"><h3 class="small-head" id="{$id}">Expected Results</h3></xsl:when>
-	<xsl:when test="$bytech='1'"><h4 class="small-head" id="{$id}">Expected Results</h4></xsl:when>
+      <xsl:when test="$slices=1"><h3 class="small-head" id="{$id}">Expected Results</h3></xsl:when>
+	<xsl:when test="$bytech=1"><h4 class="small-head" id="{$id}">Expected Results</h4></xsl:when>
       <xsl:otherwise><h5 class="small-head" id="{$id}">Expected Results</h5></xsl:otherwise></xsl:choose>
 					<xsl:apply-templates/>
 	</xsl:template>	
@@ -190,8 +190,8 @@
 	
 	<xsl:template match="tech-info">
 		<xsl:choose>
-			<xsl:when test="$slices= '1'"> <h2 class="small-head" id="{../@id}-info">Technique Information</h2></xsl:when>
-			<xsl:when test="$bytech='1'"> <h3 class="small-head" id="{../@id}-info">Technique Information</h3></xsl:when>
+			<xsl:when test="$slices= 1"> <h2 class="small-head" id="{../@id}-info">Technique Information</h2></xsl:when>
+			<xsl:when test="$bytech=1"> <h3 class="small-head" id="{../@id}-info">Technique Information</h3></xsl:when>
 			<xsl:otherwise> <h4 class="small-head" id="{../@id}-info">Technique Information</h4></xsl:otherwise>
 		</xsl:choose>
 		<xsl:apply-templates/>
@@ -200,8 +200,8 @@
 	<!--
 	<xsl:template match="admin">
 		<xsl:choose>
-			<xsl:when test="$slices= '1'"> <h2 class="small-head" id="{../@id}-info">Technique Information</h2></xsl:when>
-			<xsl:when test="$bytech= '1'"> <h3 class="small-head" id="{../@id}-info">Technique Information</h3></xsl:when>
+			<xsl:when test="$slices= 1"> <h2 class="small-head" id="{../@id}-info">Technique Information</h2></xsl:when>
+			<xsl:when test="$bytech= 1"> <h3 class="small-head" id="{../@id}-info">Technique Information</h3></xsl:when>
 			<xsl:otherwise> <h4 class="small-head" id="{../@id}-info">Technique Information</h4></xsl:otherwise>
 		</xsl:choose>
 		<xsl:if test="comment">
@@ -355,8 +355,8 @@
 			<xsl:call-template name="heading">
 				<xsl:with-param name="level">
 				<xsl:choose>
-          <xsl:when test="$slices='1'">2</xsl:when>
-				  <xsl:when test="$bytech='1'">3</xsl:when>
+          <xsl:when test="$slices=1">2</xsl:when>
+				  <xsl:when test="$bytech=1">3</xsl:when>
           <xsl:otherwise>4</xsl:otherwise>
         </xsl:choose>
       </xsl:with-param>
@@ -383,8 +383,8 @@
 			<xsl:call-template name="heading">
 				<xsl:with-param name="level">
 				<xsl:choose>
-          <xsl:when test="$slices='1'">2</xsl:when>
-	<xsl:when test="$bytech='1'">3</xsl:when>
+          <xsl:when test="$slices=1">2</xsl:when>
+	<xsl:when test="$bytech=1">3</xsl:when>
           <xsl:otherwise>4</xsl:otherwise>
         </xsl:choose>
       </xsl:with-param>
@@ -436,8 +436,8 @@
 			<xsl:call-template name="heading">
 				<xsl:with-param name="level">
 				<xsl:choose>
-          <xsl:when test="$slices='1'">2</xsl:when>
-	    <xsl:when test="$bytech='1'">3</xsl:when>
+          <xsl:when test="$slices=1">2</xsl:when>
+	    <xsl:when test="$bytech=1">3</xsl:when>
           <xsl:otherwise>4</xsl:otherwise>
         </xsl:choose>
       </xsl:with-param>
@@ -478,8 +478,8 @@
 	<xsl:template match="see-also">
 	    <xsl:if test="head">
 	    <xsl:choose>
-	        <xsl:when test="$slices='1'"><h3 class="small-head" id="{../../@id}-sa{count(preceding-sibling::see-also)}"><xsl:value-of select="head"></xsl:value-of></h3></xsl:when>
-	        <xsl:when test="$bytech='1'"><h4 class="small-head" id="{../../@id}-sa{count(preceding-sibling::see-also)}"><xsl:value-of select="head"></xsl:value-of></h4></xsl:when>
+	        <xsl:when test="$slices=1"><h3 class="small-head" id="{../../@id}-sa{count(preceding-sibling::see-also)}"><xsl:value-of select="head"></xsl:value-of></h3></xsl:when>
+	        <xsl:when test="$bytech=1"><h4 class="small-head" id="{../../@id}-sa{count(preceding-sibling::see-also)}"><xsl:value-of select="head"></xsl:value-of></h4></xsl:when>
 	        <xsl:otherwise><h5 class="small-head" id="{../../@id}-sa{count(preceding-sibling::see-also)}"><xsl:value-of select="head"></xsl:value-of></h5></xsl:otherwise>
 	    </xsl:choose></xsl:if>
 	    <xsl:apply-templates/>
@@ -490,7 +490,7 @@
 
 	<xsl:template match="short-name">
 	  <xsl:choose>
-	    <xsl:when test="$bytech='1'">
+	    <xsl:when test="$bytech=1">
 	      <h2><a name="{../@id}" id="{../@id}"><xsl:text> </xsl:text></a>
 	        <xsl:call-template name="copy-common-atts"/>
 	        <xsl:value-of select="../@id"/><xsl:text>: </xsl:text><xsl:apply-templates/>
@@ -579,8 +579,8 @@
 		<div class="ua-issues">
 			<xsl:call-template name="copy-common-atts"/>
 			<xsl:choose>
-    <xsl:when test="$slices= '1'"><h2 class="small-head" id="{$uanumber}"> User Agent and Assistive Technology Support Notes</h2></xsl:when>
-    <xsl:when test="$bytech='1'"><h3 class="small-head" id="{$uanumber}"> User Agent and Assistive Technology Support Notes</h3></xsl:when>
+    <xsl:when test="$slices=1"><h2 class="small-head" id="{$uanumber}"> User Agent and Assistive Technology Support Notes</h2></xsl:when>
+    <xsl:when test="$bytech=1"><h3 class="small-head" id="{$uanumber}"> User Agent and Assistive Technology Support Notes</h3></xsl:when>
     <xsl:otherwise><h4 class="small-head" id="{$uanumber}"> User Agent and Assistive Technology Support Notes</h4></xsl:otherwise>
   </xsl:choose>
 			
@@ -633,7 +633,7 @@
 	        </xsl:attribute>
 	    </link>
 	    <link xmlns="http://www.w3.org/1999/xhtml" rel="stylesheet" type="text/css" href="additional.css" />
-	    <xsl:if test="$bytech='1'">
+	    <xsl:if test="$bytech=1">
 	        <link rel="stylesheet" type="text/css" href="bytech.css"/>
 	    </xsl:if>
 	</xsl:template>
@@ -802,7 +802,7 @@
           </xsl:call-template>
           <xsl:text>Table of Contents</xsl:text>
         </h2>
-      	<xsl:if test="$bytech != '1'">
+      	<xsl:if test="$bytech != 1">
       	<ul>
       		<xsl:apply-templates select="//div1[not(@id = 'placeholders')] | //inform-div1" mode="toc"><xsl:with-param name="local.toc.level" select="1"/></xsl:apply-templates>
       	</ul>
@@ -814,7 +814,7 @@
             </xsl:when>
             <xsl:otherwise>
             	<!-- Links to abstract and status are local on main doc but need to point to main doc in bytech version -->
-            	<xsl:variable name="toc.base"><xsl:if test="$bytech = '1'"><xsl:value-of select="$techsthisversion"/></xsl:if></xsl:variable>
+            	<xsl:variable name="toc.base"><xsl:if test="$bytech = 1"><xsl:value-of select="$techsthisversion"/></xsl:if></xsl:variable>
             	<li><a href="{$toc.base}#abstract">Abstract </a></li>
             	<li><a href="{$toc.base}#status">Status of This Document </a></li>
               <xsl:apply-templates select="//div1[not(@id = 'placeholders')] | //inform-div1" mode="toc"/>
@@ -824,7 +824,7 @@
         
         <!-- perhaps this conditional should only be in xmlspec-tech.xsl? -->
         <xsl:choose>
-          <xsl:when test="$bytech = '1'"></xsl:when>
+          <xsl:when test="$bytech = 1"></xsl:when>
           <xsl:otherwise>
           	<!-- this bit from xmlspec-wcag.xsl shouldn't be needed
             <xsl:if test="../back">
@@ -870,7 +870,7 @@
 	<xsl:template mode="toc" match="div1">
 		<xsl:param name="local.toc.level" select="$toc.level"/>
 	<xsl:choose>
-	  <xsl:when test="$bytech = '1'">
+	  <xsl:when test="$bytech = 1">
 	              <xsl:for-each select="div2[not(@diff = 'del')]">
 	                <li>
 	                  <a>
