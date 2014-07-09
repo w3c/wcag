@@ -503,6 +503,9 @@
   <xsl:template mode="techniquetoc" match="technique[not(@diff = 'del')]">
     <xsl:variable name="gl" select="$gl-src//*[@id = current()/@id]"/>
     <ul id="navbar" >
+    	<li>
+    		<a href="#{@id}-disclaimer">Important Information about Techniques</a>
+    	</li>
         <li>
           <a href="#{@id}-applicability">Applicability</a>
         </li>
@@ -602,11 +605,15 @@
 		<xsl:choose>
 			<xsl:when test="$show.diff.markup != 0">
 				<div class="diff-add"><span class="difftext">[begin add] </span>
-					<xsl:call-template name="techniques.information.reference"/>
+					<xsl:call-template name="techniques.information.reference">
+						<xsl:with-param name="id"><xsl:value-of select="../@id"/>-disclaimer</xsl:with-param>
+					</xsl:call-template>
 					<span class="difftext">[end add]</span></div>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:call-template name="techniques.information.reference"/>
+				<xsl:call-template name="techniques.information.reference">
+					<xsl:with-param name="id"><xsl:value-of select="../@id"/>-disclaimer</xsl:with-param>
+				</xsl:call-template>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>  
