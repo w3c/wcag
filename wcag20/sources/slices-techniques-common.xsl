@@ -109,7 +109,6 @@
       <xsl:when test="$slices= 0"><xsl:apply-templates />
     </xsl:when>
     <xsl:otherwise>
-    	<xsl:message><xsl:value-of select="$bytech"/></xsl:message>
     	@@ re-run build-wcag script with the bytech parameter set to "1" for each technology collection</xsl:otherwise>
     </xsl:choose>
             </div>  
