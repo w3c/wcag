@@ -1423,4 +1423,24 @@
 	<!-- Only output stuff suited to the current maturity -->
   <xsl:template match="*[@role = 'ext-review' and /spec/@status != 'ext-review']"/>
   <xsl:template match="*[@role = 'final' and /spec/@status != 'final']"/>
+
+	<!-- ================================================================= -->
+	
+	<!-- Link to latest version of current page -->
+	<xsl:template name="canonical-link">
+		<link rel="canonical">
+			<xsl:attribute name="href">
+				<xsl:choose>
+					<xsl:when test="$bytech = 1"><xsl:value-of select="$techs-src//latestloc/loc"/></xsl:when>
+					<xsl:otherwise><xsl:value-of select="ancestor-or-self::spec//latestloc/loc"/></xsl:otherwise>
+				</xsl:choose>
+				<xsl:choose>
+					<xsl:when test="$bytech = 1"><xsl:value-of select="//body/div1/@id"/></xsl:when>
+					<xsl:when test="$slices = 1"><xsl:apply-templates select="." mode="slice-techniques-filename"/></xsl:when> <!-- would like to remove Overview.html and file extensions -->
+					<xsl:when test="$show.diff.markup = 1">complete-diff</xsl:when>
+					<xsl:otherwise>complete</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
+		</link>
+	</xsl:template>
 </xsl:transform>
