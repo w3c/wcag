@@ -2,14 +2,11 @@
 <!DOCTYPE technique
   SYSTEM "../../xmlspec.dtd">
 <technique id="F17">
-   <short-name>Failure of Success Criterion 1.3.1 and 4.1.1 due to insufficient information in DOM to determine
-                    one-to-one relationships (e.g., between labels with same id) in HTML</short-name>
+   <short-name>Failure of Success Criterion 4.1.1 due to duplicate accesskey value</short-name>
    <applicability>
-      <p> Applies to the Document Object Model (DOM) for HTML and XHTML</p>
+      <p>HTML and XHTML</p>
    </applicability>
    <applies-to>
-      <success-criterion idref="content-structure-separation-programmatic"
-                         relationship="failure"/>
       <success-criterion idref="ensure-compat-parses" relationship="failure"/>
    </applies-to>
    <description>
@@ -18,64 +15,39 @@
                         it is ambiguous, different user agents including assistive technologies
                         could present different information to their users. Users of assistive
                         technology for example may have different information presented to them than
-                        users of other mainstream user agents. Some elements and attributes in
-                        markup languages are required to have unique values, and if this requirement
+                        users of other mainstream user agents. The accesskey attribute in
+                        HTML is required to have unique value, and if this requirement
                         is not honored, the result can be irregular or not uniquely resolvable
-                        content. For example, when id attribute values are not unique, they are
-                        particularly problematic when referenced by labels, headers in data tables,
-                        or used as fragment identifiers, as user agents do not have enough
-                        information to  determine essential relationships (i.e., to determine
-                        which label goes with which item). </p>
+                        content.</p>
    </description>
    <examples>
       <eg-group role="failure">
          <description>
             <ulist>
                <item>
-                  <p> A label element whose for attribute value is an idref that
-                                        points to a non-existent id </p>
-               </item>
-               <item>
-                  <p> An id attribute value that is not unique. </p>
-               </item>
-               <item>
-                  <p> An accesskey attribute value that is not unique </p>
+                  <p>An accesskey attribute value that is not unique </p>
                </item>
             </ulist>
          </description>
       </eg-group>
    </examples>
    <resources/>
-   <related-techniques/>
+   <related-techniques>
+      <relatedtech idref="F62"/>
+   </related-techniques>
    <tests>
       <procedure>
          <olist>
             <item>
-               <p> Check for id and accesskey values which are not unique within
-                                    the document. </p>
-            </item>
-            <item>
-               <p> Check that attribute values that have an idref value have a
-                                    corresponding id value. </p>
-            </item>
-            <item>
-               <p>For tables that use the axis attribute, check that all values
-                                    listed in the axis attribute have a corresponding id value in a
-                                    table header cell in the same table.</p>
-            </item>
-            <item>
-               <p>For client-side image maps, check that the value of the usemap
-                                    attribute has a corresponding id value if the usemap attribute
-                                    is not a URI.</p>
+               <p> Check for accesskey value which is not unique within the document. </p>
             </item>
          </olist>
       </procedure>
       <expected-results>
          <ulist>
             <item>
-               <p>If step #1, step #3 or step #4 is true or step #2 is false, then this failure
-                                    condition applies and the content fails the success
-                                criterion.</p>
+               <p>If step #1 is true, then this failure condition applies and
+               the content fails the success criterion.</p>
             </item>
          </ulist>
       </expected-results>
