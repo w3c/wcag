@@ -580,7 +580,7 @@
     </h1>
   </xsl:template>
   
-  <xsl:template match="div2/head">
+  <xsl:template match="div1/div2/head">
     <div class="skiptarget"><a id="maincontent">-</a></div>
     <xsl:text>
 </xsl:text>
