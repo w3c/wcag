@@ -13,7 +13,7 @@
 	<xsl:param name="wcag-src" select="document($guidelines.file)"/>
 	<!--xsl:param name="additional.title">(Editors' copy)</xsl:param-->
 	<!-- if this =0, ednotes won't show -->
-	<xsl:param name="show.ednotes">1</xsl:param>
+	<xsl:param name="show.ednotes" select="0"/>
 		<xsl:param name="slices" select="0"/>
 	<xsl:variable name="output.mode" select="'xhtml'"/>
 	<xsl:param name="toc.level" select="3"/>
