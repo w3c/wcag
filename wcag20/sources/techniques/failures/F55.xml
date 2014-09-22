@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F55">
+   <short-name>
+          Failure of Success Criteria 2.1.1, 2.4.7, and 3.2.1 due to using script to remove focus when focus is received</short-name>
+   <applicability>
+      <p>Applies to all content that supports script.</p>
+      <p> User Agent and Assistive Technology Support Notes</p>
+      <ulist>
+         <item>
+            <p> None listed. </p>
+         </item>
+      </ulist>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="keyboard-operation-keyboard-operable" relationship="failure"/>
+      <success-criterion idref="keyboard-operation-all-funcs" relationship="failure"/>
+      <success-criterion idref="navigation-mechanisms-focus-visible" relationship="failure"/>
+      <success-criterion idref="consistent-behavior-receive-focus" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>Content that normally receives focus when the content is accessed by keyboard may have this focus removed by scripting. This is sometimes done when designer considers the system focus indicator to be unsightly.  However, the system focus indicator is an important part of accessibility for keyboard users.  In addition, this practice removes focus from the content entirely, which means that the content can only be operated by a pointing device such as a mouse.</p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <code><![CDATA[<input type="submit" onFocus="this.blur();"> ]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <code><![CDATA[<a onFocus="this.blur()" href="Page.html"><img src="myImage.gif"></a> ]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <code><![CDATA[<a href="link.html" onfocus="if(this.blur)this.blur();">Link Phrase</a> ]]></code>
+      </eg-group>
+   </examples>
+   <resources/>
+   <related-techniques/>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Use the keyboard to verify that you can get to all interactive
+                                    elements using the keyboard. </p>
+            </item>
+            <item>
+               <p> Check that when focus is placed on each element, focus remains
+                                    there until user moves it. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> If #2 is false then this failure condition applies and content
+                                    fails the Success Criterion. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

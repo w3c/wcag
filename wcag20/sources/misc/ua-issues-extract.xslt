@@ -6,7 +6,7 @@
 	
 	<xsl:import href="../slices-techniques.xsl"/>
 	
-	<xsl:output method="html" omit-xml-declaration="yes"/>
+	<xsl:output method="html" omit-xml-declaration="yes" doctype-system="" doctype-public=""/>
 	
 	<xsl:template match="/">
 		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE html>
@@ -32,7 +32,7 @@
 		</li>
 	</xsl:template>
 	<xsl:template match="div1">
-		<xsl:result-document href="{@id}.html" omit-xml-declaration="yes" method="html">
+		<xsl:result-document href="{@id}.html" omit-xml-declaration="yes" method="html" doctype-public="" doctype-system="">
 			<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE html>
 ]]></xsl:text>
 			<html>
@@ -43,7 +43,7 @@
 					<h1>User Agent Support Notes for <xsl:apply-templates select="head" mode="text"/></h1>
 					<p>This page documents user agent support notes for <a href="/TR/WCAG20-TECHS/{@id}"><xsl:apply-templates select="head" mode="text"/></a>.</p>
 					<ul class="toc">
-						<xsl:apply-templates select="//body/technique[descendant::ua-issues/*]" mode="toc"/>
+						<xsl:apply-templates select="technique[descendant::ua-issues/*]" mode="toc"/>
 					</ul>
 					<xsl:apply-templates select="div2"/>
 					<xsl:apply-templates select="technique[ua-issues/*]"/>
@@ -89,7 +89,7 @@
 		<xsl:param name="target" select="."/>
 		<xsl:variable name="slice" select="($target/ancestor-or-self::div1[not(@diff = 'del')] | 
 			$target/ancestor-or-self::inform-div1[not(@diff = 'del')]  | $target/ancestor-or-self::technique[not(@diff = 'del')] | $target/ancestor-or-self::div2[not(@diff = 'del')][ancestor::body]  | $target/ancestor-or-self::spec)[last()]"/>
-		<xsl:value-of select="//publoc"/> <!-- this is the only inserted line -->
+		<xsl:value-of select="//latestloc/loc"/> <!-- this is the only inserted line -->
 		<xsl:apply-templates select="$slice" mode="slice-techniques-filename"/>
 		<xsl:if test="$target != $slice">
 			<xsl:text>#</xsl:text>

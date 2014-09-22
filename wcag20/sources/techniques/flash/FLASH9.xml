@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH9">
+   <short-name>Applying captions to prerecorded synchronized media</short-name>
+   <applicability>
+      <p>Adobe Flash-based Content </p>
+      <ulist>
+         <item>
+            <p> Adobe Flash CS3 and later </p>
+         </item>
+      </ulist>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="media-equiv-captions" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to provide an option for people   who have hearing impairments or otherwise have trouble hearing the sound   and dialogue in synchronized media to be able to choose to view   captions as an alternative to audio information. With this technique all   of the dialogue and important sounds are provided as text in a fashion   that allows the text to be hidden unless the user requests it. As a   result they are visible only when needed. This can be achieved using the   FLVPlayback and FLVPlaybackCaptioning   components.  Note: when using FLVPlayback skins the closed   caption button is accessible by default, but if implementing custom   skins authors need to test to verify that the button is accessible. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Adding a timed text caption file to Flash</head>
+         <description>
+            <olist>
+               <item>
+                  <p> Use an external tool (such as Magpie or a simple text editor)   to create a timed Text captions xml file. Stop and play the video   content, and for each relevant part of audio information (including   speech, important background noises and event sounds) include the start   and end time code as well as the textual alternative. Tools like Magpie   have advanced features to make this process easier, whereas a text   editor requires you to read the timecodes from your media player and   include them in the XML as illustrated in the sample captions document   below </p>
+               </item>
+               <item>
+                  <p> In Flash, create a new instance of the FLVPlayback component   on your stage, and set its contentPath value to your flv video file   using the 'Component inspector' or 'Parameters' panel. </p>
+               </item>
+               <item>
+                  <p> Set the 'Skin' parameter to use a skin which includes the CC   (closed captions) button. </p>
+               </item>
+               <item>
+                  <p> From the components list also create an instance of the   FLVPlayback captioning component. In the 'Component inspector' panel set   its 'Source' parameter to the name of your timed text xml file. The   captions will automatically placed at the bottom of the player's frame. </p>
+               </item>
+            </olist>
+         </description>
+         <code xml:space="preserve"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<tt xml:lang="en" xmlns="http://www.w3.org/2006/04/ttaf1"
+  xmlns:tts="http://www.w3.org/2006/04/ttaf1#styling">
+  <head>
+    <styling>
+      <style id="defaultSpeaker" tts:backgroundColor="black"
+        tts:color="white" tts:fontFamily="SansSerif" tts:fontSize="12"
+        tts:fontStyle="normal" tts:fontWeight="normal"
+        tts:textAlign="left" tts:textDecoration="none"/>
+      <style id="defaultCaption" tts:backgroundColor="black"
+        tts:color="white" tts:fontFamily="Arial" tts:fontSize="12"
+        tts:fontStyle="normal" tts:fontWeight="normal"
+        tts:textAlign="center" tts:textDecoration="none"/>
+    </styling>
+  </head>
+  <body id="thebody" style="defaultCaption">
+    <div xml:lang="en">
+      <p begin="0:00:00.20" end="0:00:02.20">If there were nothing in
+        our universe</p>
+      <p begin="0:00:02.20" end="0:00:05.65">the fabric of space-time
+        would be flat.</p>
+      <p begin="0:00:05.65" end="0:00:08.88">But add a mass, and
+        dimples form within it.</p>
+      <p begin="0:00:16.61" end="0:00:19.84">Smaller objects that
+        approach that large mass</p>
+      <p begin="0:00:19.84" end="0:00:23.41">will follow the curve in
+        space-time around it.</p>
+      <p begin="0:00:32.64" end="0:00:36.84">Our nearest star, the
+        sun, has formed such a dimple</p>
+      <p begin="0:00:36.84" end="0:00:38.00">and our tiny planet
+        Earth</p>
+      <p begin="0:00:38.00" end="0:00:41.50">goes along for the ride
+        in the curve of its dimple</p>
+      <p begin="0:00:41.50" end="0:00:43.80">staying in orbit around
+        the sun.</p>
+      <p begin="0:00:45.67" end="0:01:55.00"/>
+    </div>
+  </body>
+</tt>
+]]></code>
+         <description>
+            <p>This is demonstrated in <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="adding_captions_to_Flash_video_as3.html"
+                    linktype="examples">working example of Adding a timed text caption file to Flash</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="adding_captions_to_Flash_video_as3.zip"
+                    linktype="examples">working example of Adding a timed text caption file to Flash</loc> is available.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <p>
+							     <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="http://ncam.wgbh.org/invent_build/web_multimedia/tools-guidelines">http://ncam.wgbh.org/invent_build/web_multimedia/tools-guidelines</loc>
+						   </p>
+      </see-also>
+      <see-also>
+         <p>
+							     <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="http://www.buraks.com/captionate/">http://www.buraks.com/captionate/</loc>
+						   </p>
+      </see-also>
+      <see-also>
+         <p>
+							     <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="http://www.w3.org/AudioVideo/TT/">http://www.w3.org/AudioVideo/TT/</loc>
+						   </p>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G87"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>Watch all video content displayed by your Flash movie. Ensure that: </p>
+         <olist>
+            <item>
+               <p> Captions are available for all audio content, either turned on   by default or as a user preference. </p>
+            </item>
+            <item>
+               <p> The captions properly describe all audio information contained   in the video. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> #1 and #2 are true </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Applying_captions_to_prerecorded_synchronized_media"/>
+					</source>
+   </admin>
+</technique>

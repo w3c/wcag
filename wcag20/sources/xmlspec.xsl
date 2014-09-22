@@ -852,7 +852,7 @@
 		<xsl:text>
 		</xsl:text>
 	  <xsl:choose>
-	    <xsl:when test="$bytech= '1'"></xsl:when>
+	    <xsl:when test="$bytech= 1"></xsl:when>
 	    <xsl:otherwise>
 		<h2>
 			<xsl:call-template name="anchor">
@@ -1618,6 +1618,7 @@
 						<xsl:value-of select="$additional.title"/>
 					</xsl:if>
 				</title>
+				<xsl:call-template name="canonical-link"/>
 				<xsl:call-template name="css"/>
 				<xsl:call-template name="additional-head"/>
 			</head>
@@ -2491,4 +2492,5 @@
 		<xsl:apply-templates mode="text"/>
 	</xsl:template>
 	<xsl:template match="*[@diff = 'del']" mode="text"/>
+	
 </xsl:transform>

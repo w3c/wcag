@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="G181">
+   <short-name>Encoding user data as hidden or encrypted data in a re-authorization page</short-name>
+   <applicability>
+      <p>Pages that require user authentication where the time available for submitting data is limited.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="time-limits-server-timeout" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>Web servers that require user authentication often terminate the session after a set period of time if there is no activity from the user. If the user is unable to input the data quickly enough and the session times out before they submit, the server will require re-authentication before proceeding. When this happens, the server passes (as hidden data) the information from the form into the page that is used for re-authentication. Then, when the user re-authenticates, the server can use the information passed on from the re-authentication page to submit the form directly or to present a page that includes the data that is to be submitted for review. In this technique, the server does not have to store any user-submitted data on server. This is an important technique for those cases where it is either illegal or a security risk for the server to store information temporarily. It also is useful in that it frees the server from having to maintain the stored information and reconnect it with the newly authenticated session.</p>
+      <note>
+         <p>If the data users are submitting is sensitive or presents a security risk, authors should consider the process used to pass the data to the re-authentication page and, after re-authentication, to the page that will process the original data in order to ensure that the data is protected.</p>
+      </note>
+   </description>
+   <examples>
+      <ulist>
+         <item>
+            <p>A user has logged in to use a wiki and begins editing a page. The time taken to complete the edits exceeds the time allowed by the server for session inactivity. When the user submits the edits, the user is notified that the session has timed out and is redirected to a login page. The script that handles the original form submission passes the edits as a variable to the login page and when the user successfully logs in, passes the users edits back to the script that handles form submissions and the edits are processed as though no session timeout had occurred.</p>
+         </item>
+         <item>
+            <p>A user had logged in to a secure shopping site and fills out some of the information on an order form. For security reasons, the session times out after 30 mintues, but the user does not submit the form until 45 minutes after loading the page. The user is informed of the time out and is prompted to log-in again. If the user logs in correctly, the order form is presented to the user with all of the data previously entered and the user is able to review their submission and submit the form. If the log-in is not successfully completed, then the form data is discarded by the server.</p>
+         </item>
+      </ulist>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="G105"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>On a site that requires user login to submit data:</p>
+         <olist>
+            <item>
+               <p>Log in and begin the timed activity.</p>
+            </item>
+            <item>
+               <p>Allow the session to time out.</p>
+            </item>
+            <item>
+               <p>Submit the data.</p>
+            </item>
+            <item>
+               <p>Re-authenticate.</p>
+            </item>
+            <item>
+               <p>Check that the process can continue and be completed without loss of data, including the original data and any changes made after re-authentication.</p>
+            </item>
+            <item>
+               <p>Check that the process used to save the information submitted in step 3 is not stored on the server. (Note: This requires knowledge of the technology and features used to implement the technique.)</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Checks #5 and #6 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

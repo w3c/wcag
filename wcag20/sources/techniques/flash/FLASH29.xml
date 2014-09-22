@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH29">
+   <short-name>Setting the label property for form components</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+      <success-criterion idref="minimize-error-cues" relationship="sufficient"/>
+      <success-criterion idref="ensure-compat-rsv" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to explicitly associate a form
+    				component with its label text by setting the component's <prop>label</prop> property.
+    				Setting this property will visually place a label next to the component,
+    				and exposes the label text to assistive technology. </p>
+      <p>Components that support the <prop>label</prop> property are: </p>
+      <ulist>
+         <item>
+            <p>
+								       <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/fl/controls/Button.html">Button</loc>
+							     </p>
+         </item>
+         <item>
+            <p>
+								       <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/fl/controls/CheckBox.html">CheckBox</loc>
+							     </p>
+         </item>
+         <item>
+            <p>
+								       <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/fl/controls/RadioButton.html">RadioButton</loc>
+							     </p>
+         </item>
+      </ulist>
+      <p>For other components, the label text has to placed adjacent to the
+    				form component manually. For these components, the label text can be
+    				associated with the form component using one of these approaches: </p>
+      <ulist>
+         <item>
+            <p>
+								       <specref ref="FLASH25"/>
+							     </p>
+         </item>
+         <item>
+            <p>
+								       <specref ref="FLASH32"/>
+							     </p>
+         </item>
+      </ulist>
+   </description>
+   <examples>
+      <p>In order for these form controls to be accessible to assistive
+    				technology, the following lines of code will have to be added once
+    				to the movie's script: </p>
+      <p> When the Button component is used: </p>
+      <p>
+						   <code xml:space="preserve"><![CDATA[import fl.accessibility.ButtonAccImpl;
+ButtonAccImpl.enableAccessibility();]]></code>
+					</p>
+      <p> When the RadioButton component is used: </p>
+      <p>
+						   <code xml:space="preserve"><![CDATA[import fl.accessibility.RadioButtonAccImpl;
+RadioButtonAccImpl.enableAccessibility();]]></code>
+					</p>
+      <p> When the CheckBox component is used: </p>
+      <p>
+						   <code xml:space="preserve"><![CDATA[import fl.accessibility.CheckBoxAccImpl;
+CheckBoxAccImpl.enableAccessibility();]]></code>
+					</p>
+      <eg-group>
+         <head>Setting the label using the Component Inspector panel</head>
+         <description>
+            <olist>
+               <item>
+                  <p> Add the Button, CheckBox or RadioButton component to the movie
+    						by dragging it on the the stage from the 'Components' panel. </p>
+               </item>
+               <item>
+                  <p> With the component selected, open the 'Component Inspector' panel
+    						by selecting it in the 'Window' menu or using the Shift + F7 shortcut. </p>
+               </item>
+               <item>
+                  <p> In the Component Inspector, under the 'Parameters' tab, enter
+    						the label text for the 'label' parameter. </p>
+               </item>
+            </olist>
+            <p>The screenshot below illustrates this technique.</p>
+            <p>
+								       <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/FLASH29/component_inspector_label.png"
+                       height="349"
+                       width="513"/>
+                  <alt>Setting a component's label in the Component Inspector Panel</alt>
+               </image>
+							     </p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Setting the label on a Button, CheckBox and RadioButton component using ActionScript 3.0</head>
+         <code xml:space="preserve"><![CDATA[import fl.accessibility.ButtonAccImpl
+import fl.accessibility.CheckBoxAccImpl
+import fl.accessibility.RadioButtonAccImpl
+import fl.controls.Button;
+import fl.controls.CheckBox;
+import fl.controls.RadioButton;
+
+ButtonAccImpl.enableAccessibility();
+var myButton: Button = new Button();
+myButton.label = "Submit Details";
+myButton.x = 10;
+myButton.y = 10
+addChild(myButton);
+
+CheckBoxAccImpl.enableAccessibility();
+var myCheckBox: CheckBox = new CheckBox();
+myCheckBox.label = "notify me";
+myCheckBox.x = 10;
+myCheckBox.y = 40
+addChild(myCheckBox);
+
+RadioButtonAccImpl.enableAccessibility();
+var myRadioButton: RadioButton = new RadioButton();
+myRadioButton.label = "Male";
+myRadioButton.x = 10;
+myRadioButton.y = 60;
+addChild(myRadioButton);]]></code>
+         <description>
+            <p>This technique is demonstrated in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="setting_label_property_as3.html"
+                    linktype="examples">working example of Setting the label on a Button, CheckBox and RadioButton component using ActionScript 3.0</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="setting_label_property_as3.fla"
+                    linktype="examples">source of Setting the label on a Button, CheckBox and RadioButton component using ActionScript 3.0</loc> is available.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="FLASH25"/>
+      <relatedtech idref="FLASH32"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>When the Button, CheckBox or RadioButton components are used: </p>
+         <olist>
+            <item>
+               <p> confirm that labels describing the purpose of the button have
+    					been provided through the component's label <prop>label</prop> property. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <olist>
+            <item>
+               <p> #1 is true </p>
+            </item>
+         </olist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Setting_the_label_property_for_form_components"/>
+					</source>
+   </admin>
+</technique>

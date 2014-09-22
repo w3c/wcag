@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH5">
+   <short-name>Combining adjacent image and text buttons for the same resource</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+      <success-criterion idref="navigation-mechanisms-refs" relationship="sufficient"/>
+      <success-criterion idref="navigation-mechanisms-link" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to avoid unnecessary duplication  that occurs when adjacent text and iconic versions of a button are  contained in a Flash movie. </p>
+      <p>Many kinds of buttons have both a text and iconic button  adjacent to each other. Often the text and the icon button are rendered  in separate buttons, in part to create a slight visual separation from  each other. Although the sighted user can see this slight visual  separation, a blind or low vision user may not be able to recognize the  separation, and be confused by the redundant buttons. To avoid this,  some authors omit specifying the accessible name for the image, but  this would fail Success Criterion 1.1.1 because the text alternative  would not serve the same purpose as the graphical button. The preferred  method to address this is to put the text and image together in one  button symbol instance, and provide a single accessible name for the  button to eliminate duplication of text. </p>
+   </description>
+   <examples>
+      <p>The following examples are for a situation where a button instance  comprised of both an image and text is on the stage. The combined  button in this example uses the instance name 'flashLink1'. </p>
+      <p>To create the combined button in Flash Professional: </p>
+      <olist>
+         <item>
+            <p> Add a graphic object and text to the stage </p>
+         </item>
+         <item>
+            <p> Select both objects </p>
+         </item>
+         <item>
+            <p> Select 'New Symbol' from the Insert menu or hit Ctrl+F8 to create a new button object </p>
+         </item>
+         <item>
+            <p> Click on the button object on the stage and enter an instance name in the Properties panel. </p>
+         </item>
+         <item>
+            <p> Continue under example 1, 2, or 3 below. </p>
+         </item>
+      </olist>
+      <p>
+						   <image>
+            <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                 source="/WAI/WCAG20/Techniques/working-examples/FLASH5/adjacentbtns.jpg"
+                 height="221"
+                 width="411"/>
+            <alt>screen shot showing the combined button with an instance name 'flashLink1'</alt>
+         </image>
+					</p>
+      <eg-group>
+         <head>Using the Accessibility panel to specify the accessible name</head>
+         <description>
+            <p>The Accessibility panel is used to specify the accessible name (which in this case is the same as the visual text).</p>
+            <p>
+								       <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/FLASH5/findoutmore.jpg"
+                       height="152"
+                       width="530"/>
+                  <alt>screen shot showing use of the Accessibility control panel to provide a name for the combined button</alt>
+               </image>
+							     </p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Using ActionScript to specify the accessible name</head>
+         <description>
+            <p>ActionScript 3 can be used instead of the Accessibility control  panel to define the accessibility name for the combined button, as  follows: </p>
+         </description>
+         <code xml:space="preserve"><![CDATA[// 'flashLink1' is an instance placed on the movie's main timeline
+flashLink1.accessibilityProperties = new AccessibilityProperties();
+flashLink1.accessibilityProperties.name = "Learn more about Flash";]]></code>
+         <description>
+            <p>ActionScript 2 can be used instead of the Accessibility control  panel to define the accessibility name for the combined button, as  follows </p>
+         </description>
+         <code xml:space="preserve"><![CDATA[// 'flashLink1' is an instance placed on the movie's main timeline
+flashLink1._accProps = new Object();
+flashLink1._accProps.name = "Learn more about Flash";]]></code>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="G94"/>
+      <relatedtech idref="G53"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Publish the SWF file </p>
+            </item>
+            <item>
+               <p> Open the SWF file in Internet Explorer 6 or higher (using  Flash Player 6 or higher), or Firefox 3 or higher (using Flash Player 9  or higher) </p>
+            </item>
+            <item>
+               <p> Use a tool which is capable of showing an object's name text alternative, such as ACTF aDesigner 1.0 to open the Flash movie. </p>
+            </item>
+            <item>
+               <p> If you are using ACTF aDesigner 1.0, use the GUI Summary panel to  check each image button in the Flash movie and ensure that there is no  separate, redundant text control adjacent to the image that performs  the same action. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>#4 is true. </p>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Combining_adjacent_image_and_text_buttons_for_the_same_resource"/>
+					</source>
+   </admin>
+</technique>

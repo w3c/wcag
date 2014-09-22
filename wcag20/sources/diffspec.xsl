@@ -45,6 +45,7 @@
 <xsl:import href="xmlspec-wcag.xsl"/>
 
 <xsl:param name="show.diff.markup" select="1"/>
+	
 
 <xsl:param name="additional.title">
   <xsl:if test="$show.diff.markup != 0">

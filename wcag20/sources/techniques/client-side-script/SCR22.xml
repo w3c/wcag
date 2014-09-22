@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SCR22">
+   <short-name>Using scripts to control blinking and stop it in five seconds or less</short-name>
+   <applicability>
+      <p>Technologies that support script-controlled blinking of content.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="time-limits-pause" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to control blinking with script so it can be set to stop in less than five seconds by the script. Script is used to start the blinking effect of content, control the toggle between visible and hidden states, and also stop the effect at five seconds or less. The <code><![CDATA[setTimeout()]]></code> function can be used to toggle blinking content between visible and hidden states, and stop when the number of iterations by the time between them adds up to nearly five seconds.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>This example uses JavaScript to control blinking of some HTML and XHTML content. JavaScript creates the blinking effect by changing the visibility status of the content. It controls the start of the effect and stops it within five seconds.</p>
+         </description>
+         <code><![CDATA[
+...
+<div id="blink1" class="highlight">New item!</div>
+<script type="text/javascript">
+<!--
+// blink "on" state
+function show()
+{
+	if (document.getElementById)
+	document.getElementById("blink1").style.visibility = "visible";
+}
+// blink "off" state
+function hide()
+{
+	if (document.getElementById)
+	document.getElementById("blink1").style.visibility = "hidden";
+}
+// toggle "on" and "off" states every 450 ms to achieve a blink effect
+// end after 4500 ms (less than five seconds)
+for(var i=900; i < 4500; i=i+900)
+{
+	setTimeout("hide()",i);
+	setTimeout("show()",i+450);
+}
+-->
+</script>
+...
+            ]]></code>
+         <description>
+            <p>Working example of this code: <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="ex1.html"
+                    linktype="examples">Using script to control blinking</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <tests>
+      <procedure>
+         <p>For each instance of blinking content:</p>
+         <olist>
+            <item>
+               <p>Start a timer for 5 seconds at the start of the blink effect.</p>
+            </item>
+            <item>
+               <p>When the timer expires, determine if the blinking has stopped.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>For each instance of blinking content, #2 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H48">
+   <short-name>Using ol, ul and dl for lists or groups of links</short-name>
+   <applicability>
+      <p>HTML, XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+      <!--success-criterion idref="navigation-mechanisms-skip"/-->
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>Assistive technologies include inconsistent support for various uses of the <att>type</att> attribute used to indicate numbering and bullet styles. </p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to create lists of related items using list elements
+            appropriate for their purposes. The <el>ol</el> element is used when the list is
+            ordered and the <el>ul</el> element is used when the list is unordered. Definition
+            lists (<el>dl</el>) are used to group terms with their definitions. Although the use
+            of this markup can make lists more readable, not all lists need markup. For instance,
+            sentences that contain comma-separated lists may not need list markup.</p>
+      <p>When markup is used that visually formats items as a list but does not indicate the
+            list relationship, users may have difficulty in navigating the information. An example
+            of such visual formatting is including asterisks in the content at the beginning of each
+            list item and using <code><![CDATA[<]]><el>br</el><![CDATA[>]]></code> elements to separate the list items.</p>
+      <p>Some assistive technologies allow users to navigate from list to list or item to item.
+            Style sheets can be used to change the presentation of the lists while preserving their
+            integrity.</p>
+      <p>The list structure (<el>ul</el>/<el>ol</el>) is also useful to group hyperlinks. When this is done, it helps screen reader users to navigate from the first item in a list to the end of the list or jump to the next list. This helps them to bypass groups of links if they choose to.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>A list showing steps in a sequence </head>
+         <description>
+            <p>This example uses an ordered list to show the sequence of steps in a process.</p>
+         </description>
+         <code role="html401"><![CDATA[ <ol>
+  <li>Mix eggs and milk in a bowl.</li>
+  <li>Add salt and pepper.</li>
+</ol>]]></code>
+      </eg-group>
+      <eg-group>
+         <head>A grocery list </head>
+         <description>
+            <p>This example shows an unordered list of items to buy at the store.</p>
+         </description>
+         <code role="html401"><![CDATA[<ul>
+  <li>Milk</li>
+  <li>Eggs</li>
+  <li>Butter</li>
+</ul>]]></code>
+      </eg-group>
+      <eg-group>
+         <head>A word and its definition </head>
+         <description>
+            <p>This example uses a definition list to group a definition with the term that is
+                being defined.</p>
+         </description>
+         <code role="html401"><![CDATA[<dl>
+  <dt>blink</dt>
+  <dd>turn on and off between .5 and 3 times per second
+  </dd>
+</dl> ]]></code>
+      </eg-group>
+      <eg-group>
+         <head>Contact information using a definition list</head>
+         <description>
+            <p>This example uses a defintion list to mark up pairs of related items. The pairs themselves are a logically related list. Since browsers lack wide support for CSS styling on definition list elements, span elements have been included in the markup for styling purposes only, and are not required: </p>
+            <codeblock xml:space="preserve"><![CDATA[<dl>
+<dt><span>name:</span></dt><dd><span>John Doe</span></dd>
+<dt><span>tel:</span></dt><dd><span>01-2345678</span></dd>
+<dt><span>fax:</span></dt><dd><span>02-3456789</span></dd>
+<dt><span>email:</span></dt><dd><span>johndoe@someemail.com</span></dd>
+</dl>
+]]></codeblock>
+            <p>The following CSS styling can be used to format each paired item in the list on its own line, as well as giving a table-like layout: </p>
+            <codeblock xml:space="preserve"><![CDATA[dt, dd{float: left;margin: 0;padding: 0;}
+dt{clear:both;font-weight: bold}
+dt span{display: inline-block; width: 70px;}
+dd span{display: inline-block; margin-right: 5px;}
+]]></codeblock>
+            <p>This is shown in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="ContactInfoDL.html"
+                    linktype="examples">working example of Contact information using a definition list</loc>
+            </p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Using lists to group links</head>
+         <description>
+            <p>In this example the links are grouped using the <el>ul</el> and <el>li</el>
+        				elements.</p>
+         </description>
+         <code role="html401"><![CDATA[<a name="categories" id="categories"></a><h2>Product Categories</h2>
+<ul class="navigation">
+    <li><a href="kitchen.html">Kitchen</a></li>
+    <li><a href="bedbath.html">Bed &amp; Bath</a></li>
+    <li><a href="dining.html">Fine Dining</a></li>
+    <li><a href="lighting.html">Lighting</a></li>
+    <li><a href="storage.html">Storage</a><li>
+</ul> ]]></code>
+         <description>
+            <p>CSS can be used to style the list elements, so this technique can be used with a
+        				variety of visual appearances.</p>
+            <p>Here is a style that removes the list bullets and the left padding that creates the
+        				indent and flows the individual list elements horizontally.</p>
+         </description>
+         <code role="html401"><![CDATA[ul.navigation {
+  list-style: none; 
+  padding: 0;
+}
+ul.navigation li {
+  display: inline;
+}]]></code>
+         <description>
+            <p>This style removes the list bullets and the left padding and displays the items in
+        				a floating block.</p>
+         </description>
+         <code role="html401"><![CDATA[ul.navigation {
+ list-style: none; 
+ padding: 0;
+}
+ul.navigation li {
+ display: block; 
+ float: left;
+}]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>HTML 4.01 <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html4/struct/lists.html#h-10.2">Unordered lists (UL), ordered lists (OL), and list items (LI)</loc>
+								       </p>
+            </item>
+            <item>
+               <p>HTML 4.01 <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html4/struct/lists.html#h-10.3">Definition lists: the DL, DT, and DD elements</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H40"/>
+      <!-- <relatedtech idref="H50"/> -->
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Check that content that has the visual appearance of a list (with or without bullets) is marked as an unordered list.</p>
+            </item>
+            <item>
+               <p>Check that content that has the visual appearance of a numbered list is marked as an ordered list.</p>
+            </item>
+            <item>
+               <p>Check that content is marked as a definition list when terms and their definitions are presented in the form of a list.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>All the checks above are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

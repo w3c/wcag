@@ -36,7 +36,7 @@
   <!-- BBC: added link to TOC -->
   <xsl:template match="header">
     <xsl:choose>
-      <xsl:when test="$bytech= '1'"></xsl:when>
+      <xsl:when test="$bytech= 1"></xsl:when>
      
       <xsl:otherwise>
     <p align="center">[<a href="#contents">contents</a>]<xsl:text> </xsl:text>
@@ -188,7 +188,7 @@
         </ul>
         
         <xsl:choose>
-          <xsl:when test="$bytech = '1'"></xsl:when>
+          <xsl:when test="$bytech = 1"></xsl:when>
           <xsl:otherwise>
             <xsl:if test="../back">
               <xsl:text>
@@ -409,7 +409,7 @@
   <!-- BBC: pulled this in to call a variation on the "css" template with custom styles -->
   <xsl:template match="spec">
     <xsl:choose>
-      <xsl:when test="$bytech = '1'">
+      <xsl:when test="$bytech = 1">
 <!--BBC: This is kind of a kludge, but it gets around the problem of having to redefine a bunch of templates to make the listing by technology work. Note that it will need to updated the CSS or other slice templates change--> 
         <html>
         	<xsl:if test="/spec/header/langusage/language">
@@ -420,6 +420,7 @@
             <title>
               <xsl:value-of select="//header/title"/>  | Techniques for WCAG 2.0
             </title>
+        		<xsl:call-template name="canonical-link"/>
             <link rel="stylesheet" type="text/css" href="slicenav.css"/>
             
             <xsl:call-template name="css"/>
@@ -438,12 +439,18 @@
             <ul id="navigation"><li><strong><a href="Overview#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li></ul> -->
             <div class="div1"><a name="maincontent"> </a>
               <h1 id="techs"> <xsl:value-of select="//header/title"/> for WCAG 2.0</h1>
-            	<p>This Web page lists <xsl:value-of select="//header/title"/> from <a href="Overview.html">Techniques for WCAG 2.0: Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. Technology-specific techniques do not supplant the general techniques: content developers should consider both general techniques and technology-specific techniques as they work toward conformance.</p>
+            	<p>This Web page lists <xsl:value-of select="//header/title"/> from <a href="Overview.html">Techniques for WCAG 2.0: Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. Technology-specific techniques do not replace the general techniques: content developers should consider both general techniques and technology-specific techniques as they work toward conformance.</p>
+            	<p>Publication of techniques for a specific technology does not imply that the technology can be used in all situations to create content that meets WCAG 2.0 success criteria and conformance requirements. Developers need to be aware of the limitations of specific technologies and provide content in a way that is accessible to people with disabilities. </p>
             	<p>For information about the techniques, see <a href="intro.html">Introduction to Techniques for WCAG 2.0</a>. For a list of techniques for other technologies, see the <a href="Overview.html#contents">Table of Contents</a>.</p>
             <xsl:apply-templates/>
             </div>
-          	<xsl:call-template name="techniques.informative.disclaimer"/>
-              <hr /><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques for WCAG 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents.
+          	<xsl:if test="$show.diff.markup != 0">
+          		<div class="diff-delete"><span class="difftext">[begin delete] </span>
+          			<xsl:call-template name="techniques.informative.disclaimer"/>
+          			<span class="difftext">[end delete]</span></div>
+          		<hr />
+          	</xsl:if>
+          	<div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques for WCAG 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents.
               </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © <xsl:apply-templates select="//pubdate/year"/><xsl:text> </xsl:text><a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>
       </xsl:when>
       <xsl:otherwise>
@@ -464,6 +471,7 @@
                 <xsl:value-of select="$additional.title"/>
               </xsl:if>
             </title>
+        		<xsl:call-template name="canonical-link"/>
             <xsl:call-template name="css"/>
             <xsl:if test="$show.diff.markup != 0">
               <script type="text/javascript" src="diffmarks.js"><xsl:text> </xsl:text></script>
@@ -1040,96 +1048,96 @@
     </xsl:choose></xsl:variable>
     <xsl:choose>
       <xsl:when test="@linktype='general'">
-        <a href="{$techsthisversion}{@href}{$techanchor}">
+        <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
           <xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
         </a>
       </xsl:when>
       <xsl:when test="@linktype='html'">
-        <a href="{$techsthisversion}{@href}{$techanchor}">
+        <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
           <xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
         </a>  (HTML)
 			</xsl:when>
       <xsl:when test="@linktype='guideline'">
-        <a href="{$glthisversion}#{@href}">
+        <a href="{$glthisversion}#{@href}" class="gl-ref">
           <xsl:apply-templates/>
         </a>
       </xsl:when>
       <xsl:when test="@linktype='glossary'">
-        <a href="{$glthisversion}#{@href}">
+        <a href="{$glthisversion}#{@href}" class="gl-ref">
           <xsl:apply-templates/>
         </a>
       </xsl:when>
       <xsl:when test="@linktype='understanding'">
 		<xsl:variable name="filename"><xsl:apply-templates select="$guide-src//*[@id = current()/@href]" mode="slice-understanding-filename"/></xsl:variable>
 		<xsl:variable name="fragment"><xsl:if test="@href != substring-before($filename, '.')">#<xsl:value-of select="@href"/></xsl:if><xsl:if test="@locn-note">#<xsl:value-of select="@locn-note"/></xsl:if></xsl:variable>
-        <a href="{$guidethisversion}{$filename}{$fragment}">
+        <a href="{$guidethisversion}{$filename}{$fragment}" class="understanding-ref">
           <xsl:apply-templates/>
         </a>
       </xsl:when>
       <xsl:when test="@linktype='techniques'">
       	<xsl:variable name="filename"><xsl:apply-templates select="$techs-src//*[@id = current()/@href]" mode="slice-techniques-filename"/></xsl:variable>
       	<xsl:variable name="fragment"><xsl:if test="@href != substring-before($filename, '.')">#<xsl:value-of select="@href"/></xsl:if><xsl:if test="@locn-note">#<xsl:value-of select="@locn-note"/></xsl:if></xsl:variable>
-      	<a href="{$techsthisversion}{$filename}{$fragment}">
+        <a href="{$techsthisversion}{$filename}{$fragment}" class="tech-ref">
           <xsl:apply-templates/>
         </a>
       </xsl:when>
       <xsl:when test="@linktype='text'">
-        <a href="{$techsthisversion}{@href}{$techanchor}">
+        <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
           <xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
         </a>  (Text)
 			</xsl:when>
       <xsl:when test="@linktype='css'">
-        <a href="{$techsthisversion}{@href}{$techanchor}">
+        <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
           <xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
         </a>  (CSS)
 			</xsl:when>
       <xsl:when test="@linktype='script'">
-        <a href="{$techsthisversion}{@href}{$techanchor}">
+        <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
           <xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
         </a>  (Scripting)
 			</xsl:when>
 			<xsl:when test="@linktype='aria'">
-			  <a href="{$techsthisversion}{@href}{$techanchor}">
+			  <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
           <xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
         </a>  (ARIA)
 			</xsl:when>
       <xsl:when test="@linktype='failure'">
-        <a href="{$techsthisversion}{@href}{$techanchor}">
+        <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
           <xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
         </a>
       </xsl:when>
       <xsl:when test="@linktype='smil'">
-        <a href="{$techsthisversion}{@href}{$techanchor}">
+        <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
           <xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
         </a> (SMIL)
 			</xsl:when>
     	<xsl:when test="@linktype='flash'">
-    		<a href="{$techsthisversion}{@href}{$techanchor}">
+    	  <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
     			<xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
     		</a> (Flash)
     	</xsl:when>
     	<xsl:when test="@linktype='pdf'">
-    		<a href="{$techsthisversion}{@href}{$techanchor}">
+    	  <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
     			<xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
     		</a> (PDF)
     	</xsl:when>
     	<xsl:when test="@linktype='silverlight'">
-    		<a href="{$techsthisversion}{@href}{$techanchor}">
+    	  <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
     			<xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
     		</a> (Silverlight)
     	</xsl:when>
     	<xsl:when test="@linktype='examples'">
-        <a href="/WAI/WCAG20/Techniques/working-examples/{ancestor::technique/@id}/{@href}">
+    	  <a href="/WAI/WCAG20/Techniques/working-examples/{ancestor::technique/@id}/{@href}" class="ex-ref">
             <xsl:apply-templates/>
         </a>
       </xsl:when>
       <xsl:when test="@linktype='tests'">
-        <a href="test-files/{ancestor::technique/@id}/{@href}">
+        <a href="test-files/{ancestor::technique/@id}/{@href}" class="test-ref">
           <xsl:apply-templates/>
         </a>
       </xsl:when>
       <xsl:when test="@linktype='server'">
-        <a href="{$techsthisversion}{@href}{$techanchor}">
+        <a href="{$techsthisversion}{@href}{$techanchor}" class="tech-ref">
           <xsl:value-of select="@href"/>: <xsl:apply-templates select="$techs-src//technique[@id=current()/@href]/short-name" mode="text"/>
         </a> (SERVER)
 			</xsl:when>
@@ -1401,7 +1409,38 @@
 		</div>
 	</xsl:template>
   
-  <!-- Only output stuff suited to the current maturity -->
+	<xsl:template name="techniques.information.reference">
+		<xsl:param name="id"/>
+		<div>
+			<xsl:if test="$id">
+				<xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>
+			</xsl:if>
+			<h2>Important Information about Techniques</h2>
+			<p>See <a href="{$guide-src//publoc/loc[@href]}understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how they relate to the normative WCAG 2.0 success criteria. The Applicability section explains the scope of the technique, and the presence of techniques for a specific technology does not imply that the technology can be used in all situations to create content that meets WCAG 2.0.</p>
+		</div>
+	</xsl:template>
+	
+	<!-- Only output stuff suited to the current maturity -->
   <xsl:template match="*[@role = 'ext-review' and /spec/@status != 'ext-review']"/>
   <xsl:template match="*[@role = 'final' and /spec/@status != 'final']"/>
+
+	<!-- ================================================================= -->
+	
+	<!-- Link to latest version of current page -->
+	<xsl:template name="canonical-link">
+		<link rel="canonical">
+			<xsl:attribute name="href">
+				<xsl:choose>
+					<xsl:when test="$bytech = 1"><xsl:value-of select="$techs-src//latestloc/loc"/></xsl:when>
+					<xsl:otherwise><xsl:value-of select="ancestor-or-self::spec//latestloc/loc"/></xsl:otherwise>
+				</xsl:choose>
+				<xsl:choose>
+					<xsl:when test="$bytech = 1"><xsl:value-of select="//body/div1/@id"/></xsl:when>
+					<xsl:when test="$slices = 1"><xsl:apply-templates select="." mode="slice-techniques-filename"/></xsl:when> <!-- would like to remove Overview.html and file extensions -->
+					<xsl:when test="$show.diff.markup = 1">complete-diff</xsl:when>
+					<xsl:otherwise>complete</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
+		</link>
+	</xsl:template>
 </xsl:transform>

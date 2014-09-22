@@ -61,6 +61,7 @@
 						<title>
 							<xsl:value-of select="head"/> to Web Content Accessibility Guidelines 2.0
 						</title>
+						<xsl:call-template name="canonical-link"/>
 						<link rel="stylesheet" type="text/css" href="slicenav.css" xmlns="http://www.w3.org/1999/xhtml"/>
 						<xsl:call-template name="css"/>
 					</head>
@@ -108,6 +109,7 @@
 						<title>
 							<xsl:value-of select="head"/>
 						</title>
+						<xsl:call-template name="canonical-link"/>
 						<link rel="stylesheet" type="text/css" href="slicenav.css"/>
 						<xsl:call-template name="css"/>
 					</head>
@@ -159,6 +161,7 @@
       </xsl:choose>
 							
 						</title>
+						<xsl:call-template name="canonical-link"/>
 						<link rel="stylesheet" type="text/css" href="slicenav.css"/>
 						<xsl:call-template name="css"/>
 					</head>
@@ -206,6 +209,7 @@
 						<title>
 							<xsl:value-of select="head"/>: Web Content Accessibility Guidelines 2.0
 						</title>
+						<xsl:call-template name="canonical-link"/>
 						<link rel="stylesheet" type="text/css" href="slicenav.css"/>
 						<xsl:call-template name="css"/>
 					</head>
@@ -255,6 +259,7 @@
 								<xsl:apply-templates select="header/version"/>
 							</xsl:if>
 						</title>
+						<xsl:call-template name="canonical-link"/>
 						<link rel="stylesheet" type="text/css" href="slicenav.css"/>
 						<xsl:call-template name="css"/>
 					</head>
@@ -473,27 +478,27 @@
 		<xsl:template match="loc">
 		<xsl:choose>
 			<xsl:when test="@linktype='general'">
-				<a href="{$techs-src//publoc/loc[@href]}{@href}.html" xmlns="http://www.w3.org/1999/xhtml">
+				<a href="{$techs-src//publoc/loc[@href]}{@href}.html" xmlns="http://www.w3.org/1999/xhtml" class="tech-ref">
 					<xsl:apply-templates/>
 				</a>
 			</xsl:when>
 			<xsl:when test="@linktype='html'">
-				<a href="{$techs-src//publoc/loc[@href]}#{@href}" xmlns="http://www.w3.org/1999/xhtml">
+				<a href="{$techs-src//publoc/loc[@href]}#{@href}" xmlns="http://www.w3.org/1999/xhtml" class="tech-ref">
 					<xsl:apply-templates/>
 				</a>
 			</xsl:when>
 			<xsl:when test="@linktype='guideline'">
-				<a href="{$gl-src//publoc/loc[@href]}guidelines.html#{@href}" xmlns="http://www.w3.org/1999/xhtml">
+				<a href="{$gl-src//publoc/loc[@href]}guidelines.html#{@href}" xmlns="http://www.w3.org/1999/xhtml" class="gl-ref">
 					<xsl:apply-templates/>
 				</a>
 			</xsl:when>
 			<xsl:when test="@linktype='css'">
-				<a href="{$techs-src//publoc/loc[@href]}#{@href}" xmlns="http://www.w3.org/1999/xhtml">
+				<a href="{$techs-src//publoc/loc[@href]}#{@href}" xmlns="http://www.w3.org/1999/xhtml" class="tech-ref">
 					<xsl:apply-templates/>
 				</a>
 			</xsl:when>
 			<xsl:when test="@linktype='script'">
-				<a href="{$techs-src//publoc/loc[@href]}#{@href}" xmlns="http://www.w3.org/1999/xhtml">
+				<a href="{$techs-src//publoc/loc[@href]}#{@href}" xmlns="http://www.w3.org/1999/xhtml" class="tech-ref">
 					<xsl:apply-templates/>
 				</a>
 			</xsl:when>

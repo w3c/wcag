@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H89">
+   <short-name>Using the title attribute to provide context-sensitive help</short-name>
+   <applicability>
+      <p>HTML and XHTML </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="minimize-error-context-help" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <ulist>
+            <item>
+               <p>Some current assistive technology provide feedback to the user when form fields have title attribute content available. </p>
+            </item>
+            <item>
+               <p>Some graphical user agents will display a tool tip when the mouse hovers above a form field containing a <att>title</att> attribute. However, current user agents do not provide access to the <att>title</att> attribute content via the keyboard. </p>
+            </item>
+            <item>
+               <p>The tool tip in some common user agents disappears after a short period of time (approximately 5 seconds). This can cause difficulty accessing title attribute content for those users who can use a mouse but have fine motor skill impairment, and may result in difficulties for users who need more time to read the tool tip. </p>
+            </item>
+            <item>
+               <p>It is difficult for most users to resize, adjust background colors, reposition or otherwise control the presentation of title attribute content in many current user agents. </p>
+            </item>
+            <item>
+               <p>This technique can only be used when the element has an explicitly associated label. In the absence of a label, the title will be used as the Name in the accessibility API of current user agents that support one. The help text described below makes a poor name. </p>
+            </item>
+         </ulist>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to provide context sensitive help for users as they enter data in forms by providing the help information in a <att>title</att> attribute. The help may include format information or examples of input. </p>
+      <note>
+         <p>Current user agents and assistive technologies do not always provide the information contained in the <att>title</att> attribute to users. Avoid using this technique in isolation until the <att>title</att> attribute has wide-spread support. </p>
+      </note>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>A mapping application provides a form consisting of a label "Address:", an input box and a submit button with value "Find map". The input box has a <att>title</att> attribute value with an example of the address format the user should enter. </p>
+         </description>
+         <code><![CDATA[
+<label for="searchAddress">Address: </label>
+<input id="searchAddress" type="text" size="30" value="" name="searchAddress" 
+ title="Address example: 101 Collins St, Melbourne, Australia" />
+             ]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>A form that allows users to pay their bill online requires the user to enter their account number. The input box associated with the "Account number" label has a <att>title</att> attribute providing information on locating the account number. </p>
+         </description>
+         <code><![CDATA[
+<label for="accNum1">Account number: </label>
+<input id="accNum1" type="text" size="10" value="" title="Your account number 
+ can be found in the top right-hand corner of your bill." />
+             ]]></code>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="H65"/>
+      <relatedtech idref="G71"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Identify form controls that require text input. </p>
+            </item>
+            <item>
+               <p>Check that each form control has an explicitly associated label </p>
+            </item>
+            <item>
+               <p>Check that each form control has context-sensitive help provided in the <att>title</att> attribute. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Checks #2 and #3 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

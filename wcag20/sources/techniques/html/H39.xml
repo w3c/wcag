@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H39">
+   <short-name>Using caption elements to associate data table captions with data tables</short-name>
+   <applicability>
+      <p>HTML and XHTML data tables </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to programmatically associate captions for data
+            tables where captions are provided in the presentation. The caption for a table is a
+            table identifier and acts like a title or heading for the table. </p>
+      <p>The <el>caption</el> element is the appropriate markup for such text and it ensures
+            that the table identifier remains associated with the table, including visually (by
+            default). In addition, using the <el>caption</el> element allows screen reading software
+            to navigate directly to the caption for a table if one is present.</p>
+      <p>The <el>caption</el> element may be used whether or not the table includes a
+              <att>summary</att> attribute. The <el>caption</el> element identifies the table
+            whereas the <att>summary</att> attribute gives an overview of the purpose or explains
+            how to navigate the table. If both are used, the <el>caption</el> should not duplicate
+            information in the <att>summary</att>.</p>
+      <p>Although WCAG 2.0 does not prohibit the use of layout tables, CSS-based layouts are
+            recommended in order to retain the defined semantic meaning of the HTML and XHTML
+            <el>table</el> elements and to conform to the coding practice of separating
+            presentation from content. If a table is used for layout, the <el>caption</el> element
+            is not used. The purpose of a layout table is simply to control the placement of
+            content; the table itself is “transparent" to the user. A <el>caption</el> would "break"
+            this transparency by calling attention to the table. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>An appointment calendar with a <el>caption</el>
+						   </head>
+         <code role="html401"><![CDATA[<table>
+<caption>Schedule for the week of March 6</caption>
+...</table> ]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>HTML 4.01 <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html4/struct/tables.html#h-11.2.2">Table Captions: The CAPTION element</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H43"/>
+      <relatedtech idref="H63"/>
+      <relatedtech idref="H73"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Check for layout tables: determine whether the content has a relationship with
+                  other content in both its column and its row. </p>
+               <olist>
+                  <item>
+                     <p>If “no," the table is a layout table.</p>
+                  </item>
+                  <item>
+                     <p>If “yes," the table is a data table.</p>
+                  </item>
+               </olist>
+            </item>
+            <item>
+               <p>If the table is a layout table, check that the table does not include a
+                    <el>caption</el> element.</p>
+            </item>
+            <item>
+               <p>If the table is a data table and it includes a <el>caption</el> element, check
+                  that the <el>caption</el> identifies the table</p>
+            </item>
+            <item>
+               <p>If both a <att>summary</att> attribute and a <el>caption</el> element are present
+                  for this data table, check that the <att>summary</att> does not duplicate the
+                    <el>caption</el>.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>For layout tables, #2 is true.</p>
+            </item>
+            <item>
+               <p>For data tables, #3 and #4 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>
