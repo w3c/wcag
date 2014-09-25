@@ -52,7 +52,7 @@
 				<xsl:variable name="tech" select="."/>
 				<td>
 					<xsl:choose>
-						<xsl:when test="$techs//div1[@id = $tech]//success-criterion[@idref = $sc and @relationship = 'sufficient']">X</xsl:when>
+						<xsl:when test="$techs//div1[@id = $tech]//success-criterion[@idref = $sc and (@relationship = 'sufficient' or @relationship = 'cosufficient')]">X</xsl:when>
 						<xsl:otherwise><xsl:text> </xsl:text></xsl:otherwise>
 					</xsl:choose>
 				</td>
