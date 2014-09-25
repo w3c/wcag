@@ -1075,20 +1075,20 @@ if(stristr($uaString, "/TR/") || stristr($uaString, "WCAG20/WD-WCAG20"))	{
 
 // insert all of the relevant cookies as hidden fields to be submitted for restored settings
 
- echo "<input type=\"hidden\" name=\"introopt\" value=\"" . htmlspecialchars($HTTP_COOKIE_VARS["introopt"]) . "\" />";
- echo "<input type=\"hidden\" name=\"cssopt\" value=\"" . htmlspecialchars($HTTP_COOKIE_VARS["cssopt"]) . "\" />";
- echo "<input type=\"hidden\" name=\"smilopt\" value=\"" . htmlspecialchars($HTTP_COOKIE_VARS["smilopt"]) . "\" />";
- echo "<input type=\"hidden\" name=\"scriptopt\" value=\"" . htmlspecialchars($HTTP_COOKIE_VARS["scriptopt"]) . "\" />";
- echo "<input type=\"hidden\" name=\"serversideopt\" value=\"" . htmlspecialchars($HTTP_COOKIE_VARS["serversideopt"]) . "\" />";
- echo "<input type=\"hidden\" name=\"flashopt\" value=\"" . htmlspecialchars($HTTP_COOKIE_VARS["flashopt"]) . "\" />";
- echo "<input type=\"hidden\" name=\"pdfopt\" value=\"" . htmlspecialchars($HTTP_COOKIE_VARS["fpdfopt"]) . "\" />";
- echo "<input type=\"hidden\" name=\"silverlightopt\" value=\"" . htmlspecialchars($HTTP_COOKIE_VARS["silverlightopt"]) . "\" />";
- echo "<input type=\"hidden\" name=\"ariaopt\" value=\"" . htmlspecialchars($HTTP_COOKIE_VARS["ariaopt"]) . "\" />";
- echo "<input type=\"hidden\" name=\"level1opt\" value=\"" . htmlspecialchars($HTTP_COOKIE_VARS["level1opt"]) . "\" />";
- echo "<input type=\"hidden\" name=\"level2opt\" value=\"" . htmlspecialchars($HTTP_COOKIE_VARS["level2opt"]) . "\" />";
- echo "<input type=\"hidden\" name=\"level3opt\" value=\"" . htmlspecialchars($HTTP_COOKIE_VARS["level3opt"]) . "\" />";
- echo "<input type=\"hidden\" name=\"sufopt\" value=\"" . htmlspecialchars($HTTP_COOKIE_VARS["sufopt"]) . "\" />";
- echo "<input type=\"hidden\" name=\"confreqs\" value=\"" . htmlspecialchars($HTTP_COOKIE_VARS["confreqs"]) . "\" />";
+ echo "<input type=\"hidden\" name=\"introopt\" value=\"" . htmlspecialchars($_COOKIE["introopt"]) . "\" />";
+ echo "<input type=\"hidden\" name=\"cssopt\" value=\"" . htmlspecialchars($_COOKIE["cssopt"]) . "\" />";
+ echo "<input type=\"hidden\" name=\"smilopt\" value=\"" . htmlspecialchars($_COOKIE["smilopt"]) . "\" />";
+ echo "<input type=\"hidden\" name=\"scriptopt\" value=\"" . htmlspecialchars($_COOKIE["scriptopt"]) . "\" />";
+ echo "<input type=\"hidden\" name=\"serversideopt\" value=\"" . htmlspecialchars($_COOKIE["serversideopt"]) . "\" />";
+ echo "<input type=\"hidden\" name=\"flashopt\" value=\"" . htmlspecialchars($_COOKIE["flashopt"]) . "\" />";
+ echo "<input type=\"hidden\" name=\"pdfopt\" value=\"" . htmlspecialchars($_COOKIE["fpdfopt"]) . "\" />";
+ echo "<input type=\"hidden\" name=\"silverlightopt\" value=\"" . htmlspecialchars($_COOKIE["silverlightopt"]) . "\" />";
+ echo "<input type=\"hidden\" name=\"ariaopt\" value=\"" . htmlspecialchars($_COOKIE["ariaopt"]) . "\" />";
+ echo "<input type=\"hidden\" name=\"level1opt\" value=\"" . htmlspecialchars($_COOKIE["level1opt"]) . "\" />";
+ echo "<input type=\"hidden\" name=\"level2opt\" value=\"" . htmlspecialchars($_COOKIE["level2opt"]) . "\" />";
+ echo "<input type=\"hidden\" name=\"level3opt\" value=\"" . htmlspecialchars($_COOKIE["level3opt"]) . "\" />";
+ echo "<input type=\"hidden\" name=\"sufopt\" value=\"" . htmlspecialchars($_COOKIE["sufopt"]) . "\" />";
+ echo "<input type=\"hidden\" name=\"confreqs\" value=\"" . htmlspecialchars($_COOKIE["confreqs"]) . "\" />";
  echo "<input type=\"hidden\" name=\"savesettings\" value=\"Y\" />";
 // echo "<p class=\"submitAsCT\"><input type=\"hidden\" value=\"Y\" name=\"AsCT\"/><input type=\"submit\" value=\"Customize with Previously Saved Settings\" class=\"submitLink\"/></p>";
 ]]></xsl:processing-instruction>
