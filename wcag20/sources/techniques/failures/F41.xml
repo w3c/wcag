@@ -2,8 +2,7 @@
 <!DOCTYPE technique
   SYSTEM "../../xmlspec.dtd">
 <technique id="F41">
-   <short-name>Failure of Success Criterion 2.2.1, 2.2.4, and 3.2.5 due to using meta refresh with a
-                    time-out</short-name>
+   <short-name>Failure of Success Criterion 2.2.1, 2.2.4, and 3.2.5 due to using meta refresh to reload the page</short-name>
    <applicability>
       <p>HTML and XHTML</p>
    </applicability>
@@ -37,7 +36,7 @@
                                 seconds.)</p>
          </description>
          <code><![CDATA[
-<html xmlns="http://www.w3.org/1999/xhtml">   
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>     
     <title>HTML Techniques for WCAG 2.0</title>     
     <meta http-equiv="refresh" content="60" />   
@@ -48,32 +47,8 @@
 </html>
 ]]></code>
       </eg-group>
-      <eg-group role="failure">
-         <description>
-            <p>This is a deprecated example that redirects the user to another page
-                                after a number of seconds. Content developers are recommended to
-                                user server-side redirects instead. (The number in the
-                                <code><![CDATA[content]]></code> attribute is the refresh interval in
-                            seconds.)</p>
-         </description>
-         <code><![CDATA[
-<html xmlns="http://www.w3.org/1999/xhtml">   
-  <head>     
-    <title>The Tudors</title>     
-    <meta http-equiv="refresh" content="10;URL='http://example.com/'" />   
-  </head>   
-  <body>
-    <p>This page has moved to a <a href="http://example.com/">
-    example.com</a>. Please note that we now have our own 
-    domain name and will redirect you in a few seconds. Please update 
-    your links and bookmarks.</p>
-  </body> 
-</html>]]></code>
-      </eg-group>
    </examples>
-   <related-techniques>
-      <relatedtech idref="SVR1"/>
-   </related-techniques>
+   <related-techniques />
    <tests>
       <procedure>
          <olist>
@@ -81,10 +56,9 @@
                <p> Find <code><![CDATA[meta]]></code> elements in the document. </p>
             </item>
             <item>
-               <p> For each <code><![CDATA[meta]]></code> element, check if it contains the
-                                    attribute <code><![CDATA[http-equiv]]></code> with value "refresh"
-                                    (case-insensitive) and the <code><![CDATA[content]]></code> attribute with a
-                                    number (representing seconds) greater than 0. </p>
+               <p>For each <code><![CDATA[meta]]></code> element, check if it contains
+               the <code><![CDATA[http-equiv]]></code> attribute with value "refresh" (case-insensitive) and
+               the <code><![CDATA[content]]></code> attribute with a number (representing seconds) equals to or greater than 0 and without "; url=" (case-insensitive). </p>
             </item>
             <item>
                <p>check to see if there is a mechanism to turn off the refresh. </p>
