@@ -2,19 +2,18 @@
 <!DOCTYPE technique
   SYSTEM "../../xmlspec.dtd">
 <technique id="F68">
-   <short-name>Failure of Success Criterion 1.3.1 and 4.1.2 due to the association of label and user interface controls not being programmatically <phrase>determined</phrase>
+   <short-name>Failure of Success Criterion 4.1.2 due to a user interface control not having a programmatically determined name.
    </short-name>
    <applicability>
       <p>HTML and XHTML controls that use visible labels</p>
    </applicability>
    <applies-to>
-      <success-criterion idref="content-structure-separation-programmatic"
-                         relationship="failure"/>
+      <success-criterion idref="content-structure-separation-programmatic" relationship="failure"/>
       <success-criterion idref="ensure-compat-rsv" relationship="failure"/>
    </applies-to>
    <description>
-      <p>This failure describes a problem that occurs when no <el>label</el> element is used to explicitly associate a form control with a label where the visual design uses a label.</p>
-      <note><!-- AWK question - is this note section formatted right? -->
+      <p>This failure describes a problem that occurs when a form control does not have a name exposed to assistive technologies. The result is that some users will not be able to identify the purpose of the form control. The name can be provided in multiple ways, including the <el>label</el> element. Other options include use of the <att>title</att> attribute and <att>aria-label</att> which are used to directly provide text that is used for the name or <att>aria-labelledby</att> which indicates an association with other text on a page that is providing the name. Button controls can have a name assigned in other ways, as indicated below, but in certain situations may require use of <el>label</el>, <att>title</att>, <att>aria-label</att>, or <att>aria-labelledby</att>.</p>
+      <note>
          <p>Elements that can use an explicitly-associated <el>label</el> element are:</p>
          <ulist>
             <item>
@@ -54,7 +53,7 @@
       <eg-group role="failure">
          <head/>
          <description>
-            <p>The following example demonstrates a form that visually presents labels for form controls, but does not use the <el>label</el> element to associate them with their controls. The code example below is a failure because assistive technology may not be able to determine which label goes with which control.</p>
+            <p>The following example demonstrates a form that visually presents labels for form controls, but does not associate them with their controls. The code example below is a failure because assistive technology may not be able to determine which label goes with which control.</p>
             <codeblock role="html401" xml:space="preserve"><![CDATA[
 <form>
  First name: 
@@ -88,7 +87,7 @@
       <eg-group role="failure">
          <head/>
          <description>
-            <p>The search text box does in the following code example not have a name.  The name can be supplied with either the title attribute or with a label element hidden with CSS.
+            <p>The search text box does in the following code example not have a name.  The name can be supplied with any of the approaches mentioned above.
               </p>
             <codeblock role="html401" xml:space="preserve"><![CDATA[
 <input type="text" value="Type your search here"><input type="submit" type="submit" value="Search">
@@ -111,26 +110,35 @@
    </related-techniques>
    <tests>
       <procedure>
-         <p>For all <el>input</el> elements of type <attval>radio</attval>, <attval>checkbox</attval>, <attval>text</attval>, <attval>file</attval> or <attval>password</attval>, and all <el>textarea</el> and <el>select</el> elements in the Web page:
-							</p>
+         <p>For all <el>input</el> elements of <att>type</att> <attval>radio</attval>, <attval>checkbox</attval>, <attval>text</attval>, <attval>file</attval> or <attval>password</attval>, and all <el>textarea</el>, <el>button</el> and <el>select</el> elements in the Web page:</p>
          <olist>
             <item>
-               <p>Check that the visual design uses a text label that identifies the purpose of the control</p>
-            </item>
-            <item>
-               <p>Check that these input elements have a programmatically determined label associated in one of the following ways:</p>
+               <p>Check that each element has a programmatically determined name using one of the following ways:</p>
                <olist>
                   <item>
-                     <p>the text label is contained in a <el>label</el> element that is correctly associated to the respective <el>input</el> element via the label's <att>for</att> attribute (the <att>id</att> given as value in the <att>for</att> attribute matches the <att>id</att> of the input element).</p>
+                     <p>the text label or labels are correctly programmatically associated with the control element via the <att>aria-labelledby</att> attribute (each <att>id</att> given as a value in the <att>aria-labelledby</att> attribute matches the <att>id</att> of the text label element).</p>
+                  </item>
+                  <item>
+                     <p>the control element is programmatically determined through the value of either its <att>aria-label</att> attribute.</p>
+                  </item>
+                  <item>
+                     <p>the text label is contained in a <el>label</el> element that is correctly associated to the respective control element via the label's <att>for</att> attribute (the <att>id</att> given as value in the <att>for</att> attribute matches the <att>id</att> of the control).</p>
                   </item>
                   <item>
                      <p>the control is contained within a <el>label</el> element that contains the label text.</p>
                   </item>
                   <item>
-                     <p>the text label is correctly programmatically associated with the <el>input</el> element via the <att>aria-labelledby</att> attribute (the <att>id</att> given as value in the <att>aria-labelledby</att> attribute matches the <att>id</att> of the input element).</p>
+                     <p>If the control is a <el>button</el> element it has text content.</p>
                   </item>
                   <item>
-                     <p>the <el>input</el> element is programmatically determined through the value of either its <att>aria-label</att> or <att>title</att> attributes.</p>
+                     <p>If the control is an <el>input</el> of <att>type</att> <attval>submit</attval> or <attval>reset</attval>,  the <att>value</att> attribute provides a text label.</p>
+                  </item>
+                  <item>
+                     <p>If the control is an <el>input</el> of <att>type</att> <attval>image</attval>,  the <att>alt</att> attribute provides a text label.</p>
+                  </item>
+                  <item>
+                     <p>the control element is programmatically determined through the value of either its <att>title</att> attribute.</p>
+                  </item>
                   </item>
                </olist>
             </item>
@@ -139,7 +147,7 @@
       <expected-results>
          <ulist>
             <item>
-               <p>If check #1 is true and all options of check #2 are false, then this failure condition applies and the content fails these Success Criteria.</p>
+               <p>If all options of check #1 are false, then this failure condition applies and the content fails the Success Criteria.</p>
             </item>
          </ulist>
       </expected-results>
