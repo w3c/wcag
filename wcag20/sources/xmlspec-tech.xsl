@@ -710,7 +710,12 @@
 					</a>
 				</li>
 			</ul>
+			<!-- This if tests for techniques with a relationship that is cosufficient, which indicates that it must be used along with another technique -->
+			<xsl:if test="@relationship='cosufficient'">
+				<div class="note"><p class="prefix"><em>Note:</em> This technique must be combined with other techniques to meet <a href="{$gl-src//publoc/loc[@href]}#{$id}">SC<xsl:text> </xsl:text><xsl:call-template name="sc-number"><xsl:with-param name="id" select="$id"/></xsl:call-template></a>. See<xsl:text> </xsl:text><a href="{$guide-src//publoc/loc[@href]}{$filename}{fragment}"> Understanding SC <xsl:call-template name="sc-number"><xsl:with-param name="id" select="$id"/></xsl:call-template></a> for details.</p></div>
+			</xsl:if>
 		</li>
+		
 	</xsl:template>
 	<xsl:template match="conformance-criterion" mode="ccrelates">
 	<xsl:choose>
