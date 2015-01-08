@@ -1,7 +1,5 @@
-WCAG (Web Content Accessibility Guidelines) - Old branch (scheduled for deletion)
+WCAG (Web Content Accessibility Guidelines) - Branch for production of Jan 2015 review versions
 ===
-
-This branch was used leading up to the Fall 2014 publication of the supporting documents and has been merged back into the master.
 
 Please do not submit any new pull requests against this branch.
 
