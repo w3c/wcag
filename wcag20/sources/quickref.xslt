@@ -117,7 +117,7 @@ Editors: Gregg Vanderheiden, Loretta Guarino Reid, Ben Caldwell, Shawn Lawton He
               </a>, <a href="http://www.ercim.eu/" shape="rect">
                 <acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym>
               </a>,
-            	<a href="http://www.keio.ac.jp/" shape="rect">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C
+            	<a href="http://www.keio.ac.jp/" shape="rect">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C
 <a href="/Consortium/Legal/ipr-notice#Legal_Disclaimer" shape="rect">liability</a>,
 
 <a href="/Consortium/Legal/ipr-notice#W3C_Trademarks" shape="rect">trademark</a>,
