@@ -20,20 +20,20 @@
       <p>The <att>summary</att> attribute may be used whether or not the table includes a
               <el>caption</el> element. If both are used, the <att>summary</att> should not
             duplicate the <el>caption</el>.</p>
-      <p> Although WCAG 2 does not prohibit the use of layout tables, CSS-based layouts are
-            recommended in order to retain the defined semantic meaning of the HTML <el>table</el>
-            elements and to conform to the coding practice of separating presentation from content.
-            However, if a layout table is used, then the <att>summary</att> attribute is not used or
-            is null. The purpose of a layout table is simply to control the placement of content;
-            the table itself is “transparent" to the user. A <att>summary</att> would “break" this
-            transparency by calling attention to the table. A null <att>summary</att>
-              (<code><![CDATA[
-							]]><att>summary</att><![CDATA[=""]]></code>) on layout tables is acceptable.</p>
+      <note>
+         <p> Although WCAG 2 does not prohibit the use of layout tables, CSS-based layouts are
+               recommended in order to retain the defined semantic meaning of the HTML <el>table</el>
+               elements and to conform to the coding practice of separating presentation from content.
+               However, if a layout table is used, then the <att>summary</att> attribute is not used or
+               is null. The purpose of a layout table is simply to control the placement of content;
+               the table itself is “transparent" to the user. A <att>summary</att> would “break" this
+               transparency by calling attention to the table. A null <att>summary</att>
+                 (<code><att>summary</att><![CDATA[=""]]></code>) on layout tables is acceptable. See <loc href="F46" linktype="failure">F46</loc> for details.</p>
+      </note>
    </description>
    <examples>
       <eg-group>
-         <head>A data table with a <att>summary</att> but no <el>caption</el>
-						   </head>
+         <head>A data table with a <att>summary</att> but no <el>caption</el></head>
          <description>
             <p>This example shows a bus schedule. The route number and direction are included in
                 the <att>summary</att> along with information on how to use the schedule.</p>
@@ -91,45 +91,28 @@ Service begins at 4:00 AM and ends at midnight.">
    <related-techniques>
       <relatedtech idref="H39"/>
       <relatedtech idref="H51"/>
+      <relatedtech idref="F46"/>
    </related-techniques>
    <tests>
       <procedure>
+         <p>For each data table: </p>
          <olist>
             <item>
-               <p>Check for layout tables: determine whether the content has a relationship with
-                  other content in both its column and its row. </p>
-               <olist>
-                  <item>
-                     <p>If “no," the table is a layout table.</p>
-                  </item>
-                  <item>
-                     <p>If “yes," the table is a data table.</p>
-                  </item>
-               </olist>
-            </item>
-            <item>
-               <p>If the table is a layout table, check that the <att>summary</att> attribute is
-                  not present or <att>summary</att> attribute is null.</p>
-            </item>
-            <item>
-               <p>If the table is a data table and a <att>summary</att> is present, check that the
-                    <att>summary</att> attribute describes the table's organization or explains how
+               <p>If a <att>summary</att> is present, check that the <att>summary</att>
+                  attribute describes the table's organization or explains how
                   to use the table</p>
             </item>
             <item>
                <p>If both a <att>summary</att> attribute and a <el>caption</el> element are present
-                  for this data table, check that the <att>summary</att> does not duplicate the
-                    <el>caption</el>.</p>
+                  for the data table, check that the <att>summary</att> does not
+                  duplicate the <el>caption</el>.</p>
             </item>
          </olist>
       </procedure>
       <expected-results>
          <ulist>
             <item>
-               <p>For layout tables, #2 is true.</p>
-            </item>
-            <item>
-               <p>For data tables, #3 and #4 are true.</p>
+               <p>#1 and #2 are true.</p>
             </item>
          </ulist>
       </expected-results>
