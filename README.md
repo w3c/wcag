@@ -1,6 +1,6 @@
-WCAG (Web Content Accessibility Guidelines) - Branch for production of Jan 2015 review versions
+WCAG (Web Content Accessibility Guidelines) - Branch for production of August 2015 review versions
 ===
 
-Please do not submit any new pull requests against this branch.
+Please use this branch as the target for pull requests until September 10, 2015.
 
 
