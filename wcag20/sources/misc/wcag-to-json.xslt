@@ -45,8 +45,16 @@
 		<xsl:text>{</xsl:text>
 		<xsl:text>"id": "WCAG2:</xsl:text><xsl:value-of select="@id"/><xsl:text>",</xsl:text>
 		<xsl:text>"num": "</xsl:text><xsl:number/><xsl:text>",</xsl:text>
-		<xsl:text>"handle": "@@",</xsl:text><!-- not separately selected in the XML--><!-- requested format was title -->
-		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string(head)"/><xsl:text>",</xsl:text><!-- full text of the principle, not in the requested format -->
+		<xsl:text>"handle": "</xsl:text>
+		<!-- principle handles not usefully in the XML or imported XSLT, so manually outputting here -->
+		<xsl:choose>
+			<xsl:when test="@id='perceivable'">Perceivable</xsl:when>
+			<xsl:when test="@id='operable'">Operable</xsl:when>
+			<xsl:when test="@id='understandable'">Understandable</xsl:when>
+			<xsl:when test="@id='robust'">Robust</xsl:when>
+		</xsl:choose>
+		<xsl:text>",</xsl:text><!-- requested key was title -->
+		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string(head)"/><xsl:text>",</xsl:text><!-- full text of the principle, not in the requested key -->
 
 		<xsl:text>"guidelines": [</xsl:text>
 		<xsl:apply-templates select="div3[@role='group1']"></xsl:apply-templates>
@@ -57,11 +65,16 @@
 	</xsl:template>
 	
 	<xsl:template match="div3[@role='group1']">
+		<xsl:variable name="handle">
+			<xsl:call-template name="sc-handle">
+				<xsl:with-param name="handleid" select="@id"/>
+			</xsl:call-template>
+		</xsl:variable>
 		<xsl:text>{</xsl:text>
 		<xsl:text>"id": "WCAG2:</xsl:text><xsl:value-of select="@id"/><xsl:text>",</xsl:text>
 		<xsl:text>"num": "</xsl:text><xsl:number level="multiple" count="div2[@role='principle'] | div3" format="1.1"/><xsl:text>",</xsl:text>
-		<xsl:text>"handle": "@@",</xsl:text><!-- not in the XML --><!-- requested format was title -->
-		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string(head)"/><xsl:text>",</xsl:text><!-- requested format was intro -->
+		<xsl:text>"handle": "</xsl:text><xsl:value-of select="wcag:json-string($handle)"/><xsl:text>",</xsl:text><!-- requested key was title -->
+		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string(head)"/><xsl:text>",</xsl:text><!-- requested key was intro -->
 
 		<xsl:text>"techniques": [</xsl:text>
 		<xsl:apply-templates select="$understanding.doc//*[@id = current()/@id]//*[@role = 'gladvisory']"></xsl:apply-templates>
@@ -83,7 +96,7 @@
 		<xsl:text>"id": "WCAG2:</xsl:text><xsl:value-of select="@id"/><xsl:text>",</xsl:text>
 		<xsl:text>"num": "</xsl:text><xsl:number level="multiple" count="div2[@role='principle'] | div3 | div5" format="1.1.1"/><xsl:text>",</xsl:text>
 		<xsl:text>"level": "</xsl:text><xsl:call-template name="sc-level"/><xsl:text>",</xsl:text>
-		<xsl:text>"handle": "</xsl:text><xsl:value-of select="wcag:json-string(head)"/><xsl:text>",</xsl:text><!-- requested format was title -->
+		<xsl:text>"handle": "</xsl:text><xsl:value-of select="wcag:json-string(head)"/><xsl:text>",</xsl:text><!-- requested key was title -->
 		<xsl:text>"text": "</xsl:text><xsl:value-of select="wcag:json-string(string($sc))"/><xsl:text>",</xsl:text>
 		<xsl:if test="p/following-sibling::*">
 			<xsl:text>"details": [</xsl:text>
@@ -121,7 +134,7 @@
 	<xsl:template match="item" mode="sc-details">
 		<xsl:variable name="text"><xsl:apply-templates select="p" mode="sc-text"/></xsl:variable>
 		<xsl:text>{</xsl:text>
-		<xsl:text>"handle": "</xsl:text><xsl:value-of select="wcag:json-string(p/emph[@role = 'sc-handle'])"/><xsl:text>",</xsl:text><!-- requested format was title -->
+		<xsl:text>"handle": "</xsl:text><xsl:value-of select="wcag:json-string(p/emph[@role = 'sc-handle'])"/><xsl:text>",</xsl:text><!-- requested key was title -->
 		<xsl:text>"text": "</xsl:text><xsl:value-of select="wcag:json-string($text)"/><xsl:text>"</xsl:text>
 		<xsl:text>}</xsl:text>
 		<xsl:if test="position() != last()">,</xsl:if>
@@ -209,7 +222,7 @@
 	<xsl:template match="item[not(p/loc)]" mode="technique">
 		<xsl:text>{</xsl:text>
 		<xsl:text>"id": "TECH:future</xsl:text><xsl:number/><xsl:text>",</xsl:text>
-		<xsl:text>"text": "</xsl:text><xsl:value-of select="wcag:json-string(.)"/><xsl:text>"</xsl:text><!-- maybe this should be title to match the others -->
+		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string(.)"/><xsl:text>"</xsl:text><!-- requested key was text -->
 		<xsl:if test="ulist | olist">
 			<xsl:call-template name="using">
 				<xsl:with-param name="list" select="ulist | olist"/>
