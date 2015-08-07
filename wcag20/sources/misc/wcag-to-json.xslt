@@ -63,9 +63,9 @@
 		<xsl:text>"handle": "@@",</xsl:text><!-- not in the XML --><!-- requested format was title -->
 		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string(head)"/><xsl:text>",</xsl:text><!-- requested format was intro -->
 
-		<xsl:text>"techniques": {</xsl:text>
+		<xsl:text>"techniques": [</xsl:text>
 		<xsl:apply-templates select="$understanding.doc//*[@id = current()/@id]//*[@role = 'gladvisory']"></xsl:apply-templates>
-		<xsl:text>},</xsl:text>
+		<xsl:text>],</xsl:text>
 
 		<xsl:text>"successcriteria": [</xsl:text>
 		<xsl:apply-templates select="div4/div5[@role = 'sc']"></xsl:apply-templates>
@@ -90,9 +90,9 @@
 			<xsl:text>],</xsl:text>
 		</xsl:if>
 
-		<xsl:text>"techniques": {</xsl:text>
-		<xsl:apply-templates select="$understanding.doc//*[@id = current()/@id]//*[@role = 'sufficient' or @role = 'advisory' or @role='failures']"></xsl:apply-templates>
-		<xsl:text>},</xsl:text>
+		<xsl:text>"techniques": [</xsl:text>
+		<xsl:apply-templates select="$understanding.doc//*[@id = current()/@id]//*[@role='sufficient' or @role='advisory' or @role='tech-optional' or @role='failures'][olist or ulist or div5]"></xsl:apply-templates>
+		<xsl:text>]</xsl:text>
 		
 		<xsl:text>}&#10;</xsl:text>
 		<xsl:if test="position() != last()">,</xsl:if>
@@ -148,32 +148,34 @@
 	
 	<xsl:template match="emph[@role = 'sc-handle']" mode="sc-text"/>
 	
-	<xsl:template match="div2[@role = 'gladvisory'] | div4[@role = 'sufficient'] | div4[@role = 'advisory'] | div4[@role = 'failures']">
-		<xsl:if test="olist or ulist or div5">
-			<xsl:text>"</xsl:text>
-			<xsl:choose>
-				<xsl:when test="@role = 'sufficient'">sufficient</xsl:when>
-				<xsl:when test="@role = 'failures'">failure</xsl:when>
-				<xsl:otherwise>advisory</xsl:otherwise>
-			</xsl:choose>
-			<xsl:text>": {</xsl:text>
-			<xsl:apply-templates select="ulist/item | olist/item" mode="technique"/>
-			<xsl:if test="div5[@role = 'situation']">
-				<xsl:text>"situations": [</xsl:text>
-				<xsl:apply-templates select="div5[@role = 'situation']" mode="situation"/>
-				<xsl:text>]</xsl:text>
-			</xsl:if>
+	<xsl:template match="div2[@role = 'gladvisory'] | div4[@role = 'sufficient'] | div4[@role = 'advisory'] | div4[@role = 'failures'] | div4[@role = 'tech-optional'][olist or ulist or div5]">
+		<xsl:text>{</xsl:text>
+		<xsl:text>"</xsl:text>
+		<xsl:choose>
+			<xsl:when test="@role = 'sufficient'">sufficient</xsl:when>
+			<xsl:when test="@role = 'failures'">failure</xsl:when>
+			<xsl:otherwise>advisory</xsl:otherwise>
+		</xsl:choose>
+		<xsl:text>": [</xsl:text>
+		<xsl:apply-templates select="ulist/item | olist/item" mode="technique"/>
+		<xsl:if test="div5[@role = 'situation']">
+			<xsl:text>{</xsl:text>
+			<xsl:text>"situations": [</xsl:text>
+			<xsl:apply-templates select="div5[@role = 'situation']" mode="situation"/>
+			<xsl:text>]</xsl:text>
 			<xsl:text>}</xsl:text>
-			<xsl:if test="position() != last()">,</xsl:if>
 		</xsl:if>
+		<xsl:text>]</xsl:text>
+		<xsl:text>}</xsl:text>
+		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="div5[@role = 'situation']" mode="situation">
 		<xsl:text>{</xsl:text>
 		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string(head)"/><xsl:text>",</xsl:text>
-		<xsl:text>"techniques": {</xsl:text>
+		<xsl:text>"techniques": [</xsl:text>
 		<!--<xsl:apply-templates select="ulist/item | olist/item" mode="technique"/>-->
-		<xsl:text>}</xsl:text>
+		<xsl:text>]</xsl:text>
 		<!-- sections, comma before last brace -->
 		<xsl:text>}</xsl:text>
 		<xsl:if test="position() != last()">,</xsl:if>
@@ -182,16 +184,20 @@
 	<xsl:template match="div2/ulist | div4/ulist | div5/ulist"></xsl:template>
 	
 	<xsl:template match="item[p/loc][count(p/loc) = 1]" mode="technique">
+		<xsl:text>{</xsl:text>
 		<xsl:text>"id": "TECH:</xsl:text>
 		<xsl:value-of select="p/loc/@href"/>
 		<xsl:text>"</xsl:text>
+		<xsl:text>}</xsl:text>
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="item[p/loc][count(p/loc) > 1]" mode="technique">
+		<xsl:text>{</xsl:text>
 		<xsl:text>"id": "TECH:</xsl:text>
 		<xsl:text>@@multiple-techs</xsl:text><xsl:number/>
 		<xsl:text>"</xsl:text>
+		<xsl:text>}</xsl:text>
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
