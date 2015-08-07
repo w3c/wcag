@@ -52,7 +52,7 @@
 		<xsl:apply-templates select="div3[@role='group1']"></xsl:apply-templates>
 		<xsl:text>]</xsl:text>
 
-		<xsl:text>}</xsl:text>
+		<xsl:text>}&#10;</xsl:text>
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
@@ -71,7 +71,8 @@
 		<xsl:apply-templates select="div4/div5[@role = 'sc']"></xsl:apply-templates>
 		<xsl:text>]</xsl:text>
 
-		<xsl:text>}</xsl:text><xsl:if test="position() != last()">,</xsl:if>
+		<xsl:text>}&#10;</xsl:text>
+		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="div5[@role = 'sc']">
@@ -174,7 +175,7 @@
 		<xsl:text>{</xsl:text>
 		<xsl:text>"title": "</xsl:text><xsl:value-of select="wcag:json-string(head)"/><xsl:text>",</xsl:text>
 		<xsl:text>"techniques": [</xsl:text>
-		<!--<xsl:apply-templates select="ulist/item | olist/item" mode="technique"/>-->
+		<xsl:apply-templates select="ulist/item | olist/item" mode="technique"/>
 		<xsl:text>]</xsl:text>
 		<!-- sections, comma before last brace -->
 		<xsl:text>}</xsl:text>
@@ -184,19 +185,23 @@
 	<xsl:template match="div2/ulist | div4/ulist | div5/ulist"></xsl:template>
 	
 	<xsl:template match="item[p/loc][count(p/loc) = 1]" mode="technique">
-		<xsl:text>{</xsl:text>
-		<xsl:text>"id": "TECH:</xsl:text>
-		<xsl:value-of select="p/loc/@href"/>
-		<xsl:text>"</xsl:text>
-		<xsl:text>}</xsl:text>
+		<xsl:apply-templates select="p/loc" mode="technique">
+			<xsl:with-param name="using" select="ulist | olist"/>
+		</xsl:apply-templates>
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="item[p/loc][count(p/loc) > 1]" mode="technique">
 		<xsl:text>{</xsl:text>
-		<xsl:text>"id": "TECH:</xsl:text>
-		<xsl:text>@@multiple-techs</xsl:text><xsl:number/>
-		<xsl:text>"</xsl:text>
+		<xsl:text>"and": </xsl:text>
+		<xsl:text>[</xsl:text>
+		<xsl:apply-templates select="p/loc" mode="technique"/>
+		<xsl:text>]</xsl:text>
+		<xsl:if test="ulist | olist">
+			<xsl:call-template name="using">
+				<xsl:with-param name="list" select="ulist | olist"/>
+			</xsl:call-template>
+		</xsl:if>
 		<xsl:text>}</xsl:text>
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
@@ -205,11 +210,36 @@
 		<xsl:text>{</xsl:text>
 		<xsl:text>"id": "TECH:future</xsl:text><xsl:number/><xsl:text>",</xsl:text>
 		<xsl:text>"text": "</xsl:text><xsl:value-of select="wcag:json-string(.)"/><xsl:text>"</xsl:text><!-- maybe this should be title to match the others -->
+		<xsl:if test="ulist | olist">
+			<xsl:call-template name="using">
+				<xsl:with-param name="list" select="ulist | olist"/>
+			</xsl:call-template>
+		</xsl:if>
+		<xsl:text>}</xsl:text>
+		<xsl:if test="position() != last()">,</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="loc" mode="technique">
+		<xsl:param name="using"/>
+		<xsl:text>{</xsl:text>
+		<xsl:text>"id": "TECH:</xsl:text>
+		<xsl:value-of select="@href"/>
+		<xsl:text>"</xsl:text>
+		<xsl:if test="$using">
+			<xsl:call-template name="using">
+				<xsl:with-param name="list" select="$using"/>
+			</xsl:call-template>
+		</xsl:if>
 		<xsl:text>}</xsl:text>
 		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="item" mode="technique">##<xsl:copy-of select="."/>##</xsl:template>
+	<xsl:template name="using">
+		<xsl:param name="list" select="."/>
+		<xsl:text>,"using": [</xsl:text>
+		<xsl:apply-templates select="$list/item" mode="technique"/>
+		<xsl:text>]</xsl:text>
+	</xsl:template>
 	
 	<!-- Override imported templates that are causing problems -->
 	<xsl:template match="head">
