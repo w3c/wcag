@@ -1,0 +1,4 @@
+# low-vision-a11y-tf
+Low Vision Accessibility Task Force
+
+<p>The <a href="http://www.w3.org/WAI/GL/low-vision-a11y-tf/">Low Vision Accessibility Task Force</a> (Low Vision A11Y TF) is a joint task force of the <a href="http://www.w3.org/WAI/GL/">Web Content Accessibility Guidelines Working Group (WCAG WG)</a> and the <a href="http://www.w3.org/WAI/UA/">User Agent Accessibility Guidelines Working Group (UAWG)</a>. The objective of the task force is to identify issues and specify solutions to web accessibility issues specific to users with low vision via WCAG 2.0 techniques, understanding and guidance documents, and as needed to produce extensions to WCAG 2.0. Since many of the low vision issues may be addressed through the browser, this work will also include references and use cases related to UAAG 2.0. </p>
