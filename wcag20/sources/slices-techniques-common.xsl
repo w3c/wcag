@@ -356,7 +356,6 @@
         		<xsl:call-template name="additional-head"/>
           </head>
           <body>
-            <a name="top" > </a>
             <xsl:apply-templates/>
             <xsl:if test="//footnote">
               <div class="endnotes">

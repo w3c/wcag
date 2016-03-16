@@ -279,7 +279,6 @@
             <hr/>
           </div>
         </xsl:if>
-						<a name="top" xmlns="http://www.w3.org/1999/xhtml"> </a>
 						<xsl:apply-templates></xsl:apply-templates>
 						<xsl:if test="//footnote">
 							<div class="endnotes">
