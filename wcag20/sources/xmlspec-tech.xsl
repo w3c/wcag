@@ -868,8 +868,8 @@
             -->
           </xsl:otherwise>
         </xsl:choose>
+      	<hr/>
       </div>
-      <hr/>
     </xsl:if>
 
 	</xsl:template>

@@ -359,9 +359,9 @@
             <a name="top" > </a>
             <xsl:apply-templates/>
             <xsl:if test="//footnote">
-              <hr/>
               <div class="endnotes">
-                <h3>
+              	<hr/>
+              	<h3>
                   <a name="endnotes">
                     <xsl:text>End Notes</xsl:text>
                   </a>

@@ -406,8 +406,8 @@
 						</a>
 					</p>
 				</xsl:if>
+				<hr/>
 			</div>
-			<hr/>
 		</xsl:if>
 		<div class="body">
 			<xsl:apply-templates/>
@@ -968,7 +968,6 @@
 	<!-- header: metadata about the spec -->
 	<!-- pull out information into standard W3C layout -->
 	<xsl:template match="header">
-		<p align="center">[<a href="#contents">contents</a>]</p>
 		<div class="head">
 			<xsl:if test="not(/spec/@role='editors-copy')">
 				<p>
@@ -1089,8 +1088,8 @@
 					</p>
 				</xsl:otherwise>
 			</xsl:choose>
+			<hr/>
 		</div>
-		<hr/>
 		<xsl:apply-templates select="notice"/>
 		<xsl:apply-templates select="abstract"/>
 		<xsl:apply-templates select="status"/>
@@ -1625,8 +1624,8 @@
 			<body>
 				<xsl:apply-templates/>
 				<xsl:if test="//footnote[not(ancestor::table)]">
-					<hr/>
 					<div class="endnotes">
+						<hr/>
 						<xsl:text>
 </xsl:text>
 						<h3>

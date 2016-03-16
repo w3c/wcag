@@ -282,8 +282,8 @@
 						<a name="top" xmlns="http://www.w3.org/1999/xhtml"> </a>
 						<xsl:apply-templates></xsl:apply-templates>
 						<xsl:if test="//footnote">
-							<hr/>
 							<div class="endnotes">
+								<hr/>
 								<h3>
 									<a name="endnotes">
 										<xsl:text>End Notes</xsl:text>

@@ -39,8 +39,6 @@
       <xsl:when test="$bytech= 1"></xsl:when>
      
       <xsl:otherwise>
-    <p align="center">[<a href="#contents">contents</a>]<xsl:text> </xsl:text>
-    </p>
     <div class="head">
       <xsl:if test="not(/spec/@role='editors-copy')">
         <p>
@@ -148,8 +146,8 @@
             </a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p>
         </xsl:otherwise>
       </xsl:choose>
+    	<hr/>
     </div>
-    <hr/>
 
     <xsl:apply-templates select="notice"/>
     <xsl:apply-templates select="abstract"/>
@@ -222,8 +220,8 @@
             </xsl:if>
           </xsl:otherwise>
         </xsl:choose>
+      	<hr/>
       </div>
-      <hr/>
     </xsl:if>
 
 	</xsl:template>
@@ -514,9 +512,9 @@
               <xsl:apply-templates select="//back/inform-div1[@id='glossary']"/>-->
             <xsl:apply-templates/>
             <xsl:if test="//footnote[not(ancestor::table)]">
-              <hr/>
               <div class="endnotes">
-                <xsl:text> </xsl:text>
+              	<hr/>
+              	<xsl:text> </xsl:text>
                 <h3>
                   <xsl:call-template name="anchor">
                     <xsl:with-param name="conditional" select="0"/>
