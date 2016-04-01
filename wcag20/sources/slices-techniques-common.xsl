@@ -650,7 +650,7 @@
 				</xsl:when>
     <xsl:otherwise>
       <!-- @@ check on parenthetical - seems less than ideal -->
-      <xsl:apply-templates select="head" mode="text"/> <a><xsl:attribute name="href"><xsl:call-template name="href.target"><xsl:with-param name="target" select="."/></xsl:call-template></xsl:attribute>(all <xsl:apply-templates select="head" mode="text"/> on one page)</a>
+      <xsl:apply-templates select="head" mode="text"/> <a><xsl:attribute name="href"><xsl:call-template name="href.target"><xsl:with-param name="target" select="."/></xsl:call-template></xsl:attribute> (all <xsl:apply-templates select="head" mode="text"/> on one page)</a>
     </xsl:otherwise>
   </xsl:choose>
 						
