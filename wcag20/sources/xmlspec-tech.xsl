@@ -796,21 +796,21 @@
 	<!-- overriding toc template to do some custom stuff for techniques -->
 		<xsl:template name="toc">
 		    <xsl:if test="$toc.level &gt; 0">
-		    	<div>
-		    		<hr/>
-		    		<h2>
-		    			<xsl:call-template name="anchor">
-		    				<xsl:with-param name="conditional" select="0"/>
-		    				<xsl:with-param name="default.id" select="'contents'"/>
-		    			</xsl:call-template>
-		    			<xsl:text>Sections</xsl:text>
-		    		</h2>
 		    		<xsl:if test="$bytech != 1">
-		    			<ul>
-		    				<xsl:apply-templates select="//div1[not(@id = 'placeholders')] | //inform-div1" mode="toc"><xsl:with-param name="local.toc.level" select="1"/></xsl:apply-templates>
-		    			</ul>
+		    			<div>
+		    				<hr/>
+		    				<h2>
+			    				<xsl:call-template name="anchor">
+			    					<xsl:with-param name="conditional" select="0"/>
+			    					<xsl:with-param name="default.id" select="'contents'"/>
+			    				</xsl:call-template>
+			    				<xsl:text>Sections</xsl:text>
+			    			</h2>
+			    			<ul>
+			    				<xsl:apply-templates select="//div1[not(@id = 'placeholders')] | //inform-div1" mode="toc"><xsl:with-param name="local.toc.level" select="1"/></xsl:apply-templates>
+			    			</ul>
+		    			</div>
 		    		</xsl:if>
-		    	</div>
       <div id="toc">
       	<h2>Table of Contents</h2>
         <xsl:text>
