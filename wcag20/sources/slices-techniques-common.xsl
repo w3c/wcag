@@ -51,7 +51,7 @@
             <xsl:call-template name="css"/>
         		<xsl:call-template name="additional-head"/>
           </head>
-         <body class="slices">
+         <body class="slices toc-inline">
           <xsl:if test="$show.diff.markup != 0">
             <xsl:attribute name="onload">jscheck()</xsl:attribute>
           </xsl:if>
@@ -98,7 +98,7 @@
             <xsl:call-template name="css"/>
         		<xsl:call-template name="additional-head"/>
           </head>
-            <body class="slices">
+            <body class="slices toc-inline">
           <xsl:if test="$show.diff.markup != 0">
             <xsl:attribute name="onload">jscheck()</xsl:attribute>
           </xsl:if>
@@ -151,7 +151,7 @@
               <script type="text/javascript" src="diffmarks.js"><xsl:text> </xsl:text></script>
             </xsl:if>
             </head>
-            <body class="slices">
+            <body class="slices toc-inline">
           <xsl:if test="$show.diff.markup != 0">
             <xsl:attribute name="onload">jscheck()</xsl:attribute>
           </xsl:if>
@@ -208,7 +208,7 @@
               <script type="text/javascript" src="diffmarks.js"><xsl:text> </xsl:text></script>
             </xsl:if>
             </head>
-            <body class="slices">
+            <body class="slices toc-inline">
           <xsl:if test="$show.diff.markup != 0">
             <xsl:attribute name="onload">jscheck()</xsl:attribute>
           </xsl:if>
@@ -259,7 +259,7 @@
             <xsl:call-template name="css"/>
       	    		<xsl:call-template name="additional-head"/>
           </head>
-          <body class="slices">
+          <body class="slices toc-inline">
           <xsl:if test="$show.diff.markup != 0">
             <xsl:attribute name="onload">jscheck()</xsl:attribute>
           </xsl:if>
@@ -310,7 +310,7 @@
             <xsl:call-template name="css"/>
       	    		<xsl:call-template name="additional-head"/>
           </head>
-          <body class="slices">
+          <body class="slices toc-inline">
           <xsl:if test="$show.diff.markup != 0">
             <xsl:attribute name="onload">jscheck()</xsl:attribute>
           </xsl:if>

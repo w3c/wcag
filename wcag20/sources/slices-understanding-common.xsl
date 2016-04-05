@@ -52,7 +52,7 @@
   					<link rel="stylesheet" type="text/css" href="diffs.css" />
   				</xsl:if>
   			</head>
-  			<body class="slices">
+  			<body class="slices toc-inline">
   				<xsl:if test="$show.diff.markup != 0">
   					<xsl:attribute name="onload">jscheck()</xsl:attribute>
   				</xsl:if>
@@ -121,7 +121,7 @@
   					<link rel="stylesheet" type="text/css" href="diffs.css" />
   				</xsl:if>
   			</head>
-  			<body class="slices">
+  			<body class="slices toc-inline">
   				<xsl:if test="$show.diff.markup != 0">
   					<xsl:attribute name="onload">jscheck()</xsl:attribute>
   				</xsl:if>
@@ -213,7 +213,7 @@
     					<link rel="stylesheet" type="text/css" href="diffs.css" />
     				</xsl:if>
     			</head>
-    			<body class="slices">
+    			<body class="slices toc-inline">
     				<xsl:if test="$show.diff.markup != 0">
     					<xsl:attribute name="onload">jscheck()</xsl:attribute>
     				</xsl:if>
@@ -281,7 +281,7 @@
   					<link rel="stylesheet" type="text/css" href="diffs.css" />
   				</xsl:if>
   			</head>
-  			<body class="slices">
+  			<body class="slices toc-inline">
   				<xsl:if test="$show.diff.markup != 0">
   					<xsl:attribute name="onload">jscheck()</xsl:attribute>
   				</xsl:if>
