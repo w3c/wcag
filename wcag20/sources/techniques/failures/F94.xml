@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F94">
+    <short-name>Failure of Success Criterion 3.3.2 for not identifying required fields and input format before submit</short-name>
+    <applicability>
+        <p>Any technology</p>
+    </applicability>
+    <applies-to>
+        <success-criterion idref="minimize-error-cues" relationship="failure" />
+    </applies-to>
+    <description>
+        <p>This failure ensures that people with visual, motor, or cognitive disabilities will recognize required fields and input format before they submit a form to minimize input errors. Fields that are required or that need specific input format are frequently formatted in fixed, distinctive ways, and authors may feel that just providing visual formatting of the fields will be sufficient to identify them. However, this information must be be available both visually and programatically and it must be available before submitting the form.</p>
+    </description>
+    <examples>
+        <description>
+            <p>A form with three fields of which one is a required field and one with a specific format</p>
+        </description>
+        <eg-group role="failure">
+
+            <head>No information on required field and specific input format</head>
+            <code><![CDATA[
+<form>
+<p>
+   <label for="name">Name</label>
+   <input type="text" id="name">
+</p>
+<p>
+   <label for="city">City</label>
+   <input type="text" id="city">
+</p>
+<p>
+   <label for="date">Date of birth</label>
+   <input type="text" id="date">
+</p>
+</form>
+               ]]></code>
+        </eg-group>
+        <eg-group role="failure">
+
+            <head>Visual information only</head>
+            <code><![CDATA[
+<form>
+<p>Field with * are mandatory</p>
+<p>
+   <label for="name">Name</label>
+   <input type="text" id="name">*
+</p>
+<p>
+   <label for="city">City</label>
+   <input type="text" id="city">
+</p>
+<p>
+   <label for="date">Date of birth</label>
+   <input type="text" id="date">(yyyy/mm/dd)
+</p>
+</form>
+               ]]></code>
+        </eg-group>
+        <eg-group role="failure">
+
+            <head>Programmatically associated information only</head>
+            <code><![CDATA[
+<form>
+<p>
+   <label for="name">Name</label>
+   <input type="text" aria-required="true" id="name">
+</p>
+<p>
+   <label for="city">City</label>
+   <input type="text" id="city">
+</p>
+<p>
+   <label for="date">Date of birth</label>
+   <input type="text" id="date" aria-label="Date of birth (yyyy/mm/dd)">
+</p>
+</form>
+               ]]></code>
+        </eg-group>
+    </examples>
+    <tests>
+        <procedure>
+            <olist>
+                <item>
+                    <p>Submit the form without providing any information.  If error messages signal required fields, check that this information was available before submitting the form via the accessible name programmatically associated with the fields and with a visible text or cue positioned near the fields.</p>
+                </item>
+                <item>
+                    <p>Submit the form after filling text input and textarea with "test" content. If error messages signal incorrect input format, check that this information was available before submitting the form via the accessible name programmatically associated with the fields and with a visible text or cue positioned near the fields.</p>
+                </item>
+            </olist>
+        </procedure>
+        <expected-results>
+            <ulist>
+                <item>
+                    <p>If check #1 or check #2 are false, then this failure condition applies and the content fails this success criterion.</p>
+                </item>
+            </ulist>
+        </expected-results>
+    </tests>
+</technique>
