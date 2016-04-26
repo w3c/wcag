@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>F40: Failure of Success Criterion 2.2.1 and 2.2.4 due to using meta redirect with a time limit
+         | Techniques for WCAG 2.0
+              </title><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/><link rel="stylesheet" type="text/css" href="additional.css"/><link rel="stylesheet" type="text/css" href="slicenav.css"/></head><body class="slices"><div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div><div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div><a name="top"> </a><!-- TOP NAVIGATION BAR --><ul id="navigation"><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="F39: Failure of Success Criterion 1.1.1 due to providing a text alternative that is not null (e.g., alt=&#34;spacer&#34; or alt=&#34;image&#34;) for images that should be ignored by assistive technology" href="F39.html"><strong>Previous: </strong>Failure F39</a></li><li><a title="F41: Failure of Success Criterion 2.2.1, 2.2.4, and 3.2.5 due to using meta refresh with a&#xA;                    time-out" href="F41.html"><strong>Next: </strong>Failure F41</a></li></ul><div class="navtoc"><p>On this page:</p><ul id="navbar"><li><a href="#F40-applicability">Applicability</a></li><li><a href="#F40-description">Description</a></li><li><a href="#F40-examples">Examples</a></li><li><a href="#F40-resources">Resources</a></li><li><a href="#F40-tests">Tests</a></li></ul></div><div class="skiptarget"><a id="maincontent">-</a></div> <h1><a name="F40" id="F40"> </a>F40: Failure of Success Criterion 2.2.1 and 2.2.4 due to using meta redirect with a time limit
+        </h1><div class="applicability"><h2 id="F40-applicability">Applicability</h2><div class="textbody"><p> All pages</p></div></div><p class="referenced">This failure relates to:</p><ul><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#time-limits-required-behaviors">
+				Success Criterion 2.2.1 (Timing Adjustable)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#time-limits-required-behaviors">
+						How to Meet 2.2.1 (Timing Adjustable)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/time-limits-required-behaviors.html">
+						Understanding Success Criterion 2.2.1 (Timing Adjustable)
+					</a></li></ul></li><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#time-limits-postponed">
+				Success Criterion 2.2.4 (Interruptions)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#time-limits-postponed">
+						How to Meet 2.2.4 (Interruptions)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/time-limits-postponed.html">
+						Understanding Success Criterion 2.2.4 (Interruptions)
+					</a></li></ul></li></ul><h2 id="F40-description">Description</h2><div class="textbody"><p> 
+         <code>meta</code>
+						   <code>http-equiv</code> of {time-out}; url=... is often used to
+                        automatically redirect users. When this occurs after a time delay, it is an
+                        unexpected change of context that may interrupt the user.</p><p>It is acceptable to use the <code>meta</code> element to create a redirect
+                        when the time-out is set to zero, since the redirect is instant and will not
+                        be perceived as a change of context. However, it is preferable to use
+                        server-side methods to accomplish this. See <a href="http://www.w3.org/WAI/GL/2014/WD-WCAG20-TECHS-20140401/SVR1">SVR1: Implementing automatic redirects on the server side instead of on the
+                    client side</a> (SERVER)
+			.</p></div><h2 class="small-head" id="F40-examples">Examples</h2><div class="failure"><h3 class="small-head" id="F40-failex1">
+					Failure Example 1</h3><div class="example"><div class="textbody"><p> The page below is a failure because it will redirect to the URI
+                                http://www.example.com/newpage after a time limit of 5 seconds.</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
+   &lt;head&gt;     
+      &lt;title&gt;Do not use this!&lt;/title&gt;     
+      &lt;meta http-equiv="refresh"
+      content="5; url=http://www.example.com/newpage" /&gt;   
+   &lt;/head&gt;   
+   &lt;body&gt;     
+      &lt;p&gt;       
+         If your browser supports Refresh, you'll be       
+         transported to our        
+         &lt;a href="http://www.example.com/newpage"&gt;new site&lt;/a&gt;        
+         in 5 seconds, otherwise, select the link manually.     
+      &lt;/p&gt;   
+   &lt;/body&gt; 
+&lt;/html&gt;
+</code></pre></div></div></div><h2 id="F40-resources">Resources</h2><div class="textbody"><p>Resources are for information purposes only, no endorsement implied.</p><ul><li><p> 
+                  <a href="http://www.w3.org/TR/html401/struct/global.html#h-7.4.4">HTML 4.01 META element</a> 
+               </p></li></ul></div><h2 id="F40-tests">Tests</h2><div class="textbody"><h3 class="small-head" id="F40-procedure">Procedure</h3><ol class="enumar"><li><p> View a page. </p></li><li><p> Check that the page does not redirect after a time-out. </p></li></ol><h3 class="small-head" id="F40-results">Expected Results</h3><ol class="enumar"><li><p>If check #2 is false, this failure condition applies and content fails the Success Criterion.</p></li></ol></div><div><h2>Techniques are Informative</h2><p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p></div><!-- BOTTOM NAVIGATION BAR --><ul id="navigationbottom"><li><strong><a href="#top">Top</a></strong></li><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="F39: Failure of Success Criterion 1.1.1 due to providing a text alternative that is not null (e.g., alt=&#34;spacer&#34; or alt=&#34;image&#34;) for images that should be ignored by assistive technology" href="F39.html"><strong>Previous: </strong>Failure F39</a></li><li><a title="F41: Failure of Success Criterion 2.2.1, 2.2.4, and 3.2.5 due to using meta refresh with a&#xA;                    time-out" href="F41.html"><strong>Next: </strong>Failure F41</a></li></ul><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+ </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>

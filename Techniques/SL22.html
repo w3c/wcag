@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>SL22: Supporting Browser Zoom in Silverlight | Techniques for WCAG 2.0
+              </title><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/><link rel="stylesheet" type="text/css" href="additional.css"/><link rel="stylesheet" type="text/css" href="slicenav.css"/></head><body class="slices"><div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div><div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div><a name="top"> </a><!-- TOP NAVIGATION BAR --><ul id="navigation"><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SL21: Replacing A Silverlight Timed Animation With a Nonanimated Element" href="SL21.html"><strong>Previous: </strong>
+        Technique SL21</a></li><li><a title="SL23: Using A Style Switcher to Increase Font Size of Silverlight Text&#xA;    &#x9;&#x9;&#x9;Elements" href="SL23.html"><strong>Next: </strong>
+        Technique SL23</a></li></ul><div class="navtoc"><p>On this page:</p><ul id="navbar"><li><a href="#SL22-applicability">Applicability</a></li><li><a href="#SL22-description">Description</a></li><li><a href="#SL22-examples">Examples</a></li><li><a href="#SL22-resources">Resources</a></li><li><a href="#SL22-related-techs">Related Techniques</a></li><li><a href="#SL22-tests">Tests</a></li></ul></div><div class="skiptarget"><a id="maincontent">-</a></div> <h1><a name="SL22" id="SL22"> </a>SL22: Supporting Browser Zoom in Silverlight</h1><div class="applicability"><h2 id="SL22-applicability">Applicability</h2><div class="textbody"><ul><li><p> Microsoft Silverlight, versions 3 and greater </p></li><li><p> Silverlight managed programming model and Silverlight XAML </p></li></ul><ul><li><p> Silverlight content in a user agent host that supports browser
+    					zoom </p></li></ul></div></div><p class="referenced">This technique relates to:</p><ul><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#visual-audio-contrast-scale">
+				Success Criterion 1.4.4 (Resize text)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#visual-audio-contrast-scale">
+						How to Meet 1.4.4 (Resize text)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/visual-audio-contrast-scale.html">
+						Understanding Success Criterion 1.4.4 (Resize text)
+					</a></li></ul></li></ul><div class="ua-issues"><h2 class="small-head" id="ua10.22.1"> User Agent and Assistive Technology Support Notes</h2><p>See <a href="/WAI/WCAG20/Techniques/ua-notes/silverlight#SL22">User Agent Support Notes for SL22</a>.</p></div><h2 id="SL22-description">Description</h2><div class="textbody"><p>The objective of this technique is to support or anticipate existing
+    				browser zoom features effectively when users interact with the Silverlight
+    				application. This technique explains how the Silverlight content area
+    				reacts to the browser zoom feature implemented by some user agent hosts.
+    				Silverlight content and layout properties are based on physical screen
+    				pixel measurements. When the browser zoom is engaged, Silverlight content
+    				scales correctly for the zoom factor, and uses the same zoom factor
+    				as any surrounding HTML content. </p><p>Browser zoom is relevant for accessibility and Silverlight because
+    				it is likely to be the zoom /scaling feature enabled by the browser
+    				host that Web technology users are the most familiar with as a technique
+    				for increasing the text size in Web content. </p><div id="SL22_legacy"><h4> Legacy behavior in Silverlight version 2 </h4><p>Built-in support for browser zoom was introduced as a feature in Silverlight
+    					version 3. Older documents on the Web might describe techniques that
+    					were relevant for Silverlight version 2, where dealing with browser
+    					zoom required JavaScript handling of the <code>Resized</code> event,
+    					and developers manually applied a <code>ScaleTransform</code> to Silverlight
+    					content to scale it up. Silverlight has a "quirks mode"   that
+    					detects existing handlers that might still use the older techniques.
+    					Built-in zoom not active in these cases, so that applications can avoid
+    					doubling or otherwise mishandling the user agent's zooming behavior. </p></div><div id="SL22_disable-zoom"><h4> Deliberately disabling browser zoom in Silverlight applications </h4><p>Silverlight also provides the ability to disable the built-in browser
+    					zoom handling and rendering behavior. This is sometimes done in order
+    					to suppress some of the aliasing and distortion artifacts that host-level
+    					scaling can introduce, particularly for video content or certain uses
+    					of text. In these cases, application authors might consider other Silverlight
+    					techniques for scaling the user interface, perhaps specifically only
+    					for the text elements on a page. When an application disables the built-in
+    					zoom behavior and rendering for Silverlight content, the browser still
+    					retains its zoom settings, and that setting applies to other content
+    					outside of Silverlight such as the hosting HTML. </p></div></div><h2 class="small-head" id="SL22-examples">Examples</h2><h3 class="small-head" id="SL22-ex1">Example 1: Verifying browser zoom, and checking the zoom factor</h3><div class="example"><div class="textbody"><p>This example has a UI defined in XAML and logic defined in C#. The
+    						UI shows the zoom factor, and also demonstrates what happens when built-in
+    						browser zoom handling is deliberately disabled. Note that the zooming
+    						factor as reported by the API is still retained even when Silverlight
+    						built-in zoom scaling is disabled deliberately. The following is the
+    						XAML UI: </p><div class="code"><pre><code>&lt;UserControl x:Class="BrowserZoom.MainPage"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+&gt;
+   &lt;StackPanel x:Name="LayoutRoot" Background="White"&gt;
+       &lt;TextBlock&gt;Some text you can zoom.&lt;/TextBlock&gt;
+       &lt;Button Click="Button_Click"&gt;Toggle built-in zoom handling&lt;/Button&gt;
+       &lt;StackPanel Orientation="Horizontal"&gt;
+           &lt;Button Click="Button_Click_1"&gt;Query current zoom factor&lt;/Button&gt;
+           &lt;TextBox IsReadOnly="true" Name="zoomf"
+   Text="{Binding Path=reportZoom}"/&gt;
+       &lt;/StackPanel&gt;
+   &lt;/StackPanel&gt;
+&lt;/UserControl&gt;
+</code></pre></div><p>The following is the C# logic: </p><div class="code"><pre><code>   public partial class MainPage : UserControl
+   {
+       public MainPage()
+       {
+           InitializeComponent();
+       }
+       private void Button_Click(object sender, RoutedEventArgs e)
+       {
+           if (!Application.Current.Host.Settings.EnableAutoZoom == false) {
+           Application.Current.Host.Settings.EnableAutoZoom = false;
+           }
+           else
+           {
+               Application.Current.Host.Settings.EnableAutoZoom = true;
+           }
+       }
+       private void Button_Click_1(object sender, RoutedEventArgs e)
+       {
+           zoomf.Text = Application.Current.Host.Content.ZoomFactor.ToString();
+       }
+   }
+</code></pre></div><p>This example is shown in operation in the <a href="/WAI/WCAG20/Techniques/working-examples/SL22/BrowserZoomTestPage.html">working example of Browser Zoom</a>.</p></div></div><h2 id="SL22-resources">Resources</h2><div class="textbody"><p>Resources are for information purposes only, no endorsement implied.</p><ul><li><p>
+                  <a href="http://msdn.microsoft.com/en-us/library/system.windows.interop.settings.enableautozoom%28VS.95%29.aspx">EnableAutoZoom
+    					Property</a> 
+               </p></li><li><p>
+                  <a href="http://msdn.microsoft.com/en-us/library/cc707824%28VS.95%29.aspx">Silverlight
+    						Accessibility Overview</a> 
+               </p></li></ul></div><h2 id="SL22-related-techs">Related Techniques</h2><div class="textbody"><ul><li><a href="G142.html">G142: Using a technology that has commonly-available user agents that support zoom</a></li><li><a href="G179.html">G179: Ensuring that there is no loss of content or functionality when the text resizes and text containers do not change their width</a></li></ul></div><h2 id="SL22-tests">Tests</h2><div class="textbody"><h3 class="small-head" id="SL22-procedure">Procedure</h3><ol class="enumar"><li><p> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. The browser
+    					being used for the test must support a browser zoom feature, and
+    					the feature must be turned on as a user preference. </p></li><li><p> Verify that the Silverlight application enables auto zoom (no
+    						Silverlight application-specific code or markup has set EnableAutoZoom
+    						API to false). </p></li><li><p> Test the zooming feature of the user agent. Verify that browser
+    							zoom factors apply to the Silverlight content. </p></li></ol><h3 class="small-head" id="SL22-results">Expected Results</h3><p>#2 and #3 are true. </p><p>If this is a sufficient technique for a success criterion, failing this test procedure does not necessarily mean that the success criterion has not been satisfied in some other way, only that this technique has not been successfully implemented and can not be used to claim conformance.</p></div><div><h2>Techniques are Informative</h2><p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p></div><!-- BOTTOM NAVIGATION BAR --><ul id="navigationbottom"><li><strong><a href="#top">Top</a></strong></li><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SL21: Replacing A Silverlight Timed Animation With a Nonanimated Element" href="SL21.html"><strong>Previous: </strong>
+        Technique SL21</a></li><li><a title="SL23: Using A Style Switcher to Increase Font Size of Silverlight Text&#xA;    &#x9;&#x9;&#x9;Elements" href="SL23.html"><strong>Next: </strong>
+        Technique SL23</a></li></ul><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+ </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>

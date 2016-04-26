@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>SL32: Using Silverlight Text Elements for Appropriate Accessibility Role | Techniques for WCAG 2.0
+              </title><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/><link rel="stylesheet" type="text/css" href="additional.css"/><link rel="stylesheet" type="text/css" href="slicenav.css"/></head><body class="slices"><div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div><div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div><a name="top"> </a><!-- TOP NAVIGATION BAR --><ul id="navigation"><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SL31: Using Silverlight Font Properties to Control Text Presentation" href="SL31.html"><strong>Previous: </strong>
+        Technique SL31</a></li><li><a title="SL33: Using Well-Formed XAML to Define a Silverlight User Interface" href="SL33.html"><strong>Next: </strong>
+        Technique SL33</a></li></ul><div class="navtoc"><p>On this page:</p><ul id="navbar"><li><a href="#SL32-applicability">Applicability</a></li><li><a href="#SL32-description">Description</a></li><li><a href="#SL32-examples">Examples</a></li><li><a href="#SL32-resources">Resources</a></li><li><a href="#SL32-related-techs">Related Techniques</a></li><li><a href="#SL32-tests">Tests</a></li></ul></div><div class="skiptarget"><a id="maincontent">-</a></div> <h1><a name="SL32" id="SL32"> </a>SL32: Using Silverlight Text Elements for Appropriate Accessibility Role</h1><div class="applicability"><h2 id="SL32-applicability">Applicability</h2><div class="textbody"><ul><li><p> Microsoft Silverlight, versions 3 and greater </p></li><li><p> Silverlight managed programming model and Silverlight XAML </p></li></ul></div></div><p class="referenced">This technique relates to:</p><ul><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#ensure-compat-rsv">
+				Success Criterion 4.1.2 (Name, Role, Value)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#ensure-compat-rsv">
+						How to Meet 4.1.2 (Name, Role, Value)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/ensure-compat-rsv.html">
+						Understanding Success Criterion 4.1.2 (Name, Role, Value)
+					</a></li></ul></li></ul><div class="ua-issues"><h2 class="small-head" id="ua10.32.1"> User Agent and Assistive Technology Support Notes</h2><p>See <a href="/WAI/WCAG20/Techniques/ua-notes/silverlight#SL32">User Agent Support Notes for SL32</a>.</p></div><h2 id="SL32-description">Description</h2><div class="textbody"><p>The objective of this technique is to choose a Silverlight text container
+    				that provides appropriate behavior and accessibility roles for different
+    				types of text content. How those roles interact with existing assistive
+    				technologies that are interpreting Silverlight under the larger concept
+    				of being an "HTML control part" is also a factor in which
+    				Silverlight text container should be used in an application's composition. </p><p>Text containers can identified by role to accessibility frameworks,
+    				and each type of Silverlight text container uses a different role.
+    				Application authors should choose text containers that combine the
+    				desired behavior in the user interface with an accessibility role that
+    				can be consumed by existing assistive technology implementations. </p><p>The Silverlight core libraries define the following classes that are
+    				specifically intended as text containers: </p><ul><li><p> 
+               <a href="http://msdn.microsoft.com/en-us/library/system.windows.controls.richtextbox%28VS.95%29.aspx">RichTextBox</a> 
+            </p></li><li><p> 
+               <a href="http://msdn.microsoft.com/en-us/library/system.windows.controls.textbox%28VS.95%29.aspx">TextBox</a> 
+            </p></li><li><p> 
+               <a href="http://msdn.microsoft.com/en-us/library/system.windows.controls.textblock%28VS.95%29.aspx">TextBlock</a> 
+            </p></li></ul><div id="SL32_programmatic"><h4> UI Automation programmatic access </h4><p>For programming information that is relevant for how Silverlight application
+    					authors produce the application, each text container has its own object
+    					model/API. That API is documented on MSDN, specifically for each class <a href="http://msdn.microsoft.com/en-us/library/system.windows.controls.textbox%28VS.95%29.aspx">TextBox</a>; <a href="http://msdn.microsoft.com/en-us/library/system.windows.controls.richtextbox%28VS.95%29.aspx">RichTextBox</a>; <a href="http://msdn.microsoft.com/en-us/library/system.windows.controls.textblock%28VS.95%29.aspx">TextBlock</a>.)
+    					However, rather than using the Silverlight-specific object models,
+    					most assistive technologies that are capable of reporting on Silverlight
+    					will choose to use UI Automation (or MSAA) to obtain information about
+    					the Silverlight elements in general. Text containers within the Silverlight
+    					content are identified through UIA accessibility roles. This is because
+    					the assistive technologies can use UI Automation to query for ANY relevant
+    					text items from the content (and chrome) of the user agent / browser
+    					host, not just those that come from Silverlight. That can include the
+    					HTML content, items created from scripting, CSS or other plugin-internal
+    					object models and so on. In other words, text from Silverlight is integrated
+    					into the overall UI Automation view of the user agent host as the top-level
+    					application in a platform view. Different types of "text" in
+    					a general sense might appear as different UI Automation patterns, as
+    					is described below. </p></div><div id="SL32_textbox"><h4> TextBox </h4><p>A <code>TextBox</code> within the Silverlight content area is
+    					reported to UI Automation as an Edit role (through MSAA, as Editable
+    					Text). </p><p>Edit controls are expected to implement the <a href="http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.ivalueprovider%28VS.95%29.aspx">Value
+    					pattern</a> for UIA, so that the value of the edit area can be queried
+    					or set by a client. Assistive technologies can use this value as
+    					a text-string value for screen readers or other purposes. </p><p>In typical user interface design, a form with an input field also
+    					includes a label or other explanatory text that is proximally close
+    					to the input field. In order to maintain proper reading order, the
+    					label should typically appear immediately before the input field. This
+    					general model should also be used for Silverlight user interface design.
+    					For more information on labeling for <code>TextBox</code> controls,
+    					see <a href="SL26.html"><em>SL26: Using LabeledBy to Associate Labels and Targets in Silverlight</em></a>. </p></div><div id="SL32_richtextbox"><h4> RichTextBox </h4><p>A <code>RichTextBox</code> within the Silverlight content area
+    					is reported to UI Automation and MSAA as a Document role. </p><p>A <code>RichTextBox</code> can either be set to be a read-only
+    					control, or left as a read-write control. In the latter case, users
+    					can insert a text cursor and make changes to the text. It is more common
+    					in Silverlight programming to set the <code>RichTextBox</code> to
+    					be read-only; in this scenario the reason for using <code>RichTextBox</code> is
+    					because <code>TextBlock</code> did not offer the range of text
+    					formatting options that are possible from a <code>RichTextBox</code>. </p><p>In UIA, a document is generally expected to support the <a href="http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.itextprovider%28VS.95%29.aspx">Text
+    					pattern</a> for UI Automation. However, to read the text from a <code>RichTextBox</code>,
+    					the assistive technology does not necessarily have to implement code
+    					that handles the entirety of the information that the Text pattern
+    					reports. </p></div><div id="SL32_text-pattern"><h4> More about the Text pattern </h4><p>The Text pattern provides APIs to iterate over the internal structure
+    					of a document and return text ranges. Each such text range can be queried
+    					for specific properties, and can return its plain text string value
+    					to UI Automation. Ranges can also be programmatically adjusted by the <code>TextPattern</code>/<code>TextRange</code> APIs.
+    					The following is a snippet of a Silverlight-specific UI Automation
+    					tree utility to give a general idea of the APIs involved. Note that
+    					these are not specifically Silverlight APIs; they are .NET Framework
+    					APIs. .NET Framework or Windows Automation APIs are generally what
+    					is used for programming a UI Automation client, which runs on a platform
+    					runtime rather than the Silverlight runtime. Using the Text pattern
+    					is generally what is necessary in order for an assistive technology
+    					to obtain a comprehensive view of the "value" for a document
+    					role object. </p><div class="code"><pre><code>private void FindTheTextPatterns_Click(object sender, RoutedEventArgs e)
+{
+   if (allSilverlight != null &amp;&amp; allSilverlight.Count&gt;0)
+   {
+       //for simplicity just processing item 0, not assuming more than one SL control
+       //on the page because this app controls the page being loaded
+       AutomationElementCollection documentsList = allSilverlight[0].FindAll(TreeScope.Descendants,
+           new PropertyCondition(AutomationElement.ControlTypeProperty,ControlType.Document)
+   );
+   for (int j=0; j&lt; documentsList.Count;j++) {
+       TextPattern targetTextPattern = 
+         documentsList[j].GetCurrentPattern(TextPattern.Pattern) as TextPattern;
+       if (targetTextPattern!=null) {
+           TextPatternRange tr = targetTextPattern.DocumentRange;
+           MessageBox.Show(tr.GetText(Int16.MaxValue));
+       }
+   }
+}
+private void GetAllSilverlight()
+{
+   allSilverlight = this._clientAppRootInstance.FindAll(TreeScope.Descendants,
+      new PropertyCondition(AutomationElement.ClassNameProperty, "MicrosoftSilverlight"));
+}
+</code></pre></div><p>MSAA has only limited possibilities for interacting with a Document
+    				role, and MSAA code for attempting to do so is not shown. </p></div><div id="SL32_textblock"><h4> TextBlock </h4><p>
+            <code>TextBlock</code> is reported as a Text role in UI Automation. <code>TextBlock</code> has
+    					several important characteristics: </p><ul><li><p> A <code>TextBlock</code> is always read-only; only the application
+    					author can declare the text, users cannot change it. </p></li><li><p> A <code>TextBlock</code> is not considered to be a true control
+    						in the Silverlight object model (it is not a class derived from <code>Control</code>).
+    						The practical implications of this to accessibility scenarios is
+    						that a <code>TextBlock</code> is not in the default tab sequence,
+    						cannot be manually added to any tab sequence, and cannot be keyboard-focused
+    						either programatically or by the user. </p></li><li><p> 
+                  <code>TextBlock</code> has a deliberately limited range of
+    							block / span formatting options. If the application author desires
+    							a wider range of formatting options, for example supporting a "Paragraph" metaphor
+    							for blocks of text, a read-only <code>RichTextBox</code> should
+    							be used instead. </p></li></ul><p>If the user relies solely on navigating a Silverlight application
+    					using the TAB sequence, such navigation will skip over any <code>TextBlock</code> in
+    					the interface. This could have implications for how users who use screen
+    					readers can interact with the Silverlight content. Screen readers typically
+    					read text only from the currently focused element in cases where the
+    					user is moving through the TAB sequence or changing focus within the
+    					application, and thus cannot read the text from a <code>TextBlock</code> in
+    					such a mode. However, most screen readers also have modes for reading
+    					text that is not necessarily focusable. These are generally the same
+    					modes that screen readers use for a conventional non-interactive HTML
+    					document text. For example, some screen readers support a mode that
+    					reads text by line, or by word. These modes can read text from a <code>TextBlock</code>. </p></div></div><h2 class="small-head" id="SL32-examples">Examples</h2><h3 class="small-head" id="SL32-ex1">Example 1: Structure from a container that has non-semantic role
+    					in UI Automation, and TextBlock for text</h3><div class="example"><div class="textbody"><p>If viewed as a UI Automation tree, the <code>StackPanel</code> and <code>Grid</code> do
+    						not exist explicitly in the tree view, because they do not serve a
+    						semantic role (only a presentation role). Rather, the tree consists
+    						of the items that report some kind of semantic control type. The semantic
+    						children of the containers are still reported in the order that they
+    						were declared, when viewed as children of the next semantic container
+    						upwards in the tree, and despite the containers themselves being abstracted
+    						out of the tree. This defines the reading order. This example is a
+    						large block of text with intentionally simple formatting, where the
+    						only formatting is to represent paragraphs as separate <code>TextBlock</code> elements
+    						to support an adaptive layout, but no <code>Run</code> blocks within. </p><p>When viewed with assistive technologies that represent the contents,
+    						each <code>TextBlock</code> is a control type of Text. Screen readers
+    						can use document reading modes such as virtual cursor modes to read
+    						the content from each element and each element's content, following
+    						the same reading order as is declared in the XAML. For example, in
+    						JAWS 12, readers can read out this text container line by line using
+    						(Jaws Key)+DownArrow. It is actually JAWS that determines the line
+    						length, because the line length otherwise is defined only by the adaptive
+    						layout at runtime, which is not reported to UIA. </p><div class="code"><pre><code>  &lt;StackPanel x:Name="LayoutRoot" Background="White"&gt;
+          &lt;TextBlock&gt;Call me Ishmael. Some years ago--never mind how long precisely--
+having little or no money in my purse, and
+nothing particular to interest me on shore, I thought I would sail about a little 
+and see the watery part of the world. It is a way I have of driving off the spleen 
+and regulating the circulation. Whenever I find 
+myself growing grim about the mouth; whenever it is a damp, drizzly November in 
+my soul; whenever I find myself involuntarily pausing before coffin warehouses, 
+and bringing up the rear of every funeral I meet;
+and especially whenever my hypos get such an upper hand of me, that it requires a strong moral 
+principle to prevent me from
+deliberately stepping into the street, and methodically knocking people's hats off--then, 
+I account it high time to get to sea as
+soon as I can. This is my substitute for pistol and ball. With a philosophical flourish Cato 
+throws himself 
+upon his sword; I quietly take to the ship. There is nothing surprising in this. If they but knew it, 
+almost all men in their degree, some time or other, cherish very nearly the same feelings towards the 
+ocean with me.
+          &lt;/TextBlock&gt;
+          &lt;TextBlock&gt;There now is your insular city of the Manhattoes, belted round by wharves as Indian isles 
+          by coral reefs--
+commerce surrounds it with her surf. Right and left, the streets take you waterward. 
+Its extreme downtown is the battery, where
+that noble mole is washed by waves, and cooled by breezes, which a few hours previous 
+were out of sight of land. Look at the crowds of water-gazers there.
+          &lt;/TextBlock&gt;
+          &lt;TextBlock&gt;Circumambulate the city of a dreamy Sabbath afternoon. Go from Corlears Hook 
+          to Coenties Slip, and from thence, by Whitehall, northward.
+What do you see?--Posted like silent sentinels all around the town, stand thousands 
+upon thousands of mortal men fixed in ocean
+reveries. Some leaning against the spiles; some seated upon the pier-heads; 
+some looking over the bulwarks of ships from China; 
+some high aloft in the rigging, as if striving to get a still better seaward peep. 
+But these are all landsmen; of week days pent
+up in lath and plaster--tied to counters, nailed to benches, clinched to desks. 
+How  then is this? Are the green fields gone? What do they here?
+          &lt;/TextBlock&gt;
+  &lt;/StackPanel&gt;
+</code></pre></div></div></div><h3 class="small-head" id="SL32-ex2">Example 2: Text containers and their UIA representation</h3><div class="example"><div class="textbody"><p>The following example is intended as sample XAML to view in an accessibility
+    						framework viewer, to see the various names, roles, and patterns for
+    						obtaining value. </p><div class="code"><pre><code>   &lt;StackPanel x:Name="LayoutRoot"&gt;
+       &lt;TextBox Text="This is a TextBox"/&gt;
+       &lt;RichTextBox&gt;
+           &lt;Paragraph&gt;This is a RichTextBox.&lt;/Paragraph&gt;
+       &lt;/RichTextBox&gt;
+       &lt;TextBlock Text="This is a TextBlock"/&gt;
+   &lt;/StackPanel&gt;
+</code></pre></div></div></div><h2 id="SL32-resources">Resources</h2><div class="textbody"><p>Resources are for information purposes only, no endorsement implied.</p><ul><li><p>
+                  <a href="http://msdn.microsoft.com/en-us/library/cc645025%28VS.95%29.aspx">Silverlight
+    					Layout System</a> 
+               </p></li><li><p>
+                  <a href="http://msdn.microsoft.com/en-us/library/cc707824%28VS.95%29.aspx">Silverlight
+    					Accessibility Overview</a> 
+               </p></li><li><p>
+                  <a href="http://msdn.microsoft.com/en-us/library/cc189034%28VS.95%29.aspx">Silverlight
+    					Object Trees</a> 
+               </p></li><li><p>Tools: <a href="http://firstfloorsoftware.com/silverlightspy">SilverlightSpy</a> or <a href="http://uiautomationverify.codeplex.com/">UIAVerify</a> 
+               </p></li></ul></div><h2 id="SL32-related-techs">Related Techniques</h2><div class="textbody"><ul><li><a href="G115.html">G115: Using semantic elements to mark up structure</a></li><li><a href="G135.html">G135: Using the accessibility API features of a technology to expose names and
+          roles, to allow user-settable properties to be directly set, and to provide
+          notification of changes</a></li><li><a href="G10.html">G10: Creating components using a technology that supports the accessibility
+          API features of the platforms on which the user agents will be run to expose the
+          names and roles, allow user-settable properties to be directly set, and provide
+          notification of changes</a></li></ul></div><h2 id="SL32-tests">Tests</h2><div class="textbody"><h3 class="small-head" id="SL32-procedure">Procedure</h3><ol class="enumar"><li><p> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. To see
+    					UI Automation, use Microsoft Windows as platform. </p></li><li><p> Use a verification tool that is capable of showing the full automation
+    						tree. (For example, use UIAVerify or Silverlight Spy; see Resources
+    						links.) </p></li><li><p> Verify that <code>TextBox</code> elements in the Silverlight
+    							user interface have the Edit role, that <code>RichTextBox</code> elements
+    							have the Document role, and <code>TextBlock</code> has Text role
+    							in UI Automation. </p></li><li><p> Verify that the text content can be programmatically determined
+    								by techniques that are appropriate for that role. </p></li></ol><h3 class="small-head" id="SL32-results">Expected Results</h3><p>#3 and #4 are true. </p><p>If this is a sufficient technique for a success criterion, failing this test procedure does not necessarily mean that the success criterion has not been satisfied in some other way, only that this technique has not been successfully implemented and can not be used to claim conformance.</p></div><div><h2>Techniques are Informative</h2><p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p></div><!-- BOTTOM NAVIGATION BAR --><ul id="navigationbottom"><li><strong><a href="#top">Top</a></strong></li><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SL31: Using Silverlight Font Properties to Control Text Presentation" href="SL31.html"><strong>Previous: </strong>
+        Technique SL31</a></li><li><a title="SL33: Using Well-Formed XAML to Define a Silverlight User Interface" href="SL33.html"><strong>Next: </strong>
+        Technique SL33</a></li></ul><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+ </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>

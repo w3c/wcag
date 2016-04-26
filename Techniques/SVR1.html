@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>SVR1: Implementing automatic redirects on the server side instead of on the
+                    client side | Techniques for WCAG 2.0
+              </title><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/><link rel="stylesheet" type="text/css" href="additional.css"/><link rel="stylesheet" type="text/css" href="slicenav.css"/></head><body class="slices"><div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div><div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div><a name="top"> </a><!-- TOP NAVIGATION BAR --><ul id="navigation"><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SCR37: Creating Custom Dialogs in a Device Independent Way" href="SCR37.html"><strong>Previous: </strong>
+        Technique SCR37</a></li><li><a title="SVR2: Using .htaccess to ensure that the only way to access non-conforming content is from conforming content" href="SVR2.html"><strong>Next: </strong>
+        Technique SVR2</a></li></ul><div class="navtoc"><p>On this page:</p><ul id="navbar"><li><a href="#SVR1-applicability">Applicability</a></li><li><a href="#SVR1-description">Description</a></li><li><a href="#SVR1-examples">Examples</a></li><li><a href="#SVR1-resources">Resources</a></li><li><a href="#SVR1-related-techs">Related Techniques</a></li><li><a href="#SVR1-tests">Tests</a></li></ul></div><div class="skiptarget"><a id="maincontent">-</a></div> <h1><a name="SVR1" id="SVR1"> </a>SVR1: Implementing automatic redirects on the server side instead of on the
+                    client side</h1><div class="applicability"><h2 id="SVR1-applicability">Applicability</h2><div class="textbody"><p> Server-side technologies, including server-side scripting languages and
+                        server configuration files with URLs or URL patterns for redirects. </p></div></div><p class="referenced">This technique relates to:</p><ul><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#consistent-behavior-no-extreme-changes-context">
+				Success Criterion 3.2.5 (Change on Request)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#consistent-behavior-no-extreme-changes-context">
+						How to Meet 3.2.5 (Change on Request)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/consistent-behavior-no-extreme-changes-context.html">
+						Understanding Success Criterion 3.2.5 (Change on Request)
+					</a></li></ul></li></ul><h2 id="SVR1-description">Description</h2><div class="textbody"><p> The objective of this technique is to avoid confusion that may be caused
+                        when two new pages are loaded in quick succession because one page (the one
+                        requested by the user) redirects to another. Some user agents support the
+                        use of the HTML <code>meta</code> element to redirect the user to another page
+                        after a specified number of seconds. This makes a page inaccessible to some
+                        users, especially users with screen readers. Server-side technologies
+                        provide methods to implement redirects in a way that does not confuse users.
+                        A server-side script or configuration file can cause the server to send an
+                        appropriate HTTP response with a status code in the 3xx range and a Location
+                        header with another URL. When the browser receives this response, the location
+                        bar changes and the browser makes a request with the new URL. </p></div><h2 class="small-head" id="SVR1-examples">Examples</h2><h3 class="small-head" id="SVR1-ex1">Example 1: JSP/Servlets</h3><div class="example"><div class="textbody"><p> In Java Servlets or JavaServer Pages (JSP), developers can use
+                                    <code>HttpServletResponse.sendRedirect(String url)</code>. </p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+…
+public void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+…
+  response.sendRedirect("/newUserLogin.do");
+}</code></pre></div><div class="textbody"><p> This sends a response with a 302 status code ("Found") and a
+                                Location header with the new URL to the user agent. It is also
+                                possible to set another status code with
+                                    <code>response.sendError(int code, String message)</code> with
+                                one of the constants defined in the interface
+                                javax.servlet.http.HttpServletResponse as status code. </p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+…
+public void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+…
+  response.sendError(response.SC_MOVED_PERMANENTLY, "/newUserLogin.do");
+}</code></pre></div><div class="textbody"><p> If an application uses <code>HttpServletResponse.encodeURL(String
+                                    url)</code> for URL rewriting because the application depends on
+                                sessions, the method
+                                    <code>HttpServletResponse.encodeRedirectURL(String url)</code>
+                                should be used instead of
+                                    <code>HttpServletResponse.sendRedirect(String url)</code>. It is
+                                also possible to rewrite a URL with
+                                    <code>HttpServletResponse.encodeURL(String url)</code> and then
+                                pass this URL to <code>HttpServletResponse.sendRedirect(String
+                                url)</code>. </p></div></div><h3 class="small-head" id="SVR1-ex2">Example 2: ASP</h3><div class="example"><div class="textbody"><p> In Active Server Page (ASP) with VBScript, developers can use
+                                    <code>Response.Redirect</code>. </p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+  Response.Redirect "newUserLogin.asp"</code></pre></div><div class="textbody"><p> or </p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+Response.Redirect("newUserLogin.asp")</code></pre></div><div class="textbody"><p> The code below is a more complete example with a specific HTTP
+                                status code. </p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+Response.Clear
+Response.Status = 301
+Response.AddHeader "Location", "newUserLogin.asp"
+Response.Flush
+Response.End</code></pre></div></div><h3 class="small-head" id="SVR1-ex3">Example 3: PHP</h3><div class="example"><div class="textbody"><p> In PHP, developers can send a raw HTTP header with the
+                                <code>header</code> method. The code below sends a 301 status code
+                                and a new location. If the status is not explicitly set, the
+                                redirect response sends an HTTP status code 302. </p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+ &lt;?php
+header("HTTP/1.1 301 Moved Permanently);
+header("Location: http://www.example.com/newUserLogin.php");
+?&gt;</code></pre></div></div><h3 class="small-head" id="SVR1-ex4">Example 4: Apache</h3><div class="example"><div class="textbody"><p> Developers can configure the Apache Web server to handle redirects,
+                                as in the following example. </p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+redirect 301 /oldUserLogin.jsp http://www.example.com/newUserLogin.do</code></pre></div></div><h2 id="SVR1-resources">Resources</h2><div class="textbody"><p>Resources are for information purposes only, no endorsement implied.</p><ul><li><p> 
+                  <a href="http://www.w3.org/QA/Tips/reback">Use standard
+                                        redirects: do not break the back button!</a> (W3C QA Tip).
+                                </p></li><li><p> 
+                  <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3">HTTP/1.1 Status Code Definitions: Redirection 3xx</a>.
+                                </p></li><li><p> 
+                  <a href="http://www.somacon.com/p145.php">HTTP 301 Permanent
+                                        Redirection Techniques</a> by Shailesh N. Humbad. </p></li><li><p> 
+                  <a href="http://docs.oracle.com/cd/E17802_01/products/products/servlet/2.3/javadoc/javax/servlet/http/HttpServletResponse.html">Interface javax.servlet.http.HttpServletResponse</a> in
+                                    the Java Servlets 2.3 API documentation. </p></li><li><p> 
+                  <a href="http://php.net/manual/en/function.header.php">header</a> in the PHP
+                                    Manual. </p></li><li><p> 
+                  <a href="http://httpd.apache.org/docs/2.2/mod/mod_alias.html">Apache Module mod_alias</a> in the <a href="http://httpd.apache.org/docs/2.2/">Apache HTTP Server
+                                        Version 2.2 Documentation</a> describes how redirects can
+                                    be specified in Apache 2.2. </p></li><li><p> 
+                  <a href="http://httpd.apache.org/docs/1.3/mod/mod_alias.html">Module mod_alias</a> in the <a href="http://httpd.apache.org/docs/1.3/">Apache HTTP Server
+                                        Version 1.3 Documentation</a> describes how redirects can
+                                    be specified in Apache 1.3. </p></li></ul></div><h2 id="SVR1-related-techs">Related Techniques</h2><div class="textbody"><p>(none currently listed)</p></div><h2 id="SVR1-tests">Tests</h2><div class="textbody"><h3 class="small-head" id="SVR1-procedure">Procedure</h3><ol class="enumar"><li><p> Find each link or programmatic reference to another page or
+                                    Web page. </p></li><li><p> For each link or programmatic reference to a URI in the set of
+                                    Web pages being evaluated, check if the referenced
+                                    Web page contains code (e.g., meta element or script) that
+                                    causes a client-side redirect. </p></li><li><p> For each link or programmatic reference to a URI in the set of
+                                    Web pages being evaluated, check if the referenced URI
+                                    does not cause a redirect OR causes a server-side redirect
+                                    without a time-out. </p></li></ol><h3 class="small-head" id="SVR1-results">Expected Results</h3><ul><li><p> Step 2 is false AND step 3 is true. </p></li></ul><p>If this is a sufficient technique for a success criterion, failing this test procedure does not necessarily mean that the success criterion has not been satisfied in some other way, only that this technique has not been successfully implemented and can not be used to claim conformance.</p></div><div><h2>Techniques are Informative</h2><p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p></div><!-- BOTTOM NAVIGATION BAR --><ul id="navigationbottom"><li><strong><a href="#top">Top</a></strong></li><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SCR37: Creating Custom Dialogs in a Device Independent Way" href="SCR37.html"><strong>Previous: </strong>
+        Technique SCR37</a></li><li><a title="SVR2: Using .htaccess to ensure that the only way to access non-conforming content is from conforming content" href="SVR2.html"><strong>Next: </strong>
+        Technique SVR2</a></li></ul><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+ </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>

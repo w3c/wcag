@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>FLASH18: Providing a control to turn off sounds that play automatically in Flash | Techniques for WCAG 2.0
+              </title><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/><link rel="stylesheet" type="text/css" href="additional.css"/><link rel="stylesheet" type="text/css" href="slicenav.css"/></head><body class="slices"><div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div><div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div><a name="top"> </a><!-- TOP NAVIGATION BAR --><ul id="navigation"><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="FLASH17: Providing keyboard access to a Flash object and avoiding a keyboard trap" href="FLASH17.html"><strong>Previous: </strong>
+        Technique FLASH17</a></li><li><a title="FLASH19: Providing a script that warns the user a time limit is about to expire and provides a way to extend it" href="FLASH19.html"><strong>Next: </strong>
+        Technique FLASH19</a></li></ul><div class="navtoc"><p>On this page:</p><ul id="navbar"><li><a href="#FLASH18-applicability">Applicability</a></li><li><a href="#FLASH18-description">Description</a></li><li><a href="#FLASH18-examples">Examples</a></li><li><a href="#FLASH18-related-techs">Related Techniques</a></li><li><a href="#FLASH18-tests">Tests</a></li></ul></div><div class="skiptarget"><a id="maincontent">-</a></div> <h1><a name="FLASH18" id="FLASH18"> </a>FLASH18: Providing a control to turn off sounds that play automatically in Flash</h1><div class="applicability"><h2 id="FLASH18-applicability">Applicability</h2><div class="textbody"><ul><li><p>Adobe Flash Professional version MX and higher </p></li><li><p>Adobe Flex</p></li></ul></div></div><p class="referenced">This technique relates to:</p><ul><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#visual-audio-contrast-dis-audio">
+				Success Criterion 1.4.2 (Audio Control)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#visual-audio-contrast-dis-audio">
+						How to Meet 1.4.2 (Audio Control)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/visual-audio-contrast-dis-audio.html">
+						Understanding Success Criterion 1.4.2 (Audio Control)
+					</a></li></ul></li></ul><div class="ua-issues"><h2 class="small-head" id="ua9.18.1"> User Agent and Assistive Technology Support Notes</h2><p>See <a href="/WAI/WCAG20/Techniques/ua-notes/flash#FLASH18">User Agent Support Notes for FLASH18</a>.</p></div><h2 id="FLASH18-description">Description</h2><div class="textbody"><p>The intent of this technique is to allow a user to turn off sounds   that start automatically when a Flash movie loads. The control to turn   off the sounds should be located near the beginning of the page to allow   the control to be easily and quickly discovered by users . This is   useful for those who utilize assistive technologies (such as screen   readers, screen magnifiers, switch mechanisms, etc.) and those who may   not (such as those with cognitive, learning and language disabilities). </p><p>In this technique, an author includes a control that makes it   possible for users to turn off any sounds that are played automatically.   For maximum accessibility, the control can be added to the HTML   document rather than to the Flash movie. The HTML control will   communicate with the Flash movie through the ExternalInterface class.   This means that the user can control the sound playback without having   to interact with Flash content. If this is not practical, the control   can be provided within the Flash content, provided that the control is   keyboard operable, located early in the tab and reading order, and   clearly labeled to indicate that it will turn off the sounds that are   playing. </p></div><h2 class="small-head" id="FLASH18-examples">Examples</h2><h3 class="small-head" id="FLASH18-ex1">Example 1: Providing a button in the Flash to stop sound</h3><div class="example"><div class="textbody"><p>This example demonstrates the addition of a button within the Flash   movie to allow the user to stop sounds from playing.  A class called   SoundHandler is created which automatically starts playing an mp3 file   when the movie loads. </p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>package wcagSamples {
+  import flash.display.Sprite;
+  import flash.net.URLRequest;
+  import flash.media.Sound;
+  import flash.media.SoundChannel;
+  
+  import fl.controls.Button;
+  import fl.accessibility.ButtonAccImpl;
+  
+  import flash.events.MouseEvent;
+  public class SoundHandler extends Sprite {
+    private var snd: Sound = new Sound();
+    private var button: Button = new Button();
+    private var req: URLRequest = new URLRequest("http://av.adobe.com/podcast\
+      /csbu_dev_podcast_epi_2.mp3");
+    private var channel: SoundChannel = new SoundChannel();
+    
+    public function SoundHandler() {
+      ButtonAccImpl.enableAccessibility();
+      button.label = "Stop Sound";
+      button.x = 10;
+      button.y = 10;
+      button.addEventListener(MouseEvent.CLICK, clickHandler);
+      this.addChild(button);
+      snd.load(req);
+      channel = snd.play();
+    }
+    private function clickHandler(e: MouseEvent): void {
+      if (button.label == "Stop Sound") {
+        button.label = "Start Sound";
+        channel.stop();
+      } else {
+        channel = snd.play();
+        button.label = "Stop Sound";
+      }
+    }
+  }
+}</code></pre></div><div class="textbody"><p>This is demonstrated in the <a href="/WAI/WCAG20/Techniques/working-examples/FLASH18/control_to_toggle_audio_as3.html">working example of Providing a button in the Flash to stop sound</a>. The <a href="/WAI/WCAG20/Techniques/working-examples/FLASH18/control_to_toggle_audio_as3.fla">source of Providing a button in the Flash to stop sound</a> is available.</p></div></div><h3 class="small-head" id="FLASH18-ex2">Example 2: Providing a button in the HTML before the Flash object to stop sound</h3><div class="example"><div class="textbody"><p>A class called SoundHandler is created which automatically starts   playing an mp3 file when the movie loads. An HTML button is placed in   the HTML document containing the Flash movie. When the button is clicked   the action is communicated between the HTML page and the Flash movie   via the Flash Player JavaScript API, resulting in the toggleSound   method being called on the SoundHandler class. </p><h4 id="FLASH18-subhead-23">ActionScript 3.0 code for Example 2</h4></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>package wcagSamples {
+  import flash.display.Sprite;
+  import flash.external.ExternalInterface;
+  import flash.net.URLRequest;
+  import flash.media.Sound;
+  import flash.media.SoundChannel;
+  
+  import flash.events.MouseEvent;
+  public class SoundHandler extends Sprite {
+    private var snd: Sound = new Sound();
+    private var soundOn: Boolean = true;
+    private var req: URLRequest = new URLRequest("http://av.adobe.com/podcast/\
+      csbu_dev_podcast_epi_2.mp3");
+    private var channel: SoundChannel = new SoundChannel();
+    
+    public function SoundHandler() {
+      if (ExternalInterface.available)
+      ExternalInterface.addCallback("toggleSound", this.toggleSound);
+      snd.load(req);
+      channel = snd.play();
+    }
+    
+    private function toggleSound(enable: Boolean): void {
+      if (! enable) {
+        channel.stop();
+        soundOn = true;
+      } else {
+        channel = snd.play();
+        soundOn = true
+      }
+    }
+  }
+}</code></pre></div><div class="textbody"><h4 id="FLASH18-subhead-24">HTML code for Example 2</h4></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
+  &lt;head&gt;
+    &lt;meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/&gt;
+    &lt;title&gt;Flash Sound Toggle example&lt;/title&gt;
+    &lt;script src="swfobject.js" type="text/javascript"/&gt;
+    &lt;script type="text/javascript"&gt;
+    function $(id) {
+        return document.getElementById(id);
+    }
+    
+    swfobject.embedSWF("html_control_to_toggle_audio_as3.swf", 
+      "flashPlaceHolder", "0", "0", "8");
+    function init() {
+            var soundOn = true;
+            $("soundToggle").onclick = function(event){
+                soundOn = !soundOn;
+                $("flashPlaceHolder").toggleSound(soundOn);
+                event.target.value = soundOn ? "Stop Sound" : "Start Sound";
+            };
+    }
+    window.onload = init;
+&lt;/script&gt;
+
+  &lt;/head&gt;
+  &lt;body id="header"&gt;
+    &lt;h1&gt;Flash Automatic Sound Demo&lt;/h1&gt;
+    &lt;p&gt;This page contains a Flash movie that automatically starts
+      playing sound. Use the button below to stop or start the
+      sound&lt;/p&gt;
+    &lt;input id="soundToggle" type="button" value="Stop Sound"/&gt;
+    &lt;p id="flashPlaceHolder"&gt;Flash needs to be installed for this
+      example to work&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div><div class="textbody"><p>This is demonstrated in the <a href="/WAI/WCAG20/Techniques/working-examples/FLASH18/html_control_to_toggle_audio_as3.html">working example of Providing a button in the HTML before the Flash object to stop sound</a>. The source of <a href="/WAI/WCAG20/Techniques/working-examples/FLASH18/html_control_to_toggle_audio_as3.zip">source of Providing a button in the HTML before the Flash object to stop sound</a> is available.</p></div></div><h2 id="FLASH18-related-techs">Related Techniques</h2><div class="textbody"><ul><li><a href="G170.html">G170: Providing a control near the beginning of the Web page that turns off sounds that play automatically</a></li></ul></div><h2 id="FLASH18-tests">Tests</h2><div class="textbody"><h3 class="small-head" id="FLASH18-procedure">Procedure</h3><p>For Flash movies that automatically start playing sound after   loading: </p><ol class="enumar"><li><p> Confirm that an HTML control that conforms to WCAG 2.0 is placed at the   beginning of the document's tab order </p></li><li><p> If there is no HTML-based control, confirm that an accessible   control is placed at the beginning of the Flash movie's tab order. </p></li><li><p> Activate the HTML or Flash-based control </p></li><li><p> Verify that audio playback stops </p></li></ol><h3 class="small-head" id="FLASH18-results">Expected Results</h3><ul><li><p> Check #1 or #2 is true, and #4 is true. </p></li></ul><p>If this is a sufficient technique for a success criterion, failing this test procedure does not necessarily mean that the success criterion has not been satisfied in some other way, only that this technique has not been successfully implemented and can not be used to claim conformance.</p></div><div><h2>Techniques are Informative</h2><p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p></div><!-- BOTTOM NAVIGATION BAR --><ul id="navigationbottom"><li><strong><a href="#top">Top</a></strong></li><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="FLASH17: Providing keyboard access to a Flash object and avoiding a keyboard trap" href="FLASH17.html"><strong>Previous: </strong>
+        Technique FLASH17</a></li><li><a title="FLASH19: Providing a script that warns the user a time limit is about to expire and provides a way to extend it" href="FLASH19.html"><strong>Next: </strong>
+        Technique FLASH19</a></li></ul><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+ </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>

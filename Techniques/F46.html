@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>F46: Failure of Success Criterion 1.3.1 due to using th elements,
+                    caption elements, or non-empty summary attributes in
+                    layout tables | Techniques for WCAG 2.0
+              </title><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/><link rel="stylesheet" type="text/css" href="additional.css"/><link rel="stylesheet" type="text/css" href="slicenav.css"/></head><body class="slices"><div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div><div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div><a name="top"> </a><!-- TOP NAVIGATION BAR --><ul id="navigation"><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="F44: Failure of Success Criterion 2.4.3 due to using tabindex to create a tab order that&#xA;        &#x9;does not preserve meaning and operability" href="F44.html"><strong>Previous: </strong>Failure F44</a></li><li><a title="F47: Failure of Success Criterion 2.2.2 due to using the blink element" href="F47.html"><strong>Next: </strong>Failure F47</a></li></ul><div class="navtoc"><p>On this page:</p><ul id="navbar"><li><a href="#F46-applicability">Applicability</a></li><li><a href="#F46-description">Description</a></li><li><a href="#F46-examples">Examples</a></li><li><a href="#F46-resources">Resources</a></li><li><a href="#F46-related-techs">Related Techniques</a></li><li><a href="#F46-tests">Tests</a></li></ul></div><div class="skiptarget"><a id="maincontent">-</a></div> <h1><a name="F46" id="F46"> </a>F46: Failure of Success Criterion 1.3.1 due to using <code>th</code> elements,
+                    <code>caption</code> elements, or non-empty <code>summary</code> attributes in
+                    layout tables</h1><div class="applicability"><h2 id="F46-applicability">Applicability</h2><div class="textbody"><p>HTML and XHTML</p></div></div><p class="referenced">This failure relates to:</p><ul><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#content-structure-separation-programmatic">
+				Success Criterion 1.3.1 (Info and Relationships)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#content-structure-separation-programmatic">
+						How to Meet 1.3.1 (Info and Relationships)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/content-structure-separation-programmatic.html">
+						Understanding Success Criterion 1.3.1 (Info and Relationships)
+					</a></li></ul></li></ul><h2 id="F46-description">Description</h2><div class="textbody"><p>The objective of this technique is to describe a failure that occurs when a
+                        table used only for layout includes either <code>th</code> elements, a
+                            <code>summary</code> attribute, or a <code>caption</code> element. This
+                        is a failure because it uses structural (or semantic) markup only for
+                        presentation. The intent of the HTML and XHTML table elements is to present data. </p><p>Although not commonly used in a layout table, the following structural markup would also be failures of Success Criterion 1.3.1 if used in a layout table: </p><ul><li><p> 
+               <code>headers</code> attributes </p></li><li><p> 
+               <code>scope</code> attributes 
+              </p></li></ul><p>Assistive technologies use the structure of an HTML or XHTML table to present data to
+                        the user in a logical manner. The <code>th</code> element is used to mark
+                        the column and row headers of the table. A screen reader uses the
+                        information in <code>th</code> elements to speak the header information that
+                        changes as the user navigates the table. The summary attribute on the
+                            <code>table</code> element provides a textual description of the table
+                        that describes its purpose and function. Assistive technologies make the
+                            <code>summary</code> attribute information available to users. The
+                            <code>caption</code> element is part of the table and identifies the
+                        table.</p><p>
+            Although WCAG 2 does not prohibit the use of layout tables, CSS-based layouts are recommended in order to retain the defined semantic meaning of the HTML table elements and to conform to the coding practice of separating presentation from content. 
+            When a table is used
+                        for layout purposes the <code>th</code> element should not be used. Since
+                        the table is not presenting data there is no need to mark any cells as
+                        column or row headers. Likewise, there is no need for an additional
+                        description of a table which is only used to layout content. Do not include
+                        a <code>summary</code> attribute and do not use the <code>summary</code>
+                        attribute to describe the table as, for instance, "layout table". When
+                        spoken, this information does not provide value and will only distract users
+                        navigating the content via a screen reader. Empty <code>summary</code>
+                        attributes are acceptable on layout tables, but not recommended.</p></div><h2 class="small-head" id="F46-examples">Examples</h2><div class="failure"><h3 class="small-head" id="F46-failex1">
+					Failure Example 1</h3><div class="example"><div class="textbody"><p>Here is a simple example that uses a table to layout content in a
+                                three column format. The navigation bar is in the left column, the
+                                main content in the middle column, and an additional sidebar is on
+                                the right. At the top is a page title. The example marks the page
+                                title as <code>&lt;th&gt;</code>, and provides a summary
+                                attribute indicating that the table is a layout table.</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+ &lt;table summary="layout table"&gt;
+ &lt;tr&gt;
+   &lt;th colspan=3&gt;Page Title&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+   &lt;td&gt;&lt;div&gt;navigation content&lt;/div&gt;&lt;/td&gt;
+   &lt;td&gt;&lt;div&gt;main content&lt;/div&gt;&lt;/td&gt;
+   &lt;td&gt;&lt;div&gt;right sidebar content&lt;/div&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+   &lt;td colspan=3&gt;footer&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/table&gt;
+</code></pre></div></div></div><h2 id="F46-resources">Resources</h2><div class="textbody"><p>No resources available for this technique.</p></div><h2 id="F46-related-techs">Related Techniques</h2><div class="textbody"><ul><li><a href="H39.html">H39: Using caption elements to associate data table captions with data tables</a></li><li><a href="H51.html">H51: Using table markup to present tabular information</a></li><li><a href="H73.html">H73: Using the summary attribute of the table element to give an overview of data
+          tables</a></li></ul></div><h2 id="F46-tests">Tests</h2><div class="textbody"><h3 class="small-head" id="F46-procedure">Procedure</h3><ol class="enumar"><li><p>Examine the source code of the HTML or XHTML document for the
+                                    <code>table</code> element</p></li><li><p>If the table is used only to visually lay out elements within the
+                                    content </p><ol class="enumla"><li><p>Check that the table does not contain any <code>th</code>
+                                            elements.</p></li><li><p>Check that the <code>table</code> element does not
+                                            contain a non-empty summary attribute.</p></li><li><p>Check that the <code>table</code> element does not
+                                            contain a <code>caption</code> element.</p></li></ol></li></ol><h3 class="small-head" id="F46-results">Expected Results</h3><ul><li><p>If any check above is false, then this failure condition applies
+                                    and the content fails the Success Criterion.</p></li></ul></div><div><h2>Techniques are Informative</h2><p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p></div><!-- BOTTOM NAVIGATION BAR --><ul id="navigationbottom"><li><strong><a href="#top">Top</a></strong></li><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="F44: Failure of Success Criterion 2.4.3 due to using tabindex to create a tab order that&#xA;        &#x9;does not preserve meaning and operability" href="F44.html"><strong>Previous: </strong>Failure F44</a></li><li><a title="F47: Failure of Success Criterion 2.2.2 due to using the blink element" href="F47.html"><strong>Next: </strong>Failure F47</a></li></ul><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+ </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>

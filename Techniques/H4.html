@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>H4: Creating a logical tab order through links, form controls, and objects | Techniques for WCAG 2.0
+              </title><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/><link rel="stylesheet" type="text/css" href="additional.css"/><link rel="stylesheet" type="text/css" href="slicenav.css"/></head><body class="slices"><div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div><div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div><a name="top"> </a><!-- TOP NAVIGATION BAR --><ul id="navigation"><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="H2: Combining adjacent image and text links for the same resource" href="H2.html"><strong>Previous: </strong>
+        Technique H2</a></li><li><a title="H24:  Providing text alternatives for the area elements of image maps " href="H24.html"><strong>Next: </strong>
+        Technique H24</a></li></ul><div class="navtoc"><p>On this page:</p><ul id="navbar"><li><a href="#H4-applicability">Applicability</a></li><li><a href="#H4-description">Description</a></li><li><a href="#H4-examples">Examples</a></li><li><a href="#H4-resources">Resources</a></li><li><a href="#H4-related-techs">Related Techniques</a></li><li><a href="#H4-tests">Tests</a></li></ul></div><div class="skiptarget"><a id="maincontent">-</a></div> <h1><a name="H4" id="H4"> </a>H4: Creating a logical tab order through links, form controls, and objects</h1><div class="applicability"><h2 id="H4-applicability">Applicability</h2><div class="textbody"><p>HTML and XHTML</p></div></div><p class="referenced">This technique relates to:</p><ul><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#navigation-mechanisms-focus-order">
+				Success Criterion 2.4.3 (Focus Order)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#navigation-mechanisms-focus-order">
+						How to Meet 2.4.3 (Focus Order)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/navigation-mechanisms-focus-order.html">
+						Understanding Success Criterion 2.4.3 (Focus Order)
+					</a></li></ul></li></ul><h2 id="H4-description">Description</h2><div class="textbody"><p>The objective of this technique is to provide a logical tab order when the default tab
+            order does not suffice. Often, <a href="http://www.w3.org/WAI/GL/2014/WD-WCAG20-TECHS-20140401/G59">G59: Placing the interactive elements in an order that follows sequences and relationships within the content</a> is sufficient and this technique is not necessary. It can be very easy
+            to introduce usability bugs when setting the tab order explicitly.</p><p>In some cases, the author may want to specify a tab order that follows relationships in
+            the content without following the order of the interactive elements in the code. In
+            these cases, an alternative order can be specified using the <code>tabindex</code>
+            attribute of the interactive element. The <code>tabindex</code> is given a value between
+            0 and 32767. </p><p>When the interactive elements are navigated using the tab key, the elements are given
+            focus in increasing order of the value of their <code>tabindex</code> attribute.
+            Elements that have a <code>tabindex</code> value higher than zero will receive focus
+            before elements without a <code>tabindex</code> or a <code>tabindex</code> of 0. After
+            all of the elements with a tabindex higher than 0 have received focus, the rest of the
+            interactive elements are given focus in the order in which they appear in the Web
+          page.</p></div><h2 class="small-head" id="H4-examples">Examples</h2><h3 class="small-head" id="H4-ex1">Example 1</h3><div class="example"><div class="textbody"><p>A genealogical search form searches for marriage records. The search form includes
+                several input fields for the bride and the groom. The form is marked up using a data
+                table that includes the fields of the groom in the first column and the fields of
+                the bride in the second column. The order in the content is row by row but the
+                author feels it is more logical to navigate the form column by column. This way, all
+                the groom's criteria can be filled in before moving on to the bride's criteria. The
+                  <code>tabindex</code> attributes of the input fields are used to specify a tab
+                order that navigates column by column.</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>&lt;form action="#" method="post"&gt;
+ &lt;table summary="the first column contains the search criteria 
+  of the groom, the second column the search criteria of 
+  of the bride"&gt;
+ &lt;caption&gt;Search for marriage records&lt;/caption&gt;
+ &lt;tr&gt;
+   &lt;th&gt;Search criteria&lt;/th&gt;
+   &lt;th&gt;Groom&lt;/th&gt;
+   &lt;th&gt;Bride&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+  &lt;th&gt;First name&lt;/th&gt;
+  &lt;td&gt;&lt;input type="text" size="30" value="" name="groomfirst" 
+      title="First name of the groom" tabindex="1"&gt;&lt;/td&gt;
+  &lt;td&gt;&lt;input type="text" size="30" value="" name="bridefirst" 
+       title="First name of the bride" tabindex="4"&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+  &lt;th&gt;Last name&lt;/th&gt;
+  &lt;td&gt;&lt;input type="text" size="30" value="" name="groomlast" 
+      title="Last name of the groom" tabindex="2"&gt;&lt;/td&gt;
+  &lt;td&gt;&lt;input type="text" size="30" value="" name="bridelast" 
+      title="Last name of the bride" tabindex="5"&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+  &lt;th&gt;Place of birth&lt;/th&gt;
+  &lt;td&gt;&lt;input type="text" size="30" value="" name="groombirth" 
+      title="Place of birth of the groom" tabindex="3"&gt;&lt;/td&gt;
+  &lt;td&gt;&lt;input type="text" size="30" value="" name="bridebirth" 
+      title="Place of birth of the bride" tabindex="6"&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/form&gt;      </code></pre></div></div><h3 class="small-head" id="H4-ex2">Example 2</h3><div class="example"><div class="textbody"><p>A Web page contains a search field in the upper right corner. The field is given
+                tabindex="1" so that it will occur first in the tab order, even though it is not
+                first in the content order.</p></div></div><h3 class="small-head" id="H4-ex3">Example 3</h3><div class="example"><div class="textbody"><p>
+								       <code>Tabindex</code> values need not be sequential nor must they begin with any
+                particular value. The values do not have to be unique. Elements that have identical
+                  <code>tabindex</code> values are navigated in the order they appear in the
+                character stream. </p></div><div class="textbody"><p>In sections of the content where the tab order follows the content order, it can be
+                less error prone to give all elements the same tabindex value rather than specifying
+                a different number for each element. Then it is easy to rearrange those elements or
+                add new elements and maintain a logical tab order.</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code> &lt;a href="xxx" tabindex = "1"&gt;First link in list&lt;/a&gt;
+&lt;a href="xxx" tabindex = "1"&gt;Second link in list&lt;/a&gt;
+&lt;a href="xxx" tabindex = "1"&gt;Link that was added long 
+  after the original list was created&lt;/a&gt;
+&lt;a href="xxx" tabindex = "1"&gt;Third link in list&lt;/a&gt;
+  ...
+&lt;a href="xxx" tabindex = "1"&gt;Twentieth link in list&lt;/a&gt;      </code></pre></div></div><h2 id="H4-resources">Resources</h2><div class="textbody"><p>Resources are for information purposes only, no endorsement implied.</p><ul><li><p>
+									         <a href="http://www.w3.org/TR/html4/interact/forms.html#adef-tabindex">Tabbing
+                    navigation in the HTML 4.01 specification</a>
+								       </p></li></ul></div><h2 id="H4-related-techs">Related Techniques</h2><div class="textbody"><ul><li><a href="G59.html">G59: Placing the interactive elements in an order that follows sequences and relationships within the content</a></li><li><a href="F44.html">F44: Failure of Success Criterion 2.4.3 due to using tabindex to create a tab order that
+        	does not preserve meaning and operability</a></li><li><a href="F85.html">F85: Failure of Success Criterion 2.4.3 due to using dialogs or menus that are not adjacent to their trigger control in the sequential navigation order</a></li></ul></div><h2 id="H4-tests">Tests</h2><div class="textbody"><h3 class="small-head" id="H4-procedure">Procedure</h3><ol class="enumar"><li><p>Check if <code>tabindex</code> is used</p></li><li><p>If <code>tabindex</code> is used, check that the tab order specified by the
+                    <code>tabindex</code> attributes follows relationships in the content.</p></li></ol><h3 class="small-head" id="H4-results">Expected Results</h3><ul><li><p>Check #2 is true.</p></li></ul><p>If this is a sufficient technique for a success criterion, failing this test procedure does not necessarily mean that the success criterion has not been satisfied in some other way, only that this technique has not been successfully implemented and can not be used to claim conformance.</p></div><div><h2>Techniques are Informative</h2><p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p></div><!-- BOTTOM NAVIGATION BAR --><ul id="navigationbottom"><li><strong><a href="#top">Top</a></strong></li><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="H2: Combining adjacent image and text links for the same resource" href="H2.html"><strong>Previous: </strong>
+        Technique H2</a></li><li><a title="H24:  Providing text alternatives for the area elements of image maps " href="H24.html"><strong>Next: </strong>
+        Technique H24</a></li></ul><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+ </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>

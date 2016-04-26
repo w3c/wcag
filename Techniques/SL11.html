@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>SL11: Pausing or Stopping A Decorative Silverlight Animation | Techniques for WCAG 2.0
+              </title><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/><link rel="stylesheet" type="text/css" href="additional.css"/><link rel="stylesheet" type="text/css" href="slicenav.css"/></head><body class="slices"><div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div><div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div><a name="top"> </a><!-- TOP NAVIGATION BAR --><ul id="navigation"><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SL10: Implementing a Submit-Form Pattern in Silverlight" href="SL10.html"><strong>Previous: </strong>
+        Technique SL10</a></li><li><a title="SL12: Pausing, Stopping, or Playing Media in Silverlight MediaElements" href="SL12.html"><strong>Next: </strong>
+        Technique SL12</a></li></ul><div class="navtoc"><p>On this page:</p><ul id="navbar"><li><a href="#SL11-applicability">Applicability</a></li><li><a href="#SL11-description">Description</a></li><li><a href="#SL11-examples">Examples</a></li><li><a href="#SL11-resources">Resources</a></li><li><a href="#SL11-tests">Tests</a></li></ul></div><div class="skiptarget"><a id="maincontent">-</a></div> <h1><a name="SL11" id="SL11"> </a>SL11: Pausing or Stopping A Decorative Silverlight Animation</h1><div class="applicability"><h2 id="SL11-applicability">Applicability</h2><div class="textbody"><ul><li><p> Microsoft Silverlight, versions 3 and greater </p></li><li><p> Silverlight managed programming model and Silverlight XAML </p></li></ul></div></div><p class="referenced">This technique relates to:</p><ul><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#time-limits-pause">
+				Success Criterion 2.2.2 (Pause, Stop, Hide)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#time-limits-pause">
+						How to Meet 2.2.2 (Pause, Stop, Hide)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/time-limits-pause.html">
+						Understanding Success Criterion 2.2.2 (Pause, Stop, Hide)
+					</a></li></ul></li></ul><div class="ua-issues"><h2 class="small-head" id="ua10.11.1"> User Agent and Assistive Technology Support Notes</h2><p>See <a href="/WAI/WCAG20/Techniques/ua-notes/silverlight#SL11">User Agent Support Notes for SL11</a>.</p></div><h2 id="SL11-description">Description</h2><div class="textbody"><p>The objective of this technique is to associate a "Pause" or "Stop"   action
+    				for a Silverlight animation with a user interface control. This enables
+    				a user to pause or stop an animation in Silverlight content. </p><p>The Silverlight animation system is generalized such that nearly any
+    				Silverlight property of type <code>Double</code>, <code>Point</code> or <code>Color</code> can
+    				be animated, or a property can cycle through discrete object values.
+    				Thus the possibilities for which properties in the user interface can
+    				be animated are quite broad. The general technique shown can be used
+    				to pause or stop any Silverlight animation, including those that are
+    				purely decorative. </p><div id="SL11_pause_stop"><h4> Pause versus Stop </h4><p>Silverlight has two discrete methods for animation control: a <code>Pause</code> method
+    					and a <code>Stop</code> method. The difference in behavior is that <code>Pause</code> uses
+    					whatever the last value was while the animation was still running,
+    					and holds that value permanenently (unless the animation is restarted). <code>Stop</code> sets
+    					the value to be whatever value existed before the animation was started.
+    					However, calling <code>Stop</code> on an animation often results
+    					in a behavior that looks like a "reset"   to the user; this
+    					is particularly true if the animation is animating an element's position
+    					on screen. In many cases, what might be a conceptual   "stop" for
+    					the user is better accomplished by a "permanent Pause" in
+    					the Silverlight animation API. Whether to call <code>Pause</code> or <code>Stop</code> is
+    					an aesthetic decision and application authors can experiment to see
+    					which behavior has the best appearance. If application authors choose
+    					to use <code>Stop</code>, authors can simply replace the call to
+    					.Pause() with a call to .Stop() for any code that is based on this
+    					technique's example. </p></div></div><h2 class="small-head" id="SL11-examples">Examples</h2><h3 class="small-head" id="SL11-ex1">Example 1: Pausing a decorative animation</h3><div class="example"><div class="textbody"><p>The following is the XAML UI. The animated object and the animation
+    						behavior are both described in XAML, as is the control that users can
+    						activate to pause the animation. </p><div class="code"><pre><code>&lt;UserControl x:Class="PauseBouncyBall.MainPage"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+&gt;
+ &lt;UserControl.Resources&gt;
+   &lt;Storyboard x:Key="anim" RepeatBehavior="Forever" &gt;
+       &lt;DoubleAnimationUsingKeyFrames Storyboard.TargetName="Ball"
+          Storyboard.TargetProperty="(Canvas.Top)"
+        FillBehavior="HoldEnd" AutoReverse="True"&gt;
+               &lt;EasingDoubleKeyFrame Value="100" KeyTime="00:00:01"&gt;
+                   &lt;EasingDoubleKeyFrame.EasingFunction&gt;
+                       &lt;BounceEase Bounces="-1" EasingMode="EaseIn"/&gt;
+                   &lt;/EasingDoubleKeyFrame.EasingFunction&gt;
+               &lt;/EasingDoubleKeyFrame&gt;
+           &lt;/DoubleAnimationUsingKeyFrames&gt;
+   &lt;/Storyboard&gt;
+ &lt;/UserControl.Resources&gt;
+ &lt;Canvas x:Name="LayoutRoot" Background="White" Height="600" Width="800"&gt;
+   &lt;Ellipse Name="Ball" Fill="Red" Width="20" Height="20" Canvas.Top="200"&gt;
+       &lt;Ellipse.RenderTransform&gt;
+           &lt;TransformGroup&gt;
+               &lt;TranslateTransform/&gt;
+           &lt;/TransformGroup&gt;
+       &lt;/Ellipse.RenderTransform&gt;
+   &lt;/Ellipse&gt;
+   &lt;Button HorizontalAlignment="Left" Width="200" Click="Button_Click"&gt;Stop the bouncy ball please!&lt;/Button&gt;
+ &lt;/Canvas&gt;
+&lt;/UserControl&gt;
+</code></pre></div><p>The following is the C# logic. One function is the "page"   constructor,
+    						which is what starts and loops the animation. The other function
+    						is the event handler for the UI control (a button). The event handler
+    						retrieves the animation definition from the page resources, and calls
+    						the <code>Pause</code> method on the animation. </p><div class="code"><pre><code>       public MainPage()
+       {
+           InitializeComponent();
+           (this.Resources["anim"] as Storyboard).Begin();
+       }
+       private void Button_Click(object sender, RoutedEventArgs e)
+       {
+           (this.Resources["anim"] as Storyboard).Pause();
+       }
+</code></pre></div><p>This example is shown in operation in the <a href="/WAI/WCAG20/Techniques/working-examples/SL11/PauseBouncyBall.html">working example of Pause Bouncy Ball</a>.</p></div></div><h2 id="SL11-resources">Resources</h2><div class="textbody"><p>Resources are for information purposes only, no endorsement implied.</p><ul><li><p>
+                  <a href="http://msdn.microsoft.com/en-us/library/cc189019%28VS.95%29.aspx">Animation
+    					Overview</a> 
+               </p></li><li><p>
+                  <a href="http://msdn.microsoft.com/en-us/library/cc189069%28VS.95%29.aspx">Working
+    						with Animations Programmatically</a> 
+               </p></li></ul></div><h2 id="SL11-tests">Tests</h2><div class="textbody"><h3 class="small-head" id="SL11-procedure">Procedure</h3><ol class="enumar"><li><p> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. For Silverlight
+    					content with moving, blinking, scrolling or auto-updating content
+    					that is the result of a running Silverlight animation: </p></li><li><p> Check for a mechanism to stop the movement, blinking, scrolling
+    						or auto-updating. </p></li><li><p> Check that the movement, blinking, scrolling or auto-updating
+    							stops when the mechanism is activated and does not restart by itself. </p></li><li><p> For pause, check that the animation can be restarted using a start
+    								mechanism. </p></li></ol><h3 class="small-head" id="SL11-results">Expected Results</h3><p>#3 is true. </p><p>If this is a sufficient technique for a success criterion, failing this test procedure does not necessarily mean that the success criterion has not been satisfied in some other way, only that this technique has not been successfully implemented and can not be used to claim conformance.</p></div><div><h2>Techniques are Informative</h2><p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p></div><!-- BOTTOM NAVIGATION BAR --><ul id="navigationbottom"><li><strong><a href="#top">Top</a></strong></li><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SL10: Implementing a Submit-Form Pattern in Silverlight" href="SL10.html"><strong>Previous: </strong>
+        Technique SL10</a></li><li><a title="SL12: Pausing, Stopping, or Playing Media in Silverlight MediaElements" href="SL12.html"><strong>Next: </strong>
+        Technique SL12</a></li></ul><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+ </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>

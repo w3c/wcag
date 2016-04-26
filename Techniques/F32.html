@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>F32: Failure of Success Criterion 1.3.2 due to using white space characters to control
+                    spacing within a word | Techniques for WCAG 2.0
+              </title><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/><link rel="stylesheet" type="text/css" href="additional.css"/><link rel="stylesheet" type="text/css" href="slicenav.css"/></head><body class="slices"><div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div><div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div><a name="top"> </a><!-- TOP NAVIGATION BAR --><ul id="navigation"><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="F31: Failure of Success Criterion 3.2.4 due to using two different labels for the same function on different Web pages within a set of Web pages " href="F31.html"><strong>Previous: </strong>Failure F31</a></li><li><a title="F33: Failure of Success Criterion 1.3.1 and 1.3.2 due to using white space characters to&#xA;                    create multiple columns in plain text content" href="F33.html"><strong>Next: </strong>Failure F33</a></li></ul><div class="navtoc"><p>On this page:</p><ul id="navbar"><li><a href="#F32-applicability">Applicability</a></li><li><a href="#F32-description">Description</a></li><li><a href="#F32-examples">Examples</a></li><li><a href="#F32-resources">Resources</a></li><li><a href="#F32-related-techs">Related Techniques</a></li><li><a href="#F32-tests">Tests</a></li></ul></div><div class="skiptarget"><a id="maincontent">-</a></div> <h1><a name="F32" id="F32"> </a>F32: Failure of Success Criterion 1.3.2 due to using white space characters to control
+                    spacing within a word</h1><div class="applicability"><h2 id="F32-applicability">Applicability</h2><div class="textbody"><p>All technologies.</p></div></div><p class="referenced">This failure relates to:</p><ul><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#content-structure-separation-sequence">
+				Success Criterion 1.3.2 (Meaningful Sequence)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#content-structure-separation-sequence">
+						How to Meet 1.3.2 (Meaningful Sequence)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/content-structure-separation-sequence.html">
+						Understanding Success Criterion 1.3.2 (Meaningful Sequence)
+					</a></li></ul></li></ul><h2 id="F32-description">Description</h2><div class="textbody"><p>The objective of this technique is to describe how using white space characters, such as space, tab, line break, or carriage return, to format individual words visually can be a failure to present meaningful sequences properly. When blank characters are inserted to control letter spacing within a word, they may change the interpretation of the word or cause it not to be programmatically recognized as a single word. 
+          </p><p>Inserting white space characters into an initialism is not an example of this
+                        failure, since the white space does not change the interpretation of the
+                        initialism and may make it easier to understand.</p><p>The use of white space between words for visual formatting is not a failure,
+                        since it does not change the interpretation of the words.</p></div><h2 class="small-head" id="F32-examples">Examples</h2><div class="failure"><h3 class="small-head" id="F32-failex1">
+					Failure Example 1: Failure due to adding white space in the middle of a word</h3><div class="example"><div class="textbody"><p>This example has white spaces within a word to space out the letters
+                                in a heading. Screen readers may read each letter individually
+                                instead of the word "Welcome."</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+&lt;h1&gt;W e l c o m e&lt;/h1&gt;
+</code></pre></div><div class="textbody"><p>&amp;nbsp; can also be used to add white space, producing similar
+                                failures:</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+&lt;h1&gt;H&amp;nbsp;E&amp;nbsp;L&amp;nbsp;L&amp;nbsp;O&lt;/h1&gt;
+</code></pre></div></div></div><div class="failure"><h3 class="small-head" id="F32-failex2">
+					Failure Example 2: White space in the middle of a word changing its meaning</h3><div class="example"><div class="textbody"><p>In Japanese, Han characters (Kanji) may have multiple readings that
+                                mean very different things. In this example, the word is read
+                                incorrectly because screen readers may not recognize these
+                                characters as a word because of the white space between the
+                                characters. The characters mean "Tokyo," but screen readers say
+                                "Higashi Kyo".</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+&lt;h1&gt;東　京&lt;/h1&gt;
+</code></pre></div></div></div><div class="failure"><h3 class="small-head" id="F32-failex3">
+					Failure Example 3: Using line break characters to format vertical text</h3><div class="example"><div class="textbody"><p>In the row header cell of a data table containing Japanese text,
+                                authors often create vertical text by using line break characters.
+                                However screen readers are not able to read the words in vertical
+                                text correctly because the line breaks occur within the word. In the
+                                following example, "東京都"(Tokyo-to) will be read "Higashi Kyo
+                                Miyako".</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+&lt;table&gt;
+&lt;caption&gt;表1.　都道府県別一覧表&lt;/caption&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;th scope="col"&gt;（見出しセル 1.）&lt;/th&gt;
+&lt;th scope="col"&gt;（見出しセル 2.）&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th scope="row"&gt;東&lt;br /&gt;京&lt;br /&gt;都&lt;/th&gt;
+&lt;td&gt;（データセル 1.）&lt;/td&gt;
+&lt;td&gt;（データセル 2.）&lt;/td&gt;
+&lt;/tr&gt;
+・・・・・・
+&lt;/table&gt;
+</code></pre></div></div></div><h2 id="F32-resources">Resources</h2><div class="textbody"><p>No resources available for this technique.</p></div><h2 id="F32-related-techs">Related Techniques</h2><div class="textbody"><ul><li><a href="C8.html">C8: Using CSS letter-spacing to control spacing within a word</a></li></ul></div><h2 id="F32-tests">Tests</h2><div class="textbody"><h3 class="small-head" id="F32-procedure">Procedure</h3><p>For each word that appears to have non-standard spacing between
+                            characters: </p><ol class="enumar"><li><p>Check whether any words in the text of the content contain white
+                                    space characters .</p></li></ol><h3 class="small-head" id="F32-results">Expected Results</h3><ul><li><p>If step #1 is true, then this failure condition applies and the
+                                    content fails this Success Criterion.</p></li></ul></div><div><h2>Techniques are Informative</h2><p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p></div><!-- BOTTOM NAVIGATION BAR --><ul id="navigationbottom"><li><strong><a href="#top">Top</a></strong></li><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="F31: Failure of Success Criterion 3.2.4 due to using two different labels for the same function on different Web pages within a set of Web pages " href="F31.html"><strong>Previous: </strong>Failure F31</a></li><li><a title="F33: Failure of Success Criterion 1.3.1 and 1.3.2 due to using white space characters to&#xA;                    create multiple columns in plain text content" href="F33.html"><strong>Next: </strong>Failure F33</a></li></ul><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+ </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>

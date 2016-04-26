@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>F43: Failure of Success Criterion 1.3.1 due to using structural markup in a way that does
+                    not represent relationships in the content | Techniques for WCAG 2.0
+              </title><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/><link rel="stylesheet" type="text/css" href="additional.css"/><link rel="stylesheet" type="text/css" href="slicenav.css"/></head><body class="slices"><div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div><div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div><a name="top"> </a><!-- TOP NAVIGATION BAR --><ul id="navigation"><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="F42: Failure of Success Criterion 1.3.1 and 2.1.1 due to using scripting events to emulate links in a way that is not programmatically determinable" href="F42.html"><strong>Previous: </strong>Failure F42</a></li><li><a title="F44: Failure of Success Criterion 2.4.3 due to using tabindex to create a tab order that&#xA;        &#x9;does not preserve meaning and operability" href="F44.html"><strong>Next: </strong>Failure F44</a></li></ul><div class="navtoc"><p>On this page:</p><ul id="navbar"><li><a href="#F43-applicability">Applicability</a></li><li><a href="#F43-description">Description</a></li><li><a href="#F43-examples">Examples</a></li><li><a href="#F43-resources">Resources</a></li><li><a href="#F43-related-techs">Related Techniques</a></li><li><a href="#F43-tests">Tests</a></li></ul></div><div class="skiptarget"><a id="maincontent">-</a></div> <h1><a name="F43" id="F43"> </a>F43: Failure of Success Criterion 1.3.1 due to using structural markup in a way that does
+                    not represent relationships in the content</h1><div class="applicability"><h2 id="F43-applicability">Applicability</h2><div class="textbody"><p>HTML and XHTML</p></div></div><p class="referenced">This failure relates to:</p><ul><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#content-structure-separation-programmatic">
+				Success Criterion 1.3.1 (Info and Relationships)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#content-structure-separation-programmatic">
+						How to Meet 1.3.1 (Info and Relationships)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/content-structure-separation-programmatic.html">
+						Understanding Success Criterion 1.3.1 (Info and Relationships)
+					</a></li></ul></li></ul><h2 id="F43-description">Description</h2><div class="textbody"><p>The objective of this technique is to describe a failure that occurs when
+                        structural markup is used to achieve a presentational effect, but indicates
+                        relationships that do not exist in the content. This is disorienting to
+                        users who are depending on those relationships to navigate the content or to
+                        understand the relationship of one piece of the content to another. Note
+                        that the use of HTML tables for layout is not an example of this failure as
+                        long as the layout table does not include improper structural markup such as
+                            <code>&lt;th&gt;</code> or <code>&lt;caption&gt;</code>
+                        elements.</p><div class="note"><p class="prefix"><em>Note: </em>Though an element's semantic meaning is generally exposed to AT, the WAI-ARIA presentation role can be used to suppress the native semantics of an element so that they are not mapped to the accessibility API. Setting an element's <code>role</code> to presentation may avoid this failure by hiding that element's semantics from the user.</p></div></div><h2 class="small-head" id="F43-examples">Examples</h2><div class="failure"><h3 class="small-head" id="F43-failex1">
+					Failure Example 1: A heading used only for visual effect</h3><div class="example"><div class="textbody"><p>In this example, a heading element is used to display an address in a
+                                large, bold font. The address does not identify a new section of the
+                                document, however, so it should not be marked as a heading.</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+&lt;p&gt;Interested in learning more? Write to us at&lt;/p&gt; 
+&lt;h4&gt;3333 Third Avenue, Suite 300 · New York City&lt;/h4&gt;
+
+&lt;p&gt;And we'll send you the complete informational packet absolutely Free!&lt;/p&gt;
+</code></pre></div></div></div><div class="failure"><h3 class="small-head" id="F43-failex2">
+					Failure Example 2: Using heading elements for presentational effect</h3><div class="example"><div class="textbody"><p>In this example, heading markup is used in two different ways: to
+                                convey document structure and to create visual effects. The
+                                <code>h1</code> and <code>h2</code> elements are used appropriately
+                                to mark the beginning of the document as a whole and the beginning
+                                of the abstract. However, the <code>h3</code> and <code>h4</code>
+                                elements between the title and the abstract are used only for visual
+                                effect — to control the fonts used to display the authors' names and
+                                the date.</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+&lt;h1&gt;Study on the Use of Heading  Elements in Web Pages&lt;/h1&gt;
+&lt;h3&gt;Joe Jones and Mary Smith&lt;h3&gt;
+&lt;h4&gt;March 14, 2006&lt;/h4&gt;
+&lt;h2&gt;Abstract&lt;/h2&gt;
+&lt;p&gt;A study was conducted in early 2006 ...
+&lt;/p&gt;
+</code></pre></div></div></div><div class="failure"><h3 class="small-head" id="F43-failex3">
+					Failure Example 3: Using blockquote elements to provide additional
+                            indentation</h3><div class="example"><div class="textbody"><p>The following example uses <code>blockquote</code> for text that is
+                                not a quotation to give it prominence by indenting it when displayed
+                                in graphical browsers.</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+&lt;p&gt;After extensive study of the company Web site, the task force 
+identified the following common problem.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;The use of markup for presentational effects made Web 
+pages confusing to screen reader users.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The committee lists particular examples of the problems 
+introduced by this practice below.&lt;/p&gt;
+</code></pre></div></div></div><div class="failure"><h3 class="small-head" id="F43-failex4">
+					Failure Example 4: Using the fieldset and legend elements to
+                            give a border to text</h3><div class="example"><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+&lt;fieldset&gt;
+&lt;legend&gt;Bargain Corner&lt;/legend&gt;
+&lt;p&gt;Buy today, and save 20%&lt;/p&gt;
+&lt;/fieldset&gt;
+</code></pre></div></div></div><h2 id="F43-resources">Resources</h2><div class="textbody"><p>No resources available for this technique.</p></div><h2 id="F43-related-techs">Related Techniques</h2><div class="textbody"><ul><li><a href="F46.html">F46: Failure of Success Criterion 1.3.1 due to using th elements,
+                    caption elements, or non-empty summary attributes in
+                    layout tables</a></li><li><a href="G115.html">G115: Using semantic elements to mark up structure</a></li><li><a href="H39.html">H39: Using caption elements to associate data table captions with data tables</a></li><li><a href="H42.html">H42: Using h1-h6 to identify headings</a></li><li><a href="H73.html">H73: Using the summary attribute of the table element to give an overview of data
+          tables</a></li></ul></div><h2 id="F43-tests">Tests</h2><div class="textbody"><h3 class="small-head" id="F43-procedure">Procedure</h3><ol class="enumar"><li><p>Check that the element's semantic meaning is exposed to assistive technology and appropriate for the content of the element.</p></li></ol><h3 class="small-head" id="F43-results">Expected Results</h3><ul><li><p>If check #1 is false then this failure condition applies.</p></li></ul></div><div><h2>Techniques are Informative</h2><p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p></div><!-- BOTTOM NAVIGATION BAR --><ul id="navigationbottom"><li><strong><a href="#top">Top</a></strong></li><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="F42: Failure of Success Criterion 1.3.1 and 2.1.1 due to using scripting events to emulate links in a way that is not programmatically determinable" href="F42.html"><strong>Previous: </strong>Failure F42</a></li><li><a title="F44: Failure of Success Criterion 2.4.3 due to using tabindex to create a tab order that&#xA;        &#x9;does not preserve meaning and operability" href="F44.html"><strong>Next: </strong>Failure F44</a></li></ul><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+ </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>

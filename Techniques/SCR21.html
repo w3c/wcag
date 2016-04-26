@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>SCR21: Using functions of the Document Object Model (DOM) to add content to a page | Techniques for WCAG 2.0
+              </title><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/><link rel="stylesheet" type="text/css" href="additional.css"/><link rel="stylesheet" type="text/css" href="slicenav.css"/></head><body class="slices"><div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div><div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div><a name="top"> </a><!-- TOP NAVIGATION BAR --><ul id="navigation"><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SCR20: Using both keyboard and other device-specific functions" href="SCR20.html"><strong>Previous: </strong>
+        Technique SCR20</a></li><li><a title="SCR22: Using scripts to control blinking and stop it in five seconds or less" href="SCR22.html"><strong>Next: </strong>
+        Technique SCR22</a></li></ul><div class="navtoc"><p>On this page:</p><ul id="navbar"><li><a href="#SCR21-applicability">Applicability</a></li><li><a href="#SCR21-description">Description</a></li><li><a href="#SCR21-examples">Examples</a></li><li><a href="#SCR21-resources">Resources</a></li><li><a href="#SCR21-related-techs">Related Techniques</a></li><li><a href="#SCR21-tests">Tests</a></li></ul></div><div class="skiptarget"><a id="maincontent">-</a></div> <h1><a name="SCR21" id="SCR21"> </a>SCR21: Using functions of the Document Object Model (DOM) to add content to a page</h1><div class="applicability"><h2 id="SCR21-applicability">Applicability</h2><div class="textbody"><p>ECMAScript used inside HTML and XHTML</p></div></div><p class="referenced">This technique relates to:</p><ul><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#content-structure-separation-programmatic">
+				Success Criterion 1.3.1 (Info and Relationships)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#content-structure-separation-programmatic">
+						How to Meet 1.3.1 (Info and Relationships)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/content-structure-separation-programmatic.html">
+						Understanding Success Criterion 1.3.1 (Info and Relationships)
+					</a></li></ul></li></ul><div class="ua-issues"><h2 class="small-head" id="ua4.8.1"> User Agent and Assistive Technology Support Notes</h2><p>See <a href="/WAI/WCAG20/Techniques/ua-notes/client-side-script#SCR21">User Agent Support Notes for SCR21</a>.</p></div><h2 id="SCR21-description">Description</h2><div class="textbody"><p>The objective of this technique is to demonstrate how to use functions of the Document Object Model (DOM) to add content to a page instead of using <code>document.write</code> or <code>object.innerHTML</code>. The <code>document.write()</code> method does not work with XHTML when served with the correct MIME type (application/xhtml+xml), and the <code>innerHTML</code> property is not part of the DOM specification and thus should be avoided.  If the DOM functions are used to add the content, user agents can access the DOM to retrieve the content. The <code>createElement()</code> function can be used to create elements within the DOM.  The <code>createTextNode()</code> is used to create text associated with elements.  The <code>appendChild()</code>, <code>removeChild()</code>, <code>insertBefore()</code> and <code>replaceChild()</code> functions are used to add and remove elements and nodes. Other DOM functions are used to assign attributes to the created elements.</p><div class="note"><p class="prefix"><em>Note: </em>When adding focusable elements into the document, do not add <code>tabindex</code> attributes to explicitly set the tab order as this can cause problems when adding focusable elements into the middle of a document. Let the default tab order be assigned to the new element by not explicitly setting a <code>tabindex</code> attribute.</p></div></div><h2 class="small-head" id="SCR21-examples">Examples</h2><h3 class="small-head" id="SCR21-ex1">Example 1</h3><div class="example"><div class="textbody"><p>This example demonstrates use of client-side scripting to validate a form. If errors are found appropriate error messages are displayed.  The example uses the DOM functions to add error notification consisting of a title, a short paragraph explaining that an error has occurred, and a list of errors in an ordered list. The content of the title is written as a link so that it can be used to draw the user's attention to the error using the focus method. Each item in the list is also written as a link that places the focus onto the form field in error when the link is followed.</p><p>For simplicity, the example just validates two text fields, but can easily be extended to become a generic form handler. Client-side validation should not be the sole means of validation , and should be backed up with server-side validation. The benefit of client-side validation is that you can provide immediate feedback to the user to save them waiting for the errors to come back from the server, and it helps reduce unnecessary traffic to the server.</p><p>Here is the script that adds the event handlers to the form. If scripting is enabled, the validateNumbers() function will be called to perform client-side validation before the form is submitted to the server. If scripting is not enabled, the form will be immediately submitted to the server, so validation should also be implemented on the server. 
+              </p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+window.onload = initialise;
+function initialise()
+{
+  // Ensure we're working with a relatively standards compliant user agent
+  if (!document.getElementById || !document.createElement || !document.createTextNode)
+    return;
+
+  // Add an event handler for the number form
+  var objForm = document.getElementById('numberform');
+  objForm.onsubmit= function(){return validateNumbers(this);};
+}
+</code></pre></div><div class="textbody"><p>Here is the validation function.  Note the use of the createElement(), createTextNode(), and appendChild() DOM functions to create the error message elements.</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+function validateNumbers(objForm)
+{
+  // Test whether fields are valid
+  var bFirst = isNumber(document.getElementById('num1').value);
+  var bSecond = isNumber(document.getElementById('num2').value);
+  // If not valid, display errors
+  if (!bFirst || !bSecond)
+  {
+    var objExisting = document.getElementById('validationerrors');
+    var objNew = document.createElement('div');
+    var objTitle = document.createElement('h2');
+    var objParagraph = document.createElement('p');
+    var objList = document.createElement('ol');
+    var objAnchor = document.createElement('a');
+    var strID = 'firsterror';
+    var strError;
+    // The heading element will contain a link so that screen readers
+    // can use it to place focus - the destination for the link is 
+    // the first error contained in a list
+    objAnchor.appendChild(document.createTextNode('Errors in Submission'));
+    objAnchor.setAttribute('href', '#firsterror');
+    objTitle.appendChild(objAnchor);
+    objParagraph.appendChild(document.createTextNode('Please review the following'));
+    objNew.setAttribute('id', 'validationerrors');
+    objNew.appendChild(objTitle);
+    objNew.appendChild(objParagraph);
+    // Add each error found to the list of errors
+    if (!bFirst)
+    {
+      strError = 'Please provide a numeric value for the first number';
+      objList.appendChild(addError(strError, '#num1', objForm, strID));
+      strID = '';
+    }
+    if (!bSecond)
+    {
+      strError = 'Please provide a numeric value for the second number';
+      objList.appendChild(addError(strError, '#num2', objForm, strID));
+      strID = '';
+    }
+    // Add the list to the error information
+    objNew.appendChild(objList);
+    // If there were existing errors, replace them with the new lot,
+    // otherwise add the new errors to the start of the form
+    if (objExisting)
+      objExisting.parentNode.replaceChild(objNew, objExisting);
+    else
+    {
+      var objPosition = objForm.firstChild;
+      objForm.insertBefore(objNew, objPosition);
+    }
+    // Place focus on the anchor in the heading to alert
+    // screen readers that the submission is in error
+    objAnchor.focus();
+    // Do not submit the form
+    objForm.submitAllowed = false;
+    return false;
+  }
+  return true;
+}
+
+// Function to validate a number
+function isNumber(strValue)
+{
+  return (!isNaN(strValue) &amp;&amp; strValue.replace(/^\s+|\s+$/, '') !== '');
+} 
+</code></pre></div><div class="textbody"><p>Below are the helper functions to create the error message and to set focus to the associated form field.</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+// Function to create a list item containing a link describing the error
+// that points to the appropriate form field
+function addError(strError, strFragment, objForm, strID)
+{
+  var objAnchor = document.createElement('a');
+  var objListItem = document.createElement('li');
+  objAnchor.appendChild(document.createTextNode(strError));
+  objAnchor.setAttribute('href', strFragment);
+  objAnchor.onclick = function(event){return focusFormField(this, event, objForm);};
+  objAnchor.onkeypress = function(event){return focusFormField(this, event, objForm);};
+  // If strID has a value, this is the first error in the list
+  if (strID.length &gt; 0)
+    objAnchor.setAttribute('id', strID);
+  objListItem.appendChild(objAnchor);
+  return objListItem;
+}
+
+// Function to place focus to the form field in error
+function focusFormField(objAnchor, objEvent, objForm)
+{
+  // Allow keyboard navigation over links
+  if (objEvent &amp;&amp; objEvent.type == 'keypress')
+    if (objEvent.keyCode != 13 &amp;&amp; objEvent.keyCode != 32)
+      return true;
+  // set focus to the form control
+  var strFormField = objAnchor.href.match(/[^#]\w*$/);
+  objForm[strFormField].focus();
+  return false;
+}</code></pre></div><div class="textbody"><p>Here is the HTML for the example form.</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"&gt;
+&lt;html&gt;
+&lt;head&gt;
+	&lt;title&gt;ECMAScript Form Validation&lt;/title&gt;
+	&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"&gt;
+	&lt;script type="text/javascript" src="validate.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Form Validation&lt;/h1&gt;
+&lt;form id="numberform" method="post" action="form.php"&gt;
+&lt;fieldset&gt;
+&lt;legend&gt;Numeric Fields&lt;/legend&gt;
+&lt;p&gt;
+&lt;label for="num1"&gt;Enter first number&lt;/label&gt;
+&lt;input type="text" size="20" name="num1" id="num1"&gt;
+&lt;/p&gt;
+&lt;p&gt;
+&lt;label for="num2"&gt;Enter second number&lt;/label&gt;
+&lt;input type="text" size="20" name="num2" id="num2"&gt;
+&lt;/p&gt;
+&lt;/fieldset&gt;
+&lt;p&gt;
+&lt;input type="submit" name="submit" value="Submit Form"&gt;
+&lt;/p&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div><div class="textbody"><p>This example is limited to client-side scripting, and should be backed up with server-side validation. The example is limited to the creation of error messages when client-side scripting is available. 
+              </p><p>Here is a link to a working example: <a href="/WAI/WCAG20/Techniques/working-examples/SCR21/ex1.html">Form Validation</a> 
+            </p></div></div><h2 id="SCR21-resources">Resources</h2><div class="textbody"><p>Resources are for information purposes only, no endorsement implied.</p><ul><li><p>HTML 4.01  <a href="http://www.webreference.com/js/column44/index.html">The Document Object Model, More methods</a> from Webreference.com
+									</p></li><li><p>
+                  <a href="http://usability.com.au/2008/09/accessible-forms-using-wcag-2-0/">Accessible Forms using WCAG 2.0</a>
+               </p></li></ul></div><h2 id="SCR21-related-techs">Related Techniques</h2><div class="textbody"><p>(none currently listed)</p></div><h2 id="SCR21-tests">Tests</h2><div class="textbody"><h3 class="small-head" id="SCR21-procedure">Procedure</h3><p>For pages that dynamically create new content:</p><ol class="enumar"><li><p>Examine the source code and check that the new content is not created using document.write(), innerHTML, outerHTML, innerText or outerText.</p></li></ol><h3 class="small-head" id="SCR21-results">Expected Results</h3><ul><li><p>Check #1 is true.</p></li></ul><p>If this is a sufficient technique for a success criterion, failing this test procedure does not necessarily mean that the success criterion has not been satisfied in some other way, only that this technique has not been successfully implemented and can not be used to claim conformance.</p></div><div><h2>Techniques are Informative</h2><p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p></div><!-- BOTTOM NAVIGATION BAR --><ul id="navigationbottom"><li><strong><a href="#top">Top</a></strong></li><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SCR20: Using both keyboard and other device-specific functions" href="SCR20.html"><strong>Previous: </strong>
+        Technique SCR20</a></li><li><a title="SCR22: Using scripts to control blinking and stop it in five seconds or less" href="SCR22.html"><strong>Next: </strong>
+        Technique SCR22</a></li></ul><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+ </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>

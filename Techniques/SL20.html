@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>SL20: Relying on Silverlight AutomationPeer Behavior to Set AutomationProperties.Name | Techniques for WCAG 2.0
+              </title><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/><link rel="stylesheet" type="text/css" href="additional.css"/><link rel="stylesheet" type="text/css" href="slicenav.css"/></head><body class="slices"><div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div><div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div><a name="top"> </a><!-- TOP NAVIGATION BAR --><ul id="navigation"><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SL19: Providing User Instructions With AutomationProperties.HelpText in&#xA;    &#x9;&#x9;&#x9;Silverlight" href="SL19.html"><strong>Previous: </strong>
+        Technique SL19</a></li><li><a title="SL21: Replacing A Silverlight Timed Animation With a Nonanimated Element" href="SL21.html"><strong>Next: </strong>
+        Technique SL21</a></li></ul><div class="navtoc"><p>On this page:</p><ul id="navbar"><li><a href="#SL20-applicability">Applicability</a></li><li><a href="#SL20-description">Description</a></li><li><a href="#SL20-examples">Examples</a></li><li><a href="#SL20-resources">Resources</a></li><li><a href="#SL20-tests">Tests</a></li></ul></div><div class="skiptarget"><a id="maincontent">-</a></div> <h1><a name="SL20" id="SL20"> </a>SL20: Relying on Silverlight AutomationPeer Behavior to Set AutomationProperties.Name</h1><div class="applicability"><h2 id="SL20-applicability">Applicability</h2><div class="textbody"><ul><li><p> Microsoft Silverlight, versions 3 and greater </p></li><li><p> Silverlight managed programming model and Silverlight XAML </p></li></ul></div></div><p class="referenced">This technique relates to:</p><ul><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#content-structure-separation-programmatic">
+				Success Criterion 1.3.1 (Info and Relationships)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#content-structure-separation-programmatic">
+						How to Meet 1.3.1 (Info and Relationships)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/content-structure-separation-programmatic.html">
+						Understanding Success Criterion 1.3.1 (Info and Relationships)
+					</a></li></ul></li><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#ensure-compat-rsv">
+				Success Criterion 4.1.2 (Name, Role, Value)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#ensure-compat-rsv">
+						How to Meet 4.1.2 (Name, Role, Value)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/ensure-compat-rsv.html">
+						Understanding Success Criterion 4.1.2 (Name, Role, Value)
+					</a></li></ul></li></ul><div class="ua-issues"><h2 class="small-head" id="ua10.20.1"> User Agent and Assistive Technology Support Notes</h2><p>See <a href="/WAI/WCAG20/Techniques/ua-notes/silverlight#SL20">User Agent Support Notes for SL20</a>.</p></div><h2 id="SL20-description">Description</h2><div class="textbody"><p>The objective of this technique is to illustrate how in certain cases,
+    				the Silverlight automation peer system can provide an accessibility
+    				framework <code>Name</code> based on any simple text strings that
+    				are also presented in the visible user interface as control content. </p><p>The applicability of this technique to SC 1.3.1 is that once promoted,
+    				the <code>Name</code> becomes the primary information item that
+    				describes the user interface element to accessibiity frameworks and
+    				assistive technologies, and the information is thus immune to any further
+    				applications of the Silverlight style system that might change the
+    				appearance of the visual text equivalent (styled with color, uses italic
+    				font for rendering basis, etc.) </p><p>The applicability of this technique to SC 4.1.2 is that the default
+    				peer promotion behavior provides the Name component of Name, Role,
+    				Value. This is related to the description of the term <em>label</em> in
+    				SC4.1.2. </p><p>A default behavior for generating <code>Name</code> for accessibility
+    				frameworks is possible for certain peers of content controls. The content
+    				controls that might support a default automation peer behavior include: </p><ul><li><p> 
+               <code>TextBlock</code> 
+            </p></li><li><p> 
+               <code>ButtonBase</code> derived classes that do not change
+    				the <code>GetNameCore</code> implementation. This includes the <code>Button</code> class.
+    				In order for the default promotion to work, the <code>Content</code> of
+    				the button must be set as a plain string or must contain only a <code>TextBlock</code>;
+    				any compositing such as wrapping in a <code>Border</code> or
+    				other container will disable the default promotion. </p></li><li><p> Any other <code>ContentControl</code> derived class where
+    					the <code>Content</code> property contains either <code>TextBlock</code> or
+    					a text-content-only <code>ButtonBase</code> implementation as
+    					sole content. </p></li></ul><p>In these cases the string that sets either <code>Content</code> (for <code>ContentControl</code> and <code>ButtonBase</code>)
+    				or <code>Text</code> (for <code>TextBlock</code>) is promoted
+    				as the <code>AutomationProperties.Name</code> for the control in
+    				UI Automation, without any further attribution. The properties in the
+    				UI Automation tree are reported to accessibility frameworks (UI Automation,
+    				and MSAA through the bridge). The accessibility frameworks reports
+    				this information to assistive technology clients. </p><p>Relying on default automation peer behavior is the preferred Silverlight
+    				technique for supplying the accessibility framework "Name"   information,
+    				so long as the default peer promotion actually does produce a usable
+    				name. Using default behavior is preferred because re-using the strings
+    				that are already used in the general visual presentation is less likely
+    				to result in accessibility-specific strings being forgotten by the
+    				application author, or get decoupled from visible UI in a revision
+    				process. </p><p>For cases where there is control compositing in a control rather than
+    				simple text, the automation peer typically cannot provide a default
+    				simple string, and it may be the application author's responsibility
+    				to set <code>AutomationProperties.Name</code> explicitly as an
+    				attribute in XAML, or as a property in runtime code. For details, see <a href="SL30.html"><em>SL30: Using Silverlight Control Compositing and AutomationProperties.Name</em></a>. </p><div id="SL20_test-based"><h4> Test-based methodology </h4><p>In order to use this technique effectively, application authors are
+    					expected to be following a test-based methodology towards verifying
+    					what information their application is reporting to any pertinent accessibility
+    					framework. Useful tools for this purpose include SilverlightSpy and
+    					UIAVerify. Application authors might examine their running Silverlight
+    					application on a test machine where the accessibility framework test
+    					viewers are also active. Initially, the application author might view
+    					the application at a point in the application development cycle that
+    					is prior to any effort devoted to specifically adding accessibility-related
+    					information to the application. Silverlight applications might be in
+    					this state because the initial user interface design was done in a
+    					visually oriented design tool such as Microsoft Expression Blend. Using
+    					the test-based methodology, application authors might note that certain
+    					accessibility framework properties are already populated, as a result
+    					of the mechanisms that are described in this technique. However, it
+    					is rare that ALL of the necessary accessibility information for an
+    					application can be obtained entirely from the built-in default behaviors
+    					of the automation peers. At this point, the application author may
+    					have to apply additional Silverlight techniques that provide accessibility
+    					framework information, for example <a href="SL30.html"><em>SL30: Using Silverlight Control Compositing and AutomationProperties.Name</em></a>. </p></div></div><h2 class="small-head" id="SL20-examples">Examples</h2><h3 class="small-head" id="SL20-ex1">Example 1: Button is composed with direct text content only</h3><div class="example"><div class="textbody"><p>The following example shows XAML UI only. Logic is not shown, but
+    						would typically be added by referencing a <code>Click</code> handler
+    						from the XAML. </p><div class="code"><pre><code> &lt;Button Height="20" Width="200"&gt;Fire photon torpedoes!&lt;/Button&gt;
+</code></pre></div><p>The following illustration shows the UIAVerify tree view of this
+    						simple interface. Note that the internal string "Fire photon
+    						torpedoes!"   is being peer-forwarded. This is verified by the
+    						Properties view on the right side: the Name property value is "Fire
+    						Photon Torpedoes", even though no programmatic Name property
+    						or <code>AutomationProperties.Name</code> has been applied to
+    						that button that would otherwise have supplied an acccessibility
+    						framework "Name". </p><p>
+               <img class="eximg" src="/WAI/WCAG20/Techniques/working-examples/SL20/uiatree_simplepeerforwarding.png" alt="UIAVerify tree view" height="373" width="747"/> 
+            </p><p>This example is shown in operation in the <a href="/WAI/WCAG20/Techniques/working-examples/SL20/SimplePeerForwardingTestPage.html">working example of Simple Peer Forwarding</a>.</p></div></div><h2 id="SL20-resources">Resources</h2><div class="textbody"><p>Resources are for information purposes only, no endorsement implied.</p><ul><li><p>
+                  <a href="http://msdn.microsoft.com/en-us/library/ff400332%28VS.95%29.aspx">Automation
+    						Properties for Accessibility Support in UI </a> 
+               </p></li><li><p>Tools: <a href="http://firstfloorsoftware.com/silverlightspy">SilverlightSpy</a> or <a href="http://uiautomationverify.codeplex.com/">UIAVerify</a> 
+               </p></li></ul></div><h2 id="SL20-tests">Tests</h2><div class="textbody"><h3 class="small-head" id="SL20-procedure">Procedure</h3><ol class="enumar"><li><p> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. To use
+    					UI AUtomation, use Windows as the platform. </p></li><li><p> Use a verification tool that is capable of showing the full automation
+    						tree, and an object’s name text alternative as part of the tree.
+    						(For example, use UIAVerify or Silverlight Spy; see Resources links.) </p></li><li><p> Check that any element where default automation peer promotion
+    							is expected is supplying a default Name in the automation tree. </p></li></ol><h3 class="small-head" id="SL20-results">Expected Results</h3><p>#3 is true. </p><p>If this is a sufficient technique for a success criterion, failing this test procedure does not necessarily mean that the success criterion has not been satisfied in some other way, only that this technique has not been successfully implemented and can not be used to claim conformance.</p></div><div><h2>Techniques are Informative</h2><p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p></div><!-- BOTTOM NAVIGATION BAR --><ul id="navigationbottom"><li><strong><a href="#top">Top</a></strong></li><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SL19: Providing User Instructions With AutomationProperties.HelpText in&#xA;    &#x9;&#x9;&#x9;Silverlight" href="SL19.html"><strong>Previous: </strong>
+        Technique SL19</a></li><li><a title="SL21: Replacing A Silverlight Timed Animation With a Nonanimated Element" href="SL21.html"><strong>Next: </strong>
+        Technique SL21</a></li></ul><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+ </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>

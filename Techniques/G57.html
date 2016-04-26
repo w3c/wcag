@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>G57: Ordering the content in a meaningful sequence | Techniques for WCAG 2.0
+              </title><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/><link rel="stylesheet" type="text/css" href="additional.css"/><link rel="stylesheet" type="text/css" href="slicenav.css"/></head><body class="slices"><div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div><div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div><a name="top"> </a><!-- TOP NAVIGATION BAR --><ul id="navigation"><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="G56: Mixing audio files so that non-speech sounds are at least 20 decibels&#xA;          lower than the speech audio content" href="G56.html"><strong>Previous: </strong>
+        Technique G56</a></li><li><a title="G58: Placing a link to the alternative for time-based media immediately next to the non-text content" href="G58.html"><strong>Next: </strong>
+        Technique G58</a></li></ul><div class="navtoc"><p>On this page:</p><ul id="navbar"><li><a href="#G57-applicability">Applicability</a></li><li><a href="#G57-description">Description</a></li><li><a href="#G57-examples">Examples</a></li><li><a href="#G57-resources">Resources</a></li><li><a href="#G57-related-techs">Related Techniques</a></li><li><a href="#G57-tests">Tests</a></li></ul></div><div class="skiptarget"><a id="maincontent">-</a></div> <h1><a name="G57" id="G57"> </a>G57: Ordering the content in a meaningful sequence</h1><div class="applicability"><h2 id="G57-applicability">Applicability</h2><div class="textbody"><p>All technologies.</p></div></div><p class="referenced">This technique relates to:</p><ul><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#content-structure-separation-sequence">
+				Success Criterion 1.3.2 (Meaningful Sequence)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#content-structure-separation-sequence">
+						How to Meet 1.3.2 (Meaningful Sequence)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/content-structure-separation-sequence.html">
+						Understanding Success Criterion 1.3.2 (Meaningful Sequence)
+					</a></li></ul></li></ul><h2 id="G57-description">Description</h2><div class="textbody"><p>The objective of this technique is to ensure that the order of content presented to assistive technologies allows the user to make sense of the content. Some techniques permit the content to be rendered visually in a meaningful sequence even if this is different from the order in which the content is encoded in the underlying source file.</p><p>For example, when mixing languages with different directionality in HTML, the bidirectional algorithm may position punctuation in the wrong location in the visual rendering. The visual rendering problem could be corrected by moving the punctuation in the content stream so that the bidirectional algorithm positions it as desired, but this would expose the incorrect content order to assistive technology. The content is both rendered in the correct order visually and exposed to assistive technology in the correct order by using markup to override the bidirectional algorithm.</p><p>When rendered visually, white space characters such as space or tab may not appear to be part of the content. However, when inserted into the content to control visual formatting, they may interfere with the meaning of the content.</p><p>At a larger granularity, controlling the placement of blocks of content in an HTML document using layout tables may produce a rendering in which related information is positioned together visually, but separated in the content stream. Since layout tables are read row by row, if the caption of an illustration is placed in the row following the illustration, it may be impossible to associate the caption with the image.</p></div><h2 class="small-head" id="G57-examples">Examples</h2><h3 class="small-head" id="G57-ex1">Example 1</h3><div class="example"><div class="textbody"><p>A Web page from a museum exhibition contains a navigation bar containing a long list of links. The page also contains an image of one of the pictures from the exhibition, a heading for the picture, and a detailed description of the picture. The links in the navigation bar form a meaningful sequence. The heading, image, and text of the description also form a meaningful sequence. CSS is used to position the elements on the page.</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+              Markup:
+                &lt;h1&gt;My Museum Page&lt;/h1&gt;
+                &lt;ul id="nav"&gt;
+                &lt;li&gt;&lt;a href="#"&gt;Link 1&lt;/a&gt;&lt;/li&gt;
+                ...
+                &lt;li&gt;&lt;a href="#"&gt;Link 10&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+                &lt;div id="description"&gt;
+                &lt;h2&gt;Mona Lisa&lt;/h2&gt;
+                &lt;p&gt;
+                &lt;img src="img.png" alt="Mona Lisa"&gt;
+                &lt;/p&gt;
+                &lt;p&gt;...detailed description of the picture...&lt;/p&gt;
+                &lt;/div&gt;
+                CSS:
+                ul#nav
+                {
+                float: left;
+                width: 9em;
+                list-style-type: none;
+                margin: 0;
+                padding: 0.5em;
+                color: #fff;
+                background-color: #063;
+                }
+                ul#nav a
+                {
+                display: block;
+                width: 100%;
+                text-decoration: none;
+                color: #fff;
+                background-color: #063;
+                }
+                div#description
+                {
+                margin-left: 11em;
+                }
+            </code></pre></div></div><h2 id="G57-resources">Resources</h2><div class="textbody"><p>No resources available for this technique.</p></div><h2 id="G57-related-techs">Related Techniques</h2><div class="textbody"><ul><li><a href="G59.html">G59: Placing the interactive elements in an order that follows sequences and relationships within the content</a></li><li><a href="C6.html">C6: Positioning content based on structural markup</a></li><li><a href="C27.html">C27: Making the DOM order match the visual order</a></li><li><a href="F1.html">F1: Failure of Success Criterion 1.3.2 due to changing the meaning of content by
+                    positioning information with CSS</a></li><li><a href="F49.html">F49: 
+          Failure of Success Criterion 1.3.2 due to using an HTML layout table that does not make sense when linearized  </a></li></ul></div><h2 id="G57-tests">Tests</h2><div class="textbody"><h3 class="small-head" id="G57-procedure">Procedure</h3><ol class="enumar"><li><p>Linearize content using a standard approach for the technology (e.g., removing layout styles or running a linearization tool)</p></li><li><p>Check to see if the order of content yields the same meaning as the original</p></li></ol><h3 class="small-head" id="G57-results">Expected Results</h3><ul><li><p>Check #2 is true.</p></li></ul><p>If this is a sufficient technique for a success criterion, failing this test procedure does not necessarily mean that the success criterion has not been satisfied in some other way, only that this technique has not been successfully implemented and can not be used to claim conformance.</p></div><div><h2>Techniques are Informative</h2><p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p></div><!-- BOTTOM NAVIGATION BAR --><ul id="navigationbottom"><li><strong><a href="#top">Top</a></strong></li><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="G56: Mixing audio files so that non-speech sounds are at least 20 decibels&#xA;          lower than the speech audio content" href="G56.html"><strong>Previous: </strong>
+        Technique G56</a></li><li><a title="G58: Placing a link to the alternative for time-based media immediately next to the non-text content" href="G58.html"><strong>Next: </strong>
+        Technique G58</a></li></ul><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+ </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>

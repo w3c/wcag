@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>F1: Failure of Success Criterion 1.3.2 due to changing the meaning of content by
+                    positioning information with CSS | Techniques for WCAG 2.0
+              </title><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/><link rel="stylesheet" type="text/css" href="additional.css"/><link rel="stylesheet" type="text/css" href="slicenav.css"/></head><body class="slices"><div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div><div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div><a name="top"> </a><!-- TOP NAVIGATION BAR --><ul id="navigation"><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="PDF23: Providing interactive form controls in PDF documents" href="PDF23.html"><strong>Previous: </strong>
+        Technique PDF23</a></li><li><a title="F2: Failure of Success Criterion 1.3.1 due to using changes in text presentation to convey information without using the appropriate markup or text" href="F2.html"><strong>Next: </strong>Failure F2</a></li></ul><div class="navtoc"><p>On this page:</p><ul id="navbar"><li><a href="#F1-applicability">Applicability</a></li><li><a href="#F1-description">Description</a></li><li><a href="#F1-examples">Examples</a></li><li><a href="#F1-resources">Resources</a></li><li><a href="#F1-related-techs">Related Techniques</a></li><li><a href="#F1-tests">Tests</a></li></ul></div><div class="skiptarget"><a id="maincontent">-</a></div> <h1><a name="F1" id="F1"> </a>F1: Failure of Success Criterion 1.3.2 due to changing the meaning of content by
+                    positioning information with CSS</h1><div class="applicability"><h2 id="F1-applicability">Applicability</h2><div class="textbody"><p>All technologies that support CSS.</p></div></div><p class="referenced">This failure relates to:</p><ul><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#content-structure-separation-sequence">
+				Success Criterion 1.3.2 (Meaningful Sequence)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#content-structure-separation-sequence">
+						How to Meet 1.3.2 (Meaningful Sequence)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/content-structure-separation-sequence.html">
+						Understanding Success Criterion 1.3.2 (Meaningful Sequence)
+					</a></li></ul></li></ul><h2 id="F1-description">Description</h2><div class="textbody"><p>This describes the failure condition that results when CSS, rather than
+                        structural markup, is used to modify the visual layout of the content, and
+                        the modified layout changes the meaning of the content. Using the
+                        positioning properties of CSS2, content may be displayed at any position on
+                        the user's viewport. The order in which items appear on a screen may be
+                        different than the order they are found in the source document. Assistive
+                        technologies rely on the source code or other programmatically determined
+                        order to render the content in the correct sequence. Thus, it is important
+                        not to rely on CSS to visually position content in a specific sequence if this sequence results in a meaning that is different from the programmatically determined reading order. 
+          </p></div><h2 class="small-head" id="F1-examples">Examples</h2><div class="failure"><h3 class="small-head" id="F1-failex1">
+					Failure Example 1</h3><div class="example"><div class="textbody"><p>The following example demonstrates how CSS has been improperly used
+                                to create a set of columns. In addition, the text appears visually
+                                in the browser in a different order than in the markup. </p><p>In this example a class is defined for each object that is being
+                                positioned. When style sheets are applied, the text appears in two
+                                columns. Elements of class "menu1" (Products) and "menu2"
+                                (Locations) appear as column headings. "Telephones, Computers, and
+                                Portable MP3 Players" are listed under Products and "Idaho" and
+                                "Wisconsin" are listed under Locations (note the different order for
+                                Idaho and Wisconsin in the source code order). </p><p>Since appropriate structural elements have not been used, when style
+                                sheets are not applied, all of the text appears in one line in the
+                                source order, "Products Locations Telephones Computers Portable MP3
+                                Players Wisconsin Idaho." </p><p>Here is the HTML content:</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+&lt;div class="box"&gt;      
+     &lt;span class="menu1"&gt;Products&lt;/span&gt;       
+     &lt;span class="menu2"&gt;Locations&lt;/span&gt;       
+     &lt;span class="item1"&gt;Telephones&lt;/span&gt;       
+     &lt;span class="item2"&gt;Computers&lt;/span&gt;       
+     &lt;span class="item3"&gt;Portable MP3 Players&lt;/span&gt;       
+     &lt;span class="item5"&gt;Wisconsin&lt;/span&gt;       
+     &lt;span class="item4"&gt;Idaho&lt;/span&gt;
+&lt;/div&gt;
+</code></pre></div><div class="textbody"><p>Here are the styles for the above content:</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+.menu1 { 
+     position: absolute; 
+     top: 3em; 
+     left: 0em;     
+     margin: 0px; 
+     font-family: sans-serif;     
+     font-size: 120%; 
+     color: red; 
+     background-color: white 
+}        
+.menu2 { 
+     position: absolute; 
+     top: 3em; 
+     left: 10em;     
+     margin: 0px; 
+     font-family: sans-serif;     
+     font-size: 120%; 
+     color: red; 
+     background-color: white 
+}      
+.item1 { 
+     position: absolute; 
+     top: 7em; 
+     left: 0em; 
+     margin: 0px 
+}      
+.item2 { 
+     position: absolute; 
+     top: 8em; 
+     left: 0em; 
+     margin: 0px 
+}      
+.item3 { 
+     position: absolute; 
+     top: 9em; 
+     left: 0em; 
+     margin: 0px 
+}      
+.item4 { 
+     position: absolute; 
+     top: 7em; 
+     left: 14em; 
+     margin: 0px 
+}      
+.item5 { 
+     position: absolute; 
+     top: 8em; left: 14em; 
+     margin: 0px 
+}      
+#box { 
+     position: absolute; 
+     top: 5em; 
+     left: 5em 
+} 
+</code></pre></div><div class="textbody"><p>A better solution for this content would be to use more meaningful
+                                elements, such as a table or a definition list.</p><ul><li><p> 
+                     <a href="/WAI/WCAG20/Techniques/working-examples/F1/cssposfailure.html">Example
+                                            of CSS positioning failure</a>
+									         </p></li><li><p> 
+                     <a href="/WAI/WCAG20/Techniques/working-examples/F1/cssposfailurenostyle.html">Example of CSS positioning failure with styles
+                                        removed</a>
+									         </p></li></ul></div></div></div><h2 id="F1-resources">Resources</h2><div class="textbody"><p>No resources available for this technique.</p></div><h2 id="F1-related-techs">Related Techniques</h2><div class="textbody"><ul><li><a href="C6.html">C6: Positioning content based on structural markup</a></li></ul></div><h2 id="F1-tests">Tests</h2><div class="textbody"><h3 class="small-head" id="F1-procedure">Procedure</h3><p>For content which uses CSS for positioning: </p><ol class="enumar"><li><p>Remove the style information from the document or turn off use of
+                                    style sheets in the user agent.</p></li><li><p>Check that the reading order of the content is correct and the
+                                    meaning of the content is preserved.</p></li></ol><h3 class="small-head" id="F1-results">Expected Results</h3><ul><li><p>If step #2 is false, then this failure condition applies and the
+                                    content fails this Success Criterion.</p></li></ul></div><div><h2>Techniques are Informative</h2><p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p></div><!-- BOTTOM NAVIGATION BAR --><ul id="navigationbottom"><li><strong><a href="#top">Top</a></strong></li><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="PDF23: Providing interactive form controls in PDF documents" href="PDF23.html"><strong>Previous: </strong>
+        Technique PDF23</a></li><li><a title="F2: Failure of Success Criterion 1.3.1 due to using changes in text presentation to convey information without using the appropriate markup or text" href="F2.html"><strong>Next: </strong>Failure F2</a></li></ul><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+ </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>SCR24: Using progressive enhancement to open new windows on user request | Techniques for WCAG 2.0
+              </title><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/><link rel="stylesheet" type="text/css" href="additional.css"/><link rel="stylesheet" type="text/css" href="slicenav.css"/></head><body class="slices"><div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div><div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div><a name="top"> </a><!-- TOP NAVIGATION BAR --><ul id="navigation"><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SCR22: Using scripts to control blinking and stop it in five seconds or less" href="SCR22.html"><strong>Previous: </strong>
+        Technique SCR22</a></li><li><a title="SCR26: Inserting dynamic content into the Document Object Model immediately following its trigger element" href="SCR26.html"><strong>Next: </strong>
+        Technique SCR26</a></li></ul><div class="navtoc"><p>On this page:</p><ul id="navbar"><li><a href="#SCR24-applicability">Applicability</a></li><li><a href="#SCR24-description">Description</a></li><li><a href="#SCR24-examples">Examples</a></li><li><a href="#SCR24-resources">Resources</a></li><li><a href="#SCR24-related-techs">Related Techniques</a></li><li><a href="#SCR24-tests">Tests</a></li></ul></div><div class="skiptarget"><a id="maincontent">-</a></div> <h1><a name="SCR24" id="SCR24"> </a>SCR24: Using progressive enhancement to open new windows on user request</h1><div class="applicability"><h2 id="SCR24-applicability">Applicability</h2><div class="textbody"><p> HTML 4.01 and XHTML 1.0 </p></div></div><p class="referenced">This technique relates to:</p><ul><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#consistent-behavior-no-extreme-changes-context">
+				Success Criterion 3.2.5 (Change on Request)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#consistent-behavior-no-extreme-changes-context">
+						How to Meet 3.2.5 (Change on Request)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/consistent-behavior-no-extreme-changes-context.html">
+						Understanding Success Criterion 3.2.5 (Change on Request)
+					</a></li></ul></li></ul><h2 id="SCR24-description">Description</h2><div class="textbody"><p> The objective of this technique is to avoid confusion that may be caused by
+                        the appearance of new windows that were not requested by the user. Suddenly
+                        opening new windows can disorient or be missed completely by some users.
+                        If the document type does not allow the <code>target</code> attribute (it
+                        does not exist in HTML 4.01 Strict or XHTML 1.0 Strict) or if the developer
+                        prefers not to use it, new windows can be opened with ECMAScript. The
+                        example below demonstrates how to open new windows with script: it adds an
+                        event handler to a link (<code>a</code> element) and warns the user that the
+                        content will open in a new window. </p></div><h2 class="small-head" id="SCR24-examples">Examples</h2><h3 class="small-head" id="SCR24-ex1">Example 1: </h3><div class="example"><div class="textbody"><p>Markup:</p><p> The script is included in the head of the document, and the link has
+                                an id that can be used as a hook by the script. </p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+&lt;script type="text/javascript" src="popup.js"&gt;&lt;/script&gt;
+…
+&lt;a href="help.html" id="newwin"&gt;Show Help&lt;/a</code></pre></div><div class="textbody"><p>Script:</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code> 
+// Use traditional event model whilst support for event registration
+// amongst browsers is poor.
+window.onload = addHandlers;
+
+function addHandlers()
+{
+  var objAnchor = document.getElementById('newwin');
+
+  if (objAnchor)
+  {
+    objAnchor.firstChild.data = objAnchor.firstChild.data + ' (opens in a new window)';
+    objAnchor.onclick = function(event){return launchWindow(this, event);}
+    // UAAG requires that user agents handle events in a device-independent manner
+    // but only some browsers do this, so add keyboard event to be sure
+    objAnchor.onkeypress = function(event){return launchWindow(this, event);}
+  }
+}
+
+function launchWindow(objAnchor, objEvent)
+{
+  var iKeyCode, bSuccess=false;
+
+  // If the event is from a keyboard, we only want to open the
+  // new window if the user requested the link (return or space)
+  if (objEvent &amp;&amp; objEvent.type == 'keypress')
+  {
+    if (objEvent.keyCode)
+      iKeyCode = objEvent.keyCode;
+    else if (objEvent.which)
+      iKeyCode = objEvent.which;
+
+    // If not carriage return or space, return true so that the user agent
+    // continues to process the action
+    if (iKeyCode != 13 &amp;&amp; iKeyCode != 32)
+      return true;
+  }
+
+  bSuccess = window.open(objAnchor.href);
+
+  // If the window did not open, allow the browser to continue the default
+  // action of opening in the same window
+  if (!bSuccess)
+    return true;
+
+  // The window was opened, so stop the browser processing further
+  return false;
+}</code></pre></div></div><h2 id="SCR24-resources">Resources</h2><div class="textbody"><p>Resources are for information purposes only, no endorsement implied.</p><ul><li><p>
+                  <a href="http://en.wikipedia.org/wiki/Progressive_enhancement">Wikipedia: Progressive Enhancement</a>
+               </p></li></ul></div><h2 id="SCR24-related-techs">Related Techniques</h2><div class="textbody"><ul><li><a href="H83.html">H83: Using the target attribute to open a new window on user request and indicating this in link text</a></li></ul></div><h2 id="SCR24-tests">Tests</h2><div class="textbody"><h3 class="small-head" id="SCR24-procedure">Procedure</h3><ol class="enumar"><li><p> Activate each link in the document to check if it opens a new window. </p></li><li><p>For each link that opens a new window, check that it uses script to accomplish each of the following:</p><ol class="enumla"><li><p>indicates that the link will open in a new window,</p></li><li><p>uses device-independent event handlers, and</p></li><li><p>allows the browser to open the content in the same window if a new window was not opened.</p></li></ol></li></ol><h3 class="small-head" id="SCR24-results">Expected Results</h3><ul><li><p> #2 is true. </p></li></ul><p>If this is a sufficient technique for a success criterion, failing this test procedure does not necessarily mean that the success criterion has not been satisfied in some other way, only that this technique has not been successfully implemented and can not be used to claim conformance.</p></div><div><h2>Techniques are Informative</h2><p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p></div><!-- BOTTOM NAVIGATION BAR --><ul id="navigationbottom"><li><strong><a href="#top">Top</a></strong></li><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SCR22: Using scripts to control blinking and stop it in five seconds or less" href="SCR22.html"><strong>Previous: </strong>
+        Technique SCR22</a></li><li><a title="SCR26: Inserting dynamic content into the Document Object Model immediately following its trigger element" href="SCR26.html"><strong>Next: </strong>
+        Technique SCR26</a></li></ul><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+ </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>

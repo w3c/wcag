@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>SCR33: Using script to scroll content, and providing a mechanism to pause it | Techniques for WCAG 2.0
+              </title><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/><link rel="stylesheet" type="text/css" href="additional.css"/><link rel="stylesheet" type="text/css" href="slicenav.css"/></head><body class="slices"><div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div><div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div><a name="top"> </a><!-- TOP NAVIGATION BAR --><ul id="navigation"><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SCR32: Providing client-side validation and adding error text via the DOM" href="SCR32.html"><strong>Previous: </strong>
+        Technique SCR32</a></li><li><a title="SCR34: Calculating size and position in a way that scales with text size" href="SCR34.html"><strong>Next: </strong>
+        Technique SCR34</a></li></ul><div class="navtoc"><p>On this page:</p><ul id="navbar"><li><a href="#SCR33-applicability">Applicability</a></li><li><a href="#SCR33-description">Description</a></li><li><a href="#SCR33-examples">Examples</a></li><li><a href="#SCR33-resources">Resources</a></li><li><a href="#SCR33-related-techs">Related Techniques</a></li><li><a href="#SCR33-tests">Tests</a></li></ul></div><div class="skiptarget"><a id="maincontent">-</a></div> <h1><a name="SCR33" id="SCR33"> </a>SCR33: Using script to scroll content, and providing a mechanism to pause it</h1><div class="applicability"><h2 id="SCR33-applicability">Applicability</h2><div class="textbody"><p>Technologies that support script-controlled scrolling of content. </p></div></div><p class="referenced">This technique relates to:</p><ul><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#time-limits-required-behaviors">
+				Success Criterion 2.2.1 (Timing Adjustable)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#time-limits-required-behaviors">
+						How to Meet 2.2.1 (Timing Adjustable)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/time-limits-required-behaviors.html">
+						Understanding Success Criterion 2.2.1 (Timing Adjustable)
+					</a></li></ul></li><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#time-limits-pause">
+				Success Criterion 2.2.2 (Pause, Stop, Hide)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#time-limits-pause">
+						How to Meet 2.2.2 (Pause, Stop, Hide)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/time-limits-pause.html">
+						Understanding Success Criterion 2.2.2 (Pause, Stop, Hide)
+					</a></li></ul></li></ul><h2 id="SCR33-description">Description</h2><div class="textbody"><p>The objective of this technique is to provide a way for users to stop scrolling content when the scrolling is created by a script. Scrolling content can be difficult or impossible to read by users with low vision or with cognitive disabilities. The movement can also be distracting for some people making it difficult for them to concentrate on other parts of the Web page. </p></div><h2 class="small-head" id="SCR33-examples">Examples</h2><h3 class="small-head" id="SCR33-ex1">Example 1</h3><div class="example"><div class="textbody"><p>In this example CSS and Javascript are used to visually present some text in a scrolling format. A link is included to pause the scrolling movement. </p><p>This implementation will display the full text and omit the link when Javascript or CSS are unsupported or inactive. </p><p>The following code is an amended version of webSemantic's Accessible Scroller (as at July 2008). </p><p>The XHTML component: </p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+...
+&lt;div id="scroller"&gt;
+&lt;p id="tag"&gt;This text will scroll and a Pause/Scroll link will be present 
+when Javascript and CSS are supported and active.&lt;/p&gt;
+&lt;/div&gt;
+...
+</code></pre></div><div class="textbody"><p>The CSS component: </p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+...
+body {font:1em verdana,sans-serif; color:#000; margin:0}
+
+/* position:relative and overflow:hidden are required */
+#scroller { position:relative; overflow:hidden; width:15em; border:1px solid #008080; }
+
+/* add formatting for the scrolling text */
+#tag { margin:2px 0; }
+
+/* #testP must also contain all text-sizing properties of #tag  */
+#testP { visibility:hidden; position:absolute; white-space:nowrap; } 
+
+/* used as a page top marker and to limit width */
+#top { width:350px; margin:auto; }
+...
+</code></pre></div><div class="textbody"><p>The JavaScript component: </p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+var speed=50        // speed of scroller
+var step=3          // smoothness of movement
+var StartActionText= "Scroll"  // Text for start link
+var StopActionText = "Pause"   // Text for stop link
+
+var x, scroll, divW, sText=""
+
+function onclickIE(idAttr,handler,call){
+  if ((document.all)&amp;&amp;(document.getElementById)){idAttr[handler]="Javascript:"+call}
+}
+
+function addLink(id,call,txt){
+  var e=document.createElement('a')
+  e.setAttribute('href',call)
+  var linktext=document.createTextNode(txt)
+  e.appendChild(linktext)
+  document.getElementById(id).appendChild(e)
+}
+
+function getElementStyle() {
+    var elem = document.getElementById('scroller');
+    if (elem.currentStyle) {
+        return elem.currentStyle.overflow;
+    } else if (window.getComputedStyle) {
+        var compStyle = window.getComputedStyle(elem, '');
+        return compStyle.getPropertyValue("overflow");
+    }
+    return "";
+}
+
+function addControls(){
+// test for CSS support first 
+// test for the overlow property value set in style element or external file
+if (getElementStyle()=="hidden") {
+  var f=document.createElement('div');
+  f.setAttribute('id','controls');
+  document.getElementById('scroller').parentNode.appendChild(f);
+  addLink('controls','Javascript:clickAction(0)',StopActionText);
+  onclickIE(document.getElementById('controls').childNodes[0],"href",'clickAction(0)');
+  document.getElementById('controls').style.display='block';
+  }
+}
+
+function stopScroller(){clearTimeout(scroll)}
+
+function setAction(callvalue,txt){
+  var c=document.getElementById('controls')
+  c.childNodes[0].setAttribute('href','Javascript:clickAction('+callvalue+')')
+  onclickIE(document.getElementById('controls').childNodes[0],"href",'clickAction
+
+('+callvalue+')')
+  c.childNodes[0].firstChild.nodeValue=txt
+}
+
+function clickAction(no){
+  switch(no) {
+    case 0:
+      stopScroller();
+      setAction(1,StartActionText);
+      break;
+    case 1:
+      startScroller();
+      setAction(0,StopActionText);
+  }
+}
+
+function startScroller(){
+  document.getElementById('tag').style.whiteSpace='nowrap'
+  var p=document.createElement('p')
+  p.id='testP'
+  p.style.fontSize='25%' //fix for mozilla. multiply by 4 before using
+  x-=step
+  if (document.getElementById('tag').className) p.className=document.getElementById
+
+('tag').className
+  p.appendChild(document.createTextNode(sText))
+  document.body.appendChild(p)
+  pw=p.offsetWidth
+  document.body.removeChild(p)
+  if (x&lt;(pw*4)*-1){x=divW}
+  document.getElementById('tag').style.left=x+'px'
+  scroll=setTimeout('startScroller()',speed)
+}
+
+function initScroller(){
+  if (document.getElementById &amp;&amp; document.createElement &amp;&amp; document.body.appendChild) {
+    addControls();
+    divW=document.getElementById('scroller').offsetWidth;
+    x=divW;
+    document.getElementById('tag').style.position='relative';
+    document.getElementById('tag').style.left=divW+'px';
+    var ss=document.getElementById('tag').childNodes;
+    for (i=0;i&lt;ss.length;i++) {sText+=ss[i].nodeValue+" "};
+    scroll=setTimeout('startScroller()',speed);
+  }
+}
+
+function addLoadEvent(func) {
+  if (!document.getElementById | !document.getElementsByTagName) return
+  var oldonload = window.onload
+  if (typeof window.onload != 'function') {
+    window.onload = func;
+  } else {
+    window.onload = function() {
+      oldonload()
+      func()
+    }
+  }
+}
+
+addLoadEvent(initScroller)
+</code></pre></div><div class="textbody"><p>A working example of this code, <a href="/WAI/WCAG20/Techniques/working-examples/SCR33/Overview.html">Example of using script to scroll content and providing a mechanism to pause it</a>, is available.</p></div></div><h2 id="SCR33-resources">Resources</h2><div class="textbody"><p>Resources are for information purposes only, no endorsement implied.</p><ul><li><p>
+                  <a href="http://www.websemantics.co.uk/tutorials/accessible_scroller/">webSemantics Accessible Scroller</a>
+               </p></li></ul></div><h2 id="SCR33-related-techs">Related Techniques</h2><div class="textbody"><ul><li><a href="G4.html">G4: Allowing the content to be paused and restarted from where it was paused</a></li></ul></div><h2 id="SCR33-tests">Tests</h2><div class="textbody"><h3 class="small-head" id="SCR33-procedure">Procedure</h3><ol class="enumar"><li><p>Check that a mechanism is provided to pause the scrolling content. </p></li><li><p>Use the pause mechanism to pause the scrolling content. </p></li><li><p>Check that the scrolling has stopped and does not restart by itself. </p></li><li><p>Check that a mechanism is provided to restart the paused content. </p></li><li><p>Use the restart mechanism provided to restart the scrolling content. </p></li><li><p>Check that the scrolling has resumed from the point where it was stopped. </p></li></ol><h3 class="small-head" id="SCR33-results">Expected Results</h3><ul><li><p>Checks #3 and #6 are true. </p></li></ul><p>If this is a sufficient technique for a success criterion, failing this test procedure does not necessarily mean that the success criterion has not been satisfied in some other way, only that this technique has not been successfully implemented and can not be used to claim conformance.</p></div><div><h2>Techniques are Informative</h2><p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p></div><!-- BOTTOM NAVIGATION BAR --><ul id="navigationbottom"><li><strong><a href="#top">Top</a></strong></li><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SCR32: Providing client-side validation and adding error text via the DOM" href="SCR32.html"><strong>Previous: </strong>
+        Technique SCR32</a></li><li><a title="SCR34: Calculating size and position in a way that scales with text size" href="SCR34.html"><strong>Next: </strong>
+        Technique SCR34</a></li></ul><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+ </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>

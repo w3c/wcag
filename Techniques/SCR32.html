@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>SCR32: Providing client-side validation and adding error text via the DOM | Techniques for WCAG 2.0
+              </title><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/><link rel="stylesheet" type="text/css" href="additional.css"/><link rel="stylesheet" type="text/css" href="slicenav.css"/></head><body class="slices"><div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div><div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div><a name="top"> </a><!-- TOP NAVIGATION BAR --><ul id="navigation"><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SCR31: Using script to change the background color or border of the element with focus" href="SCR31.html"><strong>Previous: </strong>
+        Technique SCR31</a></li><li><a title="SCR33: Using script to scroll content, and providing a mechanism to pause it" href="SCR33.html"><strong>Next: </strong>
+        Technique SCR33</a></li></ul><div class="navtoc"><p>On this page:</p><ul id="navbar"><li><a href="#SCR32-applicability">Applicability</a></li><li><a href="#SCR32-description">Description</a></li><li><a href="#SCR32-examples">Examples</a></li><li><a href="#SCR32-related-techs">Related Techniques</a></li><li><a href="#SCR32-tests">Tests</a></li></ul></div><div class="skiptarget"><a id="maincontent">-</a></div> <h1><a name="SCR32" id="SCR32"> </a>SCR32: Providing client-side validation and adding error text via the DOM</h1><div class="applicability"><h2 id="SCR32-applicability">Applicability</h2><div class="textbody"><p>Script used with HTML or XHTML.</p></div></div><p class="referenced">This technique relates to:</p><ul><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#minimize-error-identified">
+				Success Criterion 3.3.1 (Error Identification)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#minimize-error-identified">
+						How to Meet 3.3.1 (Error Identification)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/minimize-error-identified.html">
+						Understanding Success Criterion 3.3.1 (Error Identification)
+					</a></li></ul></li><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#minimize-error-suggestions">
+				Success Criterion 3.3.3 (Error Suggestion)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#minimize-error-suggestions">
+						How to Meet 3.3.3 (Error Suggestion)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/minimize-error-suggestions.html">
+						Understanding Success Criterion 3.3.3 (Error Suggestion)
+					</a></li></ul></li></ul><h2 id="SCR32-description">Description</h2><div class="textbody"><p>The objective of this technique is to demonstrate the display of an error message when client side validation of a form field has failed. Anchor elements are used to display the error messages in a list and are inserted above the fields to be validated. Anchor elements are used in the error messages so that focus can be placed on the error message(s), drawing the user's attention to it. The <code>href</code> of the anchor elements contain an in-page link which references the fields where error(s) have been found. </p><p>In a deployed application, if Javascript is turned off, client side validation will not occur. Therefore, this technique would only be sufficient in situations where scripting is relied upon for conformance or when server side validation techniques are also used to catch any errors and return the page with information about the fields with errors. </p></div><h2 class="small-head" id="SCR32-examples">Examples</h2><h3 class="small-head" id="SCR32-ex1">Example 1</h3><div class="example"><div class="textbody"><p>This example validates required fields as well as fields where a specific format is required. When an error is identified, the script inserts a list of error messages into the DOM and moves focus to them.</p><img src="/WAI/WCAG20/Techniques/working-examples/SCR32/form2.jpg" class="eximg" alt="Screenshot showing the error messages for several fields that were not filled out correctly. Error messages appear as a list of links near the top of the form."/><p>
+               <em>HTML and Javascript code </em>
+            </p><p>Here is the HTML for the example form: </p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Form Validation&lt;/title&gt;
+        &lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"/&gt;
+        &lt;link href="css/validate.css" rel="stylesheet" type="text/css"/&gt;
+        &lt;script type="text/javascript" src="scripts/validate.js"/&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+
+        &lt;h1&gt;Form Validation&lt;/h1&gt;
+
+        &lt;p&gt;The following form is validated before being submitted if scripting is available,
+            otherwise the form is validated on the server. All fields are required, except those
+            marked optional. If errors are found in the submission, the form is cancelled and 
+            a list of errors is displayed at the top of the form.&lt;/p&gt;
+
+        &lt;p&gt; Please enter your details below. &lt;/p&gt;
+
+        &lt;h2&gt;Validating Form&lt;/h2&gt;
+
+        &lt;form id="personalform" method="post" action="index.php"&gt;
+            &lt;div class="validationerrors"/&gt;
+            &lt;fieldset&gt;
+                &lt;legend&gt;Personal Details&lt;/legend&gt;
+                &lt;p&gt;
+                    &lt;label for="forename"&gt;Please enter your forename&lt;/label&gt;
+                    &lt;input type="text" size="20" name="forename" id="forename" class="string"
+                        value=""/&gt;
+                &lt;/p&gt;
+                &lt;p&gt;
+                    &lt;label for="age"&gt;Please enter your age&lt;/label&gt;
+                    &lt;input type="text" size="20" name="age" id="age" class="number" value=""/&gt;
+                &lt;/p&gt;
+                &lt;p&gt;
+                    &lt;label for="email"&gt;Please enter your email address&lt;/label&gt;
+                    &lt;input type="text" size="20" name="email" id="email" class="email" value=""/&gt;
+                &lt;/p&gt;
+            &lt;/fieldset&gt;
+            &lt;p&gt;
+                &lt;input type="submit" name="signup" value="Sign up"/&gt;
+            &lt;/p&gt;
+        &lt;/form&gt;
+        &lt;h2&gt;Second Form&lt;/h2&gt;
+        &lt;form id="secondform" method="post" action="index.php#focuspoint"&gt;
+            &lt;div class="validationerrors"/&gt;
+            &lt;fieldset&gt;
+                &lt;legend&gt;Second Form Details&lt;/legend&gt;
+                &lt;p&gt;
+                    &lt;label for="suggestion"&gt;Enter a suggestion&lt;/label&gt;
+                    &lt;input type="text" size="20" name="suggestion" id="suggestion" 
+                      class="string" value=""/&gt;
+                &lt;/p&gt;
+                &lt;p&gt;
+                    &lt;label for="optemail"&gt;Please enter your email address (optional)&lt;/label&gt;
+                    &lt;input type="text" size="20" name="optemail" id="optemail"
+                        class="optional email" value=""/&gt;
+                &lt;/p&gt;
+                &lt;p&gt;
+                    &lt;label for="rating"&gt;Please rate this suggestion&lt;/label&gt;
+                    &lt;input type="text" size="20" name="rating" id="rating" 
+                      class="number" value=""/&gt;
+                &lt;/p&gt;
+                &lt;p&gt;
+                    &lt;label for="jibberish"&gt;Enter some jibberish (optional)&lt;/label&gt;
+                    &lt;input type="text" size="20" name="jibberish" id="jibberish" value=""/&gt;
+                &lt;/p&gt;
+
+            &lt;/fieldset&gt;
+            &lt;p&gt;
+                &lt;input type="submit" name="submit" value="Add Suggestion"/&gt;
+            &lt;/p&gt;
+        &lt;/form&gt;
+    &lt;/body&gt;
+&lt;/html&gt;                      </code></pre></div><div class="textbody"><p>Here is the Javascript which performs the validation and inserts the error messages: </p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+window.onload = initialise;
+
+function initialise()
+{
+   var objForms = document.getElementsByTagName('form');
+   var iCounter;
+
+   // Attach an event handler for each form
+   for (iCounter=0; iCounter&lt;objForms.length; iCounter++)
+   {
+      objForms[iCounter].onsubmit = function(){return validateForm(this);};
+   }
+}
+
+
+// Event handler for the form
+function validateForm(objForm)
+{
+   var arClass = [];
+   var iErrors = 0;
+   var objField = objForm.getElementsByTagName('input');
+   var objLabel = objForm.getElementsByTagName('label');
+   var objList = document.createElement('ol');
+   var objError, objExisting, objNew, objTitle, objParagraph, objAnchor, objPosition;
+   var strLinkID, iFieldCounter, iClassCounter, iCounter;
+
+   // Get the id or name of the form, to make a unique
+   // fragment identifier
+   if (objForm.id)
+   {
+      strLinkID = objForm.id + 'ErrorID';
+   }
+   else
+   {
+      strLinkID = objForm.name + 'ErrorID';
+   }
+
+   // Iterate through input form controls, looking for validation classes
+   for (iFieldCounter=0; iFieldCounter&lt;objField.length; iFieldCounter++)
+   {
+      // Get the class for the field, and look for the appropriate class
+      arClass = objField[iFieldCounter].className.split(' ');
+      for (iClassCounter=0; iClassCounter&lt;arClass.length; iClassCounter++)
+      {
+         switch (arClass[iClassCounter])
+         {
+            case 'string':
+               if (!isString(objField[iFieldCounter].value, arClass))
+               {
+                  if (iErrors === 0)
+                  {
+                     logError(objField[iFieldCounter], objLabel, objList, strLinkID);
+                  }
+                  else
+                  {
+                     logError(objField[iFieldCounter], objLabel, objList, '');
+                  }
+                  iErrors++;
+               }
+               break;
+            case 'number':
+               if (!isNumber(objField[iFieldCounter].value, arClass))
+               {
+                  if (iErrors === 0)
+                  {
+                     logError(objField[iFieldCounter], objLabel, objList, strLinkID);
+                  }
+                  else
+                  {
+                     logError(objField[iFieldCounter], objLabel, objList, '');
+                  }
+                  iErrors++;
+               }
+               break;
+
+            case 'email' :
+               if (!isEmail(objField[iFieldCounter].value, arClass))
+               {
+                  if (iErrors === 0)
+                  {
+                     logError(objField[iFieldCounter], objLabel, objList, strLinkID);
+                  }
+                  else
+                  {
+                     logError(objField[iFieldCounter], objLabel, objList, '');
+                  }
+                  iErrors++;
+               }
+               break;
+         }
+      }
+   }
+
+   if (iErrors &gt; 0)
+   {
+      // If not valid, display error messages
+      objError = objForm.getElementsByTagName('div');
+      
+      // Look for existing errors
+      for (iCounter=0; iCounter&lt;objError.length; iCounter++)
+      {
+         if (objError[iCounter].className == 'validationerrors')
+         {
+            objExisting = objError[iCounter];
+         }
+      }
+
+      objNew = document.createElement('div');
+      objTitle = document.createElement('h2');
+      objParagraph = document.createElement('p');
+      objAnchor = document.createElement('a');
+
+      if (iErrors == 1)
+      {
+         objAnchor.appendChild(document.createTextNode('1 Error in Submission'));
+      }
+      else
+      {
+         objAnchor.appendChild(document.createTextNode(iErrors + ' Errors in Submission'));
+      }
+      objAnchor.href = '#' + strLinkID;
+      objAnchor.className = 'submissionerror';
+
+      objTitle.appendChild(objAnchor);
+      objParagraph.appendChild(document.createTextNode('Please review the following'));
+      objNew.className = 'validationerrors';
+
+      objNew.appendChild(objTitle);
+      objNew.appendChild(objParagraph);
+      objNew.appendChild(objList);
+      
+      // If there were existing error, replace them with the new lot,
+      // otherwise add the new errors to the start of the form
+      if (objExisting)
+      {
+         objExisting.parentNode.replaceChild(objNew, objExisting);
+      }
+      else
+      {
+         objPosition = objForm.firstChild;
+         objForm.insertBefore(objNew, objPosition);
+      }
+
+      // Allow for latency
+      setTimeout(function() { objAnchor.focus(); }, 50);
+      
+      // Don't submit the form
+      objForm.submitAllowed = false;
+      return false;
+   }
+
+   // Submit the form
+   return true;
+}
+
+// Function to add a link in a list item that points to problematic field control
+function addError(objList, strError, strID, strErrorID)
+{
+   var objListItem = document.createElement('li');
+   var objAnchor = document.createElement('a');
+   
+   // Fragment identifier to the form control
+   objAnchor.href='#' + strID;
+
+   // Make this the target for the error heading
+   if (strErrorID.length &gt; 0)
+   {
+      objAnchor.id = strErrorID;
+   }
+
+   // Use the label prompt for the error message
+   objAnchor.appendChild(document.createTextNode(strError));
+   // Add keyboard and mouse events to set focus to the form control
+   objAnchor.onclick = function(event){return focusFormField(this, event);};
+   objAnchor.onkeypress = function(event){return focusFormField(this, event);};
+   objListItem.appendChild(objAnchor);
+   objList.appendChild(objListItem);
+}
+
+function focusFormField(objAnchor, objEvent)
+{
+   var strFormField, objForm;
+
+   // Allow keyboard navigation over links
+   if (objEvent &amp;&amp; objEvent.type == 'keypress')
+   {
+      if (objEvent.keyCode != 13 &amp;&amp; objEvent.keyCode != 32)
+      {
+         return true;
+      }
+   }
+
+   // set focus to the form control
+   strFormField = objAnchor.href.match(/[^#]\w*$/);
+   objForm = getForm(strFormField);
+   objForm[strFormField].focus();
+   return false;
+}
+
+// Function to return the form element from a given form field name
+function getForm(strField)
+{
+   var objElement = document.getElementById(strField);
+
+   // Find the appropriate form
+   do
+   {
+      objElement = objElement.parentNode;
+   } while (!objElement.tagName.match(/form/i) &amp;&amp; objElement.parentNode);
+
+   return objElement;
+}
+
+// Function to log the error in a list
+function logError(objField, objLabel, objList, strErrorID)
+{
+   var iCounter, strError;
+
+   // Search the label for the error prompt
+   for (iCounter=0; iCounter&lt;objLabel.length; iCounter++)
+   {
+      if (objLabel[iCounter].htmlFor == objField.id)
+      {
+         strError = objLabel[iCounter].firstChild.nodeValue;
+      }
+   }
+
+   addError(objList, strError, objField.id, strErrorID);
+}
+
+// Validation routines - add as required
+
+function isString(strValue, arClass)
+{
+   var bValid = (typeof strValue == 'string' &amp;&amp; strValue.replace(/^\s*|\s*$/g, '') 
+     !== '' &amp;&amp; isNaN(strValue));
+
+   return checkOptional(bValid, strValue, arClass);
+}
+
+function isEmail(strValue, arClass)
+{
+   var objRE = /^[\w-\.\']{1,}\@([\da-zA-Z\-]{1,}\.){1,}[\da-zA-Z\-]{2,}$/;
+   var bValid = objRE.test(strValue);
+
+   return checkOptional(bValid, strValue, arClass);
+}
+
+function isNumber(strValue, arClass)
+{
+   var bValid = (!isNaN(strValue) &amp;&amp; strValue.replace(/^\s*|\s*$/g, '') !== '');
+
+   return checkOptional(bValid, strValue, arClass);
+}
+
+function checkOptional(bValid, strValue, arClass)
+{
+   var bOptional = false;
+   var iCounter;
+
+   // Check if optional
+   for (iCounter=0; iCounter&lt;arClass.length; iCounter++)
+   {
+      if (arClass[iCounter] == 'optional')
+      {
+         bOptional = true;
+      }
+   }
+
+   if (bOptional &amp;&amp; strValue.replace(/^\s*|\s*$/g, '') === '')
+   {
+      return true;
+   }
+
+   return bValid;
+   }
+   </code></pre></div><div class="textbody"><p>Working example of this technique implemented using PHP, Javascript, CSS and XHTML: <a href="/WAI/WCAG20/Techniques/working-examples/SCR32/index.php">Form Validation Example</a>.</p></div></div><h2 id="SCR32-related-techs">Related Techniques</h2><div class="textbody"><ul><li><a href="G83.html">G83: Providing text descriptions to identify required fields that were not completed</a></li><li><a href="G85.html">G85: Providing a text description when user input falls outside the required format or values</a></li><li><a href="SCR18.html">SCR18: Providing client-side validation and alert</a></li></ul></div><h2 id="SCR32-tests">Tests</h2><div class="textbody"><h3 class="small-head" id="SCR32-procedure">Procedure</h3><p>Create error messages using anchor tags and appropriate scripting via the technique above. </p><ol class="enumar"><li><p>Load the page.</p></li><li><p>Enter a valid value in the field(s) associated with an error message and verify that no error messages are displayed. </p></li><li><p>Enter an invalid value in the field(s) associated with an error message and verify that the correct error message for the field is displayed. </p></li><li><p>Verify that the error messages receive focus.</p></li><li><p>Enter a valid value in the field(s) associated with the displayed error message and verify that the error message is removed. </p></li><li><p>Repeat for all fields with associated error messages created via anchor tags. </p></li></ol><div class="note"><p class="prefix"><em>Note: </em>It is recommended that you also run the above procedure using an assistive technology. </p></div><h3 class="small-head" id="SCR32-results">Expected Results</h3><ul><li><p>Checks #2, #3, #4, and #5 are all true.</p></li></ul><p>If this is a sufficient technique for a success criterion, failing this test procedure does not necessarily mean that the success criterion has not been satisfied in some other way, only that this technique has not been successfully implemented and can not be used to claim conformance.</p></div><div><h2>Techniques are Informative</h2><p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p></div><!-- BOTTOM NAVIGATION BAR --><ul id="navigationbottom"><li><strong><a href="#top">Top</a></strong></li><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SCR31: Using script to change the background color or border of the element with focus" href="SCR31.html"><strong>Previous: </strong>
+        Technique SCR31</a></li><li><a title="SCR33: Using script to scroll content, and providing a mechanism to pause it" href="SCR33.html"><strong>Next: </strong>
+        Technique SCR33</a></li></ul><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+ </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>

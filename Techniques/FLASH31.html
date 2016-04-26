@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>FLASH31: Specifying caption text for a DataGrid | Techniques for WCAG 2.0
+              </title><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/><link rel="stylesheet" type="text/css" href="additional.css"/><link rel="stylesheet" type="text/css" href="slicenav.css"/></head><body class="slices"><div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div><div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div><a name="top"> </a><!-- TOP NAVIGATION BAR --><ul id="navigation"><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="FLASH30: Specifying accessible names for image buttons" href="FLASH30.html"><strong>Previous: </strong>
+        Technique FLASH30</a></li><li><a title="FLASH32: Using auto labeling to associate text labels with form controls" href="FLASH32.html"><strong>Next: </strong>
+        Technique FLASH32</a></li></ul><div class="navtoc"><p>On this page:</p><ul id="navbar"><li><a href="#FLASH31-applicability">Applicability</a></li><li><a href="#FLASH31-description">Description</a></li><li><a href="#FLASH31-examples">Examples</a></li><li><a href="#FLASH31-related-techs">Related Techniques</a></li><li><a href="#FLASH31-tests">Tests</a></li></ul></div><div class="skiptarget"><a id="maincontent">-</a></div> <h1><a name="FLASH31" id="FLASH31"> </a>FLASH31: Specifying caption text for a DataGrid</h1><div class="applicability"><h2 id="FLASH31-applicability">Applicability</h2><div class="textbody"><ul><li><p>Adobe Flash Professional version MX and higher </p></li><li><p>Adobe Flex</p></li></ul></div></div><p class="referenced">This technique relates to:</p><ul><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#content-structure-separation-programmatic">
+				Success Criterion 1.3.1 (Info and Relationships)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#content-structure-separation-programmatic">
+						How to Meet 1.3.1 (Info and Relationships)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/content-structure-separation-programmatic.html">
+						Understanding Success Criterion 1.3.1 (Info and Relationships)
+					</a></li></ul></li></ul><div class="ua-issues"><h2 class="small-head" id="ua9.31.1"> User Agent and Assistive Technology Support Notes</h2><p>See <a href="/WAI/WCAG20/Techniques/ua-notes/flash#FLASH31">User Agent Support Notes for FLASH31</a>.</p></div><h2 id="FLASH31-description">Description</h2><div class="textbody"><p>The objective of this technique is to programmatically associate captions
+    				for DataGrids where captions are provided in the presentation. Normally,
+    				the caption for a table is a table identifier and acts like a title
+    				or heading for the table. </p><p>Flash does not have a caption element for the DataGrid component,
+    				but the same effect can be achieved through the following approach: </p><ol class="enumar"><li><p> Place a label component or textfield above the DataGrid, containing
+    				the grid's caption text. </p></li><li><p> Duplicate the caption text and add it as the grid's accessible
+    					name. This can either be achieved by setting a value to the grid's   "name" field
+    					in the Accessibility panel or by setting the grid's <code>AccessibilityProperties.name</code>
+    					property. </p></li></ol></div><h2 class="small-head" id="FLASH31-examples">Examples</h2><h3 class="small-head" id="FLASH31-ex1">Example 1: Associating a label with a DataGrid</h3><div class="example"><div class="textbody"><p>This is an example of a DataGrid being added to the stage in Flash
+    						Professional from the Components panel. A label element is also added
+    						from the Components panel to contain the caption text and the caption
+    						text is used in the Accessibility control panel in Flash to serve as
+    						the accessibility name for the DataGrid. </p><ul><li><p> Create a new Flash file (.fla) or open an existing one to put
+    						a DataGrid into. </p></li><li><p> Open the Flash components panel from the Window menu </p></li><li><p> Drag a DataGrid component onto the stage and position as desired. </p></li><li><p> Drag a label component onto the stage and position as desired. </p></li><li><p> Add text to the label component. </p></li><li><p> Select the DataGrid component and add the same text as is used
+    							in the label component to the name field for DataGrid, using the
+    							Accessibility control panel. </p></li></ul></div></div><h3 class="small-head" id="FLASH31-ex2">Example 2: Associating a caption with a DataGrid using ActiveScript 3</h3><div class="example"><div class="textbody"><p>This is a basic AS3 example of a DataGrid generated through scripting.
+    						Additionally a label element is created, containing the caption text,
+    						and the caption text is added to the grid as an accessible name. </p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>import fl.accessibility.DataGridAccImpl;
+import fl.controls.DataGrid;
+import fl.controls.Label;
+import fl.data.DataProvider;
+import flash.accessibility.Accessibility;
+import flash.accessibility.AccessibilityProperties;
+import flash.system.Capabilities;
+
+// enable accessibility for the DataGrid
+DataGridAccImpl.enableAccessibility();
+
+createGrid();
+
+// set the data grid caption text
+var gridCaptionText: String = "Game Results";
+gridCaption.text = gridCaptionText;
+//add the caption text as the DataGrid's accessible name
+var accProps: AccessibilityProperties = new AccessibilityProperties();
+accProps.name = gridCaptionText;
+aDg.accessibilityProperties = accProps;
+if (Capabilities.hasAccessibility)
+Accessibility.updateProperties();
+
+function createGrid() {
+  
+  //create and add the components
+  var aDg: DataGrid = new DataGrid();
+  var gridCaption: Label = new Label();
+  addChild(aDg);
+  addChild(gridCaption);
+  aDg.move(50, 50);
+  gridCaption.move(50, 20);
+  
+  var captionFormat: TextFormat = new TextFormat();
+  captionFormat.size = 24;
+  gridCaption.setStyle("textFormat", captionFormat);
+  gridCaption.width = 300;
+  gridCaption.height = 100;
+  bldRosterGrid(aDg);
+  //prepare the data
+  var aRoster: Array = new Array();
+  aRoster =[ 
+    {Name: "Wilma Carter", Bats: "R", Throws: "R", Year: "So", Home: "Redlands, CA"},
+    {Name: "Sylvia Munson", Bats: "R", Throws: "R", Year: "Jr", Home: "Pasadena, CA"}, 
+    {Name: "Carla Gomez", Bats: "R", Throws: "L", Year: "Sr", Home: "Corona, CA"}, 
+    {Name: "Betty Kay", Bats: "R", Throws: "R", Year: "Fr", Home: "Palo Alto, CA"},
+  ];
+  aDg.dataProvider = new DataProvider(aRoster);
+  aDg.rowCount = aDg.length;
+};
+
+function bldRosterGrid(dg: DataGrid) {
+  dg.setSize(400, 300);
+  dg.columns =[ "Name", "Bats", "Throws", "Year", "Home"];
+  dg.columns[0].width = 120;
+  dg.columns[1].width = 50;
+  dg.columns[2].width = 50;
+  dg.columns[3].width = 40;
+  dg.columns[4].width = 120;
+};</code></pre></div><div class="textbody"><p>Notes on this code sample:</p><ul><li><p> For a demonstration, see the <a href="/WAI/WCAG20/Techniques/working-examples/FLASH31/datagrid_with_caption_as3.html">working version of Associating a caption with a DataGrid using ActiveScript 3</a>. The <a href="/WAI/WCAG20/Techniques/working-examples/FLASH31/datagrid_with_caption_as3.fla">source of Associating a caption with a DataGrid using ActiveScript 3</a> is available.</p></li><li><p> The accessible name can also be applied to the DataGrid using
+    						the Accessibility panel in the Flash authoring tool. </p></li><li><p> In the above example, the text used for the DataGrid caption will
+    								be read twice, once as the text label that is offered for sighted
+    								users, and again as the accessible name for the DataGrid. Authors
+    								can avoid duplicate voicing by setting the <code>silent</code> property for the
+    								label text to <code>true</code>. </p></li></ul></div></div><h2 id="FLASH31-related-techs">Related Techniques</h2><div class="textbody"><ul><li><a href="H39.html">H39: Using caption elements to associate data table captions with data tables</a></li></ul></div><h2 id="FLASH31-tests">Tests</h2><div class="textbody"><h3 class="small-head" id="FLASH31-procedure">Procedure</h3><ol class="enumar"><li><p> Check whether the Flash movie contains a DataGrid component. </p></li><li><p> Confirm that each DataGrid's caption text has been added to the component as an accessible name. </p></li></ol><h3 class="small-head" id="FLASH31-results">Expected Results</h3><p>Step 2 is true. </p><p>If this is a sufficient technique for a success criterion, failing this test procedure does not necessarily mean that the success criterion has not been satisfied in some other way, only that this technique has not been successfully implemented and can not be used to claim conformance.</p></div><div><h2>Techniques are Informative</h2><p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p></div><!-- BOTTOM NAVIGATION BAR --><ul id="navigationbottom"><li><strong><a href="#top">Top</a></strong></li><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="FLASH30: Specifying accessible names for image buttons" href="FLASH30.html"><strong>Previous: </strong>
+        Technique FLASH30</a></li><li><a title="FLASH32: Using auto labeling to associate text labels with form controls" href="FLASH32.html"><strong>Next: </strong>
+        Technique FLASH32</a></li></ul><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+ </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>SCR20: Using both keyboard and other device-specific functions | Techniques for WCAG 2.0
+              </title><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/><link rel="stylesheet" type="text/css" href="additional.css"/><link rel="stylesheet" type="text/css" href="slicenav.css"/></head><body class="slices"><div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div><div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div><a name="top"> </a><!-- TOP NAVIGATION BAR --><ul id="navigation"><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SCR19: Using an onchange event on a select element without causing a change of&#xA;                    context" href="SCR19.html"><strong>Previous: </strong>
+        Technique SCR19</a></li><li><a title="SCR21: Using functions of the Document Object Model (DOM) to add content to a page" href="SCR21.html"><strong>Next: </strong>
+        Technique SCR21</a></li></ul><div class="navtoc"><p>On this page:</p><ul id="navbar"><li><a href="#SCR20-applicability">Applicability</a></li><li><a href="#SCR20-description">Description</a></li><li><a href="#SCR20-examples">Examples</a></li><li><a href="#SCR20-resources">Resources</a></li><li><a href="#SCR20-related-techs">Related Techniques</a></li><li><a href="#SCR20-tests">Tests</a></li></ul></div><div class="skiptarget"><a id="maincontent">-</a></div> <h1><a name="SCR20" id="SCR20"> </a>SCR20: Using both keyboard and other device-specific functions</h1><div class="applicability"><h2 id="SCR20-applicability">Applicability</h2><div class="textbody"><p>Applies to all content that uses Script to implement functionality.</p></div></div><p class="referenced">This technique relates to:</p><ul><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#keyboard-operation-keyboard-operable">
+				Success Criterion 2.1.1 (Keyboard)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#keyboard-operation-keyboard-operable">
+						How to Meet 2.1.1 (Keyboard)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/keyboard-operation-keyboard-operable.html">
+						Understanding Success Criterion 2.1.1 (Keyboard)
+					</a></li></ul></li><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#keyboard-operation-all-funcs">
+				Success Criterion 2.1.3 (Keyboard (No Exception))</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#keyboard-operation-all-funcs">
+						How to Meet 2.1.3 (Keyboard (No Exception))
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/keyboard-operation-all-funcs.html">
+						Understanding Success Criterion 2.1.3 (Keyboard (No Exception))
+					</a></li></ul></li></ul><h2 id="SCR20-description">Description</h2><div class="textbody"><p>
+                        The objective of this technique is to illustrate the use of both keyboard-specific and mouse-specific events with code that has a scripting function associated with an event. Using both keyboard-specific and mouse-specific events together ensures that content can be operated by a wide range of devices. For example, a script may perform the same action when a keypress is detected that is performed when a mouse button is clicked. This technique goes beyond the Success Criterion requirement for keyboard access by including not only keyboard access but access using other devices as well. 
+                    </p><p>
+            In JavaScript, commonly used event handlers include, onblur, onchange, onclick, ondblclick, onfocus, onkeydown, onkeypress, onkeyup, onload, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onreset, onselect, onsubmit, onunload. Some mouse-specific functions have a logical corresponding keyboard-specific function (such as 'onmouseover' and 'onfocus'). A keyboard event handler should be provided that executes the same function as the mouse event handler.
+                    </p><p>
+                        The following table suggests keyboard event handlers to pair mouse event handlers.
+                    </p><a name="SCR20_mappings" id="SCR20_mappings"> </a><table border="1" cellspacing="0"><caption>Device Handler Correspondences</caption><tbody><tr><th scope="col">Use...</th><th scope="col">...with</th></tr><tr><td> 
+                  <code>mousedown</code> 
+               </td><td> 
+                  <code>keydown</code>
+								       </td></tr><tr><td> 
+                  <code>mouseup</code> 
+               </td><td> 
+                  <code>keyup</code>
+								       </td></tr><tr><td> 
+                  <code>click 
+								</code> 
+                  <sup>[1]</sup> 
+               </td><td> 
+                  <code>keypress 
+								</code> 
+                  <sup>[2]</sup> 
+               </td></tr><tr><td> 
+                  <code>mouseover</code> 
+               </td><td> 
+                  <code>focus</code>
+								       </td></tr><tr><td> 
+                  <code>mouseout</code> 
+               </td><td> 
+                  <code>blur</code> 
+               </td></tr></tbody></table><p>
+						   <sup>1</sup> Although <code>click</code> is in principle a mouse event handler, most HTML and XHTML user agents also process this event when a native HTML control (e.g. a button or a link) is activated, regardless of whether it was activated with the mouse or the keyboard. In practice, therefore, it is not necessary to duplicate this event when adding handlers to natively focusable HTML elements. However, it is necessary when adding handlers to other events, such as in Example 2 below.</p><p>
+						   <sup>2</sup> Since the <code>keypress</code> event handler reacts to any key, the event handler function should check first to ensure the Enter key was pressed before proceeding to handle the event. Otherwise, the event handler will run each time the user presses any key, even the tab key to leave the control, and this is usually not desirable.
+                    </p><p>
+                    Some mouse-specific functions (such as <code>dblclick</code> and <code>mousemove</code>) do  not have a corresponding keyboard-specific function. This means that some functions may need  to be implemented differently for each device (for example, including a series of buttons to execute, via keyboard, the equivalent mouse-specific functions implemented).</p></div><h2 class="small-head" id="SCR20-examples">Examples</h2><h3 class="small-head" id="SCR20-ex1">Example 1</h3><div class="example"><div class="textbody"><p>In this example of an image link, the image is changed when the user positions the pointer over the image. To provide keyboard users with a similar experience, the image is also changed when the user tabs to it.
+                            </p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+&lt;a href="menu.php" onmouseover="swapImageOn('menu')" onfocus="swapImageOn('menu')" 
+onmouseout="swapImageOff('menu')" onblur="swapImageOff('menu')"&gt; 
+&lt;img id="menu" src="menu_off.gif" alt="Menu" /&gt; 
+&lt;/a&gt;</code></pre></div></div><h3 class="small-head" id="SCR20-ex2">Example 2</h3><div class="example"><div class="textbody"><p>
+								This example shows a custom image control for which both the mouse and the keyboard can be used to activate the function. The mouse event <code>onclick</code> is duplicated by an appropriate keyboard event <code>onkeypress</code>. The <code>tabindex</code> attribute ensures that the keyboard will have a tab stop on the image. Note that in this example, the <code>nextPage()</code> function should check that the keyboard key pressed was Enter, otherwise it will respond to all keyboard actions while the image has focus, which is not the desired behavior.</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+&lt;img onclick="nextPage();" onkeypress="nextPage();" tabindex="0" src="arrow.gif" 
+alt="Go to next page"&gt; </code></pre></div><div class="textbody"><div class="note"><p class="prefix"><em>Note: </em>This example uses tabindex on an <code>img</code> element. Even though this is currently invalid, it is provided as a transitional technique to make this function work. Custom controls like this should also use WAI-ARIA to expose the role and state of the control.</p></div></div></div><h2 id="SCR20-resources">Resources</h2><div class="textbody"><p>Resources are for information purposes only, no endorsement implied.</p><ul><li><p> 
+                  <a href="http://webaim.org/techniques/javascript/">Overview of Creating Accessible JavaScript</a> 
+               </p></li></ul></div><h2 id="SCR20-related-techs">Related Techniques</h2><div class="textbody"><ul><li><a href="G90.html">G90: Providing keyboard-triggered event handlers</a></li></ul></div><h2 id="SCR20-tests">Tests</h2><div class="textbody"><h3 class="small-head" id="SCR20-procedure">Procedure</h3><ol class="enumar"><li><p>
+                                Find all interactive functionality
+                            </p></li><li><p>
+                                Check that all interactive functionality can be accessed using the keyboard alone
+                            </p></li></ol><h3 class="small-head" id="SCR20-results">Expected Results</h3><ul><li><p>
+                                #2 is true
+                            </p></li></ul><p>If this is a sufficient technique for a success criterion, failing this test procedure does not necessarily mean that the success criterion has not been satisfied in some other way, only that this technique has not been successfully implemented and can not be used to claim conformance.</p></div><div><h2>Techniques are Informative</h2><p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p></div><!-- BOTTOM NAVIGATION BAR --><ul id="navigationbottom"><li><strong><a href="#top">Top</a></strong></li><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SCR19: Using an onchange event on a select element without causing a change of&#xA;                    context" href="SCR19.html"><strong>Previous: </strong>
+        Technique SCR19</a></li><li><a title="SCR21: Using functions of the Document Object Model (DOM) to add content to a page" href="SCR21.html"><strong>Next: </strong>
+        Technique SCR21</a></li></ul><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+ </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>

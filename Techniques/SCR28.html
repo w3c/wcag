@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>SCR28: Using an expandable and collapsible menu to bypass block of content | Techniques for WCAG 2.0
+              </title><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/><link rel="stylesheet" type="text/css" href="additional.css"/><link rel="stylesheet" type="text/css" href="slicenav.css"/></head><body class="slices"><div id="masthead"><p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p><p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div><div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div><a name="top"> </a><!-- TOP NAVIGATION BAR --><ul id="navigation"><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SCR27: Reordering page sections using the Document Object Model" href="SCR27.html"><strong>Previous: </strong>
+        Technique SCR27</a></li><li><a title="SCR29: Adding keyboard-accessible actions to static HTML elements" href="SCR29.html"><strong>Next: </strong>
+        Technique SCR29</a></li></ul><div class="navtoc"><p>On this page:</p><ul id="navbar"><li><a href="#SCR28-applicability">Applicability</a></li><li><a href="#SCR28-description">Description</a></li><li><a href="#SCR28-examples">Examples</a></li><li><a href="#SCR28-resources">Resources</a></li><li><a href="#SCR28-related-techs">Related Techniques</a></li><li><a href="#SCR28-tests">Tests</a></li></ul></div><div class="skiptarget"><a id="maincontent">-</a></div> <h1><a name="SCR28" id="SCR28"> </a>SCR28: Using an expandable and collapsible menu to bypass block of content</h1><div class="applicability"><h2 id="SCR28-applicability">Applicability</h2><div class="textbody"><p>Technologies that provide client side scripting.</p></div></div><p class="referenced">This technique relates to:</p><ul><li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#navigation-mechanisms-skip">
+				Success Criterion 2.4.1 (Bypass Blocks)</a><ul><li><a href="http://www.w3.org/WAI/WCAG20/quickref/20140401/#navigation-mechanisms-skip">
+						How to Meet 2.4.1 (Bypass Blocks)
+					</a></li><li><a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/navigation-mechanisms-skip.html">
+						Understanding Success Criterion 2.4.1 (Bypass Blocks)
+					</a></li></ul></li></ul><h2 id="SCR28-description">Description</h2><div class="textbody"><p>This technique allows users to skip repeated material by placing that material in a menu that can be expanded or collapsed under user control. The user can skip the repeated material by collapsing the menu. The user invokes a user interface control to hide or remove the elements of the menu. The resources section lists several techniques for menus, toolbars and trees, any of which can be used to provide a mechanism for skipping navigation.</p><div class="note"><p class="prefix"><em>Note: </em>Similiar approaches can be implemented using server-side scripting and reloading a modified version of the Web page.</p></div></div><h2 class="small-head" id="SCR28-examples">Examples</h2><h3 class="small-head" id="SCR28-ex1">Example 1</h3><div class="example"><div class="textbody"><p>The navigation links at top of a Web page are all entries in a menu implemented using HTML, CSS, and Javascript. When the navigation bar is expanded, the navigation links are available to the user. When the navigation bar is collapsed, the links are not available.</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+...
+
+  &lt;script type="text/javascript"&gt;
+  function toggle(id){
+    var n = document.getElementById(id);
+    n.style.display =  (n.style.display != 'none' ? 'none' : '' );
+  }
+  &lt;/script&gt;
+
+...
+
+  &lt;a href="#" onclick="toggle('navbar')"&gt;Toggle Navigation Bar&lt;/a&gt;
+
+  &lt;ul id="navbar"&gt;
+  &lt;li&gt;&lt;a href="http://target1.html"&gt;Link 1&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="http://target2.html"&gt;Link 2&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="http://target3.html"&gt;Link 3&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="http://target4.html"&gt;Link 4&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+
+...
+</code></pre></div><div class="textbody"><p>Working example of this code: <a href="/WAI/WCAG20/Techniques/working-examples/SCR28/toggle-navbar.html">Toggle navigation bar with a link</a>.</p></div></div><h3 class="small-head" id="SCR28-ex2">Example 2</h3><div class="example"><div class="textbody"><p>The table of contents for a set of Web pages is repeated near the beginning of each Web page. A button at the beginning of the table of contents lets the user remove or restore it on the page.</p></div><div class="code"><p><strong>Example Code:</strong></p><pre><code>
+...
+
+   &lt;script type="text/javascript"&gt;
+  function toggle(id){
+    var n = document.getElementById(id);
+    n.style.display =  (n.style.display != 'none' ? 'none' : '' );
+  }
+  &lt;/script&gt;
+
+  ...
+
+  &lt;button onclick="return toggle('toc');"&gt;Toggle Table of Contents&lt;/button&gt;
+  &lt;div id="toc"&gt;
+    ...
+  &lt;/div&gt;
+
+...
+</code></pre></div><div class="textbody"><p>Working example of this code: <a href="/WAI/WCAG20/Techniques/working-examples/SCR28/toggle-toc.html">Toggle table of contents with a button</a>.</p></div></div><h2 id="SCR28-resources">Resources</h2><div class="textbody"><p>Resources are for information purposes only, no endorsement implied.</p><ul><li><p>
+                  <a href="http://www.bobbyvandersluis.com/articles/unobtrusive-show-hide/">Unobtrusive show/hide behavior reloaded</a>
+               </p></li><li><p>
+                  <a href="http://www.dustindiaz.com/seven-togglers/">Seven ways to toggle an element with JavaScript</a>
+               </p></li></ul></div><h2 id="SCR28-related-techs">Related Techniques</h2><div class="textbody"><ul><li><a href="H69.html">H69: Providing heading elements at the beginning of each section of content</a></li><li><a href="H70.html">H70: Using frame elements to group blocks of repeated material</a></li></ul></div><h2 id="SCR28-tests">Tests</h2><div class="textbody"><h3 class="small-head" id="SCR28-procedure">Procedure</h3><ol class="enumar"><li><p>Check that some user interface control allows the repeated content to be expanded or collapsed.</p></li><li><p>Check that when the content is expanded, it is included in the programmatically determined content at a logical place in the reading order.</p></li><li><p>Check that when the content is collapsed, it is not part of the programmatically determined content.</p></li></ol><h3 class="small-head" id="SCR28-results">Expected Results</h3><ul><li><p>All checks above are true.</p></li></ul><p>If this is a sufficient technique for a success criterion, failing this test procedure does not necessarily mean that the success criterion has not been satisfied in some other way, only that this technique has not been successfully implemented and can not be used to claim conformance.</p></div><div><h2>Techniques are Informative</h2><p>Techniques are informative—that means they are not required. The basis for determining conformance to WCAG 2.0 is the success criteria from the <a href="http://www.w3.org/TR/WCAG20/">WCAG 2.0 standard</a>—not the techniques. For important information about techniques, please see the <a href="http://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140401/understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> section of Understanding WCAG 2.0.</p></div><!-- BOTTOM NAVIGATION BAR --><ul id="navigationbottom"><li><strong><a href="#top">Top</a></strong></li><li><strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong></li><li><strong><a href="intro.html" title="Introduction to Techniques for WCAG 2.0"><abbr title="Introduction">Intro</abbr></a></strong></li><li><a title="SCR27: Reordering page sections using the Document Object Model" href="SCR27.html"><strong>Previous: </strong>
+        Technique SCR27</a></li><li><a title="SCR29: Adding keyboard-accessible actions to static HTML elements" href="SCR29.html"><strong>Next: </strong>
+        Technique SCR29</a></li></ul><div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
+ </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>
