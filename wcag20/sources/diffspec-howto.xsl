@@ -317,7 +317,7 @@ BBC: added "item" here to address problems with ordered lists-->
     </xsl:choose>
   </xsl:template>
   
-  <xsl:template match="item[ancestor-or-self::*/@diff]">
+  <xsl:template match="item[ancestor-or-self::*/@diff]" priority="1">
     <xsl:variable name="diffval" select="ancestor-or-self::*/@diff"/>
     <xsl:choose>
       <xsl:when test="$diffval != '' and $show.diff.markup != 0">
@@ -341,7 +341,7 @@ BBC: added "item" here to address problems with ordered lists-->
   <!-- authlist: list of authors (editors, really) -->
   <!-- called in enforced order from header's template, in <dl>
        context -->
-  <xsl:template match="authlist[@diff]">
+  <xsl:template match="authlist[@diff]" priority="1">
     <xsl:choose>
       <xsl:when test="$show.diff.markup != 0">
 	<dt>
@@ -400,11 +400,11 @@ BBC: added "item" here to address problems with ordered lists-->
   </xsl:template>
 
 <!-- unlink deleted text, as target likely to be deleted too -->
-<xsl:template match="loc[ancestor-or-self::*[@diff='del']]">
+<xsl:template match="loc[ancestor-or-self::*[@diff='del']]" priority="1">
 	<xsl:apply-templates/>
 </xsl:template>
 
-<xsl:template match="termref[ancestor-or-self::*[@diff='del']] | specref[ancestor-or-self::*[@diff='del']]">
+<xsl:template match="termref[ancestor-or-self::*[@diff='del']] | specref[ancestor-or-self::*[@diff='del']]" priority="1">
 	<xsl:value-of select="key('ids', @def)/label"/>
 </xsl:template>
 
