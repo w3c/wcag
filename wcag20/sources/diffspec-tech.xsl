@@ -311,7 +311,7 @@ BBC: This is all called in a previous XSLT, so commented out here. -->
   <!-- authlist: list of authors (editors, really) -->
   <!-- called in enforced order from header's template, in <dl>
        context -->
-  <xsl:template match="authlist[@diff]">
+  <xsl:template match="authlist[@diff]" priority="1">
     <xsl:choose>
       <xsl:when test="$show.diff.markup != 0">
 	<dt>
@@ -370,11 +370,11 @@ BBC: This is all called in a previous XSLT, so commented out here. -->
   </xsl:template>
 
 <!-- unlink deleted text, as target likely to be deleted too -->
-<xsl:template match="loc[ancestor-or-self::*[@diff='del']]">
+<xsl:template match="loc[ancestor-or-self::*[@diff='del']]" priority="1">
 	<xsl:apply-templates/>
 </xsl:template>
 
-<xsl:template match="termref[ancestor-or-self::*[@diff='del']] | specref[ancestor-or-self::*[@diff='del']]">
+<xsl:template match="termref[ancestor-or-self::*[@diff='del']] | specref[ancestor-or-self::*[@diff='del']]" priority="1">
 	<xsl:value-of select="key('ids', @def)/label"/>
 </xsl:template>
 </xsl:stylesheet>

@@ -363,7 +363,7 @@
        notes) -->
 	<xsl:template match="body">
 		<xsl:if test="$toc.level &gt; 0">
-			<div class="toc">
+			<div id="toc">
 				<xsl:text>
 </xsl:text>
 				<h2>
@@ -406,8 +406,8 @@
 						</a>
 					</p>
 				</xsl:if>
+				<hr/>
 			</div>
-			<hr/>
 		</xsl:if>
 		<div class="body">
 			<xsl:apply-templates/>
@@ -968,12 +968,11 @@
 	<!-- header: metadata about the spec -->
 	<!-- pull out information into standard W3C layout -->
 	<xsl:template match="header">
-		<p align="center">[<a href="#contents">contents</a>]</p>
 		<div class="head">
 			<xsl:if test="not(/spec/@role='editors-copy')">
 				<p>
 					<a href="http://www.w3.org/">
-						<img src="http://www.w3.org/Icons/w3c_home" alt="W3C" height="48" width="72"/>
+						<img src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" alt="W3C" height="48" width="72"/>
 					</a>
 					<xsl:choose>
 						<xsl:when test="/spec/@w3c-doctype='memsub'">
@@ -1089,8 +1088,8 @@
 					</p>
 				</xsl:otherwise>
 			</xsl:choose>
+			<hr/>
 		</div>
-		<hr/>
 		<xsl:apply-templates select="notice"/>
 		<xsl:apply-templates select="abstract"/>
 		<xsl:apply-templates select="status"/>
@@ -1625,8 +1624,8 @@
 			<body>
 				<xsl:apply-templates/>
 				<xsl:if test="//footnote[not(ancestor::table)]">
-					<hr/>
 					<div class="endnotes">
+						<hr/>
 						<xsl:text>
 </xsl:text>
 						<h3>
@@ -1641,6 +1640,7 @@
 						</dl>
 					</div>
 				</xsl:if>
+				<script src="//www.w3.org/scripts/TR/2016/fixup.js" type="text/javascript"></script>
 			</body>
 		</html>
 	</xsl:template>
@@ -2398,7 +2398,7 @@
 	<link media="print" type="text/css" rel="stylesheet" href="print.css" />
 	<link rel="stylesheet" type="text/css" href="additional.css" />
 	<link rel="stylesheet" type="text/css">
-		<xsl:attribute name="href"><xsl:text>http://www.w3.org/StyleSheets/TR/</xsl:text>
+		<xsl:attribute name="href"><xsl:text>http://www.w3.org/StyleSheets/TR/2016/</xsl:text>
 		    <xsl:choose>
 				<!-- Editor's review drafts are a special case. -->
 			    	<xsl:when test="/spec/@role='editors-copy'">W3C-ED</xsl:when>
@@ -2422,7 +2422,7 @@
 	</xsl:template>
         
 	<xsl:template name="additional-head">
-		<!-- nop -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 	</xsl:template>
 	<xsl:template name="href.target">
 		<xsl:param name="target" select="."/>
