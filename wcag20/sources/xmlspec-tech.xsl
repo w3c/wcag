@@ -610,7 +610,7 @@
 	        <link xmlns="http://www.w3.org/1999/xhtml" rel="stylesheet" type="text/css" href="diffs.css" />
 	    </xsl:if>
 	    <link xmlns="http://www.w3.org/1999/xhtml" rel="stylesheet" type="text/css">
-	        <xsl:attribute name="href"><xsl:text>http://www.w3.org/StyleSheets/TR/</xsl:text>
+	        <xsl:attribute name="href"><xsl:text>http://www.w3.org/StyleSheets/TR/2016/</xsl:text>
 	        	<xsl:choose>
 	        		<!-- Editor's review drafts are a special case. -->
 	        		<xsl:when test="/spec/@role='editors-copy'">W3C-ED</xsl:when>
@@ -796,22 +796,25 @@
 	<!-- overriding toc template to do some custom stuff for techniques -->
 		<xsl:template name="toc">
 		    <xsl:if test="$toc.level &gt; 0">
-      <div class="toc">
+		    		<xsl:if test="$bytech != 1">
+		    			<div>
+		    				<hr/>
+		    				<h2>
+			    				<xsl:call-template name="anchor">
+			    					<xsl:with-param name="conditional" select="0"/>
+			    					<xsl:with-param name="default.id" select="'contents'"/>
+			    				</xsl:call-template>
+			    				<xsl:text>Sections</xsl:text>
+			    			</h2>
+			    			<ul>
+			    				<xsl:apply-templates select="//div1[not(@id = 'placeholders')] | //inform-div1" mode="toc"><xsl:with-param name="local.toc.level" select="1"/></xsl:apply-templates>
+			    			</ul>
+		    			</div>
+		    		</xsl:if>
+      <div id="toc">
+      	<h2>Table of Contents</h2>
         <xsl:text>
 </xsl:text>
-        <hr/>
-        <h2>
-          <xsl:call-template name="anchor">
-            <xsl:with-param name="conditional" select="0"/>
-            <xsl:with-param name="default.id" select="'contents'"/>
-          </xsl:call-template>
-          <xsl:text>Table of Contents</xsl:text>
-        </h2>
-      	<xsl:if test="$bytech != 1">
-      	<ul>
-      		<xsl:apply-templates select="//div1[not(@id = 'placeholders')] | //inform-div1" mode="toc"><xsl:with-param name="local.toc.level" select="1"/></xsl:apply-templates>
-      	</ul>
-      		</xsl:if>
         <ul class="toc">
           <xsl:choose>
             <xsl:when test="$quickref='1'">
@@ -865,8 +868,8 @@
             -->
           </xsl:otherwise>
         </xsl:choose>
+      	<hr/>
       </div>
-      <hr/>
     </xsl:if>
 
 	</xsl:template>
