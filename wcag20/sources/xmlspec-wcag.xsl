@@ -39,13 +39,11 @@
       <xsl:when test="$bytech= 1"></xsl:when>
      
       <xsl:otherwise>
-    <p align="center">[<a href="#contents">contents</a>]<xsl:text> </xsl:text>
-    </p>
     <div class="head">
       <xsl:if test="not(/spec/@role='editors-copy')">
         <p>
           <a href="http://www.w3.org/">
-            <img src="http://www.w3.org/Icons/w3c_home" alt="W3C" height="48" width="72"/>
+          	<img src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" alt="W3C" height="48" width="72"/>
           </a>
           <xsl:choose>
             <xsl:when test="/spec/@w3c-doctype='memsub'">
@@ -148,8 +146,8 @@
             </a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p>
         </xsl:otherwise>
       </xsl:choose>
+    	<hr/>
     </div>
-    <hr/>
 
     <xsl:apply-templates select="notice"/>
     <xsl:apply-templates select="abstract"/>
@@ -163,7 +161,7 @@
 	
 	<xsl:template name="toc">
 		    <xsl:if test="$toc.level &gt; 0">
-      <div class="toc">
+      <div id="toc">
         <xsl:text>
 </xsl:text>
         <hr/>
@@ -222,8 +220,8 @@
             </xsl:if>
           </xsl:otherwise>
         </xsl:choose>
+      	<hr/>
       </div>
-      <hr/>
     </xsl:if>
 
 	</xsl:template>
@@ -424,6 +422,7 @@
             <link rel="stylesheet" type="text/css" href="slicenav.css"/>
             
             <xsl:call-template name="css"/>
+        		<xsl:call-template name="additional-head"/>
             <xsl:if test="$show.diff.markup != 0">
               <script type="text/javascript" src="diffmarks.js"><xsl:text> </xsl:text></script>
               <link xmlns="http://www.w3.org/1999/xhtml" rel="stylesheet" type="text/css" href="diffs.css" />
@@ -431,7 +430,7 @@
           </head>
           <body class="slices">
             <div id="masthead">
-              <p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="http://www.w3.org/Icons/w3c_home"/></a></p>
+            	<p class="logo"><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C"/></a></p>
               <p class="collectiontitle"><a href="./">Techniques for WCAG 2.0</a></p></div>
             <div id="skipnav"><p class="skipnav"><a href="#maincontent">Skip to Content (Press Enter)</a></p></div>
             <a name="top"><xsl:text> </xsl:text> </a>
@@ -451,7 +450,7 @@
           		<hr />
           	</xsl:if>
           	<div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques for WCAG 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents.
-              </p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © <xsl:apply-templates select="//pubdate/year"/><xsl:text> </xsl:text><a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div></body></html>
+          	</p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © <xsl:apply-templates select="//pubdate/year"/><xsl:text> </xsl:text><a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div><script src="//www.w3.org/scripts/TR/2016/fixup.js" type="text/javascript"></script></body></html>
       </xsl:when>
       <xsl:otherwise>
         <html>
@@ -473,6 +472,7 @@
             </title>
         		<xsl:call-template name="canonical-link"/>
             <xsl:call-template name="css"/>
+        		<xsl:call-template name="additional-head"/>
             <xsl:if test="$show.diff.markup != 0">
               <script type="text/javascript" src="diffmarks.js"><xsl:text> </xsl:text></script>
                 <link xmlns="http://www.w3.org/1999/xhtml" rel="stylesheet" type="text/css" href="diffs.css" />
@@ -493,7 +493,7 @@
               <h1>WCAG 2.0 Conformance Proposals for 04 January 2007</h1>
               <p><em>Updated 18 January based on survey comments and meeting resolutions.</em></p>
               <p>The following is a set of draft revisions for the conformance section of WCAG 2.0. It includes an updated version of the conformance and glossary sections. For the most up-to-date version of WCAG 2.0, please refer to the <a href="http://w3.org/WAI/GL/WCAG20/">latest internal working draft</a>.</p> 
-              <div class="toc">
+              <div id="toc">
               <hr/><h2><a id="contents" name="contents"> </a>Table of Contents</h2><ul class="toc"><li><a href="#conformance">Conformance</a>
               <ul class="toc">
               <li><a href="#ua-tech"> User agents, technology-independence and "relied upon" technologies 
@@ -512,9 +512,9 @@
               <xsl:apply-templates select="//back/inform-div1[@id='glossary']"/>-->
             <xsl:apply-templates/>
             <xsl:if test="//footnote[not(ancestor::table)]">
-              <hr/>
               <div class="endnotes">
-                <xsl:text> </xsl:text>
+              	<hr/>
+              	<xsl:text> </xsl:text>
                 <h3>
                   <xsl:call-template name="anchor">
                     <xsl:with-param name="conditional" select="0"/>
@@ -527,6 +527,7 @@
                 </dl>
               </div>
             </xsl:if>
+          	<script src="//www.w3.org/scripts/TR/2016/fixup.js" type="text/javascript"></script>
           </body>
         </html>
       </xsl:otherwise>
@@ -1421,6 +1422,7 @@
 	</xsl:template>
 	
 	<!-- Only output stuff suited to the current maturity -->
+  <xsl:template match="*[@role = 'int-review' and /spec/@status != 'int-review']"/>
   <xsl:template match="*[@role = 'ext-review' and /spec/@status != 'ext-review']"/>
   <xsl:template match="*[@role = 'final' and /spec/@status != 'final']"/>
 

@@ -577,7 +577,7 @@ BBC: added "item" here to address problems with ordered lists-->
   <!-- authlist: list of authors (editors, really) -->
   <!-- called in enforced order from header's template, in <dl>
        context -->
-  <xsl:template match="authlist[@diff]">
+  <xsl:template match="authlist[@diff]" priority="1">
     <xsl:choose>
       <xsl:when test="$show.diff.markup != 0">
 	<dt>
