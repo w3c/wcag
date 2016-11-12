@@ -1640,7 +1640,7 @@
 						</dl>
 					</div>
 				</xsl:if>
-				<script src="//www.w3.org/scripts/TR/2016/fixup.js" type="text/javascript"></script>
+				<script src="//www.w3.org/scripts/TR/2016/fixup.js" type="text/javascript"><xsl:text> </xsl:text></script>
 			</body>
 		</html>
 	</xsl:template>
