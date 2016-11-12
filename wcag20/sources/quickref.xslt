@@ -15,7 +15,7 @@
     <xsl:text> </xsl:text>
     <xsl:value-of select="//pubdate/year"/>
   </xsl:variable>
-  <xsl:output method="xml" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" omit-xml-declaration="yes"/>
+  <xsl:output method="xml" encoding="UTF-8" doctype-public="about:legacy-compat" indent="no" omit-xml-declaration="yes"/>
   <!-- BBC: added link to guidelines -->
   <!-- BBC: pulled this in to call a variation on the "css" template with custom styles -->
   <xsl:template match="spec">

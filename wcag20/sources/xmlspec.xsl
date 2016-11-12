@@ -135,7 +135,7 @@
 	<xsl:param name="toc.level" select="5"/>
 	<xsl:key name="ids" match="*[@id]" use="@id"/>
 	<xsl:key name="specrefs" match="specref" use="@ref"/>
-	<xsl:output method="xml" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
+	<xsl:output method="xml" encoding="UTF-8" doctype-public="about:legacy-compat" indent="no" omit-xml-declaration="yes"/>
 	<!-- not handled:
     attribute:   unhandled IDL stuff
     case:        unhandled IDL stuff

@@ -23,14 +23,14 @@
   <xsl:param name="filename" select="''"/>
   <xsl:param name="content" select="''"/>
 
-	<xsl:result-document method="xml" href="{$output.dir.prefix}{$output.dir}/{$filename}" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="no">
+	<xsl:result-document method="xml" href="{$output.dir.prefix}{$output.dir}/{$filename}" encoding="UTF-8" indent="no">
 		<xsl:copy-of select="$content"/>
 		<xsl:fallback>
 			<xalanredirect:write file="{$output.dir}/{$filename}">
 				<xsl:copy-of select="$content"/>
 				<xsl:fallback>
 					<!-- BBC: Note, indent="no" is important below, else an extra space gets inserted after every specref -->
-					<saxon:output method="xml" href="{$output.dir}/{$filename}" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="no">
+					<saxon:output method="xml" href="{$output.dir}/{$filename}" encoding="UTF-8" indent="no">
 						<xsl:copy-of select="$content"/>
 						<xsl:fallback>
 							<xsl:copy-of select="$content"/>

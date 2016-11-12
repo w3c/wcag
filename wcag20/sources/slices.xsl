@@ -25,7 +25,7 @@
   <xalanredirect:write file="{$filename}">
     <xsl:copy-of select="$content"/>
     <xsl:fallback>
-      <saxon:output method="xml" href="{$filename}" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="yes">
+      <saxon:output method="xml" href="{$filename}" encoding="UTF-8" indent="yes">
         <xsl:copy-of select="$content"/>
         <xsl:fallback>
           <xsl:copy-of select="$content"/>
