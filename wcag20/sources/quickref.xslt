@@ -110,12 +110,12 @@ Editors: Gregg Vanderheiden, Loretta Guarino Reid, Ben Caldwell, Shawn Lawton He
             <p>
               <a rel="Copyright" href="/Consortium/Legal/ipr-notice#Copyright" shape="rect">Copyright</a> &#169; 1994-<xsl:value-of select="//pubdate/year"/><xsl:text> </xsl:text>
 <a href="/" shape="rect">
-                <acronym title="World Wide Web Consortium">W3C</acronym>
+                <abbr title="World Wide Web Consortium">W3C</abbr>
               </a>
               <sup>&#174;</sup> (<a href="http://www.csail.mit.edu/" shape="rect">
-                <acronym title="Massachusetts Institute of Technology">MIT</acronym>
+                <abbr title="Massachusetts Institute of Technology">MIT</abbr>
               </a>, <a href="http://www.ercim.eu/" shape="rect">
-                <acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym>
+                <abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr>
               </a>,
             	<a href="http://www.keio.ac.jp/" shape="rect">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C
 <a href="/Consortium/Legal/ipr-notice#Legal_Disclaimer" shape="rect">liability</a>,
@@ -245,23 +245,23 @@ script type="text/javascript" src="annotate.js" xmlns="http://www.w3.org/1999/xh
           <xsl:processing-instruction name="php"><![CDATA[ if($bHTML) { ]]></xsl:processing-instruction>
           <li>
             <input type="checkbox" name="htmlopt" id="htmlopt" value="Y" checked="checked" />
-            <label for="htmlopt">Show <acronym title="Hypertext Markup Language">HTML</acronym> techniques and failures</label>
+            <label for="htmlopt">Show <abbr title="Hypertext Markup Language">HTML</abbr> techniques and failures</label>
           </li>
           <xsl:processing-instruction name="php"><![CDATA[ } else { ]]></xsl:processing-instruction>
           <li>
             <input type="checkbox" name="htmlopt" id="htmlopt" value="Y" />
-            <label for="htmlopt">Show <acronym title="Hypertext Markup Language">HTML</acronym> techniques and failures</label>
+            <label for="htmlopt">Show <abbr title="Hypertext Markup Language">HTML</abbr> techniques and failures</label>
           </li>
           <xsl:processing-instruction name="php"><![CDATA[ } if($bCSS) { ]]></xsl:processing-instruction>
           
           <li>
             <input type="checkbox" name="cssopt" id="cssopt" value="Y" checked="checked"/>
-            <label for="cssopt">Show <acronym title="Cascading Style Sheets (CSS)">CSS</acronym> techniques and failures</label>
+            <label for="cssopt">Show <abbr title="Cascading Style Sheets (CSS)">CSS</abbr> techniques and failures</label>
           </li>
           <xsl:processing-instruction name="php"><![CDATA[ } else { ]]></xsl:processing-instruction>
           <li>
             <input type="checkbox" name="cssopt" id="cssopt" value="Y"/>
-            <label for="cssopt">Show <acronym title="Cascading Style Sheets (CSS)">CSS</acronym> techniques and failures</label>
+            <label for="cssopt">Show <abbr title="Cascading Style Sheets (CSS)">CSS</abbr> techniques and failures</label>
           </li>
           <!--xsl:processing-instruction name="php"><![CDATA[ } if($bCSSBase) { ]]></xsl:processing-instruction>
           <dd>
@@ -276,12 +276,12 @@ script type="text/javascript" src="annotate.js" xmlns="http://www.w3.org/1999/xh
           <xsl:processing-instruction name="php"><![CDATA[ } if($bSMIL) { ]]></xsl:processing-instruction>
           <li>
             <input type="checkbox" name="smilopt" id="smilopt" value="Y" checked="checked"/>
-            <label for="smilopt">Show <acronym title="Synchronized Multimedia Integration Language (SMIL)">SMIL</acronym> techniques and failures</label>
+            <label for="smilopt">Show <abbr title="Synchronized Multimedia Integration Language (SMIL)">SMIL</abbr> techniques and failures</label>
           </li>
           <xsl:processing-instruction name="php"><![CDATA[ } else { ]]></xsl:processing-instruction>
           <li>
             <input type="checkbox" name="smilopt" id="smilopt" value="Y"/>
-            <label for="smilopt">Show <acronym title="Synchronized Multimedia Integration Language (SMIL)">SMIL</acronym> techniques and failures</label>
+            <label for="smilopt">Show <abbr title="Synchronized Multimedia Integration Language (SMIL)">SMIL</abbr> techniques and failures</label>
           </li>
           <!--xsl:processing-instruction name="php"><![CDATA[ } if($bSMILBase) { ]]></xsl:processing-instruction>
           <dd>
@@ -346,12 +346,12 @@ script type="text/javascript" src="annotate.js" xmlns="http://www.w3.org/1999/xh
           <xsl:processing-instruction name="php"><![CDATA[ } if($bARIA) { ]]></xsl:processing-instruction>
           <li>
             <input type="checkbox" name="ariaopt" id="ariaopt" value="Y" checked="checked"/>
-            <label for="ariaopt">Show <acronym title="Web Accessibility Initiative - Accessible Rich Internet Applications">WAI-ARIA</acronym> techniques and failures</label>
+            <label for="ariaopt">Show <abbr title="Web Accessibility Initiative - Accessible Rich Internet Applications">WAI-ARIA</abbr> techniques and failures</label>
           </li>
           <xsl:processing-instruction name="php"><![CDATA[ } else { ]]></xsl:processing-instruction>
           <li>
             <input type="checkbox" name="ariaopt" id="ariaopt" value="Y"/>
-            <label for="ariaopt">Show <acronym title="Web Accessibility Initiative - Accessible Rich Internet Applications">WAI-ARIA</acronym> techniques and failures</label>
+            <label for="ariaopt">Show <abbr title="Web Accessibility Initiative - Accessible Rich Internet Applications">WAI-ARIA</abbr> techniques and failures</label>
           </li>
           <xsl:processing-instruction name="php"><![CDATA[ } ]]></xsl:processing-instruction>
           </ul>

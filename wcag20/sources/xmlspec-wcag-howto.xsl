@@ -217,7 +217,7 @@
     </h4>
     <xsl:choose>
       <xsl:when test="../@role='failures'">
-        <p >The following are common mistakes that are considered failures of Success Criterion <xsl:call-template name="sc-number"><xsl:with-param name="id" select="../../../@id"/></xsl:call-template> by the <acronym title="Web Content Accessibility Guidelines">WCAG</acronym> Working Group.</p>
+        <p >The following are common mistakes that are considered failures of Success Criterion <xsl:call-template name="sc-number"><xsl:with-param name="id" select="../../../@id"/></xsl:call-template> by the <abbr title="Web Content Accessibility Guidelines">WCAG</abbr> Working Group.</p>
       	<xsl:if test="not(../p or ../olist or ../ulist or ../div5)">
           <p  >(No failures currently documented)</p>
         </xsl:if>
@@ -570,6 +570,6 @@
     <xsl:template match="div3[@id='conformance-terms']"></xsl:template>
     	
 <xsl:template name="understanding.notrestricted.disclaimer">
-	<p>Each numbered item in this section represents a technique or combination of techniques that the <acronym title="Web Content Accessibility Guidelines">WCAG</acronym> Working Group deems sufficient for meeting this Success Criterion. However, it is not necessary to use these particular techniques. For information on using other techniques, see <a href="{$guide-src//publoc/loc[@href]}understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a>, particularly the "Other Techniques" section.</p>
+	<p>Each numbered item in this section represents a technique or combination of techniques that the <abbr title="Web Content Accessibility Guidelines">WCAG</abbr> Working Group deems sufficient for meeting this Success Criterion. However, it is not necessary to use these particular techniques. For information on using other techniques, see <a href="{$guide-src//publoc/loc[@href]}understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a>, particularly the "Other Techniques" section.</p>
 </xsl:template>
 </xsl:transform>

@@ -1063,16 +1063,16 @@
 						<xsl:apply-templates select="pubdate/year"/>
 						<xsl:text> </xsl:text>
 						<a href="http://www.w3.org/">
-							<acronym title="World Wide Web Consortium">W3C</acronym>
+							<abbr title="World Wide Web Consortium">W3C</abbr>
 						</a>
 						<sup>®</sup>
 						<xsl:text> (</xsl:text>
 						<a href="http://www.csail.mit.edu/">
-							<acronym title="Massachusetts Institute of Technology">MIT</acronym>
+							<abbr title="Massachusetts Institute of Technology">MIT</abbr>
 						</a>
 						<xsl:text>, </xsl:text>
 						<a href="http://www.ercim.eu/">
-							<acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym>
+							<abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr>
 						</a>
 						<xsl:text>, </xsl:text>
 						<a href="http://www.keio.ac.jp/">Keio</a>

@@ -137,12 +137,12 @@
             <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> &#169; <xsl:apply-templates select="pubdate/year"/>
             <xsl:text> </xsl:text>
             <a href="http://www.w3.org/">
-              <acronym title="World Wide Web Consortium">W3C</acronym>
+              <abbr title="World Wide Web Consortium">W3C</abbr>
             </a>
             <sup>&#174;</sup> (<a href="http://www.csail.mit.edu/">
-              <acronym title="Massachusetts Institute of Technology">MIT</acronym>
+              <abbr title="Massachusetts Institute of Technology">MIT</abbr>
             </a>, <a href="http://www.ercim.eu/">
-              <acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym>
+              <abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr>
             </a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p>
         </xsl:otherwise>
       </xsl:choose>
@@ -394,7 +394,7 @@
       <xsl:choose>
         <xsl:when test="/spec/@w3c-doctype='review'">
           <p>
-            <strong>This document is the internal working draft used by the <acronym title="Web Content Accessibility Guidelines Working Group">WCAG WG</acronym> and is updated continuously and without notice. This document has no formal standing within W3C. Please consult the <a href="http://www.w3.org/WAI/GL/">group's home page</a> and the <a href="http://www.w3.org/TR/">W3C technical reports index</a> for information about the latest publications by this group.</strong>
+            <strong>This document is the internal working draft used by the <abbr title="Web Content Accessibility Guidelines Working Group">WCAG WG</abbr> and is updated continuously and without notice. This document has no formal standing within W3C. Please consult the <a href="http://www.w3.org/WAI/GL/">group's home page</a> and the <a href="http://www.w3.org/TR/">W3C technical reports index</a> for information about the latest publications by this group.</strong>
           </p>
             <p>This draft includes revisions that have been made since the <a href="http://www.w3.org/TR/2008/CR-WCAG20-20080430/">30 April 2008 Candidate Recommendation</a> was published.  Please refer to the <a href="/TR/WCAG20/">latest public version of WCAG 2.0</a> for information about the status of WCAG 2.0 as well as information about submitting comments to the working group.</p>
         </xsl:when>
@@ -450,7 +450,7 @@
           		<hr />
           	</xsl:if>
           	<div class="footer"><p class="copyright">This Web page is part of <a href="Overview.html">Techniques for WCAG 2.0</a>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents.
-          	</p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © <xsl:apply-templates select="//pubdate/year"/><xsl:text> </xsl:text><a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div><script src="//www.w3.org/scripts/TR/2016/fixup.js" type="text/javascript"></script></body></html>
+          	</p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © <xsl:apply-templates select="//pubdate/year"/><xsl:text> </xsl:text><a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div><script src="//www.w3.org/scripts/TR/2016/fixup.js" type="text/javascript"></script></body></html>
       </xsl:when>
       <xsl:otherwise>
         <html>
