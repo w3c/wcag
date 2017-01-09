@@ -67,5 +67,5 @@ If you providing term definitions along with your SC, include them in the glossa
 ```
 
 The ```dfn``` element tells the script that this is a term and causes special styling and linking features. To link to a term, use an `<a>` element without an `href` attribute; if the link text is the same as the term, the link will be correctly generated. For example, if there is a term `<dfn>web page</dfn>` on the page, a link in the form of `<a>web page</a>` will result in a proper link. If the link text has a different form from the canonical term, e.g., "web pages" (note the plural), you can provide a hint on the term definition with the `data-lt` attribute. In this example, modify the term to be `<dfn data-lt="web pages">web page</dfn>`. Multiple alternate names for the term can be separated with pipe characters, with no leading or trailing space, e.g., `<dfn data-lt="web pages|page|pages">web page</dfn>`.
-=======
+
 The issues on the wcag 2.1 repo are currently reserved for success criteria proposals for wcag 2.1. Discussion of changes for understanding documents and techniques should take place on the list or is the wcag 2.0 repo issues.
