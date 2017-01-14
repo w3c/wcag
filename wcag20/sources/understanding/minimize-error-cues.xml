@@ -5,25 +5,21 @@
    <head>3.3.2</head>
    <div3 role="intent">
       <head/>
-      <p>The intent of this success criterion is to have content authors place instructions or labels that identify the controls in a form so that users know what input data is expected. Instructions or labels may also specify data formats for fields especially if they are out of the customary formats or if there are specific rules for correct input. Content authors may also choose to make such instructions available to users only when the individual control has focus especially when instructions are long and verbose.</p>
-      <p>The intent of this Success Criterion is not to clutter the page with unnecessary information but to provide important cues and instructions that will benefit people with disabilities. Too much information or instruction can be just as much of a hindrance as too little. The goal is to make certain that enough information is provided for the user to accomplish the task without undue confusion or navigation.</p>
-      <note>
-         <p>When labels are provided for input objects, the input object's relationship to the label (or to redundant text serving as the label) must be programmatically determinable or available in text per <specref ref="content-structure-separation-programmatic"/>.</p>
+      <p>The intent of this success criterion is to have content authors place instructions or labels that identify the controls in a form so that users know what input data is expected. In the absence of field-specific labels, an instruction that identifies individual field or fields within a group is also sufficient to meet this success criterion.</p>
+<p>The phrase "when content requires user input" refers to elements such as form controls that accept user input as distinct from other elements on a page like hyperlinks or images.</p>
+<p>When the form control and its label or instruction are in the same field of vision, users of screen magnification software are likely to be well served. In other words, placing the label or instruction logically in close proximity to the related form control makes their relationship to each other obvious by presentation.</p>
+<note>
+    <p>When labels are provided for input objects, the input object's relationship to the label (or to redundant text serving as the label) must be programmatically determinable or available in text per <specref ref="content-structure-separation-programmatic"/>.The label or instruction can also serve as an accessible name as per SC 4.1.2 if marked up properly.</p>
+<p>Supplementary instructions that indicate the expected data format or data range or whether input is mandatory for specific form controls do not by themselves identify what data is expected and are not covered by the term "instructions" as used in the success criterion. However, such instructions help users with disabilities avoid consequences that may result from making a mistake when submitting form data including unnecessary navigation. All visible instructions should be programmatically determinable in relation to the form control per <specref ref="content-structure-separation-programmatic"/>.</p>
       </note>
-      <div4 role="benefits">
+       <div4 role="benefits">
          <head/>
          <ulist>
             <item>
-               <p>When label elements are associated with input elements the label is spoken by screen readers when the field receives focus and users with impaired motor control are helped by a larger clickable area for the control, since clicking on the label or the control will activate the control.</p>
+               <p>A visible label or instruction (e.g. "Last name" or "Departure date" or "Your question") enables users to determine what data needs to be entered into a specific text box. </p>
             </item>
             <item>
-               <p>Field labels located in close proximity to the associated field assist users of screen magnifiers because the field and label are more likely to visible within the magnified area of the page.</p>
-            </item>
-            <item>
-               <p>Providing examples of expected data formats help users with cognitive, language and learning disabilities to enter information correctly.</p>
-            </item>
-            <item>
-               <p>Clearly identifying required fields prevents a keyboard only user from submitting an incomplete form and having to navigate the redisplayed form to find the uncompleted field and provide the missing information.</p>
+               <p>A label or instruction also serves to convey the specific purpose of other controls like radio buttons, checkboxes, drop down controls, etc.</p>
             </item>
          </ulist>
       </div4>
@@ -32,17 +28,31 @@
       <head/>
       <ulist>
          <item>
-            <p>A field which requires the user to enter the two character abbreviation for a US state has a link next to it which will popup an alphabetized list of state names and the correct abbreviation.</p>
-         </item>
-         <item>
-            <p>A field for entering a date contains initial text which indicates the correct format for the date.</p>
-         </item>
-         <item>
             <p>A field for entering a given name is clearly labeled with "Given Name" and the field for family name is labeled "Family Name" to avoid confusion over which name is requested.</p>
+             <p>Marking up each visible label, "Given Name:" / "Family Name:" as a label and using the for-id method (H44) to associate it with the corresponding field is one method of also satisfying SC 4.1.2 and SC 1.3.1 besides SC 3.3.2.</p>
          </item>
          <item>
-            <p>A U.S. phone number separates the area code, exchange, and number into three fields. Parentheses surround the area code field, and a dash separates the exchange and number fields. While the punctuation provides visual clues to those familiar with the U.S. telephone number format, the punctuation is not sufficient to label the fields. The single "Phone number" label also cannot label all three fields. To address this, the three fields are grouped in a <code><![CDATA[fieldset]]></code> with the <code><![CDATA[legend]]></code> "Phone number". Visual labels for the fields (beyond the punctuation) cannot be provided in the design, so invisible labels are provided with the "title" attribute to each of the three fields. The value of this attribute for the three fields are, respectively, "Area Code", "Exchange", and "Number". </p>
+             <p>A U.S. phone number separates the area code, exchange, and number into three fields. Parentheses surround the area code field, and a dash separates the exchange and number fields. These fields are all arranged to the right of the label "Your phone number:".</p>
+             <p>Marking up the common label, "Your phone number:" as a <code><![CDATA[legend]]></code>, setting a title attribute to identify individual segments of the phone number and wrapping them all in a <code><![CDATA[fieldset]]></code> is one method of making the three controls satisfy SC 4.1.2 and SC 1.3.1 as well.</p>
          </item>
+         <item>
+<p>Instruction to identify form controls:</p>
+      <code role="html401"><![CDATA[<form>
+Enter first middle and last name for the first applicant in the next 3 fields:
+<input type="text" name="fn1" id="fn1" /> 
+<input type="text" name="mn1" id="mn1" /> 
+<input type="text" name="ln1" id="ln1" /> 
+Enter first middle and last name for the second applicant in the next
+3 fields:
+<input type="text" name="fn2" id="fn2" /> 
+<input type="text" name="mn2" id="mn2" /> 
+<input type="text" name="ln2" id="ln2" /> 
+</form>]]>
+<p>Placing an off-screen legend, like, "First Applicant" / "Second
+Applicant", a <attr>title</attr> attribute to identify first middle and last name
+boxes and wrapping them all in a <code><![CDATA[fieldset]]></code> is one method of making the
+above satisfy SC 4.1.2 and SC 1.3.1 too.</p>        
+          </item>
       </ulist>
    </div3>
    <div3 role="resources">
