@@ -5,6 +5,11 @@ var biblio = {
       		"publisher": "Carnegie Mellon University",
       		"title": "The CAPTCHA Project"
       	},
+    
+    "GPII": {
+        "href": "http://gpii.net/",
+        "title": "Global Public Inclusive Infrastructure"
+    },
       	
       	"HARDING-BINNIE": {
       		"authors": [
@@ -19,6 +24,12 @@ var biblio = {
       		"date": "May 5, 1998",
       		"title": "IEC/4WD 61966-2-1: Colour Measurement and Management in Multimedia Systems and Equipment - Part 2.1: Default Colour Space - sRGB",
       	},
+    
+    "ISO_9241-112": {
+        "uri": "http://www.iso.org/iso/catalogue_detail.htm?csnumber=64840",
+        "title": "Ergonomics of human-system interaction -- Part 112: Principles for the presentation of information",
+        "publisher": "International Standards Organization"
+    },
       	
       	"sRGB": {
       		"authors": [
