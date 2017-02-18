@@ -6,6 +6,7 @@ var respecConfig = {
 	includePermalinks: true,
 	permalinkEdge:     true,
 	permalinkHide:     false,
+	tocIntroductory: true,
 	// specification status (e.g., WD, LC, NOTE, etc.). If in doubt use ED.
 	specStatus:           "ED",
 	//crEnd:                "2012-04-30",
