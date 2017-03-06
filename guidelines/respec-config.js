@@ -6,6 +6,7 @@ var respecConfig = {
 	includePermalinks: true,
 	permalinkEdge:     true,
 	permalinkHide:     false,
+	tocIntroductory: true,
 	// specification status (e.g., WD, LC, NOTE, etc.). If in doubt use ED.
 	specStatus:           "ED",
 	//crEnd:                "2012-04-30",
@@ -25,7 +26,7 @@ var respecConfig = {
 	// and its maturity status
 	//previousPublishDate:  "2014-06-12",
 	//previousMaturity:  "WD",
-	prevRecURI: "http://www.w3.org/TR/2008/REC-WCAG20-20081211/",
+	prevRecURI: "https://www.w3.org/TR/2008/REC-WCAG20-20081211/",
 	//previousDiffURI: "https://www.w3.org/TR/2014/REC-wai-aria-20140320/",
 	
 	// if there a publicly available Editors Draft, this is the link
@@ -55,10 +56,10 @@ var respecConfig = {
 		},
 		{
 			name: "Michael Cooper",
-			url: 'http://www.w3.org',
+			url: 'https://www.w3.org',
 			mailto: "cooper@w3.org",
 			company: "W3C",
-			companyURI: "http://www.w3.org",
+			companyURI: "https://www.w3.org",
 			w3cid: 34017
 		}
 	],
@@ -80,13 +81,13 @@ var respecConfig = {
 	],
 	*/
 	
-	// errata: 'http://www.w3.org/2010/02/rdfa/errata.html',
+	// errata: 'https://www.w3.org/2010/02/rdfa/errata.html',
 	
 	// name of the WG
 	wg:           "Accessibility Guidelines Working Group",
 	
 	// URI of the public WG page
-	wgURI:        "http://www.w3.org/WAI/GL/",
+	wgURI:        "https://www.w3.org/WAI/GL/",
 	
 	// name (with the @w3c.org) of the public mailing to which comments are due
 	wgPublicList: "public-comments-wcag20",
