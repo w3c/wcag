@@ -23,22 +23,22 @@
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="html:section[matches(@class, 'sc')][html:p[@class='change']]">
+    <xsl:template match="html:section[matches(@class, 'sc')]">
         <xsl:variable name="filename" select="mc:create-filename(html:h4)"/>
-        <section data-include="sc/{$filename}.html" data-include-replace="true"/>
-        <xsl:result-document href="sc/{$filename}.html" exclude-result-prefixes="#all" method="html" indent="true" xpath-default-namespace="http://www.w3.org/1999/xhtml">
+        <section data-include="sc/20/{$filename}.html" data-include-replace="true"/>
+        <xsl:result-document href="sc/20/{$filename}.html" exclude-result-prefixes="#all" method="html" indent="true" xpath-default-namespace="http://www.w3.org/1999/xhtml">
             <xsl:copy-of select="."/>
         </xsl:result-document>
     </xsl:template>
     
-    <xsl:template match="html:dt[@class='new' or @class='proposed']">
+    <xsl:template match="html:dl[@id='terms']/html:dt[html:dfn]">
         <xsl:variable name="filename" select="mc:create-filename(html:dfn)"/>
-        <dt data-include="terms/{$filename}.html" data-include-replace="true"/>
-        <xsl:result-document href="terms/{$filename}.html" exclude-result-prefixes="#all" method="html" indent="true" xpath-default-namespace="http://www.w3.org/1999/xhtml">
+        <dt data-include="terms/20/{$filename}.html" data-include-replace="true"/>
+        <xsl:result-document href="terms/20/{$filename}.html" exclude-result-prefixes="#all" method="html" indent="true" xpath-default-namespace="http://www.w3.org/1999/xhtml">
             <xsl:copy-of select="."/>
             <xsl:copy-of select="./following-sibling::html:dd[1]"/>
         </xsl:result-document>
     </xsl:template>
     
-    <xsl:template match="html:dd[@class='new' or @class='proposed']"/>
+    <xsl:template match="html:dl[@id='terms']/html:dd"/>
 </xsl:stylesheet>
