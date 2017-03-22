@@ -42,7 +42,7 @@ var respecConfig = {
 			name: "Andrew Kirkpatrick",
 			url: "http://www.adobe.com/",
 			mailto: "akirkpat@adobe.com",
-			company: "Adobe Systems Inc.",
+			company: "Adobe",
 			companyURI: "http://www.adobe.com/",
 			w3cid: 39770
 		},
