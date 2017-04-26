@@ -7,7 +7,7 @@ function linkUnderstanding() {
 		var heading = node.firstElementChild.textContent;
 		var el = document.createElement("div");
 		el.setAttribute("class", "doclinks");
-		el.innerHTML = "<a href=\"../understanding/21/" + titleToPathFrag(heading) + "\">Understanding " + heading + "</a>";
+		el.innerHTML = "<a href=\"../understanding/21/" + titleToPathFrag(heading) + ".html\">Understanding " + heading + "</a>";
 		node.insertBefore(el, node.children[1]);
 	})
 }
