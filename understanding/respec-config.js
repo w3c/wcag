@@ -15,7 +15,7 @@ var respecConfig = {
 	diffTool:             "http://www.aptest.com/standards/htmldiff/htmldiff.pl",
 	
 	// the specifications short name, as in https://www.w3.org/TR/short-name/
-	shortName:            "WCAG21",
+	shortName:            "UNDERSTANDING-WCAG21",
 	
 	
 	// if you wish the publication date to be other than today, set this
@@ -26,11 +26,11 @@ var respecConfig = {
 	// and its maturity status
 	//previousPublishDate:  "2014-06-12",
 	//previousMaturity:  "WD",
-	prevRecURI: "https://www.w3.org/TR/2008/REC-WCAG20-20081211/",
+	prevRecURI: "https://www.w3.org/TR/2008/REC-UNDERSTANDING-WCAG20-20081211/",
 	//previousDiffURI: "https://www.w3.org/TR/2014/REC-wai-aria-20140320/",
 	
 	// if there a publicly available Editors Draft, this is the link
-	edDraftURI: "https://w3c.github.io/wcag21/guidelines/",
+	edDraftURI: "https://w3c.github.io/wcag21/understanding/",
 	
 	// if this is a LCWD, uncomment and set the end of its review period
 	// lcEnd: "2012-02-21",
@@ -90,7 +90,7 @@ var respecConfig = {
 	wgURI:        "https://www.w3.org/WAI/GL/",
 	
 	// name (with the @w3c.org) of the public mailing to which comments are due
-	wgPublicList: "public-comments-wcag20",
+	wgPublicList: "public-agwg-comments",
 	
 	// URI of the patent status for this WG, for Rec-track documents
 	// !!!! IMPORTANT !!!!
