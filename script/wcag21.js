@@ -3,7 +3,7 @@ function titleToPathFrag (title) {
 }
 
 function linkUnderstanding() {
-	document.querySelectorAll('.sc.new').forEach(function(node){
+	document.querySelectorAll('.sc.new,.sc.proposed').forEach(function(node){
 		var heading = node.firstElementChild.textContent;
 		var el = document.createElement("div");
 		el.setAttribute("class", "doclinks");
