@@ -3,11 +3,14 @@ function titleToPathFrag (title) {
 }
 
 function linkUnderstanding() {
+	var understandingBaseURI;
+	if (respecConfig.specStatus == "ED") understandingBaseURI = "../understanding/21/";
+	else understandingBaseURI = "https://www.w3.org/WAI/WCAG21/Understanding/21/";
 	document.querySelectorAll('.sc.new,.sc.proposed').forEach(function(node){
 		var heading = node.firstElementChild.textContent;
 		var el = document.createElement("div");
 		el.setAttribute("class", "doclinks");
-		el.innerHTML = "<a href=\"../understanding/21/" + titleToPathFrag(heading) + ".html\">Understanding " + heading + "</a>";
+		el.innerHTML = "<a href=\"" + understandingBaseURI + titleToPathFrag(heading) + ".html\">Understanding " + heading + "</a>";
 		node.insertBefore(el, node.children[1]);
 	})
 }
