@@ -15,6 +15,37 @@ function linkUnderstanding() {
 	})
 }
 
+function addTextSemantics() {
+	// put brackets around the change marker
+	document.querySelectorAll('p.change').forEach(function(node){
+		var change = node.textContent;
+		node.textContent = "[" + change + "]";
+	})
+	// put level before and parentheses around the conformance level marker
+	document.querySelectorAll('p.conformance-level').forEach(function(node){
+		var level = node.textContent;
+		node.textContent = "(Level " + level + ")";
+	})
+	// put principle in principle headings
+	document.querySelectorAll('section.sc h2 span.secno').forEach(function(node){
+		var num = node.textContent;
+		node.textContent = "Principle " + num;
+	})
+	// put guideline in GL headings
+	document.querySelectorAll('section.guideline h3 span.secno').forEach(function(node){
+		var num = node.textContent;
+		node.textContent = "Guideline " + num;
+	})
+	// put success criterion in SC headings
+	document.querySelectorAll('section.sc h4 span.secno').forEach(function(node){
+		var num = node.textContent;
+		node.textContent = "Success Criterion " + num;
+	})
+}
+
+function markConformanceLevel() {
+}
+
 require(["core/pubsubhub"], function(respecEvents) {
     "use strict";
     respecEvents.sub('end', function(message) {
