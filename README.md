@@ -98,4 +98,6 @@ Files are populated with a template that provides the expected structure. Leave 
 
 Understanding files are referenced from the relevant Success Criterion on the WCAG 2.1 page; these links are put in by the script.
 
+The formal publication location for Understanding pages is https://www.w3.org/WAI/WCAG21/Understanding/. This content is updated as needed; and may be automated.
+
 The approach to techniques in WCAG 2.1 is not yet worked out. For the moment, list techniques in the Understanding document. References to existing WCAG 2.0 techniques should link to the technique on https://www.w3.org/TR/WCAG20-TECHS/. Proposed new techniques should be included as a draft technique title in the Understanding document, which will seed later work.
