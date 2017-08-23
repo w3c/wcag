@@ -89,7 +89,12 @@ The ```dfn``` element tells the script that this is a term and causes special st
 
 ## Editing Draft Understanding Content
 
-There is one Understanding file per success criterion. Files are populated with a template that provides the expected structure. Leave the template structure in place, and add content as appropriate within the sections. Elements with class="instructions" provide guidance about what content to include in that section; you can remove those elements if you want but don't have to. The template for examples proposes either a bullet list or a series of sub-sections, choose one of those approaches and remove the other from the template. The template for techniques includes sub-sections for "situations", remove that wrapper section if not needed.
+There is one Understanding file per success criterion, plus an index:
+
+* understanding/index.html - index page, need to uncomment or add a reference to individual Understanding pages as they are made available
+* understanding/21/*.html - files for each understanding page, named the same as the success criterion file in the guidelines
+
+Files are populated with a template that provides the expected structure. Leave the template structure in place, and add content as appropriate within the sections. Elements with class="instructions" provide guidance about what content to include in that section; you can remove those elements if you want but don't have to. The template for examples proposes either a bullet list or a series of sub-sections, choose one of those approaches and remove the other from the template. The template for techniques includes sub-sections for "situations", remove that wrapper section if not needed.
 
 Understanding files are referenced from the relevant Success Criterion on the WCAG 2.1 page; these links are put in by the script.
 
