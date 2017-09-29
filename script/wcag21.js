@@ -46,6 +46,17 @@ function addTextSemantics() {
 function markConformanceLevel() {
 }
 
+function swapInDefinitions() {
+	if (new URLSearchParams(window.location.search).get("defs") != null) document.querySelectorAll('.internalDFN').forEach(function(node){
+		node.title = node.textContent;
+		node.textContent = findDef(document.querySelector(node.href.substring(node.href.indexOf('#'))).parentNode.nextElementSibling.firstElementChild).textContent;
+	})
+	function findDef(el){
+		if (el.hasAttribute('class')) return findDef(el.nextElementSibling);
+		else return el;
+	}
+}
+
 require(["core/pubsubhub"], function(respecEvents) {
     "use strict";
     respecEvents.sub('end', function(message) {
