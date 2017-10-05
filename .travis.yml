@@ -23,8 +23,11 @@ script:
   - cp -r ../../w3c/wcag21/css css
   - cp ../../w3c/wcag21/guidelines/guidelines.css guidelines/guidelines.css
   - cp ../../w3c/wcag21/guidelines/relative-luminance.xml guidelines/relative-luminance.xml 
-  - curl https://labs.w3.org/spec-generator/?type=respec"&"url=https://rawgit.com/w3c/wcag21/master/requirements/index.html -o requirements/index.html -f
-  - curl https://labs.w3.org/spec-generator/?type=respec"&"url=https://rawgit.com/w3c/wcag21/master/guidelines/index.html -o guidelines/index.html -f
+  - curl https://labs.w3.org/spec-generator/?type=respec"&"url=https://rawgit.com/w3c/wcag21/master/requirements/index.html -o requirements/index.html -f --retry 3
+  - curl https://labs.w3.org/spec-generator/?type=respec"&"url=https://rawgit.com/w3c/wcag21/master/guidelines/index.html -o guidelines/index.html -f --retry 3
+  - cp ../../w3c/wcag21/understanding/understanding.css understanding/understanding.css
+  - cp -r ../../w3c/wcag21/understanding/21 understanding/21 
+  - curl https://labs.w3.org/spec-generator/?type=respec"&"url=https://rawgit.com/w3c/wcag21/master/understanding/index.html -o understanding/index.html -f --retry 3
 
 after_success:
   - git add -A .
