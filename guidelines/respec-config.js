@@ -102,6 +102,6 @@ var respecConfig = {
 	
 	localBiblio: biblio,
 	
-	postProcess: [addTextSemantics]
+	postProcess: [addTextSemantics, swapInDefinitions]
 	
 };
