@@ -4,25 +4,35 @@
 		<title>WCAG 2.0 Understanding Page</title>
 		<link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove" />
 	</head>
-	<body>
-		<h1>Understanding {Shortname}</h1>
+	<body data-gr-c-s-loaded="true" screen_capture_injected="true" cz-shortcut-listen="true" style="">
+		<h1>Understanding Concurrent Input Mechanisms</h1>
 		<section id="intent">
 			<h2>Intent</h2>
 			<p class="instructions">This section contains the main explanatory content of the Understanding. It explains why the Guideline or Success Criterion exists and, at a high level, how to meet it.</p>
 			<section id="benefits">
+        <p>When interacting with web content, users may employ a variety of input mechanisms (such as keyboard and keyboard-like interfaces, or pointer devices such as a mouse, stylus or touchscreen).
+        Users may switch between input mechanisms at any point during their interaction. Input mechanisms may dynamically be added or removed. Even if a device has a primary/preferred input mechanism (for instance,
+        the touchscreen on mobile phones and tablets), the user may instead employ alternative input mechanisms (such as a paired mouse or external keyboard in the case of mobile phones and tablets).
+        Content must therefore be "input agnostic": not make assumptions about which input mechanism is the primary/preferred one, and not limit the user's interaction to any particular input mechanism.</p>
+        
 				<h3>Benefits</h3>
 				<p class="instructions">This explains how following the success criterion benefits particular types of users with disabilities.</p>
+        <p></p>
 				<ul>
-					<li>Benefit</li>
+					<li>Users are able to interact with web content with whichever input mechanism is available to them.</li>
+          <li>Users are able to add/remove input mechanisms.</li>
+          <li>Users can switch between input mechanisms when they desire or the circumstances demand it.</li>
 				</ul>
 			</section>
 		</section>
 		<section id="examples">
 			<h2>Examples</h2>
 			<p class="instructions">Examples in Understanding pages are normally simple lists of hand-waving examples. Sometimes, examples are instead provided in sub-sections with headings. In either case, examples should stay high-level and not get into code specifics, which is for techniques.</p>
-			<ul>
-				<li>Example</li>
-			</ul>
+				<ul>
+					<li>Even though content is being viewed on a mobile phone with a touchscreen, users are able to pair a mouse and keyboard with the phone and operate the content - the content does not assume that the touchscreen is the only input modality the user will want to employ.</li>
+          <li>On a touch-enabled laptop, users are still able to interact with content using their trackpad and keyboard.</li>
+          <li>A user starts interacting with a page using a keyboard on their computer, and they attach a secondary touch-enabled monitor. Content can be operated using this newly added input mechanism, and does not assume that the first input mechanism it detected is the only one in use.</li>
+				</ul>
 			<section class="example">
 				<h3>Example</h3>
 			</section>
@@ -31,7 +41,11 @@
 			<h2>Resources</h2>
 			<p class="instructions"></p>
 			<ul>
-				<li>Resource</li>
+        <li><a href="https://w3c.github.io/pointerevents/">W3C Pointer Events - Level 2</a></li>
+        <li><a href="https://hacks.mozilla.org/2013/04/detecting-touch-its-the-why-not-the-how/">Patrick H. Lauke - Detecting touch: it's the 'why', not the 'how'</a></li>
+				<li><a href="https://www.html5rocks.com/en/mobile/touchandmouse/">Chris Wilson / Paul Kinlan: Touch And Mouse - Together Again For The First Time
+        </a></li><li><a href="https://w3c.github.io/touch-events/#mouse-events">W3C Touch Events - Level 2: Interaction with Mouse Events and click</a></li>
+        <li><a href="https://www.w3.org/TR/mediaqueries-4/#mf-interaction">W3C CSS Media Queries Level 4: Interaction Media Features</a></li>
 			</ul>
 		</section>
 		<section id="techniques">
@@ -50,27 +64,22 @@
 			<section id="sufficient">
 				<h3>Sufficient</h3>
 				<p class="instructions">Techniques that are sufficient to meet the Guideline or Success Criterion.</p>
-				<section class="situation">
-					<h4>Situation</h4>
-					<ul>
-						<li><a href="idref">ID</a> [AND <a href="idref">ID</a>]* [using]
-							<ul>
-								<li><a href="idref">ID</a></li>
-							</ul>
-						</li>
-					</ul>
-				</section>
-			</section>
-			<section id="advisory">
-				<h2>Advisory</h2>
-				<p class="instructions">Techniques that are not sufficient by themselves to meet the Guideline or Success Criterion.</p>
-				<p class="instructions">Same template as sufficient techniques.</p>
+				<ul>
+          <li>Only using high-level, input-agnostic event handlers (<code>focus</code>, <code>blur</code>, <code>click</code>) in Javascript (operating systems/UAs fire these events for all input mechanisms).</li>
+          <li>Registering event handlers for keyboard/keyboard-like and pointer inputs simultaneously in Javascript (see <a href="https://w3c.github.io/pointerevents/#examples">Example 1 in Pointer Events Level 2</a>)</li>
+        </ul>
 			</section>
 			<section id="failure">
 				<h2>Failure</h2>
 				<p class="instructions">Techniques that document conditions that would cause the page not to meet the Guideline or Success Criterion, even if sufficient techniques are also used.</p>
 				<p class="instructions">Same template as sufficient techniques.</p>
+        <ul>
+          <li>Registering <em>either</em> touch event handlers <em>or</em> keyboard/mouse event handlers based on a feature check/presence of a touchscreen in Javascript.</li>
+          <li>Using CSS Media Queries Level 4 Interaction Media Features to determine what the UA deems to be the "primary" input mechanism and assuming no other input mechanisms are present/may be added/may be used.</li>
+        </ul>
 			</section>
 		</section>
-	</body>
+	
+
+</body>
 </html>
