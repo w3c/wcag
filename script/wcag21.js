@@ -66,6 +66,18 @@ require(["core/pubsubhub"], function(respecEvents) {
 	})
 })
 
+// Change the authors credit to WCAG 2.0 editors credit
+require(["core/pubsubhub"], function(respecEvents) {
+    "use strict";
+    respecEvents.sub('end', function(message) {
+    	if (message === 'core/link-to-dfn') {
+    		document.querySelectorAll("div.head dt").forEach(function(node){
+    			if (node.textContent == "Authors:") node.textContent = "WCAG 2.0 Editors:";
+    		});
+    	}
+	})
+})
+
 // Fix the scroll-to-fragID problem:
 require(["core/pubsubhub"], function (respecEvents) {
     "use strict";
