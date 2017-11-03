@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head xmlns:wcag="https://www.w3.org/WAI/GL/"><title>Failure of Success Criterion 2.2.1 and 2.2.4 due to using meta redirect with a time limit
+        </title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body xmlns:wcag="https://www.w3.org/WAI/GL/"><h1>Failure of Success Criterion 2.2.1 and 2.2.4 due to using meta redirect with a time limit
+        </h1><section class="meta"><p class="id">ID: F40</p><p class="technology">Technology: failures</p><p class="type">Type: Failure</p></section><section class="applicability"><h2>When to Use</h2>
+      <p> All pages</p>
+   </section><section class="description"><h2>Description</h2>
+      <p> 
+         meta
+						   http-equiv of {time-out}; url=... is often used to
+                        automatically redirect users. When this occurs after a time delay, it is an
+                        unexpected change of context that may interrupt the user.</p>
+      <p>It is acceptable to use the meta element to create a redirect
+                        when the time-out is set to zero, since the redirect is instant and will not
+                        be perceived as a change of context. However, it is preferable to use
+                        server-side methods to accomplish this. See <a href="https://www.w3.org/TR/WCAG20-TECHS/SVR1">Implementing automatic redirects on the server side
+                            instead of on the client side</a>.</p>
+   </section><section class="examples"><h2>Examples</h2>
+      <section class="example">
+         <section class="description"><h2>Description</h2>
+            <p> The page below is a failure because it will redirect to the URI
+                                http://www.example.com/newpage after a time limit of 5 seconds.</p>
+         </section>
+         <pre xml:space="preserve">
+&lt;html xmlns="http://www.w3.org/1999/xhtml" lang="en"&gt;
+   &lt;head&gt;     
+      &lt;title&gt;Do not use this!&lt;/title&gt;     
+      &lt;meta http-equiv="refresh"
+      content="5; url=http://www.example.com/newpage" /&gt;   
+   &lt;/head&gt;   
+   &lt;body&gt;     
+      &lt;p&gt;       
+         If your browser supports Refresh, you'll be       
+         transported to our        
+         &lt;a href="http://www.example.com/newpage"&gt;new site&lt;/a&gt;        
+         in 5 seconds, otherwise, select the link manually.     
+      &lt;/p&gt;   
+   &lt;/body&gt; 
+&lt;/html&gt;
+</pre>
+      </section>
+   </section><section class="tests"><h2>Tests</h2>
+      <section class="procedure"><h3>Procedure</h3>
+         <ol>
+            <li> View a page. </li>
+            <li> Check that the page does not redirect after a time-out. </li>
+         </ol>
+      </section>
+      <section class="results"><h3>Expected Results</h3>
+         <ol>
+            <li>If check #2 is false, this failure condition applies and content fails the Success Criterion.</li>
+         </ol>
+      </section>
+   </section><section class="related"><h2>Related Techniques</h2>
+      
+      
+   </section><section class="resources"><h2>Resources</h2>
+      
+         <ul>
+            <li> 
+                  <a href="http://www.w3.org/TR/html401/struct/global.html#h-7.4.4">HTML 4.01 META element</a> 
+               </li>
+         </ul>
+      
+   </section></body></html>

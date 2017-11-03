@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head xmlns:wcag="https://www.w3.org/WAI/GL/"><title>Using LabeledBy to Associate Labels and Targets in Silverlight</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body xmlns:wcag="https://www.w3.org/WAI/GL/"><h1>Using LabeledBy to Associate Labels and Targets in Silverlight</h1><section class="meta"><p class="id">ID: SL26</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section class="applicability"><h2>When to Use</h2>
+      <p use-id="silverlight.applicability.general"></p>
+   </section><section class="description"><h2>Description</h2>
+      <p>The objective of this technique is to use the AutomationProperties.LabeledBy property
+    				to associate a non-interactive text label with an interactive field
+    				such as a Silverlight TextBox or RichTextBox.
+    				By using this technique, application authors can use the label text
+    				as the default source for AutomationProperties.Name on
+    				the target, and do not need to specify an explicit AutomationProperties.Name. </p>
+      <p>This technique relies on several Silverlight features: the Name property
+    				for identifying specific UI elements, the AutomationProperties API,
+    				and the ElementName variation of Silverlight data binding. AutomationProperties.Name can
+    				be set on and can target any Silverlight UIElement.
+    				The two most common uses of this labeling technique are for labeling
+    				a form field, and for associating an image caption with an image. </p>
+   </section><section class="examples"><h2>Examples</h2>
+      <section class="example">
+         <h3>Example 1: Two TextBox form fields, each with a LabeledBy reference
+    					to a text label</h3>
+         <section class="description"><h2>Description</h2>
+            <p>The following is XAML for the UI (and can be inserted into a UserControl
+    						XAML root or elsewhere). No code-behind is necessary for this example;
+    						the element relationships are established by the {Binding} values in
+    						the XAML and interpreted appropriately by the Silverlight run time. </p>
+            <pre xml:space="preserve">   &lt;StackPanel x:Name="LayoutRoot" Background="White"&gt;
+       &lt;StackPanel Orientation="Horizontal"&gt;
+           &lt;TextBlock Name="lbl_FirstName"&gt;First name&lt;/TextBlock&gt;
+           &lt;TextBox AutomationProperties.LabeledBy="{Binding ElementName=lbl_FirstName}" Name="tbFirstName" Width="100"/&gt;
+       &lt;/StackPanel&gt;
+       &lt;StackPanel Orientation="Horizontal"&gt;
+           &lt;TextBlock Name="lbl_LastName"&gt;Last name&lt;/TextBlock&gt;
+           &lt;TextBox AutomationProperties.LabeledBy="{Binding ElementName=lbl_LastName}" Name="tbLastName" Width="100"/&gt;
+       &lt;/StackPanel&gt;
+   &lt;/StackPanel&gt;
+</pre>
+            <p>This example is shown in operation in the <a href="https://www.w3.org/WAI/WCAG20/Techniques/working-examples/LabelsTestPage.html">working example of Labels</a>.</p>
+         </section>
+      </section>
+      <section class="example">
+         <h3>Example 2: Labeling / captioning an image </h3>
+         <section class="description"><h2>Description</h2>
+            <pre xml:space="preserve">       &lt;Image HorizontalAlignment="Left" Width="480" Name="img_MyPix"
+                Source="snoqualmie-NF.jpg"
+                AutomationProperties.LabeledBy="{Binding ElementName=caption_MyPix}"/&gt;
+       &lt;TextBlock Name="caption_MyPix"&gt;Mount Snoqualmie North Bowl Skiing&lt;/TextBlock&gt;
+       </pre>
+            <div class="note">
+               <p>If the caption is not a usable text alternative, use the technique <a href="#SL5"></a>, or change the caption
+    						text. </p>
+            </div>
+         </section>
+      </section>
+   </section><section class="tests"><h2>Tests</h2>
+      <section class="procedure"><h3>Procedure</h3>
+         <ol>
+            <li> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. To see
+    					UI Automation, use Microsoft Windows as platform. </li>
+            <li> Use a verification tool that is capable of showing the full automation
+    						tree. (For example, use UIAVerify or Silverlight Spy; see Resources
+    						links.) </li>
+            <li> Verify that any element that has a LabeledBy value
+    							has an associated visible label. </li>
+            <li> Verify that any element that has a LabeledBy value
+    								uses the Name value from that label. </li>
+         </ol>
+      </section>
+      <section class="results"><h3>Expected Results</h3>
+         <p>#3 and #4 are true. </p>
+      </section>
+   </section><section class="related"><h2>Related Techniques</h2>
+      
+   </section><section class="resources"><h2>Resources</h2>
+      
+         <ul>
+            <li>
+                  <a href="https://msdn.microsoft.com/en-us/library/system.windows.automation.automationproperties.labeledby%28VS.95%29.aspx">AutomationProperties.LabeledBy</a> 
+               </li>
+            <li>Tools: <a href="http://firstfloorsoftware.com/silverlightspy">SilverlightSpy</a> or <a href="http://uiautomationverify.codeplex.com/">UIAVerify</a> 
+               </li>
+         </ul>
+      
+   </section></body></html>
