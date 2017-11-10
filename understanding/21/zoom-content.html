@@ -1,143 +1,145 @@
 <!DOCTYPE html>
 <html>
-		<head>
-		<title>Understanding Zoom Content</title>
-		<link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove" />
-		<style type="text/css">
-.highlight {
-	color: white;
-	background-color: black;
-}
-</style>
-		</head>
-		<body>
-<h1>Understanding Zoom Content</h1>
-<section id="intent">
+<head>
+    <title>Understanding Zoom Content</title>
+    <link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove" />
+    <style type="text/css">
+        .highlight {
+            color: white;
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <h1>Understanding Zoom Content</h1>
+    <section id="intent">
           <h2>Intent</h2>
           <p> In short, users will be able to get a &quot;mobile view&quot; of content on a desktop sized monitor that only scrolls in one direction. </p>
           <p>The intent is to allow  the browser zoom function to zoom content to 400% without requiring scrolling in the direction of the text. For western languages, zooming page content will not require horizontal scrolling. The impact of horizontal scrolling can <a href="http://nosetothepage.org/Fitz/2dScroll.html">increase the effort required to read by 40-100 times</a>, so avoiding scrolling should be the aim whenever feasible.  Goal: Authors to responsively support the resizing and reflow of content as allowed by the browser.</p>
           <p>Zoom functionality in browsers allows users to increase the size of all content. When appropriately authored, the content can reflow (wrap) to stay within the windows boundaries (viewport). Spatial relationships can vary, but all content and functionality continues to be available.</p>
           <p>A browser at 1280px wide, and then zoomed in to 400% means your view is then 320px wide, equivalent to a mobile device in portrait mode. Many sites currently cater to that range of sizes, and that number will only increase as more sites update to be mobile friendly. The size 400% was picked as the largest size a standard website can currently get to using responsive design. If the user needs to increase content more than 400%, then a complete <a href="https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/Reflow_to_Single_Column">linearisation</a> would be necessary, which completely overrides the layout of the website. </p>
           <p>Technologies like HTML/CSS, PDF and ePub have methods of reflowing content to fit the width of the user-agent window (viewport). When zooming in on HTML/CSS content, pixels increase in size, so an element that is 200 pixels wide at 200% takes 400 pixels of the width on screen.</p>
-          <section id="benefits">
-    <h3>Benefits</h3>
-    <ul>
-              <li>Responsive design and using native browser functions mitgates the need for screen magnification software and resultant loss of context from horizontal scrolling for users needing 400% or less content size.</li>
-              <li>There are 6 times more people with low vision than are totally blind. (<a href="http://www.who.int/mediacentre/factsheets/fs282/en/">World Health Organization (WHO)</a> estimates that of the 285 million people   worldwide who are visually impaired, 39 million are blind and 246 have   low vision, that is, 14% are blind and 86% have low vision.)</li>
-              <li>A significant proportion of people with low vision need more than a 200% increase in the size of content. From the <a href="http://webaim.org/projects/lowvisionsurvey/#magnification">Webaim survey</a> 25% of low vision users indicated needing magnification to 400% or more, which is probably more than the total number of screen reader users. (It is 42% for 300% or more).</li>
-              <li>Horizontal scrolling makes reading difficult for people with low vision, or cognitive disorders, or people on mobile divices. Horizontal scrolling can <a href="http://nosetothepage.org/Fitz/2dScroll.html">increase the effort required to read by 40-100 times</a>, so avoiding scrolling should be the aim whenever feasible.</li>
-              <li>Some people need to increase the size of all content in order to perceive information. </li>
-              <li>This does not require the user of assistive technology such as screen magnification software.</li>
-            </ul>
-  </section>
-          <h2>FAQ</h2>
-          <h3>Mobile devices start smaller, how does that work?</h3>
-          <p>The main principle here is that the web content must be capable of resizing. It is not a device-specific issue. Starting with a desktop browser at 1280px wide and zooming 400% provides a mobile view of 320 px. This works in desktop/laptop browsers.</p>
-          <p>The whole concept is enabled by media queries, which were designed to enable reformatting for mobile devices. However, the physics of the smaller screens means that expanding text and/or other content is more constrained. The layout method browsers use on small screen devices does not reflow in the same way, it magnifies (e.g. with pinch-zoom) and causes horizontal scrolling regardless of what an author does.</p>
-          <p>That is one of the reasons to keep 1.4.4 at a lower threshold (200%) without a prohibition on 2D scrolling, there is an applicable SC for mobile. The other reason is that it covers things within the '2D' exception, such as text within data tables.</p>
-          <p>For content that is of a fixed ratio (video, images etc) they come under the "require two-dimensional layout" exception. In practice they can expand up to the width (and/or height) of the viewport, and be limited to that.</p>
-          <h3>Is the 400% by area or dimension?</h3>
-          <p>As per WCAG 2.0's 1.4.4, it is by dimension. I.e. you zoom 200% and the width is 200% wider and height is 200% taller.</p>
-          <h3>What about sites which bring in external content?</h3>
-          <p>Similar to other SCs, including content from elsewhere is still being displayed in that page therefore under the sites responsibility. There is a responsibility to transform content in an accessible way from <a href="https://www.w3.org/TR/ATAG20/#gl_b12">ATAG 2.0</a>. In practice, if the pages shows external content, it should at least provide that content the full width of the page at higher zoom levels / smaller screen sizes.</p>
-          <h3>Does this mean sites have to be responsive?</h3>
-          <p>Basically: yes.</p>
-          <p>Another way of saying that is sites have to adapt to different devices and browsers, or as <a href="https://stuffandnonsense.co.uk/blog/about/i_dont_care_about_responsive_web_design/">Andy Clarke put it in <strong>2011</strong></a>:</p>
-          <blockquote>Web design is responsive design, Responsive Web Design is web design, done right.</blockquote>
-          The switch to responsive design is like moving from table-based layout to CSS (actually, I think that was harder than responsive design). We've been talking about zoom and responsive design for accessibility <a href="https://alastairc.ac/2013/08/browser-zoom-great-for-accessibility/#comment-165826">since at least 2013</a>, and even then it was apparent that sites were defaulting to responsive when re-designing.
-          
-          Apart from particular things (covered by the two-dimensional exception) we have not found a reasonable feasibility argument that new sites/content cannot be implemented in a responsive manner.
-          <h3>What happens if sites move/change things at smaller sizes?</h3>
-          <p>So long as the content and functionality is still <em>available</em> that is ok. If some content is hidden behind a show/hide btton, or navigation is moved into a drop-down it is still available. (Like the 'hamburger' icon patter for navigation).</p>
-          <p>It is possible people might get confused if things move or get hidden, however, the physics demands that something has to give, you cannot make things bigger and fit them in the same space. Also, the people who need it most would typically be zoomed-in when arriving, so may not notice the difference.</p>
-          <p>However, if content or functionality is removed that would fail this success criteria.</p>
-        </section>
-<section id="examples">
+    </section>
+    <section id="benefits">
+        <h3>Benefits</h3>
+        <ul>
+            <li>Responsive design and using native browser functions mitgates the need for screen magnification software and resultant loss of context from horizontal scrolling for users needing 400% or less content size.</li>
+            <li>There are 6 times more people with low vision than are totally blind. (<a href="http://www.who.int/mediacentre/factsheets/fs282/en/">World Health Organization (WHO)</a> estimates that of the 285 million people   worldwide who are visually impaired, 39 million are blind and 246 have   low vision, that is, 14% are blind and 86% have low vision.)</li>
+            <li>A significant proportion of people with low vision need more than a 200% increase in the size of content. From the <a href="http://webaim.org/projects/lowvisionsurvey/#magnification">Webaim survey</a> 25% of low vision users indicated needing magnification to 400% or more, which is probably more than the total number of screen reader users. (It is 42% for 300% or more).</li>
+            <li>Horizontal scrolling makes reading difficult for people with low vision, or cognitive disorders, or people on mobile divices. Horizontal scrolling can <a href="http://nosetothepage.org/Fitz/2dScroll.html">increase the effort required to read by 40-100 times</a>, so avoiding scrolling should be the aim whenever feasible.</li>
+            <li>Some people need to increase the size of all content in order to perceive information. </li>
+            <li>This does not require the user of assistive technology such as screen magnification software.</li>
+        </ul>
+    </section>
+    <section id="faq">
+        <h2>FAQ</h2>
+        <h3>Mobile devices start smaller, how does that work?</h3>
+        <p>The main principle here is that the web content must be capable of resizing. It is not a device-specific issue. Starting with a desktop browser at 1280px wide and zooming 400% provides a mobile view of 320 px. This works in desktop/laptop browsers.</p>
+        <p>The whole concept is enabled by media queries, which were designed to enable reformatting for mobile devices. However, the physics of the smaller screens means that expanding text and/or other content is more constrained. The layout method browsers use on small screen devices does not reflow in the same way, it magnifies (e.g. with pinch-zoom) and causes horizontal scrolling regardless of what an author does.</p>
+        <p>That is one of the reasons to keep 1.4.4 at a lower threshold (200%) without a prohibition on 2D scrolling, there is an applicable SC for mobile. The other reason is that it covers things within the '2D' exception, such as text within data tables.</p>
+        <p>For content that is of a fixed ratio (video, images etc) they come under the "require two-dimensional layout" exception. In practice they can expand up to the width (and/or height) of the viewport, and be limited to that.</p>
+        <h3>Is the 400% by area or dimension?</h3>
+        <p>As per WCAG 2.0's 1.4.4, it is by dimension. I.e. you zoom 200% and the width is 200% wider and height is 200% taller.</p>
+        <h3>What about sites which bring in external content?</h3>
+        <p>Similar to other SCs, including content from elsewhere is still being displayed in that page therefore under the sites responsibility. There is a responsibility to transform content in an accessible way from <a href="https://www.w3.org/TR/ATAG20/#gl_b12">ATAG 2.0</a>. In practice, if the pages shows external content, it should at least provide that content the full width of the page at higher zoom levels / smaller screen sizes.</p>
+        <h3>Does this mean sites have to be responsive?</h3>
+        <p>Basically: yes.</p>
+        <p>Another way of saying that is sites have to adapt to different devices and browsers, or as <a href="https://stuffandnonsense.co.uk/blog/about/i_dont_care_about_responsive_web_design/">Andy Clarke put it in <strong>2011</strong></a>:</p>
+        <blockquote>Web design is responsive design, Responsive Web Design is web design, done right.</blockquote>
+        The switch to responsive design is like moving from table-based layout to CSS (actually, I think that was harder than responsive design). We've been talking about zoom and responsive design for accessibility <a href="https://alastairc.ac/2013/08/browser-zoom-great-for-accessibility/#comment-165826">since at least 2013</a>, and even then it was apparent that sites were defaulting to responsive when re-designing.
+
+        Apart from particular things (covered by the two-dimensional exception) we have not found a reasonable feasibility argument that new sites/content cannot be implemented in a responsive manner.
+        <h3>What happens if sites move/change things at smaller sizes?</h3>
+        <p>So long as the content and functionality is still <em>available</em> that is ok. If some content is hidden behind a show/hide btton, or navigation is moved into a drop-down it is still available. (Like the 'hamburger' icon patter for navigation).</p>
+        <p>It is possible people might get confused if things move or get hidden, however, the physics demands that something has to give, you cannot make things bigger and fit them in the same space. Also, the people who need it most would typically be zoomed-in when arriving, so may not notice the difference.</p>
+        <p>However, if content or functionality is removed that would fail this success criteria.</p>
+    </section>
+    <section id="examples">
           <h2>Examples</h2>
           <section class="example">
-    <h3>Example 1: Content Overlap</h3>
-    <p><img style="border: black 2px solid" src="https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/images/7/71/Zoom-100.png" alt="web page with default text size, with heading spanning 2 columns, main text, and sidebar text" height="224" width="305"/><br>
-              Web page with default text size, with heading spanning 2 columns, main text, and sidebar text</p>
-    <p> <img style="border: black 2px solid" src="https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/images/2/2a/Zoom-overlap.png" alt="Web page with larger text. Example shows that when text size is increased, the heading overlaps the main text, the main text overlaps the sidebar text, and the sidebar text is cut off at the bottom." height="224" width="305" /><br>
-              Web page that is zoomed. Result are text size increased, the heading overlaps the main text, the main text overlaps the sidebar text, and the sidebar text is cut off at the bottom.</p>
-  </section>
-          <section class="example">
-    <h3>Example 2: Horizontal Scrolling</h3>
-    <p>Shows a page at 100% zoom with full user interface and no horizontal scroll bar. Page on the right shows the same page at 400% zoom with partial user interface, partial title, and horizontal scroll bar (indicated by red arrow).</p>
-    <p><img style="border: black 2px solid" src="https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/images/2/2b/Zoom-start.png" width="400" height="223" alt="page at 100%"> <img style="border: black 2px solid" src="https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/images/1/1b/Zoom_fail_400pc.png" alt="page at 400%" width="400" height="223"></p>
-  </section>
-          <section class="example">
-    <h3>Example 3 - Demonstration</h3>
-    <p>The  demonstration tries to show the difficulties of reading text that does not wrap/reflow when the user zooms the content to 400%. Paragraph 1 and 2 below have the same text and hightlighting. The highlighting is set close to 320 pixels (depending on word boundaries). Paragraph 1 has a fixed width of 1280 pixels. Paragraph 2 has width set to 100%. Set your viewport so Paragraph 1 is completely within the viewport with no text off the screen. The black highlight is to show viewport boundaries at 400% ( roughly 320 pixels, or one-fourth of 1280 pixels) zoom. There are  21 scroll boundaries. </p>
-    <p>Zoom your browser to 400%. Notice that Paragraph 1 has scrolled out of the view port because of its fixed width. Read the paragraph, pausing at each hightlight change. In Paragraph 2, each hightlighted piece will roughtly fill (depending on your browser settings - e.g.font size) the viewport. There is no content that is beyond the left boundary of the screen.   Notice that the paragraph is roughly alternating lines that are highlighted or not. The reader simply reads the text down the screen with no horizontal scrolling. </p>
-    <h4>Paragraph 1 - styled with fixed width of 1280 pixels</h4>
-    <p style="width:1280px;">This unlikely story begins on a sea that <span class="highlight">was a blue dream, as
-      colorful as blue-</span>silk stockings, and beneath a sky as blue as <span class="highlight">the
-      irises of children's eyes. From the</span> western half of the sky the
-              sun was <span class="highlight">shying little golden disks at the sea&mdash;if you</span> gazed
-              intently enough you could see them <span class="highlight">skip from wave tip to wave tip until they</span> joined a broad collar of golden coin<span class="highlight"> that was
-      collecting half a mile out and would</span> eventually be a dazzling
-              sunset. About <span class="highlight">half-way between the Florida shore and</span> the golden
-              collar a white steam-yacht, <span class="highlight">very young and graceful, was riding at</span> anchor and under a blue-and-white awning <span class="highlight">aft a yellow-haired
-      girl reclined in a</span> wicker settee reading The Revolt of the<span class="highlight"> Angels, by Anatole France.</span></p>
-    <h4>Paragaph 2 - no styling</h4>
-    <p width="100%">This unlikely story begins on a sea that <span class="highlight">was a blue dream, as
-      colorful as blue-silk</span> stockings, and beneath a sky as blue as <span class="highlight">the
-      irises of children's eyes. From the</span> western half of the sky the
-              sun was <span class="highlight">shying little golden disks at the sea&mdash;if you</span> gazed
-              intently enough you could see them <span class="highlight">skip from wave tip to wave tip until they</span> joined a broad collar of golden coin<span class="highlight"> that was
-      collecting half a mile out and would</span> eventually be a dazzling
-              sunset. About <span class="highlight">half-way between the Florida shore and</span> the golden
-              collar a white steam-yacht, <span class="highlight">very young and graceful, was riding at</span> anchor and under a blue-and-white awning <span class="highlight">aft a yellow-haired
-      girl reclined in a</span> wicker settee reading The Revolt of the<span class="highlight"> Angels, by Anatole France.</span></p>
-  </section>
+            <h3>Example 1: Content Overlap</h3>
+            <p><img style="border: black 2px solid" src="https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/images/7/71/Zoom-100.png" alt="web page with default text size, with heading spanning 2 columns, main text, and sidebar text" height="224" width="305"/><br>
+                    Web page with default text size, with heading spanning 2 columns, main text, and sidebar text</p>
+            <p> <img style="border: black 2px solid" src="https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/images/2/2a/Zoom-overlap.png" alt="Web page with larger text. Example shows that when text size is increased, the heading overlaps the main text, the main text overlaps the sidebar text, and the sidebar text is cut off at the bottom." height="224" width="305" /><br>
+            Web page that is zoomed. Result are text size increased, the heading overlaps the main text, the main text overlaps the sidebar text, and the sidebar text is cut off at the bottom.</p>
         </section>
+        <section class="example">
+            <h3>Example 2: Horizontal Scrolling</h3>
+            <p>Shows a page at 100% zoom with full user interface and no horizontal scroll bar. Page on the right shows the same page at 400% zoom with partial user interface, partial title, and horizontal scroll bar (indicated by red arrow).</p>
+            <p><img style="border: black 2px solid" src="https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/images/2/2b/Zoom-start.png" width="400" height="223" alt="page at 100%"> <img style="border: black 2px solid" src="https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/images/1/1b/Zoom_fail_400pc.png" alt="page at 400%" width="400" height="223"></p>
+        </section>
+        <section class="example">
+            <h3>Example 3 - Demonstration</h3>
+            <p>The  demonstration tries to show the difficulties of reading text that does not wrap/reflow when the user zooms the content to 400%. Paragraph 1 and 2 below have the same text and hightlighting. The highlighting is set close to 320 pixels (depending on word boundaries). Paragraph 1 has a fixed width of 1280 pixels. Paragraph 2 has width set to 100%. Set your viewport so Paragraph 1 is completely within the viewport with no text off the screen. The black highlight is to show viewport boundaries at 400% ( roughly 320 pixels, or one-fourth of 1280 pixels) zoom. There are  21 scroll boundaries. </p>
+            <p>Zoom your browser to 400%. Notice that Paragraph 1 has scrolled out of the view port because of its fixed width. Read the paragraph, pausing at each hightlight change. In Paragraph 2, each hightlighted piece will roughtly fill (depending on your browser settings - e.g.font size) the viewport. There is no content that is beyond the left boundary of the screen.   Notice that the paragraph is roughly alternating lines that are highlighted or not. The reader simply reads the text down the screen with no horizontal scrolling. </p>
+            <h4>Paragraph 1 - styled with fixed width of 1280 pixels</h4>
+            <p style="width:1280px;">This unlikely story begins on a sea that <span class="highlight">was a blue dream, as
+            colorful as blue-</span>silk stockings, and beneath a sky as blue as <span class="highlight">the
+            irises of children's eyes. From the</span> western half of the sky the
+            sun was <span class="highlight">shying little golden disks at the sea&mdash;if you</span> gazed
+            intently enough you could see them <span class="highlight">skip from wave tip to wave tip until they</span> joined a broad collar of golden coin<span class="highlight"> that was
+            collecting half a mile out and would</span> eventually be a dazzling
+            sunset. About <span class="highlight">half-way between the Florida shore and</span> the golden
+            collar a white steam-yacht, <span class="highlight">very young and graceful, was riding at</span> anchor and under a blue-and-white awning <span class="highlight">aft a yellow-haired
+            girl reclined in a</span> wicker settee reading The Revolt of the<span class="highlight"> Angels, by Anatole France.</span></p>
+            <h4>Paragaph 2 - no styling</h4>
+            <p width="100%">This unlikely story begins on a sea that <span class="highlight">was a blue dream, as
+            colorful as blue-silk</span> stockings, and beneath a sky as blue as <span class="highlight">the
+            irises of children's eyes. From the</span> western half of the sky the
+            sun was <span class="highlight">shying little golden disks at the sea&mdash;if you</span> gazed
+            intently enough you could see them <span class="highlight">skip from wave tip to wave tip until they</span> joined a broad collar of golden coin<span class="highlight"> that was
+            collecting half a mile out and would</span> eventually be a dazzling
+            sunset. About <span class="highlight">half-way between the Florida shore and</span> the golden
+            collar a white steam-yacht, <span class="highlight">very young and graceful, was riding at</span> anchor and under a blue-and-white awning <span class="highlight">aft a yellow-haired
+            girl reclined in a</span> wicker settee reading The Revolt of the<span class="highlight"> Angels, by Anatole France.</span></p>
+    </section>
+</section>
 <section id="resources">
-          <h2>Resources </h2>
-          <ul>
-    <li><a href="http://w3c.github.io/low-vision-a11y-tf/requirements.html#size-of-all-elements"> Accessibility Requirements for People with Low Vision, Section 3.3.5: Size of All Content</a></li>
-  </ul>
-        </section>
-<section id="techniques">
-          <h2>Techniques</h2>
-          <section id="sufficient">
-    <h3>Sufficient</h3>
-    <p class="instructions">Techniques that are sufficient to meet the Guideline or Success Criterion.</p>
-    <section class="situation">
-              <h4>Situation</h4>
-              <ul>
-        <li><a href="https://www.w3.org/TR/WCAG20-TECHS/G146"> G146: Using liquid layout</a> and ''AND'' using measurements that are relative to other measurements in the content by using one or more of the following techniques:
-                  <ul>
-            <li><a href="https://www.w3.org/TR/WCAG20-TECHS/C12%20https://www.w3.org/TR/WCAG20-TECHS/C12"> C12: Using percent for font sizes (CSS)</a> OR </li>
-            <li><a href="https://www.w3.org/TR/WCAG20-TECHS/C13"> C13: Using named font sizes (CSS)</a> OR </li>
-            <li><a href="https://www.w3.org/TR/WCAG20-TECHS/C14"> C14: Using em units for font sizes (CSS)</a> OR </li>
-            <li><a href="https://www.w3.org/TR/WCAG20-TECHS/C24"> C24: Using percentage values in CSS for container sizes (CSS)</a> OR </li>
-            <li><a href="https://www.w3.org/TR/WCAG20-TECHS/FLASH33"> FLASH33: Using relative values for Flash object dimensions (Flash)</a></li>
-            <li><a href="https://www.w3.org/TR/WCAG20-TECHS/SCR34"> SCR34: Calculating size and position in a way that scales with text size (Scripting)</a> OR </li>
-          </ul>
-                </li>
-        <li><a href="https://www.w3.org/TR/WCAG20-TECHS/G206"> G206: Providing options within the content to switch to a layout that does not require the user to scroll horizontally to read a line of text</a></li>
-      </ul>
-              <h3>New Techniques</h3>
-              <ul>
-        <li> Using fluid grids (CSS). Ref: <a href="http://alistapart.com/article/fluidgrids"> fluid grids</a></li>
-        <li> Using em based media queries (CSS). Ref: <a href="http://blog.cloudfour.com/the-ems-have-it-proportional-media-queries-ftw/"> em based media queries</a></li>
-        <li> Using responsive images (CSS). Ref: HTML <a href="https://w3c.github.io/html/semantics-embedded-content.html#the-picture-element"> picture element</a> and <a href="https://w3c.github.io/html/semantics-embedded-content.html#ref-for-element-attrdef-img-srcset-1"> srcset attribute</a></li>
-      </ul>
-            </section>
-  </section>
-          <section id="advisory">
-    <h2>Advisory</h2>
-    <p class="instructions">None</p>
-  </section>
-          <section id="failure">
-    <h2>Failure</h2>
+    <h2>Resources </h2>
     <ul>
-              <li>@@ Using fixed sized containers and fixed position content (CSS)</li>
-              <li> @@ "Interfering with a user agent's ability to zoom" i.e., author using: maximum-scale or minimum-scale or user-scalable=no or user-scalable=0 in the meta element ?? @@ Note: In <a href="https://lists.w3.org/Archives/Public/w3c-wai-gl/2016AprJun/0502.html"> Pinch zoom thread on the WCAG list</a> people did not seem to be in favor of this as a failure.</li>
-              <li> @@ (HTML) Using preformatted text or excluding preformatting text  as an exception to no two dimensional scrolling. </li>
+        <li><a href="http://w3c.github.io/low-vision-a11y-tf/requirements.html#size-of-all-elements"> Accessibility Requirements for People with Low Vision, Section 3.3.5: Size of All Content</a></li>
+    </ul>
+</section>
+<section id="techniques">
+    <h2>Techniques</h2>
+    <section id="sufficient">
+        <h3>Sufficient</h3>
+        <p class="instructions">Techniques that are sufficient to meet the Guideline or Success Criterion.</p>
+        <section class="situation">
+            <h4>Situation</h4>
+            <ul>
+                <li><a href="https://www.w3.org/TR/WCAG20-TECHS/G146"> G146: Using liquid layout</a> and ''AND'' using measurements that are relative to other measurements in the content by using one or more of the following techniques:
+                    <ul>
+                        <li><a href="https://www.w3.org/TR/WCAG20-TECHS/C12%20https://www.w3.org/TR/WCAG20-TECHS/C12"> C12: Using percent for font sizes (CSS)</a> OR </li>
+                        <li><a href="https://www.w3.org/TR/WCAG20-TECHS/C13"> C13: Using named font sizes (CSS)</a> OR </li>
+                        <li><a href="https://www.w3.org/TR/WCAG20-TECHS/C14"> C14: Using em units for font sizes (CSS)</a> OR </li>
+                        <li><a href="https://www.w3.org/TR/WCAG20-TECHS/C24"> C24: Using percentage values in CSS for container sizes (CSS)</a> OR </li>
+                        <li><a href="https://www.w3.org/TR/WCAG20-TECHS/FLASH33"> FLASH33: Using relative values for Flash object dimensions (Flash)</a></li>
+                        <li><a href="https://www.w3.org/TR/WCAG20-TECHS/SCR34"> SCR34: Calculating size and position in a way that scales with text size (Scripting)</a> OR </li>
+                    </ul>
+                </li>
+                <li><a href="https://www.w3.org/TR/WCAG20-TECHS/G206"> G206: Providing options within the content to switch to a layout that does not require the user to scroll horizontally to read a line of text</a></li>
             </ul>
-  </section>
+            <h3>New Techniques</h3>
+            <ul>
+                <li> Using fluid grids (CSS). Ref: <a href="http://alistapart.com/article/fluidgrids"> fluid grids</a></li>
+                <li> Using em based media queries (CSS). Ref: <a href="http://blog.cloudfour.com/the-ems-have-it-proportional-media-queries-ftw/"> em based media queries</a></li>
+                <li> Using responsive images (CSS). Ref: HTML <a href="https://w3c.github.io/html/semantics-embedded-content.html#the-picture-element"> picture element</a> and <a href="https://w3c.github.io/html/semantics-embedded-content.html#ref-for-element-attrdef-img-srcset-1"> srcset attribute</a></li>
+            </ul>
         </section>
+    </section>
+    <section id="advisory">
+        <h2>Advisory</h2>
+        <p class="instructions">None</p>
+    </section>
+    <section id="failure">
+        <h2>Failure</h2>
+        <ul>
+            <li>@@ Using fixed sized containers and fixed position content (CSS)</li>
+            <li> @@ "Interfering with a user agent's ability to zoom" i.e., author using: maximum-scale or minimum-scale or user-scalable=no or user-scalable=0 in the meta element ?? @@ Note: In <a href="https://lists.w3.org/Archives/Public/w3c-wai-gl/2016AprJun/0502.html"> Pinch zoom thread on the WCAG list</a> people did not seem to be in favor of this as a failure.</li>
+            <li> @@ (HTML) Using preformatted text or excluding preformatting text  as an exception to no two dimensional scrolling. </li>
+        </ul>
+    </section>
+</section><!-- end techniques -->
 </body>
 </html>
