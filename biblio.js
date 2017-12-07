@@ -7,7 +7,7 @@ var biblio = {
       	},
     
     "GPII": {
-        "href": "http://gpii.net/",
+        "href": "https://gpii.net/",
         "title": "Global Public Inclusive Infrastructure"
     },
       	
@@ -26,7 +26,7 @@ var biblio = {
       	},
     
     "ISO_9241-112": {
-        "uri": "http://www.iso.org/iso/catalogue_detail.htm?csnumber=64840",
+        "uri": "https://www.iso.org/iso/catalogue_detail.htm?csnumber=64840",
         "title": "Ergonomics of human-system interaction -- Part 112: Principles for the presentation of information",
         "publisher": "International Standards Organization"
     },
@@ -39,7 +39,7 @@ var biblio = {
       			"R. Motta"
       		],
       		"date": "November 5, 1996",
-      		"href": "http://www.w3.org/Graphics/Color/sRGB.html",
+      		"href": "https://www.w3.org/Graphics/Color/sRGB.html",
       		"title": "A Standard Default Color Space for the Internet - sRGB, Version 1.10"
       	},
       	
