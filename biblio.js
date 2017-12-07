@@ -26,7 +26,7 @@ var biblio = {
       	},
     
     "ISO_9241-112": {
-        "uri": "https://www.iso.org/iso/catalogue_detail.htm?csnumber=64840",
+        "uri": "https://www.iso.org/standard/64840.html",
         "title": "Ergonomics of human-system interaction -- Part 112: Principles for the presentation of information",
         "publisher": "International Standards Organization"
     },
