@@ -6,7 +6,7 @@ function linkUnderstanding() {
 	var understandingBaseURI;
 	if (respecConfig.specStatus == "ED") understandingBaseURI = "../understanding/21/";
 	else understandingBaseURI = "https://www.w3.org/WAI/WCAG21/Understanding/21/";
-	document.querySelectorAll('.sc.new,.sc.proposed').forEach(function(node){
+	document.querySelectorAll('.sc').forEach(function(node){
 		var heading = node.firstElementChild.textContent;
 		var pathFrag = titleToPathFrag(heading);
 		var el = document.createElement("div");
