@@ -8,9 +8,10 @@ function linkUnderstanding() {
 	else understandingBaseURI = "https://www.w3.org/WAI/WCAG21/Understanding/21/";
 	document.querySelectorAll('.sc.new,.sc.proposed').forEach(function(node){
 		var heading = node.firstElementChild.textContent;
+		var pathFrag = titleToPathFrag(heading);
 		var el = document.createElement("div");
 		el.setAttribute("class", "doclinks");
-		el.innerHTML = "<a href=\"" + understandingBaseURI + titleToPathFrag(heading) + ".html\">Understanding " + heading + "</a>";
+		el.innerHTML = "<a href=\"https://www.w3.org/TR/WCAG21/quickref/#" + pathFrag + "\">How to Meet " + heading + "</a> <span class=\"screenreader\">|</span> <a href=\"" + understandingBaseURI + pathFrag + ".html\">Understanding " + heading + "</a>";
 		node.insertBefore(el, node.children[1]);
 	})
 }
