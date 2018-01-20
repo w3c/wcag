@@ -21,6 +21,7 @@ var respecConfig = {
 	// if you wish the publication date to be other than today, set this
 	//publishDate:  "2014-12-11",
 	copyrightStart:  "2017",
+	license: "document",
 	
 	// if there is a previously published draft, uncomment this and set its YYYY-MM-DD date
 	// and its maturity status
@@ -63,6 +64,38 @@ var respecConfig = {
 			w3cid: 34017
 		}
 	],
+	authors: [
+		{
+			name: "Ben Caldwell",
+			company: "Trace R&D Center, University of Wisconsin-Madison",
+			w3cid: 33602
+		},
+		{
+			name: "Loretta Guarino Reid",
+			company: "Google, Inc.",
+			w3cid: 35436
+		},
+		{
+			name: "Gregg Vanderheiden",
+			company: "Trace R&D Center, University of Wisconsin-Madison",
+			w3cid: 3442
+		},
+		{
+			name: "Wendy Chisholm",
+			company: "W3C",
+			w3cid: 4099
+		},
+		{
+			name: "John Slatin",
+			company: "Accessibility Institute, University of Texas at Austin",
+			w3cid: 35537
+		},
+		{
+			name: "Jason White",
+			company: "University of Melbourne",
+			w3cid: 74028
+		}
+	],
 	
 	// authors, add as many as you like.
 	// This is optional, uncomment if you have authors as well as editors.
@@ -102,6 +135,6 @@ var respecConfig = {
 	
 	localBiblio: biblio,
 	
-	postProcess: [addTextSemantics]
+	postProcess: [addTextSemantics, swapInDefinitions]
 	
 };

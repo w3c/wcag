@@ -1,75 +1,107 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 	<head>
-		<title>WCAG 2.0 Understanding Page</title>
+		<meta charset="UTF-8" />
+		<title>Understanding Content on Hover or Focus</title>
 		<link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove" />
 	</head>
 	<body>
-		<h1>Understanding {Shortname}</h1>
+		<h1>Understanding Content on Hover or Focus</h1>
 		<section id="intent">
 			<h2>Intent</h2>
-			<p class="instructions">This section contains the main explanatory content of the Understanding. It explains why the Guideline or Success Criterion exists and, at a high level, how to meet it.</p>
-			<section id="benefits">
-				<h3>Benefits</h3>
-				<p class="instructions">This explains how following the success criterion benefits particular types of users with disabilities.</p>
-				<ul>
-					<li>Benefit</li>
-				</ul>
+			<p>The intent of this success criterion is to enable  common user methods for perceiving and interacting with additional content which appears on pointer hover or keyboard focus.  Examples are custom tooltips, sub-menus, and other nonmodal popups which display on hover and focus.  Such additional content can present many challenges for users with low vision and others whose mouse accuracy may be low.  Three conditions are specified by the criterion.</p>
+			
+			<h3>1. Visible Trigger</h3>
+			<p>The intent of this condition is to ensure that the additional content does not interfere with viewing or operating the trigger.  If the additional content is positioned to cover all or part of its trigger, then users may find the trigger can become much more difficult to perceive or activate due to visual field disruption.  Under magnification, screen area that doesn't trigger the additional content may be the minority, resulting in a difficult user cycle to pan the magnified screen using the mouse without re-triggering the additional content.  Two methods may be used to satisfy this condition and prevent such interference:</p>
+			<ol>
+			<li>Position the additional content so that it does not obscure any of the trigger with the exception of purely decorative content, such as whitespace or a background graphic which provides no information.</li>
+			<li>Provide a mechanism to easily dismiss the additional content, such as by pressing escape or a close button.</li>
+			</ol>
+			<p>For most triggers of relatively small size, it is desirable for both methods to be implemented.  If the trigger is large, noticing the additional content may be of concern if it appears away from the trigger.  In those cases, only the second method may be appropriate.</p>
+			
+			<h3>2. Hoverable</h3>
+			<p>The intent of this condition is to ensure that content which may appear on hover of a target may also be hovered itself.  Content which appears on  hover can be difficult or impossible to perceive if a user is required to keep their mouse pointer over the trigger. When the added content is large, magnified views may mean that the user needs to scroll or pan to completely view it, which is impossible unless the user is able to move their pointer off the trigger without the additional content disappearing. Another common situation is when large pointers have been selected via platform settings or assistive technology. Here, the pointer can obscure a significant area of the additional content. A technique to view the content fully in both situations is to move the mouse pointer directly from the trigger onto the new content.  This capability also offers significant advantages for users who utilize screen reader feedback on mouse interactions.  This condition generally implies that the additional content overlaps or is positioned adjacent to the target.</p>
+			
+			<h3>3. Persistent</h3>
+			<p>The intent of this condition is to ensure users have adequate time to perceive the additional content after it becomes visible.  Users with disabilities may require more time for many reasons, such as to change magnification, move the pointer, or simply to bring the new content into their visual field.  Once it appears, the content should remain visible until:</p>
+			<ul>
+			<li>The user removes hover or focus from the trigger and the additional content, consistent with the typical user experience;</li>
+			<li>The user dismisses the additional content via the mechanism provided to satisfy the Dismissable condition; or</li>
+			<li>The information conveyed by the additional content becomes invalid, such as an error or success message.</li>
+			</ul>
+			
+			<h3>Additional Notes</h3>
+			<ul>
+			<li>This criterion does not attempt to solve such issues when the appearance of the additional content is completely controlled by the user agent. A prominent example is the common behavior of browsers to display the <code>title</code>  attribute in HTML as a small tooltip.</li>
+			<li>Modal dialogs are out of scope for this criterion because they must take keyboard focus  and thus should not appear on hover or focus.  Refer to <a href="https://www.w3.org/TR/WCAG21/#on-focus">Success Criterion 3.2.1, On Focus</a>.</li>
+			<li>Content which can be triggered via pointer hover should also be able to be triggered by keyboard focus.  Refer to <a href="https://www.w3.org/TR/WCAG21/#keyboard">Success Criterion 2.1.1, Keyboard</a>.</li>
+			</ul>
 			</section>
+			
+			<section id="benefits">
+			<h2>Benefits</h2>
+			<ul>
+			<li>Users with low vision who view content under magnification will be better able to view content on hover or focus without reducing their desired magnification.</li>
+			<li>Users who increase the size of mouse cursors via platform settings or assistive technology will be able to employ a technique to view obscured content on hover.</li>
+			<li>Users with low vision or cognitive disabilities will have adequate time to perceive content appearing on hover or focus and to view the trigger content with less distraction.</li>
+			</ul>
 		</section>
+		
 		<section id="examples">
 			<h2>Examples</h2>
-			<p class="instructions">Examples in Understanding pages are normally simple lists of hand-waving examples. Sometimes, examples are instead provided in sub-sections with headings. In either case, examples should stay high-level and not get into code specifics, which is for techniques.</p>
-			<ul>
-				<li>Example</li>
-			</ul>
+			
 			<section class="example">
-				<h3>Example</h3>
+				<h3>Example 1: Tooltip Allowing for Visible Trigger</h3>
+				<figure>
+				<img src="https://i.imgur.com/K3k8WYk.png" alt="Screenshot of a button with a mouse pointer over it, and a tooltip displayed  below the button">
+				<img src="https://i.imgur.com/i0ndsmP.png" alt="Screenshot of a button with a mouse pointer over it, and no tooltip">
+				<figcaption>A tooltip is displayed below a button on hover so as not to obscure the button itself.  A user can also press the Escape key to clear the tooltip without moving the mouse.</figcaption>
+				</figure>
+				<figure>
+				<img src="https://i.imgur.com/625Nyod.png" alt="Screenshot of a button with a focus indicator on it, and no tooltip">
+				<figcaption>The button's tooltip also appears on focus and can be removed with the Escape key.</figcaption>
+				</figure>
 			</section>
+			
+			<section class="example">
+				<h3>Example 2: Hoverable Tooltip</h3>
+				<figure>
+				<img src="https://i.imgur.com/9Br0nqM.png" alt="Screenshot of a button with a large mouse pointer over it, and a tooltip displayed  below the button which is obscured by the large pointer">
+				<img src="https://i.imgur.com/aa1LTLl.png" alt="Screenshot of a button with a tooltip below it, and a large mouse pointer at the bottom of the tooltip">
+				<figcaption>A button's tooltip is displayed directly below it on mouse hover which can easily be obscured by a large pointer.  The tooltip itself is able to be hovered so the mouse pointer can be moved down to its bottom edge in order to view the tooltip text.</figcaption>
+				</figure>
+			</section>
+
 		</section>
 		<section id="resources">
 			<h2>Resources</h2>
-			<p class="instructions"></p>
 			<ul>
-				<li>Resource</li>
+				<li><a href="https://www.w3.org/TR/wai-aria-practices-1.1/#tooltip">Tooltip design described in WAI-ARIA Authoring Practices</a></li>
 			</ul>
 		</section>
+		
 		<section id="techniques">
 			<h2>Techniques</h2>
-			<div class="instructions">
-				<p>This section references techniques that can be used to meet the Guideline or Success Criterion. There are sub-sections for sufficient techniques, advisory techniques, and failures. </p>
-				<ul>
-					<li>Within each sub-section, there may be "situations" to describe when a set of techniques need to be considered. Remove the sub-section and heading if situations are not used.</li>
-					<li>Techniques are provided in an unordered list. Reference techniques by linking to the filename of the technique and using the technique ID as link text. Use unlinked plain text if the technique has not been written yet.</li>
-					<li>If more than one technique must be used for full sufficiency, list them in the same bullet separated by "AND".</li>
-					<li>If a general technique requires technology-specific techniques to be implemented, end the bullet with "using" and provide a sub-list of those techniques.</li>
-					<li>Square brackets indicate optional components.</li>
-				</ul>
-				<p>Remove any parts of the template that are not used, such as the section and heading for situations, sub-lists of techniques, or the "AND" construction. Also remove the square brackets around placeholder optional components.</p>
-			</div>
 			<section id="sufficient">
 				<h3>Sufficient</h3>
-				<p class="instructions">Techniques that are sufficient to meet the Guideline or Success Criterion.</p>
-				<section class="situation">
-					<h4>Situation</h4>
 					<ul>
-						<li><a href="idref">ID</a> [AND <a href="idref">ID</a>]* [using]
-							<ul>
-								<li><a href="idref">ID</a></li>
-							</ul>
-						</li>
+						<li>ARIA: Using role="tooltip"</li>
+						<li>CSS: Using hover and focus pseudo classes</li>
 					</ul>
-				</section>
 			</section>
 			<section id="advisory">
 				<h2>Advisory</h2>
-				<p class="instructions">Techniques that are not sufficient by themselves to meet the Guideline or Success Criterion.</p>
-				<p class="instructions">Same template as sufficient techniques.</p>
+<ul>
+<li>None</li>
+</ul>
 			</section>
 			<section id="failure">
 				<h2>Failure</h2>
-				<p class="instructions">Techniques that document conditions that would cause the page not to meet the Guideline or Success Criterion, even if sufficient techniques are also used.</p>
-				<p class="instructions">Same template as sufficient techniques.</p>
+<ul>
+<li>Failure to have visible triggers</li>
+<li>Failure to have hover content hoverable</li>
+<li>Failure to meet by content on hover or focus not remaining visible until dismissed or invalid</li>
+</ul>
 			</section>
 		</section>
 	</body>
