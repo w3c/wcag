@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<meta charset="UTF-8" />
+    <title>Understanding Reflow</title>
+    <link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove" />
+    <style type="text/css">
+        video {
+            max-height: 50vh;
+            max-width:  50%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Understanding Zoom Content</h1>
+    <section id="intent">
+        <h2>Intent</h2>
+        <p>The intent of this Success Criterion is to help people with low vision by allowing the browser zoom function to increase the size of most content to 400% without requiring scrolling in more than one direction.</p> 
+        <p>Zooming the page for horizontally written languages where pages scroll vertically by default (e.g. English) should not require horizontal scrolling. Zooming the page for vertically written languages which scroll horizontally by default should not require vertical scrolling. The impact of horizontal scrolling can <a href="http://nosetothepage.org/Fitz/2dScroll.html">increase the effort required to read by 40-100 times</a>, so avoiding scrolling should be the aim whenever feasible. It is also important that content is not hidden off-screen, for example zooming on a vertically scrolling page should not cause content to be hidden to one side.</p>
+        <p>Zoom functionality in browsers allows users to increase the size of all content. When appropriately authored, the content can reflow (wrap) to stay within the windows boundaries (viewport). Spatial relationships can vary, but all information and functionality should continue to be available.</p>
+        <p>The value of &quot;320 CSS pixels&quot; was chosen as a reasonable minimum size that authors can acheive as it lines up with small displays on mobile devices. A browser on a desktop or laptop at 1280px wide and then zoomed in to 400% means the view is then &quot;equivelent to&quot; 320px wide. Many sites currently cater to that range of sizes, and that number will only increase as more sites update to be small-screen friendly.</p>
+        <p>User agents for technologies such as HTML/CSS, PDF and ePub have methods of reflowing content to fit the width of the window (viewport).</p>
+    </section>
+    <section id="benefits">
+        <h3>Benefits</h3>
+        <p>The benefits are primarily for people with low vision. Of the 285 million people worldwide who are visually impaired, 14% are blind and 86% have low vision <a href="http://www.who.int/mediacentre/factsheets/fs282/en/">according to the World Health Organization (WHO)</a>. A significant proportion of people with low vision need more than a 200% increase in the size of content. From the <a href="http://webaim.org/projects/lowvisionsurvey/#magnification">WebAIM survey</a> 25% of low vision users indicated needing magnification to 400% or more.</p>
+        <ul>
+            <li>A site uses responsive design and when a person zooms-in by over 300% the layout is reflowed to one column. The user can read the content easily and does not have to scroll sideways to read.</li>
+            <li>A PDF is created that conforms to PDF/Universal Accessibility (ISO 14289), the content can be reflowed and zoomed in to make reading possible for someone with low-vision.</li>
+        </ul>
+    </section>
+    <section id="faq">
+        <h2>FAQ</h2>
+        <h3>Mobile devices start smaller, how does that work?</h3>
+        <p>The main principle here is that the web content must be capable of resizing. It is not a device-specific issue. Starting with a desktop browser at 1280px wide and zooming 400% provides a mobile view of 320 px. This works in desktop/laptop browsers.</p>
+        <p>The whole concept is enabled by media queries (in CSS), which were designed to enable reformatting for mobile devices. However, the physics of the smaller screens means that expanding text and/or other content is more constrained. The layout method browsers use on small screen devices does not reflow in the same way, it magnifies (e.g. with pinch-zoom) and causes horizontal scrolling regardless of what an author does.</p>
+        <p>Note that the Resize Text (<a href="https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-scale.html">Success criterion 1.4.4</a>) still applies so there should still be a method of increasing the text-size on smaller screen devices, even if it causes scrolling.</p>
+        <p>For content that is of a fixed ratio (video, images etc) they come under the "require two-dimensional layout" exception. In practice they can expand up to the width (and/or height) of the viewport, and be limited to that.</p>
+        <h3>Is the 400% by area or dimension?</h3>
+        <p>It is by dimension, in the same way that Resize Text (<a href="https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-scale.html">Success criterion 1.4.4</a>) is by dimension. Zooming 200% means the width is 200% wider and height is 200% taller.</p>
+        <h3>Does this mean web sites have to be responsive?</h3>
+        <p>Using responsive design is the most effective method of achieving the goal of allowing people to zoom in to 400%. For organisations which are using legacy systems or are not able to update their layout methods for some reason, an alternative conforming version could be a mobile site which has a fixed 320px wide layout.</p>
+        <h3>What happens if sites move/change things at smaller sizes?</h3>
+        <p>So long as the information and functionality are still <em>available</em> that is ok. If some content is hidden behind a show/hide button, or navigation is moved into a drop-down it is still available. (Like the 'hamburger' icon pattern for navigation).</p>
+        <p>It is possible people might get confused if things move or get hidden, however, the physics demands that something has to move down or be hidden, you cannot make things bigger and fit them in the same space. Also, the people who need it most would typically be zoomed-in when arriving, so may not notice the difference.</p>
+        <p>However, if content or functionality is removed that would fail this success criteria.</p>
+        <h3>What is the relation to Resize Text?</h3>
+        <p>The focus of the Reflow success criteria is to enable users to zoom in without scrolling in two directions. Resize Text (<a href="https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-scale.html">Success criterion 1.4.4</a>) also applies, so it should be possible to increase the size of all text by at least 200% <em>as well</em>. If text is reduced in size when people zoom in (or for small-screen usage), it should still be possible to get to 200% bigger. For example, if text is set at 20px when the window is 1280px wide, at 200% zoom it should be at least 20px (so 200% larger), but at 400% zoom it could be set to 10px (therefore still 200% larger than the 100% view. It is not required to be 200% larger at every breakpoint, but it should be possible to get 200% large text in some way.</p>
+    </section>
+    <section id="examples">
+          <h2>Examples</h2>
+          <section class="example">
+            <h3>Example 1: Responsive Design</h3>
+            <p><video controls="controls"><source src="https://alastairc.ac/w3c/reflow-example-1-BBC.mp4" type="video/mp4" /><source src="https://alastairc.ac/w3c/reflow-example-1-BBC.ogv" type="video/ogg" />Animation of zooming in on a responsive site. The content reflows to fit the screen.</video></p>
+            <p>Note that as the zoom percentage increases, the navigation changes first to hide options behind a "More" dropdown menu,  and eventually most navigation options are behind a &quot;hamburger&quot; menu button. All the information and functionality is still available from this web page. There is no horizontal scrolling..</p>
+        </section>
+</section>
+<section id="resources">
+    <h2>Resources </h2>
+    <ul>
+        <li><a href="http://w3c.github.io/low-vision-a11y-tf/requirements.html#size-of-all-elements">Accessibility Requirements for People with Low Vision</a>.</li>
+        <li><a href="https://developer.mozilla.org/en-US/Apps/Progressive/Responsive">Responsive design resources</a> from MDN Web docs.</li>
+        <li><a href="https://developers.google.com/web/fundamentals/design-and-ux/responsive/">Responsive web design basics</a> tutorial from Google.</li>
+    </ul>
+</section>
+<section id="techniques">
+    <h2>Techniques</h2>
+    <section id="sufficient">
+        <h3>Sufficient</h3>
+        <ul>
+            <li> Using media queries (CSS). Ref: <a href="http://blog.cloudfour.com/the-ems-have-it-proportional-media-queries-ftw/"> em based media queries</a> AND</li>
+            <li>@@ New: Using CSS grids to reflow content (CSS). Ref: <a href="http://alistapart.com/article/fluidgrids"> fluid grids</a> OR</li>
+            <li>@@ New: Using CSS Flexbox to reflow content (CSS).</a> OR</li>
+            <li><a href="https://www.w3.org/TR/WCAG20-TECHS/SCR34"> SCR34: Calculating size and position in a way that scales with text size (Scripting)</a></li>
+            <li><a href="https://www.w3.org/TR/WCAG20-TECHS/G206"> G206: Providing options within the content to switch to a layout that does not require the user to scroll horizontally to read a line of text</a></li>
+            <li>@@ New: Using PDF/UA when creating PDFs.</li>
+        </ul>
+    </section>
+    <section id="advisory">
+        <h2>Advisory</h2>
+        <p class="instructions">None</p>
+    </section>
+    <section id="failure">
+        <h2>Failure</h2>
+        <ul>
+            <li>@@ Using fixed sized containers and fixed position content (CSS)</li>
+            <li> @@ "Interfering with a user agent's ability to zoom" i.e., author using: maximum-scale or minimum-scale or user-scalable=no or user-scalable=0 in the meta element ?? @@ Note: In <a href="https://lists.w3.org/Archives/Public/w3c-wai-gl/2016AprJun/0502.html"> Pinch zoom thread on the WCAG list</a> people did not seem to be in favor of this as a failure.</li>
+            <li> @@ (HTML) Using preformatted text or excluding preformatting text  as an exception to no two dimensional scrolling. </li>
+        </ul>
+    </section>
+</section><!-- end techniques -->
+</body>
+</html>
