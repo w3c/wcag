@@ -5,13 +5,13 @@ function titleToPathFrag (title) {
 function linkUnderstanding() {
 	var understandingBaseURI;
 	if (respecConfig.specStatus == "ED") understandingBaseURI = "../understanding/21/";
-	else understandingBaseURI = "https://www.w3.org/WAI/WCAG21/Understanding/21/";
+	else understandingBaseURI = "https://www.w3.org/WAI/WCAG21/Understanding/";
 	document.querySelectorAll('.sc').forEach(function(node){
 		var heading = node.firstElementChild.textContent;
 		var pathFrag = titleToPathFrag(heading);
 		var el = document.createElement("div");
 		el.setAttribute("class", "doclinks");
-		el.innerHTML = "<a href=\"https://www.w3.org/TR/WCAG21/quickref/#" + pathFrag + "\">How to Meet " + heading + "</a> <span class=\"screenreader\">|</span> <br /><a href=\"" + understandingBaseURI + pathFrag + ".html\">Understanding " + heading + "</a>";
+		el.innerHTML = "<a href=\"https://www.w3.org/WAI/WCAG21/quickref/#" + pathFrag + "\">How to Meet " + heading + "</a> <span class=\"screenreader\">|</span> <br /><a href=\"" + understandingBaseURI + pathFrag + ".html\">Understanding " + heading + "</a>";
 		node.insertBefore(el, node.children[1]);
 	})
 }
