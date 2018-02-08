@@ -100,4 +100,28 @@ Understanding files are referenced from the relevant Success Criterion on the WC
 
 The formal publication location for Understanding pages is https://www.w3.org/WAI/WCAG21/Understanding/. This content is updated as needed; and may be automated.
 
-The approach to techniques in WCAG 2.1 is not yet worked out. For the moment, list techniques in the Understanding document. References to existing WCAG 2.0 techniques should link to the technique on https://www.w3.org/TR/WCAG20-TECHS/. Proposed new techniques should be included as a draft technique title in the Understanding document, which will seed later work.
+## Editing Techniques
+
+Techniques are in the techniques folder, and grouped by technology into sub-folders. Each technique is a standalone file, which is in HTML format with a regular structure of elements, classes, and ids. Techniques previously published for WCAG 2.0 are currently have the assigned ID of the technique as the filename, but new techniques should use a filename that is derived from a shortened version of the technique title. 
+
+For example, a technique "Using the alt attribute on the img element to provide short text alternatives" might use "img-alt-short-text-alternatives.html" as the filename.
+
+### Create Techniques
+
+* Determine a filename for the technique that is likely to be descriptive, unique, and short.
+* Create a working branch named the same as the technique filename.
+* Copy the techniques/technique-template.html file into the appropriate technology folder for the technique, and give it the chosen file name.
+* Populate the template with appropriate content, using other techniques as examples for code formatting choices. Keep the existing structural sections from the template in place.
+* When the technique is ready for review, ask the chairs to arrange WG review and merge.
+
+### Associate Techniques with Success Criteria
+
+PROPOSED: edit the [wcag21.json](wcag21.json) file to add a technique entry into each SC where appropriate. Entries can declare the technique to be sufficient, advisory, or failure on a per SC basis. The (proposed) generator will use this to provide links in the various places needed.
+
+ALTERNATE: create a HTML-based data structure, which would be easier to read but harder to edit correctly.
+
+ALTERNATE: link to techniques from Understanding as we have done before, but this allows inconsistencies and is harder to extract data from.
+
+### Provide Working Examples of Techniques
+
+@@
