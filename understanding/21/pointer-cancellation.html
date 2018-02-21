@@ -9,9 +9,14 @@
 		<h1>Understanding Pointer Cancellation</h1>
 		<section id="intent">
 			<h2>Intent</h2>
-			<p>People with various disabilities can inadvertently initiate touch or mouse events with unwanted results. Up-Event activation refers to the activation of a component when the trigger stimulus is released. For example, for touchscreen interaction the event would be triggered when a finger is lifted from the touchscreen at the end of a tap. There is a distinction between when someone touches a screen and when they remove their finger. On a mouse there is a difference between mouse down (initiating a click) and mouse up (releasing the finger). Authors can reduce the problem of users inadvertently triggering an action, by making activation on the up-event. This gives users the opportunity to move their finger or other pointer (e.g. mouse) away from the wrong target once they hit it. If touch down activation is necessary, there are several options:</p>
+			<p>People with various disabilities can inadvertently initiate touch or mouse events with unwanted results. There is a distinction between when someone touches a screen and when they remove their finger. Similarly, in mouse interaction, there is a difference between pressing and releasing the mouse button. A mouseclick only occurs when the mouse button is released.</p>
+      
+        <p>Up-event activation refers to the activation of a target when the pointer is released. In a touchscreen interaction, when the finger touches a target, the up-event activation ony occurs when the finger is lifted while still being within the target boundary.</p>
+      <p>Authors can reduce the problem of users inadvertently triggering an action by using event handlers that activate functionality on the up-event. This gives users the opportunity to move their finger or other pointer (e.g. mouse) away from the target when they realise that they touched that target inadvertently or erroneously.</p>
+      
+      <p>If activation on the down-event is necessary, there are several options:</p>
 			<ul>
-				<li>A confirmation alert allows the user to change their mind</li>
+				<li>A confirmation dialog allows the user to change their mind</li>
 				<li>An undo button or other mechanism allows the user to reverse the action.</li>
 				<li>A setting in preferences allows the user to choose whether activation happens on the down or up event.</li>
 			</ul>
@@ -25,7 +30,7 @@
 				<h3>Benefits</h3>
 					<ul>
 					<li>Makes it easier for all users to recover from hitting the wrong target.</li>
-					<li>Helps people with visual disabilities, cognitive limitations, and motor impairments by reducing the chance that a control will be accidentally activated or action will occur unexpectedly.</li>
+					<li>Helps people with visual disabilities, cognitive limitations, and motor impairments by reducing the chance that a control will be accidentally activated or an action will occur unexpectedly.</li>
 					<li>Individuals who are unable to detect changes of context are less likely to become disoriented while navigating a site</li>
 				</ul>
 			</section>
@@ -35,6 +40,8 @@
 			<ul>
 				<li>For interface elements that have a single tap or long press as input, the corresponding event is triggered when the finger is lifted inside that element.</li>
 				<li>A phone dialling application has number keys that are activated on touch down. A user can undo an unwanted number by hitting the backspace button to delete a mistaken digit.</li>
+        <li>A drag-and-drop interface allows users to sort vertically stacked cards by picking up one card with the pointer (down-event), move it to a new position, and insert it at the new location when the pointer is released (up-event). Releasing the pointer outside the drop target area reverts the action, i.e., it moves the card back to the old position before the interaction started.</li>
+          <li>A user can undo the input of a wrong number by hitting the backspace button to delete a mistaken digit.</li>
 			</ul>
 			<section class="example">
 				<h3>Example</h3>
