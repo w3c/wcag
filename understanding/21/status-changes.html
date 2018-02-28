@@ -53,7 +53,7 @@ Information can frequently be added to pages which does not meet the definition 
 
 <li>Modification of status text</li>
 <li>Removal of status text</li>
-<li>textual status content, such as images</li>
+<li>Non-textual status content, such as images</li>
 
 		</section>
 		<h4>Non-displayed text specific to AT users</h4>
@@ -63,9 +63,9 @@ Information can frequently be added to pages which does not meet the definition 
 		<h4>Modification of status text</h4>
 		<p>If a status message persists on the page, modifications to this text are usually equivalent to a new status message. An example would be a shopping cart which updates text from reading "0 items" to "3 items". Typical methods of writing such changes in the page content result in the entire modified text string being considered a new change, and thus read by assistive technologies. However, where only the number in this string was coded as an updated chunk of content, the resulting experience for screen reader users would be to only hear "three", which may not be sufficient information to provide context for the user. In such situations, marking the entire "3 items" string as the status text would normally be a better solution.</p>
 		<h4>Removal of status text</h4>
-		<p>In situations where status text is entirely removed, its absence may itself convey information about the status. The most obvious example of this is where a message is displayed that the system is "busy" or "waiting". For a sighted user, when this text disappears, it is normally an indication that the state is now available. However non-sighted users would be unaware of this change, unless the end of the waiting state results in a change of context for the user. The use of a non-visible status message, such as "system available", ensures equivalent status information is provided.</p>
+		<p>In situations where status text is entirely removed, its absence may itself convey information about the status. The most obvious example of this is where a message is displayed that the system is "busy" or "waiting". For a sighted user, when this text disappears, it is normally an indication that the state is now available. However non-sighted users would be unaware of this change, unless the end of the waiting state results in a change of context for the user. Where updating the visible message (e.g., to "system available") is not feasible, the use of a non-visible status message, such as "system available", ensures equivalent status information is provided.</p>
 		<h4>Non-textual status content</h4>
-		<p>Changes in content are not restricted to text changes. Where an icon or sound indicates a status message, this information will be announced by the screen reader through existing WCAG requirements governing text alternatives (under SC 1.1.1 Non-Text Content) in combination with the requirement of this Success Criterion, Status Messages, to supply an appropriate role.</p>
+		<p>Changes in content are not restricted to text changes. Where an icon or sound indicates a status message, this information will be announced by the screen reader through existing WCAG requirements governing text alternatives (under SC 1.1.1 Non-Text Content) in combination with the requirement of the current Success Criterion to supply an appropriate role.</p>
 <section class="example">
 				<h2 id="excepted-examples">Examples of Changes That Are Not Status Messages</h2>
 			</section>
@@ -99,34 +99,57 @@ Information can frequently be added to pages which does not meet the definition 
 				<h3>Sufficient</h3>
 						<section class="situation">
 
-					<h4>Situation</h4>
-					<p>@@@ do we need situations, such as 'Situation A Where a status message is confirmation'? I think it would be an idea to see how many situations we can think of, and whether this provides clarify and guidance @@@</p>
+					<h4>Situation A: If a status message advises on the success or results of an action, or the state of an application:</h4>
 					<ul>
-						<li><a href="https://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/G199">G199: Providing success feedback when data is submitted successfully</a> in combination with any of the following:
+						<li><a href="">Using role="status"</a> in combination with any of the following:
 							<ul>
-								<li><a href="https://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/ARIA19">ARIA19: Using ARIA role=alert or Live Regions to Identify Errors</a></li>
-								<li>using role="status"</li>
+								<li><a href="https://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/G199">G199: Providing success feedback when data is submitted successfully</a></li>
 							</ul>
+							
 						</li>
+					</ul>
+
+					<h4>Situation B: If a status message conveys a suggestion, or a warning on the existence of an error:</h4>
+					<ul>
+						<li><a href="https://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/ARIA19">ARIA19: Using ARIA role=alert or Live Regions to Identify Errors</a> in combination with any of the following:
+							<ul>
+								
+								<li><a href="http://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/G84">G84: Providing a text description when the user provides information that is not in the list of allowed values</a></li>
+								<li><a href="http://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/G85">G85: Providing a text description when user input falls outside the required format or values</a></li>
+								<li><a href="https://www.w3.org/TR/WCAG-TECHS/G139.html">G139: Creating a mechanism that allows users to jump to errors</a></li>
+								<li><a href="https://www.w3.org/TR/WCAG-TECHS/G177.html">G177: Providing suggested correction text</a></li>
+								<li><a href="https://www.w3.org/TR/WCAG-TECHS/G194.html">G194: Providing spell checking and suggestions for text input</a></li>
+								
+							</ul>
+							<p>Note: Not all examples in the preceding general techniques use status messages to convey warnings or errors to users. A role of "alert" is only necessary where a change of context does not take place.</p>
+						</li>
+					</ul>
+
+					<h4>Situation C: If a status message conveys information on the progress of a process:</h4>
+					<ul>
+					
 						<li>Using role="log"</li>
 						<li>Using role="progressbar"</li>
+						<li><a href="">Using role="status"</a> in combination with <a href="https://www.w3.org/TR/WCAG-TECHS/G193.html">G193: Providing help by an assistant in the Web page</a></li>
 					</ul>
 				</section>
 			</section>
 			<section id="advisory">
 				<h2>Advisory</h2>
 				<ul>
+		<li>chat clients</li>
 		<li>Using role="marquee"</li>
 		<li>Using role="timer"</li>
-		<li>Moving focus to new content (including using alertdialog and dialog)</li>
-		<li>Providing an option for users to set a preference on live content</li>
+		<li>Providing an option for users to set a preference on live content; <a href="https://www.w3.org/TR/WCAG-TECHS/SCR14.html">SCR14: Using scripts to make nonessential alerts optional</a></li>
+		<li>Moving focus to new content (including using alertdialog and dialog; <a href="https://www.w3.org/TR/WCAG-TECHS/ARIA18.html">ARIA18: Using aria-alertdialog to Identify Errors</a>)</li>
+	
 	</ul>
 
 			</section>
 			<section id="failure">
 				<h2>Failure</h2>
 				<ul>
-				<li>Using role="alert" or aria-live="assertive" on content which is not critical and time-sensitive</li>
+				<li>Using role="alert" or aria-live="assertive" on content which is not important and time-sensitive</li>
 			</ul>
 			</section>
 		</section>
