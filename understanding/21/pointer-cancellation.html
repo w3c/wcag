@@ -9,24 +9,29 @@
 		<h1>Understanding Pointer Cancellation</h1>
 		<section id="intent">
 			<h2>Intent</h2>
-			<p>People with various disabilities can inadvertently initiate touch or mouse events with unwanted results. Up-Event activation refers to the activation of a component when the trigger stimulus is released. For example, for touchscreen interaction the event would be triggered when a finger is lifted from the touchscreen at the end of a tap. There is a distinction between when someone touches a screen and when they remove their finger. On a mouse there is a difference between mouse down (initiating a click) and mouse up (releasing the finger). Authors can reduce the problem of users inadvertently triggering an action, by making activation on the up-event. This gives users the opportunity to move their finger or other pointer (e.g. mouse) away from the wrong target once they hit it. If touch down activation is necessary, there are several options:</p>
+			<p>The intent of this success criterion is to make it easier for users to prevent accidental or erroneous pointer input. People with various disabilities can inadvertently initiate touch or mouse events with unwanted results.</p>
+<p>There is a distinction between when someone touches a screen and when they remove their finger. Similarly, in mouse interaction, there is a difference between pressing and releasing the mouse button. When activation occurs only when the pointer is released, users have the opportunity to prevent (cancel) the activation. They can move their finger or other pointer (e.g., the mouse cursor) away from the target when they realise that they touched that target inadvertently or erroneously.</p>     
+        <p>Up-event activation refers to the activation of a target when the pointer is released. In a touchscreen interaction, when the finger touches a target, the up-event activation ony occurs when the finger is lifted while still being within the target boundary. Similarly in mouse interaction, the up-event occurs when the mouse button is released while the cursor is still within the boundary of the initial target when the mouse button was pressed.</p>
+      <p>Authors can reduce the problem of users inadvertently triggering an action by using generic platform activation/click events that activate functionality on the up-event. For example, the "click" event in JavaScript triggers on release of the primary mouse button, and is an example of an implicit up-event. Despite its name, the onclick event handler works both for mouse interaction as well as for touch interaction.</p>
+      
+      <p>If activation on the down-event is necessary, there are several options:</p>
 			<ul>
-				<li>A confirmation alert allows the user to change their mind</li>
-				<li>An undo button or other mechanism allows the user to reverse the action.</li>
-				<li>A setting in preferences allows the user to choose whether activation happens on the down or up event.</li>
+				<li>There is a mechanism to abort the function before completion. An example is a drag-and-drop behaviour where the activation starts on the down-event but is cancelled when the picked-up target is released outside a valid drop target.</li>
+        <li>A confirmation dialog or an undo button allows the user to reverse / undo the action.</li>
+				<li>A setting in preferences allows the user to choose whether activation happens on the down-event or the up-event.</li>
 			</ul>
-			<p>Generic platform activation/click events generally trigger on up and when they do, they are also allowed. For example, in the case of mouse interactions, the "click" event in JavaScript triggers on release of the primary mouse button, and is an example of an implicit up-event.</p>
-			<p>Examples of where timing of the activation is essential would be:</p>
+			
+			<p>Examples of where the timing of an activation is essential and requires the down-event would be:</p>
 			<ul>
-				<li>An activity that would be invalid if activation waited for the up-event such as a piano program.</li>
+				<li>An activity that would be invalid if activation waited for the up-event, such as when playing an on-screen piano keyboard.</li>
 				<li>A program for shooting skeets where waiting for the "up" event would invalidate the activation.</li>
 			</ul>
 					<section id="benefits">
 				<h3>Benefits</h3>
 					<ul>
 					<li>Makes it easier for all users to recover from hitting the wrong target.</li>
-					<li>Helps people with visual disabilities, cognitive limitations, and motor impairments by reducing the chance that a control will be accidentally activated or action will occur unexpectedly.</li>
-					<li>Individuals who are unable to detect changes of context are less likely to become disoriented while navigating a site</li>
+					<li>Helps people with visual disabilities, cognitive limitations, and motor impairments by reducing the chance that a control will be accidentally activated or an action will occur unexpectedly.</li>
+					<li>Individuals who are unable to detect changes of context are less likely to become disoriented while navigating a site.</li>
 				</ul>
 			</section>
 		</section>
@@ -34,11 +39,9 @@
 			<h2>Examples</h2>
 			<ul>
 				<li>For interface elements that have a single tap or long press as input, the corresponding event is triggered when the finger is lifted inside that element.</li>
-				<li>A phone dialling application has number keys that are activated on touch down. A user can undo an unwanted number by hitting the backspace button to delete a mistaken digit.</li>
+				<li>A phone dialling application has number keys that are immediately activated on touch (i.e. via the down-event). A user can undo an unwanted number input by hitting the backspace button to delete the erroneous digit.</li>
+        <li>A drag-and-drop interface allows users to sort vertically stacked cards by picking up one card with the pointer (down-event), move it to a new position, and insert it at the new location when the pointer is released (up-event). Releasing the pointer outside the drop target area reverts the action, i.e., it moves the card back to the old position before the interaction started.</li>
 			</ul>
-			<section class="example">
-				<h3>Example</h3>
-			</section>
 		</section>
 		<section id="resources">
 			<h2>Resources</h2>
@@ -54,9 +57,8 @@
 					<h4>Situation</h4>
 					<ul>
 						<li>Activating a control using the up-Event in HTML, iOS and Android</li>
-						<li><a href="https://www.w3.org/WAI/GL/mobile-a11y-tf/wiki/M029">M029(wiki) Touch events are only triggered when touch is removed from a control</a></li>
-						<li><a href="http://w3c.github.io/Mobile-A11y-TF-Note/Techniques/FM001">FM001 Failure of SC 2.5.3 due to activating a button on initial touch location rather than the final touch location</a></li>
-					</ul>
+						<li><a href="https://www.w3.org/WAI/GL/mobile-a11y-tf/wiki/M029">M029(wiki) Touch events are only triggered when touch is removed from a control</a></li>		
+          </ul>
 				</section>
 			</section>
 			<section id="advisory">
@@ -65,8 +67,8 @@
 			<section id="failure">
 				<h2>Failure</h2>
 				<ul>
-					<li>Actions are only available through long press or 3D touch</li>
-				</ul>
+          <li><a href="http://w3c.github.io/Mobile-A11y-TF-Note/Techniques/FM001">FM001 Failure of SC 2.5.3 due to activating a button on initial touch location rather than the final touch location</a></li>         
+        </ul>
 			</section>
 		</section>
 	</body>
