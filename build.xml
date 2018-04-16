@@ -51,20 +51,20 @@
 	</target>
 	
 	<!-- Understanding -->
-	<target name="generate-understanding" depends="guidelines-xml">
+	<target name="understanding" depends="guidelines-xml" description="Generate formatted Understanding docs">
 		<makeurl file="${basedir}/understanding/" property="base.understanding"/>
 		<mkdir dir="${basedir}/output/"/>
 		<makeurl file="${basedir}/output/" property="output.dir"/>
-		<echo message="${output.dir}"/>
+		<echo message="Outputting Understanding to ${output.dir}"/>
 		<xslt in="${inputdir.guidelines}/wcag21.xml" out="output.html" style="xslt/generate-understanding.xslt" force="true">
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.understanding}"/>
 			<param name="output.dir" expression="${output.dir}"/>
 		</xslt>
 		<copy file="understanding/understanding.css" todir="output/"/>
-	</target>
-	
-	<target name="understanding" depends="generate-understanding, clean" description="Generate formatted Understanding docs"></target>
+		<copy todir="output/img/">
+			<fileset dir="understanding/21/img"/>
+		</copy>	</target>
 	
 	<!-- Everything -->
 	<target name="all" depends="init" description="Generate entire suite"/>
