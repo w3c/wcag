@@ -72,7 +72,7 @@ require(["core/pubsubhub"], function(respecEvents) {
     respecEvents.sub('end', function(message) {
     	if (message === 'core/link-to-dfn') {
     		document.querySelectorAll("div.head dt").forEach(function(node){
-    			if (node.textContent == "Authors:") node.textContent = "WCAG 2.0 Editors:";
+    			if (node.textContent == "Former editors:") node.textContent = "WCAG 2.0 Editors (until December 2008):";
     		});
     	}
 	})
