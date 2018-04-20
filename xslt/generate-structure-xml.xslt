@@ -6,17 +6,9 @@
 	exclude-result-prefixes="#all"
 	version="2.0">
 	
+	<xsl:include href="base.xslt"/>
+	
 	<xsl:output method="xml" indent="yes"/>
-	
-	<xsl:function name="wcag:generate-id">
-		<xsl:param name="title"/>
-		<xsl:value-of select="lower-case(replace(replace($title, ' ', '-'), '[,()]', ''))"/>
-	</xsl:function>
-	
-	<xsl:function name="wcag:find-heading">
-		<xsl:param name="el"/>
-		<xsl:copy-of select="$el/html:h1 | $el/html:h2 | $el/html:h3 | $el/html:h4 | $el/html:h5 | $el/html:h6"/>
-	</xsl:function>
 	
 	<xsl:template name="id">
 		<xsl:attribute name="id">
@@ -42,7 +34,31 @@
 	
 	<xsl:template match="html:html">
 		<guidelines lang="{@lang}">
+			<understanding>
+				<name>Introduction to Understanding WCAG 2.1</name>
+				<file href="intro.html"/>
+			</understanding>
+			<understanding>
+				<name>Understanding Techniques for WCAG Success Criteria</name>
+				<file href="understanding-techniques.html"/>
+			</understanding>
 			<xsl:apply-templates select="//html:section[@class='principle']"/>
+			<understanding>
+				<name>Understanding Conformance</name>
+				<file href="conformance.html"/>
+			</understanding>
+			<understanding>
+				<name>How to Refer to WCAG 2.1 from Other Documents</name>
+				<file href="refer-to-wcag.html"/>
+			</understanding>
+			<understanding>
+				<name>Documenting Accessibility Support for Uses of a Web Technology</name>
+				<file href="documenting-accessibility-support.html"/>
+			</understanding>
+			<understanding>
+				<name>Understanding Metadata</name>
+				<file href="understanding-metadata.html"/>
+			</understanding>
 		</guidelines>
 	</xsl:template>
 	

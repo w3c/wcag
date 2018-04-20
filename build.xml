@@ -64,7 +64,14 @@
 		<copy file="understanding/understanding.css" todir="output/"/>
 		<copy todir="output/img/">
 			<fileset dir="understanding/21/img"/>
-		</copy>	</target>
+		</copy>
+	</target>
+	
+	<target name="understanding-toc" depends="guidelines-xml" description="Generate the TOC for Understanding">
+		<xslt in="${inputdir.guidelines}/wcag21.xml" out="understanding/toc.html" style="xslt/generate-understanding-toc.xslt" force="true">
+			<factory name="${xslt.factory}"/>
+		</xslt>
+	</target>
 	
 	<!-- Everything -->
 	<target name="all" depends="init" description="Generate entire suite"/>
