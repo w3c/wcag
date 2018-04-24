@@ -1,7 +1,7 @@
 # wcag21
-WCAG 2.1 and support materials
+WCAG 2.1 [https://www.w3.org/TR/WCAG21/] extends Web Content Accessibility Guidelines 2.0 [https://www.w3.org/TR/WCAG20/], which was published as a W3C Recommendation December 2008. Until WCAG 2.1 advances to W3C Recommendation the current and referenceable document is WCAG 2.0. 
 
-The issues on the wcag 2.1 repo are currently reserved for success criteria proposals for wcag 2.1. Discussion of changes for understanding documents and techniques should take place on the list or in the wcag 2.0 repo issues.
+This repository is used to develop the success criteria proposal for wcag 2.1, as well as associated understanding documents and techniques.
 
 ## File Structure
 
