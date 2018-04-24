@@ -64,7 +64,7 @@ var respecConfig = {
 			w3cid: 34017
 		}
 	],
-	authors: [
+	formerEditors: [
 		{
 			name: "Ben Caldwell",
 			company: "Trace R&D Center, University of Wisconsin-Madison",
