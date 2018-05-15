@@ -1,56 +1,81 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-	<head>
-		<title>Allowing for spacing override</title>
-		<link rel="stylesheet" type="text/css" href="https://rawgit.com/w3c/wcag21/master/css/sources.css"/>
-	</head>
-	<body>
-		<h1>Allowing for spacing override</h1>
-		<section id="meta">
-			<h2>Metadata</h2>
-			<p id="id"></p>
-			<p id="technology">css</p>
-			<p id="type">sufficient</p>
-		</section>
-		<section id="applicability">
-			<h2>When to Use</h2>
-			<p class="instructions">Describe the situations in which to use the technique, such as types of pages, features in use that might use the technique, etc.</p>
-		</section>
-		<section id="description">
-			<h2>Description</h2>
-			<p class="instructions">Describe how the technique works. This begins with a description of the problem the technique solves, then describes how to apply the technique. The description should be detailed enough to provide all the information a reader needs to be able to apply the technique, without recourse to following example code.</p>
-			<p>The objective of this technique is to ...</p>
-		</section>
-		<section id="examples">
-			<h2>Examples</h2>
-			<p class="instructions">Copy the following section for each example. Examples must have a title and a description, and usually have a code sample. Code samples should be elided if necessary to show the core of the technique without necessarily providing all the surrounding code that would also be involved. A working example link references a location where the technique can be shown working live.</p>
-			<section class="example">
-				<h3>Example Title</h3>
-				<p>Description</p>
-				<code>Code sample</code>
-				<p>Working example: link</p>
-			</section>
-		</section>
-		<section id="tests">
-			<h2>Tests</h2>
-			<section class="test-procedure">
-				<h3>Procedure</h3>
-				<ol>
-					<li>Step 1</li>
-				</ol>
-			</section>
-			<section class="test-results">
-				<h3>Expected Results</h3>
-				<ul>
-					<li>Result</li>
-				</ul>
-			</section>
-		</section>
-		<section id="related">
-			<h2>Related Techniques</h2>
-			<ul>
-				<li>ID</li>
-			</ul>
-		</section>
-	</body>
+   <head>
+      <title>Allowing for spacing override</title>
+      <link rel="stylesheet" type="text/css" href="https://rawgit.com/w3c/wcag21/master/css/sources.css"/>
+   </head>
+   <body>
+      <h1>Allowing for spacing override</h1>
+      <section id="meta">
+         <h2>Metadata</h2>
+         <p id="id"></p>
+         <p id="technology">css</p>
+         <p id="type">sufficient</p>
+      </section>
+      <section id="applicability">
+         <h2>When to Use</h2>
+         <p class="instructions">This technique is applicable to Cascading Style Sheet/HTML technologies.</p>
+      </section>
+      <section id="description">
+         <h2>Description</h2>
+         <p><span class="instructions">The objective of this technique is to show how to test for a spacing override.</span> Increased spacing between lines, words, and letters  benefits  people who override author settings via user stylesheet, bookmarklet, extension, or application. An author's content needs to have the ability to be set to  Success Criterion 1.4.12's metrics without loss of content or functionality. The author requirement is both to not interfere with a user's ability to override the author settings, and to ensure that content thus modified does not break content.  </p>
+      </section>
+      <section id="examples">
+         <h2>Examples
+         </h2>
+         <section class="example">
+            <h3>Text adapts and does not break content</h3>
+            <p>Line height adapts to 1.5 times the font size. Letter spacing adapts to 0.12 times the font size. Word spacing adapts to 0.16 times the font size. Spacing underneath paragraphs adapts to 2 times the font size. Text fits within the bounds of its containing box without being cut off and without overlapping other boxes.</p>
+         </section>
+      </section>
+      <section id="tests">
+         <h2>Tests</h2>
+         <section class="test-procedure">
+            <h3>Procedure</h3>
+            <h4>Bookmarklet Procedure (for Sites without Content Security Policies)</h4>
+            <p>First, create a bookmark of a page and replace the URL with the following:</p>
+            <p><code>javascript:(function()%7Bdocument.body.appendChild(document.createElement(%27script%27)).src%3D%27http://www.d.umn.edu/~lcarlson/wcagwg/tests/text-adaptation.js%27%3B%7D)()%3B</code></p>
+            <p>Then, </p>
+            <ol>
+               <li>Set zoom level to 100%.</li>
+               <li> Visit the page to be tested.</li>
+               <li>Click (activate) the new bookmark.</li>
+            </ol>
+            <h4>Alternate Plugin Procedure (for Sites with Content Security Policies)</h4>
+            <p>First, use the <a href="https://userstyles.org/help/stylish_chrome">Stylish Chrome Plugin</a> to add the following style:</p>
+            <code>* {<br>
+            line-height: 1.5 !important;<br>
+            }<br>
+            p {<br>
+            margin-bottom: 2em !important;<br>
+            }<br>
+            * {<br>
+            letter-spacing: 0.12em !important;<br>
+            }<br>
+            * {<br>
+            word-spacing: 0.16em !important;<br>
+            }
+            </code>
+            <p>These rules can be added via a <a href="https://userstyles.org/styles/154735/wcag-2-1-text-spacing-test">WCAG 2.1 Text Spacing Test Style</a>.</p>
+            <p>Then,</p>
+            <ol>
+               <li>Set zoom level to 100%.</li>
+               <li>Visit the page to be tested.</li>
+            </ol>
+         </section>
+         <section class="test-results">
+            <h3>Expected Results</h3>
+            <ul>
+               <li>No loss of essential content or functionality occurs.</li>
+            </ul>
+            <p><strong>Note</strong>: Where a page has multiple layouts (e.g. in a responsive design) text spacing should be tested in each layout. </p>
+         </section>
+      </section>
+      <section id="related">
+         <h2>Related Techniques</h2>
+         <ul>
+            <li>ID</li>
+         </ul>
+      </section>
+   </body>
 </html>
