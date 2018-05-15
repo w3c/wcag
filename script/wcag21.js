@@ -4,7 +4,7 @@ function titleToPathFrag (title) {
 
 function linkUnderstanding() {
 	var understandingBaseURI;
-	if (respecConfig.specStatus == "ED") understandingBaseURI = "../understanding/21/";
+	if (respecConfig.specStatus == "ED") understandingBaseURI = "../understanding/";
 	else understandingBaseURI = "https://www.w3.org/WAI/WCAG21/Understanding/";
 	document.querySelectorAll('.sc').forEach(function(node){
 		var heading = node.firstElementChild.textContent;
@@ -72,7 +72,7 @@ require(["core/pubsubhub"], function(respecEvents) {
     respecEvents.sub('end', function(message) {
     	if (message === 'core/link-to-dfn') {
     		document.querySelectorAll("div.head dt").forEach(function(node){
-    			if (node.textContent == "Authors:") node.textContent = "WCAG 2.0 Editors:";
+    			if (node.textContent == "Former editors:") node.textContent = "WCAG 2.0 Editors (until December 2008):";
     		});
     	}
 	})
