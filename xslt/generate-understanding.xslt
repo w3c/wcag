@@ -147,7 +147,10 @@
 				<h1><xsl:apply-templates select="//html:h1"/></h1>
 				<xsl:choose>
 					<xsl:when test="name($meta) = 'guideline' or name($meta) = 'success-criterion'">
-						<blockquote class="scquote"><xsl:copy-of select="$meta/content/html:*"/></blockquote>
+						<blockquote class="scquote">
+							<xsl:copy-of select="$meta/content/html:*"/>
+							<p>(Level <xsl:value-of select="$meta/level"/>)</p>
+						</blockquote>
 						<main>
 							<xsl:apply-templates select="//html:section[@id = 'intent']"/>
 							<xsl:apply-templates select="//html:section[@id = 'benefits']"/>
