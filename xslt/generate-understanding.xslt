@@ -174,7 +174,7 @@
 	<xsl:template match="html:section[@id = 'intent']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Intent of <xsl:call-template name="name"/></h2>
+			<h2>Intent</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.) or @id = 'benefits')]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -182,7 +182,7 @@
 	<xsl:template match="html:section[@id = 'benefits']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Benefits of <xsl:call-template name="name"/></h2>
+			<h2>Benefits</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -190,7 +190,7 @@
 	<xsl:template match="html:section[@id = 'examples']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Examples of <xsl:call-template name="name"/></h2>
+			<h2>Examples</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -198,7 +198,7 @@
 	<xsl:template match="html:section[@id = 'resources']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Resources <xsl:call-template name="name"/></h2>
+			<h2>Related Resources</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -206,7 +206,7 @@
 	<xsl:template match="html:section[@id = 'techniques']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Techniques for <xsl:call-template name="name"/></h2>
+			<h2>Techniques</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
