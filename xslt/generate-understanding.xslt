@@ -265,6 +265,13 @@
 		</xsl:copy>
 	</xsl:template>
 	
+	<xsl:template match="html:h2 | html:h3 | html:h4 | html:h5 | html:h6">
+		<xsl:variable name="level" select="count(ancestor::section) + 2"/>
+		<xsl:element name="h{$level}">
+			<xsl:apply-templates/>
+		</xsl:element>
+	</xsl:template>
+	
 	<xsl:template match="html:a[not(node()) and starts-with(@href, 'https://www.w3.org/TR/WCAG20-TECHS/')]">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
