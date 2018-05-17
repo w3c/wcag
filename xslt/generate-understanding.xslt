@@ -266,7 +266,7 @@
 	</xsl:template>
 	
 	<xsl:template match="html:h2 | html:h3 | html:h4 | html:h5 | html:h6">
-		<xsl:variable name="level" select="count(ancestor::section) + 1"/>
+		<xsl:variable name="level" select="count(ancestor::html:section) + 1"/>
 		<xsl:element name="h{$level}">
 			<xsl:apply-templates/>
 		</xsl:element>
