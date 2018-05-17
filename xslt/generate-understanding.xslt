@@ -25,6 +25,7 @@
 	
 	<xsl:template name="navigation">
 		<xsl:param name="meta" tunnel="yes"/>
+		<nav>
 		<ul id="navigation">
 			<li><a href="." title="Table of Contents">Contents</a></li>
 			<xsl:choose>
@@ -102,6 +103,20 @@
 				</xsl:when>
 			</xsl:choose>
 		</ul>
+		</nav>
+	</xsl:template>
+	
+	<xsl:template name="navtoc">
+		<nav class="navtoc">
+			<p>On this page:</p>
+			<ul id="navbar">
+				<li><a href="#intent">Intent</a></li>
+				<li><a href="#benefits">Benefits</a></li>
+				<li><a href="#examples">Examples</a></li>
+				<li><a href="#resources">Related Resources</a></li>
+				<li><a href="#techniques">Techniques</a></li>
+			</ul>
+		</nav>
 	</xsl:template>
 	
 	<xsl:template match="guidelines">
@@ -141,13 +156,15 @@
 				<link rel="stylesheet" type="text/css" href="understanding.css" />
 			</head>
 			<body>
-				<nav>
-					<xsl:call-template name="navigation"/>
-				</nav>
+				<xsl:call-template name="navigation"/>
+				<xsl:call-template name="navtoc"/>
 				<h1><xsl:apply-templates select="//html:h1"/></h1>
 				<xsl:choose>
 					<xsl:when test="name($meta) = 'guideline' or name($meta) = 'success-criterion'">
-						<blockquote class="scquote"><xsl:copy-of select="$meta/content/html:*"/></blockquote>
+						<blockquote class="scquote">
+							<xsl:copy-of select="$meta/content/html:*"/>
+							<xsl:if test="name($meta) = 'success-criterion'"><p>(Level <xsl:value-of select="$meta/level"/>)</p></xsl:if>
+						</blockquote>
 						<main>
 							<xsl:apply-templates select="//html:section[@id = 'intent']"/>
 							<xsl:apply-templates select="//html:section[@id = 'benefits']"/>
@@ -174,7 +191,7 @@
 	<xsl:template match="html:section[@id = 'intent']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Intent of <xsl:call-template name="name"/></h2>
+			<h2>Intent</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.) or @id = 'benefits')]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -182,7 +199,7 @@
 	<xsl:template match="html:section[@id = 'benefits']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Benefits of <xsl:call-template name="name"/></h2>
+			<h2>Benefits</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -190,7 +207,7 @@
 	<xsl:template match="html:section[@id = 'examples']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Examples of <xsl:call-template name="name"/></h2>
+			<h2>Examples</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -198,7 +215,7 @@
 	<xsl:template match="html:section[@id = 'resources']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Resources <xsl:call-template name="name"/></h2>
+			<h2>Related Resources</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -206,7 +223,7 @@
 	<xsl:template match="html:section[@id = 'techniques']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Techniques for <xsl:call-template name="name"/></h2>
+			<h2>Techniques</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -246,6 +263,13 @@
 			</xsl:attribute>
 			<xsl:apply-templates/>
 		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="html:h2 | html:h3 | html:h4 | html:h5 | html:h6">
+		<xsl:variable name="level" select="count(ancestor::html:section) + 1"/>
+		<xsl:element name="h{$level}">
+			<xsl:apply-templates/>
+		</xsl:element>
 	</xsl:template>
 	
 	<xsl:template match="html:a[not(node()) and starts-with(@href, 'https://www.w3.org/TR/WCAG20-TECHS/')]">
