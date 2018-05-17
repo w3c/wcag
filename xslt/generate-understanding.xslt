@@ -25,6 +25,7 @@
 	
 	<xsl:template name="navigation">
 		<xsl:param name="meta" tunnel="yes"/>
+		<nav>
 		<ul id="navigation">
 			<li><a href="." title="Table of Contents">Contents</a></li>
 			<xsl:choose>
@@ -102,6 +103,20 @@
 				</xsl:when>
 			</xsl:choose>
 		</ul>
+		</nav>
+	</xsl:template>
+	
+	<xsl:template name="navtoc">
+		<nav class="navtoc">
+			<p>On this page:</p>
+			<ul id="navbar">
+				<li><a href="#intent">Intent</a></li>
+				<li><a href="#benefits">Benefits</a></li>
+				<li><a href="#examples">Examples</a></li>
+				<li><a href="#resources">Related Resources</a></li>
+				<li><a href="#techniques">Techniques</a></li>
+			</ul>
+		</nav>
 	</xsl:template>
 	
 	<xsl:template match="guidelines">
@@ -141,15 +156,14 @@
 				<link rel="stylesheet" type="text/css" href="understanding.css" />
 			</head>
 			<body>
-				<nav>
-					<xsl:call-template name="navigation"/>
-				</nav>
+				<xsl:call-template name="navigation"/>
+				<xsl:call-template name="navtoc"/>
 				<h1><xsl:apply-templates select="//html:h1"/></h1>
 				<xsl:choose>
 					<xsl:when test="name($meta) = 'guideline' or name($meta) = 'success-criterion'">
 						<blockquote class="scquote">
 							<xsl:copy-of select="$meta/content/html:*"/>
-							<p>(Level <xsl:value-of select="$meta/level"/>)</p>
+							<xsl:if test="name($meta) = 'success-criterion'"><p>(Level <xsl:value-of select="$meta/level"/>)</p></xsl:if>
 						</blockquote>
 						<main>
 							<xsl:apply-templates select="//html:section[@id = 'intent']"/>
