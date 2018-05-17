@@ -14,35 +14,45 @@
 		</section>
 		<section id="applicability">
 			<h2>When to Use</h2>
-			<p class="instructions">Describe the situations in which to use the technique, such as types of pages, features in use that might use the technique, etc.</p>
+			<h3>Applicability</h3>
+			<p>The Technique us applicable to any technology that supports pointer input (e.g. supporting any or all of the following: mouse pointer, touch on touch screen or trackpad, stylus input, or laser pointer input).</p>
+			<h3>User Agent and Assistive Technology Support Notes</h3>
+			<p>On touch screen devices, author-supplied path-based and multipoint gestures usually do not work when OS level assistive technologies (AT) like a built-in screenreader is turned on. AT generally consumes path-based or multipoint gestures so they would not reach the authored content. For example, a horizontal drag gesture may not move a slider thumb as intended by the author, but move the screen reader focus to the next or previous element. Some gestures may work if the user operates "pass through gestures" which are often unreliable as they may depend on factors of hardware, operating system, operating system "skin", operating system setting, or user agent.</p>
 		</section>
 		<section id="description">
 			<h2>Description</h2>
-			<p class="instructions">Describe how the technique works. This begins with a description of the problem the technique solves, then describes how to apply the technique. The description should be detailed enough to provide all the information a reader needs to be able to apply the technique, without recourse to following example code.</p>
-			<p>The objective of this technique is to ...</p>
+			<p>The objective of this technique is to ensure that users who use a path-based drag-and-drop gesture to move elements from the initial area to a drop target can abort the action after picking up the target. This can be done either by releasing the target outside a drop area, or by moving the target back to its original position in a separate action that undoes the first action. A third option is a dialog asking for confirmation of the action when the item is dropped.</p>
+
+			<p><em>Note:</em> This technique addresses gestures where support has been implemented by authors, not gestures provided by the user agent (such as horizontal swiping to move through the browser history or vertical swiping to scroll through page content) or the operating system (e.g., gestures to move between open apps, or call up contextual menus of assistive technologies when these are enabled).</p>
 		</section>
 		<section id="examples">
 			<h2>Examples</h2>
-			<p class="instructions">Copy the following section for each example. Examples must have a title and a description, and usually have a code sample. Code samples should be elided if necessary to show the core of the technique without necessarily providing all the surrounding code that would also be involved. A working example link references a location where the technique can be shown working live.</p>
-			<section class="example">
-				<h3>Example Title</h3>
-				<p>Description</p>
-				<code>Code sample</code>
-				<p>Working example: link</p>
-			</section>
+<ul>
+	<li>A site shows a file directory. Files can be picked up and moved over a trash can icon. When the picked-up file is released outside this target, it reverts to the old position.</li>
+    <li>A site shows a file directory. Files can be picked up and moved over a trash can icon to delete it. When the picked-up file is released over the trash can, a modal dialog asks the user to confirm or cancel the delete action.</li>
+    <li>A kanban implementation of a project planning site shows different columns for phases of an activity. Users can pick up and move icons representing planning items to another column. When an item has been picked up and now follows the pointer, it can be moved outside the drop targets (columns) and dropped there to cancel the action. The item will then jump back to the old position.</li>
+    <li>A kanban implementation of an issue tracking system shows columns that indicate different phases in handling issues (such as new / processed / done / closed). There is no screen space outside the kanban columns. Users can pick up and move icons representing issues between columns. When an item has been dropped in another column, the action can be reversed by dragging the icon back to the original column where it will return to its original position (defined by sorting preferences).</li>
+	</ul>
+		</section>
+		<section id="resources">
+		<h2>Resources<</h2>
+			<a href="https://www.youtube.com/watch?v=DI5ALywD6Qc">Video of canceled drag-and-drop interaction (item released outside drop target) (Youtube)</a>
 		</section>
 		<section id="tests">
 			<h2>Tests</h2>
 			<section class="test-procedure">
 				<h3>Procedure</h3>
 				<ol>
-					<li>Step 1</li>
+					<li>Determine if any content items are draggable. If this is the case:</li>
+    <li>Check if the drag-and-drop action can be reversed by releasing the picked-up item outside a drop target</li>
+    <li>Check if drag-and-drop action can be reversed by dragging the picked-up item back to its old position.</li>
+    <li>Check if drag-and-drop action can be reversed after releasing the item over the drop target via a dialog or an undo control.</li>
 				</ol>
 			</section>
 			<section class="test-results">
 				<h3>Expected Results</h3>
 				<ul>
-					<li>Result</li>
+					<li>If #1 is true, at least one option of #2, #3, #4 is true</li>
 				</ul>
 			</section>
 		</section>
