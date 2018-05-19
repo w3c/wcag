@@ -216,6 +216,7 @@
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
 			<h2>Related Resources</h2>
+			<p>Resources are for information purposes only, no endorsement implied.</p>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -224,6 +225,7 @@
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
 			<h2>Techniques</h2>
+			<p>Each numbered item in this section represents a technique or combination of techniques that the WCAG Working Group deems sufficient for meeting this Success Criterion. However, it is not necessary to use these particular techniques. For information on using other techniques, see <a href="understanding-techniques">Understanding Techniques for WCAG Success Criteria</a>, particularly the "Other Techniques" section.</p>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -232,6 +234,7 @@
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
 			<h3>Sufficient Techniques</h3>
+			<xsl:if test="html:section[@class = 'situation']"><p>Select the situation below that matches your content. Each situation includes techniques or combinations of techniques that are known and documented to be sufficient for that situation. </p></xsl:if>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -240,6 +243,7 @@
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
 			<h3>Advisory Techniques</h3>
+			<p>Although not required for conformance, the following additional techniques should be considered in order to make content more accessible. Not all techniques can be used or would be effective in all situations.</p>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -248,6 +252,7 @@
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
 			<h3>Failures</h3>
+			<p>The following are common mistakes that are considered failures of this Success Criterion by the WCAG Working Group.</p>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
