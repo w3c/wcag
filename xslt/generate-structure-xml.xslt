@@ -59,6 +59,7 @@
 				<name>Understanding Metadata</name>
 				<file href="understanding-metadata.html"/>
 			</understanding>
+			<xsl:apply-templates select="//html:dfn"/>
 		</guidelines>
 	</xsl:template>
 	
@@ -95,6 +96,17 @@
 			<level><xsl:value-of select="html:p[@class='conformance-level']"/></level>
 			<file href="{wcag:generate-id(wcag:find-heading(.))}.html"/>
 		</success-criterion>
+	</xsl:template>
+	
+	<xsl:template match="html:dfn">
+		<xsl:variable name="alts" select="tokenize(@data-lt, '\|')"></xsl:variable>
+		<term>
+			<id><xsl:text>dfn-</xsl:text><xsl:value-of select="wcag:generate-id(.)"/></id>
+			<name><xsl:value-of select="."/></name>
+			<xsl:for-each select="$alts">
+				<name><xsl:value-of select="."/></name>
+			</xsl:for-each>
+		</term>
 	</xsl:template>
 	
 </xsl:stylesheet>
