@@ -108,16 +108,35 @@
 	</xsl:template>
 	
 	<xsl:template name="navtoc">
+		<xsl:param name="meta" tunnel="yes"/>
 		<nav class="navtoc">
 			<p>On this page:</p>
 			<ul id="navbar">
 				<li><a href="#intent">Intent</a></li>
-				<li><a href="#benefits">Benefits</a></li>
-				<li><a href="#examples">Examples</a></li>
-				<li><a href="#resources">Related Resources</a></li>
-				<li><a href="#techniques">Techniques</a></li>
+				<xsl:if test="name($meta) = 'success-criterion'">
+					<li><a href="#benefits">Benefits</a></li>
+					<li><a href="#examples">Examples</a></li>
+					<li><a href="#resources">Related Resources</a></li>
+					<li><a href="#techniques">Techniques</a></li>
+				</xsl:if>
+				<xsl:if test="name($meta) = 'guideline'">
+					<li><a href="#advisory">Advisory Techniques</a></li>
+					<li><a href="#success-criteria">Success Criteria</a></li>
+				</xsl:if>
 			</ul>
 		</nav>
+	</xsl:template>
+	
+	<xsl:template name="gl-sc">
+		<xsl:param name="meta" tunnel="yes"/>
+		<section id="success-criteria">
+			<h2>Success Criteria for this Guideline</h2>
+			<ul>
+				<xsl:for-each select="$meta/success-criterion">
+					<li><a href="{file/@href}"><xsl:value-of select="num"/><xsl:text> </xsl:text><xsl:value-of select="name"/></a></li>
+				</xsl:for-each>
+			</ul>
+		</section>
 	</xsl:template>
 	
 	<xsl:template match="guidelines">
@@ -172,6 +191,10 @@
 							<xsl:apply-templates select="//html:section[@id = 'examples']"/>
 							<xsl:apply-templates select="//html:section[@id = 'resources']"/>
 							<xsl:apply-templates select="//html:section[@id = 'techniques']"/>
+							<xsl:if test="name($meta) = 'guideline'">
+								<xsl:apply-templates select="//html:section[@id = 'advisory']"/>
+								<xsl:call-template name="gl-sc"/>
+							</xsl:if>
 						</main>
 					</xsl:when>
 					<xsl:when test="name($meta) = 'understanding'">
@@ -288,7 +311,7 @@
 	<xsl:template match="html:a[not(@href)]">
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:variable name="dfn" select="lower-case(.)"/>
-		<a href="{$loc.guidelines}#{$meta/ancestor::guidelines/term[name = $dfn]/id}"><xsl:value-of select="."/></a>
+		<a href="{$loc.guidelines}#{$meta/ancestor::guidelines/term[name = $dfn]/id}" target="terms"><xsl:value-of select="."/></a>
 	</xsl:template>
 	
 	<xsl:template match="html:*[@class = 'instructions']"/>
