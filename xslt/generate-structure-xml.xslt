@@ -102,9 +102,9 @@
 		<xsl:variable name="alts" select="tokenize(@data-lt, '\|')"></xsl:variable>
 		<term>
 			<id><xsl:text>dfn-</xsl:text><xsl:value-of select="wcag:generate-id(.)"/></id>
-			<name><xsl:value-of select="."/></name>
+			<name><xsl:value-of select="lower-case(.)"/></name>
 			<xsl:for-each select="$alts">
-				<name><xsl:value-of select="."/></name>
+				<name><xsl:value-of select="lower-case(.)"/></name>
 			</xsl:for-each>
 		</term>
 	</xsl:template>

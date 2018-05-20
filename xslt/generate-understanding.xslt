@@ -11,6 +11,7 @@
 	
 	<xsl:param name="base.dir">understanding/</xsl:param>
 	<xsl:param name="output.dir">output/</xsl:param>
+	<xsl:param name="loc.guidelines">https://www.w3.org/TR/WCAG21/</xsl:param>
 	
 	<xsl:template name="name">
 		<xsl:param name="meta" tunnel="yes"/>
@@ -162,7 +163,7 @@
 				<xsl:choose>
 					<xsl:when test="name($meta) = 'guideline' or name($meta) = 'success-criterion'">
 						<blockquote class="scquote">
-							<xsl:copy-of select="$meta/content/html:*"/>
+							<xsl:apply-templates select="$meta/content/html:*"/>
 							<xsl:if test="name($meta) = 'success-criterion'"><p>(Level <xsl:value-of select="$meta/level"/>)</p></xsl:if>
 						</blockquote>
 						<main>
@@ -282,6 +283,12 @@
 			<xsl:apply-templates select="@*"/>
 			<xsl:value-of select="substring-after(@href, 'https://www.w3.org/TR/WCAG20-TECHS/')"/>
 		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="html:a[not(@href)]">
+		<xsl:param name="meta" tunnel="yes"/>
+		<xsl:variable name="dfn" select="lower-case(.)"/>
+		<a href="{$loc.guidelines}#{$meta/ancestor::guidelines/term[name = $dfn]/id}"><xsl:value-of select="."/></a>
 	</xsl:template>
 	
 	<xsl:template match="html:*[@class = 'instructions']"/>
