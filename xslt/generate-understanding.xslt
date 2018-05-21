@@ -192,7 +192,7 @@
 							<xsl:apply-templates select="//html:section[@id = 'resources']"/>
 							<xsl:apply-templates select="//html:section[@id = 'techniques']"/>
 							<xsl:if test="name($meta) = 'guideline'">
-								<xsl:apply-templates select="//html:section[@id = 'advisory']"/>
+								<xsl:apply-templates select="//html:section[@id = 'advisory']" mode="gladvisory"/>
 								<xsl:call-template name="gl-sc"/>
 							</xsl:if>
 						</main>
@@ -268,6 +268,15 @@
 			<xsl:apply-templates select="@*"/>
 			<h3>Advisory Techniques</h3>
 			<p>Although not required for conformance, the following additional techniques should be considered in order to make content more accessible. Not all techniques can be used or would be effective in all situations.</p>
+			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
+		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="html:section[@id = 'advisory']" mode="gladvisory">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<h2>Advisory Techniques</h2>
+			<p>Specific techniques for meeting each Success Criterion for this guideline are listed in the understanding sections for each Success Criterion (listed below). If there are techniques, however, for addressing this guideline that do not fall under any of the success criteria, they are listed here. These techniques are not required or sufficient for meeting any success criteria, but can make certain types of Web content more accessible to more people.</p>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
