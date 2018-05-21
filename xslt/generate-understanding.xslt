@@ -139,6 +139,26 @@
 		</section>
 	</xsl:template>
 	
+	<xsl:template name="sc-info">
+		<xsl:param name="meta" tunnel="yes"/>
+		<xsl:choose>
+			<xsl:when test="name($meta) = 'guideline'">Guideline </xsl:when>
+			<xsl:when test="name($meta) = 'success-criterion'">Success Criterion </xsl:when>
+		</xsl:choose>
+		<a href="{$loc.guidelines}#{$meta/@id}" style="font-weight: bold;">
+			<xsl:value-of select="$meta/num"/>
+			<xsl:text> </xsl:text>
+			<xsl:value-of select="$meta/name"/>
+		</a>
+		<xsl:if test="name($meta) = 'success-criterion'"> (Level <xsl:value-of select="$meta/level"/>)</xsl:if>
+		<xsl:text>: </xsl:text>
+	</xsl:template>
+	
+	<xsl:template match="html:p" mode="sc-info">
+		<xsl:param name="sc-info"/>
+		<p><xsl:copy-of select="$sc-info"/><xsl:apply-templates/></p>
+	</xsl:template>
+	
 	<xsl:template match="guidelines">
 		<xsl:apply-templates select="//understanding | //guideline | //success-criterion"/>
 	</xsl:template>
@@ -182,8 +202,10 @@
 				<xsl:choose>
 					<xsl:when test="name($meta) = 'guideline' or name($meta) = 'success-criterion'">
 						<blockquote class="scquote">
-							<xsl:apply-templates select="$meta/content/html:*"/>
-							<xsl:if test="name($meta) = 'success-criterion'"><p>(Level <xsl:value-of select="$meta/level"/>)</p></xsl:if>
+							<xsl:apply-templates select="$meta/content/html:p[1]" mode="sc-info">
+								<xsl:with-param name="sc-info"><xsl:call-template name="sc-info"/></xsl:with-param>
+							</xsl:apply-templates>
+							<xsl:apply-templates select="$meta/content/html:*[position() &gt; 1]"/>
 						</blockquote>
 						<main>
 							<xsl:apply-templates select="//html:section[@id = 'intent']"/>
