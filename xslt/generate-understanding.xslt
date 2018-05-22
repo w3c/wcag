@@ -356,10 +356,10 @@
 		</xsl:element>
 	</xsl:template>
 	
-	<xsl:template match="html:a[not(node()) and starts-with(@href, 'https://www.w3.org/TR/WCAG20-TECHS/')]">
+	<xsl:template match="html:a[not(node()) and starts-with(@href, 'https://www.w3.org/WAI/WCAG21/Techniques/')]">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<xsl:value-of select="substring-after(@href, 'https://www.w3.org/TR/WCAG20-TECHS/')"/>
+			<xsl:value-of select="replace(@href, '^.*/([\w\d]*)$', '$1')"/>
 		</xsl:copy>
 	</xsl:template>
 	
