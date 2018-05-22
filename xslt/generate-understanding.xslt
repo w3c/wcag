@@ -159,6 +159,29 @@
 		<p><xsl:copy-of select="$sc-info"/><xsl:apply-templates/></p>
 	</xsl:template>
 	
+	<xsl:template name="key-terms">
+		<xsl:param name="meta" tunnel="yes"/>
+		<xsl:variable name="termrefs" select="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]"/>
+		<xsl:if test="$termrefs">
+			<xsl:variable name="termids" as="node()*">
+				<xsl:for-each select="$termrefs">
+					<xsl:copy-of select="$meta/ancestor::guidelines/term[name = current()]"/>
+				</xsl:for-each>
+			</xsl:variable>
+			<section id="key-terms">
+				<h2>Key Terms</h2>
+				<xsl:apply-templates select="$termids" mode="key-terms">
+					<xsl:sort select="id"/>
+				</xsl:apply-templates>
+			</section>
+		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="term" mode="key-terms">
+		<dt id="{id}"><xsl:value-of select="name[1]"/></dt>
+		<dd><xsl:apply-templates select="definition"/></dd>
+	</xsl:template>
+	
 	<xsl:template match="guidelines">
 		<xsl:apply-templates select="//understanding | //guideline | //success-criterion"/>
 	</xsl:template>
@@ -217,6 +240,7 @@
 								<xsl:apply-templates select="//html:section[@id = 'advisory']" mode="gladvisory"/>
 								<xsl:call-template name="gl-sc"/>
 							</xsl:if>
+							<xsl:call-template name="key-terms"/>
 						</main>
 					</xsl:when>
 					<xsl:when test="name($meta) = 'understanding'">

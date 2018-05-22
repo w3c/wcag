@@ -106,6 +106,9 @@
 			<xsl:for-each select="$alts">
 				<name><xsl:value-of select="lower-case(.)"/></name>
 			</xsl:for-each>
+			<definition>
+				<xsl:copy-of select="../following-sibling::html:dd[1]/node()"/>
+			</definition>
 		</term>
 	</xsl:template>
 	
