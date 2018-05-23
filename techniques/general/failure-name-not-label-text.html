@@ -14,35 +14,37 @@
 		</section>
 		<section id="applicability">
 			<h2>When to Use</h2>
-			<p class="instructions">Describe the situations in which to use the technique, such as types of pages, features in use that might use the technique, etc.</p>
+			<p>This Failure applies to all web technologies that include interactive controls (such as links or form inputs)</p>
 		</section>
 		<section id="description">
 			<h2>Description</h2>
-			<p class="instructions">Describe how the technique works. This begins with a description of the problem the technique solves, then describes how to apply the technique. The description should be detailed enough to provide all the information a reader needs to be able to apply the technique, without recourse to following example code.</p>
-			<p>The objective of this technique is to ...</p>
+			<p>The objective of this Failure is to capture situations where speech input users cannot operate web content reliably.</p>
+			<p>When speech input users interact with a web page, they usually speak a command followed by the reference to some visible label (like the text in a button or a link, or the text labelling some input). If the visible label does not match the accessible name (or the beginning of the accessible name) of the control, speech users may be unable to directly activate that control.</p>	
+			<p>When techniques such as the use of accessibly hidden text, aria-label, or aria-labelledby attributes are used to add to the visible label text in order to provide more context, and this addition is placed before the visible label text, speech users may equally be unable to directly activate that control. (Refer to the <a href="https://www.w3.org/TR/accname/">Accessible Name and Description Computation</a> algorithm to work out the order of precendence in computing the accessible name of a control.)
 		</section>
+		
 		<section id="examples">
 			<h2>Examples</h2>
-			<p class="instructions">Copy the following section for each example. Examples must have a title and a description, and usually have a code sample. Code samples should be elided if necessary to show the core of the technique without necessarily providing all the surrounding code that would also be involved. A working example link references a location where the technique can be shown working live.</p>
-			<section class="example">
-				<h3>Example Title</h3>
-				<p>Description</p>
-				<code>Code sample</code>
-				<p>Working example: link</p>
-			</section>
+			<ul>
+				<li><strong>Failure example 1:</strong> The text in a search button reads "Go" but the accessible name provided in an aria-label attribute is "Find in this site"</li>
+				<li><strong>Failure example 2:</strong> A link to the code of conduct of an organisation reads "Code of conduct" but there is invisible link text before the visible text so that the accessible name of that link is "ACME Corporation Code of conduct". While the visble label text is part of the accessible name, it is not positioned at the start and will therefore prevent the link from being activated by speech input.</li>
+				<li><strong>Failure example 3:</strong> A button element enclosing the text "search" has a programmatically linked and accessibly hidden label enclosing the text "Find in this site". Because label takes precedence over the enclosed text content of the button, the accessible name of the button in most browser / screen reader combinations will be "Find in this site". Speech users speaking a command such as "Click search" will be unable to activate the control.</li>
+			</ul>	
 		</section>
 		<section id="tests">
 			<h2>Tests</h2>
 			<section class="test-procedure">
 				<h3>Procedure</h3>
-				<ol>
-					<li>Step 1</li>
-				</ol>
+				<p>For all controls with a visible label (e.g. link text, button text, programmatically linked label, value of input), check that</p>
+<ol>
+	<li>The visible label differs the accessible name of the control, or</li>
+	<li>The visible label string is included in the accessible name of the control, but not at the beginning </li>
+</ol>
 			</section>
 			<section class="test-results">
 				<h3>Expected Results</h3>
 				<ul>
-					<li>Result</li>
+					<li>If step #1 or step #2 are true, the content fails the Success Criterion.</li>
 				</ul>
 			</section>
 		</section>
