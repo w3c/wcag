@@ -122,6 +122,7 @@
 		<technique>
 			<id><xsl:value-of select="$tech-id"/></id>
 			<technology><xsl:value-of select="$tech-technology"/></technology>
+			<title><xsl:value-of select="$tech-doc//html:h1"/></title>
 			<file href="{$tech-technology}/{$tech-id}"/>
 		</technique>
 	</xsl:template>
