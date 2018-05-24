@@ -8,8 +8,6 @@
 	
 	<xsl:include href="base.xslt"/>
 	
-	<xsl:param name="techs.dir">techniques/</xsl:param>
-	
 	<xsl:output method="xml" indent="yes"/>
 	
 	<xsl:template name="id">
@@ -112,19 +110,6 @@
 				<xsl:copy-of select="../following-sibling::html:dd[1]/node()"/>
 			</definition>
 		</term>
-	</xsl:template>
-	
-	<xsl:template match="html:a[starts-with(@href, 'https://www.w3.org/WAI/WCAG21/Techniques/')]">
-		<xsl:variable name="tech-technology" select="replace(@href, '^.*/([\w-]*)/[\w\d]*$', '$1')"/>
-		<xsl:variable name="tech-id" select="replace(@href, '^.*/([\w\d]*)$', '$1')"/>
-		<xsl:variable name="tech-path" select="concat('../techniques/', $tech-technology, '/', '$tech-id', '.html')"/>
-		<xsl:variable name="tech-doc" select="document(resolve-uri($tech-path, $techs.dir))"/>
-		<technique>
-			<id><xsl:value-of select="$tech-id"/></id>
-			<technology><xsl:value-of select="$tech-technology"/></technology>
-			<title><xsl:value-of select="$tech-doc//html:h1"/></title>
-			<file href="{$tech-technology}/{$tech-id}"/>
-		</technique>
 	</xsl:template>
 	
 </xsl:stylesheet>
