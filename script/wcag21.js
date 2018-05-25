@@ -4,14 +4,14 @@ function titleToPathFrag (title) {
 
 function linkUnderstanding() {
 	var understandingBaseURI;
-	if (respecConfig.specStatus == "ED") understandingBaseURI = "../understanding/21/";
+	if (respecConfig.specStatus == "ED") understandingBaseURI = "../understanding/";
 	else understandingBaseURI = "https://www.w3.org/WAI/WCAG21/Understanding/";
 	document.querySelectorAll('.sc').forEach(function(node){
 		var heading = node.firstElementChild.textContent;
 		var pathFrag = titleToPathFrag(heading);
 		var el = document.createElement("div");
 		el.setAttribute("class", "doclinks");
-		el.innerHTML = "<a href=\"https://www.w3.org/WAI/WCAG21/quickref/#" + pathFrag + "\">How to Meet " + heading + "</a> <span class=\"screenreader\">|</span> <br /><a href=\"" + understandingBaseURI + pathFrag + ".html\">Understanding " + heading + "</a>";
+		el.innerHTML = "<a href=\"" + understandingBaseURI + pathFrag + ".html\">Understanding " + heading + "</a> <span class=\"screenreader\">|</span> <br /><a href=\"https://www.w3.org/WAI/WCAG21/quickref/#" + pathFrag + "\">How to Meet " + heading + "</a>";
 		node.insertBefore(el, node.children[1]);
 	})
 }
@@ -72,7 +72,7 @@ require(["core/pubsubhub"], function(respecEvents) {
     respecEvents.sub('end', function(message) {
     	if (message === 'core/link-to-dfn') {
     		document.querySelectorAll("div.head dt").forEach(function(node){
-    			if (node.textContent == "Authors:") node.textContent = "WCAG 2.0 Editors:";
+    			if (node.textContent == "Former editors:") node.textContent = "WCAG 2.0 Editors (until December 2008):";
     		});
     	}
 	})
