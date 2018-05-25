@@ -3,7 +3,7 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:wcag="https://www.w3.org/WAI/GL/"
-	exclude-result-prefixes="xs"
+	exclude-result-prefixes="#all"
 	version="2.0">
 	
 	<xsl:import href="base.xslt"/>
