@@ -43,9 +43,11 @@
 		<technique>
 			<id><xsl:value-of select="$tech-id"/></id>
 			<technology><xsl:value-of select="$tech-technology"/></technology>
-			<title><xsl:value-of select="$tech-doc//html:h1"/></title>
+			<title><xsl:value-of select="normalize-space($tech-doc//html:h1)"/></title>
 			<file href="{$tech-technology}/{$tech-id}"/>
 		</technique>
 	</xsl:template>
+	
+	<xsl:template match="html:a"/>
 	
 </xsl:stylesheet>
