@@ -56,6 +56,14 @@ var respecConfig = {
 			w3cid: 41218
 		},
 		{
+			name: "Alastair Campbell",
+			url: "https://www.nomensa.com/",
+			mailto: "acampbell@nomensa.com",
+			company: "Nomensa",
+			companyURI: "https://www.nomensa.com/",
+			w3cid: 44689
+		},
+		{
 			name: "Michael Cooper",
 			url: 'https://www.w3.org',
 			mailto: "cooper@w3.org",

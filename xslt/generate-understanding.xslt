@@ -11,6 +11,7 @@
 	
 	<xsl:param name="base.dir">understanding/</xsl:param>
 	<xsl:param name="output.dir">output/</xsl:param>
+	<xsl:param name="loc.guidelines">https://www.w3.org/TR/WCAG21/</xsl:param>
 	
 	<xsl:template name="name">
 		<xsl:param name="meta" tunnel="yes"/>
@@ -25,6 +26,7 @@
 	
 	<xsl:template name="navigation">
 		<xsl:param name="meta" tunnel="yes"/>
+		<nav>
 		<ul id="navigation">
 			<li><a href="." title="Table of Contents">Contents</a></li>
 			<xsl:choose>
@@ -102,6 +104,82 @@
 				</xsl:when>
 			</xsl:choose>
 		</ul>
+		</nav>
+	</xsl:template>
+	
+	<xsl:template name="navtoc">
+		<xsl:param name="meta" tunnel="yes"/>
+		<nav class="navtoc">
+			<p>On this page:</p>
+			<ul id="navbar">
+				<li><a href="#intent">Intent</a></li>
+				<xsl:if test="name($meta) = 'success-criterion'">
+					<li><a href="#benefits">Benefits</a></li>
+					<li><a href="#examples">Examples</a></li>
+					<li><a href="#resources">Related Resources</a></li>
+					<li><a href="#techniques">Techniques</a></li>
+				</xsl:if>
+				<xsl:if test="name($meta) = 'guideline'">
+					<li><a href="#advisory">Advisory Techniques</a></li>
+					<li><a href="#success-criteria">Success Criteria</a></li>
+				</xsl:if>
+			</ul>
+		</nav>
+	</xsl:template>
+	
+	<xsl:template name="gl-sc">
+		<xsl:param name="meta" tunnel="yes"/>
+		<section id="success-criteria">
+			<h2>Success Criteria for this Guideline</h2>
+			<ul>
+				<xsl:for-each select="$meta/success-criterion">
+					<li><a href="{file/@href}"><xsl:value-of select="num"/><xsl:text> </xsl:text><xsl:value-of select="name"/></a></li>
+				</xsl:for-each>
+			</ul>
+		</section>
+	</xsl:template>
+	
+	<xsl:template name="sc-info">
+		<xsl:param name="meta" tunnel="yes"/>
+		<xsl:choose>
+			<xsl:when test="name($meta) = 'guideline'">Guideline </xsl:when>
+			<xsl:when test="name($meta) = 'success-criterion'">Success Criterion </xsl:when>
+		</xsl:choose>
+		<a href="{$loc.guidelines}#{$meta/@id}" style="font-weight: bold;">
+			<xsl:value-of select="$meta/num"/>
+			<xsl:text> </xsl:text>
+			<xsl:value-of select="$meta/name"/>
+		</a>
+		<xsl:if test="name($meta) = 'success-criterion'"> (Level <xsl:value-of select="$meta/level"/>)</xsl:if>
+		<xsl:text>: </xsl:text>
+	</xsl:template>
+	
+	<xsl:template match="html:p" mode="sc-info">
+		<xsl:param name="sc-info"/>
+		<p><xsl:copy-of select="$sc-info"/><xsl:apply-templates/></p>
+	</xsl:template>
+	
+	<xsl:template name="key-terms">
+		<xsl:param name="meta" tunnel="yes"/>
+		<xsl:variable name="termrefs" select="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]"/>
+		<xsl:if test="$termrefs">
+			<xsl:variable name="termids" as="node()*">
+				<xsl:for-each select="$termrefs">
+					<xsl:copy-of select="$meta/ancestor::guidelines/term[name = current()]"/>
+				</xsl:for-each>
+			</xsl:variable>
+			<section id="key-terms">
+				<h2>Key Terms</h2>
+				<xsl:apply-templates select="$termids" mode="key-terms">
+					<xsl:sort select="id"/>
+				</xsl:apply-templates>
+			</section>
+		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="term" mode="key-terms">
+		<dt id="{id}"><xsl:value-of select="name[1]"/></dt>
+		<dd><xsl:apply-templates select="definition"/></dd>
 	</xsl:template>
 	
 	<xsl:template match="guidelines">
@@ -115,8 +193,8 @@
 				<xsl:when test="version = 'WCAG21'">21/</xsl:when>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:result-document href="{$output.dir}/{file/@href}" encoding="utf-8" exclude-result-prefixes="#all" indent="yes" method="xml" omit-xml-declaration="yes">
-			<xsl:apply-templates select="document(resolve-uri(file/@href, concat($base.dir, $subpath)))">
+		<xsl:result-document href="{$output.dir}/{file/@href}.html" encoding="utf-8" exclude-result-prefixes="#all" indent="yes" method="xml" omit-xml-declaration="yes">
+			<xsl:apply-templates select="document(resolve-uri(concat(file/@href, '.html'), concat($base.dir, $subpath)))">
 				<xsl:with-param name="meta" select="." tunnel="yes"/>
 			</xsl:apply-templates>
 		</xsl:result-document>
@@ -141,19 +219,28 @@
 				<link rel="stylesheet" type="text/css" href="understanding.css" />
 			</head>
 			<body>
-				<nav>
-					<xsl:call-template name="navigation"/>
-				</nav>
+				<xsl:call-template name="navigation"/>
+				<xsl:call-template name="navtoc"/>
 				<h1><xsl:apply-templates select="//html:h1"/></h1>
 				<xsl:choose>
 					<xsl:when test="name($meta) = 'guideline' or name($meta) = 'success-criterion'">
-						<blockquote class="scquote"><xsl:copy-of select="$meta/content/html:*"/></blockquote>
+						<blockquote class="scquote">
+							<xsl:apply-templates select="$meta/content/html:p[1]" mode="sc-info">
+								<xsl:with-param name="sc-info"><xsl:call-template name="sc-info"/></xsl:with-param>
+							</xsl:apply-templates>
+							<xsl:apply-templates select="$meta/content/html:*[position() &gt; 1]"/>
+						</blockquote>
 						<main>
 							<xsl:apply-templates select="//html:section[@id = 'intent']"/>
 							<xsl:apply-templates select="//html:section[@id = 'benefits']"/>
 							<xsl:apply-templates select="//html:section[@id = 'examples']"/>
 							<xsl:apply-templates select="//html:section[@id = 'resources']"/>
 							<xsl:apply-templates select="//html:section[@id = 'techniques']"/>
+							<xsl:if test="name($meta) = 'guideline'">
+								<xsl:apply-templates select="//html:section[@id = 'advisory']" mode="gladvisory"/>
+								<xsl:call-template name="gl-sc"/>
+							</xsl:if>
+							<xsl:call-template name="key-terms"/>
 						</main>
 					</xsl:when>
 					<xsl:when test="name($meta) = 'understanding'">
@@ -174,7 +261,7 @@
 	<xsl:template match="html:section[@id = 'intent']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Intent of <xsl:call-template name="name"/></h2>
+			<h2>Intent</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.) or @id = 'benefits')]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -182,7 +269,7 @@
 	<xsl:template match="html:section[@id = 'benefits']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Benefits of <xsl:call-template name="name"/></h2>
+			<h2>Benefits</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -190,7 +277,7 @@
 	<xsl:template match="html:section[@id = 'examples']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Examples of <xsl:call-template name="name"/></h2>
+			<h2>Examples</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -198,7 +285,8 @@
 	<xsl:template match="html:section[@id = 'resources']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Resources <xsl:call-template name="name"/></h2>
+			<h2>Related Resources</h2>
+			<p>Resources are for information purposes only, no endorsement implied.</p>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -206,7 +294,8 @@
 	<xsl:template match="html:section[@id = 'techniques']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Techniques for <xsl:call-template name="name"/></h2>
+			<h2>Techniques</h2>
+			<p>Each numbered item in this section represents a technique or combination of techniques that the WCAG Working Group deems sufficient for meeting this Success Criterion. However, it is not necessary to use these particular techniques. For information on using other techniques, see <a href="understanding-techniques">Understanding Techniques for WCAG Success Criteria</a>, particularly the "Other Techniques" section.</p>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -215,6 +304,7 @@
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
 			<h3>Sufficient Techniques</h3>
+			<xsl:if test="html:section[@class = 'situation']"><p>Select the situation below that matches your content. Each situation includes techniques or combinations of techniques that are known and documented to be sufficient for that situation. </p></xsl:if>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -223,6 +313,16 @@
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
 			<h3>Advisory Techniques</h3>
+			<p>Although not required for conformance, the following additional techniques should be considered in order to make content more accessible. Not all techniques can be used or would be effective in all situations.</p>
+			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
+		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="html:section[@id = 'advisory']" mode="gladvisory">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<h2>Advisory Techniques</h2>
+			<p>Specific techniques for meeting each Success Criterion for this guideline are listed in the understanding sections for each Success Criterion (listed below). If there are techniques, however, for addressing this guideline that do not fall under any of the success criteria, they are listed here. These techniques are not required or sufficient for meeting any success criteria, but can make certain types of Web content more accessible to more people.</p>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -231,6 +331,7 @@
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
 			<h3>Failures</h3>
+			<p>The following are common mistakes that are considered failures of this Success Criterion by the WCAG Working Group.</p>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -248,11 +349,24 @@
 		</xsl:copy>
 	</xsl:template>
 	
-	<xsl:template match="html:a[not(node()) and starts-with(@href, 'https://www.w3.org/TR/WCAG20-TECHS/')]">
+	<xsl:template match="html:h2 | html:h3 | html:h4 | html:h5 | html:h6">
+		<xsl:variable name="level" select="count(ancestor::html:section) + 1"/>
+		<xsl:element name="h{$level}">
+			<xsl:apply-templates/>
+		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template match="html:a[not(node()) and starts-with(@href, 'https://www.w3.org/WAI/WCAG21/Techniques/')]">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<xsl:value-of select="substring-after(@href, 'https://www.w3.org/TR/WCAG20-TECHS/')"/>
+			<xsl:value-of select="replace(@href, '^.*/([\w\d]*)$', '$1')"/>
 		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="html:a[not(@href)]">
+		<xsl:param name="meta" tunnel="yes"/>
+		<xsl:variable name="dfn" select="lower-case(.)"/>
+		<a href="{$loc.guidelines}#{$meta/ancestor::guidelines/term[name = $dfn]/id}" target="terms"><xsl:value-of select="."/></a>
 	</xsl:template>
 	
 	<xsl:template match="html:*[@class = 'instructions']"/>
