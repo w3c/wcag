@@ -6,17 +6,9 @@
 	exclude-result-prefixes="#all"
 	version="2.0">
 	
+	<xsl:include href="base.xslt"/>
+	
 	<xsl:output method="xml" indent="yes"/>
-	
-	<xsl:function name="wcag:generate-id">
-		<xsl:param name="title"/>
-		<xsl:value-of select="lower-case(replace(replace($title, ' ', '-'), '[,()]', ''))"/>
-	</xsl:function>
-	
-	<xsl:function name="wcag:find-heading">
-		<xsl:param name="el"/>
-		<xsl:copy-of select="$el/html:h1 | $el/html:h2 | $el/html:h3 | $el/html:h4 | $el/html:h5 | $el/html:h6"/>
-	</xsl:function>
 	
 	<xsl:template name="id">
 		<xsl:attribute name="id">
@@ -42,7 +34,32 @@
 	
 	<xsl:template match="html:html">
 		<guidelines lang="{@lang}">
+			<understanding>
+				<name>Introduction to Understanding WCAG 2.1</name>
+				<file href="intro"/>
+			</understanding>
+			<understanding>
+				<name>Understanding Techniques for WCAG Success Criteria</name>
+				<file href="understanding-techniques"/>
+			</understanding>
 			<xsl:apply-templates select="//html:section[@class='principle']"/>
+			<understanding>
+				<name>Understanding Conformance</name>
+				<file href="conformance"/>
+			</understanding>
+			<understanding>
+				<name>How to Refer to WCAG 2.1 from Other Documents</name>
+				<file href="refer-to-wcag"/>
+			</understanding>
+			<understanding>
+				<name>Documenting Accessibility Support for Uses of a Web Technology</name>
+				<file href="documenting-accessibility-support"/>
+			</understanding>
+			<understanding>
+				<name>Understanding Metadata</name>
+				<file href="understanding-metadata"/>
+			</understanding>
+			<xsl:apply-templates select="//html:dfn"/>
 		</guidelines>
 	</xsl:template>
 	
@@ -64,7 +81,7 @@
 			<num><xsl:number level="multiple" count="html:section[@class='principle']|html:section[@class='guideline' or @class = 'guideline new']" format="1.1"/></num>
 			<name><xsl:value-of select="wcag:find-heading(.)"/></name>
 			<xsl:call-template name="content"/>
-			<file href="{wcag:generate-id(wcag:find-heading(.))}.html"/>
+			<file href="{wcag:generate-id(wcag:find-heading(.))}"/>
 			<xsl:apply-templates select="html:section"/>
 		</guideline>
 	</xsl:template>
@@ -77,8 +94,22 @@
 			<name><xsl:value-of select="wcag:find-heading(.)"/></name>
 			<xsl:call-template name="content"/>
 			<level><xsl:value-of select="html:p[@class='conformance-level']"/></level>
-			<file href="{wcag:generate-id(wcag:find-heading(.))}.html"/>
+			<file href="{wcag:generate-id(wcag:find-heading(.))}"/>
 		</success-criterion>
+	</xsl:template>
+	
+	<xsl:template match="html:dfn">
+		<xsl:variable name="alts" select="tokenize(@data-lt, '\|')"></xsl:variable>
+		<term>
+			<id><xsl:text>dfn-</xsl:text><xsl:value-of select="wcag:generate-id(.)"/></id>
+			<name><xsl:value-of select="lower-case(.)"/></name>
+			<xsl:for-each select="$alts">
+				<name><xsl:value-of select="lower-case(.)"/></name>
+			</xsl:for-each>
+			<definition>
+				<xsl:copy-of select="../following-sibling::html:dd[1]/node()"/>
+			</definition>
+		</term>
 	</xsl:template>
 	
 </xsl:stylesheet>
