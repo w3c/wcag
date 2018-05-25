@@ -32,6 +32,7 @@
 	<target name="clean" description="Clean up any temp files">
 		<delete file="${inputdir.guidelines}/index-flat.html" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/wcag21.xml" failonerror="false"/>
+		<delete file="${inputdir.techniques}/techniques.xml" failonerror="false"/>
 		<delete file="output.html" failonerror="false"/>
 		<delete dir="output" failonerror="false"/>
 	</target>
@@ -47,6 +48,17 @@
 	<target name="guidelines-xml" depends="flatten" description="Build an XML representation of the guidelines">
 		<xslt in="${inputdir.guidelines}/index-flat.html" out="${inputdir.guidelines}/wcag21.xml" style="xslt/generate-structure-xml.xslt">
 			<factory name="${xslt.factory}"/>
+		</xslt>
+	</target>
+	
+	<!-- Techniques -->
+	<target name="techniques-xml" depends="flatten, guidelines-xml" description="Build an XML structure of all techniques">
+		<makeurl file="${basedir}/techniques" property="techniques.dir"/>
+		<makeurl file="${basedir}/understanding" property="understanding.dir"/>
+		<xslt in="${inputdir.guidelines}/wcag21.xml" out="${inputdir.techniques}/techniques.xml" style="xslt/generate-technique-xml.xslt">
+			<factory name="${xslt.factory}"/>
+			<param name="techniques.dir" expression="${techniques.dir}"/>
+			<param name="understanding.dir" expression="${understanding.dir}"/>
 		</xslt>
 	</target>
 	
