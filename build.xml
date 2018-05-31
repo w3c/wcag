@@ -32,6 +32,7 @@
 	<target name="clean" description="Clean up any temp files">
 		<delete file="${inputdir.guidelines}/index-flat.html" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/wcag21.xml" failonerror="false"/>
+		<delete file="${inputdir.guidelines}/wcag21.json" failonerror="false"/>
 		<delete file="${inputdir.techniques}/techniques.xml" failonerror="false"/>
 		<delete file="output.html" failonerror="false"/>
 		<delete dir="output" failonerror="false"/>
@@ -83,6 +84,11 @@
 		<xslt in="${inputdir.guidelines}/wcag21.xml" out="understanding/toc.html" style="xslt/generate-understanding-toc.xslt" force="true">
 			<factory name="${xslt.factory}"/>
 		</xslt>
+	</target>
+	
+	<!-- JSON -->
+	<target name="json" depends="guidelines-xml" description="Generate JSON structure for Quickref">
+		<xslt in="${inputdir.guidelines}/wcag21.xml" out="${inputdir.guidelines}/wcag21.json" style="xslt/xml-to-json.xslt" force="true"/>
 	</target>
 	
 	<!-- Everything -->
