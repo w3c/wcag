@@ -10,6 +10,8 @@
 	
 	<xsl:output method="text"/>
 	
+	<xsl:variable name="ids" select="document('ids.xml')"/>
+	
 	<xsl:template name="versions">
 		<xsl:choose>
 			<xsl:when test="version = 'WCAG20'">["2.0", "2.1"]</xsl:when>
@@ -66,6 +68,10 @@
 		]}
 	</xsl:template>
 	
+	<xsl:template name="altid">
+		<xsl:for-each select="$ids//id[. = current()/@id]/following-sibling::altid">"<xsl:value-of select="."/>"<xsl:if test="position() != last()">, </xsl:if></xsl:for-each>
+	</xsl:template>
+	
 	<xsl:template match="/">
 		{
 			"principles": [
@@ -90,6 +96,7 @@
 	<xsl:template match="guideline">
 		{
 			"id": "WCAG2:<xsl:value-of select="@id"/>",
+			"alt_id": [<xsl:call-template name="altid"/>],
 			"num": "<xsl:value-of select="num"/>",
 			"versions": <xsl:call-template name="versions"/>,
 			"handle": "<xsl:value-of select="name"/>",
@@ -106,6 +113,7 @@
 	<xsl:template match="success-criterion">
 		{
 			"id": "WCAG2:<xsl:value-of select="@id"/>",
+			"alt_id": [<xsl:call-template name="altid"/>],
 			"num": "<xsl:value-of select="num"/>",
 			"versions": <xsl:call-template name="versions"/>,
 			"level": "<xsl:value-of select="level"/>",
