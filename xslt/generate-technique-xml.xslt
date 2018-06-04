@@ -36,6 +36,7 @@
 	</xsl:template>
 	
 	<xsl:template match="html:a[starts-with(@href, 'https://www.w3.org/WAI/WCAG21/Techniques/')]">
+		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:variable name="tech-technology" select="replace(@href, '^.*/([\w-]*)/[\w\d]*$', '$1')"/>
 		<xsl:variable name="tech-id" select="replace(@href, '^.*/([\w\d]*)$', '$1')"/>
 		<xsl:variable name="tech-path" select="concat('../techniques/', $tech-technology, '/', $tech-id, '.html')"/>
@@ -45,6 +46,7 @@
 			<technology><xsl:value-of select="$tech-technology"/></technology>
 			<type><xsl:choose><xsl:when test="$tech-technology = 'failures'">failure</xsl:when><xsl:otherwise>technique</xsl:otherwise></xsl:choose></type>
 			<title><xsl:value-of select="normalize-space($tech-doc//html:h1)"/></title>
+			<association item="{$meta/@id}" type="{ancestor::html:section[@id = 'sufficient' or @id = 'advisory' or @id = 'failure']/@id}"/>
 			<file href="{$tech-technology}/{$tech-id}"/>
 		</technique>
 	</xsl:template>
