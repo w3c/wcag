@@ -14,8 +14,27 @@
 	<xsl:param name="understanding.dir">understanding/</xsl:param>
 	
 	<xsl:template match="guidelines">
-		<techniques>
+		<xsl:variable name="techniques">
 			<xsl:apply-templates select="//guideline | //success-criterion"/>
+		</xsl:variable>
+		<xsl:variable name="technique-ids" select="distinct-values($techniques//id)"/>
+		<techniques>
+			<xsl:for-each select="$technique-ids">
+				<xsl:sort/>
+				<xsl:variable name="tech-id" select="."/>
+				<xsl:variable name="tech" select="$techniques/technique[id = $tech-id][1]"/>
+				<xsl:variable name="tech-technology" select="$tech/technology"/>
+				<xsl:variable name="tech-path" select="concat('../techniques/', $tech-technology, '/', $tech-id, '.html')"/>
+				<xsl:variable name="tech-doc" select="document(resolve-uri($tech-path, $techniques.dir))"/>
+				<technique>
+					<xsl:copy-of select="$tech/id"/>
+					<xsl:copy-of select="$tech/technology"/>
+					<type><xsl:choose><xsl:when test="$tech-technology = 'failures'">failure</xsl:when><xsl:otherwise>technique</xsl:otherwise></xsl:choose></type>
+					<title><xsl:value-of select="normalize-space($tech-doc//html:h1)"/></title>
+					<xsl:copy-of select="$techniques/technique[id = $tech-id]/association"/>
+					<file href="{$tech-technology}/{$tech-id}"/>
+				</technique>
+			</xsl:for-each>
 		</techniques>
 	</xsl:template>
 	
@@ -39,15 +58,16 @@
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:variable name="tech-technology" select="replace(@href, '^.*/([\w-]*)/[\w\d]*$', '$1')"/>
 		<xsl:variable name="tech-id" select="replace(@href, '^.*/([\w\d]*)$', '$1')"/>
-		<xsl:variable name="tech-path" select="concat('../techniques/', $tech-technology, '/', $tech-id, '.html')"/>
-		<xsl:variable name="tech-doc" select="document(resolve-uri($tech-path, $techniques.dir))"/>
 		<technique>
 			<id><xsl:value-of select="$tech-id"/></id>
 			<technology><xsl:value-of select="$tech-technology"/></technology>
-			<type><xsl:choose><xsl:when test="$tech-technology = 'failures'">failure</xsl:when><xsl:otherwise>technique</xsl:otherwise></xsl:choose></type>
-			<title><xsl:value-of select="normalize-space($tech-doc//html:h1)"/></title>
-			<association item="{$meta/@id}" type="{ancestor::html:section[@id = 'sufficient' or @id = 'advisory' or @id = 'failure']/@id}"/>
-			<file href="{$tech-technology}/{$tech-id}"/>
+			<association item="{$meta/@id}" type="{ancestor::html:section[@id = 'sufficient' or @id = 'advisory' or @id = 'failure']/@id}">
+				<xsl:if test="ancestor::html:section[@class = 'situation']">
+					<xsl:variable name="situation" select="ancestor::html:section[@class = 'situation']"/>
+					<xsl:variable name="num"><xsl:number select="$situation"/></xsl:variable>
+					<situation num="{$num}"/>
+				</xsl:if>
+			</association>
 		</technique>
 	</xsl:template>
 	
