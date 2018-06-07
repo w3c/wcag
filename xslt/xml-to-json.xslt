@@ -8,6 +8,9 @@
 	
 	<xsl:include href="base.xslt"/>
 	
+	<xsl:param name="base.dir">understanding/</xsl:param>
+	<xsl:param name="understanding.dir">understanding/</xsl:param>
+	
 	<xsl:output method="text"/>
 	
 	<xsl:variable name="ids" select="document('ids.xml')"/>
@@ -19,7 +22,19 @@
 		</xsl:choose>
 	</xsl:template>
 	
-	<xsl:template name="techniques-placeholder">
+	<xsl:template name="techniques">
+		"techniques": [
+		<xsl:variable name="subpath">
+			<xsl:choose>
+				<xsl:when test="version = 'WCAG20'">20/</xsl:when>
+				<xsl:when test="version = 'WCAG21'">21/</xsl:when>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:apply-templates select="document(resolve-uri(concat(file/@href, '.html'), concat($base.dir, $subpath)))//html:section[@id = 'sufficient' or @id = 'advisory' or @id = 'failure']">
+			<xsl:with-param name="meta" select="." tunnel="yes"/>
+		</xsl:apply-templates>
+		]
+		
 		{"sufficient": [
 			{"situations": [
 				{
@@ -101,12 +116,10 @@
 			"versions": <xsl:call-template name="versions"/>,
 			"handle": "<xsl:value-of select="name"/>",
 			"title": "<xsl:value-of select="normalize-space(content/html:p[1])"/>",
-			"techniques": [
-				<xsl:call-template name="techniques-placeholder"/>
-			],
 			"successcriteria": [
 				<xsl:apply-templates select="success-criterion"/>
-			]
+			],
+			"techniques": {<xsl:apply-templates select="descendant::html:section[@id = 'advisory']"/>}
 		}<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
@@ -127,9 +140,7 @@
 				]
 			}],
 		</xsl:if>
-			"techniques": [
-				<xsl:call-template name="techniques-placeholder"/>
-			]
+			"techniques": {<xsl:apply-templates select="descendant::html:section[@id = 'sufficient' or @id = 'advisory' or @id = 'failure']"/>}
 		}<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
@@ -139,5 +150,52 @@
 			"text": "<xsl:value-of select="normalize-space(following-sibling::html:dd[1])"/>"
 		}<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
+	
+	
+	
+	
+	
+	
+	<xsl:template match="html:section[@id = 'sufficient' or @id = 'advisory' or @id = 'failure']">
+		{"<xsl:value-of select="@id"/>": [
+			<xsl:apply-templates select="html:section[@class = 'situation'] | html:ul | html:ol" mode="techniques"/>	
+		]}<xsl:if test="position() != last()">,</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="html:section[@class = 'situation']" mode="techniques">
+		<situation num="{count(preceding-sibling::html:section[@class = 'situation']) + 1}">
+			<title><xsl:value-of select="html:h4"/></title>
+			<xsl:apply-templates select="html:ul | html:ol" mode="techniques"/>
+		</situation>
+	</xsl:template>
+	
+	<xsl:template match="html:ul | html:ol" mode="techniques">
+		<xsl:choose>
+			<xsl:when test="count(html:li) &gt; 1">
+				<or><xsl:apply-templates select="html:li" mode="techniques"/></or>
+			</xsl:when>
+			<xsl:otherwise><xsl:apply-templates select="html:li" mode="techniques"/></xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template match="html:li" mode="techniques">
+		<technique>
+			<xsl:choose>
+				<xsl:when test="count(html:a) &gt; 1">
+					<and><xsl:apply-templates select="html:a" mode="techniques"/></and>
+					<xsl:if test="html:ol or html:ul">
+						<using><xsl:apply-templates select="html:ul | html:ol" mode="techniques"/></using>
+					</xsl:if>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:apply-templates select="html:a" mode="techniques"/>
+					<xsl:if test="html:ol or html:ul">
+						<using><xsl:apply-templates select="html:ul | html:ol" mode="techniques"/></using>
+					</xsl:if>
+				</xsl:otherwise>
+			</xsl:choose>
+		</technique>
+	</xsl:template>
+	
 	
 </xsl:stylesheet>
