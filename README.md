@@ -3,32 +3,25 @@ WCAG (Web Content Accessibility Guidelines)
 
 Please do not submit any new pull requests against this branch - please look in the list of branches for the most current Working Branch and use that one.
 
-This repository is used to develop the success criteria proposal for wcag 2.1, as well as associated understanding documents and techniques.
+This repository is used to develop content for WCAG 2, as well as associated understanding documents and techniques.
 
 ## File Structure
 
-The WCAG 2.1 repository contains source and auxiliary files for WCAG 2.1, Understanding WCAG 2.1, and eventually techniques, along with some content from WCAG 2.0 for context. It also contains auxiliary files that support automated formatting of the document. To facilitate multi-party editing, each success criterion is in a separate file, consisting of a HTML fragment that can be included into the main guidelines. Key files include:
+WCAG 2.0 was maintained in a different file structure than subsequent versions of WCAG. Source files for WCAG 2.0 are in the wcag20 folder and exists primarily for archival purposes. Do not edit content in that folder.
+
+Content for WCAG 2.1 and later is organized accordign to the file structure below. The WCAG repository contains source and auxiliary files for WCAG 2, Understanding WCAG 2, and eventually techniques. It also contains auxiliary files that support automated formatting of the document. To facilitate multi-party editing, each success criterion is in a separate file, consisting of a HTML fragment that can be included into the main guidelines. Key files include:
 
 * guidelines/index.html - the main guidelines file
-* guidelines/sc/21/*.html - files for each success criterion
-* guidelines/terms/21/*.html - files for each definition
-* understanding/21/*.html - understanding files for each success criterion
+* guidelines/sc/<version>/*.html - files for each success criterion
+* guidelines/terms/<version>/*.html - files for each definition
+* understanding/<version>/*.html - understanding files for each success criterion
 
-## Review Links
- 
-Review links have been [put at the top of each issue](https://lists.w3.org/Archives/Public/w3c-wai-gl/2017JanMar/1200.html) tracking the success criterion proposal. The pattern for review links is:
-
-* SC for viewing: https://rawgit.com/w3c/wcag21/{branchname}/guidelines/sc/21/{scfile}.html
-* SC for editing: https://github.com/w3c/wcag21/blob/{branchname{/guidelines/sc/21/{scfile}.html
-* Term for viewing: https://rawgit.com/w3c/wcag21/{branchname}/guidelines/terms/21/{termfile}.html 
-* Term for editing: https://github.com/w3c/wcag21/blob/{branchname{/guidelines/terms/21/{termfile}.html
-* SC in context of full guidelines: https://rawgit.com/w3c/wcag21/branchname/guidelines/#{scfile}
+Where <version> is "20", content came from WCAG 2.0. "21" is used for content introduced in WCAG 2.1, "22" for WCAG 2.2, etc.
 
 ## Editing Draft Success Criteria
 
 [Success Criteria Managers](https://www.w3.org/WAI/GL/wiki/SC_Managers_Phase1) will prepare candidate success criteria, ready for inclusion in the guidelines document. To prepare success criteria, follow these steps:
 
-<!--1. [Fork this repository](https://help.github.com/articles/fork-a-repo/) or, if you have already forked it, [update your fork](https://help.github.com/articles/syncing-a-fork/). It is important to keep your fork up to date to avoid merge conflicts.-->
 1. [Clone the repository](https://help.github.com/articles/cloning-a-repository/), using the URI https://github.com/w3c/wcag21.git to clone.
 1. Switch to the working branch for the proposal, which is named for the shortname of the draft success criterion and the issue number, concatenated together.
 1. Find the appropriate file for the success criterion in the guidelines/sc/21 folder, named the same as the start of the branch name, and open in an HTML-capable editor. Do the same with any definitions referenced by the success criterion, in the guidelines/terms/21 folder.
@@ -94,13 +87,13 @@ The ```dfn``` element tells the script that this is a term and causes special st
 There is one Understanding file per success criterion, plus an index:
 
 * understanding/index.html - index page, need to uncomment or add a reference to individual Understanding pages as they are made available
-* understanding/21/*.html - files for each understanding page, named the same as the success criterion file in the guidelines
+* understanding/<version>/*.html - files for each understanding page, named the same as the success criterion file in the guidelines
 
 Files are populated with a template that provides the expected structure. Leave the template structure in place, and add content as appropriate within the sections. Elements with class="instructions" provide guidance about what content to include in that section; you can remove those elements if you want but don't have to. The template for examples proposes either a bullet list or a series of sub-sections, choose one of those approaches and remove the other from the template. The template for techniques includes sub-sections for "situations", remove that wrapper section if not needed.
 
-Understanding files are referenced from the relevant Success Criterion on the WCAG 2.1 page; these links are put in by the script.
+Understanding files are referenced from the relevant Success Criterion on the WCAG specification; these links are put in by the script.
 
-The formal publication location for Understanding pages is https://www.w3.org/WAI/WCAG21/Understanding/. This content is updated as needed; and may be automated.
+The formal publication location for Understanding pages is currently https://www.w3.org/WAI/WCAG21/Understanding/. This content is updated as needed; and may be automated.
 
 ## Editing Techniques
 
@@ -113,16 +106,11 @@ For example, a technique "Using the alt attribute on the img element to provide 
 * Determine a filename for the technique that is likely to be descriptive, unique, and short.
 * Create a working branch named the same as the technique filename.
 * Copy the techniques/technique-template.html file into the appropriate technology folder for the technique, and give it the chosen file name.
+* In the section element with id "meta", indicate to which guideline or success criterion the technique relates, and whether the technique is sufficient, advisory, or a failure for that item. Multiple applicability are allowed.
 * Populate the template with appropriate content, using other techniques as examples for code formatting choices. Keep the existing structural sections from the template in place.
 * When the technique is ready for review, ask the chairs to arrange WG review and merge.
-
-### Associate Techniques with Success Criteria
-
-PROPOSED: edit the [wcag21.json](wcag21.json) file to add a technique entry into each SC where appropriate. Entries can declare the technique to be sufficient, advisory, or failure on a per SC basis. The (proposed) generator will use this to provide links in the various places needed.
-
-ALTERNATE: create a HTML-based data structure, which would be easier to read but harder to edit correctly.
-
-ALTERNATE: link to techniques from Understanding as we have done before, but this allows inconsistencies and is harder to extract data from.
+* If you wish to reference the draft technique from an Understanding document, use the technique's rawgit URI.
+* After a technique is approved, the chairs will assign it an ID and update links to it in the Undestanding documents. 
 
 ### Provide Working Examples of Techniques
 
