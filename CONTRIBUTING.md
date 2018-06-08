@@ -20,3 +20,5 @@ If you added a contributor by mistake, you can remove them in a comment with:
 
 If you are making a pull request on behalf of someone else but you had no part in designing the 
 feature, you can remove yourself with the above syntax.
+
+Public comments can be made by opening a new Issue https://github.com/w3c/wcag/issues/new. The public can also comment on any issue threads on Github https://github.com/w3c/wcag/issues.
