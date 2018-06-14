@@ -114,4 +114,18 @@ For example, a technique "Using the alt attribute on the img element to provide 
 
 ### Provide Working Examples of Techniques
 
-@@
+Examples in techniques should be brief easy-to-consume code samples of how the technique is used in content. Therefore examples should focus on the specific features the technique describes, and not include related content such as style, script, surrounding web content, etc.
+
+Often it is desirable to provide more comprehensive examples, which show the technique in action while not interfering with the main technique document. These examples also show the complete code required to make the technique operate, including full style and script files, images, page code, etc. Usually, these "working examples" are referenced at the bottom of the elided example which is included in the main technique.
+
+Working examples are stored in the `working-examples` directory of the repository. Each example is in its own subdirectory, to contain the multiple files that may be necessary to make the example work. In some cases, multiple working examples will share common resources; these are stored in the appropriate sub-directory of the working-examples directory, e.g., `working-examples/css`, `working-examples/img`, `working-examples/script`. Reference these common resources when available; otherwise place resources in the working example directory, using subdirectories to organize when appropriate.
+
+To create a working example:
+
+* Identify the name for the example, e.g., "Using the alt attribute".
+* Create a working branch for the example, whose name begins with the prefix `example-` and which otherwise semantically identifies the example, e.g., `example-alt-attribute`.
+* Create a directory for the example inside the working examples directory, using the semantic name for the example minus the prefix used in the branch name, e.g., `working-examples/alt-attribute/`.
+* If the primary example is HTML, name the file `index.html`. Otherwise, create a suitable file name.
+* Refer to resources shared among multiple examples using relative links, e.g., `../css/example.css`. Place other resources in the same directory as the main example, e.g., `working-examples/alt-attribute/css/alt.css`.
+* Reference working examples from techniques using the rawgit URI to the example in its development branch, e.g., `https://rawgit.com/w3c/wcag/master/working-examples/alt-attribute/`. Editors will update links when examples are approved.
+* When the example is complete and functional, submit a pull request into the master branch.
