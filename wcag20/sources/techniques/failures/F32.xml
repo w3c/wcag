@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F32">
+   <short-name>Failure of Success Criterion 1.3.2 due to using white space characters to control
+                    spacing within a word</short-name>
+   <applicability>
+      <p>All technologies.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-sequence" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to describe how using white space characters, such as space, tab, line break, or carriage return, to format individual words visually can be a failure to present meaningful sequences properly. When blank characters are inserted to control letter spacing within a word, they may change the interpretation of the word or cause it not to be programmatically recognized as a single word. 
+          </p>
+      <p>Inserting white space characters into an initialism is not an example of this
+                        failure, since the white space does not change the interpretation of the
+                        initialism and may make it easier to understand.</p>
+      <p>The use of white space between words for visual formatting is not a failure,
+                        since it does not change the interpretation of the words.</p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <head>Failure due to adding white space in the middle of a word</head>
+         <description>
+            <p>This example has white spaces within a word to space out the letters
+                                in a heading. Screen readers may read each letter individually
+                                instead of the word "Welcome."</p>
+         </description>
+         <code role="html401"><![CDATA[
+<h1>W e l c o m e</h1>
+]]></code>
+         <description>
+            <p>&amp;nbsp; can also be used to add white space, producing similar
+                                failures:</p>
+         </description>
+         <code role="html401"><![CDATA[
+<h1>H&nbsp;E&nbsp;L&nbsp;L&nbsp;O</h1>
+]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <head>White space in the middle of a word changing its meaning</head>
+         <description>
+            <p>In Japanese, Han characters (Kanji) may have multiple readings that
+                                mean very different things. In this example, the word is read
+                                incorrectly because screen readers may not recognize these
+                                characters as a word because of the white space between the
+                                characters. The characters mean "Tokyo," but screen readers say
+                                "Higashi Kyo".</p>
+         </description>
+         <code role="html401"><![CDATA[
+<h1>東　京</h1>
+]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <head>Using line break characters to format vertical text</head>
+         <description>
+            <p>In the row header cell of a data table containing Japanese text,
+                                authors often create vertical text by using line break characters.
+                                However screen readers are not able to read the words in vertical
+                                text correctly because the line breaks occur within the word. In the
+                                following example, "東京都"(Tokyo-to) will be read "Higashi Kyo
+                                Miyako".</p>
+         </description>
+         <code role="html401"><![CDATA[
+<table>
+<caption>表1.　都道府県別一覧表</caption>
+<tr>
+<td></td>
+<th scope="col">（見出しセル 1.）</th>
+<th scope="col">（見出しセル 2.）</th>
+</tr>
+<tr>
+<th scope="row">東<br />京<br />都</th>
+<td>（データセル 1.）</td>
+<td>（データセル 2.）</td>
+</tr>
+・・・・・・
+</table>
+]]></code>
+      </eg-group>
+   </examples>
+   <resources/>
+   <related-techniques>
+      <relatedtech idref="C8"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each word that appears to have non-standard spacing between
+                            characters: </p>
+         <olist>
+            <item>
+               <p>Check whether any words in the text of the content contain white
+                                    space characters .</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If step #1 is true, then this failure condition applies and the
+                                    content fails this Success Criterion.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

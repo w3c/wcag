@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH30">
+   <short-name>Specifying accessible names for image buttons</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+      <success-criterion idref="ensure-compat-rsv" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>For image based Button components the accessible name needs to be
+    				set to provide a functional label. This label indicates the button's
+    				function, but does not attempt to describe the image. The label is
+    				especially important if there are multiple buttons on the page that
+    				each lead to different results. </p>
+      <p>The accessible name for a button may need to be updated if the button
+    				changes during the use of the Flash movie. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Accessible name for a simple image button</head>
+         <description>
+            <p>In this example, an icon based button is given an accessible name
+    					through scripting. When the button is clicked a web page is opened. </p>
+         </description>
+         <code xml:space="preserve"><![CDATA[//provide text equivalent for image button
+this.check_btn.accessibilityProperties = new AccessibilityProperties();
+this.check_btn.accessibilityProperties.name = "Check page validation";
+
+//set up event listener and function to navigate to URL
+
+this.check_btn.addEventListener(MouseEvent.CLICK, onClickHandler);
+
+function onClickHandler(e: MouseEvent): void {
+  var btn = e.target;
+  var url: String = "http://validator.w3.org";
+  var request: URLRequest = new URLRequest(url);
+  navigateToURL(request, '_blank');
+}]]></code>
+         <description>
+            <p>The result is demonstrated in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="Text_description_for_simpleimage_buttons_as3.html"
+                    linktype="examples">working version of Accessible name for a simple image button</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="Text_description_for_simpleimage_buttons_as3.fla"
+                    linktype="examples">source of Accessible name for a simple image button</loc> is available.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Accessible name for a dynamic image button</head>
+         <description/>
+         <code xml:space="preserve"><![CDATA[import fl.controls.Button;
+import fl.accessibility.ButtonAccImpl;
+
+ButtonAccImpl.enableAccessibility();
+
+var soundIsMuted = false;
+var myButton: Button = new Button();
+myButton.label = "";
+myButton.x = myButton.y = 10;
+myButton.width = myButton.height = 50;
+updateAccName(myButton, "mute sound");
+myButton.setStyle("icon", unmuted);
+myButton.addEventListener(MouseEvent.CLICK, handleBtnClick);
+addChild(myButton);
+
+function handleBtnClick(e) {
+  soundIsMuted = ! soundIsMuted;
+  myButton.setStyle("icon", soundIsMuted? muted: unmuted);
+  updateAccName(myButton, soundIsMuted? "unmute sound": "mute sound");
+}
+
+function updateAccName(obj, newName: String) {
+  if (! obj.accessibilityProperties)
+  obj.accessibilityProperties = new AccessibilityProperties();
+  obj.accessibilityProperties.name = newName;
+  if (Capabilities.hasAccessibility)
+  Accessibility.updateProperties();
+}]]></code>
+         <description>
+            <p>The result is demonstrated in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="text_description_for_image_buttons_as3.html"
+                    linktype="examples">working version of Accessible name for a dynamic image button</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="text_description_for_image_buttons_as3.fla"
+                    linktype="examples">source of Accessible name for a dynamic image button</loc> is available.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="FLASH1"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>When a Flash Movie contains image based buttons, confirm that: </p>
+         <olist>
+            <item>
+               <p> An accessible name is provided for the button that describes the
+    					button's action </p>
+            </item>
+            <item>
+               <p> If the button's action changes (for example when it is clicked)
+    					the accessible name changes correspondingly </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> #1 and #2 are true </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Specifying_accessible_names_for_image_buttons"/>
+					</source>
+   </admin>
+</technique>

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="PDF5">
+   <short-name>Indicating required form controls in PDF forms</short-name>
+   <applicability>
+      <p>Tagged PDF documents with forms</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="minimize-error-identified" relationship="sufficient"/>
+      <success-criterion idref="minimize-error-cues" relationship="cosufficient"/>
+      <success-criterion idref="minimize-error-suggestions" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="pdf.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to notify the user when a field
+    				that must be completed has not been completed in a PDF form. Required
+    				fields are implemented using the /Ff entry in the form field's dictionary
+    				(see Table 220 in Section 12.7 (Interactive Forms) of <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF
+    					1.7 (ISO 32000-1)</loc>. This is normally accomplished using a tool for
+    				authoring PDF. </p>
+      <p>If errors are found, an alert dialog describes the nature of the error
+    				in text. This may be accomplished through scripting created by the
+    				author (see, for example, <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="SCR18"
+              linktype="techniques">SCR18:
+    					Providing client-side validation and alert</loc>). User agents, such
+    				as Adobe Acrobat Pro and LiveCycle, can provide automatic alerts (as
+    				described in the examples below). </p>
+      <p>
+         <emph role="strong">Note</emph>: once the user dismisses the alert dialog, it
+    				may be helpful if the script positions the keyboard focus on the field
+    				where the error occurred, although some users may expect the focus
+    				to remain on the last control focused prior to the alert appearing.
+    				Authors should exercise care to ensure that any movement of the focus
+    				will be expected. For example, if the alert announces a missing required
+    				phone number, positioning the focus on the phone number field when
+    				the alert is dismissed can be regarded as helpful and expected. In
+    				some cases, however, this may not be possible. If multiple input errors
+    				occur on the page, another approach must be taken to error reporting. 
+(See, for example, the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.adobe.com/devnet/acrobat/javascript.html">Adobe scripting resources.</loc>) </p>
+      <p>Ensuring that users are aware an error has occurred, can determine
+    				what is wrong, and can correct it are keys to software usability and
+    				accessibility. Meeting this objective helps ensure that all users can
+    				complete transactions with ease and confidence. </p>
+      <section id="PDF5_labels">
+         <head> Labels for required form controls </head>
+         <p>It is also important that users are aware that an error <emph role="strong">may</emph> occur.
+    				You can incorporate this information in labels; for example,   "Date
+    				(required)" or the use of a red asterisk to indicate required
+    				fields. (Make sure that a legend appears on each form with required
+    				fields, e.g., "* = required field".) See <specref ref="PDF10"/>. </p>
+      </section>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Creating a required field in a PDF form using Adobe Acrobat
+    					9 Pro</head>
+         <description>
+            <p>This example is shown with Adobe Acrobat Pro. There are other software tools that perform similar functions. See the list of other software tools in <specref ref="pdf_notes_acc-sup_files_applications"/>.</p>
+            <olist>
+               <item>
+                  <p> Access the context menu of the field and select the Properties
+    						dialog. </p>
+               </item>
+               <item>
+                  <p> If the field is required, check the Required box. This checkbox
+    							forces the user to fill in the selected form field. If the user attempts
+    							to submit the form while a required field is blank, an error message
+    							appears and the empty required form field is highlighted. </p>
+               </item>
+            </olist>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF5/form4.jpg"
+                       height="388"
+                       width="642"/>
+                  <alt>The Properties dialog for a form field. The Required box is checked.</alt>
+               </image> 
+            </p>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="required-fields.pdf"
+                    linktype="examples">working example of creating a required field in Acrobat</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Creating a required field in a PDF form using Adobe LiveCycle
+    				Designer ES 8.2.1</head>
+         <description>
+            <p>This example is shown with Adobe LiveCycle Designer. There are other software tools that perform similar functions. See the list of other software tools in <specref ref="pdf_notes_acc-sup_files_applications"/>.</p>
+            <olist>
+               <item>
+                  <p> Access the context menu of the form control, select Palettes,
+    						and select Object. </p>
+               </item>
+               <item>
+                  <p> Select "User entered - Required" from the Type pulldown. </p>
+               </item>
+               <item>
+                  <p> Enter an error message in the "Empty Message" field.
+    							This message appears when a user tries to submit the form without
+    							entering a value in the required field. </p>
+               </item>
+            </olist>
+            <p>If the user attempts to submit the form with a required field left
+    						blank, the Empty Message text appears and the empty required field
+    						is highlighted. </p>
+            <p>The image below shows the Adobe LiveCycle Object palette with the
+    						required selection. </p>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF5/lc-required2.gif"
+                       height="468"
+                       width="345"/>
+                  <alt>Image of Adobe LiveCycle Object palette showing the 'User entered - Required' selection.</alt>
+               </image> 
+            </p>
+            <p>You can also add explicit text to the form label to indicate required
+    					fields (e.g., "(Required)"). </p>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="required-fields-lc.pdf"
+                    linktype="examples">working example of creating a required field in LiveCycle Designer</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Adding a required text field in a PDF form using the /Tx
+    				field type and Ff flag</head>
+         <description>
+            <p>The following code fragment illustrates code that is typical for the
+    						object definitions for a typical text field. Note that the text field
+    						is required, using the Ff flag. This is typically accomplished by an
+    						authoring tool. </p>
+            <codeblock xml:space="preserve"><![CDATA[<< /AP -dict-                                                   
+   /DA /Helv  0 Tf 0 g
+   /DR -dict-
+   /F 0x4
+   /FT Tx              % FT key set to Tx for Text Field
+   /Ff 0x2             % Ff integer 0x2 value indicates required
+   /P -dict-
+   /Rect -array-
+   /StructParent 0x1
+   /Subtype Widget
+   /T First            % Partial field name First
+   /TU First name (required)  % TU tool tip value serves as short description
+   /Type Annot
+   /V Pat Jones
+>>
+...
+<Start Stream>
+ BT
+  /P <</MCID 0 >>BDC
+  /CS0 cs 0  scn 
+  /TT0 1 Tf
+    -0.001 Tc 0.003 Tw 11.04 0 0 11.04 72 709.56 Tm
+    [(P)-6(le)-3(as)10(e)-3( )11(P)-6(rin)2(t)-3( Y)8(o)-7(u)2(r N)4(a)11(m)-6(e)]TJ
+  0 Tc 0 Tw 9.533 0 Td
+  ( )Tj
+  -0.004 Tc 0.004 Tw 0.217 0 Td
+  [(\()-5(R)-4(e)5(q)-1(u)-1(i)-3(r)-3(e)-6(d)-1(\))]TJ
+ EMC
+  /P <</MCID 1 >>BDC
+  0 Tc 0 Tw 4.283 0 Td
+  [( )-2( )]TJ
+   EMC
+   /ArtifactSpan <</MCID 2 >>BDC
+   0.002 Tc -0.002 Tw 0.456 0 Td
+  [(__)11(___)11(___)11(___)11(___)11(_)11(____)11(___)11(___)11(__)]TJ
+  0 Tc 0 Tw 13.391 0 Td
+  ( )Tj
+  EMC
+ ET
+<End Stream>
+]]></codeblock>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> Section 12.7 (Interactive Forms) in <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF
+    				1.7 (ISO 32000-1)</loc> 
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://partners.adobe.com/public/developer/xml/index_arch.html">Adobe
+    					XML Forms Architecture (XFA)</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/accessibility/products/acrobat.html">PDF and Accessibility</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G83"/>
+      <relatedtech idref="H90"/>
+      <relatedtech idref="SCR18"/>
+      <relatedtech idref="PDF23"/>
+      <relatedtech idref="PDF10"/>
+      <relatedtech idref="PDF22"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each form field that is required, verify that validation information
+    					and instructions are provided by applying the following: </p>
+         <olist>
+            <item>
+               <p> Check that the required status is indicated in the form control's
+    					label. </p>
+            </item>
+            <item>
+               <p> Leave the field blank and submit the form. Check that an alert
+    						describing the error is provided. </p>
+            </item>
+            <item>
+               <p> Use a tool that exposes the document through the accessibility
+    							API, and verify that the required property is indicated. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#1, #2, and #3 are true. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Indicating_required_form_controls_in_PDF_forms"/>
+      </source>
+   </admin>
+</technique>

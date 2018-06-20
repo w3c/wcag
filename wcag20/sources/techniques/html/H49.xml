@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H49">
+   <short-name>Using semantic markup to mark emphasized or special text</short-name>
+   <applicability>
+      <p>HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="cosufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <ulist>
+            <item>
+               <p>Some semantic elements are not supported well by assistive technologies. Elements and attributes that are known to have limited support include <el>code</el>, <el>del</el>, <el>dfn</el>, <el>ins</el>, <el>kbd</el>, <el>s</el>, <el>sub</el>, <el>sup</el>, <el>tt</el>, and <el>q</el>. For these elements, authors are encouraged to consider whether they are using them in a way that would require users to be able to access the semantic meaning of the markup in order to understand the content and, where understanding the semantics is required, to provide this information in text.
+                  </p>
+            </item>
+            <item>
+               <p>Most screen readers do not provide automatic notification about <el>em</el>, <el>strong</el>, <el>b</el>, or <el>i</el>.
+                  </p>
+            </item>
+            <item>
+               <p>JAWS contains support for <el>blockquote</el> and <el>cite</el>. WindowEyes contains support for <el>blockquote</el>, <el>q</el> and <el>cite</el>. </p>
+            </item>
+            <item>
+               <p>Firefox 1.0 (Windows) and higher, Opera 7.54 (Windows) and higher, Mozilla 1.7.3 (Windows) and higher automatically generate quotes around <el>q</el> elements, but Internet Explorer 6 for Windows does not.
+                  </p>
+            </item>
+         </ulist>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to demonstrate how semantic markup can be used to
+            mark emphasized or special text so that it can be programmatically determined. Using
+            semantic markup to mark emphasized or special text also provides structure to the
+            document. User agents can then make the structure perceivable to the user, for example
+            using a different visual presentation for different types of structures or by using a
+            different voice or pitch in an auditory presentation. </p>
+      <p>Most user agents will visually distinguish text that has been identified using semantic
+            markup. Some assistive technologies provide a mechanism for determining the
+            characteristics of content that has been created using proper semantic markup.</p>
+   </description>
+   <examples>
+      <p>See <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="semantictext.html"
+              linktype="examples">rendered examples of semantic
+              text</loc>.</p>
+      <eg-group>
+         <description>
+            <p>This example shows how to use the <el>em</el> and <el>strong</el> elements
+                to emphasize text. The <el>em</el> and <el>strong</el> elements were
+                designed to indicate structural emphasis that may be rendered in a variety of ways
+                (font style changes, speech inflection changes, etc.).</p>
+         </description>
+         <code role="html401"><![CDATA[ ...What she <em>really</em> meant to say was, &quot;This is not ok, 
+ it is <strong>excellent</strong>&quot;!... ]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>This example shows using the <el>blockquote</el> element to mark up long
+                quotations which may require paragraph breaks. It also demonstrates the use of the
+                  <el>cite</el> element to specify a reference.</p>
+         </description>
+         <code role="html401"><![CDATA[<p>The following is an excerpt from the <cite>The Story of my Life</cite> by Helen Keller</p>
+ <blockquote>
+   <p>Even in the days before my teacher came, I used to feel along the square stiff boxwood
+   hedges, and, guided by the sense of smell, would find the first violets and lilies.  
+   There, too, after a fit of temper, I went to find comfort and to hide my hot face 
+   in the cool leaves and grass.</p>
+ </blockquote>]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>Here is the use of the <el>q</el> element to mark up a shorter quotation.
+                Quotes are provided around the <el>q</el> element, because many user agents do
+                not support this element yet and therefore do not display it properly (see UA
+                notes). CSS rules to suppress automatic generation of quotes are provided for those
+                user agents that do support the <el>q</el> element, to prevent them from
+                generating quotes automatically in addition to the quotes provided by the author,
+                resulting in double-quoted content. In the future, when the <el>q</el> element
+                is more broadly supported, the need to provide quotes and suppress browser-generated
+                quotes will go away. </p>
+         </description>
+         <code role="css"><![CDATA[q:before { content: ""; } 
+q:after { content: ""; }  ]]></code>
+         <code role="html401"><![CDATA[ <p>Helen Keller said, "<q>Self-pity is our worst enemy and if we yield to it, 
+we can never do anything good in the world.</q>"</p>]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>Superscripts and subscripts are created using the <el>sup</el> and
+                <el>sub</el> elements.</p>
+         </description>
+         <code role="html401"><![CDATA[ <p>Beth received 1<sup>st</sup> place in the 9<sup>th</sup> grade science competition.</p>
+<p>The chemical notation for water is H<sub>2</sub>O.</p>]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>HTML 4.01 <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html4/struct/text.html#h-9.2.1">Phrase
+                    elements: EM, STRONG, DFN, CODE, SAMP, KBD, VAR, CITE, ABBR, and ACRONYM</loc>
+								       </p>
+            </item>
+            <item>
+               <p>HTML 4.01 <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html4/struct/text.html#h-9.2.2">Quotations: The BLOCKQUOTE and Q elements</loc>
+								       </p>
+            </item>
+            <item>
+               <p>HTML 4.01 <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html4/struct/text.html#h-9.2.3">Subscripts and superscripts: the SUB and SUP elements</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://juicystudio.com/article/fixing-ie-quotes.php">Fixing Quotes in
+                    Internet Explorer</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G115"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Examine the content for information that is conveyed through variations in
+                  presentation of text.</p>
+            </item>
+            <item>
+               <p>Check that appropriate semantic markup (such as <el>em</el>, <el>strong</el>, <el>cite</el>,
+                    <el>blockquote</el>, <el>sub</el>, and <el>sup</el>) have been used to mark the
+                  text that conveys information through variations in text.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Check #2 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

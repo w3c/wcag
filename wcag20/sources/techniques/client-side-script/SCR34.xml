@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SCR34">
+   <short-name>Calculating size and position in a way that scales with text size</short-name>
+   <applicability>
+      <p>Client-side scripting.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="visual-audio-contrast-scale" relationship="cosufficient"/>
+      <success-criterion idref="visual-audio-contrast-visual-presentation"
+                         relationship="cosufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>Calculating size and position can be complex and different browsers can produce different results. This can occur when the CSS styling mixes padding, margins and widths for an object, or when it mixes an offset and plain value, e.g., offsetWidth and width. Some of these behave differently in reaction to zooming. See <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="https://msdn.microsoft.com/en-us/library/bb250395(VS.85).aspx#cssenhancements_topic3">MSDN: Fix the Box Instead of Thinking Outside It</loc> for an explanation of the way that Internet Explorer 6 and later differ from earlier versions of Internet Explorer. </p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to calculate the size and position of elements in a way that will scale appropriately as the text size is scaled. </p>
+      <p>There are four properties in JavaScript that help determine the size and position of elements: </p>
+      <ulist>
+         <item>
+            <p>
+               <code><![CDATA[offsetHeight]]></code> (the height of the element in pixels) </p>
+         </item>
+         <item>
+            <p>
+               <code><![CDATA[offsetWidth]]></code> (the width of the element in pixels) </p>
+         </item>
+         <item>
+            <p>
+               <code><![CDATA[offsetLeft]]></code> (the distance of the element from the left of its parent (offsetParent) in pixels) </p>
+         </item>
+         <item>
+            <p>
+               <code><![CDATA[offsetTop]]></code> (the distance of the element from the top of its parent (offsetParent) in pixels) </p>
+         </item>
+      </ulist>
+      <p>Calculating the height and width using <code><![CDATA[offsetHeight]]></code> and <code><![CDATA[offsetWidth]]></code> is straightforward, but when calculating an object's left and top position as absolute values, we need to consider the parent element. The <code><![CDATA[calculatePosition]]></code> function below iterates through all of an element's parent nodes to give a final value. The function takes two parameters; <code><![CDATA[objElement]]></code> (the name of the element in question), and the offset property (<code><![CDATA[offsetLeft]]></code> or <code><![CDATA[offsetTop]]></code>): </p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>The Javascript function:</p>
+         </description>
+         <code><![CDATA[
+function calculatePosition(objElement, strOffset)
+{
+    var iOffset = 0;
+
+    if (objElement.offsetParent)
+    {
+        do 
+        {
+            iOffset += objElement[strOffset];
+            objElement = objElement.offsetParent;
+        } while (objElement);
+    }
+
+    return iOffset;
+}
+
+]]></code>
+         <description>
+            <p>The following example illustrates using the function above by aligning an object beneath a reference object, the same distance from the left: </p>
+         </description>
+         <code><![CDATA[
+// Get a reference object
+var objReference = document.getElementById('refobject');
+// Get the object to be aligned
+var objAlign = document.getElementById('lineup');
+
+objAlign.style.position = 'absolute';
+objAlign.style.left = calculatePosition(objReference, 'offsetLeft') + 'px';
+objAlign.style.top = calculatePosition(objReference, 'offsetTop') + objReference.offsetHeight + 'px'; 
+]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/bb250395(VS.85).aspx#cssenhancements_topic3">MSDN: Fix the Box Instead of Thinking Outside It</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="C12"/>
+      <relatedtech idref="C14"/>
+      <relatedtech idref="C17"/>
+      <relatedtech idref="C20"/>
+      <relatedtech idref="C24"/>
+      <relatedtech idref="G206"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Open a page that is designed to adjust container sizes as text size changes. </p>
+            </item>
+            <item>
+               <p>Increase the text size up to 200% using the browser's text size adjustment (not the zoom feature). </p>
+            </item>
+            <item>
+               <p>Examine the text to ensure the text container size is adjusted to accommodate the size of the text. </p>
+            </item>
+            <item>
+               <p>Ensure that no text is "clipped" or has disappeared as a result of the increase in text size. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Checks #3 and #4 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

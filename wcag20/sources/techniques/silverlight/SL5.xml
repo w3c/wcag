@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SL5">
+   <short-name>Defining a Focusable Image Class for Silverlight</short-name>
+   <applicability>
+      <p use-id="silverlight.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="silverlight.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to wrap the Silverlight <obj>Image</obj> class
+    				inside a UI container class that is focusable. If the image is focusable,
+    				users who use the TAB sequence to navigate content while the assistive
+    				technology is active, and/or assistive technologies that construct
+    				navigation structures that are based on the TAB sequence, can both
+    				detect the image in navigation. The assistive technology can then associate
+    				alternative text for that image within the navigation structure, and
+    				report the information to the user. </p>
+      <p>Many existing assistive technologies do not construct initial navigation
+    				views that are derived from UI Automation information if it is coming
+    				from a non-focusable element in a Silverlight user interface. This
+    				is particularly true if the assistive technology is in a navigation
+    				mode that is specifically intended to help users enter information
+    				into a form or similar interactive interface element; an example of
+    				this situation is the Forms Mode of the JAWS screen reader. </p>
+      <p>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="https://msdn.microsoft.com/en-us/library/system.windows.controls.image%28VS.95%29.aspx">Image</loc> is
+    				an example of a Silverlight element that is not focusable. This technique
+    				and the example therein are intended to circumvent the possible omission
+    				of a nonfocusable Silverlight <obj>Image</obj> element from certain
+    				navigation views in existing assistive technology implementations.
+    				The Silverlight <obj>Image</obj> is wrapped with a display/viewer
+    				control class that is focusable. This image-wrapping control is initially
+    				presented in assistive technology representations of a Silverlight
+    				user interface that use only focusable elements when constructing the
+    				assistive technology's representation of the application. </p>
+      <p>The image wrapper class uses the <prop>AutomationProperties.Name</prop> property
+    				to provide a short text alternative for the contained <obj>Image</obj>,
+    				so that the alternative text can be read or otherwise presented by
+    				assistive technologies. The Silverlight API <prop>AutomationProperties.Name</prop> directly
+    				sets <prop>Name</prop> in the UI Automation tree. The properties
+    				in the UI Automation tree are reported to assistive technologies, when
+    				the assistive technology implements behavior that acts as a UI Automation
+    				client. <prop>Name</prop> is one of the accessibility framework
+    				properties that most assistive technologies present in some way, for
+    				purposes of both name and value information, and setting <prop>Name</prop> is
+    				the common technique for exposing text alternatives for any other <obj>Control</obj> class
+    				(for example, for a button with an image, as shown in the technique <specref ref="SL18"/>). </p>
+      <p>This technique is intended for cases where application authors deliberately
+    				do not want a visible image caption for the image to be part of the
+    				user interface, and the image is a part of a larger interactive user
+    				interface control or page. Otherwise, if there is a visible caption,
+    				authors can use <specref ref="SL26"/>. </p>
+   </description>
+   <examples>
+      <p>The two examples are intended to be used together, if an application
+    				is both defining and consuming the focusable image control. </p>
+      <eg-group>
+         <head>Defining the FocusableImage XAML template and C# code
+    					behavior</head>
+         <description>
+            <p>Silverlight supports a control development model whereby the visual
+    						appearance of a control is largely defined in XAML, and the behavior
+    						of a control (such as its event handling and hookups to services) are
+    						implemented in a managed code language such as C#. The following is
+    						the XAML template, which includes a visual state that shows visually
+    						when the control is focused in UI. </p>
+            <codeblock xml:space="preserve"><![CDATA[<ResourceDictionary
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:local="clr-namespace:ImageEquivalent">
+ <Style TargetType="local:FocusableImage">
+   <Setter Property="Template">
+    <Setter.Value>
+      <ControlTemplate TargetType="local:FocusableImage">
+        <Grid>
+          <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="FocusStates">
+              <VisualState x:Name="Focused">
+                <Storyboard>
+                  <ColorAnimation  
+ Storyboard.TargetName="focusborder"
+ Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+ Duration="0" To="Blue"/>
+                </Storyboard>
+              </VisualState>
+              <VisualState x:Name="Unfocused"/>
+            </VisualStateGroup>
+          </VisualStateManager.VisualStateGroups>
+          <Border
+            x:Name="focusborder"
+            BorderThickness="4"
+            BorderBrush="Transparent">
+            <Image
+             Margin="2" Opacity="10"
+             Source="{TemplateBinding Source}"/>
+         </Border>
+       </Grid>
+    </ControlTemplate>
+    </Setter.Value>
+   </Setter>
+ </Style>
+</ResourceDictionary>
+]]></codeblock>
+            <p>The following is the C# class definition and logic. The logic includes
+    						invoking a default automation peer on creation, and loading the template
+    						as defined in the previous XAML example through the Silverlight "generic.xaml" resource
+    						convention for custom controls. </p>
+            <codeblock xml:space="preserve"><![CDATA[namespace ImageEquivalent
+{
+   public class FocusableImage : Control
+   {
+       protected override System.Windows.Automation.Peers.AutomationPeer OnCreateAutomationPeer()
+       {
+           return new FrameworkElementAutomationPeer(this);
+       }
+       public FocusableImage()
+       {
+           this.DefaultStyleKey = typeof(FocusableImage);
+       }
+       public ImageSource Source
+       {
+           get { return (ImageSource)this.GetValue(SourceProperty); }
+           set { this.SetValue(SourceProperty,value); }
+       }
+       public static DependencyProperty SourceProperty = DependencyProperty.Register(
+         "Source",
+         typeof(ImageSource),
+         typeof(FocusableImage),
+         null);
+       Boolean _Focused;
+       void ChangeState()
+       {
+           if (_Focused)
+           {
+               VisualStateManager.GoToState(this,"Focused",false);
+           }
+           else
+           {
+               VisualStateManager.GoToState(this,"Unfocused",false);
+           }
+       }
+       protected override void OnGotFocus(RoutedEventArgs e)
+       {
+           base.OnGotFocus(e);
+           this._Focused = true;
+           ChangeState();
+       }
+       protected override void OnLostFocus(RoutedEventArgs e)
+       {
+           base.OnGotFocus(e);
+           this._Focused = false;
+           ChangeState();
+       }
+   }
+}
+]]></codeblock>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="ImageEquivalentTestPage.html"
+                    linktype="examples">working example of Focusable Image</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Using the FocusableImage class in UI and applying AutomationProperties.Name</head>
+         <description>
+            <p>Now that the image is wrapped by a focusable control, you can instantiate
+    						an instance of the wrapper UI inside a Silverlight layout container,
+    						specify <prop>AutomationProperties.Name</prop> at the level of
+    						the wrapper control’s tag, and have that text serve as the alternative
+    						text for the referenced source image file. </p>
+            <codeblock xml:space="preserve"><![CDATA[   <StackPanel
+   xmlns:local="clr-namespace:ImageEquivalent;assembly=FocusableImage"
+   >
+   <local:FocusableImage
+     Height="300" Width="400
+     AutomationProperties.Name="Diagram of secret lair"
+     Source="/diagram_lair.png" />
+   </StackPanel>
+]]></codeblock>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/ff400332%28VS.95%29.aspx">Automation
+    						Properties for Accessibility Support in UI</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/system.windows.automation.automationproperties.name%28VS.95%29.aspx">AutomationProperties.Name
+    					Attached Property</loc> 
+               </p>
+            </item>
+            <item>
+               <p>Tools: <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://firstfloorsoftware.com/silverlightspy">SilverlightSpy</loc> or <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://uiautomationverify.codeplex.com/">UIAVerify</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H37"/>
+   </related-techniques>
+   <tests>
+      <head>Automation Tree</head>
+      <procedure>
+         <olist>
+            <item>
+               <p> Open the test HTML page in a Silverlight-supported useragent host;
+    					to use UI Automation, use Microsoft Windows as platform. </p>
+            </item>
+            <item>
+               <p> Use the tab sequence inside the Silverlight content area to focus
+    						the control. </p>
+            </item>
+            <item>
+               <p> Using an accessibility framework verification tool, check that
+    							the string content is promoted as the default <prop>Name</prop> applied
+    							to the control. </p>
+            </item>
+         </olist>
+         <note>
+            <p>Accessibility framework verification tools typically show the
+    					entirety of an automation tree for a given application, and in fact
+    					will show the tree for all applications running on the Windows client
+    					machine. Focusing the control as in #2 is thus not strictly speaking
+    					necessary. However, manually focusing using the application interface
+    					is often a faster way to step into the automation tree as opposed to
+    					having to open an extensive series of nested nodes starting from the
+    					browser host application root. Whether this functionality exists depends
+    					on which accessibility framework verification tool is being used for
+    					testing. </p>
+         </note>
+      </procedure>
+      <expected-results>
+         <p>#3 is true. </p>
+      </expected-results>
+   </tests>
+   <tests>
+      <head>Screen Reader</head>
+      <procedure>
+         <olist>
+            <item>
+               <p> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. To use
+    					UI Automation, use Microsoft Windows as platform. </p>
+            </item>
+            <item>
+               <p> Engage the screen reader. Move focus to the control (for example,
+    						use the tab sequence). </p>
+            </item>
+            <item>
+               <p> Check that the <prop>Name</prop> applied to the image is read
+    							by the screen reader. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>#3 is true. </p>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Defining_a_Focusable_Image_Class_for_Silverlight"/>
+      </source>
+   </admin>
+</technique>

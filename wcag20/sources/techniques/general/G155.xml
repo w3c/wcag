@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="G155">
+   <short-name>Providing a checkbox in addition to a submit button</short-name>
+   <applicability>
+      <p>Any technology</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="minimize-error-reversible" relationship="sufficient"/>
+      <success-criterion idref="minimize-error-reversible-all" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to provide a checkbox that users must select to indicate they have reviewed their input and are ready for it to be committed. This is important when the nature of the transaction is such that it may not be reversible if input errors are subsequently discovered or when the result of an action is that data is deleted. The author provides a checkbox that is not selected when the page loads, with a label like "I confirm that the input is correct and am ready to submit" or "I confirm that I wish to delete this data". The checkbox should be located near the submit button to help the user notice it during the submission process. If the checkbox is not selected when the form is submitted, the input is rejected and the user is prompted to review their entry, select the checkbox, and resubmit. Only if the checkbox is selected will the input be accepted and the transaction processed.</p>
+      <p>This checkbox helps to guard against the consequences of an accidental form submission, and also serves to prompt the user to be sure they have entered accurate data. This is more secure than simply putting a label on the submit button like "input is correct, submit". Providing the checkbox as a separate control from the submit button forces the user to "double-check", as they must both select the checkbox and activate the submit button for the transaction to proceed. As such, this is a mechanism for reviewing, confirming, and correcting information before finalizing the submission.</p>
+      <note>
+         <p>When users submit information without selecting the checkbox, they should not lose the information that they have entered when they return to the form to resubmit.</p>
+      </note>
+   </description>
+   <examples>
+      <ulist>
+         <item>
+            <p>An online bank service allows users to transfer money between accounts in different currencies. Because exchange rates are constantly in flux, the money cannot be re-exchanged at the same rate if the user discovers an error in their input after the transaction has been carried out. In addition to the "account from", "account to", and "amount" fields, there is a checkbox with a label "I have checked that the amount I wish to transfer is correct". If this checkbox is not selected when the user submits the form, the transaction is not carried out and the user is notified. If the checkbox is selected, the (irreversible) transaction is carried out.</p>
+         </item>
+         <item>
+            <p>An online payment system stores user bank account information in order to process payments. There is an elaborate procedure for users to enter new accounts and verify that they are the owner. There is the facility to delete old accounts, but if an account is accidentally deleted, it would be difficult to reinstate it, and the transaction history with that account would be lost. Therefore, on pages that allow users to delete accounts, there is a checkbox with the label "I confirm that I wish to delete this account." If this checkbox is not selected when the user submits the form, the account is not deleted and the user is given an error message. Only if the checkbox is selected is the account deleted.</p>
+         </item>
+         <item>
+            <p>A checkout form on a shopping site includes a form that collects order, shipping and billing information. After submitting the form, the user is taken to a page where the information they have submitted is summarized for review. Below the summary, a checkbox with the label "I have reviewed and confirmed that this data is correct" is shown. The user must mark the checkbox and activate a "complete order" button in order to complete the transaction.</p>
+         </item>
+      </ulist>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="G98"/>
+      <relatedtech idref="G99"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For user input pages that cause irreversible transactions to occur:</p>
+         <olist>
+            <item>
+               <p>Check that a checkbox indicating user confirmation of the input or action is provided in addition to the submit button.</p>
+            </item>
+            <item>
+               <p>Check that if the checkbox is not selected when the form is submitted, the input is rejected and the user is prompted to review their entry, select the checkbox, and resubmit.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Checks #1 and #2 are true</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>
