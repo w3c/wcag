@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns="http://www.w3.org/1999/xhtml"
 	exclude-result-prefixes="#all"
 	version="2.0">
-	
+
 	<xsl:import href="../slices-techniques.xsl"/>
-	
+
 	<xsl:output method="html" omit-xml-declaration="yes" doctype-system="" doctype-public=""/>
-	
+
 	<xsl:template match="/">
 		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE html>
 ]]></xsl:text>
@@ -25,7 +25,7 @@
 			</body>
 		</html>
 	</xsl:template>
-	
+
 	<xsl:template match="div1" mode="toc">
 		<li class="toc">
 			<a href="{@id}"><xsl:apply-templates select="head" mode="text"/></a>
@@ -37,7 +37,7 @@
 ]]></xsl:text>
 			<html>
 				<head>
-					<title>User Agent Support Notes for for <xsl:apply-templates select="head" mode="text"/></title>
+					<title>User Agent Support Notes for <xsl:apply-templates select="head" mode="text"/></title>
 				</head>
 				<body>
 					<h1>User Agent Support Notes for <xsl:apply-templates select="head" mode="text"/></h1>
@@ -51,11 +51,11 @@
 			</html>
 		</xsl:result-document>
 	</xsl:template>
-	
+
 	<xsl:template match="div2">
 		<section id="{@id}"><xsl:apply-templates/></section>
 	</xsl:template>
-	
+
 	<xsl:template match="technique" mode="toc">
 		<li class="toc">
 			<a href="{@id}"><xsl:apply-templates select="short-name" mode="text"/></a>
@@ -83,11 +83,11 @@
 			</xsl:choose>
 		</section>
 	</xsl:template>
-	
+
 	<!-- Override href.target to force absolute URI -->
 	<xsl:template name="href.target">
 		<xsl:param name="target" select="."/>
-		<xsl:variable name="slice" select="($target/ancestor-or-self::div1[not(@diff = 'del')] | 
+		<xsl:variable name="slice" select="($target/ancestor-or-self::div1[not(@diff = 'del')] |
 			$target/ancestor-or-self::inform-div1[not(@diff = 'del')]  | $target/ancestor-or-self::technique[not(@diff = 'del')] | $target/ancestor-or-self::div2[not(@diff = 'del')][ancestor::body]  | $target/ancestor-or-self::spec)[last()]"/>
 		<xsl:value-of select="//latestloc/loc"/> <!-- this is the only inserted line -->
 		<xsl:apply-templates select="$slice" mode="slice-techniques-filename"/>
@@ -104,5 +104,5 @@
 			</xsl:choose>
 		</xsl:if>
 	</xsl:template>
-	
+
 </xsl:stylesheet>
