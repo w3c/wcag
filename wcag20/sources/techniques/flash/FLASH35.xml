@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH35">
+   <short-name>Using script to scroll Flash content, and providing a mechanism to pause it</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to><!--success-criterion idref="time-limits-required-behaviors"/-->
+      <success-criterion idref="time-limits-pause" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description><!--<ednote>
+						<edtext>The wiki indicated this applies to 2.2.1 but that doesn't seem right because it's just about scrolling, removed that.</edtext>
+					</ednote>-->
+      <p>The objective of this technique is to provide a way for users to stop
+    				scrolling content when the scrolling is created by a script. Scrolling
+    				content can be difficult or impossible to read by users with low vision
+    				or with cognitive disabilities. The movement can also be distracting
+    				for some people making it difficult for them to concentrate on other
+    				parts of the Web page. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>A toggle button to pause and resume scrolling</head>
+         <description>
+            <p>In this example, text scrolls from left to right. A toggle button
+    						is provided that allows the user to pause and resume the scrolling
+    						behavior. Additionally, a checkbox is provided which can be used to
+    						slow down the scrolling speed. </p>
+            <note>
+               <p>Users may prefer a greater variety of scrolling speed options
+    						than are offered in this example. Developers might choose to provide
+    						several speed choices with a slider or drop down list control in order
+    						to accomplish this. </p>
+            </note>
+         </description>
+         <code xml:space="preserve"><![CDATA[import fl.accessibility.ButtonAccImpl;
+import fl.accessibility.CheckBoxAccImpl;
+
+ButtonAccImpl.enableAccessibility();
+CheckBoxAccImpl.enableAccessibility();
+
+var scrollInterval: int;
+var intervalLength: int = 15;
+
+var expandedViewer: MovieClip = exampleScroller.expandedViewer;
+var scrollText: MovieClip = exampleScroller.scrollText;
+var scrollViewer: MovieClip = exampleScroller.scrollViewer;
+
+var scrollingPaused: Boolean = true;
+
+scrollStopper.addEventListener(MouseEvent.CLICK, handleBtnClick, false);
+slowDown_chk.addEventListener(MouseEvent.CLICK, handleChkClick, false);
+
+function handleBtnClick(e) {
+  toggleScroll(false);
+  e.target.label = scrollingPaused? "Resume Scrolling": "Stop Scrolling";
+}
+
+//slow down scrolling speed
+function handleChkClick(e) {
+  intervalLength = e.target.selected? 50: 15;
+  if (! scrollingPaused) {
+    clearTimeout(scrollInterval);
+    toggleScroll(true);
+  }
+}
+
+//pause or resume scrolling
+function toggleScroll(noToggle: Boolean) {
+  if (noToggle || scrollingPaused)
+  scrollInterval = setInterval(moveText, intervalLength); else
+  clearTimeout(scrollInterval);
+  if (! noToggle)
+  scrollingPaused = ! scrollingPaused;
+}
+
+function moveText() {
+  if (scrollText.x + scrollText.width < scrollViewer.x)
+  scrollText.x = scrollViewer.x + scrollViewer.width;
+  scrollText.x -= 1;
+}
+
+//initiate scrolling
+toggleScroll(false);
+]]></code>
+         <description>
+            <p>The technique is demonstrated in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="pause_scrolling_as3.html"
+                    linktype="examples">working version of A toggle button to pause and resume scrolling</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="pause_scrolling_as3.fla"
+                    linktype="examples">source of A toggle button to pause and resume scrolling</loc> is available.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="G4"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>When a Flash Movie contains scrolling content:</p>
+         <olist>
+            <item>
+               <p>Confirm that a button is provided that allows users to pause and resume the scrolling behavior</p>
+            </item>
+            <item>
+               <p>Confirm that pressing the button stops the scrolling</p>
+            </item>
+            <item>
+               <p>Confirm that pressing the button again restarts the scrolling</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Checks #1, #2, and #3 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Using_script_to_scroll_Flash_content,_and_providing_a_mechanism_to_pause_it"/>
+					</source>
+   </admin>
+</technique>

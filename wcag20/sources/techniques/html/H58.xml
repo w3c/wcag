@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H58">
+   <short-name>Using language attributes to identify changes in the human language </short-name>
+   <applicability>
+      <p>HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="meaning-other-lang-id" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="subtags" version="">
+         <p>Additional subtags for region, script, variant or other aspects may lead to errors in language switching in older versions of some screenreaders.</p>
+      </ua-issue>
+      <ua-issue name="jaws" version="8">
+         <p>JAWS 8.0 can be configured to change language automatically on the basis of the lang attribute. However, it only switches amongst major languages as indicated by the primary code. If a regional language variant is indicated with a language subcode, JAWS will use the default variant for which it is configured.</p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to clearly identify any changes in language on a
+            page by using the <att>lang</att> or <att>xml:lang</att> attribute, as appropriate
+            for the HTML or XHTML version you use.</p>
+      <p>HTML 4.01 uses the <att>lang</att> attribute on elements. XHTML served as text/html
+            uses the <att>lang</att> attribute and the <att>xml:lang</att> attribute on
+            elements, in order to meet the requirements of XHTML and provide backward compatibility
+            with HTML. XHTML served as application/xhtml+xml uses the <att>xml:lang</att>
+            attribute on elements.</p>
+      <note>
+         <p> HTML only offers the use of the <att>lang</att> attribute, while XHTML 1.0 (as a
+              transitional measure) allows both attributes, and XHTML 1.1 allows only
+              <att>xml:lang</att>. </p>
+      </note>
+      <!-- Same note in H57 -->
+      <p>Allowed values for the lang and xml:lang attributes are indicated in the resources referenced below. Language tags use a primary code to indicate the language, and optional subcodes (separated by hyphen characters) to indicate variants of the language. For instance, English is indicated with the primary code "en"; British English and American English can be distinguished by using "en-GB" and "en-US", respectively. Use of the primary code is important for this technique. Use of subcodes is optional but may be helpful in certain circumstances.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>This example demonstrates the use of the <att>xml:lang</att> attribute defining a
+                quote written in German. This snippet could be included by an XHTML 1.1 document
+                where <att>lang</att> is not allowed.</p>
+         </description>
+         <code role="html401"><![CDATA[<blockquote xml:lang="de">
+  <p>
+    Da dachte der Herr daran, ihn aus dem Futter zu schaffen,
+    aber der Esel merkte, daß kein guter Wind wehte, lief fort
+    und machte sich auf den Weg nach Bremen: dort, meinte er,
+    könnte er ja Stadtmusikant werden.
+  </p>
+</blockquote>   
+            ]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html401/struct/dirlang.html#adef-lang">HTML 4.01
+                    lang attribute</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/REC-xml/#sec-lang-tag">XML 1.0 xml:lang
+                  attribute</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/1999/REC-html401-19991224/struct/dirlang.html#h-8.1.2">Inheritance of language codes</loc>. </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP 47: Tags for the
+                    Identification of Languages</loc> . </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/International/articles/language-tags/">Language tags
+                    in HTML and XML</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H57"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each element in the document: </p>
+         <olist>
+            <item>
+               <p>Check that the human language of the content of the element is the same as the
+                  inherited language for the element as specified in <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/1999/REC-html401-19991224/struct/dirlang.html#h-8.1.2">HTML 4.01, Inheritance of language codes</loc>
+								       </p>
+            </item>
+         </olist>
+         <p>For each <att>lang</att> attribute in the document: </p>
+         <olist>
+            <item>
+               <p>Check that the value of the <att>lang</att> attribute conforms to <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP 47: Tags for the
+                    Identification of Languages</loc> or its successor </p>
+            </item>
+         </olist>
+         <p>For each xml:lang attribute in the document: </p>
+         <olist>
+            <item>
+               <p> Check that the value of the <att>xml:lang</att> attribute conforms to <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP 47: Tags for the
+                    Identification of Languages</loc> or its successor </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>All checks above are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

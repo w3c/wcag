@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F59">
+   <short-name>Failure of Success Criterion 4.1.2 due to using script to make div or span a user interface control in HTML without providing a role for the control</short-name>
+   <applicability>
+      <p> HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="ensure-compat-rsv" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p> This failure demonstrates how using generic HTML elements to create user
+                        interface controls can make the controls inaccessible to assistive
+                        technology. Assistive technologies rely on knowledge of the role and current
+                        state of a component in order to provide that information to the user. Many
+                        HTML elements have well defined roles, such as links, buttons, text fields,
+                        etc. Generic elements such as <el>div</el> and <el>span</el> do not
+                        have any predefined roles. When these generic elements are used to create
+                        user interface controls in HTML the assistive technology may not have the
+                        necessary information to describe and interact with the control. </p>
+      <p><note>Attaching event handlers to elements that are not normally interactive, such
+                        as <el>span</el> and <el>div</el>, can be disorienting to
+                        users. Even if care is taken to provide keyboard access to such elements,
+                        users may have a difficult time discovering that there are interactive
+                        controls in the content or understanding what type of behavior to expect
+                        from them. For example, users may not know which keystrokes are supported by
+                        the script to activate the element. Additionally, these elements do not
+                        generate the same operating system events as interactive elements, so
+                        assistive technology may not be notified when the user activates them.</note></p>
+      <p> The W3C Candidate Recommendation "<loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA) 1.0</loc>" describes mechanisms to provide the necessary role and state information to create fully accessible user interface controls.</p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <description>
+            <p>The following example fails because it creates a checkbox using a span and an image.</p>
+            <codeblock xml:space="preserve"><![CDATA[
+  <p> 
+  <span  onclick="toggleCheckbox('chkbox')"> 
+  <img src="unchecked.gif"  id="chkbox" alt=""> Include Signature 
+  </span> 
+  </p>]]></codeblock>
+            <p>Here is the scripting code which changes the image source when the <el>span</el> is clicked with the mouse.</p>
+            <codeblock xml:space="preserve"><![CDATA[ 
+  var CHECKED = "check.gif"; 
+  var UNCHECKED = "unchecked.gif"; 
+  function toggleCheckbox(imgId) { 
+  var theImg = document.getElementById(imgId); 
+  if ( theImg.src.lastIndexOf(CHECKED)!= -1 ) { 
+  theImg.src = UNCHECKED; 
+  // additional code to implement unchecked action 
+  } 
+  else { 
+  theImg.src = CHECKED; 
+  // additional code to implement checked action 
+  } 
+  } ]]></codeblock>
+            <p> A checkbox created in this manner will not work with assistive technology since there is no information that identifies it as a checkbox. In addition, this example is also not operable from the keyboard and would fail guideline 2.1.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA) 1.0</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="F42"/>
+      <relatedtech idref="ARIA4"/>
+      <!-- http://www.w3.org/WAI/GL/wiki/Using_a_WAI-ARIA_role_to_expose_the_role_of_a_user_interface_component -->
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Examine the parsed source code for elements which have event handlers assigned within the mark-up or via scripting (indicating that the element is a user interface control).</p>
+            </item>
+            <item>
+               <p>Check if the role of the control is already defined natively in the mark-up language.</p>
+            </item>
+            <item>
+               <p>Check if another valid method, such as the assignment of a fitting WAI-ARIA role, has been used to define the role of the control.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>If check #2 AND check #3 are false, the failure condition applies.</p>
+      </expected-results>
+   </tests>
+</technique>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="ARIA16">
+   <short-name>Using aria-labelledby to provide a name for user interface controls</short-name>
+   <applicability>
+      <p>Technologies that support <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+      <success-criterion idref="ensure-compat-rsv" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
+         <ulist>
+            <item>
+               <p>Jaws V.11 and greater has complete support.
+</p>
+            </item>
+            <item>
+               <p>ChromeVox V.1 and greater has complete support 
+</p>
+            </item>
+            <item>
+               <p>VoiceOver V.3 and greater supports ???
+</p>
+            </item>
+            <item>
+               <p>NVDA 2 supports Aria Describedby ???
+</p>
+            </item>
+            <item>
+               <p>Window Eyes as of V.7 ???.
+</p>
+            </item>
+         </ulist>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The purpose of this technique is to provide names for user interface controls that can be read by assistive technology.  WAI-ARIA provides a way to associate text with a section, drawing, form element, picture, and so on, using the <att>aria-labelledby</att> property. This techniques uses the <att>aria-labelledby</att> attribute to associate a user interface control, such as a form field, with text on the page that labels it.
+</p>
+      <p>Like <att>aria-describedby</att>, <att>aria-labelledby</att> can accept multiple ids to point to other elements of the page using a space separated list. This capability makes <att>aria-labelledby</att> especially useful in situations where sighted users use information from the surrounding context to identify a control. <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="ARIA9">Using aria-labelledby to concatenate a label from several text nodes</loc> contains more examples of situations where names are created from several other text elements on the page.
+</p>
+      <p>While the function of aria-labelledby appears similar to the native HTML label element, there are some differences:
+</p>
+      <ulist>
+         <item>
+            <p> 
+               <att>aria-labelledby</att> can reference more than one text element; <el>label</el> can only reference one.</p>
+         </item>
+         <item>
+            <p> 
+               <att>aria-labelledby</att> can be used for a variety of elements while the <el>label</el> element can only be used on form elements.</p>
+         </item>
+         <item>
+            <p> Clicking on a <el>label</el> focuses the associated form field. This does not occur with <att>aria-labelledby</att>. If this behaviour is required then use <el>label</el> or implement this functionality using scripting.
+</p>
+         </item>
+      </ulist>
+      <p>Note that as of December 2013, <el>label</el> has better support than <att>aria-labelledby</att>, especially in older browsers and assistive technologies.
+</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Labelling a simple text field</head>
+         <description>
+            <p>The following is an example of <att>aria-labelledby</att> used on a simple text field to provide a label in a situation where there is no text available for a dedicated label but there is other text on the page that can be used to accurately label the control.</p>
+            <codeblock xml:space="preserve"><![CDATA[<input name="searchtxt" type="text" aria-labelledby="searchbtn">
+<input name="searchbtn" id="searchbtn" type="submit" value="Search">]]></codeblock>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Labelling a slider</head>
+         <description>
+            <p>Below is an example of <att>aria-labelledby</att> used to provide a label for a slider control. In this case the label text is selected from within a longer adjacent text string. Please note that this example is simplified to show only the labeling relationship; authors implementing custom controls also need to ensure that controls meet other success criteria.</p>
+            <codeblock xml:space="preserve"><![CDATA[<p>Please select the <span id="mysldr-lbl">number of days for your trip</span></p>
+<div id="mysldr" role="slider" aria-labelledby="mysldr-lbl"></div>]]></codeblock>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>A label from multiple sources</head>
+         <description>
+            <p>The following example of <att>aria-labelledby</att> with multiple references uses the <el>label</el> element. For additional detail on concatenating multiple sources of information into a label with <att>aria-labelledby</att>, please view the technique <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="ARIA9">Using ARIA labelledby to concatenate a label from several text nodes</loc>.
+</p>
+            <codeblock xml:space="preserve"><![CDATA[<label id="l1" for="f3">Notify me</label>
+<select name="amt" id="f3" aria-labelledby="l1 f3 l2">
+  <option value="1">1</option>
+  <option value="2">2</option>
+</select>
+<span id="l2" tabindex="-1">days in advance</span>]]></codeblock>
+            <p>Note: The use of the <el>label</el> element is included for a number of reasons. If the user clicks on the text of the <el>label</el> element, the corresponding form field will receive focus, which makes the clicking target larger for people with dexterity problems. Also the <el>label</el> element will always be exposed via the accessibility API. A <el>span</el> could have been used (but if so, it should receive a <code><![CDATA[tabindex="-1"]]></code> so that it will be exposed via the accessibility API in all versions of Internet Explorer). However, a <el>span</el> would lose the advantage of the larger clickable region.
+</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</loc>
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="ARIA10"/>
+      <relatedtech idref="ARIA6"/>
+      <relatedtech idref="ARIA9"/>
+      <relatedtech idref="ARIA7"/>
+      <relatedtech idref="ARIA13"/>
+      <relatedtech idref="G92"/>
+      <relatedtech idref="H45"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each user interface control element where an <att>aria-labelledby</att> attribute is present:
+</p>
+         <olist>
+            <item>
+               <p>Check that the value of the <att>aria-labelledby</att> attribute is the <att>id</att> of an element or a space separated list of <att>id</att>s on the web page. 
+</p>
+            </item>
+            <item>
+               <p>Check that the text of the referenced element or elements accurately labels the user interface control.
+</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#1 and #2 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

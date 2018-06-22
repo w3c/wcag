@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H4">
+   <short-name>Creating a logical tab order through links, form controls, and objects</short-name>
+   <applicability>
+      <p>HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="navigation-mechanisms-focus-order" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to provide a logical tab order when the default tab
+            order does not suffice. Often, <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="G59"
+              linktype="general">placing the
+              interactive elements in an order that follows sequences and relationships within the
+              content</loc> is sufficient and this technique is not necessary. It can be very easy
+            to introduce usability bugs when setting the tab order explicitly.</p>
+      <p>In some cases, the author may want to specify a tab order that follows relationships in
+            the content without following the order of the interactive elements in the code. In
+            these cases, an alternative order can be specified using the <att>tabindex</att>
+            attribute of the interactive element. The <att>tabindex</att> is given a value between
+            0 and 32767. </p>
+      <p>When the interactive elements are navigated using the tab key, the elements are given
+            focus in increasing order of the value of their <att>tabindex</att> attribute.
+            Elements that have a <att>tabindex</att> value higher than zero will receive focus
+            before elements without a <att>tabindex</att> or a <att>tabindex</att> of 0. After
+            all of the elements with a tabindex higher than 0 have received focus, the rest of the
+            interactive elements are given focus in the order in which they appear in the Web
+          page.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>A genealogical search form searches for marriage records. The search form includes
+                several input fields for the bride and the groom. The form is marked up using a data
+                table that includes the fields of the groom in the first column and the fields of
+                the bride in the second column. The order in the content is row by row but the
+                author feels it is more logical to navigate the form column by column. This way, all
+                the groom's criteria can be filled in before moving on to the bride's criteria. The
+                  <att>tabindex</att> attributes of the input fields are used to specify a tab
+                order that navigates column by column.</p>
+         </description>
+         <code role="html401"><![CDATA[<form action="#" method="post">
+ <table summary="the first column contains the search criteria 
+  of the groom, the second column the search criteria of 
+  of the bride">
+ <caption>Search for marriage records</caption>
+ <tr>
+   <th>Search criteria</th>
+   <th>Groom</th>
+   <th>Bride</th>
+ </tr>
+ <tr>
+  <th>First name</th>
+  <td><input type="text" size="30" value="" name="groomfirst" 
+      title="First name of the groom" tabindex="1"></td>
+  <td><input type="text" size="30" value="" name="bridefirst" 
+       title="First name of the bride" tabindex="4"></td>
+ </tr>
+ <tr>
+  <th>Last name</th>
+  <td><input type="text" size="30" value="" name="groomlast" 
+      title="Last name of the groom" tabindex="2"></td>
+  <td><input type="text" size="30" value="" name="bridelast" 
+      title="Last name of the bride" tabindex="5"></td>
+ </tr>
+ <tr>
+  <th>Place of birth</th>
+  <td><input type="text" size="30" value="" name="groombirth" 
+      title="Place of birth of the groom" tabindex="3"></td>
+  <td><input type="text" size="30" value="" name="bridebirth" 
+      title="Place of birth of the bride" tabindex="6"></td>
+ </tr>
+</table>
+</form>      ]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>A Web page contains a search field in the upper right corner. The field is given
+                tabindex="1" so that it will occur first in the tab order, even though it is not
+                first in the content order.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>
+								       <att>Tabindex</att> values need not be sequential nor must they begin with any
+                particular value. The values do not have to be unique. Elements that have identical
+                  <att>tabindex</att> values are navigated in the order they appear in the
+                character stream. </p>
+         </description>
+         <description>
+            <p>In sections of the content where the tab order follows the content order, it can be
+                less error prone to give all elements the same tabindex value rather than specifying
+                a different number for each element. Then it is easy to rearrange those elements or
+                add new elements and maintain a logical tab order.</p>
+         </description>
+         <code role="html401"><![CDATA[ <a href="xxx" tabindex = "1">First link in list</a>
+<a href="xxx" tabindex = "1">Second link in list</a>
+<a href="xxx" tabindex = "1">Link that was added long 
+  after the original list was created</a>
+<a href="xxx" tabindex = "1">Third link in list</a>
+  ...
+<a href="xxx" tabindex = "1">Twentieth link in list</a>      ]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html4/interact/forms.html#adef-tabindex">Tabbing
+                    navigation in the HTML 4.01 specification</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G59"/>
+      <relatedtech idref="F44"/>
+      <relatedtech idref="F85"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Check if <att>tabindex</att> is used</p>
+            </item>
+            <item>
+               <p>If <att>tabindex</att> is used, check that the tab order specified by the
+                    <att>tabindex</att> attributes follows relationships in the content.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Check #2 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

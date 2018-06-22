@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="G146">
+   <short-name>Using liquid layout</short-name>
+   <applicability>
+      <p>Applies to all technologies.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="visual-audio-contrast-scale" relationship="cosufficient"/>
+      <success-criterion idref="visual-audio-contrast-visual-presentation"
+                         relationship="cosufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to be able to present content without introducing horizontal scroll bars by using layout techniques that adapt to the available horizontal space. Liquid layouts define layout regions that both resize with text, and
+            reflow as needed to display the region on the screen. Although the exact layout therefore varies, the relationship of elements and the reading order remains the same. This is an effective way to create designs that present well on different devices and for users with different font size preferences.</p>
+      <p>The basic principles of liquid layouts are to:</p>
+      <olist>
+         <item>
+            <p>Define the size of layout regions using units that will cause the region to scale relative to text, so they enlarge or shrink as text is enlarged or shrunk;</p>
+         </item>
+         <item>
+            <p>Position the layout regions as a row of adjacent floating boxes, which wrap to new rows as needed in much the same way as words in a paragraph wrap.</p>
+         </item>
+      </olist>
+      <p>Complex liquid layouts may be achieved by nesting layout regions, thus creating localized liquid layouts within a larger liquid layout. Even simple liquid layouts require design finesse to achieve good-looking results at a wide range of text sizes, but well-designed liquid layouts can be the most effective page design.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Simple liquid layout in HTML and CSS</head>
+         <description>
+            <p>The following fairly simple example uses HTML and CSS to create a liquid layout. The three columns adjust their size as text size is adjusted. When the total horizontal width exceeds the available width of the columns, the last column wraps to be positioned below, rather than beside, the previous column. The font size can be increased without either clipping or introducing horizontal scrolling until the longest word no longer fits in a column. This particular example uses percent sizes for the columns and defines them as floating regions using the "float" property.</p>
+         </description>
+         <code><![CDATA[
+              <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+                <html xmlns="http://www.w3.org/1999/xhtml">
+                <head>
+                <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+                <title>Example of Basic Liquid Layout</title>
+                <style type="text/css">
+                .column
+                {
+                border-left: 1px solid green;
+                padding-left:1%;
+                float: left;
+                width: 32%;
+                }
+                #footer
+                {
+                border-top: 1px solid green;
+                clear: both;
+                }
+                </style>
+                </head>
+                <body>
+                <h1>WCAG Example</h1>
+                <h2>Text in Three Columns</h2>
+                <div title="column one" class="column">
+                <h3>Block 1</h3>
+                <p> The objective of this technique is to be able to present content 
+                without introducing horizontal scroll bars by using layout 
+                techniques that adapt to the available horizontal space.
+                </p>
+                </div>
+                <div title="column two" class="column">
+                <h3>Block 2</h3>
+                <p> This is a very simple example of a page layout that adapts as the
+                text size changes.
+                </p>
+                </div>
+                <div title="column three" class="column">
+                <h3>Block 3</h3>
+                <p> For techniques that support more complex page layouts, see the
+                Resources listed below.
+                </p>
+                </div>
+                <p id="footer">Footer text</p>
+                </body>
+                </html>
+            ]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                	<loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.webreference.com/authoring/style/sheets/css_mastery2/index.html">CSS Mastery: Fixed-Width, Liquid, and Elastic Layouts and Faux Columns</loc>
+                </p>
+            </item>
+            <item>
+               <p>
+               	<loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://cssliquid.com/">Liquid Designs</loc>
+                </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="C12"/>
+      <relatedtech idref="C13"/>
+      <relatedtech idref="C14"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Display content in a user agent.</p>
+            </item>
+            <item>
+               <p>Increase text size to 200%.</p>
+            </item>
+            <item>
+               <p>Check whether all content and functionality is available with no horizontal scrolling.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Check #3 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

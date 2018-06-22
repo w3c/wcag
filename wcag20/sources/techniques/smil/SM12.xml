@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SM12">
+   <short-name>Providing captions through synchronized text streams in SMIL 2.0</short-name>
+   <applicability>
+      <p> Applies to SMIL 2.0 </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="media-equiv-captions" relationship="sufficient"/>
+      <success-criterion idref="media-equiv-real-time-captions" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>Only RealPlayer supports SMIL 2.0.</p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to provide a way for people who are deaf
+                        or otherwise have trouble hearing the dialogue in audio visual material to be
+                        able to view the material. With this technique all of the dialogue and
+                        important sounds are available in a text stream that is displayed in a
+                        caption area.</p>
+      <p> With SMIL 2.0, separate regions can be defined for the video and the
+                        captions. The captions and video playback are synchronized, with the caption
+                        text displayed in one region of the screen, and the corresponding video
+                        displayed in another region. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>SMIL 2.0 caption sample for RealMedia player</head>
+         <code><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<smil xmlns="http://www.w3.org/2001/SMIL20/Language">
+  <head>
+    <layout>
+      <root-layout backgroundColor="black" height="310" width="330"/>
+      <region id="video" backgroundColor="black" top="5" left="5" 
+      height="240" width="320"/>
+      <region id="captions" backgroundColor="black" top="250" 
+      height="60" left="5" width="320"/>
+    </layout>
+  </head>
+  <body>
+    <par>
+      <video src="salesdemo.mpg" region="video" title="Sales Demo"
+      alt="Sales Demo"/>
+      <textstream src="salesdemo_cc.rt" region="captions" systemCaptions="on" 
+      title="captions" alt="Sales Demo Captions"/>
+    </par>
+  </body>
+</smil>
+]]></code>
+         <description>
+            <p> The example shows a <code><![CDATA[<par>]]></code> segment
+                                containing a <code><![CDATA[<video>]]></code> and a
+                                    <code><![CDATA[<textstream>]]></code> tag. The systemCaptions
+                                attribute indicates that the textstream should be displayed when the
+                                user's player setting for captions indicates the preference for
+                                captions to be displayed. The <code><![CDATA[<layout>]]></code>
+                                section defines the regions used for the video and the captions.
+                            </p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>SMIL 2.0 caption sample with internal text streams for
+                            RealMedia player</head>
+         <code><![CDATA[ 
+<?xml version="1.0" encoding="UTF-8"?>
+<smil xmlns="http://www.w3.org/2001/SMIL20/Language">
+  <head>
+    <layout>
+      <root-layout backgroundColor="black" height="310" width="330"/>
+      <region id="video" backgroundColor="black" top="5" left="5" 
+      height="240" width="320"/>
+      <region id="captions" backgroundColor="black" top="250" 
+      height="60" left="5" width="320"/>
+    </layout>
+  </head>
+  <body>
+    <par>
+      <video src="salesdemo.mpg" region="video" title="Sales Demo" 
+      alt="Sales Demo"/>
+      <text src="data:,This%20is%20inline%20text." region="captions" 
+      begin="0s" dur="3">
+        <param name="charset" value="iso-8859-1"/>
+        <param name="fontFace" value="System"/>
+        <param name="fontColor" value="yellow"/>
+        <param name="backgroundColor" value="blue"/>
+      </text>
+      <text src="data:,This%20is%20a%20second%20text." 
+      region="captions" begin="3s" dur="3">
+        <param name="charset" value="iso-8859-1"/>
+        <param name="fontFace" value="System"/>
+        <param name="fontColor" value="yellow"/>
+        <param name="backgroundColor" value="blue"/>
+      </text>
+    </par>
+  </body>
+</smil>
+]]></code>
+         <description>
+            <p>This example shows a <code><![CDATA[<text>]]></code> element that
+                                includes synchronized text streams within the SMIL file.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/SMIL/">Synchronized Multimedia
+                                        Integration Language (SMIL 2.0)</loc>
+								       </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/SMIL-access/">Accessibility
+                                        Features of SMIL</loc>
+								       </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://ncam.wgbh.org/invent_build/web_multimedia/accessible-digital-media-guide/guideline-h-multimedia#techH12">NCAM Rich Media Accessibility, Accessible SMIL
+                                    Templates</loc>
+								       </p>
+            </item>
+            <!--item>
+                <p>
+                  <loc href="http://developer.apple.com/documentation/QuickTime/REF/refDataExchange.6.htm">QuickTime QTtext</loc>
+                </p>
+              </item-->
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/ms971327.aspx">SAMI 1.0</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="SM11"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Enabled caption preference in player, if present </p>
+            </item>
+            <item>
+               <p> Play file with captions </p>
+            </item>
+            <item>
+               <p> Check whether captions are displayed </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> #3 is true </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

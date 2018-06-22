@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H75">
+   <short-name>Ensuring that Web pages are well-formed</short-name>
+   <applicability>
+      <p> Any XML-based markup languages. </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="ensure-compat-parses" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p> The objective of this technique is to avoid key errors that are known to cause
+            problems for assistive technologies when they are trying to parse contents.
+            Well-formedness is checked by parsing the document with a conforming XML parser and
+            checking if the validation report mentions well-formedness errors. Every conforming XML
+            parser is required to check well-formedness and stop normal processing when a
+            well-formedness error is found (a conforming XML parser does not need to support
+            validation).</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head/>
+         <description>
+            <p>XML files include a document type declaration, a xsi:schemaLocation attribute or
+                other type of reference to a schema. The developer can use off-line or online
+                validators, an XML editor or an IDE with XML support (see Resources below) to check
+                well-formedness. </p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head/>
+         <description>
+            <p> When XML files do not include a document type declaration, a xsi:schemaLocation
+                attribute or a processing instruction referencing a schema even though there is a
+                schema for them, the relevant schema is specified by a command line instruction, a
+                user dialog or a configuration file, and the XML files are checked against the
+                schema.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head/>
+         <description>
+            <p>When XML files do not include a document type declaration, a xsi:schemaLocation
+                attribute or a processing instruction referencing a schema even though there is a
+                schema for them, the namespace is dereferenced to retrieve a schema document or
+                resource directory (Resource Directory Description Language: <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.rddl.org/">RDDL</loc>), and the XML files are checked against the
+                schema.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head/>
+         <description>
+            <p>When a Website generates XML dynamically instead of serving only static documents,
+                a developer can use <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="http://xmlunit.sourceforge.net/">XMLUnit</loc>, <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="http://xmltestsuite.sourceforge.net/">XML Test Suite</loc> or a similar
+                framework to test the generated XML code. </p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/2004/REC-xml-20040204/Overview.html#sec-well-formed">Well-Formed XML Documents</loc> in Extensible Markup Language (XML) 1.0 (Third
+                  Edition), W3C Recommendation 04 February 2004. </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/2004/REC-xml11-20040204/#sec-well-formed">Well-Formed XML Documents</loc> in Extensible Markup Language (XML) 1.1, W3C
+                  Recommendation 04 February 2004. </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/REC-xml/#wf-entities">4.3.2 Well-Formed Parsed
+                    Entities</loc> in Extensible Markup Language (XML) 1.1, W3C Recommendation 04
+                  February 2004.</p>
+            </item>
+         </ulist>
+         <p> For other resources, see <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="G134"
+                 linktype="general">Validating Web
+              pages</loc>. </p>
+      </see-also>
+   </resources>
+   <related-techniques/>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Load each file into a validating XML parser. </p>
+            </item>
+            <item>
+               <p> Check that there are no well-formedness errors. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>Step 2 is true.</p>
+      </expected-results>
+   </tests>
+</technique>
