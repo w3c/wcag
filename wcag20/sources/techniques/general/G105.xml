@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="G105">
+   <short-name>Saving data so that it can be used after a user re-authenticates</short-name>
+   <applicability>
+      <p>Web pages that require user authentication and limit the time available for submitting data.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="time-limits-server-timeout" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>Web servers that require user authentication often terminate the session after a set period of time if there is no activity from the user. If the user is unable to input the data quickly enough and the session times out before they submit, the server will require re-authentication before proceeding. When this happens, the server stores the data in a temporary cache while the user logs in, and when the user has re-authenticated, the data is made available from the cache and the form is processed as if there had never been a session time-out. The server does not keep the cache indefinitely, merely long enough to ensure success after re-authentication in a single user session, such as one day.</p>
+   </description>
+   <examples>
+      <ulist>
+         <item>
+            <p>A user logs in to use a forum and replies to a post. The time taken to write the reply  is longer than the time allowed by the server for a session of inactivity. The user submits the reply and is informed of the time out and prompted to log in again to submit the response. The user's post reply is retained by the server and if the user log-in is successful the reply  is processed as normal. If the log-in cannot be successfully completed the reply is discarded.</p>
+         </item>
+         <item>
+            <p>A user logs in to a secure area and fills out a form. The session times out for security reasons. The form data is retained by the server and the user is informed of the time  out and is prompted to log-in again. If the user logs in correctly, the form is presented to the user with all of the data previously entered and user can submit the form. If the log-in cannot be successfully completed the form data is discarded.</p>
+         </item>
+      </ulist>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="G181"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>On a site that requires user login to submit data,</p>
+         <olist>
+            <item>
+               <p>Log in and begin the timed activity.</p>
+            </item>
+            <item>
+               <p>Allow the session to time out.</p>
+            </item>
+            <item>
+               <p>Submit the data.</p>
+            </item>
+            <item>
+               <p>Re-authenticate.</p>
+            </item>
+            <item>
+               <p>Check that the process can continue and be completed without loss of data, including the original data and any changes made after re-authentication.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#5 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

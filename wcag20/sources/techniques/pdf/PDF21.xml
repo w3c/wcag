@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="PDF21">
+   <short-name>Using List tags for lists in PDF documents</short-name>
+   <applicability>
+      <p>Tagged PDF documents with lists.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="pdf.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The intent of this technique is to create lists of related items using
+    				list elements appropriate for their purposes. PDF files containing
+    				lists are normally created or repaired using a tool for authoring PDF. </p>
+      <p>When markup is used that visually formats items as a list but does
+    				not indicate the list relationship, users may have difficulty navigating
+    				the information. An example of such visual formatting is simply using
+    				line-breaks to separate list items. </p>
+      <p>Some assistive technologies allow users to navigate from list to list
+    				or item to item. If the lists are not correctly formatted with list
+    				tags, these users will have difficulty understanding the list content. </p>
+      <p>The easiest way to create lists in PDF content is to format them properly
+    				using list markup in the authoring tool, for example, Microsoft Word
+    				or OpenOffice.org Writer. However, if you do not have access to the
+    				source file and authoring tool, you can use Acrobat Pro's TouchUp Reading
+    				Order tool and the Tags panel. </p>
+      <p>The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF
+    				specification</loc> defines list structure in section 14.8.4.3.3 (List
+    				Elements). The structure types for lists in PDF documents are: </p>
+      <ulist>
+         <item>
+            <p> L - the List tag, which contains one or more LI tags. </p>
+         </item>
+         <item>
+            <p> LI - the List Item tag. List item tags can contain Lbl and LBody
+    				tags. </p>
+         </item>
+         <item>
+            <p> Lbl - the list item label. Contains distinguishing information
+    					such as a item number or bullet character. </p>
+         </item>
+         <item>
+            <p> LBody - the list item body. Contains list item content, or in
+    						the case of a nested list, it may contain additional List tag trees. </p>
+         </item>
+      </ulist>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Adding lists to Microsoft Word 2007 documents</head>
+         <description>
+            <p>This example is shown with Microsoft Word. There are other software tools that perform similar functions. See the list of other software tools in <specref ref="pdf_notes_acc-sup_files_applications"/>.</p>
+            <p>On the Home ribbon, use the lists tools to create or repair lists
+    						in Word documents. This is the easiest way to ensure that lists are
+    						formatted correctly when they are converted to PDF. </p>
+            <p>In the image below, the numbered and bullet lists were created using
+    						the list tools. The third list did not use the list tool (see the ribbon)
+    						and the list will not be tagged as list elements when converted to
+    						PDF. </p>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF21/lists-word.jpg"
+                       height="563"
+                       width="481"/>
+                  <alt>Screenshot showing correctly formatted ordered and unordered lists, and a third section of text formatted to appear as a list, but not using the list formatting tool in Microsoft Word.</alt>
+               </image> 
+            </p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Adding lists to OpenOffice.org Writer 2.2 documents</head>
+         <description>
+            <p>This example is shown with OpenOffice.org Writer. There are other software tools that perform similar functions. See the list of other software tools in <specref ref="pdf_notes_acc-sup_files_applications"/>.</p>
+            <p>Use the Bullets and Numbering tool to create or repair lists in OpenOffice.org
+    						Writer documents. This is the easiest way to ensure that lists are
+    						formatted correctly when they are converted to PDF. </p>
+            <p>In the image below, the numbered and bullet lists were created using
+    						the list tools. The third list did not use the list tool (see the toolbar)
+    						and the list will not be tagged as list elements when converted to
+    						PDF. </p>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF21/lists-oo.jpg"
+                       height="517"
+                       width="451"/>
+                  <alt>Screenshot showing correctly formatted ordered and unordered lists, and a third section of text formatted to appear as a list, but not using the list formatting tool in OpenOffice.org Writer.</alt>
+               </image> 
+            </p>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="lists.odt"
+                    linktype="examples">working example of adding lists to OpenOffice Writer documents</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Ensuring that lists are correctly formatted using Adobe
+    				Acrobat 9 Pro</head>
+         <description>
+            <p>This example is shown with Adobe Acrobat Pro. There are other software tools that perform similar functions. See the list of other software tools in <specref ref="pdf_notes_acc-sup_files_applications"/>.</p>
+            <olist>
+               <item>
+                  <p> View &gt; Navigation Panels... &gt; Tags </p>
+               </item>
+               <item>
+                  <p> Inspect the lists in the document to determine which, if any,
+    						are not formatted properly. </p>
+               </item>
+            </olist>
+            <p>In the following image, the third list is formatted as text. The list
+    						items are separated only by line-breaks. Assistive technology may not
+    						be able to render the list intelligibly for users. </p>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF21/unformattedlist.jpg"
+                       height="427"
+                       width="550"/>
+                  <alt>Tags panel showing incorrectly formatted list as text beneath a Text body tag rather than nested under list tags.</alt>
+               </image> 
+            </p>
+            <p>To repair the list, use the Tags panel to create list tags in the
+    						content. </p>
+            <p>The following image shows the resulting first list item correctly
+    						formatted. </p>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF21/listrepair.jpg"
+                       height="448"
+                       width="556"/>
+                  <alt>Tags panel showing first list item correctly nested under list tags.</alt>
+               </image> 
+            </p>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="lists.pdf"
+                    linktype="examples">working example of ensuring lists are properly formatted in Acrobat Pro</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Marking up lists using List structure elements</head>
+         <description>
+            <p>The following code fragment illustrates code that is typical marking
+    						up a list hierarchy in PDF documents. It uses the simple numbered list
+    						in the previous examples. This is typically accomplished by an authoring
+    						tool. </p>
+            <codeblock xml:space="preserve"><![CDATA[4 0 obj
+  <</Type /Page
+    /Contents 5 0 R
+  >>
+
+endobj
+5 0 obj
+  << /Length 3 0 R >>
+  stream
+   /P <</MCID 1>> BDC
+      BT T* (The most popular sports are:) Tj ET EMC
+   /Lbl <</MCID 11>> BDC
+      BT T* (1. ) Tj ET EMC
+   /LBody <</MCID 12>> /BDC
+      BT (Snow-shoeing ) Tj ET EMC
+   /Lbl <</MCID 21>> BDC
+      BT T* (2. ) Tj ET EMC
+   /LBody <</MCID 22>> /BDC
+      BT (Ice-skating ) Tj ET EMC
+   /Lbl <</MCID 31>> BDC
+      BT T* (3. ) Tj ET EMC
+   /LBody <</MCID 32>> /BDC
+      BT (Skiing ) Tj ET EMC
+endstream
+endobj
+
+101 0 obj                 % Structure element for intro paragraph to list ("The most popular sports are:")
+  << /Type /StructElem
+     /S /P
+     /P 201 0 R
+     /Pg 4 0 R
+     /K 1
+  >>
+endobj
+
+111 0 obj                  % Structure element for first item, list label (Lbl): "1."
+  << /Type /StructElem
+     /S /Lbl
+     /P 211 0 R
+     /Pg 4 0 R
+     /K 11
+  >>
+endobj
+
+112 0 obj
+  << /Type /StructElem     % Structure element for first item, list text (LBody): ("Snow-shoeing")
+     /S /LBody
+     /P 211 0 R
+     /Pg 4 0 R
+     /K 12
+  >>
+endobj
+
+... [ objects 121-122 and 131-132, referencing MCIDs 21-22 and 31-32 are omitted in the interest of space. ]
+
+201 0 obj
+  << /Type /StructElem
+     /S /Caption            % Intro paragraph
+     /P 400 0 R
+     /K [101 0 R]
+  >>
+endobj
+
+211 0 obj
+  << /Type /StructElem
+     /S /LI                 % List item for "1. Snow-shoeing"
+     /P 400 0 R
+     /K [111 0 R 112 0 R]
+  >>
+endobj
+
+212 0 obj
+  << /Type /StructElem
+     /S /LI                 % List item for "2. Ice-skating"
+     /P 301 0 R
+     /K [121 0 R 122 0 R]
+  >>
+endobj
+
+213 0 obj
+  << /Type /StructElem
+     /S /LI                 % List item for "3. Skiing"
+     /P 301 0 R
+     /K [131 0 R 132 0 R]
+  >>
+endobj
+
+400 0 obj
+  << /Type /StructElem
+     /S /L                   % Top-level structure element in the list hierarchy                
+     /K [201 0 R 211 0 R 212 0 R 213 0 R]
+  >>
+endobj
+]]></codeblock>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> Section 14.8.4.3.3 (List Elements) in <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF
+    					1.7 (ISO 32000-1)</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/accessibility/products/acrobat.html">PDF and Accessibility</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G115"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> For a list in a PDF document, verify in one of the following
+    					ways:</p>
+               <ulist>
+                  <item>
+                     <p> Read the PDF document with a screen reader, listening to hear
+    						that list is read correctly when reading the content line-by-line. </p>
+                  </item>
+                  <item>
+                     <p> Use a tool that is capable of showing lists to open the PDF
+    							document and view the list to check that it is correctly structured. </p>
+                  </item>
+                  <item>
+                     <p> Inspect the tag tree to verify that the list is structured
+    								according to the PDF specification. </p>
+                  </item>
+                  <item>
+                     <p> Use a tool that exposes the document through the accessibility
+    									API and verify that the list is correctly structured. </p>
+                  </item>
+               </ulist>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#1 is true </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Using_List_tags_for_lists_in_PDF_documents"/>
+      </source>
+   </admin>
+</technique>

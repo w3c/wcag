@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F41">
+   <short-name>Failure of Success Criterion 2.2.1, 2.2.4, and 3.2.5 due to using meta refresh to reload the page</short-name>
+   <applicability>
+      <p>HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="time-limits-required-behaviors" relationship="failure"/>
+      <success-criterion idref="time-limits-postponed" relationship="failure"/>
+      <!-- Bruces raises concern this mapping could mislead people, should expand technique to clarify -->
+      <success-criterion idref="consistent-behavior-no-extreme-changes-context"
+                         relationship="failure"/>
+   </applies-to>
+   <description>
+      <p> 
+         <code><![CDATA[meta]]></code>
+						   <code><![CDATA[http-equiv]]></code> of refresh is often used to periodically refresh
+                        pages or to redirect users to another page. If the time interval is too
+                        short, and there is no way to turn auto-refresh off, people who are blind will not have enough time to make their screen
+                        readers read the page before the page refreshes unexpectedly and causes the
+                        screen reader to begin reading at the top. Sighted users may also be
+                        disoriented by the unexpected refresh.</p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <description>
+            <p> This is a deprecated example that changes the user's page at regular
+                                intervals. Content developers should not use this technique to
+                                simulate "push" technology. Developers cannot predict how much time
+                                a user will require to read a page; premature refresh can disorient
+                                users. Content developers should avoid periodic refresh and allow
+                                users to choose when they want the latest information. (The number
+                                in the <code><![CDATA[content]]></code> attribute is the refresh interval in
+                                seconds.)</p>
+         </description>
+         <code><![CDATA[
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>     
+    <title>HTML Techniques for WCAG 2.0</title>     
+    <meta http-equiv="refresh" content="60" />   
+  </head>   
+  <body>
+    ...     
+  </body> 
+</html>
+]]></code>
+      </eg-group>
+   </examples>
+   <related-techniques />
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Find <code><![CDATA[meta]]></code> elements in the document. </p>
+            </item>
+            <item>
+               <p>For each <code><![CDATA[meta]]></code> element, check if it contains
+               the <code><![CDATA[http-equiv]]></code> attribute with value "refresh" (case-insensitive) and
+               the <code><![CDATA[content]]></code> attribute with a number (representing seconds) equals to or greater than 0 and without "; url=" (case-insensitive). </p>
+            </item>
+            <item>
+               <p>check to see if there is a mechanism to turn off the refresh. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If step 2 is true and step 3 is false then this failure condition applies and content
+                                    fails these Success Criteria. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SL17">
+   <short-name>Providing Static Alternative Content for Silverlight Media Playing
+    			in a MediaElement</short-name>
+   <applicability>
+      <p use-id="silverlight.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="media-equiv-av-only-alt" relationship="sufficient"/>
+      <success-criterion idref="media-equiv-audio-desc" relationship="sufficient"/>
+      <success-criterion idref="media-equiv-text-doc" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="silverlight.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to replace a Silverlight <obj>MediaElement</obj> with
+    				static alternative non-media content that is not time-based. The static
+    				alternative content replaces the media in the same or a nearby user
+    				interface region of the Silverlight application. </p>
+      <ulist>
+         <item>
+            <p> If the media being played is audio-only, and the alternative content
+    				is a text equivalent such as a transcript, this technique addresses <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="media-equiv-av-only-alt"
+                    linktype="understanding">Success
+    					Criterion 1.2.1 (Audio-only and Video-only, Prerecorded)</loc>. </p>
+         </item>
+         <item>
+            <p> If the media includes content that cannot be adequately described
+    						by either alternative audio track or additional text captions, and
+    						the best alternative is to provide a full description in text such
+    						as a screenplay of the content, this technique addresses <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="media-equiv-audio-desc"
+                    linktype="understanding">Success
+    							Criterion 1.2.3 (Audio Description or Full Text Alternative)</loc> and
+    						is similar to <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="G69"
+                    linktype="techniques">G69:
+    							Providing an alternative for time based media</loc>. </p>
+         </item>
+      </ulist>
+      <p>A Silverlight application user interface can be adjusted at run time
+    				by removing elements from the visual tree, and adding new elements
+    				to the visual tree. In this case, the user interface is designed to
+    				provide a control that the user activates to display the static alternative
+    				content, which is often a control that displays text, or a text element. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>MediaElement playing audio, replace with transcript</head>
+         <description>
+            <p>This example has a UI definition in XAML and interaction logic in C#. In this case the <obj>MediaElement</obj> 
+              has no visual representation itself and is 0x0 size because it plays audio only. As a simple placeholder, this 
+              example displays the text "Library of Congress Audio" to represent the media element as something visible in the 
+              UI. In addition to Play/Stop controls, this interface includes a Display Transcript button. Activating the 
+              button displays static text that represents the transcript of the audio. The following is the basic UI in XAML.</p>
+            <codeblock xml:space="preserve"><![CDATA[<UserControl x:Class="ReplaceAudioWithTranscriptText.MainPage"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   xmlns:sys="clr-namespace:System;assembly=mscorlib">
+   <UserControl.Resources>
+       <sys:String x:Key="transSpeakerName">Matt Raymond: </sys:String>
+       <sys:String x:Key="transText">This is Matt Raymond at the Library of Congress.
+Each year thousands of book lovers of all ages visit the nation's capital to celebrate the joys 
+of reading and lifelong literacy, at the Library of Congress National Book Festival. 
+For the first time in the festival's nine year history, President Barack Obama and 
+First Lady Michelle Obama will serve as honorary chairs of this free event. </sys:String>
+   </UserControl.Resources>
+   <StackPanel x:Name="LayoutRoot" Background="White" >
+       <TextBlock FontSize="30" Foreground="Blue">Library of Congress Audio</TextBlock>
+       <MediaElement Source="/locintro.wma" AutoPlay="False" Name="player" Height="0" />
+       <StackPanel Orientation="Horizontal" Name="ControlBar">
+           <Button Name="Play" Click="Play_Click">Play</Button>
+           <Button Name="Stop" Click="Stop_Click">Stop</Button>
+           <Button Name="TextAlt" Click="TextAlt_Click">Display Transcript</Button>
+       </StackPanel>
+   </StackPanel>
+</UserControl>
+]]></codeblock>
+            <p>The following is the C# logic. </p>
+            <codeblock xml:space="preserve"><![CDATA[   public partial class MainPage : UserControl
+   {
+       RichTextBox rtb;
+       bool transDisplayed=false;
+       public MainPage()
+       {
+           InitializeComponent();
+           rtb = new RichTextBox();
+           rtb.IsReadOnly = true;
+           Paragraph p = new Paragraph();
+           Run speakerName = new Run();
+           speakerName.Text = this.Resources["transSpeakerName"] as String;
+           speakerName.FontWeight = FontWeights.Bold;
+           Run transText = new Run();
+           transText.Text = this.Resources["transText"] as String;
+           p.Inlines.Add(speakerName);
+           p.Inlines.Add(transText);
+           rtb.Blocks.Add(p);
+       }
+       private void Play_Click(object sender, RoutedEventArgs e)
+       {
+           player.Play();
+           Play.IsEnabled = false;
+       }
+       private void Stop_Click(object sender, RoutedEventArgs e)
+       {
+           player.Stop();
+           Play.IsEnabled = true;
+       }
+       private void TextAlt_Click(object sender, RoutedEventArgs e)
+       {
+           Panel parent = (player.Parent as Panel);
+           if (!transDisplayed)
+           {
+               DisplayTranscript();
+               (sender as Button).Content = "Hide Transcript";
+               transDisplayed = true;
+           }
+           else
+           {
+               parent.Children.Remove(rtb);
+               (sender as Button).Content = "Display Transcript";
+               transDisplayed = false;
+           }
+       }
+       private void DisplayTranscript()
+       {
+           Panel parent = (player.Parent as Panel);
+           parent.Children.Add(rtb);
+       }
+]]></codeblock>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="ReplaceAudioWithTranscriptTextTestPage.html"
+                    linktype="examples">working example of Replace Audio With Transcript</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/cc189078(VS.95).aspx">Audio
+    						and Video Overview</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. That
+    					application has audio-only media content and is expected to supply
+    					a text alternative, or has media that is expected to be replaced
+    					entirely with a transcript or similar text alternative. </p>
+            </item>
+            <item>
+               <p> Check for a control that indicates that activating it will supply
+    						static alternative content for the media. Activate the control. </p>
+            </item>
+            <item>
+               <p> Verify that the media control is replaced with alternate content,
+    							and that assistive technologies represent the change to the user
+    							interface. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>#3 is true. </p>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Providing_Static_Alternative_Content_for_Silverlight_Media_Playing_in_a_MediaElement#User_Agent_and_Assistive_Technology_Support_Notes"/>
+      </source>
+   </admin>
+</technique>

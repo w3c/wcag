@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F86">
+   <short-name>Failure of Success Criterion 4.1.2 due to not providing names for each part of a multi-part form field, such as a US telephone number</short-name>
+   <applicability>
+      <p>General</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="ensure-compat-rsv" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>This describes a failure condition of Success Criterion 4.1.2 where some or all of the parts of multi-part form field do not have names. Often there is a label for the multi-part field, which is either programatically associated with the first part, or not programatically associated with any parts.</p>
+      <note>
+         <p>A name does not necessarily have to be visible, but is visible to assistive technologies.</p>
+      </note>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <description>
+            <p>A US telephone number consists of a 3-digit area code, a 3-digit prefix, and a 4-digit suffix. They are typically formatted as follows ([area code]) [prefix]-[suffix], such as (206) 555-1212. Often, forms asking for a telephone number will include 3 separate fields, but with a single label, such as:</p>
+            <codeblock xml:space="preserve"><![CDATA[Phone number: 
+(<input type="text" size="3">) <input type="text" size="3">-<input type="text" size="4">]]></codeblock>
+            <p>The failure occurs when there is not a name for each of the 3 fields in the Accessibility API. A user with assistive technology will experience these as three undefined text fields. Some assistive technologies will read the punctuation as identification for the text fields, which can be even more confusing. In the case of a 3-field US phone number, some assistive technologies would name the fields "(", ")" and "-", which is not very useful.</p>
+         </description>
+      </eg-group>
+      <eg-group role="failure">
+         <description>
+            <p>The same US telephone number. In this case, the label is not programatically associated with any of the parts. </p>
+            <codeblock xml:space="preserve"><![CDATA[Phone number: (<input type="text" size="3">) <input type="text" size="3">-<input type="text" size="4">]]></codeblock>
+            <p> A user with assistive technology will experience these as three undefined text fields. </p>
+         </description>
+      </eg-group>
+      <eg-group role="failure">
+         <description>
+            <p>The same US telephone number. In this case, the label is programatically associated with the first part.</p>
+            <codeblock xml:space="preserve"><![CDATA[<label for="area">Phone number:</label> 
+(<input id="area" type="text" size="3">) <input type="text" size="3">-<input type="text" size="4">]]></codeblock>
+            <p>A user with assistive technology will be led to believe that the first field is for the entire phone number, and will experience the second and third fields as undefined text fields.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/ms695716.aspx">Microsoft Active Accessibility 2.0 SDK</loc>. Includes Inspect32.exe and other MSAA tools.</p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://developer.gnome.org/atk/unstable/">Gnome Accessibility Toolkit documentation</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.microsoft.com/en-us/download/details.aspx?id=18359">Microsoft Internet Explorer Developer Toolbar</loc>. Allows examination of script-generated DOM in Microsoft Internet Explorer.</p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://getfirebug.com/">Firebug</loc>. Allows examination of script-generated DOM in Firefox.</p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques><!-- the following were not yet aproved when this tech. was published: 
+            -Modeling custom user interfaces in HTML semantics (HTML, CSS, Script) This is a new technique
+            - Using CSS to hide label elements when visible text labels cannot be used (CSS) (this is new technique)  -->
+      <relatedtech idref="H44"/>
+      <relatedtech idref="H71"/>
+      <relatedtech idref="H65"/>
+      <relatedtech idref="ARIA6"/>
+      <!-- Using aria-label to name controls -->
+      <relatedtech idref="ARIA16"/>
+      <!-- Using aria-labelledby to provide a label for objects -->
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each subfield in the multi-part form field:</p>
+         <olist>
+            <item>
+               <p>Check that there is a programmatically determined name for the field.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If check #1 is false for any subfield, then the failure condition applies and the content fails the success criterion.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SCR20">
+   <short-name>Using both keyboard and other device-specific functions</short-name>
+   <applicability>
+      <p>Applies to all content that uses Script to implement functionality.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="keyboard-operation-keyboard-operable" relationship="sufficient"/>
+      <success-criterion idref="keyboard-operation-all-funcs" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>
+                        The objective of this technique is to illustrate the use of both keyboard-specific and mouse-specific events with code that has a scripting function associated with an event. Using both keyboard-specific and mouse-specific events together ensures that content can be operated by a wide range of devices. For example, a script may perform the same action when a keypress is detected that is performed when a mouse button is clicked. This technique goes beyond the Success Criterion requirement for keyboard access by including not only keyboard access but access using other devices as well. 
+                    </p>
+      <p>
+            In JavaScript, commonly used event handlers include, onblur, onchange, onclick, ondblclick, onfocus, onkeydown, onkeypress, onkeyup, onload, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onreset, onselect, onsubmit, onunload. Some mouse-specific functions have a logical corresponding keyboard-specific function (such as 'onmouseover' and 'onfocus'). A keyboard event handler should be provided that executes the same function as the mouse event handler.
+                    </p>
+      <p>
+                        The following table suggests keyboard event handlers to pair mouse event handlers.
+                    </p>
+      <table border="1" cellspacing="0" id="SCR20_mappings">
+         <caption>Device Handler Correspondences</caption>
+         <tbody>
+            <tr>
+               <th scope="col" rowspan="1" colspan="1">Use...</th>
+               <th scope="col" rowspan="1" colspan="1">...with</th>
+            </tr>
+            <tr>
+               <td rowspan="1" colspan="1"> 
+                  <code><![CDATA[mousedown]]></code> 
+               </td>
+               <td rowspan="1" colspan="1"> 
+                  <code><![CDATA[keydown]]></code>
+								       </td>
+            </tr>
+            <tr>
+               <td rowspan="1" colspan="1"> 
+                  <code><![CDATA[mouseup]]></code> 
+               </td>
+               <td rowspan="1" colspan="1"> 
+                  <code><![CDATA[keyup]]></code>
+								       </td>
+            </tr>
+            <tr>
+               <td rowspan="1" colspan="1"> 
+                  <code><![CDATA[click 
+								]]></code> 
+                  <sup>[1]</sup> 
+               </td>
+               <td rowspan="1" colspan="1"> 
+                  <code><![CDATA[keypress 
+								]]></code> 
+                  <sup>[2]</sup> 
+               </td>
+            </tr>
+            <tr>
+               <td rowspan="1" colspan="1"> 
+                  <code><![CDATA[mouseover]]></code> 
+               </td>
+               <td rowspan="1" colspan="1"> 
+                  <code><![CDATA[focus]]></code>
+								       </td>
+            </tr>
+            <tr>
+               <td rowspan="1" colspan="1"> 
+                  <code><![CDATA[mouseout]]></code> 
+               </td>
+               <td rowspan="1" colspan="1"> 
+                  <code><![CDATA[blur]]></code> 
+               </td>
+            </tr>
+         </tbody>
+      </table>
+      <p>
+						   <sup>1</sup> Although <code><![CDATA[click]]></code> is in principle a mouse event handler, most HTML and XHTML user agents also process this event when a native HTML control (e.g. a button or a link) is activated, regardless of whether it was activated with the mouse or the keyboard. In practice, therefore, it is not necessary to duplicate this event when adding handlers to natively focusable HTML elements. However, it is necessary when adding handlers to other events, such as in Example 2 below.</p>
+      <p>
+						   <sup>2</sup> Since the <code><![CDATA[keypress]]></code> event handler reacts to any key, the event handler function should check first to ensure the Enter key was pressed before proceeding to handle the event. Otherwise, the event handler will run each time the user presses any key, even the tab key to leave the control, and this is usually not desirable.
+                    </p>
+      <p>
+                    Some mouse-specific functions (such as <code><![CDATA[dblclick]]></code> and <code><![CDATA[mousemove]]></code>) do  not have a corresponding keyboard-specific function. This means that some functions may need  to be implemented differently for each device (for example, including a series of buttons to execute, via keyboard, the equivalent mouse-specific functions implemented).</p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>In this example of an image link, the image is changed when the user positions the pointer over the image. To provide keyboard users with a similar experience, the image is also changed when the user tabs to it.
+                            </p>
+         </description>
+         <code><![CDATA[
+<a href="menu.php" onmouseover="swapImageOn('menu')" onfocus="swapImageOn('menu')" 
+onmouseout="swapImageOff('menu')" onblur="swapImageOff('menu')"> 
+<img id="menu" src="menu_off.gif" alt="Menu" /> 
+</a>]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>
+								This example shows a custom image control for which both the mouse and the keyboard can be used to activate the function. The mouse event <code><![CDATA[onclick]]></code> is duplicated by an appropriate keyboard event <code><![CDATA[onkeypress]]></code>. The <code><![CDATA[tabindex]]></code> attribute ensures that the keyboard will have a tab stop on the image. Note that in this example, the <code><![CDATA[nextPage()]]></code> function should check that the keyboard key pressed was Enter, otherwise it will respond to all keyboard actions while the image has focus, which is not the desired behavior.</p>
+         </description>
+         <code><![CDATA[
+<img onclick="nextPage();" onkeypress="nextPage();" tabindex="0" src="arrow.gif" 
+alt="Go to next page"> ]]></code>
+         <description>
+            <note>
+               <p>This example uses tabindex on an <code><![CDATA[img]]></code> element. Even though this is currently invalid, it is provided as a transitional technique to make this function work. Custom controls like this should also use WAI-ARIA to expose the role and state of the control.</p>
+            </note>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://webaim.org/techniques/javascript/">Overview of Creating Accessible JavaScript</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G90"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>
+                                Find all interactive functionality
+                            </p>
+            </item>
+            <item>
+               <p>
+                                Check that all interactive functionality can be accessed using the keyboard alone
+                            </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>
+                                #2 is true
+                            </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

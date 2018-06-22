@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH31">
+   <short-name>Specifying caption text for a DataGrid</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to programmatically associate captions
+    				for DataGrids where captions are provided in the presentation. Normally,
+    				the caption for a table is a table identifier and acts like a title
+    				or heading for the table. </p>
+      <p>Flash does not have a caption element for the DataGrid component,
+    				but the same effect can be achieved through the following approach: </p>
+      <olist>
+         <item>
+            <p> Place a label component or textfield above the DataGrid, containing
+    				the grid's caption text. </p>
+         </item>
+         <item>
+            <p> Duplicate the caption text and add it as the grid's accessible
+    					name. This can either be achieved by setting a value to the grid's   "name" field
+    					in the Accessibility panel or by setting the grid's <prop>AccessibilityProperties.name</prop>
+    					property. </p>
+         </item>
+      </olist>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Associating a label with a DataGrid</head>
+         <description>
+            <p>This is an example of a DataGrid being added to the stage in Flash
+    						Professional from the Components panel. A label element is also added
+    						from the Components panel to contain the caption text and the caption
+    						text is used in the Accessibility control panel in Flash to serve as
+    						the accessibility name for the DataGrid. </p>
+            <ulist>
+               <item>
+                  <p> Create a new Flash file (.fla) or open an existing one to put
+    						a DataGrid into. </p>
+               </item>
+               <item>
+                  <p> Open the Flash components panel from the Window menu </p>
+               </item>
+               <item>
+                  <p> Drag a DataGrid component onto the stage and position as desired. </p>
+               </item>
+               <item>
+                  <p> Drag a label component onto the stage and position as desired. </p>
+               </item>
+               <item>
+                  <p> Add text to the label component. </p>
+               </item>
+               <item>
+                  <p> Select the DataGrid component and add the same text as is used
+    							in the label component to the name field for DataGrid, using the
+    							Accessibility control panel. </p>
+               </item>
+            </ulist>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Associating a caption with a DataGrid using ActiveScript 3</head>
+         <description>
+            <p>This is a basic AS3 example of a DataGrid generated through scripting.
+    						Additionally a label element is created, containing the caption text,
+    						and the caption text is added to the grid as an accessible name. </p>
+         </description>
+         <code xml:space="preserve"><![CDATA[import fl.accessibility.DataGridAccImpl;
+import fl.controls.DataGrid;
+import fl.controls.Label;
+import fl.data.DataProvider;
+import flash.accessibility.Accessibility;
+import flash.accessibility.AccessibilityProperties;
+import flash.system.Capabilities;
+
+// enable accessibility for the DataGrid
+DataGridAccImpl.enableAccessibility();
+
+createGrid();
+
+// set the data grid caption text
+var gridCaptionText: String = "Game Results";
+gridCaption.text = gridCaptionText;
+//add the caption text as the DataGrid's accessible name
+var accProps: AccessibilityProperties = new AccessibilityProperties();
+accProps.name = gridCaptionText;
+aDg.accessibilityProperties = accProps;
+if (Capabilities.hasAccessibility)
+Accessibility.updateProperties();
+
+function createGrid() {
+  
+  //create and add the components
+  var aDg: DataGrid = new DataGrid();
+  var gridCaption: Label = new Label();
+  addChild(aDg);
+  addChild(gridCaption);
+  aDg.move(50, 50);
+  gridCaption.move(50, 20);
+  
+  var captionFormat: TextFormat = new TextFormat();
+  captionFormat.size = 24;
+  gridCaption.setStyle("textFormat", captionFormat);
+  gridCaption.width = 300;
+  gridCaption.height = 100;
+  bldRosterGrid(aDg);
+  //prepare the data
+  var aRoster: Array = new Array();
+  aRoster =[ 
+    {Name: "Wilma Carter", Bats: "R", Throws: "R", Year: "So", Home: "Redlands, CA"},
+    {Name: "Sylvia Munson", Bats: "R", Throws: "R", Year: "Jr", Home: "Pasadena, CA"}, 
+    {Name: "Carla Gomez", Bats: "R", Throws: "L", Year: "Sr", Home: "Corona, CA"}, 
+    {Name: "Betty Kay", Bats: "R", Throws: "R", Year: "Fr", Home: "Palo Alto, CA"},
+  ];
+  aDg.dataProvider = new DataProvider(aRoster);
+  aDg.rowCount = aDg.length;
+};
+
+function bldRosterGrid(dg: DataGrid) {
+  dg.setSize(400, 300);
+  dg.columns =[ "Name", "Bats", "Throws", "Year", "Home"];
+  dg.columns[0].width = 120;
+  dg.columns[1].width = 50;
+  dg.columns[2].width = 50;
+  dg.columns[3].width = 40;
+  dg.columns[4].width = 120;
+};]]></code>
+         <description>
+            <p>Notes on this code sample:</p>
+            <ulist>
+               <item>
+                  <p> For a demonstration, see the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                          href="datagrid_with_caption_as3.html"
+                          linktype="examples">working version of Associating a caption with a DataGrid using ActiveScript 3</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                          href="datagrid_with_caption_as3.fla"
+                          linktype="examples">source of Associating a caption with a DataGrid using ActiveScript 3</loc> is available.</p>
+               </item>
+               <item>
+                  <p> The accessible name can also be applied to the DataGrid using
+    						the Accessibility panel in the Flash authoring tool. </p>
+               </item>
+               <item>
+                  <p> In the above example, the text used for the DataGrid caption will
+    								be read twice, once as the text label that is offered for sighted
+    								users, and again as the accessible name for the DataGrid. Authors
+    								can avoid duplicate voicing by setting the <prop>silent</prop> property for the
+    								label text to <propval>true</propval>. </p>
+               </item>
+            </ulist>
+         </description>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="H39"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Check whether the Flash movie contains a DataGrid component. </p>
+            </item>
+            <item>
+               <p> Confirm that each DataGrid's caption text has been added to the component as an accessible name. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>Step 2 is true. </p>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Specifying_caption_text_for_a_DataGrid"/>
+					</source>
+   </admin>
+</technique>

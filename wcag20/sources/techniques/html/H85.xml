@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H85">
+   <short-name>Using OPTGROUP to group OPTION elements inside a SELECT</short-name>
+   <applicability>
+      <p>HTML and XHTML pages that collect user input.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>The <el>optgroup</el> element is not widely supported by many screen readers including JAWS 11 and below or Window-Eyes 6 and below.</p>
+      </ua-issue>
+      <ua-issue name="" version="">
+         <p>The <att>label</att> attribute for <el>option</el> and <el>optgroup</el> is supported inconsistently across user agents and is not widely supported by screen readers including JAWS 11 and below and Window-Eyes 6 and below.</p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to group items in a selection list. A selection list is a set of allowed values for a form control such as a multi-select list or a combo box. Often, selection lists have groups of related options. Those groups should be semantically identified, rather than simply delimiting the groups with "dummy" list entries. This allows user agents to collapse the options by group to support quicker skimming of the options, and to indicate in what group an option of interest is located. It also helps to visually break up long lists so that users can more easily locate the option(s) they are interested in.</p>
+      <p>In HTML, the <el>select</el> element is used to create both multi-select lists and combo boxes. The various allowed options are each indicated with <el>option</el> elements. To group options together, use the <el>optgroup</el> element, with the related <el>option</el> elements inside that element. Label the group with the "label" attribute so users will know what to expect inside the group.</p>
+      <p>The <el>optgroup</el> element should be directly inside the <el>select</el> element, and the <el>option</el>  elements directly inside the <el>optgroup</el>. It is possible for a <el>select</el> element to contain both single <el>option</el> elements and <el>optgroup</el> groups, though authors should consider if this is in fact the desired intent when using this. It is not possible to nest the <el>optgroup</el> element, so only one level of grouping can be done within a <el>select</el>.</p>
+      <p>If grouping information is essential to understanding the list, authors may define <el>option</el> labels that can be understood even when the screen reader does not present the grouping information provided by <el>optgroup</el>.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>The following combo box collects data about favorite foods. Grouping by type allows users to select their preference more quickly.</p>
+         </description>
+         <code><![CDATA[
+<form action="http://example.com/prog/someprog" method="post">
+    <label for="food">What is your favorite food?</label>
+    <select id="food" name="food">
+      <optgroup label="Fruits">
+        <option value="1">Apples</option>
+        <option value="3">Bananas</option>
+        <option value="4">Peaches</option>
+        <option value="5">...</option>
+      </optgroup>
+      <optgroup label="Vegetables">
+        <option value="2">Carrots</option>
+        <option value="6">Cucumbers</option>
+       <option value="7">...</option>
+     </optgroup>
+     <optgroup label="Baked Goods">
+       <option value="8">Apple Pie</option>
+       <option value="9">Chocolate Cake</option>
+       <option value="10">...</option>
+     </optgroup>
+   </select>
+</form>              ]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>The following example shows how a multi-select box can make use of the <el>optrgroup</el> element.</p>
+         </description>
+         <code><![CDATA[
+<form action="http://example.com/prog/someprog" method="post">
+    <label for="related_techniques"><strong>Related Techniques:</strong></label>
+    <select name="related_techniques" id="related_techniques" multiple="multiple" size="10">
+  <optgroup label="General Techniques">
+    <option value="G1">G1: Adding a link at the top of each page ... </option>
+    <option value="G4">G4: Allowing the content to be paused and restarted ... </option>
+    <option value="G5">G5: Allowing users to complete an activity without any time... </option>
+    <option value="G8">G8: Creating an extended audio description for the ... </option>
+    <option value="G9">G9: Creating captions for live synchronized media... </option>
+    <option value="G10">G10: Creating components using a technology that ... </option>
+  </optgroup>
+  <optgroup label="HTML Techniques">
+    <option value="H2">H2: Combining adjacent image and text links for the same ... </option>
+    <option value="H4">H4: Creating a logical tab order through links, form ... </option>
+    <option value="H24">H24: Providing text alternatives for the area ... </option>
+  </optgroup>
+  <optgroup label="CSS Techniques">
+    <option value="C6">C6: Positioning content based on structural markup... </option>
+    <option value="C7">C7: Using CSS to hide a portion of the link text... </option>
+  </optgroup>
+  <optgroup label="SMIL Techniques">
+    <option value="SM1">SM1: Adding extended audio description in SMIL 1.0... </option>
+    <option value="SM2">SM2: Adding extended audio description in SMIL 2.0... </option>
+    <option value="SM6">SM6: Providing audio description in SMIL 1.0... </option>
+  </optgroup>
+  <optgroup label="ARIA Techniques">
+    <option value="ARIA1">ARIA1: Using WAI-ARIA describedby... </option>
+    <option value="ARIA2">ARIA2: Identifying required fields with the "required"... </option>
+    <option value="ARIA3">ARIA3: Identifying valid range information with "valuemin" ... </option>
+  </optgroup>
+  <optgroup label="Common Failures">
+    <option value="F1">F1: Failure of SC 1.3.2 due to changing the meaning of content by... </option>
+    <option value="F2">F2: Failure of SC 1.3.1 due to using changes in text presentation... </option>
+    <option value="F3">F3: Failure of SC 1.1.1 due to using CSS to include images  ... </option>
+    <option value="F4">F4: Failure of SC 2.2.2 due to using text-decoration:blink ...</option>
+  </optgroup>
+</select>
+</form>              ]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html401/interact/forms.html#edef-SELECT">HTML SELECT element</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html401/interact/forms.html#edef-OPTGROUP">HTML OPTGROUP element</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://webaim.org/techniques/forms/">Creating Accessible Forms</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://usability.com.au/2008/09/accessible-forms-using-wcag-2-0/">Accessible Forms using WCAG 2.0</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Check the set of options within a selection list to see if there are groups of related options.</p>
+            </item>
+            <item>
+               <p>If there are groups of related options, they should be grouped with <el>optgroup</el>. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Check #2 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

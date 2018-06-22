@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH7">
+   <short-name>Using scripting to change control labels</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="navigation-mechanisms-refs" relationship="sufficient"/>
+      <success-criterion idref="navigation-mechanisms-link" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The purpose of this technique is to allow users to choose to have  additional information added to the label of a button or other control  so that it can be understood out of context. </p>
+      <p>Some users prefer to have control labels that are  self-contained, where there is no need to explore the context of the  control. Other users find including the context information in each  button to be repetitive and to reduce their ability to use a site.  Among users of assistive technology, the feedback to the working group  on which is preferable has been divided. This technique allows users to  pick the approach that works best for them. </p>
+      <p>A control is provided near the beginning of the page that will  expand the labels for controls on the page so that no  additional context is needed to understand the purpose of those  controls. It must always be possible to understand purpose of the  control directly from its label. </p>
+      <p>This technique expands the control labels only for the current  page view. It is also possible, and in some cases would be advisable,  to save this preference in a cookie or server-side user profile, so  that users would only have to make the selection once per site. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Using ActionScript to add contextual information  directly to the label of a button</head>
+         <description>
+            <p>This example uses ActionScript to add contextual information  directly to the label of a button. When the "Expand Button Labels"  button is toggled, each button on the page has its <prop>label</prop> property  modified. </p>
+         </description>
+         <code xml:space="preserve"><![CDATA[import fl.accessibility.ButtonAccImpl;
+ButtonAccImpl.enableAccessibility();
+btn1.addEventListener(MouseEvent.CLICK, clickHandler);
+
+function clickHandler(e) {
+  btn2.label = btn1.selected? "PDF version of 2010 brochure": "PDF";
+  btn2.width = btn1.selected? 200: 100;
+  btn3.label = btn1.selected? "Text version of 2010 brochure": "Text";
+  btn3.width = btn1.selected? 200: 100;
+  btn4.label = btn1.selected? "Word version of 2010 brochure": "Word";
+  btn4.width = btn1.selected? 200: 100;
+}]]></code>
+         <description>
+            <p>The result can be seen in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="change_button_label.html"
+                    linktype="examples">working example of adding contextual information to a button label</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="change_button_label.fla"
+                    linktype="examples">source of adding contextual information to a button label</loc> is available.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="SCR30"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>When a Flash Movie contains content with context dependent labels,  confirm that a separate toggle control is provided that allows the user  to expand the labels so that they are no longer context dependent. </p>
+      </procedure>
+      <expected-results>
+         <p>The above is true. </p>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Using_scripting_to_change_control_labels"/>
+					</source>
+   </admin>
+</technique>

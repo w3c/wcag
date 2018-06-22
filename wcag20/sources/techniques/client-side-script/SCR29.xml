@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SCR29">
+   <short-name>Adding keyboard-accessible actions to static HTML elements</short-name>
+   <applicability>
+      <p>HTML and XHTML, Script</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="keyboard-operation-keyboard-operable" relationship="sufficient"/>
+      <success-criterion idref="keyboard-operation-all-funcs" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>
+            <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="http://www.w3.org/TR/html4/interact/forms.html#adef-tabindex">HTML 4.01</loc> only defines the tabindex attribute for <code><![CDATA[a]]></code>, <code><![CDATA[area]]></code>, <code><![CDATA[button]]></code>, <code><![CDATA[input]]></code>, <code><![CDATA[object]]></code>, <code><![CDATA[select]]></code>, and <code><![CDATA[textarea]]></code>, and limits its value to the range between 0 and 32767. The use of <code><![CDATA[tabindex]]></code> with other element types and the tabindex value -1 is supported in Internet Explorer 5.01 and higher, and Firefox 1.5 and higher, Opera 9.5 and higher and Camino. Note that modifying focus through script can cause unpredictable behavior in screen readers that use a virtual cursor. 
+                </p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to demonstrate how to provide keyboard access to a user interface control that is implemented by actions to static HTML elements such as <code><![CDATA[div]]></code> or <code><![CDATA[span]]></code>. This technique ensures that the element is focusable by setting the <code><![CDATA[tabindex]]></code> attribute, and it ensures that the action can be triggered from the keyboard by providing an <code><![CDATA[onkeyup]]></code> or <code><![CDATA[onkeypress]]></code> handler in addition to an <code><![CDATA[onclick]]></code> handler. </p>
+      <p>When the <code><![CDATA[tabindex]]></code> attribute has the value 0, the element can be focused via the keyboard and is included in the tab order of the document. When the <code><![CDATA[tabindex]]></code> attribute has the value -1, the element cannot be tabbed to, but focus can be set programmatically, using <code><![CDATA[element.focus()]]></code>.</p>
+      <p>Because static HTML elements do not have actions associated with them, it is not possible to provide a backup implementation or explanation in environments in which scripting is not available. This technique should only be used in environments in which client-side scripting can be relied upon.</p>
+      <note>
+         <p> Such user interface controls must still satisfy Success Criterion 4.1.2. Applying this technique without also providing role, name, and state information about the user interface control will results in Failure F59, Failure of Success Criterion 4.1.2 due to using script to make div or span a user interface control in HTML.</p>
+      </note>
+   </description>
+   <examples>
+      <eg-group>
+         <head> Adding a JavaScript action to a div element</head>
+         <description>
+            <p>The <code><![CDATA[div]]></code> element on the page is given a unique <code><![CDATA[id]]></code> attribute and a <code><![CDATA[tabindex]]></code> attribute with value 0.  A script uses the Document Object Model (DOM) to find the <code><![CDATA[div]]></code> element by its id and add the <code><![CDATA[onclick]]></code> handler and the <code><![CDATA[onkeyup]]></code> handler. The <code><![CDATA[onkeyup]]></code> handler will invoke the action when the Enter key is pressed. Note that the <code><![CDATA[div]]></code> element must be loaded into the DOM before it can be found and modified. This is usually accomplished by calling the script from the <code><![CDATA[onload]]></code> event of the <code><![CDATA[body]]></code> element.  The script to add the event handlers will only execute if the user agent supports and has JavaScript enabled.   </p>
+         </description>
+         <code><![CDATA[
+...
+<script type="text/javascript">
+ // this is the function to perform the action. This simple example toggles a message.
+ function doSomething(event) {
+   var msg=document.getElementById("message");
+   msg.style.display = msg.style.display=="none" ? "" : "none";
+   //return false from the function to make certain that the href of the link does not get invoked
+   return false;
+ }
+ // this is the function to perform the action when the Enter key has been pressed.  
+ function doSomethingOnEnter(event) {
+   var key = 0;
+   // Determine the key pressed, depending on whether window.event or the event object is in use
+   if (window.event) {
+     key = window.event.keyCode;
+   } else if (event) {
+     key = event.keyCode;
+   }
+   // Was the Enter key pressed?
+   if (key == 13) {
+     return doSomething(event);
+   } 
+   // The event has not been handled, so return true
+   return true;
+ }
+ // This setUpActions() function must be called to set the onclick and onkeyup event handlers onto the existing 
+ // div element. This function must be called after the div element with id="active" has been loaded into the DOM.
+ // In this example the setUpActions() function is called from the onload event for the body element.
+ function setUpActions() {
+   // get the div object
+   var active=document.getElementById("active");
+   // assign the onclick handler to the object.
+   // It is important to return false from the onclick handler to prevent the href attribute
+   // from being followed after the function returns.
+   active.onclick=doSomething;
+   // assign the onkeyup handler to the object.
+   active.onkeyup=doSomethingOnEnter;
+ }
+ </script>
+
+ <body onload="setUpActions();">
+ <p>Here is the link to modify with a javascript action:</p>
+ <div>
+  <span id="active" tabindex="0">Do Something</span>
+ </div>
+ <div id="message">Hello, world!</div>
+...
+]]></code>
+         <description>
+            <p>Working example of this code: <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="action-on-div.html"
+                    linktype="examples">Creating Divs with Actions using JavaScript</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>HTML 4.01 <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/REC-html40/interact/scripts.html">Scripts</loc>
+               </p>
+            </item>
+            <item>
+               <p>HTML 4.01 <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/REC-html40/interact/forms.html#h-17.11">Giving focus to an element</loc>
+               </p>
+            </item>
+            <item>
+               <p>Accessible Rich Internet Applications (WAI-ARIA) Version 1.0 <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria/states_and_properties#global_states">Global States and Properties</loc>
+               </p>
+            </item>
+            <item>
+               <p>WAI-ARIA Primer, <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria-primer/#focus">Provision of the keyboard or input focus</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/DOM/DOMTR">Document Object Model (DOM) Technical Reports</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/ms534654(VS.85).aspx">Internet Explorer, HTML and DHTML Reference, tabIndex Property</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="SCR20"/>
+      <relatedtech idref="SCR24"/>
+      <relatedtech idref="SCR35"/>
+      <relatedtech idref="F59"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>In a user agent that supports Scripting:</p>
+         <olist>
+            <item>
+               <p>Click on the control with the mouse</p>
+            </item>
+            <item>
+               <p>Check that the scripting action executes properly</p>
+            </item>
+            <item>
+               <p>Check that it is possible to navigate to and give focus to the control via the keyboard</p>
+            </item>
+            <item>
+               <p>Set keyboard focus to the control</p>
+            </item>
+            <item>
+               <p>Check that pressing ENTER invokes the scripting action.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>All of the checks are true</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

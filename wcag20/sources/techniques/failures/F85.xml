@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F85">
+   <short-name>Failure of Success Criterion 2.4.3 due to using dialogs or menus that are not adjacent to their trigger control in the sequential navigation order</short-name>
+   <applicability>
+      <p>All technologies.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="navigation-mechanisms-focus-order" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>This describes the failure condition that results when a Web page opens a dialog or menu interface component embedded on the page in a way that makes it difficult for a keyboard user to operate because of its position in the sequential navigation order. When the user opens the dialog or menu embedded on the page by activating a button or link, his next action will be to interact with the dialog or menu. If <phrase>focus is not set to the dialog or menu, and it</phrase> is not adjacent to the trigger control in the sequential navigation order, it will be difficult for the keyboard user to operate the dialog or menu.</p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <head>Adding a dialog or menu embedded on the page to the end of the sequential navigation order</head>
+         <description>
+            <p>When a DHTML menu or dialog is activated, it is created dynamically, positioned visually near the trigger, and appended to the end of the DOM. Because it is appended to the end of the DOM, it is at the end of the sequential navigation order. The user must tab through the rest of the web page before he can interact with the dialog or menu.</p>
+         </description>
+      </eg-group>
+      <eg-group role="failure">
+         <head>Setting focus to the document after dismissing a menu embedded on the page</head>
+         <description>
+            <p>When a menu is dismissed, it is removed or hidden from the web page and focus is set to the document. The user must tab from the beginning of the navigation sequence to reach the point from which the menu was opened.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="SCR26"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each menu or dialog embedded on a Web page that is opened via a trigger control:</p>
+         <olist>
+            <item>
+               <p>Activate the trigger control via the keyboard.</p>
+               <ulist>
+                  <item>
+                     <p>Check whether focus is in the menu or dialog.</p>
+                  </item>
+                  <item>
+                     <p>Check whether advancing the focus in the sequential navigation order puts focus in the menu or dialog.</p>
+                  </item>
+               </ulist>
+            </item>
+            <item>
+               <p>Dismiss the menu or dialog.</p>
+               <ulist>
+                  <item>
+                     <p>Check whether focus is on the trigger control.</p>
+                  </item>
+                  <item>
+                     <p>Check whether advancing the focus backwards in the sequential navigation order puts focus in the trigger control.</p>
+                  </item>
+               </ulist>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If both points under step 1 are false, then this failure condition applies and the content fails this success criterion.</p>
+            </item>
+            <item>
+               <p>If both points under step 2 are false, then this failure condition applies and the content fails this success criterion.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

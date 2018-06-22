@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="PDF7">
+   <short-name>Performing OCR on a scanned PDF document to provide actual text</short-name>
+   <applicability>
+      <p>Scanned PDF documents</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="visual-audio-contrast-text-presentation"
+                         relationship="sufficient"/>
+      <success-criterion idref="visual-audio-contrast-text-images" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="pdf.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The intent of this technique is to ensure that visually rendered text
+    				is presented in such a manner that it can be perceived without its
+    				visual presentation interfering with its readability. </p>
+      <p>A document that consists of scanned images of text is inherently inaccessible
+    				because the content of the document is images, not searchable text.
+    				Assistive technologies cannot read or extract the words; users cannot
+    				select, edit, resize, or reflow text nor can they change text and background
+    				colors; and authors cannot manipulate the PDF for accessibility. </p>
+      <p>For these reasons, authors should use actual text rather than images
+    				of text, using an authoring tool such as Microsoft Word or Oracle Open
+    				Office to author and convert content to PDF. </p>
+      <p>If authors do not have access to the source file and authoring tool,
+    				scanned images of text can be converted to PDF using optical character
+    				recognition (OCR). Adobe Acrobat Pro can then be used to create accessible
+    				text. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Generating actual text rather than images of text using
+    					Adobe Acrobat 9 Pro</head>
+         <description>
+            <p>This example is shown with Adobe Acrobat Pro. There are other software tools that perform similar functions. See the list of other software tools in <specref ref="pdf_notes_acc-sup_files_applications"/>.</p>
+            <p>This example uses a simple one-page scanned image of text. To ensure
+    						that actual text is stored in the document, perform the following steps: </p>
+            <olist>
+               <item>
+                  <p> Scan the document using as high a resolution as possible to improve
+    						the OCR performance. </p>
+               </item>
+               <item>
+                  <p> Load the scanned document in Acrobat Acrobat Pro. Select Document &gt; OCR
+    						Text Recognition &gt; Recognize Text Using OCR... </p>
+               </item>
+               <item>
+                  <p> In the next dialog, select the All Pages radio button under Pages
+    								(or Current Page if you are converting only one page), and then select
+    								OK. </p>
+               </item>
+               <item>
+                  <p> Under the Settings list, select Edit. In the next dialog, select
+    									Formatted Text and Graphics in the PDF Output Style drop-down list.
+    									This is important for ensuring accessibility. </p>
+               </item>
+               <item>
+                  <p> Depending on the resolution and how clear the text was, OCR converts
+    										images of words and characters to actual text. Text that Acrobat
+    										Pro does not recognize is listed as an "OCR suspect," or
+    										text element that Acrobat suspects was not recognized correctly. </p>
+               </item>
+               <item>
+                  <p> To fix the suspects, choose Document &gt; OCR Text Recognition   &gt; Find
+    											First OCR Suspect. Acrobat Pro presents each suspect one at a time,
+    											which can be corrected using Acrobat Pro touchup tools. </p>
+               </item>
+               <item>
+                  <p> Run Advanced &gt; Accessibility &gt; Add Tags to Document </p>
+               </item>
+               <item>
+                  <p> Test for accessibility: Advanced &gt; Accessibility &gt; Full
+    						Check... </p>
+               </item>
+            </olist>
+            <note>
+               <p>Alternatively, you can use Document &gt; OCR
+    						Text Recognition &gt; Find All OCR Suspects to display all OCR suspects
+    						at the same time for faster editing. </p>
+            </note>
+            <p>The following image shows a scanned one-page document in Adobe Acrobat
+    						Pro. </p>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF7/ocr1.jpg"
+                       height="578"
+                       width="857"/>
+                  <alt>A scanned page in Acrobat Pro showing soup recipes. </alt>
+               </image> 
+            </p>
+            <p>The next image shows the converted content after adding tags to the
+    						document. It will probably be necessary to use the TouchUp Reading
+    						Order tool and the Tags panel to tag the content properly for the intended
+    						final document. For this example, the image of the spiral book binding
+    						was tagged in the conversion. The TouchUp Reading Order tool was used
+    						to hide the image as a background (decorative) image (see <specref ref="PDF4"/>). The recipe
+    						titles were tagged as first level headers. </p>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF7/ocr3.jpg"
+                       height="597"
+                       width="918"/>
+                  <alt>A tagged converted page in Acrobat Pro showing soup recipes. The name of each soup is a first level header. The image of the spiral book binding was hidden as a decorative image.</alt>
+               </image> 
+            </p>
+            <p>Note: Acrobat Pro may automatically add tags when the file is run
+    					through OCR. </p>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="ocr-example.pdf"
+                    linktype="examples">working example of generating actual text</loc> and the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="ocr-example-tagged.pdf"
+                    linktype="examples">result of performing OCR</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/accessibility/products/acrobat.html">PDF and Accessibility</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G140"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> For each page converted to text using OCR, ensure that the resulting
+    					PDF has been converted correctly, using one of the following ways:</p>
+               <ulist>
+                  <item>
+                     <p> Read the PDF document with a screen reader or a tool that reads aloud, listening to hear that all text is read correctly
+    						and in the correct reading order. </p>
+                  </item>
+                  <item>
+                     <p> Save the document as text and check that the converted text
+    							is complete and in the correct reading order. </p>
+                  </item>
+                  <item>
+                     <p> Use a tool that is capable of showing the converted content
+    								to open the PDF document and verify that all text was converted
+    								and is in the correct reading order. </p>
+                  </item>
+                  <item>
+                     <p> Use a tool that exposes the document through the accessibility
+    									API and verify that all text was converted and is in the correct
+    									reading order. </p>
+                  </item>
+               </ulist>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#1 is true. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Performing_OCR_on_a_scanned_PDF_document_to_provide_actual_text"/>
+      </source>
+   </admin>
+</technique>

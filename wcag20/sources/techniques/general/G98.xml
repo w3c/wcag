@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="G98">
+   <short-name>Providing the ability for the user to review and correct answers before submitting</short-name>
+   <applicability>
+      <p>Sites that collect data from users that is specific to the moment it is submitted, such as test data, and cannot be changed once it is submitted.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="minimize-error-reversible" relationship="sufficient"/>
+      <success-criterion idref="minimize-error-reversible-all" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to provide users with a way to ensure their input is correct before completing an irreversible transaction. Testing, financial, and legal applications permit transactions to occur which cannot be "undone". It is therefore important that there be no errors in the data submission, as the user will not have the opportunity to correct the error once the transaction has been committed.</p>
+      <p>On a simple, 1-page form this is easy because the user can review the form before submitting. On a form that spans multiple Web pages, however, data is collected from the user in multiple steps before the transaction is committed. The user may not recall all of the data that was entered in previous steps before the step which commits the transaction.</p>
+      <p>One approach is to cache the results of each individual step and allow the user to navigate back and forth at will to review all data entered. Another approach is to provide a summary of all data collected in all steps for the user to review prior to the final commitment of the transaction.</p>
+      <p>Before the final step that commits the transaction to occur, instructions are provided to prompt the user to review the data entered and confirm. Once the user confirms, the transaction is completed.</p>
+   </description>
+   <examples>
+      <ulist>
+         <item>
+            <p>An online banking application provides multiple steps to complete a transfer of funds between accounts as follows:</p>
+            <olist>
+               <item>
+                  <p>Select "transfer from" account</p>
+               </item>
+               <item>
+                  <p>Select "transfer to" account</p>
+               </item>
+               <item>
+                  <p>Enter transfer amount</p>
+               </item>
+            </olist>
+            <p>A summary of the transaction is provided showing the from and to accounts and the transfer amount. The user can select a button to either complete the transaction or cancel it.</p>
+         </item>
+         <item>
+            <p>A testing application provides multiple pages of questions. At any time, the user can choose to return to previously completed sections to review and change answers. A final page is displayed providing buttons to either submit the test answers or review answers.</p>
+         </item>
+      </ulist>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="G155"/>
+      <relatedtech idref="G168"/>
+      <relatedtech idref="SCR18"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>In a testing application or one that causes financial or legal transactions to occur and that also collects data from users in multiple steps:</p>
+         <olist>
+            <item>
+               <p>Check that the user is prompted to review and confirm data.</p>
+            </item>
+            <item>
+               <p>If user data are collected in multiple steps, the user is allowed to return to previous steps to review and change data.</p>
+            </item>
+            <item>
+               <p>Determine if a summary of all data input by the user is provided before the transaction is committed and a method is provided to correct errors if necessary.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Either #2 or #3 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

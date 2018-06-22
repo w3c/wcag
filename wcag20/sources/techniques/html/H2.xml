@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H2">
+   <short-name>Combining adjacent image and text links for the same resource</short-name>
+   <applicability>
+      <p>HTML4, HTML5, and XHTML documents that contain links.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+      <success-criterion idref="navigation-mechanisms-refs" relationship="sufficient"/>
+      <success-criterion idref="navigation-mechanisms-link" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>This objective of this technique is to provide both text and iconic representations of links without making the web page more confusing or difficult for keyboard users or assistive technology users. Since different users finding text and icons more usable, providing both can improve the accessibility of the link.</p>
+      <p>Many links have both a text and iconic representation adjacent to each other, but rendered in separate <el>a</el> elements. Visually they appear to be a single link, but many users encounter them as adjacent identical links. For a keyboard user, it is tedious to navigate through redundant links. For users of assistive technologies, it can be confusing to encounter successive identical links. When the text alternative for the icon is a duplicate of the link text, it is repetitive as screen readers read the description twice.</p> 
+<p>If the author omitted alternative text from the link image, it would fail <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="text-equiv-all"
+              linktype="guideline">Success Criterion 1.1.1</loc> because the
+            text alternative would not serve the same purpose as the graphical link.</p> 
+      <p>This technique provides such links by putting the text and image together in one <el>a</el> element and providing null alternative text on the image to eliminate duplication of text. In this way, both representations of the link are provided, but keyboard users only encounter one link and assistive technology that provides users with link lists for a web page do not include duplicate links.</p>
+      <p>Sometimes the text and the icon link are rendered in separate, adjacent table cells to
+            facilitate page layout. Although WCAG 2 does not prohibit the use of layout tables,
+            CSS-based layouts are recommended in order to retain the defined semantic meaning of the
+            HTML table elements and to conform to the coding practice of separating presentation
+            from content. If CSS is used, this technique can be applied to combine the links.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>The icon and text are contained in the same <el>a</el> element. (HTML4 / HTML5)</p>
+         </description>
+         <code role="html5"><![CDATA[ <a href="products.html">
+   <img src="icon.gif" alt="">
+   Products page
+ </a>      ]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>A link contains an icon and text, and the site help refers to the icon. The
+                  <el>img</el> has a text alternative which is the name used for the icon in the
+                site help, which describes clicking the home page icon. (HTML4 / HTML5)</p>
+         </description>
+         <code role="html5"><![CDATA[<a href="home.html">
+  <img src="house.gif" alt="home page icon">
+  Go to the home page
+</a>     ]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html401/struct/objects.html#h-13.8">HTML 4.01 -
+                    how to specify alt text</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G91"/>
+      <relatedtech idref="G94"/>
+      <relatedtech idref="H30"/>
+      <relatedtech idref="C9"/>
+      <relatedtech idref="F89"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each <el>a</el> applying this technique:</p>
+         <olist>
+            <item chg="del">
+               <p>Check that every <el>img</el> element contained within the <el>a</el> element has a null value set for its <att>alt</att> attribute.</p>
+            </item>
+            <item>
+               <p>Check that the <el>a</el> element contains an <el>img</el> element that has either a null <att>alt</att> attribute value or a value that supplements the link text and describes the image</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>All checks above are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

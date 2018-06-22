@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F90">
+   <short-name>Failure of Success Criterion 1.3.1 for incorrectly associating table headers and content via the headers and id attributes</short-name>
+   <applicability>
+      <p>HTML and XHTML.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>One way for authors to explicitly associate header cells to data cells is by using the <code><![CDATA[id]]></code> and <code><![CDATA[headers]]></code> attributes. These allow the author to associate multiple header cells to a particular data cell, which can be necessary when complex data tables with more than one level of heading are used. </p>
+      <p>The failure occurs when the relationship between data cells and corresponding header cells cannot be programmatically determined correctly because the association of <att>id</att> and <att>headers</att> attributes is faulty. This can happen, for example, when copying code within tables and forgetting to update the code.</p>
+   </description>
+   <examples>
+      <p>Note: The example below is based on the complex data table presented as example 1 of <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="H43" linktype="html">Technique H43: Using id and headers attributes to associate data cells with header cells in data tables</loc>.
+					</p>
+      <eg-group role="failure">
+         <head>Table content not correctly associated to nested headers</head>
+         <description>
+            <p>In this example, nested headers are used, but the content cells are incorrectly associated via the <code><![CDATA[id]]></code> and <code><![CDATA[headers]]></code> attributes. All cells reference top level header 'Exams' (id="e") - this isn't correct for the last three columns which should reference header 'Projects'. Also, the referencing of the second level column headers has been accidentally swapped even though in this example this makes no difference as the contents (1, 2, Final) are repeated.
+							</p>
+            <p>Example Code:</p>
+            <codeblock xml:space="preserve"><![CDATA[
+<table>
+   <tr>
+     <th rowspan="2" id="h">Homework</th>
+     <th colspan="3" id="e">Exams</th>
+     <th colspan="3" id="p">Projects</th>
+   </tr>
+   <tr>
+     <th id="e1" headers="e">1</th>
+     <th id="e2" headers="e">2</th>
+     <th id="ef" headers="e">Final</th>
+     <th id="p1" headers="p">1</th>
+     <th id="p2" headers="p">2</th>
+     <th id="pf" headers="p">Final</th>
+   </tr>
+   <tr>
+     <td headers="h">15%</td>       
+     <td headers="e p1">15%</td>  // should be "e e1"
+     <td headers="e p2">15%</td>  // should be "e e2"
+     <td headers="e pf">20%</td>  // should be "e ef"
+     <td headers="e e1">10%</td>  // should be "p p1"
+     <td headers="e e2">10%</td>  // should be "p p2"
+     <td headers="e ef">15%</td>  // should be "p pf"
+   </tr>
+</table>
+							]]></codeblock>
+            <p>
+               <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="incorrectassociation"
+                    linktype="examples">Failure example of table incorrectly associating headers attributes in table content (td) to table headers (th)</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="H43"/>
+      <relatedtech idref="F46"/>
+      <relatedtech idref="G115"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>For tables that associate data cells to header cells via the <code><![CDATA[id]]></code> and <code><![CDATA[headers]]></code> attributes, check that the programmatic association is correct.
+							</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If check #1 is false, then this failure condition applies and the content fails the Success Criterion.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

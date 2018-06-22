@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique SYSTEM "../../xmlspec.dtd">
+<technique id="F24">
+   <short-name>Failure of Success Criterion 1.4.3, 1.4.6 and 1.4.8 due to specifying foreground colors without
+      specifying background colors or vice versa</short-name>
+   <applicability>
+      <p> All technologies that allow user agents to control foreground and background
+         colors through personal stylesheets or other means. </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="visual-audio-contrast-contrast" relationship="failure"/>
+      <success-criterion idref="visual-audio-contrast7" relationship="failure"/>
+      <success-criterion idref="visual-audio-contrast-visual-presentation" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>Users with vision loss or cognitive, language and learning challenges often prefer specific foreground and background color combinations. In some cases, individuals with low vision will find it much easier to see a Web page that has white text on a black background, and they may have set their user agent to present this contrast. Many user agents make it possible for users to choose a preference about the foreground or background colors they would like to see without overriding all author-specified styles. This makes it possible for users to view pages where colors have not been specified by the author in their preferred color combination.</p>
+      <p>Unless an author specifies both foreground and background colors, then they (the author) can no longer guarantee that the user will get a contrast that meets the contrast requirements. If, for example, the author specifies, that text should be grey, then it may override the settings of the user agent and render a page that has grey text (specified by the author) on a light grey background (that was set by the user in their user agent). This principle also works in reverse. If the author forces the background to be white, then the white background specified by the author could be similar in color to the text color preference expressed by the user in their user agent settings, thus rendering the page unusable to the user. Because an author can not predict how a user may have configured their preferences, if the author specifies a foreground text color then they should also specify a background color which has sufficient contrast with the foreground and vice versa.</p>
+      <p>It is not necessary that the foreground and background colors both be defined on the same CSS rule. Since CSS color properties inherit from ancestor elements, it is sufficient if both foreground and background colors are defined either directly or through inheritance by the time that color is applied to a given element.</p>
+      <note>
+         <p>
+            Best practice is to include all states of the text. For example, text, link text, visited link text, link text with hover and keyboard focus, etc.</p>
+      </note>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <head>Specifying only background color with CSS</head>
+         <description>
+            <p>In the example below the background color is defined on the CSS
+               stylesheet, however the foreground color is not defined. Therefore,
+               the example fails the Success Criterion.</p>
+         </description>
+         <code><![CDATA[
+  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+<head>
+ <title>Setting the canvas background</title>
+    <style type="text/css">
+
+       body {background-color:white}
+    </style>
+  </head>
+  <body>
+    <p>My background is white.</p>
+  </body>
+</html>]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <head>Specifying only foreground color with CSS</head>
+         <description>
+            <p>In the example below the foreground color is defined on the CSS
+               stylesheet, however the background color is not defined. Therefore,
+               the example fails the Success Criterion. </p>
+         </description>
+         <code><![CDATA[
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+<head>
+ <title>Setting the canvas background</title>
+    <style type="text/css">
+       body {color:white}
+    </style>
+  </head>
+
+  <body>
+    <p>My foreground is white.</p>
+  </body>
+</html>]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <head>Specifying foreground color of link text with CSS</head>
+         <description>
+            <p>In the example below the link text (foreground) color is defined on
+               the body element. However, the background color is not defined.
+               Therefore, the example fails the Success Criterion. </p>
+         </description>
+         <code><![CDATA[
+  <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+<head>
+ <title>A study of population dynamics</TITLE>
+ <style type="text/css">
+  a:link { color: red }
+  a:visited { color: maroon }
+  a:active { color: fuchsia }
+ </style>
+
+</head>
+<body>
+  <p>... document body... <a href="foo.htm">Foo</a></p>
+</body>
+</html>]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <head>Specifying only background color with <att>bgcolor</att> in HTML </head>
+         <description>
+            <p>In the example below the background color is defined on the body
+               element, however the foreground color is not defined. Therefore, the
+               example fails the Success Criterion.</p>
+            <p>Note that the use of the <att>bgcolor</att> attribute is deprecated as of HTML 4, but this failure example is included as this usage is still found on some web sites.</p>
+         </description>
+         <code><![CDATA[   
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+      <html>
+          <head>
+              <title>A study of population dynamics</title>
+          </head>
+          <body bgcolor="white">
+              <p> ... document body...</p>
+          </body>
+  </html>]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <head>Specifying only foreground color with the <att>text</att> attribute in HTML </head>
+         <description>
+            <p>In the example below the foreground color is defined on the body
+               element, however the background color is not defined. Therefore, the
+               example fails the Success Criterion. </p>
+            <p>Note that the use of the <att>text</att> attribute is deprecated as of HTML 4, but this failure example is included as this usage is still found on some web sites.</p>
+         </description>
+         <code><![CDATA[
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+<head>
+ <title>A study of population dynamics</title>
+
+</head>
+<body text="white">
+  <p>... document body...</p>
+</body>
+</html>]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/TR/CSS2/cascade.html#inheritance">Assigning property values, Cascading, and Inheritance</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="C23"/>
+      <relatedtech idref="C25"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Examine the code of the Web page.</p>
+            </item>
+            <item>
+               <p>Check to see if an author-specified foreground color is present</p>
+            </item>
+            <item>
+               <p>Check to see if an author-specified background color is present</p>
+            </item>
+         </olist>
+         <note>
+            <p>
+               Color and background color may be specified at any level in the cascade of preceding selectors, by external stylesheets or through inheritance rules.
+            </p>
+            <p>
+               Background color may also be specified using a background image with the CSS property 'background-image' or with the CSS property 'background' (with the URI of the image, e.g., 'background: url("images/bg.gif")'). With background images, it is still necessary to specify a background color, because users may have images turned off in their browser. But the background image and the background color need to be checked. </p>
+         </note>
+      </procedure>
+      <expected-results>
+         <p>If step #2 is true but step #3 is false, OR if step #3 is true but step #2 is false then this
+            failure condition applies and content fails these Success Criteria.</p>
+      </expected-results>
+   </tests>
+</technique>
