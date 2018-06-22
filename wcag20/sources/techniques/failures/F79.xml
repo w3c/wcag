@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F79">
+   <short-name>Failure of Success Criterion 4.1.2 due to the focus state of a user interface component not being programmatically determinable or no notification of change of focus state available</short-name>
+   <applicability>
+      <p>All technologies</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="ensure-compat-rsv" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>Whether a user interface component has focus is a particularly important facet of its state. Many types of assistive technology rely on tracking the current keyboard focus. Screen readers will move the user's point of regard to the focused user interface component, and screen magnifiers will change the display of the content so that the focused component is visible. If assistive technology is not notified when focus moves to a new component, the user will become confused when they attempt to interact with the wrong component.</p>
+      <p>While user agents usually handle this functionality for standard controls, custom-scripted user interface components are responsible for using accessibility APIs to make focus information and notifications available.</p>
+   </description>
+   <examples>
+      <p>A custom menu displays menu items by rendering them explicitly, handling mouse and key events directly and highlighting the currently selected menu item. The programmer does not expose the menu item that has focus via the Accessibility API, so assistive technology can only determine that focus is somewhere within the menu and cannot determine which menu item has focus.</p>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/ms696082.aspx">Accessible Explorer and Accessible Event Watcher</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Using the accessibility checker for the technology (or if that is not available, inspect the code or test with an assistive technology), check the controls to see if they expose the focus state through the accessibility API. </p>
+            </item>
+            <item>
+               <p>Using the accessibility checker for the technology (or if that is not available, inspect the code or test with an assistive technology), check whether assistive technology is notified when focus moves from one control to another.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If Check #1 or Check #2 is false, then this failure condition applies and the content fails this Success Criterion.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

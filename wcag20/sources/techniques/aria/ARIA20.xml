@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="ARIA20">
+   <short-name>Using the region role to identify a region of the page</short-name>
+   <applicability>
+      <p>Technologies that support <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications</loc>.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic" relationship="sufficient"/>
+   </applies-to>
+   <description>
+<p>This technique demonstrates how to assign a generic <prop>region</prop> role to a section of a page so that user agents and assistive technologies may be able to programmatically identify it. The <prop>region</prop> role demarcates a segment of the page that contains content of significance so that it is more readily discoverable and navigable. The generic region should be used when the section cannot be marked up using a standard document landmark role (see <loc href="ARIA11" linktype="aria">ARIA11</loc>).</p>
+<p>It is important to name regions, because they are generic grouping elements and users will need some way to tell which region they are in. Regions can be named using <att>aria-labelledby</att>, <att>aria-label</att>, or another technique. Doing so helps to better expose content and information relationships on the page. The role of <prop>region</prop> should be used prudently, because if overused they can make the page overly verbose for screen reader users.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Region on a news website</head>
+         <description>
+            <p>A section on the home page of a news website that contains a poll that changes every week is marked up with <code><![CDATA[role="region"]]></code>. The h3 text above the form is referenced as the region's name using <att>aria-labelledby</att>.</p>
+         <codeblock role="html5"><![CDATA[
+<div role="region" aria-labelledby="pollhead">
+<h3 id="pollhead">This week's Poll</h3>
+<form method="post" action="#">
+  <fieldset>
+    <legend>Do you believe the tax code needs to be overhauled?</legend>
+    <input type="radio" id="r1" name="poll" />
+    <label for="r1">No, it's fine the way it is</label>
+    <input type="radio" id="r2" name="poll" />
+    <label for="r2">Yes, the wealthy need to pay more</label>
+    <input type="radio" id="r3" name="poll" />
+    <label for="r3">Yes, we need to close corporate loopholes</label>
+    <input type="radio" id="r4" name="poll" />
+    <label for="r4">Changes should be made across the board</label>
+  </fieldset>
+</form>
+<a href="results.php">See Poll Results</a>
+</div>			
+            ]]></codeblock>
+            <!--<p><loc href="aria20_ex1.html" linktype="examples">Live example</loc>.</p>-->
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Identifying a region on a banking site</head>
+         <description>
+            <p>A user can expand links on a bank website after logging in to see details of term deposit accounts. The details are within a span marked up with <prop>region</prop> role. The heading for the region has <code><![CDATA[role=heading]]></code> and is included in the <att>aria-labelledby</att> that names the region.</p>
+         <codeblock role="html5"><![CDATA[
+<ol>
+	<li><a id="l1" href="#" aria-expanded="false" title="Show details" aria-controls="block1" >John Henry's Account</a><img src="images/panel_expand.gif" alt="" />
+		 <div id="block1" class="nowHidden" tabindex="-1" aria-labelledby="l1 cd1" role="region"><span id="cd1" role="heading" aria-level="3">Certificate of  Deposit:</span>
+		 <table>
+			 <tr><th scope="row">Account:</th> <td>25163522</td></tr>
+			 <tr><th scope="row">Start date:</th> <td>February 1, 2014</td></tr>
+			 <tr><th scope="row">Maturity date:</th><td>February 1, 2016</td></tr>
+			 <tr><th scope="row">Deposit Amount:</th> <td>$ 3,000.00</td></tr>
+			 <tr><th scope="row">Maturity Amount:</th> <td>$ 3,072.43</td></tr>
+		 </table>
+		 </div>
+	 </li>
+ </ol>
+            ]]></codeblock>
+            <!--<p><loc href="aria20_ex2.html" linktype="examples">Live example</loc>.</p>-->
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Identifying a portlet with a generic region</head>
+         <description>
+            <p>This example shows how a generic <prop>region</prop> landmark might be added to a weather portlet. There is no existing text on the page that can be referenced as the label, so it is labelled with <att>aria-label</att>.
+</p>
+         </description>
+         <code role="html5"><![CDATA[
+<div role="region" aria-label="weather portlet"> 
+	...
+</div>            ]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/TR/wai-aria/roles#region">The Roles Model (role=region)</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="ARIA11"/>
+      <relatedtech idref="ARIA12"/>
+      <relatedtech idref="ARIA13"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each section marked up with <code><![CDATA[role="region"]]></code>:</p>
+         <olist>
+            <item>
+               <p>Examine the content and ensure that it is important enough to have an independent landmark</p>
+            </item>
+            <item>
+               <p>Ensure that a standard landmark role is not appropriate for this content</p>
+            </item>
+            <item>
+               <p>Check that the region has a programmatically determined name</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Checks #1-3 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

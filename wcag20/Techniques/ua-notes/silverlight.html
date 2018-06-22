@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>User Agent Support Notes for for Silverlight Techniques</title></head><body><h1>User Agent Support Notes for Silverlight Techniques</h1><p>This page documents user agent support notes for <a href="/TR/WCAG20-TECHS/silverlight">Silverlight Techniques</a>.</p><ul class="toc"><li class="toc"><a href="#SL1">Accessing Alternate Audio Tracks in Silverlight Media</a></li><li class="toc"><a href="#SL2">Changing The Visual Focus Indicator in Silverlight</a></li><li class="toc"><a href="#SL3">Controlling Silverlight MediaElement Audio Volume</a></li><li class="toc"><a href="#SL4">Declaring Discrete Silverlight Objects to Specify Language Parts
+    			in the HTML DOM</a></li><li class="toc"><a href="#SL5">Defining a Focusable Image Class for Silverlight</a></li><li class="toc"><a href="#SL6">Defining a UI Automation Peer for a Custom Silverlight Control</a></li><li class="toc"><a href="#SL7">Designing a Focused Visual State for Custom Silverlight Controls</a></li><li class="toc"><a href="#SL8">Displaying HelpText in Silverlight User Interfaces</a></li><li class="toc"><a href="#SL9">Handling Key Events to Enable Keyboard Functionality in Silverlight</a></li><li class="toc"><a href="#SL10">Implementing a Submit-Form Pattern in Silverlight</a></li><li class="toc"><a href="#SL11">Pausing or Stopping A Decorative Silverlight Animation</a></li><li class="toc"><a href="#SL12">Pausing, Stopping, or Playing Media in Silverlight MediaElements</a></li><li class="toc"><a href="#SL13">Providing A Style Switcher To Switch To High Contrast</a></li><li class="toc"><a href="#SL14">Providing Custom Control Key Handling for Keyboard Functionality
+    			in Silverlight</a></li><li class="toc"><a href="#SL15">Providing Keyboard Shortcuts that Work Across the Entire Silverlight
+    			Application</a></li><li class="toc"><a href="#SL16">Providing Script-Embedded Text Captions for MediaElement Content</a></li><li class="toc"><a href="#SL17">Providing Static Alternative Content for Silverlight Media Playing
+    			in a MediaElement</a></li><li class="toc"><a href="#SL18">Providing Text Equivalent for Nontext Silverlight Controls With AutomationProperties.Name</a></li><li class="toc"><a href="#SL19">Providing User Instructions With AutomationProperties.HelpText in
+    			Silverlight</a></li><li class="toc"><a href="#SL20">Relying on Silverlight AutomationPeer Behavior to Set AutomationProperties.Name</a></li><li class="toc"><a href="#SL21">Replacing A Silverlight Timed Animation With a Nonanimated Element</a></li><li class="toc"><a href="#SL22">Supporting Browser Zoom in Silverlight</a></li><li class="toc"><a href="#SL23">Using A Style Switcher to Increase Font Size of Silverlight Text
+    			Elements</a></li><li class="toc"><a href="#SL24">Using AutoPlay to Keep Silverlight Media from Playing Automatically</a></li><li class="toc"><a href="#SL25">Using Controls and Programmatic Focus to Bypass Blocks of Content
+    			in Silverlight</a></li><li class="toc"><a href="#SL26">Using LabeledBy to Associate Labels and Targets in Silverlight</a></li><li class="toc"><a href="#SL27">Using Language/Culture Properties as Exposed by Silverlight Applications
+    			and Assistive Technologies</a></li><li class="toc"><a href="#SL28">Using Separate Text-Format Text Captions for MediaElement Content</a></li><li class="toc"><a href="#SL29">Using Silverlight "List" Controls to Define Blocks that
+    			can be Bypassed</a></li><li class="toc"><a href="#SL30">Using Silverlight Control Compositing and AutomationProperties.Name</a></li><li class="toc"><a href="#SL31">Using Silverlight Font Properties to Control Text Presentation</a></li><li class="toc"><a href="#SL32">Using Silverlight Text Elements for Appropriate Accessibility Role</a></li><li class="toc"><a href="#SL33">Using Well-Formed XAML to Define a Silverlight User Interface</a></li><li class="toc"><a href="#SL34">Using the Silverlight Default Tab Sequence and Altering Tab Sequences
+    			With Properties</a></li><li class="toc"><a href="#SL35">Using the Validation and ValidationSummary APIs to Implement Client
+    			Side Forms Validation in Silverlight</a></li></ul><section id="silverlight_notes"><div class="skiptarget"><a id="maincontent">-</a></div>
+<h3><a name="silverlight_notes" id="silverlight_notes"> </a>Silverlight Technology Notes</h3><p>Microsoft Silverlight is a development platform for applications.
+          To learn more about Silverlight and how Microsoft defines and markets
+          the Silverlight technology, see <a href="http://www.microsoft.com/silverlight/what-is-silverlight/">What
+          Is Silverlight? document on microsoft.com</a>. </p><p>Once an application author produces a Silverlight application, the
+          most common way to deploy that application is to present the Silverlight
+          content using a browser plug-in that end users have installed on their
+          computers. The Silverlight plug-in is instantiated within an HTML page
+          as an &lt;object&gt; or &lt;embed&gt; tag.   &lt;object&gt; tag attributes
+          reference Silverlight's unique classid, and/or its MIME type, thus
+          invoking a plug-in instance within the browser host's HTML content.
+          Users request the Silverlight-containing page as a URL, and the surrounding
+          HTML plus the Silverlight content is viewed within a browser host such
+          as Firefox, Internet Explorer, Google Chrome, or Safari. There are
+          other means by which Silverlight-developed content can be deployed
+          that are NOT viewed in the plug-in or hosted by HTML; this is discussed
+          in the upcoming section "Browser Host Platform Considerations". </p><p>The content that is displayed within the Silverlight content area
+          is specified as the "source" parameter, within the Silverlight
+          object/embed tag. The "source" parameter value references
+          a URI for a package. The package is typically served by the same server
+          that served the HTML (and the package itself is typically requested
+          through http: or https: protocol). The package always contains an application
+          manifest, and a managed code compiled DLL. The package might also contain
+          other content, for example media files or image files that the application
+          consumes as resources. The compiled DLL typically contains two types
+          of information within its compiled structure: CLR runtime code that
+          handles dynamic operations of the application such as startup logic,
+          business rules, event handlers, and further resources. The resources
+          inside the DLL are primarily UI definitions in a markup format/language
+          called XAML. </p><p>Silverlight provides a combination of built-in support for accessibility
+          and capabilities that authors and authoring tools can take advantage
+          of in order to enable support for accessible content. Tools and related
+          technologies that are related to this include: </p><ul><li><p> Microsoft Visual Studio 2010 (or Microsoft Visual Studio 2008
+            if still developing for version 3 of the Silverlight runtime) – Silverlight authors
+            can use Express versions if their development needs are fairly basic </p></li><li><p> Microsoft Expression products, in particular Microsoft Expression
+            Blend </p></li><li><p> Silverlight Tools – a separate package for Visual Studio that
+            should be installed for effective Silverlight application development </p></li><li><p> Developer tools that are specifically for verification of information
+            presented to either the UIA or MSAA accessibility frameworks. </p></li></ul><div class="div3"><h3><a name="silverlight_notes_frameworks" id="silverlight_notes_frameworks"> </a> Accessibility Frameworks </h3><p>Silverlight support for assistive technologies is based on implementing
+          Silverlight for Microsoft UI Automation (often abbreviated as UIA).
+          In the UIA accessibility framework, Silverlight is implemented as a
+          UI Automation server. This means that Silverlight provides information
+          about the application itself and its current content through the framework.
+          Any subscriber to the operating system's automation can consume that
+          information as a UI Automation client. One such client role is typically
+          implemented by assistive technologies, most notably by screen readers.
+          By acting as a UI Automation client, an assistive technology can programmatically
+          determine many aspects of Silverlight content and content structure.
+          In addition, UIA has APIs that can change the content in a predictable
+          way that maintains security boundaries between applications. Reading
+          information from Silverlight through the UIA accessibility framework
+          requires no extra work on the part of a given assistive technology,
+          presuming that the assistive technology has already implemented UIA.
+          All information that Silverlight reports to UIA comes through the common
+          property set, and a fixed set of possible user interactions is programmatically
+          accessible through a discoverable set of automation patterns and techniques. </p><p>As an example of how UI Automation might provide information to an
+          assistive technology, consider the following scenario: </p><ol class="enumar"><li><p> A Silverlight application author produces an application that
+            follows all Microsoft-documented best practices for providing accessibility
+            information, either by specific programming actions or by relying
+            on a known set of Silverlight default behaviors (many of these actions/behaviors
+            are also described as Silverlight WCAG techniques). </p></li><li><p> A user views a Web page that contains Silverlight content, using
+            a browser host that loads the HTML, and using an operating system
+            such as Microsoft Windows (XP, Vista or Windows 7) that supports
+            UI Automation. </p></li><li><p> An assistive technology that is already running on the user's
+            system loads the UIA representation of all Web content loaded by
+            the browser. Part of that representation is an automation element
+            that represents the Silverlight plug-in. The plug-in content area
+            itself is focusable in the browser host's HTML rendering and representation
+            model. </p></li><li><p> The user navigates elements in the Silverlight application area,
+            either by using the TAB sequence, or by using navigation techniques
+            implemented by a particular assistive technology. </p></li><li><p> By forwarding information that is pertinent to either the navigated-to
+            element or the application in general, the accessibility framework
+            provides the assistive technology with the information from Silverlight
+            application. As a specific example, a screen reader might read the
+            name and role of the currently focused control element such as a
+            Silverlight <code>TextBox</code>. In addition, the assistive
+            technology can provide means to enter data or otherwise interact
+            with elements of that application, if that element reports to UIA
+            that it supports such interaction. </p></li></ol><p>A good introductory topic on UI Automation is available on <a href="http://msdn.microsoft.com/en-us/library/ms747327.aspx">MSDN</a>. </p><p>UI Automation supersedes Microsoft Active Accessibility (MSAA), an
+          earlier Microsoft accessibility framework. UI Automation provides built-in
+          bridging support for MSAA, such that assistive technologies that are
+          implemented as clients for MSAA rather than UIA receive the expected
+          interface hooks for IAccessible and can call methods of the MSAA interfaces.
+          Also, applications that provide MSAA/ IAccessible are readable to a
+          UIA-client assistive technology through similar bridging. </p><p>Whether implemented as clients for UI Automation or for MSAA, support
+          for assistive technologies is provided for users viewing content using
+          combinations of: </p><ul><li><p> Microsoft Internet Explorer 6 or later, in combination with Microsoft
+            Silverlight on Windows. </p></li><li><p> Mozilla Firefox 3 or later, in combination with Microsoft Silverlight
+            on Windows. </p></li><li><p> Google Chrome 4 or later, in combination with Microsoft Silverlight
+            on Windows </p></li></ul><p>Screen reader assistive technology support for either MSAA or UIA
+          is provided in several assistive technologies, including but not limited
+          to: </p><ul><li><p> JAWS </p></li><li><p> Windows-Eyes </p></li><li><p> NVDA </p></li><li><p> Microsoft Narrator </p></li></ul><p>The exact level of support to assistive technologies will partially
+          depend on whether that assistive technology is implemented as a UIA
+          client or an MSAA client. This can vary depending on specific version
+          releases of the assistive technology. In general, the UIA architecture
+          is capable of reporting a richer information set to clients than is
+          MSAA. This is because UIA has a larger number of properties available,
+          and also because UIA has the patterns concept to support class extension
+          whereas MSAA does not (class extension is a key concept in Silverlight
+          programming). </p><p>Silverlight uses UI Automation support as a general system that addresses
+          parts or entireties of many WCAG criteria at a system/platform level,
+          rather than requiring each Silverlight author to build the entirety
+          of such support as an individually coded feature of a Silverlight application.
+          The following is a list of criteria where UI Automation support in
+          Silverlight is necessary to apply the Silverlight WCAG techniques,
+          and the application must be on a client and platform that also supports
+          UIA (or MSAA): </p><ul><li><p> <a href="http://www.w3.org/TR/UNDERSTANDING-WCAG20/content-structure-separation-programmatic.html">Success
+              Criterion 1.3.1 (Info and Relationships)</a> </p></li><li><p> <a href="http://www.w3.org/TR/UNDERSTANDING-WCAG20/content-structure-separation-programmatic.html">Success
+              Criterion 1.3.3 (Sensory Characteristics)</a> </p></li><li><p> <a href="http://www.w3.org/TR/UNDERSTANDING-WCAG20/content-structure-separation-sequence.html">Success
+              Criterion 1.3.2 (Meaningful Sequence)</a> </p></li><li><p> <a href="http://www.w3.org/TR/UNDERSTANDING-WCAG20/consistent-behavior-consistent-functionality.html">Success
+              Criterion 3.2.4 (Consistent Functionality)</a> </p></li><li><p> <a href="http://www.w3.org/TR/UNDERSTANDING-WCAG20/ensure-compat-rsv.html">Success
+              Criterion 4.1.2 (Name Role Value)</a> </p></li></ul><p>The following is a list of criteria where UIA Automation support in
+          Silverlight is helpful but not necessary: </p><ul><li><p> <a href="http://www.w3.org/TR/UNDERSTANDING-WCAG20/content-structure-separation-programmatic.html">Success
+              Criterion 1.1.1 (Non-text Content)</a> </p></li><li><p> <a href="http://www.w3.org/TR/UNDERSTANDING-WCAG20/minimize-error-identified.html">Success
+              Criterion 3.3.1 (Error Identification)</a> </p></li><li><p> <a href="http://www.w3.org/TR/UNDERSTANDING-WCAG20/minimize-error-cues.html">Success
+              Criterion 3.3.2 (Labels or Instructions)</a> </p></li><li><p> <a href="http://www.w3.org/TR/UNDERSTANDING-WCAG20/minimize-error-suggestions.html">Success
+              Criterion 3.3.3 (Error Suggestion)</a> </p></li><li><p> <a href="http://www.w3.org/TR/UNDERSTANDING-WCAG20/minimize-error-reversible.html">Success
+              Criterion 3.3.4 (Error Prevention)</a> </p></li></ul><div class="div4"><h4><a name="silverlight_notes_frameworks_nrv" id="silverlight_notes_frameworks_nrv"> </a> Further notes on Name Role Value </h4><p><a href="http://www.w3.org/TR/UNDERSTANDING-WCAG20/ensure-compat-rsv.html">Success
+            Criterion 4.1.2 (Name Role Value)</a> directly influenced the design
+            of both the Microsoft UI Automation accessibility framework and its
+            MSAA predecessor. Many aspects of providing name, role and value
+            are built-in to the Silverlight UIA support, and that information
+            can be programmatically determined by assistive technologies that
+            are programmed as UI Automation clients. </p><div><h5><a name="silverlight_notes_frameworks_nrv_name" id="silverlight_notes_frameworks_nrv_name"> </a> Name </h5><p>In most cases, the name of the control is used to identify that control
+          to users, as well as providing a programmatic identifier. In UI Automation
+          programming, any entity that can have a name is represented as an <a href="http://msdn.microsoft.com/en-us/library/system.windows.automation.automationelement.aspx">AutomationElement</a>,
+          and its name is determined by reading the value of the <a href="http://msdn.microsoft.com/en-us/library/system.windows.automation.automationelement.automationelementinformation.name.aspx">AutomationElementInformation.Name
+          property</a>. There is an intermediate "Current" property,
+          so an example usage is something like: </p><p><code>string AName = anAutomationElement.Current.Name;  </code></p><p><code>Name</code> is the most common UI Automation property
+            that is consumed by assistive technologies. Application authors in
+            general that rely on UI Automation (and Silverlight application authors
+            in particular) typically provide strings for <code>Name</code> that
+            can inform users of the purpose that the element serves in the application.
+            For example, if an application provides a button that can be activated,
+            the <code>Name</code> reported to UI Automation could best describe
+            its purpose by using a <code>Name</code> string something like "Submit
+            form". While there is some crossover here with the concept of
+            Value, what is notable about <code>Name</code> is that it is
+            controlled only by the application rather than typical means of user
+            input that would alter the data of Value. </p><p>Because UI Automation is also used as a framework for automation testing
+          of applications, UI Automation supports a parallel identification property
+          named <a href="http://msdn.microsoft.com/en-us/library/system.windows.automation.automationelement.automationelementinformation.automationid.aspx">AutomationId</a>. <code>AutomationID</code> is
+          not relevant to accessibility support scenarios, although in practice <code>Name</code> and <code>AutomationID</code> sometimes
+          use the same string values, or are supported by parallel property-forwarding
+          techniques by implementing technologies. The intended design difference
+          between <code>AutomationId</code> and <code>Name</code> is
+          the following: </p><ul><li><p> <code>AutomationID</code> is not intended to be human readable,
+            but is intended to be unique </p></li><li><p> <code>Name</code> is intended to be human readable but might
+            not be unique </p></li></ul><p>Silverlight in particular has a property-forwarding technique whereby
+          the Silverlight-specific <a href="http://msdn.microsoft.com/en-us/library/system.windows.frameworkelement.name%28VS.95%29.aspx">Name</a> or <a href="http://msdn.microsoft.com/en-us/library/cc189028%28VS.95%29.aspx">x:Name</a> properties
+          are promoted as the initial <a href="http://msdn.microsoft.com/en-us/library/system.windows.automation.automationelement.automationelementinformation.name.aspx">AutomationElementInformation.Name</a>.
+          This forwarding is implemented within build procedures to provide a
+          fallback for testing and initial development of an application's UI
+          Automation representation. In many cases a forwarded Name/x:Name does
+          not result in a particularly human-comprehensible or user-actionable
+          string or phrase. Silverlight application authors should use a test-based
+          methodology to examine all possible <a href="http://msdn.microsoft.com/en-us/library/system.windows.automation.automationelement.automationelementinformation.name.aspx">AutomationElementInformation.Name</a> values
+          exposed by their application, and assure that each such string is specifically
+          replaced by a UI-specific <a href="http://msdn.microsoft.com/en-us/library/system.windows.automation.automationproperties.name%28VS.95%29.aspx">AutomationProperties.Name
+          value</a>. </p></div><div><h5><a name="silverlight_notes_frameworks_nrv_role" id="silverlight_notes_frameworks_nrv_role"> </a> Role </h5><p>Role in UI Automation can be determined through several techniques. </p><p>The most straightforward technique for determining a given AutomationElement's
+          role is to check the value of <a href="http://msdn.microsoft.com/en-us/library/system.windows.automation.automationelement.automationelementinformation.controltype.aspx">ControlType</a>.
+          This value provides an enumeration that reports role as several known
+          possibilities plus an alternate role of "Custom" if no enumeration-defined
+          role is a good descriptor. For example, a Silverlight <code>Button</code> control
+          describes itself to UI Automation as a ControlType of <a href="http://msdn.microsoft.com/en-us/library/system.windows.automation.controltype.button.aspx">Button</a>,
+          and a Silverlight <code>TreeView</code> describes itself as <a href="http://msdn.microsoft.com/en-us/library/system.windows.automation.peers.automationcontroltype%28VS.95%29.aspx">Tree</a>. </p><p>For further information on roles, UI Automation clients can query
+          an AutomationElement to see which UI Automation patterns that element
+          supports. The patterns describe expectations of the interaction model,
+          and the patterns themselves expose the methods that clients should
+          call to engage that interaction. For more information, see <a href="http://msdn.microsoft.com/en-us/library/ms741836.aspx">Get
+          Supported UI Automation Control Patterns on MSDN</a>. </p></div><div><h5><a name="silverlight_notes_frameworks_nrv_value" id="silverlight_notes_frameworks_nrv_value"> </a> Value </h5><p>In MSAA, the "Value" concept was addressed by the simple
+          property <code>Value</code> and had to be represented as a string.
+          One of the major refinements of UIA over MSAA is to expand what types
+          of data can be expected to exist as a value. For this reason, determining "Value" requires
+          a larger understanding of UI Automation and how to access UI Automation
+          patterns exposed by each peer, and is not discussed further in this
+          document. For more information, see <a href="http://msdn.microsoft.com/en-us/library/ms741836.aspx">Get
+          Supported UI Automation Patterns</a> and <a href="http://msdn.microsoft.com/en-us/library/ms746719.aspx">UI
+          Automation Control Patterns for Clients</a>. The most basic concept
+          of Value is often represented by the <a href="http://msdn.microsoft.com/en-us/library/system.windows.automation.valuepattern.aspx">ValuePattern</a>,
+          but UI Automation clients should be aware of the larger range of patterns
+          that can possibly return or provide a value. In general, the UIA Value
+          pattern is only relevant for setting the value directly, such as in
+          a text box where a user types or otherwise inputs a string or phrase. </p><p>State is also a related concept to value. UI Automation elements typically
+          report states that make sense given their role, and such state is reported
+          in the provider implementations. There are also some generalized state
+          properties available in any automation element. Examples of these include: <a href="http://msdn.microsoft.com/en-us/library/system.windows.automation.automationelement.automationelementinformation.haskeyboardfocus.aspx">HasKeyboardFocus</a>; <a href="http://msdn.microsoft.com/en-us/library/system.windows.automation.automationelement.automationelementinformation.isoffscreen.aspx">IsOffscreen</a>. </p></div></div><div class="div4"><h4><a name="silverlight_notes_frameworks_concepts" id="silverlight_notes_frameworks_concepts"> </a> Object Tree Concepts and UI Automation Tree Views </h4><p>The object tree is composed of all the programming constructs that
+          a Silverlight application author explicitly declares by writing XAML
+          UI definitions (which are initially loaded by the Silverlight runtime)
+          and by invoking run-time code. The relationships between nodes in XAML
+          markup, and the declaration order of peer elements in XAML, create
+          identical relationships/orders in the object tree representation. In
+          code, order is made explicitly by using structured definitions and
+          APIs of various types of collections (list, dictionaries, etc.) that
+          are common in .NET Framework programming. For example, to get the first
+          child of a StackPanel named myPanel, call myPanel.Childen[0]
+          (.NET collections are zero-index based). Parent-child relationships
+          are declared by how specific properties are set. For example, to add
+          a   "newButton" child element to myPanel as the last child,
+          call myPanel.Children.Add(newButton). </p><p>An object tree representation forms the basis of the Silverlight run-time
+          programming model, and enables programmatic access to every programming
+          entity or element part of a running Silverlight application. The object
+          tree representation is particularly useful for accessibility frameworks,
+          and in turn for assistive technologies that use the accessibility framework
+          as a client. The relationships and item order in the object tree also
+          define the default reading order, as well as the default tab sequence
+          for default Silverlight key handling. The Silverlight plug-in code
+          that renders Silverlight content into the plug-in display area is literally
+          reading the same run-time object tree that is being simultaneously
+          reported to the accessibility frameworks or other subsystems of Silverlight
+          (for example, printing APIs). </p><p>Silverlight supports UI Automation (UIA) as its primary accessibility
+          framework on Windows platform. Silverlight also provides accessibility
+          information to MSAA, by reporting information through the UIA-MSAA
+          bridge. By using the APIs of the relevant accessibility framework,
+          assistive technologies and other accessibility framework clients can
+          discover the information and relationships declared in a Silverlight
+          application's runtime object tree. The accessibility framework APIs
+          work against the UI automation tree in a manner that does not require
+          any specific knowledge of the Silverlight programming model. For example,
+          the UI Automation APIs use an abstraction of a <code>UIAutomationElement</code> to
+          represent any accessible Silverlight object. By calling UI Automation
+          APIs against this abstracted object, accessibility framework clients
+          can determine any child elements and their count, check parent elements,
+          can obtain name/role/value of that <code>UIAutomationElement</code>,
+          and so on. In fact, Silverlight accessibility support in general is
+          achieved without assistive technologies even being aware that Silverlight
+          is a distinct technology from HTML. This is because Silverlight implements
+          its accessibility framework support such that Silverlight dovetails
+          into the surrounding HTML content through the connection point of the "SilverlightControl" <code>UIAutomationElement</code> that
+          exists within the browser host's HTML content. </p><p>For more information, see <a href="http://msdn.microsoft.com/en-us/library/ee684009%28VS.85%29.aspx">UI
+            Automation (unmanaged)</a> or <a href="http://msdn.microsoft.com/en-us/library/ms753107.aspx">UI
+            Automation (managed)</a> </p><div><h5><a name="silverlight_notes_frameworks_concepts_example" id="silverlight_notes_frameworks_concepts_example"> </a> An Object Tree / UI Automation Example </h5><p>In the following XAML example, a Silverlight <code>StackPanel</code> is
+          the container element for four different Button elements. In the visible
+          user interface, the resulting buttons are oriented vertically, with
+          the first declared button vertically above the others and first in
+          the tab sequence. (Event handling logic for each button is not shown
+          and is not relevant for the example.) </p><p><code>&lt;StackPanel Orientation="Vertical" &gt;
+  &lt;Button&gt;Hit&lt;/Button&gt;
+  &lt;Button&gt;Stay&lt;/Button&gt;
+  &lt;Button&gt;Split&lt;/Button&gt;
+  &lt;Button&gt;Double Down&lt;/Button&gt;
+&lt;/StackPanel&gt;
+</code></p><p>The following image shows the resulting render order. Note the first
+            “Hit” button has the blue border as focus indicator; focus was placed
+            here by traversing the default tab order, and this element was the
+            first Silverlight element that captured the focus. </p><p><img class="eximg" src="/WAI/WCAG20/Techniques/working-examples/silverlight/stackpanelbuttonsorder.png" alt="Image:StackPanelButtonsOrder.png" height="98" width="277"></img> </p><p>The following is the same UI as defined in C# code rather than XAML.
+          The key concept here is that each call to a Silverlight collection <code>Add</code> method
+          adds that item to the end of the existing collection. Thus, to define
+          a collection’s order, add the intended first item with the first
+          call to <code>Add</code>, the second item in the next line of code,
+          and so on. This code is analogous to what a XAML parser does when it
+          processes the previous XAML example, and results in the same visible
+          UI and same default tab order. </p><p><code> void MakeUI()
+ {
+   StackPanel sp = new StackPanel() { Width = 300, Orientation = Orientation.Vertical };
+   Button hitButton = new Button() { Content = "Hit" };
+   Button stayButton = new Button() { Content = "Stay" };
+   Button splitButton = new Button() { Content = "Split" };
+   Button doubleDownButton = new Button() { Content = "DoubleDown" };
+   sp.Children.Add(hitButton);
+   sp.Children.Add(stayButton);
+   sp.Children.Add(splitButton);
+   sp.Children.Add(doubleDownButton);
+ }
+</code></p><p>The following is a screenshot of the UI Automation subtree specifically
+            in the area of the UI as declared by either the XAML or C# shown
+            previously. The tool being used in this screenshot is Inspect.exe,
+            which comes with the Windows SDK version 7.1 </p><p><img class="eximg" src="/WAI/WCAG20/Techniques/working-examples/silverlight/screenshot_uia_objecttree.png" alt="Image:Screenshot_uia_objecttree.png" height="595" width="737"></img> </p><p>The screenshot is representative of the kind of tree structure that
+          a UI Automation client such as a given assistive technology is able
+          to program against, when a Silverlight application exists as an embedded
+          plug-in inside the surrounding browser host. </p></div></div></div><div class="div3"><h3><a name="silverlight_notes_input-multimedia" id="silverlight_notes_input-multimedia"> </a> Input and Multimedia </h3><p>Silverlight implements UI controls that support keyboard input methods
+          for users who do not use a mouse. Also, Silverlight provides the input
+          system framework such that application authors and control authors
+          can provide similar mouse-keyboard equivalence from their own UI, by
+          using the Silverlight event system and sending each event to the same
+          or similar handling logic. Silverlight application authors can control
+          the tab order of content within Silverlight content, as is demonstrated
+          in the WCAG 2.0 techniques for Silverlight. </p><p>Silverlight is often used to display video. Silverlight and the media
+          formats it supports can include embedded text tracks with timing markers.
+          The text tracks and timing markers enable a Silverlight technique that
+          can provide closed captions or subtitles in any language. Silverlight
+          and its media formats also support multiple tracks of audio, thereby
+          enabling support for video description. </p></div><div class="div3"><h3><a name="silverlight_notes_text-color" id="silverlight_notes_text-color"> </a> Text and Color Preferences </h3><p>Silverlight supports text resize through browser zoom, as described
+          in <a href="http://www.w3.org/TR/WCAG20-TECHS/G142.html">G142:
+          Using a technology that has commonly-available user agents that support
+          zoom</a>. The effects of invoking browser zoom apply any resize to
+          the entirely of the hosted HTML (including Silverlight content). Silverlight
+          interaction with browser zoom is further discussed in the Silverlight
+          WCAG technique <a href="http://www.w3.org/TR/WCAG20-TECHS/SL22.html"><em>SL22: Supporting Browser Zoom in Silverlight</em></a>. </p><p>However, not all browser hosts that are supported by Silverlight provide
+          browser zoom as a feature, and in the Firefox implementation the text
+          within the Silverlight content area is not affected if the user has
+          checked Zoom Text Only. As an alternative or additional technique for
+          text resize, the Silverlight WCAG technique <a href="http://www.w3.org/TR/WCAG20-TECHS/SL23.html"><em>SL23: Using A Style Switcher to Increase Font Size of Silverlight Text
+    			Elements</em></a> describes
+          how to use Silverlight APIs to resize text elements that are specifically
+          within the Silverlight content area. </p><p>Silverlight supports a high-contrast detection mode at the platform
+          level. If the user has already selected a high-contrast mode at the
+          platform/OS level, the Silverlight application can use various styling
+          and appearance techniques to select a color scheme that is appropriate
+          for high contrast. This concept is shown in the Silverlight WCAG technique <a href="http://www.w3.org/TR/WCAG20-TECHS/SL13.html"><em>SL13: Providing A Style Switcher To Switch To High Contrast</em></a>. Silverlight and its
+          API do not account for any color settings that are made for default
+          HTML by a browser host application (settings under General / Appearance
+          in Internet Explorer; settings under Content / Fonts &amp; Color in
+          Firefox). This information is not made available to plug-ins such as
+          Silverlight. </p></div><div class="div3"><h3><a name="silverlight_ua_support" id="silverlight_ua_support"> </a> User Agents Supported </h3><p>Silverlight documents its official list of supported user agents on
+          the Microsoft.com web site. The list is dynamic, because the vendors
+          that produce browsers are constantly updating versions. Also, Silverlight
+          might announce support for a browser in a time period that falls after
+          the release date of the latest Silverlight runtime; sometimes this
+          means that the Silverlight product team performed new testing for acceptance
+          of that specific user agent and can now vouch for an official level
+          of Microsoft support. </p><p>For convenience, a snapshot of the official Microsoft browser/user
+          agent support matrix from the date 13 January 2011 is reproduced here: </p><ul><li><p> Windows Vista: IE 8, IE 7, Firefox 3, Chrome 4 </p></li><li><p> Windows 7: IE 8, Firefox 3, Chrome 4 </p></li><li><p> Windows Server 2008: IE 8, IE 7, Firefox 3, Chrome 4 </p></li><li><p> Windows Server 2008 R2: IE 8, Chrome 4 </p></li><li><p> Windows Server 2003, Windows XP SP2, SP3: IE 8, IE 7, IE 6, Firefox
+            3, Chrome 4 </p></li><li><p> Windows 2000 SP4 + KB 891861: IE 6 </p></li><li><p> Macintosh OS 10.4.11+ (Intel-based): Firefox 3, Safari 3, Safari
+            4 </p></li></ul><p>For the official list of supported user agents for Silverlight, see <a href="http://www.microsoft.com/getsilverlight/get-started/install/default.aspx">http://www.microsoft.com/getsilverlight/get-started/install/default.aspx</a> (System
+          Requirements tab). </p><ul><li><p> As of 13 January 2011 Silverlight does not work in 64-bit browser
+            hosts (64-bit platform users should use a 32-bit browser application
+            on their system). </p></li><li><p> Silverlight and Novell have a technical collaboration, and Novell
+            sponsors an open-source initiative known as the Mono Project. Part
+            of the Mono Project is Moonlight, which is a port of Silverlight
+            technology for Linux and other Unix/X11 based operating systems.
+            For more information, see <a href="http://www.mono-project.com/Main_Page">Mono</a> and <a href="http://mono-project.com/MoonlightSupportedPlatforms">Moonlight Supported Platforms</a>. </p></li></ul></div><div class="div3"><h3><a name="silverlight_notes_platform" id="silverlight_notes_platform"> </a> Browser Host Platform Considerations </h3><p>Depending on the browser host being targeted, Silverlight is implemented
+          as an ActiveX control or as an NPAPI plugin. When a user installs Silverlight,
+          they are installing both of these implementations, such that the same
+          Silverlight installation could be accessed by an Internet Explorer
+          browser host and a Firefox browser host, and could even be accessed
+          simultaneously by both. Differences between the program access layers
+          of ActiveX versus NPAPI, and also browser-specific differences in program
+          access layers, produce some platform differences that occasionally
+          relate to accessibility support. For example, there can be slight differences
+          in whether the program access layer will correctly forward certain
+          keys or key combinations, which might impact keyboard-mouse equivalence
+          implementations. </p><p>Silverlight also supports modes that do not rely on a browser host
+          at all. In previous releases of Silverlight, Silverlight was defined
+          as a platform for producing rich Internet applications. This is still
+          true, but in the current Silverlight release the deployment options
+          are expanded such that a Silverlight application is not necessarily
+          a web-based application, and Silverlight is not exclusively a Web content
+          technology. </p><p>Silverlight supports an out of browser deployment mode. Through UI
+          in an initial Web-based Silverlight application, the user is asked
+          to conform whether they wish to install the out-browser application.
+          If the user approves the installation, the Web-based Silverlight application
+          shuts down and the installation begins. Typically, the application
+          restarts itself immediately after the installation. Once installed
+          on the user's hard disk, a Silverlight out-of-browser functions more
+          as an application window under the control of the current platform
+          operating system. This is manifested through technical aspects such
+          as a change in programming security boundaries, and addition of operating-system-specific
+          application model features for the Silverlight out-of-browser application.
+          Examples of the latter include icons and presence in running-application
+          UI metaphors such as task bars. Out-of-browser mode is not specifically
+          mentioned in the Silverlight WCAG techniques, because in this mode
+          Silverlight is no longer a Web application. However, an out-of-browser
+          Silverlight application can include an embedded control that is itself
+          capable of displaying HTML. In this situation, Silverlight accesses
+          basic HTML browser frameworks provided by the platform, and any techniques
+          that would normally apply to HTML content and Web content could also
+          apply to the HTML as viewed within a Silverlight out-of-browser application.
+          For more information, see <a href="http://msdn.microsoft.com/en-us/library/dd550721%28VS.95%29.aspx">MSDN</a>. </p><p>Silverlight is also a development platform that can be used to create
+          applications for Windows Phone. While these applications often rely
+          on Internet connectivity, these applications are run in the context
+          of an application directly under the Windows Phone operating system,
+          rather than being run in an intermediate Web host that serves as a
+          generalized Web browser for Windows Phone. Therefore the typical considerations
+          of Silverlight acting as a part of a larger definition of Web content
+          do not apply. For more information on Silverlight for Windows Phone
+          development, see <a href="http://msdn.microsoft.com/en-us/library/ff402528%28VS.92%29.aspx">The
+          Silverlight and XNA Frameworks for Windows Phone on MSDN</a>. </p></div><div class="div3"><h3><a name="silverlight_notes_xaml" id="silverlight_notes_xaml"> </a> The XAML Language </h3><p>XAML is an abbreviation for eXtensible Application Markup Language.
+          In the Silverlight application model, XAML is generally used for defining
+          the elements that make up an application's user interface (UI). XAML
+          markup for UI resembles markup paradigms for HTML in that it uses angle
+          brackets in its syntax, has concepts of elements and attributes, and
+          uses a predominately text-based file editing and storage format such
+          that XAML is human-readable in a text editor. The UI design role typically
+          designs an application user interface by interacting with graphical
+          user interface tools such as Microsoft Expression Blend. In this case,
+          Expression Blend produces XAML as its output, and XAML becomes the
+          interchange format between the Expression Blend tool and the Visual
+          Studio tools. Visual Studio is more typically used by code-oriented
+          Web developers for Silverlight. Web developers in Visual Studio might
+          work with XAML at the text level, and write or change the XAML markup,
+          and more than one interchange between tools and/or roles of a given
+          XAML file might occur by the time the application is finished. The
+          Silverlight techniques are written from the perspective of the code-oriented
+          Web developer who is possibly adjusting post-design phase XAML. </p><p>One key difference between HTML and XAML is that XAML is always interpreted
+          by the Silverlight runtime, or preparsed at compile time within Silverlight
+          tools. XAML is NOT parsed by potentially different engines per browser
+          host. Because XAML provides UI definition, the Silverlight techniques
+          often include procedures or concepts that adjust the elements and attributes
+          of XAML markup for an application. Some of the techniques show procedures
+          or concepts for code-behind, scripting, deployment steps, or other
+          aspects of Silverlight programming in addition to or instead of XAML
+          examples. The runtime parsing characteristics of XAML for Silverlight
+          is discussed further in the Silverlight WCAG technique <a href="http://www.w3.org/TR/WCAG20-TECHS/SL33.html"><em>SL33: Using Well-Formed XAML to Define a Silverlight User Interface</em></a>. </p><p>XAML attributes sometimes specify strings that are visible in UI and
+          reported to assistive technologies. The Silverlight WCAG techniques
+          typically hard-code such UI strings in XAML, so that the example code
+          can be kept simple and can concentrate on the immediate concept being
+          illustrated. However, hard-coding UI strings in XAML is not a best
+          practice for production code, because of localizion considerations.
+          To learn more about producing XAML that is localization-ready, or about
+          refactoring XAML to support better designer-coder-localizer workflows,
+          see <a href="http://msdn.microsoft.com/en-us/library/cc838238%28VS.95%29.aspx">Localizing
+          Silverlight-based Applications</a> on MSDN. </p></div><div class="div3"><h3><a name="silverlight_notes_text-methodology" id="silverlight_notes_text-methodology"> </a> Test-based Methodology for Accessibility Support </h3><p>Some of the Silverlight WCAG techniques mention a concept of   "test-based
+          methodology" - this section describes what is meant by that concept. </p><p>In typical Web application development, there are phases that are
+          a natural part of the workflow. First there is a specification phase,
+          where the basic planning is performed. The next two phases are user
+          interface design (often interweaved with user experience design) and
+          code development. For larger applications or applications that are
+          built on frameworks, the human role of designer is often separate from
+          the human role of code developer/script developer. For this reason
+          the UI design phase and code phase might be going on concurrently,
+          and/or might be iterative. At the point where the efforts of UI design
+          and code development are combined into a working application, many
+          Web developers now introduce a testing phase. It is at this point that
+          a test-based methodology for accessibility support becomes an appropriate
+          and useful strategy. </p><p>Testers for Web applications sometimes rely largely on ad hoc or experiential
+          tests, but increasingly there are tools available that assist with
+          the job of testing a Web site. Many of these tools focus on specific
+          aspects of testing: sub-areas such as testing under specific browser
+          hosts; testing with stored state or data vs. initial experience; testing
+          for different form factors; etc. One such sub-area of testing is testing
+          the existing accessibility support. </p><p>Because Silverlight supports the UI Automation accessibility framework,
+          the best tools for testing accessibility support in a Silverlight application
+          are the tools that work with UI Automation as their basis. Some of
+          these tools are available from Microsoft, and other such tools are
+          available from third parties. </p><p>In a test-based methodology, a tester should view the application
+          in its UIA representation. Using tools, testers can write tests for
+          certain conditions and determine whether the application as a whole
+          passes or fails. For example, a scripted test could determine whether
+          all the controls in a UIA view have a valid string for <code>Name</code>.
+          No <code>Name</code> string would potentially cause an assistive
+          technology to misrepresent that element, and could cause confusion
+          for user groups that rely on a particular assistive technology view
+          of an application. In cases where an application failed these kinds
+          of tests, the application might be sent back to the human role of developer/script
+          writer, so that the missing accessibility information can be committed
+          to the application code base. Then the application can be re-tested. </p><p>A test-based methodology for accessibility support works best because
+          Silverlight is such an extensive development platform. Sometimes it
+          is not immediately obvious to a developer that a certain property required
+          for accessibility remained unset. Or perhaps that developer was expecting
+          that the human design role would have introduced that information as
+          part of UI definition. Only when the integration of UI design and code
+          is complete is it possible to see that there is still information or
+          functionality missing. When the development process includes a testing
+          step wherein dedicated tests for accessibility support are committed
+          in a systematic way, it is much more likely that issues can be detected
+          prior to application deployment. </p></div><div class="div3"><h3><a name="silverlight_notes_test-files" id="silverlight_notes_test-files"> </a> Running Silverlight Test Files Provided with Techniques </h3><p>Most Silverlight WCAG Techniques reference one or more ZIP files from
+          the Test Files section of the technique. These ZIP files are linked
+          from the techniques and can be uploaded for testing. </p><p>To run the test files, you must have Microsoft Silverlight (the client
+          run-time version) installed on your computer. To install Microsoft
+          Silverlight, open the following URL: <a href="http://www.microsoft.com/getsilverlight/">http://www.microsoft.com/getsilverlight/</a> .
+          Follow the instruction steps on the Web page. When you install Silverlight,
+          you are installing the plug-in for use by all supported browser user
+          agents on that computer. In order to test techniques that rely on UIA,
+          you should install Silverlight on a computer that is running Microsoft
+          Windows (XP SP2; Vista; Windows 7) as the operating system. Note that
+          you must be running as adminstrator in order to install Microsoft Silverlight
+          on the computer. </p><p>Each ZIP file contains two items: an HTML file, and a Silverlight
+          package file (always has a file extension of XAP). You can run any
+          given test file through the following procedure: </p><ol class="enumar"><li><p> Click the link from the technique to download the ZIP file. </p></li><li><p> Extract all files within the ZIP file to a temporary location,
+            but use a tangible location such as C:\temp rather than temporary
+            Internet files. Do not attempt to open the HTML file from within
+            the unextracted archive; the test will only run correctly when the
+            test components are extracted from ZIP. </p></li><li><p> Go to the folder location where you extracted the files. To run
+            the test based on the current system's file associations for HTML,
+            open the HTML with the associated browser. Otherwise, you must open
+            the specific browser you want to test under, and type or copy either
+            a file:/// URL or a Windows folder path into that browser's address
+            bar. </p></li><li><p> This should open the HTML page. When the HTML page opens, it instantiates
+            a Silverlight plug-in within the page content, which in turn references
+            the other extracted file (the XAP) as local content. </p></li><li><p> Once the content is in view, follow the remaining steps that are
+            indicated in the specific test procedure. </p></li></ol></div><div class="div3"><h3><a name="silverlight_notes_sample-code" id="silverlight_notes_sample-code"> </a> Using Sample Code in Techniques to Create a New Silverlight Application </h3><p>The Silverlight techniques offer pre-built test files so that you
+          can observe the basic operation of a technique without having to write
+          the code yourself, or create your own application. The salient parts
+          of Silverlight code or Silverlight XAML for the technique are provided
+          as code blocks under the Examples section. In order to experiment more
+          with the technique beyond running the test file, you might want to
+          define your own Silverlight application project, and then import the
+          code and XAML from the technique into your own project. This section
+          describes the basic information that is necessary to create a project
+          that incorporates sample code from a Silverlight technique. </p><div class="div4"><h4><a name="silverlight_notes_sample-code_prerequisites" id="silverlight_notes_sample-code_prerequisites"> </a> Prerequisites </h4><p>Creating a Silverlight application project requires that you have
+          a full Silverlight application development environment installed. Although
+          Silverlight applications run cross-platform, the actual development
+          of Silverlight applications is done on Microsoft Windows computers.
+          The computer must have Microsoft Visual Studio 2008 or Microsoft Visual
+          Studio 2010 installed. With some limitations, the Express SKUs of Visual
+          Studio are adequate for basic Silverlight application development.
+          The Express SKUs are available for 30-day evaluation from the following
+          URL: <a href="http://go.microsoft.com/fwlink/?LinkId=323467">http://go.microsoft.com/fwlink/?LinkId=323467</a> .
+          In addition to Visual Studio, you also should install the Silverlight
+          Tools, which includes the Silverlight SDK. Get Silverlight Tools from <a href="http://go.microsoft.com/fwlink/?LinkID=177428">http://go.microsoft.com/fwlink/?LinkID=177428</a>.
+          What to install for Silverlight development is also linked to and explained
+          at <a href="http://msdn.microsoft.com/en-us/silverlight/bb187358.aspx">Silverlight.net</a>. </p></div><div class="div4"><h4><a name="silverlight_notes_sample-code_project" id="silverlight_notes_sample-code_project"> </a> Creating the Project </h4><p>For general instructions, see <a href="http://msdn.microsoft.com/en-us/library/cc838164%28VS.95%29.aspx">How
+            to: Create a New Silverlight Project</a>. This creates a new project
+            based on a default template. </p><p>The C# code or XAML shown in the Silverlight techniques is a usually
+          a fragment that you should integrate into an existing code file or
+          XAML page from the default project template. For code, you generally
+          open the file page.xaml.cs from Solution Explorer, and paste the entirety
+          of the example code into the body of the C# public partial class that
+          you start with (this class comes from a template). For XAML, you generally
+          open page.xaml from Solution Explorer and paste the entirety of the
+          XAML into the &lt;Grid&gt; element. In some cases the example XAML
+          is the entire XAML (you can identify this case if the example XAML
+          contains one or more xmlns attributes). In this case, replace the entirety
+          of the XAML. However, you may have to adjust the value of the x:Class
+          attribute to properly reference your own partial class; this name is
+          influenced by your own project naming in your local project and thus
+          cannot be anticipated by the example code. Descibing Silverlight application
+          development in its entirety is well beyond the scope of this document.
+          Use resources available from <a href="http://msdn.microsoft.com/en-us/silverlight/bb187358.aspx">Silverlight.net</a> or <a href="http://msdn.microsoft.com/en-us/library/cc838158%28VS.95%29.aspx">MSDN
+          Silverlight documentation</a> to learn more about Silverlight application
+          development. </p></div></div><div class="div3"><h3><a name="silverlight_notes_considerations" id="silverlight_notes_considerations"> </a> Special Considerations for WCAG 2.0 Compliance </h3><p>2.4.2 Page Titled - In order to meet 2.4.2, Silverlight content must
+          be embedded within an HTML page that has a page title in the HTML title
+          element. </p><p>3.1.1 Language of Page - The language of an HTML page is established
+          by the <code>Lang</code> attribute of the containing object element in HTML. However,
+          Silverlight's own logic generally interprets language/culture information
+          using a Microsoft .NET Framework concept of the CultureInfo object.
+          This makes it important to align the HTML-level lang with any CultureInfo
+          as used by Silverlight. The reason for this is that assistive technologies
+          are likely to respect the top-level declaration of the <code>Lang</code> attribute
+          and to not be aware of the CultureInfo considerations of embedded Silverlight
+          content. Application authors can delibrately override language settings
+          of a client by specifying a discrete CultureInfo in the Silverlight &lt;object&gt; parameters;
+          this can be useful if the application has real-time language switching,
+          if users store language preferences either locally or based on server
+          information or cookies, etc. Aligning html-lang with CultureInfo and
+          adjusting the CultureInfo through various means are both discussed
+          in Silverlight techniques. </p></div></section><section id="SL1"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL1.html">SL1</a>: Accessing Alternate Audio Tracks in Silverlight Media</h2><div class="ua-issue"><p>See <a href="http://www.w3.org/TR/WCAG20-TECHS/silverlight_notes.html#silverlight_ua_support"> User Agents Supported </a> for general information on user agent support.</p></div></section><section id="SL2"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL2.html">SL2</a>: Changing The Visual Focus Indicator in Silverlight</h2><div class="ua-issue"></div></section><section id="SL3"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL3.html">SL3</a>: Controlling Silverlight MediaElement Audio Volume</h2><div class="ua-issue"></div></section><section id="SL4"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL4.html">SL4</a>: Declaring Discrete Silverlight Objects to Specify Language Parts
+    			in the HTML DOM</h2><div class="ua-issue"></div></section><section id="SL5"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL5.html">SL5</a>: Defining a Focusable Image Class for Silverlight</h2><div class="ua-issue"></div></section><section id="SL6"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL6.html">SL6</a>: Defining a UI Automation Peer for a Custom Silverlight Control</h2><div class="ua-issue"></div></section><section id="SL7"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL7.html">SL7</a>: Designing a Focused Visual State for Custom Silverlight Controls</h2><div class="ua-issue"></div></section><section id="SL8"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL8.html">SL8</a>: Displaying HelpText in Silverlight User Interfaces</h2><div class="ua-issue"></div></section><section id="SL9"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL9.html">SL9</a>: Handling Key Events to Enable Keyboard Functionality in Silverlight</h2><div class="ua-issue"></div></section><section id="SL10"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL10.html">SL10</a>: Implementing a Submit-Form Pattern in Silverlight</h2><div class="ua-issue"></div></section><section id="SL11"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL11.html">SL11</a>: Pausing or Stopping A Decorative Silverlight Animation</h2><div class="ua-issue"></div></section><section id="SL12"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL12.html">SL12</a>: Pausing, Stopping, or Playing Media in Silverlight MediaElements</h2><div class="ua-issue"></div></section><section id="SL13"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL13.html">SL13</a>: Providing A Style Switcher To Switch To High Contrast</h2><div class="ua-issue"></div></section><section id="SL14"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL14.html">SL14</a>: Providing Custom Control Key Handling for Keyboard Functionality
+    			in Silverlight</h2><div class="ua-issue"></div></section><section id="SL15"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL15.html">SL15</a>: Providing Keyboard Shortcuts that Work Across the Entire Silverlight
+    			Application</h2><div class="ua-issue"></div></section><section id="SL16"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL16.html">SL16</a>: Providing Script-Embedded Text Captions for MediaElement Content</h2><div class="ua-issue"></div></section><section id="SL17"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL17.html">SL17</a>: Providing Static Alternative Content for Silverlight Media Playing
+    			in a MediaElement</h2><div class="ua-issue"></div></section><section id="SL18"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL18.html">SL18</a>: Providing Text Equivalent for Nontext Silverlight Controls With AutomationProperties.Name</h2><div class="ua-issue"></div></section><section id="SL19"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL19.html">SL19</a>: Providing User Instructions With AutomationProperties.HelpText in
+    			Silverlight</h2><div class="ua-issue"></div><div class="ua-issue"><p>Not all assistive technologies choose to read or present information
+    				from the UI Automation tree for Silverlight in cases where the corresponding
+    				UI object is not focusable in the tab sequence. This technique provides
+    				the support for introducing the information into the UI Automation
+    				tree for that element, but cannot guarantee that a given assistive
+    				technology provides the user with access to the element information
+    				from that UIA tree. </p></div><div class="ua-issue"><p>The <code>HelpText</code> property is readable in the UIA framework
+    				by any client that programs against the basic UIA property model, and
+    				that property is forwarded/bridged to MSAA through the <code>get_accHelp</code> method.
+    				However, as of 13 January 2011, no known assistive technology provides
+    				users with a technique or interface option that accesses the <code>HelpText</code> / <code>get_accHelp</code> information. </p></div></section><section id="SL20"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL20.html">SL20</a>: Relying on Silverlight AutomationPeer Behavior to Set AutomationProperties.Name</h2><div class="ua-issue"></div></section><section id="SL21"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL21.html">SL21</a>: Replacing A Silverlight Timed Animation With a Nonanimated Element</h2><div class="ua-issue"></div></section><section id="SL22"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL22.html">SL22</a>: Supporting Browser Zoom in Silverlight</h2><div class="ua-issue"></div><div class="ua-issue"><ul><li><p> Not all user agents implement a browser zoom feature. Of those
+    				that do as of 30 March 2011, best results are obtained when the
+    				user agent is Internet Explorer or Firefox. </p></li><li><p> Note that on Firefox, the Ctrl+(+) accelerator for browser zoom
+    					may not work due to an issue where if the plugin (Silverlight) has
+    					focus, it traps all keyboard events, even those that would ordinarily
+    					be the user agent's set of accelerators. </p></li><li><p> Some versions of Firefox have a browser zoom mode that zooms text
+    						only. This functionality is based on text by an HTML definition,
+    						so selecting this option does not zoom any Silverlight content (whether
+    						it is text by any Silverlight definition, or not.) </p></li><li><p> Internet Explorer version 8 has an "AutoZoom" feature
+    							that is based on operating system DPI. Silverlight accounts for this
+    							through a native sizing behavior, but that behavior is not relevant
+    							for this technique because the DPI settings are not typically used
+    							as a primary technique by Web technology users for accessibility
+    							purposes. DPI is more relevant to device choices, or specific operating
+    							system features. </p></li></ul></div></section><section id="SL23"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL23.html">SL23</a>: Using A Style Switcher to Increase Font Size of Silverlight Text
+    			Elements</h2><div class="ua-issue"></div></section><section id="SL24"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL24.html">SL24</a>: Using AutoPlay to Keep Silverlight Media from Playing Automatically</h2><div class="ua-issue"></div></section><section id="SL25"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL25.html">SL25</a>: Using Controls and Programmatic Focus to Bypass Blocks of Content
+    			in Silverlight</h2><div class="ua-issue"></div></section><section id="SL26"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL26.html">SL26</a>: Using LabeledBy to Associate Labels and Targets in Silverlight</h2><div class="ua-issue"></div><div class="ua-issue"><p>MSAA clients might not use LabeledBy values appropriately, unless
+    				such clients are handling MSAA AND IAccessibleEx. See <a href="http://msdn.microsoft.com/en-us/library/dd561899%28VS.85%29.aspx">IAccessibleEx
+    					Implementation Guidelines</a>. </p></div></section><section id="SL27"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL27.html">SL27</a>: Using Language/Culture Properties as Exposed by Silverlight Applications
+    			and Assistive Technologies</h2><div class="ua-issue"></div><div class="ua-issue"><p>Most assistive technologies will use the HTML Lang tag value as the
+    				determinant of the language of the page. Assistive technologies would
+    				also use HTML Lang tag values for the language of parts. HTML Lang
+    				is not specifically reported in accessibility frameworks, so assistive
+    				technologies would typically be accessing the HTML DOM to get this
+    				information. </p></div><div class="ua-issue"><p>Existing behavior on screen readers is not able to determine language
+    				programmatically by using the CultureInfo and Language properties of
+    				.NET and Silverlight that are referenced in the body of this technique.
+    				For an alternative technique that specifically uses HTML Lang on two
+    				discrete Silverlight object tags, such that language of parts can be
+    				determined through the same principles as described in <a href="http://www.w3.org/TR/2014/NOTE-WCAG20-TECHS-20140311/H58.html">H58</a>,
+    				see <a href="http://www.w3.org/TR/WCAG20-TECHS/SL4.html"><em>SL4: Declaring Discrete Silverlight Objects to Specify Language Parts
+    			in the HTML DOM</em></a>. </p></div><div class="ua-issue"><p>In the case of the parts that are within Silverlight, these parts
+    				are not HTML parts and thus do not provide the ability to specify HTML
+    				Lang. For this reason, Silverlight application authors should be cautious
+    				about defining extensive text regions in Silverlight that set a Silverlight <code>Language</code> to
+    				be other than that declared by the hosting page HTML Lang. Any such
+    				text regions might not be processed correctly by an assistive technology
+    				such as a screen reader. In particular, authors should not specify
+    				HTML Lang at all if it is uncertain that the language of the Silverlight "part" will
+    				match, due to the "CurrentCulture" that is determined only
+    				at run time on the client. In these cases it is best to leave HTML
+    				Lang unspecified, so that language properties are under the control
+    				of the user's browser settings/preferences, or operating system settings/preferences. </p></div></section><section id="SL28"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL28.html">SL28</a>: Using Separate Text-Format Text Captions for MediaElement Content</h2><div class="ua-issue"></div></section><section id="SL29"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL29.html">SL29</a>: Using Silverlight "List" Controls to Define Blocks that
+    			can be Bypassed</h2><div class="ua-issue"></div></section><section id="SL30"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL30.html">SL30</a>: Using Silverlight Control Compositing and AutomationProperties.Name</h2><div class="ua-issue"></div></section><section id="SL31"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL31.html">SL31</a>: Using Silverlight Font Properties to Control Text Presentation</h2><div class="ua-issue"></div></section><section id="SL32"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL32.html">SL32</a>: Using Silverlight Text Elements for Appropriate Accessibility Role</h2><div class="ua-issue"></div><div class="ua-issue"><p>JAWS version 12 misreports a read-only <code>RichTextBox</code> as   "edit",
+    				despite it reporting its role as "document" to both UIA and
+    				MSAA. Text is still read by JAWS 12, but users might expect that they
+    				would be able to enter text in an element that JAWS 12 reports as edit,
+    				whereas in fact they cannot enter text. </p></div></section><section id="SL33"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL33.html">SL33</a>: Using Well-Formed XAML to Define a Silverlight User Interface</h2><div class="ua-issue"></div></section><section id="SL34"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL34.html">SL34</a>: Using the Silverlight Default Tab Sequence and Altering Tab Sequences
+    			With Properties</h2><div class="ua-issue"></div></section><section id="SL35"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/SL35.html">SL35</a>: Using the Validation and ValidationSummary APIs to Implement Client
+    			Side Forms Validation in Silverlight</h2><div class="ua-issue"></div></section></body></html>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="G201">
+   <short-name>Giving users advanced warning when opening a new window</short-name>
+   <applicability>
+      <p>Pages that open new windows</p>
+   </applicability>
+   <applies-to>
+	   <guideline idref="consistent-behavior" relationship="advisory"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to provide a warning before automatically
+            opening a new window or tab. Opening new windows automatically when
+            a link is activated can be disorienting for people who have difficulty
+            perceiving visual content, and for some people with cognitive disabilities,
+            if they are not warned in advance. Providing a warning allows the user
+            to decide it they want to leave the current window, and the warning
+            will help them find their way back, if they do decide they would like
+            to go to the new window. It will help them understand that the "back" button
+            will not work and that they have to return to the last window they
+            had open, in order to find their previous location.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Including the warning in the text describing a control</head>
+         <description>
+            <p>The name or label that describes a control can include the warning
+                about opening in a new window.</p>
+         </description>
+         <code xml:space="preserve"><![CDATA[
+              <a href="knitting.html" target="_blank">All about Knitting 
+                (opens in new window)</a>
+            ]]></code>
+      </eg-group>
+      <eg-group>
+         <head>Using CSS to provide a warning before opening a new window</head>
+         <description>
+            <p>The code below uses CSS to provide a warning before opening a new
+                window.</p>
+         </description>
+         <code xml:space="preserve"><![CDATA[
+              <html>
+                <head>
+                <title>Pop-Up Warning</title>
+                <style type="text/css">
+                body {
+                margin-left:2em;
+                margin-right:2em;
+                }
+                :focus { outline: 0; }
+                a.info {
+                position:relative;
+                z-index:24;
+                background-color:#ccc;
+                color:#000;
+                text-decoration:none
+                }
+                a.info:hover, a.info:focus, a.info:active {
+                z-index:25;
+                background-color:#ff0
+                }
+                a.info span {
+                position: absolute;
+                left: -9000px;
+                width: 0;
+                overflow: hidden;
+                }
+                a.info:hover span, a.info:focus span, a.info:active span {
+                display:block;
+                position:absolute;
+                top:1em; left:1em; width:12em;
+                border:1px solid #0cf;
+                background-color:#cff;
+                color:#000;
+                text-align: center
+                }
+                div.example {
+                margin-left: 5em;
+                }
+                </style>
+                </head>
+                <body>
+                <h1>Pop-Up Warning</h1>
+                <p> This is an example of an <a class="info"
+                href="popup_advisory_technique.html" target="_blank">
+                <strong>External link</strong><span>Opens a new
+                window</span></a>
+                </p>
+                </body>
+                </html>
+            ]]></code>
+         <description>
+            <p>A
+                <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="new-window.html"
+                    linktype="examples">working
+                  example of Using CSS to provide a warning before opening a new window</loc>
+                is available.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="H83"/>
+      <relatedtech idref="SCR24"/>
+      <relatedtech idref="G200"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each link that opens automatically in a new window or tab when
+              a change of context is initiated by a user request:</p>
+         <olist>
+            <item>
+               <p>Check that there is a warning spoken in assistive technology that
+                  this link opens to a new window.</p>
+            </item>
+            <item>
+               <p>Check that there is a visual warning in text that this link opens
+                  to a new window.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Checks #1 and check #2 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

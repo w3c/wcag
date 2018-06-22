@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="ARIA15">
+   <short-name>Using aria-describedby to provide descriptions of images</short-name>
+   <applicability>
+      <p>Technologies that support <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
+         <p>Updated July 16, 2013
+</p>
+         <ulist>
+            <item>
+               <p>Jaws V.11 and greater has complete support. IE10 JAWS 14. Speaks alt and then "press JAWS key + alt +r to hear descriptive text". IE 10 intermittent support, sometimes works, sometimes need to reload the page for JAWs to read it properly. 
+</p>
+            </item>
+            <item>
+               <p>ChromeVox V.1 and greater has complete support? 
+</p>
+            </item>
+            <item>
+               <p>VoiceOver V.3 and greater supports but replaces ALT text if both are present
+</p>
+            </item>
+            <item>
+               <p>NVDA 2 reads ALT text if both are present but not Describedby unless it is alone
+</p>
+            </item>
+            <item>
+               <p>Window Eyes as of V.7 ???.
+</p>
+            </item>
+         </ulist>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to provide descriptions of images when a short text alternative does not adequately convey the function or information provided in the object. 
+</p>
+      <p>A feature of WAI-ARIA is the ability to associate descriptive text with a section, drawing, form element, picture, and so on using the <prop>aria-describedby</prop> property. This is similar to the <att>longdesc</att> attribute in that both are useful for providing additional information to help users understand complex images. Like <att>longdesc</att>, descriptive text provided using <att>aria-describedby</att> is separate from the short name provided using the <att>alt</att> attribute in HTML. Unlike <att>longdesc</att>, <att>aria-describedby</att> cannot reference descriptions outside of the page containing the image. An advantage of providing long descriptions using content from the same page as the image is that the alternative is available to all, including sighted people who do not have assistive technology. It is worth noting that as of the time of writing (October 2013) some assistive technologies read <att>aria-describedby</att> content immediately after an image's alt attribute information without user activation - whereas most implementations of <att>longdesc</att> require the user to take explicit action to read the additional description.
+</p>
+      <p>Like <att>aria-labelledby</att>, <att>aria-describedby</att> can accept multiple ids to point to other regions of the page using a space separated list. It is also limited to ids for defining these sets.
+</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Describing an image</head>
+         <description>
+            <p>The following example shows how <att>aria-describedby</att> can be applied to an image to provide a long description, where that text description is on the same page as the image. 
+</p>
+            <codeblock xml:space="preserve"><![CDATA[<img src="ladymacbeth.jpg" alt="Lady MacBeth" aria-describedby="p1">
+<p id="p1">This painting dates back to 1730 and is oil on canvas. It was created by 
+Jean-Guy Millome, and represents ...</p>]]></codeblock>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</loc>
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="ARIA6"/>
+      <relatedtech idref="ARIA16"/>
+      <relatedtech idref="G92"/>
+      <relatedtech idref="H45"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Examine each image element where a <att>aria-describedby</att> attribute is present.
+</p>
+            </item>
+            <item>
+               <p>Examine whether the <att>aria-describedby</att> attribute  programatically associates an element with its text description, via the <att>id</att> attribute on the element where the text to be used as the description is found. 
+</p>
+            </item>
+            <item>
+               <p>Examine whether the combined text equivalent and associated text description accurately describe or provide the equivalent purpose to the object.
+</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#1, #2, and #3 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

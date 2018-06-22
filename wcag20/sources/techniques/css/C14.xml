@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="C14">
+   <short-name>Using em units for font sizes</short-name>
+   <applicability>
+      <p>CSS</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="visual-audio-contrast-scale" relationship="cosufficient"/>
+      <success-criterion idref="visual-audio-contrast-text-presentation"
+                         relationship="sufficient"/>
+      <success-criterion idref="visual-audio-contrast-visual-presentation"
+                         relationship="cosufficient"/>
+      <success-criterion idref="visual-audio-contrast-text-images" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="IE" version="6">
+         <p>In Internet Explorer 6, using ems for font sizes will cause the text to grow more than using % or named font sizes. So, text-size/largest, might cause the text to grow more than 200% and have clipping problems.</p>
+      </ua-issue>
+      <ua-issue name="IE" version="7-">
+         <p>When font size is given in absolute units of measurement, such as points or pixels, the Text Size menu commands in Internet Explorer 7 and earlier do not resize the text.</p>
+      </ua-issue>
+      <ua-issue name="IE" version="7">
+         <p>Internet Explorer 7 only changes the text size when the style rule that applies to the text is defined within a style element; when using inline styles, that is, using an element's <att>style</att> attribute, the text size change is not supported.</p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to specify text font size in <code><![CDATA[em]]></code> units so that user agents can scale content effectively. Since the em is a property of the font, it scales as the font changes size. If a font-size is specified for the <el>body</el> element, all other elements inherit that value, unless overridden by a more specific selector.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Em font sizes in CSS</head>
+         <description>
+            <p>This example defines the font size for <code><![CDATA[strong]]></code> element so that its text will always be larger than the surrounding text, in whatever context it is used. Assuming that headings and paragraphs use different font sizes, the strong words in this example will each be larger than their surrounding text.</p>
+         </description>
+         <code><![CDATA[
+strong {font-size: 1.6em}
+
+...
+
+<h1>Letting the <strong>user</strong> control text size</h1>
+<p>Since only the user can know what size text works for him, 
+it is <strong>very</strong> important to let him configure the text size.  </p>
+…]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/CSS2/fonts.html">Cascading Style Sheets, Level 2 (CSS2), Fonts</loc> 
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/CSS2/fonts.html#font-size-props">CSS 2 Font Size Property</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="C12"/>
+      <relatedtech idref="C13"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Check that the value of the CSS property that defines the font size is expressed in <code><![CDATA[em]]></code> units.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Check #1 is true</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

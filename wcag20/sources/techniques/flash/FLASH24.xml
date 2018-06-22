@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH24">
+   <short-name>Allowing the user to extend the default time limit</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="time-limits-required-behaviors" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to allow the user to extend the
+    				default time limit by providing a mechanism to extend the time when
+    				scripts provide functionality that has default time limits. In order
+    				to allow the user to request a longer time limit, the script can provide
+    				a form (for example) allowing the user to enter a larger time limit
+    				or indicating that more time is needed. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Changing timeout with a dropdown list</head>
+         <description>
+            <p>This is a basic AS2 example where the timeout duration can be changed
+    						by the user through a dropdown list. In this example there is a combobox
+    						with the instance name sessionLimitDuration. </p>
+         </description>
+         <code xml:space="preserve"><![CDATA[import mx.controls.Alert;
+import mx.accessibility.AlertAccImpl;
+import mx.accessibility.ComboBoxAccImpl;
+
+ComboBoxAccImpl.enableAccessibility();
+AlertAccImpl.enableAccessibility();
+
+var sessionTimeout;
+var sessionNotificationTimeout;
+var timeLimit: Number;
+var sessionAlert: Alert;
+
+adjustTimeoutDuration();
+// reset the timeout when interaction occurs
+testField.addEventListener("change", resetTimeout);
+
+//
+//update limit duration when the combobox value changes
+//
+sessionLimitDuration.addEventListener("change", adjustTimeoutDuration);
+
+function adjustTimeoutDuration(e) {
+  timeLimit = sessionLimitDuration.value * 1000;
+  resetTimeout();
+  timeoutDescription.text = "A session timeout will be simulated after " + 
+    sessionLimitDuration.selectedLabel + " without interaction in the form field below."
+}
+
+function resetTimeout() {
+  clearTimeout(sessionTimeout);
+  sessionTimeout = setTimeout(endSession, timeLimit);
+}
+
+function endSession() {
+  sessionAlert.deletePopUp();
+  Alert.show("please log in again",
+  "Your session has expired");
+}]]></code>
+         <description>
+            <p>For a demonstration, see the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="checkbox_for_extending_timelimit_as3.html"
+                    linktype="examples">working
+    						version of Changing timeout with a dropdown list</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="checkbox_for_extending_timelimit_as3.fla"
+                    linktype="examples">source of Changing timeout with a dropdown list</loc> is available. Please note that the session times are
+    						purposefully short for demonstration purposes, developers will
+    						want to provide durations that are sufficient to meet the requirements
+    						of <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="time-limits-required-behaviors"
+                    linktype="understanding">Success
+    						Criterion 2.2.1 (Timing Adjustable)</loc> . </p>
+            <!--<ednote>
+								<edtext>The test zip was updated but seems completely changed from the previous version. And it seems to be a checkbox, while the example in the wiki source mentions a drop-down list. Is this one correct, or does the inline example need updating, or a second example added, or something? For the moment the working example references the updated version.</edtext>
+							</ednote>-->
+         </description>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="SCR1"/>
+      <relatedtech idref="G133"/>
+      <relatedtech idref="G198"/>
+      <relatedtech idref="G180"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For Flash content that include a time limit: </p>
+         <olist>
+            <item>
+               <p> Check that there is a control to adjust the time limit near the
+    					top of the page that allows the user to adjust the time to at least
+    					ten times longer than the default. </p>
+            </item>
+            <item>
+               <p> Verify that the default time limit for the page is long enough
+    						that a user can easily navigate to the control even if they are 10
+    						times slower than most users. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>The above is true </p>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Allowing_the_user_to_extend_the_default_time_limit"/>
+					</source>
+   </admin>
+</technique>

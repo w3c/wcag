@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SL14">
+   <short-name>Providing Custom Control Key Handling for Keyboard Functionality
+    			in Silverlight</short-name>
+   <applicability>
+      <p use-id="silverlight.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="keyboard-operation-keyboard-operable" relationship="sufficient"/>
+      <success-criterion idref="keyboard-operation-all-funcs" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="silverlight.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to implement built-in handling
+    				of key events in a custom control. If a custom control is correctly
+    				implemented, then any Silverlight applications that include the control
+    				can rely on the built-in key handling for some or all of the desired
+    				keyboard equivalence of a control's functionality. </p>
+      <p>Defining a custom control requires that the control author write a
+    				default template for the control and also the initialization logic,
+    				including the default implementations for built-in keyboard equivalence.
+    				Typically, control authors provide keyboard equivalence for any actions
+    				that can be activated by a mouse click on the control surface, and
+    				that are not already providing a keyboard equivalence through the implementation
+    				of a composite part. </p>
+      <p>All input events report a specific source that is communicated to
+    				handler code as an event parameter, so that the application author
+    				can identify which element in their Silverlight UI was being interacted
+    				with, and the application can perform an action that is relevant to
+    				that user input. In the case of mouse events, the event source is the
+    				element that the mouse pointer is over at the time. In the case of
+    				key events, the event source is the element that has focus. The element
+    				that has focus is visually indicated so that the user knows which element
+    				they are interacting with (see <specref ref="SL2"/>). Assistive technologies
+    				often have parallel conventions whereby the user is made aware of which
+    				element is visually focused and is the current input scope presented
+    				by the assistive technology. </p>
+      <section id="SL14_hosts">
+         <head> Browser hosts and keyboard events </head>
+         <p>Silverlight is hosted as a plug-in inside a browser host. The Silverlight
+    					runtime only receives the input events that the browser host forwards
+    					to hosted plug-ins through a browser-specific program access layer.
+    					Occasionally the browser host receives input that the browser host
+    					itself handles in some way, and does not forward the keyboard event.
+    					An example is that a Silverlight application hosted by an Internet
+    					Explorer browser host on Windows operating system cannot detect a press
+    					of the ALT key, because Internet Explorer processes this input and
+    					performs the action of bringing keyboard focus to the Internet Explorer
+    					menu bar. Silverlight authors might need to be aware of browser-specific
+    					input handling models and not rely on key events for keys that are
+    					essentially reserved for use by a browser host. For more information,
+    					see <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="https://msdn.microsoft.com/en-us/library/cc189015(VS.95).aspx">Keyboard
+    						Support</loc>. </p>
+         <p>Application authors should choose keys that avoid browser conflicts,
+    					but still are a natural choice for an accelerator. Using the CTRL key
+    					as a modifier is a convention that is frequently used in existing Silverlight
+    					applications. </p>
+      </section>
+      <section id="SL14_which-keys">
+         <head> Informing users of which keys to use for keyboard equivalence </head>
+         <p>If a control supports user interaction, which key to use to engage
+    					the keyboard equivalent behavior is not always obvious. One way to
+    					inform users of the possible key options that a control supports is
+    					to author an <prop>AutomationProperties.HelpText</prop> value in
+    					the application UI that gives instructions such as "Press the
+    					plus key to increment value". This is up to the application author
+    					to do; the control definitions do not provide a means to set HelpText
+    					by default, because any display technique for end user help is potentially
+    					too application-specific to be encapsulated in control definitions.
+    					Application authors might also consider using tooltips, providing a
+    					menu framework that visually indicates the key associations (perhaps
+    					with the Windows key-underlined convention), providing a generalized
+    					application Help, or displaying plain text in the user interface. </p>
+      </section>
+      <section id="SL14_on-methods">
+         <head> The On* method pattern in Silverlight </head>
+         <p>Silverlight classes often have methods that follow the naming pattern <function>On*</function> where
+    					the star is a string that also identifies an event. These <function>On*</function> methods
+    					are prewired event handlers, defined as virtual methods so that subclasses
+    					can override them. A consumer of a control class can change or augment
+    					the default behavior associated with that event by overriding the method,
+    					and typically also calls the base implementation so that the base functionality
+    					is preserved. This principle is illustrated in Example 1 by the overrides
+    					of <function>OnGotFocus</function> and <function>OnLostFocus</function>. Controls that introduce new events should
+    					consider also exposing a virtual <function>On*</function> method that pairs with the event,
+    					so that consumers of the custom control can use the same pattern. </p>
+      </section>
+   </description>
+   <examples>
+      <eg-group>
+         <head>KeyNumericUpDown Control That Handles Arrow Key Equivalence
+    					for + and - Buttons</head>
+         <description>
+            <p>This example implements a custom Silverlight control that displays
+    						an integer value, and can increment or decrement the integer value
+    						based on user actions. When a user interacts with the control, the
+    						user can click the "+" and "-" buttons that are
+    						component parts of the control. The "+" and "-" button
+    						parts are deliberately not in the Silverlight tab sequence, because
+    						this is intended to be a complete control, where only the control itself
+    						(and not its constituent parts) are focusable and are reported as an
+    						element to the accessibility framework. To provide keyboard equivalence,
+    						the control defines a <event>KeyUp</event> handler. The design of
+    						the control treats an Up Arrow key press as equivalent to activating
+    						the "+" button, and the Down Arrow key as equivalent to activating
+    						the "-" button. The control implementation reinforces this
+    						behavior by having the button <event>Click</event> event handlers
+    						and the cases of the <event>KeyUp</event> handler call the same underlying
+    						helper functions (Increment() and Decrement()). </p>
+            <p>Handling the + and - keys as alternate or additional keyboard equivalents
+    						for the actions is also possible (if that is desired, handler would
+    						check for <prop>Key.Add</prop> or <prop>Key.Subtract</prop> values). </p>
+            <p>The following is the XAML-defined control template for this control.</p>
+            <codeblock xml:space="preserve"><![CDATA[   <Style TargetType="local:KeysNumericUpDown">
+       <Setter Property="BorderThickness" Value="1"/>
+       <Setter Property="Height" Value="22"/>
+       <Setter Property="BorderBrush">
+           <Setter.Value>
+               <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                   <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                   <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                   <GradientStop Color="#FF718597" Offset="0.375"/>
+                   <GradientStop Color="#FF617584" Offset="1"/>
+               </LinearGradientBrush>
+           </Setter.Value>
+       </Setter>
+       <Setter Property="Template">
+           <Setter.Value>
+               <ControlTemplate TargetType="local:KeysNumericUpDown">
+                   <Grid x:Name="CompositionRoot">
+                       <Grid.ColumnDefinitions>
+                           <ColumnDefinition/>
+                           <ColumnDefinition/>
+                       </Grid.ColumnDefinitions>
+                       <TextBox x:Name="Text" IsTabStop="False" AcceptsReturn="False"
+ BorderThickness="0" Foreground="{TemplateBinding Foreground}" FontWeight="{TemplateBinding FontWeight}"
+ FontStyle="{TemplateBinding FontStyle}" FontStretch="{TemplateBinding FontStretch}"
+ FontSize="{TemplateBinding FontSize}" FontFamily="{TemplateBinding FontFamily}" MinWidth="20"
+ TextAlignment="Right" VerticalAlignment="Center"  TextWrapping="NoWrap" Text="{TemplateBinding Value}">
+                               <TextBox.Style>
+                                   <Style TargetType="TextBox">
+                                       <Setter Property="Template">
+                                           <Setter.Value>
+                                               <ControlTemplate TargetType="TextBox">
+                                                   <ScrollViewer x:Name="ContentElement" BorderThickness="0" Padding="0"/>
+                                               </ControlTemplate>
+                                           </Setter.Value>
+                                       </Setter>
+                                   </Style>
+                               </TextBox.Style>
+                           </TextBox>
+                       <StackPanel Orientation="Vertical" Grid.Column="1">
+                       <Button Width="18" Height="18" IsTabStop="False" x:Name="plusButton">+</Button>
+                       <Button Width="18" Height="18" IsTabStop="False" x:Name="minusButton">-</Button>
+                       </StackPanel>
+                       <Border x:Name="FocusVisualElement" BorderBrush="#FF45D6FA" BorderThickness="{TemplateBinding BorderThickness}" 
+                       CornerRadius="1,1,1,1" IsHitTestVisible="False" Opacity="0"/>
+                   </Grid>
+               </ControlTemplate>
+           </Setter.Value>
+       </Setter>
+   </Style>
+   ]]></codeblock>
+            <p>The following is the implementation of the control class. Overrides
+    						of the base class are omitted for clarity, as is automation support.
+    						Note the event wiring in <function>OnApplyTemplate</function>; this is
+    						a common pattern for custom control definitions. </p>
+            <codeblock xml:space="preserve"><![CDATA[   public class KeysNumericUpDown : UpDownBase<double>
+   {
+       Grid root;
+       Button plusButton;
+       Button minusButton;
+       Border focusRect;
+       public KeysNumericUpDown()
+       {
+           this.DefaultStyleKey = typeof(KeysNumericUpDown);
+       }
+       public override void OnApplyTemplate()
+       {
+           base.OnApplyTemplate();
+           root = this.GetTemplateChild("CompositionRoot") as Grid;
+           root.KeyUp += new KeyEventHandler(Handle_Accelerators);
+           plusButton = this.GetTemplateChild("plusButton") as Button;
+           minusButton = this.GetTemplateChild("minusButton") as Button;
+           plusButton.Click += new RoutedEventHandler(plusButton_Click);
+           minusButton.Click += new RoutedEventHandler(minusButton_Click);
+           focusRect = this.GetTemplateChild("FocusVisualElement") as Border;
+       }
+       void plusButton_Click(object sender, EventArgs e)
+       {
+           Increment();
+       }
+       void minusButton_Click(object sender, EventArgs e)
+       {
+           Decrement();
+       }
+       private void Increment()
+       {
+           this.Value += 1;
+       }
+       private void Decrement()
+       {
+           this.Value -= 1;
+       }
+       private void Handle_Accelerators(object sender, KeyEventArgs e)
+       {
+           switch (e.Key)
+           {
+               case (Key.Up):
+                   this.Value -= 1;
+                   e.Handled = true;
+                   break;
+               case (Key.Down):
+                   this.Value += 1;
+                   e.Handled = true;
+                   break;
+               default: break;
+           }
+       }
+       protected override void OnGotFocus(RoutedEventArgs e)
+       {
+           base.OnGotFocus(e);
+           if (focusRect != null)
+           {
+               focusRect.Opacity = 1;
+           }
+       }
+       protected override void OnLostFocus(RoutedEventArgs e)
+       {
+           base.OnLostFocus(e);
+           focusRect.Opacity = 0;
+       }
+   }
+   ]]></codeblock>
+            <p>When this control is included in application UI, the usage is very
+    						simple. Note that there are no key handlers on this instance; the
+    						necessary key handling to wire up the increment/decrement logic is
+    						already built-in to all instances of the control. </p>
+            <codeblock xml:space="preserve"><![CDATA[<local:KeysNumericUpDown Width="100" Height="45"/>
+]]></codeblock>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="SimpleNumericUpDownTestPage.html"
+                    linktype="examples">working example of Numeric Up / Down control</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/cc189015(VS.95).aspx">Keyboard
+    					Support</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/cc903954(VS.95).aspx">Focus
+    					Overview</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/cc278064(VS.95).aspx">Creating
+    					a New Control by Creating a ControlTemplate</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/cc189018(VS.95).aspx">Events
+    						Overview for Silverlight</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G90"/>
+      <relatedtech idref="SL9"/>
+      <relatedtech idref="SL19"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. </p>
+            </item>
+            <item>
+               <p> Press TAB key to move keyboard focus to various element parts
+    						of the user interface, and in particular to areas that are known
+    						to be custom control implementations. </p>
+            </item>
+            <item>
+               <p> Check that custom key commands exist for all these user interface
+    							actions and that these key commands are made known to the user. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>#3 is true. </p>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Providing_Custom_Control_Key_Handling_for_Keyboard_Functionality_in_Silverlight"/>
+      </source>
+   </admin>
+</technique>

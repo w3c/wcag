@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SCR24">
+   <short-name>Using progressive enhancement to open new windows on user request</short-name>
+   <applicability>
+      <p> HTML 4.01 and XHTML 1.0 </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="consistent-behavior-no-extreme-changes-context"
+                         relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p> The objective of this technique is to avoid confusion that may be caused by
+                        the appearance of new windows that were not requested by the user. Suddenly
+                        opening new windows can disorient or be missed completely by some users.
+                        If the document type does not allow the <code><![CDATA[target]]></code> attribute (it
+                        does not exist in HTML 4.01 Strict or XHTML 1.0 Strict) or if the developer
+                        prefers not to use it, new windows can be opened with ECMAScript. The
+                        example below demonstrates how to open new windows with script: it adds an
+                        event handler to a link (<code><![CDATA[a]]></code> element) and warns the user that the
+                        content will open in a new window. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head/>
+         <description>
+            <p>Markup:</p>
+            <p> The script is included in the head of the document, and the link has
+                                an id that can be used as a hook by the script. </p>
+         </description>
+         <code><![CDATA[
+<script type="text/javascript" src="popup.js"></script>
+…
+<a href="help.html" id="newwin">Show Help</a]]></code>
+         <description>
+            <p>Script:</p>
+         </description>
+         <code><![CDATA[ 
+// Use traditional event model whilst support for event registration
+// amongst browsers is poor.
+window.onload = addHandlers;
+
+function addHandlers()
+{
+  var objAnchor = document.getElementById('newwin');
+
+  if (objAnchor)
+  {
+    objAnchor.firstChild.data = objAnchor.firstChild.data + ' (opens in a new window)';
+    objAnchor.onclick = function(event){return launchWindow(this, event);}
+    // UAAG requires that user agents handle events in a device-independent manner
+    // but only some browsers do this, so add keyboard event to be sure
+    objAnchor.onkeypress = function(event){return launchWindow(this, event);}
+  }
+}
+
+function launchWindow(objAnchor, objEvent)
+{
+  var iKeyCode, bSuccess=false;
+
+  // If the event is from a keyboard, we only want to open the
+  // new window if the user requested the link (return or space)
+  if (objEvent && objEvent.type == 'keypress')
+  {
+    if (objEvent.keyCode)
+      iKeyCode = objEvent.keyCode;
+    else if (objEvent.which)
+      iKeyCode = objEvent.which;
+
+    // If not carriage return or space, return true so that the user agent
+    // continues to process the action
+    if (iKeyCode != 13 && iKeyCode != 32)
+      return true;
+  }
+
+  bSuccess = window.open(objAnchor.href);
+
+  // If the window did not open, allow the browser to continue the default
+  // action of opening in the same window
+  if (!bSuccess)
+    return true;
+
+  // The window was opened, so stop the browser processing further
+  return false;
+}]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://en.wikipedia.org/wiki/Progressive_enhancement">Wikipedia: Progressive Enhancement</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H83"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Activate each link in the document to check if it opens a new window. </p>
+            </item>
+            <item>
+               <p>For each link that opens a new window, check that it uses script to accomplish each of the following:</p>
+               <olist>
+                  <item>
+                     <p>indicates that the link will open in a new window,</p>
+                  </item>
+                  <item>
+                     <p>uses device-independent event handlers, and</p>
+                  </item>
+                  <item>
+                     <p>allows the browser to open the content in the same window if a new window was not opened.</p>
+                  </item>
+               </olist>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> #2 is true. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

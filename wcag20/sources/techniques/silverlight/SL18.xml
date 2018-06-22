@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SL18">
+   <short-name>Providing Text Equivalent for Nontext Silverlight Controls With AutomationProperties.Name</short-name>
+   <applicability>
+      <p use-id="silverlight.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+      <success-criterion idref="navigation-mechanisms-refs" relationship="cosufficient"/>
+      <success-criterion idref="navigation-mechanisms-link" relationship="sufficient"/>
+      <success-criterion idref="ensure-compat-rsv" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="silverlight.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to use the Silverlight <prop>AutomationProperties.Name</prop> property
+    				to provide a short text alternative for controls that do not otherwise
+    				contain text. The text is intended to provide human-readable identifiers
+    				and short-descriptions or user instructions for accessibility frameworks,
+    				which can then be reported to assistive technologies. </p>
+      <p>"Control" in this technique refers to any element that is
+    				based on the Silverlight <obj>Control</obj> class, and is keyboard-focusable
+    				either by user action or calling focus to the control programmatically.
+    				The non-text control in question might be something like a button that
+    				communicates information using only an icon or image. For example,
+    				a triangle image rotated 90 degrees clockwise is commonly used in many
+    				user interfaces to indicate a "Play"   button control. This "Play" icon
+    				mimics interface metaphors from many non-software consumer products,
+    				and is often presented in a user interface without any nearby visible
+    				text information that explains the purpose of the control. Another
+    				example is a "thumbnail" metaphor where a small image serves
+    				as a control that can be activated, and where the action results in
+    				the display of a larger version of the same image, or enters an editing
+    				mode that loads the same image. </p>
+      <p>For cases of controls such as buttons that invoke actions, the text
+    				alternative also identifies link purpose. </p>
+      <p>In Silverlight, a text-only identifier for any control can be set
+    				specifically as <prop>AutomationProperties.Name</prop> on the parent
+    				control. Silverlight control compositing techniques enable either per-control
+    				images that are specified by the application author, or a general-purpose
+    				image/icon for a control that is part of the control's template and
+    				displays that way by default. The Silverlight API <prop>AutomationProperties.Name</prop> directly
+    				sets <prop>Name</prop> in the UI Automation tree. The properties
+    				in the UI Automation tree are reported to assistive technologies, when
+    				the assistive technology implements behavior that acts as a UI Automation
+    				client (or as an MSAA client, which relies on the UIA-MSAA bridge). </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Applying a text alternative for an icon Button with
+    					XAML</head>
+         <description>
+            <p>Application authors can specify the <prop>AutomationProperties.Name</prop> attribute
+    						on the <obj>Button</obj> element, and leave accessibility information
+    						for the composited <obj>Image</obj> content unspecified. It is
+    						the button and its action that is relevant to users, not the non-interactive <obj>Image</obj> component.
+    						The value provided for <prop>AutomationProperties.Name</prop> is
+    						a meaningful text alternative for the action conveyed by the button's
+    						icon/image, but where the functionality is conceptually embodied in
+    						the button and not its images or other constituent parts in compositing
+    						or visual design. </p>
+            <codeblock xml:space="preserve"><![CDATA[ <Button
+   Height="20" Width="50"
+   AutomationProperties.Name="Pause Media">
+   <Image Height="12" Width="12" Source="/icon_pause.png"/>
+ </Button>
+]]></codeblock>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="ButtonNontextTextCompositionTestPage.html"
+                    linktype="examples">working example of Button Text Alternative</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/ff400332%28VS.95%29.aspx">Automation
+    					Properties for Accessibility Support in UI</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/system.windows.automation.automationproperties.name%28VS.95%29.aspx">AutomationProperties.Name
+    					Attached Property</loc> 
+               </p>
+            </item>
+            <item>
+               <p>Tools: <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://firstfloorsoftware.com/silverlightspy">SilverlightSpy</loc> or <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://uiautomationverify.codeplex.com/">UIAVerify</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="SL30"/>
+   </related-techniques>
+   <tests>
+      <head>Accessibility framework view </head>
+      <procedure>
+         <olist>
+            <item>
+               <p> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. </p>
+            </item>
+            <item>
+               <p> Use a verification tool that is capable of showing the full accessibility
+    						framework tree, and an object’s "Name" text alternative
+    						as part of the tree. Verify that all interactive elements such as
+    						buttons without visible text provide a human-readable text identifier "Name" in
+    						the automation tree. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>#2 is true. </p>
+      </expected-results>
+   </tests>
+   <tests>
+      <head>Screen Reader</head>
+      <procedure>
+         <olist>
+            <item>
+               <p> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. </p>
+            </item>
+            <item>
+               <p> Engage the screen reader. Press TAB to traverse the tab sequence
+    						inside the Silverlight content area to focus to a composite control
+    						that has no visible text, but has an <prop>AutomationProperties.Name</prop> applied. </p>
+            </item>
+            <item>
+               <p> Check that the "Name" as applied to the control instance,
+    							along with the class name of the named control, is read by the screen
+    							reader. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>#3 is true. </p>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Providing_Text_Equivalent_for_Nontext_Silverlight_Controls_With_AutomationProperties.Name"/>
+      </source>
+   </admin>
+</technique>

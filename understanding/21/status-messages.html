@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>WCAG 2.0 Understanding Page</title>
+		<link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove" />
+	</head>
+	<body>
+		<h1>Status Messages<br />
+		Understanding SC 3.2.6</h1>
+		<section id="intent">
+			<h2>Intent of this Success Criterion</h2>
+			<p>The intent of this Success Criterion is to make users aware of important changes in content that are not given focus, and to do so in a way that doesn't unnecessarily interrupt their work.</p>
+			<p>The intended beneficiaries are blind and low vision users of assistive technologies with screen reader capabilities. An additional benefit is that assistive technologies for users with cognitive disabilities may achieve an alternative means of indicating (or even delaying or supressing) status messages, as preferred by the user.</p>
+<p>The scope of this Success Criterion is specific to changes in content that involve status messages. A <a href="https://www.w3.org/TR/WCAG21/#dfn-status-messages">status message</a> is a defined term in WCAG. There are two main criteria that determine whether something meets the definition of a status message:</p>
+	<ol>
+		<li> the message <q>provides information to the user on the success or results of an action, on the waiting state of an application, on the progress of a process, or on the existence of errors;</q></li>
+		<li> the message is not delivered via a change in context.</li>
+	</ol>
+<p>Information can be added to pages which does not meet the definition of a status message. For example, the list of results obtained from a search are not considered a status update and thus are not covered by this Success Criterion. However, brief text messages displayed about the completion or status of the search, such as "Searching...", "18 results returned" or "No results returned" would be status updates if they do not take focus. Examples of status messages are given in the section titled <a href="#status-examples">Status Message Examples</a> below.</p>
+
+<p>This Success Criterion specifically addresses scenarios where new content is added to the page without changing the user's context. <a href="https://www.w3.org/TR/2006/WD-WCAG20-20060427/appendixA.html#context-changedef">Changes of context</a>, by their nature, interrupt the user by taking focus. They are already surfaced by assistive technologies, and so have already met the goal to alert the user to new content. As such, messages that involve changes of context do not need to be considered and are not within the scope of this Success Criterion. Examples of scenarios that add new content by changing the context are given in the section titled <a href="#excepted-examples">Examples of Changes That Are Not Status Messages</a> below.</p>
+			
+  <section id="benefits">
+				<h3>Benefits</h3>
+			<ul>
+					<li>When appropriate roles or properties are assigned to status messages, the new content is spoken by screen readers in such a way as to assist blind and low vision users. Most sighted users can observe text peripherally added to the viewport. Such content provides additional information without affecting the user's current point of regard. The ability of an assistive technology to announce such new important text content allows more users to benefit from an awareness of the information in an equivalent manner.</li>
+			<li>Assigning proper roles or properties to status messages provides possible future uses and personalization opportunities, such as the potential to be exploited by assistive technologies created for users with some cognitive disabilities. Where page authors elect to design additions to the screen which do <em>not</em> change the user's context (i.e., take focus), the information is arguably of less importance than something presented using a modal dialog, which must be acknowledged by the user. As such, depending on the user's preferences, an assistive technology may choose to delay, suppress, or transform such messages so a user is not unnecessarily interrupted; or conversely the assistive technology may highlight such messages where the user finds it optimal to do so.</li>
+</ul>
+			</section>
+		</section>
+		<section id="examples">
+			<h2>Examples of Success Criterion 3.2.6</h2>
+			
+			<section class="example">
+				<h3 id="status-examples">Status Message Examples</h3>
+			<ol>
+				<li>After a user presses a Search button, the page content is updated to include the results of the search, which are displayed in a section below the Search button. The change to content also includes the message "5 results returned" near the top of this new content. This text is given an appropriate role for a status message. A screen reader announces, "Five results returned".</li>
+				<li>After a user presses an Add to Shopping Cart button, a section of content near the Shopping Cart icon adds the text "5 items". A screen reader announces "Five items" or "Shopping cart, five items".</li>
+				<li>After a user enters incorrect text in an input called Postal Code, a message appears above the input reading "Invalid entry".  The screen reader announces, "Invalid entry" or "Postal code, invalid entry".</li>
+				<li>After a user activates a process, an icon symbolizing 'busy'  appears on the screen. The screen reader announces "application busy". </li>
+				<li>An application displays a progressbar to indicate the status of an upgrade. The element is assigned a suitable role. The screen reader provides intermittent announcements of the progress. </li>
+        <li>After a user submits a form, text is added to the existing form which reads, "Your form was successfully submitted." The screen reader announces the same message.</li> 
+        <li>After a user unsuccessfully fills in a form because some of the data is in the incorrect format, text is added to the existing form which reads "5 errors on page". The screen reader announces the same message.</li>
+			</ol>
+			</section>
+			<section class="example">
+				<h3>Examples of Changes that Do Not Add New Text to the Screen</h3>
+			<p>This Success Criterion was intentionally worded to apply primarily when visible text is added to (or becomes visible on) the page. The reason for this is that where new text is displayed, it is intended to be visible to all users. By providing a programmatic means of ensuring the text is also surfaced through assistive technologies, the Success Criterion provides the same information to users who cannot or may not see it. However, not all changes to content involve the addition of text to the screen. The following are all considerations relevant to this Success Criterion:</p>
+				<ul>
+					<li>Non-displayed text specific to AT users;</li>
+
+<li>Modification of status text;</li>
+<li>Removal of status text; and</li>
+<li>Non-textual status content, such as images.</li>
+				</ul>
+
+			</section>
+		</section>
+		<h4>Non-displayed text specific to AT users</h4>
+		
+		<p>There may be cases where the addition of visible text does not by itself convey sufficient information to the user of assistive technology. For example, the proximity of new content to other pieces of information on the screen may provide a visual context that is lacking in the text alone.</p>
+		<p>In such cases, authors may wish to designate additional content for inclusion in the status message, including non-displayed text which can be provided to the assistive technologies, for added context. Important considerations regarding the appropriate use of such techniques are further discussed in the Sufficient Techniques.</p>
+		<h4>Modification of status text</h4>
+		<p>If a status message persists on the page, modifications to this text are usually equivalent to a new status message. An example would be a shopping cart which updates text from reading "0 items" to "3 items". Typical methods of writing such changes in the page content result in the entire modified text string being considered a new change, and thus read by assistive technologies. However, where only the number in this string was coded as an updated chunk of content, the resulting experience for screen reader users would be to only hear "three", which may not be sufficient information to provide context for the user. In such situations, marking the entire "3 items" string as the status text would normally be a better solution. See Sufficient Techniques for more discussion, including the use of <code>aria-atomic</code>. In this case it would also be a courtesy to add offscreen text "in shopping cart" to the message.</p>
+		<h4>Removal of status text</h4>
+		<p>In situations where status text is entirely removed, its absence may itself convey information about the status. The most obvious example of this is where a message is displayed that the system is "busy" or "waiting". For a sighted user, when this text disappears, it is normally an indication that the state is now available. However non-sighted users would be unaware of this change, unless the end of the waiting state results in a change of context for the user. Where updating the visible message (e.g., to "system available") is not feasible, the use of a non-visible status message, such as "system available", ensures equivalent status information is provided. See Sufficient Techniques for more discussion.</p>
+		<h4>Non-textual status content</h4>
+		<p>Changes in content are not restricted to text changes. Where an icon or sound indicates a status message, this information will be surfaced by the screen reader through a combination of two things: 1) existing WCAG requirements governing text alternatives (under SC 1.1.1 Non-Text Content), and 2) the requirement of this current Success Criterion to supply an appropriate role.</p>
+
+		<section id="resources">
+			<h2>Other Considerations</h2>
+			<section class="example">
+				<h3 id="excepted-examples">Examples of Changes That Are Not Status Messages</h3>
+			</section>
+			<p>The following examples identify situations where no additional author action is necessary. All cases are excepted from this Success Criterion since they do not meet the definition of "status messages."</p>
+			<ul>
+			<li><p>An author displays an error message in a dialog.</p>
+				<p>Since the dialog takes focus, it is defined as a change of context and does not meet the definition of a status message. As a result of taking focus, the new change of context is already announced by the screen reader, and thus does not need to be included in the scope of this Success Criterion. </p>
+			</li>
+			<li>
+				<p>Content is exposed or hidden when a user interacts with a user interface component, for example expanding components such as a menu, select, accordion or tree, or selecting a different tab item in a tablist.</p>
+				<p>None of the resulting changes to content meet the definition of status messages. Further, all components that meet the definition of a user interface component already have requirements specified under <a href="name-role-value" class="sc">4.1.2 Name, Role, Value</a>, including the need to make notifications of changes to values and states available to user agents, including assistive technologies. As a result, changes in state, such as "expanded" or "collapsed," would be announced by the screen reader, and thus the user would be alerted to the 'addition' or 'removal' of content. As such, such content does not need to be addressed by this Success Criterion.</p>
+
+			</li>
+			<li>
+				<p>After a user completes an input that indicates they are unhappy, a series of new inputs are added to the page about customer satisfaction.</p>
+				<p>The new inputs do not meet the definition of status message. They do not "provide information to the user on the success or results of an action, on the waiting state of an application, on the progress of a process or on the existence of errors," and so are not required to meet this Success Criterion.</p>
+				<p><strong>Note:</strong> Creating a status message about these inputs being added, or notifying the user in advance that content changes may take place based on the user's response, are best practices but are not requirements in this scenario.</p>
+				</li>
+
+			</ul>
+			<h3>Other uses of live regions</h3>
+<p>There are a number of considerations for content changes which are relevant to this Success Criterion, but which fall outside its scope. There are a number of situations where a short off screen message may be appropriate for screen reader users. For example:</p>
+      <ul><li>A form field asks “How many children do you have?” and the user types in the number 5, these fields are added to the form. Offscreen text may announce “5 form fields added”</li>
+<li>	A list of 15 products are on a page with a “See More” button at the bottom. When the user clicks the button, offscreen text announces, “15 products added to the page”</li></ul>
+        <p>Several Advisory Techniques are incorporated into this Understanding document.</p>
+
+
+		</section>
+		<section id="techniques">
+			<h2>Techniques</h2>
+			<section id="sufficient">
+				<h3>Sufficient</h3>
+						<section class="situation">
+
+					<h4>Situation A: If a status message advises on the success or results of an action, or the state of an application:</h4>
+					<ul>
+						<li><a href="aria-status-role.html">Using <code>role="status"</code></a> @@@ technique created but URL unknown @@@ in combination with any of the following:
+							<ul>
+								<li><a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G199" class="general">G199: Providing success feedback when data is submitted successfully</a></li>
+							</ul>
+							
+						</li>
+					</ul>
+
+					<h4>Situation B: If a status message conveys a suggestion, or a warning on the existence of an error:</h4>
+					<ul>
+						<li><a href="https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA19" class="aria">ARIA19: Using ARIA role=alert or Live Regions to Identify Errors</a> in combination with any of the following:
+							<ul>
+								
+								<li><a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G83" class="general">G83: Providing text descriptions to identify required fields that were not completed</a></li>
+								<li><a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G84" class="general">G84: Providing a text description when the user provides information that is not in the list of allowed values</a></li>
+								<li><a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G85" class="general">G85: Providing a text description when user input falls outside the required format or values</a></li>
+								<li><a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G139" class="general">G139: Creating a mechanism that allows users to jump to errors</a></li>
+								<li><a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G177" class="general">G177: Providing suggested correction text</a></li>
+								<li><a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G194" class="general">G194: Providing spell checking and suggestions for text input</a></li>
+								
+							</ul>
+							<p>Note: Not all examples in the preceding general techniques use status messages to convey warnings or errors to users. A role of "alert" is only necessary where a change of context does <em>not</em> take place.</p>
+						</li>
+					</ul>
+
+					<h4>Situation C: If a status message conveys information on the progress of a process:</h4>
+					<ul>
+					
+						<li><a href="aria-log-role.html" >Using <code>role="log"</code></a> @@@ technique created but URL unknown</li>
+						<li>Using <code>role="progressbar"</code> (future link)</li>
+						<li><a href="aria-status-role.html">Using <code>role="status"</code></a> @@@ URL to update @@@ in combination with <a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G193" class="general">G193: Providing help by an assistant in the Web page</a></li>
+					</ul>
+				</section>
+			</section>
+			<section id="advisory">
+				<h3>Advisory</h3>
+				<ul>
+		<li>Using aria-live regions with chat clients (future link)</li>
+		<li>Using aria-live regions to support <a href="https://www.w3.org/WAI/WCAG21/Understanding/content-on-hover-or-focus.html">1.4.13 Content on Hover or Focus</a> (future link)</li>
+		<li>Using <code>role="marquee"</code> (future link)</li>
+		<li>Using <code>role="timer"</code> (future link)</li>
+					<li>Moving focus to new content, including by using <code>alertdialog</code> and <code>dialog</code>; <a href="https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA18" class="aria">ARIA18: Using <code>aria-alertdialog</code> to Identify Errors</a></li>
+					<li>Support personalization by providing an option for users to set a preference on live content; <a href="https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR14" class="script">SCR14: Using scripts to make nonessential alerts optional</a></li>	
+	</ul>
+
+			</section>
+			<section id="failure">
+				<h3>Failure</h3>
+				<ul>
+				<li>Using <code>role="alert"</code> or <code>aria-live="assertive"</code> on content which is not important and time-sensitive (future link)</li>
+				<li>Using a <code>visibilitychange</code> event to hide or display a document without switching the document's live regions between active and inactive (future link)</li>
+			</ul>
+			</section>
+		</section>
+	</body>
+</html>	

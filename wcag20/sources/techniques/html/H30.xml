@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H30">
+   <short-name>Providing link text that describes the purpose of a link for anchor elements</short-name>
+   <applicability>
+      <p>HTML and XHTML documents that contain links, (&lt;a
+            href&gt; elements)</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+      <success-criterion idref="navigation-mechanisms-refs" relationship="sufficient"/>
+      <success-criterion idref="navigation-mechanisms-link" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to describe the purpose of a link by providing
+            descriptive text as the content of the <el>a</el> element. The description lets a
+            user distinguish this link from other links in the Web page and helps the user determine
+            whether to follow the link. The URI of the destination is generally not sufficiently
+            descriptive. </p>
+      <p>When an image is the only content of a link, the text alternative for the image
+            describes the unique function of the link.</p>
+      <p>When the content of a link contains both text and one or more images, if the text is
+            sufficient to describe the purpose of the link, the images may have an empty text
+            alternative. (See <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="H67"
+              linktype="techniques">Using null alt text and no title
+              attribute on img elements for images that assistive technology should ignore</loc>.)
+            When the images convey information beyond the purpose of the link, they must also have
+            appropriate alt text. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>Describing the purpose of a link in HTML in the text content of the <el>a</el>
+                element.</p>
+         </description>
+         <code role="html401"><![CDATA[<a href="routes.html">
+  Current routes at Boulders Climbing Gym
+</a>]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>Using the <att>alt</att> attribute for the <el>img</el> element to describe
+                the purpose of a graphical link.</p>
+         </description>
+         <code role="html401"><![CDATA[<a href="routes.html">
+   <img src="topo.gif" alt="Current routes at Boulders Climbing Gym" /> 
+</a> ]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>Using an empty <att>alt</att> attribute when the anchor (<el>a</el>) element contains text
+                that describes the purpose of the link in addition to the <el>img</el> element.
+                Note that the link text will appear on the page next to the image.</p>
+         </description>
+         <code role="html401"><![CDATA[<a href="routes.html">
+  <img src="topo.gif" alt="" />
+  Current routes at Boulders Climbing Gym
+</a>]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>A site allows users to provide feedback on products, when the user is logged in, by clicking on the "Feedback" link in a product detail page. Other users or the product manufacturer are able to provide a response to any feedback. The feedback link displays an icon before the "Feedback" text when a response to the user's feedback is available. The help information describes this icon as a talking bubble containing quotation marks and includes the icon itself as an example. The icon's text alternative in the help text is "Response received icon". The same text alternative is used in the product detail pages (when a response is available) to allow identification of this icon through multiple modalities.</p>
+         </description>
+         <code role="html401"><![CDATA[<a href="prod_123_feedback.htm">Feedback 
+         <img src="response.gif" width="15" height="15" alt="Response received icon" /></a>]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>A link contains text and an icon, and the icon provides additional information about the target. </p>
+         </description>
+         <code role="html401"><![CDATA[<a href="WMFP.pdf">
+Woodend Music Festival Program
+<img src="pdficon.gif" alt="PDF format"/>
+</a>]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>The “MyCorp” company’s annual report is made available on the corporate
+        				website as a PDF file, and the annual corporate budget is made available as an
+        				Excel file on the web site.</p>
+            <note>
+               <p>Many users prefer to know the file type when opening a file that results in opening a new application to view the file, so it is often regarded as useful to include this additional information. However, this is not required for compliance with this success criterion.</p>
+            </note>
+         </description>
+         <code><![CDATA[<p>
+<a href=”2009mycorp_report.pdf”>MyCorp 2009 Annual Report (pdf)</a><br />
+<a href=”2009mycorp_budget.xls”>MyCorp 2009 Annual Budget (Excel)</a>
+</p>]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>Using a link to wrap block level elements in HTML5.</p>
+         </description>
+         <code role="html5"><![CDATA[<article>
+<a href="news.html">
+<h3>Budget Debate Continues in Parliament</h3>
+<p class="subhead"><img class="alertimg" src="alerticon.png" alt="Breaking News" height="30" width="30">Members of Parliament continued vigorous debate on three challenging issues surrounding the upcoming year's budget.</p>
+<p>Read more</p>
+</a>
+</article>]]></code>
+            <p>This is shown in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="link-wraps-block.html"
+                    linktype="examples">working example of using a link to wrap block level elements</loc>.
+            </p>
+      </eg-group>      
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html401/struct/objects.html#h-13.8">HTML 4.01 -
+                    how to specify alt text</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G91"/>
+      <!--<relatedtech idref="C7"/>-->
+      <relatedtech idref="H2"/>
+      <relatedtech idref="H24"/>
+      <relatedtech idref="H67"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each link in the content that uses this technique:</p>
+         <olist>
+            <item>
+               <p>Check that text or a text alternative for non-text content is included in the
+                    <el>a</el> element</p>
+            </item>
+            <item>
+               <p>If an <el>img</el> element is the only content of the <el>a</el> element,
+                  check that its text alternative describes the purpose of the link</p>
+            </item>
+            <item>
+               <p>If the <el>a</el> element contains one or more <el>img</el> element(s)
+                  and the text alternative of the <el>img</el> element(s) is empty, check that
+                  the text of the link describes the purpose of the link </p>
+            </item>
+            <item>
+               <p>If the <el>a</el> element only contains text, check that the text describes
+                  the purpose of the link</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>The above checks are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

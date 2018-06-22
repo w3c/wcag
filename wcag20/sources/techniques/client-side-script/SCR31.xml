@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SCR31">
+   <short-name>Using script to change the background color or border of the element with focus</short-name>
+   <applicability>
+      <p>HTML and XHTML, CSS, Script</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="navigation-mechanisms-focus-visible" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>This technique can be used on user agents that don't support the <code><![CDATA[:focus]]></code> pseudoclass but do support script, including Microsoft Internet Explorer.</p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>This purpose of this technique is to allow the author to use JavaScript to apply CSS, in order to make the focus indicator more visible than it would ordinarily be. When an element receives focus, the background color or border is changed to make it visually distinct. When the element loses focus, it returns to its normal styling. This technique can be used on any HTML user agent that supports Script and CSS, regardless of whether it supports the :focus pseudoclass.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>In this example, when the link receives focus, its background turns yellow. When it loses focus, the yellow is removed. Note that if the link had a background color to begin with, you would use that color rather than "" in the script.</p>
+         </description>
+         <code><![CDATA[
+...
+<script>
+ function toggleFocus(el)
+ {
+  el.style.backgroundColor =  el.style.backgroundColor=="yellow" ? "inherit" : "yellow";
+ }
+</script>
+
+...
+
+<a href="example.html" onfocus="toggleFocus(this)" onblur="toggleFocus(this)">focus me</a>
+...
+]]></code>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="C15"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Tab to each element in the page</p>
+            </item>
+            <item>
+               <p>Check that the focus indicator is visible</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Step #2 is true</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

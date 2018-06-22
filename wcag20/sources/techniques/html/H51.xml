@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H51">
+   <short-name>Using table markup to present tabular information</short-name>
+   <applicability>
+      <p>HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to present tabular information in a way that
+            preserves relationships within the information even when users cannot see the table or
+            the presentation format is changed. Information is considered tabular when logical
+            relationships among text, numbers, images, or other data exist in two dimensions
+            (vertical and horizontal). These relationships are represented in columns and rows, and
+            the columns and rows must be recognizable in order for the logical relationships to be
+            perceived.</p>
+      <p>Using the <el>table</el> element with the child elements <el>tr</el>,
+              <el>th</el>, and <el>td</el> makes these relationships perceivable. Techniques
+            such as inserting tabs to create columns or using the <el>pre</el> element are
+            purely visual, and visually implied logical relationships are lost if the user cannot
+            see the table or the visual presentation is changed.</p>
+      <p>Simple tables generally have only one level of headers for columns and/or one level of headers on the rows. </p>
+      <p>Usually, for simple tables, row 1 column 1 is either blank or describes the contents of the entire column 1. Row 1 columns are not blank (i.e. they contain "column headings"), describe the contents of the entire column, and allow the reader to distinguish the difference in meaning between that column and other columns. </p>
+      <p>Column 1 rows are usually not blank, they often contain "row headings" which describe the contents of the entire row, and allow the reader to distinguish the difference in meaning between that row and the other rows. Otherwise, the Column 1 would contain simple data.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>A schedule marked up as a simple data table with column and row headers</head>
+         <description>
+            <p>This example uses markup for a simple data table. The first row shows the days of
+                the week. Time intervals are shown in the first column. These cells are marked with
+                the <el>th</el> element. This identifies the days of the week as column headers
+                and the time intervals as row headers.</p>
+            <p>Screen readers speak header information that changes as the user navigates the
+                table. Thus, when screen reader users move to left or right along a row, they will
+                hear the day of the week (the column header) followed by the appointment (if any).
+                They will hear the time interval as they move up or down within the same column.</p>
+         </description>
+         <code role="html401"><![CDATA[ <table>
+  <tr>
+    <td> </td>
+    <th>Monday</th>
+    <th>Tuesday</th>
+    <th>Wednesday</th>
+    <th>Thursday</th>
+    <th>Friday</th>
+  </tr>
+  <tr>
+    <th>8:00-9:00</th>
+    <td>Meet with Sam</td>
+    <td> </td>
+    <td> </td>
+    <td> </td>
+    <td> </td>
+  </tr>
+  <tr>
+    <th>9:00-10:00</th>
+    <td> </td>
+    <td> </td>
+    <td>Doctor Williams</td>
+    <td>Sam again</td>
+    <td>Leave for San Antonio</td>
+  </tr>
+</table> ]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>HTML 4.01 <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html4/struct/tables.html#h-11.2.1">Table Element</loc>
+								       </p>
+            </item>
+            <item>
+               <p>HTML 4.01 <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html4/struct/tables.html#h-11.2.5">Table rows: The TR element</loc>
+								       </p>
+            </item>
+            <item>
+               <p>HTML 4.01 <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html4/struct/tables.html#h-11.2.6">Table cells: The TH and TD elements</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H39"/>
+      <relatedtech idref="H43"/>
+      <relatedtech idref="H63"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Check for the presence of tabular information.</p>
+            </item>
+            <item>
+               <p>For each occurrence of tabular information: </p>
+               <olist>
+                  <item>
+                     <p>Check that table markup with at least the elements <el>table</el>,
+                        <el>tr</el>, <el>th</el>, and <el>td</el> is used. </p>
+                  </item>
+               </olist>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>All checks above are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>
