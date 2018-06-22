@@ -1,0 +1,62 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+ <head>
+ <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+ <title>Creating Divs with Actions using JavaScript</title>
+<style type="text/css" media="screen">
+#active {
+  border:solid;
+}
+</style>
+ <script type="text/javascript">
+ //<![CDATA[
+ // this is the function to perform the action. This simple example toggles a message.
+ function doSomething(event) {
+   var msg=document.getElementById("message");
+   msg.style.display = msg.style.display=="none" ? "" : "none";
+   //return false from the function to make certain that the href of the link does not get invoked
+   return false;
+ }
+ // this is the function to perform the action when the Enter key has been pressed.  
+ function doSomethingOnEnter(event) {
+   var key = 0;
+   // Determine the key pressed, depending on whether window.event or the event object is in use
+   if (window.event) {
+     key = window.event.keyCode;
+   } else if (event) {
+     key = event.keyCode;
+   }
+   // Was the Enter key pressed?
+   if (key == 13) {
+     return doSomething(event);
+   } 
+   // The event has not been handled, so return true
+   return true;
+ }
+ // This setUpActions() function must be called to set the onclick and onkeyup event handlers onto the existing 
+ // div element. This function must be called after the div element with id="active" has been loaded into the DOM.
+ // In this example the setUpActions() function is called from the onload event for the body element.
+ function setUpActions() {
+   // get the div object
+   var active=document.getElementById("active");
+   // assign the onclick handler to the object.
+   // It is important to return false from the onclick handler to prevent the href attribute
+   // from being followed after the function returns.
+   active.onclick=doSomething;
+   // assign the onkeyup handler to the object.
+   active.onkeyup=doSomethingOnEnter;
+ }
+ //]]>
+ </script>
+ </head>
+ <body onload="setUpActions();">
+ <p>Here is the link to modify with a javascript action:</p>
+ <div>
+  <span id="active" tabindex="0">Do Something</span>
+ </div>
+<br />
+ <div id="message" style="display:none">Hello, world!</div>
+ </body>
+ </html>

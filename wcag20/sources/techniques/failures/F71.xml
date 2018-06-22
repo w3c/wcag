@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F71">
+   <short-name>Failure of Success Criterion 1.1.1 due to using text look-alikes to represent text without providing a text alternative</short-name>
+   <applicability>
+      <p>Any technology.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>The objective of this failure condition is to avoid substituting characters whose glyphs look similar to the intended character, for that intended character. The Unicode character set defines thousands of characters, covering dozens of writing systems. While the glyphs for some of these characters may look like the glyphs for other characters in visual presentation, they are not processed the same by text-to-speech tools.</p>
+      <p>For example, the characters U+0063 and U+03F2 both look like the letter "c", yet the first is from the Western alphabet and the second from the Greek alphabet and not used in Western languages. The characters U+0033 and U+04E0 both look like the number "3", yet the second is actually a letter from the Cyrillic alphabet.</p>
+      <note>
+         <p>This failure also applies to the use of character entities. It is the incorrect character used because of its glyph representation that comprises a failure, not the mechanism by which that character is implemented.</p>
+      </note>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <head>Characters </head>
+         <description>
+            <p>The following word looks, in browsers with appropriate font support, like the English word "cook", yet is composed of the string U+03f2 U+043E U+03BF U+006B, only one of which is a letter from the Western alphabet. This word will not be processed meaningfully, and a text alternative is not provided.</p>
+         </description>
+         <code role="xhtml"><![CDATA[
+ϲоοk
+]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <head>Character entities</head>
+         <description>
+            <p>The following example, like the one above, will look like the English word "cook" when rendered in browsers with appropriate font support. In this case, the characters are implemented with character entities, but the word will still not be processed meaningfully, and a text alternative is not provided.</p>
+         </description>
+         <code role="xhtml"><![CDATA[
+&#x03F2;&#x043E;&#x03BF;&#x006B;
+]]></code>
+         <description>
+            <p>Working Example: "ϲоοk"</p>
+         </description>
+      </eg-group>
+   </examples>
+   <related-techniques/>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Check the characters or character entities used to represent text.</p>
+            </item>
+            <item>
+               <p>If the characters used do not match the appropriate characters for the displayed glyphs in the human language of the content, then look-alike glyphs are being used.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If look-alike glyphs are used, and there is not a text alternative for any range of text that uses look-alike glyphs, then the content does not meet the Success Criterion.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

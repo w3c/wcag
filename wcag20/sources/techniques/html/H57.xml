@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H57">
+   <short-name> Using language attributes on the html element </short-name>
+   <applicability>
+      <p>HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="meaning-doc-lang-id" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="subtags" version="">
+         <p>Additional subtags for region, script, variant or other aspects may lead to errors in language switching in older versions of some screenreaders.</p>
+      </ua-issue>
+      <ua-issue name="jaws" version="8">
+         <p>JAWS 8.0 can be configured to change language automatically on the basis of the lang attribute. However, it only switches amongst major languages as indicated by the primary code. If a regional language variant is indicated with a language subcode, JAWS will use the default variant for which it is configured.</p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p> The objective of this technique is to identify the default language of a document by
+            providing the <att>lang</att> and/or <att>xml:lang</att> attribute on the <el>html</el>
+            element. </p>
+      <p>Identifying the language of the document is important for a number of reasons: </p>
+      <ulist>
+         <item>
+            <p>It allows braille translation software to substitute control codes for accented
+                characters, and insert control codes necessary to prevent erroneous creation of
+                Grade 2 braille contractions. </p>
+         </item>
+         <item>
+            <p>Speech synthesizers that support multiple languages will be able to orient and
+                adapt to the pronunciation and syntax that are specific to the language of the page,
+                speaking the text in the appropriate accent with proper pronunciation. </p>
+         </item>
+         <item>
+            <p>Marking the language can benefit future developments in technology, for example
+                users who are unable to translate between languages themselves will be able to use
+                machines to translate unfamiliar languages. </p>
+         </item>
+         <item>
+            <p>Marking the language can also assist user agents in providing definitions using a
+                dictionary. </p>
+         </item>
+      </ulist>
+      <p>HTML 4.01 uses the <el>lang</el> attribute of the <el>html</el> element. XHTML served
+            as text/html uses the <att>lang</att> attribute and the <att>xml:lang</att> attribute of
+            the <el>html</el> element, in order to meet the requirements of XHTML and provide
+            backward compatibility with HTML. XHTML served as application/xhtml+xml uses the
+              <att>xml:lang</att> attribute of the <el>html</el> element. Both the <att>lang</att>
+            and the <att>xml:lang</att> attributes can take only one value. </p>
+      <note>
+         <p> HTML only offers the use of the <att>lang</att> attribute, while XHTML 1.0 (as a
+              transitional measure) allows both attributes, and XHTML 1.1 allows only
+              <att>xml:lang</att>. </p>
+         <!-- Same note in H58 -->
+         <p>Allowed values for the lang and xml:lang attributes are indicated in the resources referenced below. Language tags use a primary code to indicate the language, and optional subcodes (separated by hyphen characters) to indicate variants of the language. For instance, English is indicated with the primary code "en"; British English and American English can be distinguished by using "en-GB" and "en-US", respectively. Use of the primary code is important for this technique. Use of subcodes is optional but may be helpful in certain circumstances.</p>
+      </note>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>This example defines the content of an HTML document to be in the French language.
+              </p>
+         </description>
+         <code role="html401"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="fr"> 
+<head>
+  <title>document écrit en français</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+</head>  
+<body>     
+	...document écrit en français...   
+</body>
+</html>]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>This example defines the content of an XHTML 1.0 document with content type of
+                text/html to be in the French language. Both the <att>lang</att> and
+                <att>xml:lang</att> attributes are specified in order to meet the requirements of
+                XHTML and provide backward compatibility with HTML.</p>
+         </description>
+         <code role="html401"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+<head>
+  <title>document écrit en français</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+</head>
+<body> 
+...document écrit en français...      
+</body>
+</html>  ]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>This example defines the content of an XHTML 1.1 document with content type of
+                application/xhtml+xml to be in the French language. Only the <att>xml:lang</att>
+                attribute is specified.</p>
+         </description>
+         <code role="html401"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" 
+   "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+  <title>document écrit en français</title>
+	<meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
+</head>
+<body> 
+	...document écrit en français... 
+</body>
+</html>]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html401/struct/dirlang.html#h-8.1">HTML 4.01
+                    "lang" attribute</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP 47: Tags for the
+                    Identification of Languages</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/1999/REC-html401-19991224/struct/dirlang.html#h-8.1.2">Inheritance of language codes</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/International/tutorials/language-decl/">Declaring
+                    Language in XHTML and HTML</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/i18n-html-tech-lang/">Authoring Techniques for
+                    XHTML &amp; HTML Internationalization: Specifying the language of content
+                    1.0</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/International/articles/language-tags/Overview.en.php">Language tags in HTML and XML</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H58"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Examine the <el>html</el> element of the document.</p>
+            </item>
+            <item>
+               <p>Check that the <el>html</el> element has a <att>lang</att> and/or
+                    <att>xml:lang</att> attribute. </p>
+            </item>
+            <item>
+               <p>Check that the value of the <att>lang</att> attribute conforms to <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP 47: Tags for the
+                    Identification of Languages</loc> or its successor and reflects the primary language used by the Web page. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>The above checks are all true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SL3">
+   <short-name>Controlling Silverlight MediaElement Audio Volume</short-name>
+   <applicability>
+      <p use-id="silverlight.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="visual-audio-contrast-dis-audio" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="silverlight.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to adjust the volume for media
+    				that is played in Silverlight applications, as implemented through
+    				incorporating the Silverlight <obj>MediaElement</obj> object.
+    				By default, a <obj>MediaElement</obj> will start playing its
+    				media as soon as the UI loads completely AND the media source file
+    				is downloaded. For details, see <specref ref="SL24"/>. </p>
+      <p>At any given time, a Silverlight <obj>MediaElement</obj> is associated
+    				with exactly one media source as specified by the <prop>Source</prop> property
+    				URI value. That source might be audio-only, or audio-video. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="https://msdn.microsoft.com/en-us/library/system.windows.controls.mediaelement.volume%28VS.95%29.aspx">Volume</loc> property
+    				of <obj>MediaElement</obj> affects the audio playback volume
+    				of that particular source when it is playing. The Silverlight plug-in
+    				does not have a user option that adjusts the volume of ALL Silverlight
+    				applications as run within it, or a standardized user interface that
+    				is always present for all uses of <obj>MediaElement</obj>. Therefore
+    				it is the responsibility of Silverlight application authors to provide
+    				an adequate set of user interface controls, including volume adjustment,
+    				whenever the Silverlight application plays media that has an audio
+    				component. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Providing a volume control and a Mute control as part
+    					of a set of user interface controls that go with a MediaElement</head>
+         <description>
+            <p>In addition to the Play Pause Stop controls, application authors can
+    						also provide a dedicated control that changes the <prop>Volume</prop> property
+    						of the <obj>MediaElement</obj>. The typical control for setting
+    						a discrete volume is <obj>Slider</obj>, because <obj>Slider</obj> is
+    						designed for input of discrete values from a range. Adjusting <prop>Volume</prop> with
+    						a data bound <obj>Slider</obj> changes the volume of any actively
+    						playing media, independent of the system volume or of any other audio
+    						source controlled by Silverlight. For <prop>Volume</prop> as set with the <obj>Slider</obj>,
+    						the <obj>Binding</obj> in XAML declares the interaction between
+    						the control and the <obj>MediaElement</obj>, without requiring
+    						an event handler. However, not all users will be able to interact quickly
+    						with a <obj>Slider</obj>, particularly if they are not using
+    						a mouse. To help these users, application authors should also include
+    						a "Mute" control. Rather than setting <prop>Volume</prop> to
+    						0, application authors should instead set <prop>IsMuted</prop> to
+    						true. Note that <prop>Volume</prop> and <prop>IsMuted</prop> values
+    						are not directly related; if <prop>IsMuted</prop> is set to true,
+    						that does not set <prop>Volume</prop> to 0, nor does setting <prop>Volume</prop> to
+    						zero cause <prop>IsMuted</prop> to be set true. </p>
+            <codeblock xml:space="preserve"><![CDATA[<UserControl x:Class="MediaElementControls.MainPage"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  >
+   <Grid x:Name="LayoutRoot">
+       <StackPanel>
+           <MediaElement x:Name="media" Source="/xbox.wmv"
+          Width="300" Height="300" 
+          AutomationProperties.Name="Video of new Fable game for XBox"           
+       />
+           <Grid Name="UIControls">
+               <Grid.ColumnDefinitions>
+                   <ColumnDefinition Width="*" />
+                   <ColumnDefinition Width="*" />
+                   <ColumnDefinition Width="*"/>
+               </Grid.ColumnDefinitions>
+               <Grid.RowDefinitions>
+                   <RowDefinition Height="*" />
+                   <RowDefinition Height="Auto" />
+                   <RowDefinition Height="20" />
+               </Grid.RowDefinitions>
+               <Button Click="StopMedia" 
+    Grid.Column="0" Grid.Row="1" Content="Stop" />
+               <Button Click="PauseMedia" 
+    Grid.Column="1" Grid.Row="1" Content="Pause" />
+               <Button Click="PlayMedia" 
+    Grid.Column="2" Grid.Row="1" Content="Play" />
+               <Button Click="MuteMedia" 
+   Grid.Row="2" Grid.Column="0" Content="Mute" />
+               <TextBlock Name="VolumeLabel" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right">Volume</TextBlock>
+               <Slider Height="20"
+           Value="{Binding Volume, Mode=TwoWay, ElementName=media}"
+           Minimum="0" Maximum="1"
+           Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2"
+               AutomationProperties.LabeledBy="{Binding ElementName=VolumeLabel}"/>
+           </Grid>
+       </StackPanel>
+   </Grid>
+</UserControl>
+]]></codeblock>
+            <p>The following is the C# logic. </p>
+            <codeblock xml:space="preserve"><![CDATA[ private void StopMedia(object sender, RoutedEventArgs e)
+ {
+     media.Stop();
+ }
+ private void PauseMedia(object sender, RoutedEventArgs e)
+ {
+     media.Pause();
+ }
+ private void PlayMedia(object sender, RoutedEventArgs e)
+ {
+     media.Play();
+ }
+ private void MuteMedia(object sender, RoutedEventArgs e)
+ {
+    Button target = sender as Button;
+    // mute if not muted, unmute if already muted, in either case make sure the button content for text and accessibility info is updated
+    if (!media.IsMuted)
+    {
+       media.IsMuted = true;
+       target.Content = "Unmute";
+    }
+    else
+    {
+        media.IsMuted = false;
+        target.Content = "Mute";
+    }
+ }
+]]></codeblock>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="MediaElementControlsTestPage.html"
+                    linktype="examples">working example of Media Element Controls</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/system.windows.controls.mediaelement.volume%28VS.95%29.aspx">Volume</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/cc189078(VS.95).aspx">Audio
+    						and Video Overview</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://smf.codeplex.com/">Silverlight
+    						Media Framework</loc> - a framework and a media player control implementation
+    						that incorporates many of the Silverlight techniques related to <obj>MediaElement</obj> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="SL17"/>
+      <relatedtech idref="SL24"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. It is
+    					expected that the application incorporates a <obj>MediaElement</obj>. </p>
+            </item>
+            <item>
+               <p> Check that a control is available for controlling volume and that
+    						the Volume control controls the volume of the playing media, independently
+    						from system volume. </p>
+            </item>
+            <item>
+               <p> Check that control is available for muting, and that the Mute
+    							control mutes the volume of the playing media, independently from
+    							system volume. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>#2 OR #3 is true. </p>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Controlling_Silverlight_MediaElement_Audio_Volume"/>
+      </source>
+   </admin>
+</technique>

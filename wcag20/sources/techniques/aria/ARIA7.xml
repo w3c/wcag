@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="ARIA7">
+   <short-name>Using aria-labelledby for link purpose</short-name>
+   <applicability>
+      <p>Technologies that support <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="navigation-mechanisms-refs" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
+         <p>Screen reader testing as of October 2012</p>
+         <ulist>
+            <item>
+               <p>Not supported:</p>
+               <ulist>
+                  <item>
+                     <p>Win 7, IE 9, JAWS 13</p>
+                  </item>
+                  <item>
+                     <p>Win 7, FF 13, NVDA 2012.2.1</p>
+                  </item>
+                  <item>
+                     <p>Win XP, FF 15.0, NVDA 2011.3</p>
+                  </item>
+                  <item>
+                     <p>Win XP, IE 8, SaToGo</p>
+                  </item>
+               </ulist>
+            </item>
+            <item>
+               <p>Partial support (both link text and element referenced by aria-labeledby are read):</p>
+               <ulist>
+                  <item>
+                     <p>Win 7, IE9, NVDA 2012.2.1 (but Example 2 not supported)</p>
+                  </item>
+                  <item>
+                     <p>Win XP, IE 8, NVDA 2011.3 (but Example 2 not supported)</p>
+                  </item>
+               </ulist>
+            </item>
+            <item>
+               <p>Supported:</p>
+               <ulist>
+                  <item>
+                     <p>Win 7, FF 13, JAWS 13 (but Example 2 has only partial/buggy support: "Sales report 2012" is read twice)</p>
+                  </item>
+                  <item>
+                     <p>Mac OS 10.5.8, VoiceOver</p>
+                  </item>
+               </ulist>
+            </item>
+         </ulist>
+         <p>
+            <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="http://3needs.org/en/testing/code/aria-labelledby-for-link-purpose.html">See full testing results for Example 1</loc>
+         </p>
+         <p>
+            <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="http://3needs.org/en/testing/code/aria-labelledby-filetype.html">See full testing results for Example 2</loc>
+         </p>
+         <p>David <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="http://davidmacd.com/test/labelledby-on-a-link.html">tested</loc> on Aug 25, 2013... Example 2 and 3 are still not sufficiently supported.</p>
+         <ulist>
+            <item>
+               <p>Example 1 ok on JAWS, VoiceOver. NVDA ignores labelledby on an anchor</p>
+            </item>
+            <item>
+               <p>Example 2: JAWS 14 in FF, IE 10 read the entire paragraph for each link which is confusing and chatty. VoiceOver for Mountain Lion in Safari 6 same as JAWS. NVDA ignores labelledby on an anchor (unsuccessful implementation)</p>
+            </item>
+            <item>
+               <p>Example 3: JAWS 14 in FF, IE 10 read the entire paragraph for each link which is confusing and chatty, VoiceOver for Mountain Lion in Safari 6 OK. NVDA ignores labelledby on an anchor (unsuccessful implementation)</p>
+            </item>
+         </ulist>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>With the <att>aria-labelledby</att> attribute, authors can use a visible text element on the page as a label for a focusable element (a form control or a link). For example, a "read more..." link could be associated with the text of the heading of the preceding section to make the purpose of the link unambiguous (see example 1).</p>
+      <p>When associating text to a focusable element with the help of <att>aria-labelledby</att>, the target text element is given an ID which is referenced in the value of the <att>aria-labelledby</att> attribute of the focusable element.</p>
+      <p>It is also possible to use several text elements on the page as a label for a focusable element. Each of the text elements used must be given a unique ID which is referenced as a string of IDs (IDREF) in the value of the <att>aria-labelledby</att> attribute. The label text should then be concatenated following the order of IDs in the value of the <att>aria-labelledby</att> attribute.</p>
+      <p>When applied on links, <att>aria-labelledby</att> can be used to identify the purpose of a link that may be readily apparent for sighted users, but less obvious for screen reader users.</p>
+      <p>The specified behavior of <att>aria-labelledby</att> is that the associated label text is announced instead of the link text (not in addition to the link text). When the link text itself should be included in the label text, the ID of the link should be referenced as well in the string of IDs forming the value of the <att>aria-labelledby</att> attribute.</p>
+      <p>For more information on the naming hierarchy please consult the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/wai-aria/roles#textalternativecomputation">ARIA specification</loc> and the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/html-aapi/#a-element">accessible name and description calculation for links</loc> in the HTML to Platform Accessibility APIs Implementation Guide.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Providing additional information for links</head>
+         <description>
+            <p>This example will mean that the link text as shown on screen is then used as the start of the accessible name for the link. Popular screen readers like JAWS and NVDA will announce this as:
+"Read more ...Storms hit east coast" and will display that same text in the links list which is very useful for screen reader users who may browse by links.</p>
+            <codeblock xml:space="preserve"><![CDATA[<h2 id="headline">Storms hit east coast</h2>
+
+<p>Torrential rain and gale force winds have struck the east coast, causing flooding in many coastal towns.
+<a id="p123" href="news.html" aria-labelledby="p123 headline">Read more...</a></p>]]></codeblock>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Concatenating link text from multiple sources</head>
+         <description>
+            <p>There may be cases where an author will placed a tag around a section of code that will be referenced.</p>
+            <p>Note: The use of <code><![CDATA[tabindex="-1"]]></code> on the <el>span</el> element is not meant to support focusing by scripts - here, it merely serves to ensure that some browsers (IE9, IE10) will include the <el>span</el> element in the accessibility tree, thus making it available for reference by <att>aria-labelledby</att>. For more details see <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="https://msdn.microsoft.com/en-us/library/ie/gg701963%28v=vs.85%29.aspx#Accessible_HTML_Elements">Accessible HTML Elements</loc>.</p>
+            <codeblock xml:space="preserve"><![CDATA[<p>Download <span id="report-title" tabindex="-1">2012 Sales Report</span>:
+<a aria-labelledby="report-title pdf" href="#" id="pdf">PDF</a> |
+<a aria-labelledby="report-title doc" href="#" id="doc">Word</a> |
+<a aria-labelledby="report-title ppt" href="#" id="ppt">Powerpoint</a></p>]]></codeblock>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques/>
+   <tests>
+      <procedure>
+         <p>For each link that has an <att>aria-labelledby</att> attribute:</p>
+         <olist>
+            <item>
+               <p>Check that each ID in the value of the <att>aria-labelledby</att> attribute matches an ID of a text element used as part of the link purpose.</p>
+            </item>
+            <item>
+               <p>Check that the combined value of the text referenced by the one or more ID's in the <att>aria-labelledby</att> attribute properly describes the purpose of the link element.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Checks #1 and #2 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SVR4">
+   <short-name>Allowing users to provide preferences for the display of conforming alternate versions</short-name>
+   <applicability>
+      <p>Content created using server-side scripting to store preferences.</p>
+   </applicability>
+   <applies-to>
+      <conformance-criterion idref="cc1" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to provide a mechanism for users to select a preference for an alternate conforming version of a Web page.</p>
+      <p>Providing preferences to allow users to view conforming alternate versions can be accomplished in several ways. One common method is to provide a link which triggers a server-side process that sets a session or persistent cookie that the Web server uses to modify the page or redirect the user to the alternate version. Other methods include providing user-specific choices that are stored as part of the user's login information for a system where users sign in to access a Web page or service. </p>
+      <p>Users requiring an alternate version will need the mechanism provided in the non-conforming page to be accessible in order to find and use it. The mechanism itself should conform to the accessibility level being claimed. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Setting a session or persistent cookie to store a user preference </head>
+         <description>
+            <p>A Web site offers a link to a "preferences" page on pages within the site. On this page, there is an option to view an alternate version of the site. There may be various aspects of the page that are affected, or the user may be opting to view an entirely alternate version of the site. The preference may be to display a version of the site where video included on the site displays captioning, or it may be offered because the primary site contains accessibility conformance issues that are addressed only via the alternative. </p>
+            <p>A Web page author may choose to handle this preference via a cookie, which may be handled via a server-side scripting language such as PHP.</p>
+            <p>The preferences page may be offered as follows: </p>
+         </description>
+         <code><![CDATA[ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+      <head>
+      <title>Site Preferences</title>
+  </head>
+  <body>
+      <h1>Site Preferences</h1>
+      <form id="form1" name="site_prefs" method="post" action="pref.php">
+          <fieldset>
+              <legend>Which version of the site do you want to view?</legend>
+              <input type="radio" name="site_pref" id="site_pref_reg" value="reg" />
+              <label for="site_pref_reg">Main version of site</label>
+              <input type="radio" name="site_pref" id="site_pref_axx" value="axx" />
+              <label for="site_pref_axx">Accessibility-conforming version</label>
+          </fieldset> 
+      </form>
+  </body>
+  </html>]]></code>
+         <description>
+            <p>The form is submitted to the pref.php file for processing. A cookie is set, and in this simple example the user's browser is directed to the site home page.</p>
+            <p>pref.php: </p>
+         </description>
+         <code><![CDATA[<?php
+    if(isset($site_pref)) {
+        setcookie("site_pref",$site_pref, time() + (86400 * 30)); //set for 30 days
+        header("location: http://www.example.com"); //redirects to home page
+    }
+?>
+]]></code>
+         <description>
+            <p>The home page starts with code that implements the user's preference. </p>
+            <p>index.php: </p>
+         </description>
+         <code><![CDATA[<?
+if(isset($site_pref)) {
+	if($site_pref="axx") {
+	header("location: ./accessible/index.php");
+}
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+...
+]]></code>
+         <description>
+            <p>For a login-based system, the preference is stored in the user's database record and referred to by the server-side script generating the pages for the user to view. </p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://php.net/setcookie">Setting and using cookies in PHP</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G136"/>
+      <relatedtech idref="G190"/>
+      <relatedtech idref="SCR38"/>
+      <relatedtech idref="SVR2"/>
+      <relatedtech idref="SVR3"/>
+      <relatedtech idref="C29"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Change a preference for how pages on the site are displayed. </p>
+            </item>
+            <item>
+               <p>Check that the preference itself or a link to that page where it can be set can be reached from each non-conforming page. </p>
+            </item>
+            <item>
+               <p>Check that Web pages are displayed according to the selected preference. </p>
+            </item>
+            <item>
+               <p>Check that when the preference(s) are set, the Web page conforms as claimed. </p>
+            </item>
+            <item>
+               <p>Verify that the resulting page is a conforming alternate version for the original page. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Checks #2 and #3 are true. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

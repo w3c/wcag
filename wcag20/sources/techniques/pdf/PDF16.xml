@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="PDF16">
+   <short-name>Setting the default language using the /Lang entry in the document
+    			catalog of a PDF document</short-name>
+   <applicability>
+      <p use-id="pdf.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="meaning-doc-lang-id" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="pdf.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to specify a document's default
+    				language by setting the /Lang entry in the document catalog. This is
+    				normally accomplished using a tool for authoring PDF. </p>
+      <p>Both assistive technologies and conventional user agents can render
+    				text more accurately when the language of the document is identified.
+    				Screen readers can load the correct pronunciation rules. Visual browsers
+    				can display characters and scripts correctly. Media players can show
+    				captions correctly. As a result, users with disabilities are better
+    				able to understand the content. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Adding a /Lang entry to specify the default document language
+    					using Adobe Acrobat 9 Pro</head>
+         <description>
+            <p>This example is shown with Adobe Acrobat Pro. There are other software tools that perform similar functions. See the list of other software tools in <specref ref="pdf_notes_acc-sup_files_applications"/>.</p>
+            <olist>
+               <item>
+                  <p> Open the document in Adobe Acrobat Pro </p>
+               </item>
+               <item>
+                  <p> From the File menu, select "Properties..." </p>
+               </item>
+               <item>
+                  <p> In the "Properties" dialog, select the "Advanced" tab </p>
+               </item>
+               <item>
+                  <p> In the "Reading Options" field, select the default language
+    						from the "Language" combo box </p>
+               </item>
+            </olist>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF16/docprop.gif"
+                       height="322"
+                       width="263"/>
+                  <alt>Specifying the default language in Adobe Acrobat's Properties dialog.</alt>
+               </image> 
+            </p>
+            <note>
+               <p>Acrobat includes 16 preset language selections.
+    						If you need to specify a language that is not on the list, such as
+    						Russian, you must type the ISO 639 code for the language, not its name. </p>
+            </note>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="language-en.pdf"
+                    linktype="examples">working example of adding a /Lang entry using Acrobat Pro</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Specifying the default document language in a PDF document
+    				using Microsoft Word 2007</head>
+         <description>
+            <p>This example is shown with Microsoft Word. There are other software tools that perform similar functions. See the list of other software tools in <specref ref="pdf_notes_acc-sup_files_applications"/>.</p>
+            <p>Documents authored in Microsoft Word: "In some instances, even
+    						if the document language has been specified in the source file, the
+    						information about document language is not conveyed to the PDFMaker.
+    						Setting the language for an entire document in the Document Properties
+    						dialog box [see Example 1] corrects all errors related to this option."(<loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="http://www.adobe.com/content/dam/Adobe/en/accessibility/products/acrobat/pdfs/A9-accessible-pdf-from-word.pdf">Adobe®
+    							Acrobat® 9 Pro Accessibility Guide: Creating Accessible PDF from Microsoft®
+    							Word</loc>) </p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Specifying the default document language in a PDF document
+    				using a /Lang entry</head>
+         <description>
+            <p>The natural language used for text in a document is determined in
+    						a hierarchical fashion, based on whether an optional /Lang entry is
+    						present in any of several possible locations. At the highest level,
+    						the document's default language may be specified by a /Lang entry in
+    						the document catalog. </p>
+            <p>The following code fragment illustrates code that is typical for using
+    						the /Lang entry in the document catalog for a document's default language
+    						(in this case, US English). (This is typically accomplished by an authoring
+    						tool.) </p>
+            <codeblock xml:space="preserve"><![CDATA[ 1 0 obj
+   << /Type /Catalog
+      ...
+      /Lang (en-US)
+      ...
+   >> 
+ endobj
+]]></codeblock>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> Section 14.9.2 (Natural Language Specification) in <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF
+    					1.7 (ISO 32000-1)</loc> 
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.loc.gov/standards/iso639-2/php/code_list.php">ISO
+    						639-2 Codes</loc> 
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://partners.adobe.com/public/developer/en/pdf/PDFReference16.pdf#page=886">PDF
+    							Reference 1.6, 10.8.1 Natural Language Specification (PDF 8.7 Mb)</loc> 
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://pdf.editme.com/pdfua-naturalLanguageSpecification">PDF
+    								Standards: Natural Language Specification</loc> 
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/content/dam/Adobe/en/accessibility/products/acrobat/pdfs/A9-accessible-pdf-from-word.pdf">Adobe®
+    									Acrobat® 9 Pro Accessibility Guide: Creating Accessible PDF from
+    									Microsoft® Word</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/accessibility/products/acrobat.html">PDF and Accessibility</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="PDF19"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Verify that the default language for the document is correctly
+    					specified by applying one of the following:</p>
+               <ulist>
+                  <item>
+                     <p> Read the PDF document with a screen reader, listening to hear
+    						that the text is read in the correct natural language. </p>
+                  </item>
+                  <item>
+                     <p> Using a PDF editor, check that the language is
+    							set to the default document language. </p>
+                  </item>
+                  <item>
+                     <p> Use a tool which is capable of showing the /Lang entry value
+    								in the document catalog to open the PDF document and view the
+    								language settings. </p>
+                  </item>
+                  <item>
+                     <p> Use a tool that exposes the document through the accessibility
+    									API and verify that the language is set to the default language. </p>
+                  </item>
+               </ulist>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#1 is true. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Setting_the_default_language_using_the_/Lang_entry_in_the_document_catalog_of_a_PDF_document"/>
+      </source>
+   </admin>
+</technique>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SM2">
+   <short-name>Adding extended audio description in SMIL 2.0</short-name>
+   <applicability>
+      <p> Applies whenever SMIL 2.0 player is available </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="media-equiv-audio-desc" relationship="sufficient"/>
+      <success-criterion idref="media-equiv-audio-desc-only" relationship="sufficient"/>
+      <success-criterion idref="media-equiv-extended-ad" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p> The purpose of this technique is to allow there to be more audio description
+                        than will fit into the gaps in the dialogue of the audio-visual material. </p>
+      <p> With SMIL 2.0 it is possible to specify that particular audio files be
+                        played at particular times, and that the program be frozen (paused) while
+                        the audio file is being played. </p>
+      <p> The effect is that the video appears to play through from end to end but
+                        freezes in places while a longer audio description is provided. It then
+                        continues automatically when the audio description is complete. </p>
+      <p> To turn the extended audio description on and off one could use script to
+                        switch back and forth between two SMIL scripts, one with and one without the
+                        extended audio description lines. Or script could be used to add or remove
+                        the extended audio description lines from the SMIL file so that the film
+                        clips would just play uninterrupted. </p>
+      <p> If scripting is not available then two versions of the SMIL file could be
+                        provided, one with and one without extended audio description. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Video with extended audio description.</head>
+         <code><![CDATA[
+<smil xmlns="http://www.w3.org/2001/SMIL20/Language"> 
+<head> 
+<layout> 
+<root-layout backgroundColor="black" height="266" width="320"/> 
+<region id="video" backgroundColor="black" top="26" left="0" 
+height="144" width="320"/> 
+</layout> 
+</head> 
+<body>	 
+<excl> 
+<priorityClass peers="pause"> 
+<video src="movie.rm" region="video" title="video" alt="video" /> 
+<audio src="desc1.rm" begin="12.85s" alt="Description 1" /> 
+<audio src="desc2.rm" begin="33.71s" alt="Description 2" /> 
+<audio src="desc3.rm" begin="42.65s" alt="Description 3" /> 
+<audio src="desc4.rm" begin="59.80s" alt="Description 4" /> 
+</priorityClass> 
+</excl> 
+</body> 
+     </smil> ]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/SMIL/">Synchronized Multimedia
+                                        Integration Language (SMIL 2.0)</loc>
+								       </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/SMIL-access/">Accessibility
+                                        Features of SMIL</loc>
+								       </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://ncam.wgbh.org/invent_build/web_multimedia/accessible-digital-media-guide/guideline-h-multimedia#techH12">NCAM Rich Media Accessibility, Accessible SMIL
+                                    Templates</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G81"/>
+      <relatedtech idref="SM7"/>
+      <relatedtech idref="SM11"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Play file with extended audio description </p>
+            </item>
+            <item>
+               <p> Check whether video freezes in places and plays extended audio
+                                    description </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> #2 is true </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

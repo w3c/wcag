@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH28">
+   <short-name>Providing text alternatives for ASCII art, emoticons, and leetspeak in Flash</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>ASCII characters, emoticons, and leetspeek are sometimes used
+    			and present accessibility challenges since the meaning is conveyed
+    			through the visual appearance of groupings of individual characters. </p>
+      <p>In Flash, such groupings of characters can be made accessible
+    				by wrapping them in a MovieClip, and providing an accessible
+    				name. It is crucial that  the <prop>forceSimple</prop> property for the
+    				MovieClip is set to true also. This will hide the actual ASCII
+    				characters from assistive technology. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Providing a text alternative for ASCII art in the Accessibility control panel</head>
+         <description>
+            <p>This example contains words written in ASCII art using leetspeek
+    						(the text says "WCAG 2 rulez"). To make this text
+    						accessible, the following steps are followed: </p>
+            <olist>
+               <item>
+                  <p> Place the ASCII characters in a MovieClip instance </p>
+               </item>
+               <item>
+                  <p> Select the MovieClip instance containing the text, and
+    							make the following changes in the Accessibility panel:</p>
+                  <ulist>
+                     <item>
+                        <p> Add a meaningful text alternative for the ASCII art,
+	    							without leetspeak (such as "WCAG 2 RULEZ"). </p>
+                     </item>
+                     <item>
+                        <p> Uncheck the "Make child objects accessible" checkbox,
+    								so that the ASCII characters will not be read by screen
+    								readers </p>
+                     </item>
+                  </ulist>
+               </item>
+            </olist>
+            <p>These steps are ilustrated in the screenshot below: </p>
+            <p>
+								       <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/FLASH28/ascii_art_alternative.png"
+                       height="308"
+                       width="695"/>
+                  <alt>Adding text alternative for ASCII art using the Accessibility panel</alt>
+               </image>
+							     </p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Providing a text alternative for ASCII art using ActionScript</head>
+         <description>
+            <p>This example is the same as example 1, except using ActionScript
+    						instead of the Accessibility control panel in the Flash Professional
+    						authoring tool. </p>
+            <olist>
+               <item>
+                  <p> Place the ASCII characters in a MovieClip instance </p>
+               </item>
+               <item>
+                  <p> Provide an instance name for the MovieClip instance (e.g. myASCII) </p>
+               </item>
+               <item>
+                  <p> Set the accessible name for the MovieClip and set the
+    							<prop>forceSimple</prop> property to true to hide the text inside the
+    							MovieClip. </p>
+               </item>
+            </olist>
+         </description>
+         <code xml:space="preserve"><![CDATA[// 'myASCII' is a MovieClip instance placed on the movie's main timeline
+myASCII.accessibilityProperties = new AccessibilityProperties();
+myASCII.accessibilityProperties.name = "WCAG 2 Rulez";
+myASCII.accessibilityProperties.forceSimple = true;
+]]></code>
+         <description>
+            <p>This technique is demonstrated in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="ascii_art_alternatives_as3.html"
+                    linktype="examples">working version of Providing a text alternative for ASCII art using ActionScript</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="ascii_art_alternatives_as3.html"
+                    linktype="examples">source of Providing a text alternative for ASCII art using ActionScript</loc> is available.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Publish the SWF file </p>
+            </item>
+            <item>
+               <p> Use a tool which is capable of showing an object's name
+    					to open the Flash movie. </p>
+            </item>
+            <item>
+               <p> Locate the ASCII grouping, leet speak, or emoticon and
+    						verify in the tool that the accessibility name represents
+    						the same information. </p>
+            </item>
+            <item>
+               <p> Authors may also test with a screen reader, by reading
+    							the Flash content and listening to hear that the equivalent
+    							text is read when tabbing to the non-text object (if it is
+    							tabbable) or hearing the alternative text read when reading
+    							the content line-by-line. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> #3 or #4 above is true </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Providing_text_alternatives_for_ASCII_art,_emoticons,_and_leetspeak_in_Flash"/>
+					</source>
+   </admin>
+</technique>

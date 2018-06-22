@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="ARIA11">
+   <short-name>Using ARIA landmarks to identify regions of a page</short-name>
+   <applicability>
+      <p>Technologies that support <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+      <success-criterion idref="navigation-mechanisms-skip" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
+         <ulist>
+            <item>
+               <p>Jaws V.11 and greater has complete support.
+</p>
+            </item>
+            <item>
+               <p>ChromeVox V.1 and greater has complete support 
+</p>
+            </item>
+            <item>
+               <p>VoiceOver V.3 and greater supports all landmarks except “form”.
+</p>
+            </item>
+            <item>
+               <p>NVDA 2 supports all landmarks except it will not support navigation to “application”
+</p>
+            </item>
+            <item>
+               <p>Window Eyes as of V.7 does not support ARIA landmarks.
+</p>
+            </item>
+         </ulist>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The purpose of this technique is to provide programmatic access to sections of a web page.  Landmark roles (or "landmarks") programmatically identify sections of a page. Landmarks help assistive technology (AT) users orient themselves to a page and help them navigate easily to various sections of a page. 
+</p>
+      <p>They also provide an easy way for users of assistive technology to skip over blocks of content that are repeated on multiple pages and notify them of programmatic structure of a page. For instance, if there is a common navigation menu found on every page, landmark roles (or "landmarks") can be used to skip over it and navigate from section to section. This will save assistive technology users and keyboard users the trouble and time of tabbing through a large amount of content to find what they are really after, much like a traditional "skip links" mechanism. (Refer to User Agent Notes above for specifics of AT support). A blind user who may be familiar with a news site's menu, and is only interested in getting to the top story could easily navigate to the "main" landmark, and bypass dozens of menu links. In another circumstance, a user who is blind may want to quickly find a navigation menu, and can do so by jumping to the navigation landmark. 
+</p>
+      <p>Landmarks also can help sighted keyboard-only users navigate to sections of a page using a <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+      	href="https://www.paciellogroup.com/blog/2013/07/enabling-landmark-based-keyboard-navigation-in-firefox/">browser plugin</loc>. 
+</p>
+      <p>Landmarks are inserted into the page using the role attribute on an element that marks the section. The value of the attribute is the name of the landmark. These role values are listed below:
+</p>
+      <ulist>
+         <item>
+            <p>banner: A region that contains the prime heading or internal title of a page.
+</p>
+         </item>
+         <item>
+            <p>complementary: Any section of the document that supports the main content, yet is separate and meaningful on its own.
+</p>
+         </item>
+         <item>
+            <p>contentinfo:  A region that contains information about the parent document such as copyrights and links to privacy statements.
+</p>
+         </item>
+         <item>
+            <p>form: A region of the document that represents a collection of form-associated elements, some of which can represent editable values that can be submitted to a server for processing.
+</p>
+         </item>
+         <item>
+            <p>main: Main content in a document. In almost all cases a page will have only one role="main".
+</p>
+         </item>
+         <item>
+            <p>navigation: A collection of links suitable for use when navigating the document or related documents.
+</p>
+         </item>
+         <item>
+            <p>search: The search tool of a Web document.
+</p>
+         </item>
+         <item>
+            <p>application: A region declared as a web application, as opposed to a web document. (note: The role of application should only be used with caution because it gives a signal to screen reading software to turn off normal web navigation controls. Simple widgets should generally not be given the application role, nor should an entire web page be given the application role, unless it is not to be used at all like a web page, and not without much user testing with assistive technology.)
+</p>
+         </item>
+      </ulist>
+      <p>There are cases when a particular landmark role could be used more than once on a page, such as on primary and secondary navigation menus. In these cases, identical roles should be disambiguated from each other using a valid technique for labelling regions (see examples below).
+</p>
+      <p>Landmarks should supplement native semantic markup such as HTML headings, lists and other structural markup. Landmarks are interpretable by WAI-ARIA-aware assistive technologies and are not exposed by browsers directly to users.
+</p>
+      <p>It is a best practice to include ALL content on the page in landmarks, so that screen reader users who rely on them to navigate from section to section do not lose track of content.
+</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Simple landmarks</head>
+         <description>
+            <p>The following example shows how landmarks might be added to an HTML4 or XHTML 1.0 document:</p>
+            <codeblock xml:space="preserve"><![CDATA[<div id="header" role="banner">A banner image and introductory title</div>
+<div id="sitelookup" role="search">....</div>
+<div id="nav" role="navigation">...a list of links here ... </div>
+<div id="content" role="main"> ... Ottawa is the capital of Canada ...</div>
+<div id="rightsideadvert" role="complementary">....an advertisement here...</div>
+<div id="footer" role="contentinfo">(c)The Freedom Company, 123 Freedom Way, Helpville, USA</div>]]></codeblock>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Multiple landmarks of the same type and aria-labelledby</head>
+         <description>
+            <p>The following example shows a best practice of how landmarks might be added to an HTML4 or XHTML 1.0 document in situations where there are more than two of the same type of landmark on the same page. For instance, if a navigation role is used multiple times on a Web page, each instance may have a unique label specified using <att>aria-labelledby</att>:
+
+</p>
+            <codeblock xml:space="preserve"><![CDATA[<div id="leftnav" role="navigaton" aria-labelledby="leftnavheading">
+<h2 id="leftnavheading">Institutional Links</h2>
+<ul><li>...a list of links here ...</li> </ul></div>
+<div id="rightnav" role="navigation" aria-labelledby="rightnavheading">
+<h2 id="rightnavheading">Related topics</h2>
+<ul><li>...a list of links here ...</li></ul></div>]]></codeblock>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Multiple landmarks of the same type and aria-label</head>
+         <description>
+            <p>The following example shows a best practice of how landmarks might be added to an HTML4 or XHTML 1.0 document in situations where there are more than two of the same type of landmark on the same page, and there is no existing text on the page that can be referenced as the label.</p>
+            <codeblock xml:space="preserve"><![CDATA[<div id="leftnav" role="navigaton" aria-label="Primary">
+<ul><li>...a list of links here ...</li></ul> </div>
+<div id="rightnav" role="navigation" aria-label="Secondary">
+<ul><li>...a list of links here ...</li> </ul></div>]]></codeblock>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Search form</head>
+         <description>
+            <p>The following example shows a search form with a "search" landmark. The search role typically goes on the form field or a div surrounding the search form.</p>
+            <codeblock xml:space="preserve"><![CDATA[<form role="search">
+<label for="s6">search</label><input id="s6" type="text" size="20">
+...
+</form> ]]></codeblock>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria/usage#usage_intro">Accessible Rich Internet Applications (WAI-ARIA) 1.0, Using WAI-ARIA Roles</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria/states_and_properties">Accessible Rich Internet Applications (WAI-ARIA) 1.0, Supported States and Properties</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                  	href="https://www.paciellogroup.com/blog/2013/07/enabling-landmark-based-keyboard-navigation-in-firefox/">Enabling landmark-based keyboard navigation in Firefox</loc>
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://accessibleculture.org/articles/2011/02/not-all-aria-widgets-deserve-role-application/">Not All ARIA Widgets Deserve role="application"</loc>
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                  	href="https://developer.yahoo.com/blogs/ydn/aria-role-application-53608.html">When Should You Use ARIA Role="Application"?</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H69"/>
+      <relatedtech idref="SCR28"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Examine each element with a <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria/roles#landmark_roles">landmark role</loc>.
+</p>
+            </item>
+            <item>
+               <p>Examine whether the landmark role attribute is applied to the section of the page that corresponds with that role. (i.e., the "navigation" role is applied to a navigation section, the "main" role is applied to where the main content begins.)
+</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#1 and #2 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

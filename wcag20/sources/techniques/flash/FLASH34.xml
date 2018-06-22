@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH34">
+   <short-name>Turning off sounds that play automatically when an assistive technology is detected</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="visual-audio-contrast-dis-audio" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The intent of this technique is to prevent sounds from playing when
+    				the Flash movie loads. This is useful for those who utilize assistive
+    				technologies (such as screen readers, screen magnifiers, switch mechanisms,
+    				etc.) and those who may not (such as those with cognitive, learning
+    				and language disabilities). By default, the sound will be played automatically.
+    				When a screen reader such as JAWS is detected however, the sound will
+    				have to be started manually. </p>
+      <p>To perform screen reader detection, Flash provides the <prop>flash.accessibility.Accessibility.active</prop>
+    				property. If this property is set to <propval>true</propval>, it means that the Flash
+    				player has detected running assistive technology. Based on this flag,
+    				the Flash developer can choose to run different functionality. </p>
+      <note>
+         <p>The Flash Player requires some time to detect active assistive
+    				technology and set the <prop>Accessibility.active</prop> property. To get accurate
+    				results, do not check for this property immediately on the first frame
+    				of the movie. Instead, perform the check 5 frames in or based on a
+    				timed event. </p>
+         <p>Not every screen reader will be detected using this mechanism.
+    				In general, the property will be set to true when any  <abbr expansion="Microsoft Active Accessibility">MSAA</abbr> client
+    				is running. </p>
+         <p>Other assistive technology tools, including screen magnifiers,
+    				or tools not used as assistive technologies may also utilize MSAA in
+    				ways that result in <prop>Accessibility.active</prop> being set to <propval>true</propval>. </p>
+      </note>
+   </description>
+   <examples>
+      <eg-group>
+         <head>A SoundHandler class</head>
+         <description>
+            <p>A class called SoundHandler is created which automatically starts
+    						playing an MP3 file only when <prop>Accessibility.active</prop> is set to <propval>false</propval>.
+    						Note that this example also checks the <prop>flash.system.Capabilities.hasAccessibility</prop>
+    						property. This property does not check whether a screen reader is running,
+    						but instead indicates whether the Flash Player is running in an environment
+    						that supports MSAA (which basically means the Windows operating system). </p>
+         </description>
+         <code xml:space="preserve"><![CDATA[package wcagSamples {
+  import flash.accessibility.Accessibility;
+  import flash.display.Sprite;
+  import flash.net.URLRequest;
+  import flash.media.Sound;
+  import flash.media.SoundChannel;
+  import flash.system.Capabilities;
+  import fl.controls.Button;
+  import fl.accessibility.ButtonAccImpl;
+  import fl.controls.Label;
+  import flash.events.MouseEvent;
+  
+  public class SoundHandler extends Sprite {
+    private var snd: Sound = new Sound();
+    private var button: Button = new Button();
+    private var req: URLRequest = new URLRequest(
+      "http://av.adobe.com/podcast/csbu_dev_podcast_epi_2.mp3");
+    private var channel: SoundChannel = new SoundChannel();
+    private var statusLbl: Label = new Label();
+    public function SoundHandler() {
+      snd.load(req);
+      ButtonAccImpl.enableAccessibility();
+      button.x = 10;
+      button.y = 10;
+      statusLbl.autoSize = "left";
+      statusLbl.x = 10;
+      statusLbl.y = 40;
+      addChild(statusLbl);
+      button.addEventListener(MouseEvent.CLICK, clickHandler);
+      this.addChild(button);
+      if (! Capabilities.hasAccessibility || ! Accessibility.active) {
+        channel = snd.play();
+        button.label = "Stop Sound";
+        statusLbl.text = "No Assistive technology detected. \
+          Sound will play automatically";
+      } else {
+        button.label = "Start Sound";
+        statusLbl.text = "Assistive technology detected. \
+          Sound will not play automatically";
+      }
+    }
+    private function clickHandler(e: MouseEvent): void {
+      if (button.label == "Stop Sound") {
+        button.label = "Start Sound";
+        channel.stop();
+      } else {
+        channel = snd.play();
+        button.label = "Stop Sound";
+      }
+    }
+  }
+}]]></code>
+         <description>
+            <p>This technique can be viewed in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="screen_reader_detection_to_prevent_autoplay_as3.html"
+                    linktype="examples">working version of A SoundHandler class</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="screen_reader_detection_to_prevent_autoplay_as3.fla"
+                    linktype="examples">source of A SoundHandler class</loc> is available.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/accessibility/Accessibility.html#active">ActionScript 3.0 Language and Components Reference: Accessibility.active property</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+									         	href="https://www.paciellogroup.com/blog/2008/04/developer-beware-using-flash-to-detect-screen-readers/">Developer Beware: Using Flash to Detect Screen Readers</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G170"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Start a screen reader that supports MSAA. </p>
+            </item>
+            <item>
+               <p> Open a page containing a Flash movie that starts playing audio
+    					automatically when a screen reader is not running </p>
+            </item>
+            <item>
+               <p> Confirm that the audio is stopped. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <olist>
+            <item>
+               <p> #3 is true </p>
+            </item>
+         </olist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Using_screen_reader_detection_to_turn_off_sounds_that_play_automatically"/>
+					</source>
+   </admin>
+</technique>

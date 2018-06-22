@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH13">
+   <short-name>Using HTML language attributes to specify language in Flash content</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="meaning-doc-lang-id" relationship="sufficient"/>
+      <success-criterion idref="meaning-other-lang-id" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+      <ua-issue name="JAWS" version="8.0">
+         <p>JAWS 8.0 or later can be configured to change language automatically   on the basis of the lang attribute. However, it only switches amongst   major languages as indicated by the primary code. If a regional language   variant is indicated with a language subcode, JAWS will use the default   variant for which it is configured. </p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to identify the default language   of the Flash content by providing the lang and/or xml:lang attribute on   the HTML or object elements for the page containing the Flash. The   embedded Flash content will inherit the language specified. If the   entire web page uses the same language, the lang and/or xml:lang   attribute can be placed on the page's HTML element, as described in <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/WCAG20-TECHS/H57.html">H57:   Using language attributes on the html element</loc>. </p>
+      <p>Since Flash inherits the language from the HTML or object   element, all text within the Flash content is expected to be in that   inherited language. This means that it is possible to have a Flash   object in the French language on a page that is primarily in another   language, or to have a page with multiple Flash objects, each in a   different language. It is not possible, however, to indicate changes in the human language of content <emph>within</emph> a single Flash object using this technique.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Using the language of the page as whole in the embedded Flash</head>
+         <description>
+            <p>This example defined the content of the entire web page to be in the   French language. The Flash content will inherit the specified language   from the HTML container. </p>
+         </description>
+         <code xml:space="preserve"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<html lang="fr" xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta content="text/html; charset=iso-8859-1"
+      http-equiv="Content-Type"/>
+    <title>Flash Languages Examples - French</title>
+    <script src="swfobject.js" type="text/javascript"/>
+    <script type="text/javascript">
+    swfobject.registerObject("myMovie", "9.0.115", "expressInstall.swf");
+</script>
+  </head>
+  <body>
+    <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+      height="420" id="myMovie" width="780">
+      <param name="movie" value="myMovie.swf"/>
+      <!--[if !IE]>-->
+      <object data="languages.swf" height="420"
+        type="application/x-shockwave-flash" width="780">
+        <!--<![endif]-->
+        <!--[if !IE]>-->
+      </object>
+      <!--<![endif]-->
+    </object>
+  </body>
+</html>
+]]></code>
+         <description>
+            <p>This is demonstrated in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="language_en.html"
+                    linktype="examples">working example of Using the language of the page as whole in the embedded Flash</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="languages.fla"
+                    linktype="examples">source of Using the language of the page as whole in the embedded Flash</loc> is available.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Applying a language just to the embedded Flash</head>
+         <description>
+            <p>This example defines the content of a Flash movie to be in the French   language. The Flash movie is embedded using <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+            	href="https://github.com/swfobject/swfobject">SWFObject's static publishing method</loc>. This means   that there are two nested object elements, the outer to target Internet   Explorer, the Inner to target other browsers. For this reason the lang   and xml:lang attributes must be added twice. </p>
+         </description>
+         <code xml:space="preserve"><![CDATA[<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+  height="420" id="myMovie" lang="fr" width="780" xml:lang="fr">
+  <param name="movie" value="myMovie.swf"/>
+  <!--[if !IE]>-->
+  <object data="languages.swf" height="420" lang="fr"
+    type="application/x-shockwave-flash" width="780" xml:lang="fr">
+    <!--<![endif]-->
+    <!--[if !IE]>-->
+  </object>
+  <!--<![endif]-->
+</object>
+]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP 47: Tags for the Identification of Languages</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/1999/REC-html401-19991224/struct/dirlang.html#h-8.1.2">Inheritance of language codes</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H57"/>
+      <relatedtech idref="H58"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Examine the html element and the object element of the HTML   document containing the reference to the SWF. </p>
+            </item>
+            <item>
+               <p> Check that the human language of the Flash content is the same   as the inherited language for the object element as specified in HTML   4.01, Inheritance of language codes </p>
+            </item>
+            <item>
+               <p> Check that the value of the lang attribute conforms to BCP 47:   Tags for the Identification of Languages or its successor and reflects   the  primary language used by the Flash content. </p>
+            </item>
+            <item>
+               <p>Check that no changes in human language occur within the Flash content</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>For Success Criterion 3.1.1: Checks 1-3 are all true.</p>
+            </item>
+            <item>
+               <p>For Success Criterion 3.1.2: Checks 1-4 are all true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Using_HTML_language_attributes_to_specify_language_in_Flash_content"/>
+					</source>
+   </admin>
+</technique>
