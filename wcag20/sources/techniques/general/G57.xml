@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="G57">
+   <short-name>Ordering the content in a meaningful sequence</short-name>
+   <applicability>
+      <p>All technologies.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-sequence" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to ensure that the order of content presented to assistive technologies allows the user to make sense of the content. Some techniques permit the content to be rendered visually in a meaningful sequence even if this is different from the order in which the content is encoded in the underlying source file.</p>
+      <p>For example, when mixing languages with different directionality in HTML, the bidirectional algorithm may position punctuation in the wrong location in the visual rendering. The visual rendering problem could be corrected by moving the punctuation in the content stream so that the bidirectional algorithm positions it as desired, but this would expose the incorrect content order to assistive technology. The content is both rendered in the correct order visually and exposed to assistive technology in the correct order by using markup to override the bidirectional algorithm.</p>
+      <p>When rendered visually, white space characters such as space or tab may not appear to be part of the content. However, when inserted into the content to control visual formatting, they may interfere with the meaning of the content.</p>
+      <p>At a larger granularity, controlling the placement of blocks of content in an HTML document using layout tables may produce a rendering in which related information is positioned together visually, but separated in the content stream. Since layout tables are read row by row, if the caption of an illustration is placed in the row following the illustration, it may be impossible to associate the caption with the image.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>A Web page from a museum exhibition contains a navigation bar containing a long list of links. The page also contains an image of one of the pictures from the exhibition, a heading for the picture, and a detailed description of the picture. The links in the navigation bar form a meaningful sequence. The heading, image, and text of the description also form a meaningful sequence. CSS is used to position the elements on the page.</p>
+            <p>Markup:</p>
+         </description>
+         <code role="html401"><![CDATA[
+  <h1>My Museum Page</h1>
+  <ul id="nav">
+    <li><a href="#">Link 1</a></li>
+    ...
+    <li><a href="#">Link 10</a></li>
+  </ul>
+  <div id="description">
+    <h2>Mona Lisa</h2>
+    <p>
+    <img src="img.png" alt="Mona Lisa">
+    </p>
+    <p>...detailed description of the picture...</p>
+  </div>
+          ]]></code>
+          <description>
+            <p>CSS:</p>
+          </description> 
+          <code role="css"><![CDATA[
+  ul#nav {
+    float: left;
+    width: 9em;
+    list-style-type: none;
+    margin: 0;
+    padding: 0.5em;
+    color: #fff;
+    background-color: #063;
+  }
+  ul#nav a {
+   display: block;
+    width: 100%;
+    text-decoration: none;
+    color: #fff;
+    background-color: #063;
+  }
+  div#description {
+    margin-left: 11em;
+  }
+        ]]></code>
+      </eg-group>
+   </examples>
+   <resources/>
+   <related-techniques>
+      <relatedtech idref="G59"/>
+      <relatedtech idref="C6"/>
+      <relatedtech idref="C27"/>
+      <relatedtech idref="F1"/>
+      <relatedtech idref="F49"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Linearize content using a standard approach for the technology (e.g., removing layout styles or running a linearization tool)</p>
+            </item>
+            <item>
+               <p>Check to see if the order of content yields the same meaning as the original</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Check #2 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

@@ -1,0 +1,34 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+ <head>
+ <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+ <title>Creating Action Buttons using JavaScript</title>
+ <script type="text/javascript">
+ //<![CDATA[
+ // this is the function to perform the action.  This simple example just displays an alert message.
+ function doSomething(event) {
+   alert("simple test");
+   return false;
+ }
+ // This setUpActions() function must be called to set the onclick event handler onto the existing button element. 
+ // This function must be called after the button element with id="actionButton" has been loaded into the DOM.
+ // In this example the setUpActions() function is called from the onload event for the body element.
+ function setUpActions() {
+   // get the link object
+   var button=document.getElementById("actionButton");
+   // assign the onclick handler to the button object.
+   button.onclick=doSomething;
+ }
+ //]]>
+ </script>
+ </head>
+ <body onload="setUpActions();">
+ 	<p>Here is the button to modify with a javascript action:</p>
+   <form action="doSomething.aspx" onsubmit="return false;">
+     <button type="button" id="actionButton" name="actionButton">Button to invoke JavaScript.</button>
+   </form>
+ <p>As in the previous example, the button element is given a unique id attribute; a script uses the Document Object Model (DOM) to find the button element by its id and add the onclick handler. The <code>action</code> attribute of the enclosing <code>form</code> element contains a script that will perform the action on the server. </p>
+ </body>
+ </html>

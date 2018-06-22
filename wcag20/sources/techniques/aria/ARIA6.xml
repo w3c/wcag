@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="ARIA6">
+   <short-name>Using aria-label to provide labels for objects</short-name>
+   <applicability>
+      <p>Technologies that support <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
+         <ulist>
+            <item>
+               <p>Jaws V.11 and greater has complete support.
+</p>
+            </item>
+            <item>
+               <p>ChromeVox V.1 and greater has complete support 
+</p>
+            </item>
+            <item>
+               <p>VoiceOver V.3 and greater supports
+</p>
+            </item>
+            <item>
+               <p>NVDA 2 supports Aria Describedby
+</p>
+            </item>
+            <item>
+               <p>Window Eyes as of V.7.
+</p>
+            </item>
+         </ulist>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The purpose of this technique is to provide a label for objects that can be read by assistive technology. The <att>aria-label</att> attribute provides the text label for an object, such as a button. When a screen reader encounters the object, the <att>aria-label</att> text is read so that the user will know what it is.</p>
+      <p>Authors should be aware that <att>aria-label</att> may be disregarded by assistive technologies in situations where <att>aria-labelledby</att> is used for the same object. For more information on the naming hierarchy please consult the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/wai-aria/roles#textalternativecomputation">ARIA specification</loc> and the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">accessible name and description calculation</loc> in the HTML to Platform Accessibility APIs Implementation Guide. Authors should be aware that use of <att>aria-label</att> will override any native naming such as <att>alt</att> on images or <el>label</el> associated with a form field using the <att>for</att> attribute.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Distinguishing navigation landmarks</head>
+         <description>
+            <p>The following example shows how <att>aria-label</att> could be used to distinguish two navigation landmarks in a HTML4 and XHTML 1.0 document, where there are more than two of the same type of landmark on the same page, and there is no existing text on the page that can be referenced as the label.</p>
+            <codeblock xml:space="preserve"><![CDATA[<div role="navigation" aria-label="Primary">
+<ul><li>...a list of links here ...</li></ul> </div>
+<div role="navigation" aria-label="Secondary">
+<ul><li>...a list of links here ...</li> </ul></div>]]></codeblock>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Identifying region landmarks</head>
+         <description>
+            <p>The following example shows how a generic "region" landmark might be added to a weather portlet. There is no existing text on the page that can be referenced as the label, so it is labelled with <att>aria-label</att>.</p>
+            <codeblock xml:space="preserve"><![CDATA[<div role="region" aria-label="weather portlet"> 
+...
+</div>]]></codeblock>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Providing a label for Math</head>
+         <description>
+            <p>Below is an example of a MathML function, using the math role, appropriate label, and MathML rendering:</p>
+            <codeblock xml:space="preserve"><![CDATA[<div role="math" aria-label="6 divided by 4 equals 1.5">
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mfrac>
+      <mn>6</mn>
+      <mn>4</mn>
+    </mfrac>
+    <mo>=</mo>
+    <mn>1.5</mn>
+  </math>
+</div>]]></codeblock>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html-aapi/#html-element-to-accessibility-api-role-mapping-matrix">HTML to Platform Accessibility APIs Implementation Guide: HTML Element to Accessibility API Role Mapping Matrix</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="ARIA16"/>
+      <relatedtech idref="H44"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each element where a <att>aria-label</att> attribute is present.</p>
+         <olist>
+            <item>
+               <p>Examine whether the text description accurately labels the object or provides a description of its purpose or provides equivalent information.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#1 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

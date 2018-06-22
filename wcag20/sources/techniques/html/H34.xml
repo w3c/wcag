@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H34">
+   <short-name>Using a Unicode right-to-left mark (RLM) or left-to-right mark (LRM) to mix text
+          direction inline</short-name>
+   <applicability>
+      <p>HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-sequence" relationship="cosufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to use Unicode right-to-left marks and left-to-right
+            marks to override the HTML bidirectional algorithm when it produces undesirable results.
+            This may be necessary, for instance, when placing neutral characters such as spaces or
+            punctuation between different directional text runs. The concepts used in this technique
+            are described in <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/International/articles/inline-bidi-markup/">What you need to
+              know about the bidi algorithm and inline markup</loc>.</p>
+      <p> Unicode right-to-left marks and left-to-right marks can be entered directly or by
+            means of character entities or numeric character references, as shown here.</p>
+      <ulist>
+         <item>
+            <p>left-to-right mark: &amp;lrm; or &amp;#x200e; (U+200E)</p>
+         </item>
+         <item>
+            <p>right-to-left mark: &amp;rlm; or &amp;#x200f; (U+200F)</p>
+         </item>
+      </ulist>
+      <p>Due to the <abbr expansion="bidirectional">bidi</abbr> algorithm, a source code editor
+            may not display character entities or numeric
+              character references as expected.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>This example shows an Arabic phrase in the middle of an English sentence. The exclamation point is part of the Arabic phrase and should appear on its left. Because it is between an Arabic and Latin character and the overall paragraph direction is <abbr expansion="left-to-right">LTR</abbr>, the bidirectional algorithm positions the exclamation mark to the right of the Arabic phrase. </p>
+            <p>The title is "<phrase xml:lang="ar">مفتاح معايير الويب!</phrase>" in Arabic.</p>
+            <p>Visually-ordered ASCII version (RTL text in uppercase, LTR in lower):</p>
+            <p>the title is "HCTIWS SDRADNATS BEW!" in arabic.</p>
+            <p>Inserting a Unicode right-to-left mark in the code immediately after the exclamation mark positions it correctly when you view the displayed text (see below). You can use a character escape or the (invisible) control character to insert the right-to-left mark.</p>
+            <p>The title is "<phrase xml:lang="ar">مفتاح معايير الويب!‏</phrase>" in Arabic.</p>
+            <p>Visually-ordered ASCII version:</p>
+            <p>the title is "!HCTIWS SDRADNATS BEW" in arabic.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/i18n-html-tech-bidi/">Authoring Techniques for
+                    XHTML &amp; HTML Internationalization: Handling Bidirectional Text 1.0</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/i18n-html-tech-bidi/#ri20030218.135304584">Mixing
+                    text direction inline</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/International/articles/inline-bidi-markup/">What you
+                    need to know about the bidi algorithm and inline markup</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/International/geo/html-tech/tech-bidi.html#bidisource">Problems with bidirectional source text</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H56"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Examine the source for places where text changes direction. </p>
+            </item>
+            <item>
+               <p>When text changes direction, check whether neutral characters such as spaces or
+                  punctuation occur adjacent to text that is rendered in the non-default
+                direction.</p>
+            </item>
+            <item>
+               <p>When #2 is true and the HTML bidirectional algorithm would produce the wrong
+                  placement of the neutral characters, check whether the neutral characters are
+                  followed by Unicode right-to-left or left-to-right marks that cause neutral
+                  characters to be placed as part of the preceding characters. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Check #3 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

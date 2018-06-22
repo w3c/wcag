@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H63">
+   <short-name>Using the scope attribute to associate header cells and data cells in data
+          tables</short-name>
+   <applicability>
+      <p>HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>The <att>row</att> and <att>col</att> values of the <att>scope</att> attribute are
+              currently supported to a large extent by most current versions of JAWS. However, there
+              are still some problems and WindowEyes support for <att>scope</att> is inconsistent.
+              The same is true for Japanese versions of these screen readers. Versions of JAWS prior
+              to version 5 and older versions of Window-Eyes have inconsistent support for
+                <att>scope</att>.</p>
+         <p>At the current time, those who want to ensure consistent support across Assistive
+              Technologies for tables where the headers are not in the first row/column may want to
+              use the technique for complex tables <specref ref="H43"/>. For simple tables that have
+              headers in the first column or row we recommend the use of the <el>th</el> and
+              <el>td</el> elements. </p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to associate header cells with data cells in complex tables using the
+              <att>scope</att> attribute. The <att>scope</att> attribute may be used to clarify
+            the scope of any cell used as a header. The scope identifies whether the cell is a
+            header for a row, column, or group of rows or columns. The values <code><![CDATA[row]]></code>,
+              <code><![CDATA[col]]></code>, <code><![CDATA[rowgroup]]></code>, and <code><![CDATA[colgroup]]></code> identify these
+            possible scopes respectively.</p>
+      <p>For simple data tables where the header is not in the first row or column, like the one
+            in Example 1, this technique can be used. Based on screen reader support today, its use
+            is suggested in two situations both relating to simple tables:</p>
+      <ulist>
+         <item>
+            <p>data cells marked up with <el>td</el> that also function as row header or column
+                header </p>
+         </item>
+         <item>
+            <p>header cells marked up with <el>td</el> instead of <el>th</el>. Sometimes, authors
+                use this to avoid the display characteristics associated with <el>th</el> and also
+                do not choose to use CSS to control the display for <el>th</el>. </p>
+         </item>
+      </ulist>
+      <note>
+         <p>For simple tables that have the headers in the first row or column then it is
+              sufficient to simply use the TH elements without scope. </p>
+         <p>For complex tables use ids and headers as in <specref ref="H43"/>. </p>
+         <p>Some users may find it easier to work with several simple tables than one more complex table. Authors may wish to consider whether they can convert complex tables to one or more simple tables.</p>
+      </note>
+   </description>
+   <examples>
+      <eg-group>
+         <head>A simple schedule</head>
+         <description>
+            <p>In the following example, column #1 contains serial numbers for rows in the table
+                and the second column contains the key value for the row. The cells in the second
+                column may then use <code><![CDATA[
+									]]><att>scope</att><![CDATA[="row"]]></code>. The cells in the first row too are
+                marked up with <el>td</el> and use <code><![CDATA[
+									]]><att>scope</att><![CDATA[="col"]]></code>. </p>
+         </description>
+         <code role="html401"><![CDATA[ <table border="1">
+  <caption>Contact Information</caption>
+  <tr>
+    <td></td>
+    <th scope="col">Name</th>
+    <th scope="col">Phone#</th>
+    <th scope="col">Fax#</th>
+    <th scope="col">City</th>
+  </tr><tr>
+    <td>1.</td>
+    <th scope="row">Joel Garner</th>
+    <td>412-212-5421</td>
+    <td>412-212-5400</td>
+    <td>Pittsburgh</td>
+  </tr><tr>
+    <td>2.</td>
+    <th scope="row">Clive Lloyd</th>
+    <td>410-306-1420</td>
+    <td>410-306-5400</td>
+    <td>Baltimore</td>
+  </tr><tr>
+    <td>3.</td>
+    <th scope="row">Gordon Greenidge</th>
+    <td>281-564-6720</td>
+    <td>281-511-6600</td>
+    <td>Houston</td>
+  </tr>
+</table> ]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>HTML 4.01 <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/1999/REC-html401-19991224/struct/tables.html#adef-scope ">Table Cells: scope attribute</loc>
+								       </p>
+            </item>
+            <item>
+               <p>HTML 4.01 <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html401/struct/tables.html#h-11.2.6">Table cells: The TH and TD elements</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.eramp.com/david/tablesample2.htm">Assistive technology
+                    reading tables</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H43"/>
+      <relatedtech idref="H51"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each data table: </p>
+         <olist>
+            <item>
+               <p>Check that all <el>th</el> elements have a <att>scope</att> attribute.</p>
+            </item>
+            <item>
+               <p>Check that all <el>td</el> elements that act as headers for other elements
+                  have a <att>scope</att> attribute.</p>
+            </item>
+            <item>
+               <p>Check that all <att>scope</att> attributes have the value <code><![CDATA[row]]></code>,
+                    <code><![CDATA[col]]></code>, <code><![CDATA[rowgroup]]></code>, or <code><![CDATA[colgroup]]></code>.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>All checks above are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH15"><!-- FLASH37 merged into this -->
+   <short-name>Using the tabIndex property to specify a logical reading order and a logical tab order in Flash</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-sequence" relationship="sufficient"/>
+      <success-criterion idref="navigation-mechanisms-focus-order" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to control the Flash Movie's   reading order and tab order by assigning tabIndex values to its elements. </p>
+      <p>The tab order is the order in which objects receive input focus when users press the Tab key. The tab order does not necessarily contain the same elements as the reading order does, as the reading order can also contain elements that are not focusable. However, both the reading order and tab order can be controlled using tab index values. </p>
+      <p>Flash Player uses a default tab index order from left to right and top to bottom.</p>
+      <p>To create a custom reading order, assign a tab index value to every instance on the stage, either through ActionScript or through the Accessibility panel. Create a tabIndex value for every accessible object, not just the focusable objects. For example, dynamic text must have tab indexes, even though a user cannot tab to dynamic text.</p>
+      <p>You can create a custom tab-order index in the Accessibility panel for keyboard navigation for the following objects:</p>
+      <ulist>
+         <item>
+            <p>Dynamic text</p>
+         </item>
+         <item>
+            <p>Input text</p>
+         </item>
+         <item>
+            <p>Buttons</p>
+         </item>
+         <item>
+            <p>Movie clips, including compiled movie clips</p>
+         </item>
+         <item>
+            <p>Components</p>
+         </item>
+         <item>
+            <p>Screens</p>
+         </item>
+      </ulist>
+      <p>Tab focus occurs in numerical order, starting from the lowest index number. After tab focus reaches the highest tab index, focus returns to the lowest index number. When you move tab-indexed objects that are user-defined in your document, or to another document, Flash retains the index attributes. Check for and resolve index conflicts (for example, two different objects on the Stage with the same tab-index number). If two or more objects have the same tab index in any given frame, Flash follows the order in which the objects were placed on the Stage.</p>
+      <p>To add a tabIndex value using the Accessibility panel, perform   the following steps for every accessible object on the stage: </p>
+      <olist>
+         <item>
+            <p> Select the element by clicking on it. </p>
+         </item>
+         <item>
+            <p> In the Accessibility panel, enter a numeric value in the "Tab   index"  field. The value must be  a positive integer (up to 65535) that   reflects the order in which the selected object should be read. Elements   with higher tab index values will be read after elements with lower   values.  If two or more objects have the same tab index in any given   frame, Flash follows the order in which the objects were placed on the   Stage. </p>
+         </item>
+         <item>
+            <p> To visualize the currently defined tab order, select View &gt;   Show Tab Order. Tab index numbers for individual objects appear in the   upper-left corner of the object. </p>
+         </item>
+      </olist>
+      <note>
+         <p>You can also use ActionScript code to create a tab-order index for keyboard navigation. </p>
+      </note>
+      <p>These steps are illustrated in the screenshots below </p>
+      <p>
+						   <image>
+            <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                 source="/WAI/WCAG20/Techniques/working-examples/FLASH15/ac_show_tab_order_view.png"
+                 height="232"
+                 width="214"/>
+            <alt>visualizing the tab order</alt>
+         </image>
+					</p>
+      <p>
+						   <image>
+            <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                 source="/WAI/WCAG20/Techniques/working-examples/FLASH15/setting_tabindex_in_accessibility_panel.png"
+                 height="319"
+                 width="281"/>
+            <alt>Setting a tab index value in the Accessibility panel</alt>
+         </image>
+					</p>
+      <note>
+         <p>Flash Player no longer requires that you add all of the   objects in a FLA file to a list of tab index values. Even if you do not   specify a tab index for all objects, a screen reader reads each object   correctly. </p>
+      </note>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Using tabIndex to navigate a column structure</head>
+         <description>
+            <p>This example contains dynamic TextField instances that are grouped   into columns. To ensure the reading order follows the column structure.   The TextField instances are given a tab index value that corresponds to   their textual content (for example, the TextField containing the text   "Sample Text 3" has a tabindex value of 3. Additionally, a single   TextField is added that has no tabindex value set. This field contains   the text "Not in tab order". Even though this field is visually placed   between sample text 2 and 3, it is placed at the end of the custom tab   order because it is not assigned a tabindex value. </p>
+            <p>The results can be found in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="custom_reading_order_as3.html"
+                    linktype="examples">working version of Using tabindex to navigate a column structure</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="custom_reading_order_as3.fla"
+                    linktype="examples">source of Using tabindex to navigate a column structure</loc> is available.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Controlling tab order in a two-column layout</head>
+         <description>
+            <p>This example contains a Flash based form that is laid out over two
+    						columns. To make the tab order follow the column structure, each form
+    						control is assigned a tab index value in the Accessibility panel. </p>
+            <p>The results are shown in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="custom_tab_order_as3.html"
+                    linktype="examples">working version of Controlling tab order in a two-column layout</loc>.  The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="custom_tab_order_as3.fla"
+                    linktype="examples">source of Controlling tab order in a two-column layout</loc> is available.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/devnet/flash/articles/concept_tab_order.html">Flash glossary: Tab order</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G57"/>
+      <relatedtech idref="G59"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Use a screen reader to navigate through the Flash movie, one element   at a time. </p>
+            </item>
+            <item>
+               <p>Check that the order in which the screen reader announces the content, matches   the logical visual order. </p>
+            </item>
+            <item>
+               <p>When focus has been placed inside the Flash movie, press the Tab key repeatedly to traverse its contents by keyboard. </p>
+            </item>
+            <item>
+               <p>Verify that all interactive and focusable elements are reachable by keyboard, in a logical order. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Checks #2 and #4 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Using_the_tabIndex_property_to_specify_a_logical_reading_order_in_Flash"/>
+					</source>
+   </admin>
+</technique>

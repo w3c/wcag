@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="G123">
+   <short-name>Adding a link at the beginning of a block of repeated content to go to the end of the block</short-name>
+   <applicability>
+      <p>All technologies that contain links.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="navigation-mechanisms-skip" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to provide a mechanism to bypass a block of material by skipping to the end of the block. The first link in the block or the link directly preceding the block moves focus to the content immediately after the block. Activating the link advances the keyboard focus past the block. When there are multiple blocks to be skipped, the user skips from block to block via these links.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Skip navigation links</head>
+         <description>
+            <p>The pages on an organization's Web site include a navigation bar or main menu containing links to major sections of the site, the site map, information about the organization, and how to contact the organization. The first link in this area is titled "Skip Navigation Links". A user activates the link to skip over these links.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>A book index</head>
+         <description>
+            <p>A book contains an index that is divided into a set of pages. In the content at the beginning of each page of the index are links for each letter of the alphabet, linking into the index where the entries start with that letter. The first link in the set is titled "Skip Links into Index". A user activates this link to skip over the links.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Several sets of links</head>
+         <description>
+            <p>All the pages on a Web site include a section containing links to the site map, information about the organization, and how to contact the organization. All the pages in each section of the site also contain a set of links to its subsections. The first link in the first block is titled "Skip Navigation Links" and skips over the first set of links. The first link in the second block is titled "Skip Section Links" and skips over the subsection links.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>HTML page with several blocks of navigation links</head>
+         <description>
+            <p>This example demonstrates both the use of Heading elements at the beginning of each section (H69) and links that skip to the end of each section. This allows people to skip blocks of repeated content using keyboard navigation or using heading navigation, depending on the capabilities of their user agents. Note that some sections of the content are wrapped in a
+                <el>div</el>
+                element to work around a limitation of Internet Explorer (see the User Agents Notes for Creating HTML links to skip blocks of content (future link)).</p>
+         </description>
+         <code role="html401"><![CDATA[
+              <p><a href="#content">Content title</a></p>
+                <h2>Main Navigation</h2>
+                <ul>
+                <li><a href="#subnav">Sub Navigation</a></li>
+                <li><a href="/a/">Link A</a></li>
+                <li><a href="/b/">Link B</a></li>
+                <li><a href="/c/">Link C</a></li>
+                ...
+                <li><a href="/j/">Link J</a></li>
+                </ul>
+                <div class="iekbfix">
+                <h2 id="subnav">Sub Navigation</h2>
+                <ul>
+                <li><a href="#ultranav">Ultra Sub Navigation</a></li>
+                <li><a href="/suba/">Sub A</a></li>
+                <li><a href="/subb/">Sub B</a></li>
+                <li><a href="/subc/">Sub C</a></li>
+                ...
+                <li><a href="/subj/">Sub J</a></li>
+                </ul>
+                </div>
+                <div class="iekbfix">
+                <h2 id="ultranav">Ultra Sub Navigation</h2>
+                <ul>
+                <li><a href="#content">Content title</a></li>
+                <li><a href="/ultraa/">Ultra A</a></li>
+                <li><a href="/ultrab/">Ultra B</a></li>
+                <li><a href="/ultrac/">Ultra C</a></li>
+                ...
+                <li><a href="/ultraj/">Ultra J</a></li>
+                </ul>
+                </div>
+                <div>
+                <h2 id="content">Content title</h2>
+                <p>Now that I have your attention...</p>
+                </div>
+            ]]></code>
+         <description>
+            <p>And the CSS</p>
+         </description>
+         <code role="css"><![CDATA[
+              div.iekbfix {
+                width: 100%;
+                }
+            ]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.jimthatcher.com/skipnav.htm">Skip Navigation Links</loc>
+                </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G1"/>
+      <relatedtech idref="G124"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Check that a link is the last focusable control before the block of repeated content or the first link in the block.</p>
+            </item>
+            <item>
+               <p>Check that the description of the link communicates that it skips the block.</p>
+            </item>
+            <item>
+               <p>Check that the link is either always visible or visible when it has keyboard focus.</p>
+            </item>
+            <item>
+               <p>Check that after activating the link, the keyboard focus has moved to the content immediately after the block.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>All checks above are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH16">
+   <short-name>Making actions keyboard accessible by using the click event on standard components</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="keyboard-operation-keyboard-operable" relationship="cosufficient"/>
+      <success-criterion idref="keyboard-operation-all-funcs" relationship="cosufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to demonstrate how to invoke a   scripting function in a way that is keyboard accessible by attaching it   to keyboard-accessible, standard Flash components provided by the Adobe   Flash Professional authoring tool. In order to ensure that scripted   actions can be invoked from the keyboard, they are associated with   standard Flash components such as the Button component. The click event   of these components is device independent. While the "CLICK" event is a   mouse event, it is actually mapped to the default action of a button.   The default action occurs when the user clicks the element with a mouse,   but it also occurs when the user focuses the element and hits the space   key, and when the element is triggered via the accessibility API. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Click event on a button</head>
+         <description>
+            <p>This example shows a button that uses the MouseEvent.CLICK   event to change its label. This event will fire both on mouse click and   when the space key is pressed </p>
+         </description>
+         <code xml:space="preserve"><![CDATA[import fl.controls.Button;
+import fl.accessibility.ButtonAccImpl;
+
+ButtonAccImpl.enableAccessibility();
+
+var testBtn = new Button();
+testBtn.label = "click me";
+testBtn.addEventListener(MouseEvent.CLICK, clickHandler, false);
+addChild(testBtn);
+testBtn.x = testBtn.y = 10;
+
+function clickHandler(e) {
+  e.target.label = "Thanks";
+}]]></code>
+         <description>
+            <p>This approach is demonstrated in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="device_independent_event_handler_on_component_as3.html"
+                    linktype="examples">working version of click event on a button</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="device_independent_event_handler_on_component_as3.fla"
+                    linktype="examples">source of click event on a button</loc> is available. </p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Pending example</head>
+         <description>
+            <ednote id="FLASH16_note">
+               <edtext>The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://trace.wisc.edu/wcag_wiki/index.php?title=Making_actions_keyboard_accessible_by_using_the_click_event_on_standard_components">wiki source for FLASH16</loc> indicated there was an action to add a second example.</edtext>
+            </ednote>
+         </description>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="SCR35"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>When a Flash Movie contains interactive controls, confirm that: </p>
+         <olist>
+            <item>
+               <p> Standard Flash components are used for the controls </p>
+            </item>
+            <item>
+               <p> The controls use the "click" event </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> #1 and #2 are true </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Making_actions_keyboard_accessible_by_using_the_click_event_on_standard_components"/>
+					</source>
+   </admin>
+</technique>

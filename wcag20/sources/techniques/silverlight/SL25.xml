@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SL25">
+   <short-name>Using Controls and Programmatic Focus to Bypass Blocks of Content
+    			in Silverlight</short-name>
+   <applicability>
+      <p use-id="silverlight.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="navigation-mechanisms-skip" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="silverlight.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to use the combination of Silverlight
+    				control activation and programmatic focus to enable the user to skip
+    				regions of content in a Silverlight application user interface. </p>
+      <p>The control that the user activates should clearly indicate that its
+    				purpose is to skip content, so that the resulting programmatic focus
+    				shift is not interpreted as an undesired change of context. </p>
+      <p>The object to call focus to (the receiver of focus after the user-initiated
+    				action is triggered) has to be a <obj>Control</obj> in the Silverlight
+    				programming model. This is because the <function>Focus</function> method
+    				must be called on the target, and therefore the target must inherit
+    				the <obj>Control</obj> class. So, an application author might
+    				call focus to a read-only <obj>TextBox</obj>, or perhaps a <obj>RichTextBox</obj>,
+    				depending on the purpose of the Silverlight application and its user
+    				interface design. You can also focus a <obj>UserControl</obj>,
+    				for cases where the area to call focus to represents a custom control
+    				implementation. </p>
+      <section>
+         <head> Setting TabIndex (not recommended) </head>
+         <p>Silverlight provides a <prop>TabIndex</prop> attribute that can
+    					be used to override the default-generated tab sequence. Do not attempt
+    					to adjust tab index as a technique for getting past content blocks.
+    					Doing so will create a focus order that does not match the apparent
+    					visual order, as described in <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="navigation-mechanisms-focus-order"
+                 linktype="understanding">SC
+    					2.4.3</loc>. </p>
+      </section>
+   </description>
+   <examples>
+      <eg-group>
+         <head>User-enabled control that programmatically sets focus</head>
+         <description>
+            <p>The following is the XAML for the user interface. </p>
+            <codeblock xml:space="preserve"><![CDATA[   <StackPanel Name="LayoutRoot">
+       <Button Name="bypassbtn1" Click="bypassbtn1_Click">Skip menus, go to main page content</Button>
+       <!intervening content-->
+       <StackPanel>
+           <RichTextBox Name="rtb_MainContent" IsReadOnly="True">
+           <Paragraph>Here is the main content ....</Paragraph>
+           </RichTextBox>
+       </StackPanel>
+   </StackPanel>
+   ]]></codeblock>
+            <p>The following is the event handler that forces focus. </p>
+            <codeblock xml:space="preserve"><![CDATA[       private void bypassbtn1_Click(object sender, RoutedEventArgs e)
+       {
+           rtb_MainContent.Focus();
+       }
+]]></codeblock>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="ProgrammaticFocusTestPage.html"
+                    linktype="examples">working example of Programmatic Focus</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/cc903954(VS.95).aspx">Focus
+    					Overview</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/cc707824(VS.95).aspx">Silverlight
+    						Accessibility Overview</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G123"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Open the test HTML page for a Silverlight application. </p>
+            </item>
+            <item>
+               <p> Check for a control that indicates that activating that control
+    					can skip to some particular region of the content. </p>
+            </item>
+            <item>
+               <p> Activate that control. Verify that activating the control causes
+    						focus to go to that region, and that a repeated block or blocks of
+    						content are skipped. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>#2 and #3 are true. </p>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Using_Controls_and_Programmatic_Focus_to_Bypass_Blocks_of_Content_in_Silverlight"/>
+      </source>
+   </admin>
+</technique>
