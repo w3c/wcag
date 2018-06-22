@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F77">
+   <short-name>Failure of Success Criterion 4.1.1 due to duplicate values of type ID</short-name>
+   <applicability>
+      <p>HTML5, and any XML-based markup languages including HTML 4 and SVG</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="ensure-compat-parses" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>This describes a failure condition where duplicate ID errors are known to cause problems for assistive technologies when they are trying to interact with content. Duplicate values of type ID can be problematic for user agents that rely on this attribute to accurately convey relationships between different parts of content to users. For example, a screen reader may use ID values to identify the applicable header content for a data cell within a data table, or an input control to which a given label applies. If these values are not unique, the screen reader will be unable to programmatically determine which headers are associated with the data cell or which control is associated with which label or name.</p>
+      <p>Checking that ID attribute values are unique within a document can be done by validating the document against its specification, because the specification defines which attributes contain document-wide unique identifiers.</p>
+      <note>
+         <p>In most markup languages, ID values are attribute values, for example in HTML and SVG.</p>
+         <p>XML documents that use only the <code><![CDATA[xml:id]]></code> attribute as an ID attribute, parsing the XML document with a validating parser that supports the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="http://www.w3.org/TR/2005/REC-xml-id-20050909/">xml:id specification</loc> is sufficient.</p>
+      </note>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <description>
+            <p>An author uses an online validation service to check that all id attribute values are unique.</p>
+         </description>
+      </eg-group>
+      <eg-group role="failure">
+         <description>
+            <p>A developer utilizes features in their authoring tool to ensure that id attribute values are unique.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>HTML 5: <loc href="http://www.w3.org/TR/html5/dom.html#the-id-attribute">id attribute</loc> 
+               </p>
+               </item>
+            <item>
+               <p>HTML 4.01: <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html4/struct/global.html#adef-id">id attribute</loc> 
+               </p>
+				</item>
+			<item>
+             <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/2005/REC-xml-id-20050909/">xml:id Version 1.0</loc> - W3C Recommendation 9 September 2005.</p>
+            </item>
+            <item>
+               <p>Extensible Markup Language (XML) 1.0 (Fourth Edition): <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/REC-xml/#id">Validity constraint: ID</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G108"/>
+      <relatedtech idref="H75"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Check that all values of type ID are unique in the Web page</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If Step #1 is false, then this failure condition applies and the content fails the Success Criterion.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

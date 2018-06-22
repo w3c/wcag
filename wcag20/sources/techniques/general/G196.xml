@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="G196">
+   <short-name>Using a text alternative on one item within a group of images that describes all items in the group</short-name>
+   <applicability>
+      <p>Any technology where a grouping of non-text content is used to present information or functionality.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to avoid unnecessary duplication that occurs when a grouping of adjacent non-text content is used to present information or functionality.</p>
+      <p>In some cases, pages will present a group of images to convey information. When presented together or in a specific combination these groupings can convey different types of information. For example, two images of a star where one is presented in black and white and the other is colored can be used in combination to represent a user rating. For example, three filled stars followed by two unfilled stars might represent a rating of three out of five stars.</p>
+      <p>To use this technique, an author provides a text alternative that serves the equivalent purpose for the entire group and associates it with one item in the group. The other items in the group are then marked in a way that can be ignored by assistive technologies. In this way, the user is able to more efficiently identify the purpose of the group and can avoid duplication or confusion that may result had a text alternative been provided for each item in the group.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>A rating system in HTML</head>
+         <description>
+            <p>In the following example, a rating is shown as three filled stars and two empty stars. While a text alternative could have been provided for each of the five images, the author has instead provided the rating in the form "3 out of 5 stars" for the first image and has marked the others using null alt text.</p>
+         </description>
+         <code role="html401"><![CDATA[
+              <p>Rating: 
+                <img src="star1" alt="3 out of 5 stars">
+                <img src="star1" alt="">
+                <img src="star1" alt="">
+                <img src="star2" alt="">
+                <img src="star2" alt="">
+                </p>
+            ]]></code>
+      </eg-group>
+      <eg-group>
+         <head>A button created from a group of images in XHTML</head>
+         <description>
+            <p>In this example, each button has a set of images to indicate the level of conformance to WCAG being claimed. This approach makes it possible for assistive technologies to avoid announcing things like, "Image A, Image A, Image A" etc.</p>
+         </description>
+         <code role="xhtml1"><![CDATA[
+              <p>Conformance Level:</p>
+                <button name="A"><img src="a.png" alt="A" /></button> <br />
+                <button name="AA"><img src="a.png" alt="AA" /><img src="a.png" alt="" /></button> <br />
+                <button name="AAA"><img src="a.png" alt="AAA" /><img src="a.png" alt="" /><img src="a.png" alt="" /></button>
+            ]]></code>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="G94"/>
+      <relatedtech idref="H2"/>
+      <relatedtech idref="H67"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Check that one item in the group includes a text alternative that serves the equivalent purpose for the entire group.</p>
+            </item>
+            <item>
+               <p>Check that the other items in the group are marked in a way that can be ignored by assistive technologies.</p>
+            </item>
+            <item>
+               <p>Check that the items marked in a way that can be ignored by assistive technologies are adjacent to the item that contains the text alternative for the group.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>All of the above checks are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH25">
+   <short-name>Labeling a form control by setting its accessible name</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+      <success-criterion idref="minimize-error-cues" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to provide an accessible name to
+    				the built in form components provided by Flash. Some components, such
+    				as radio buttons, checkboxes and buttons, have their own <prop>label</prop> property.
+    				For other components, the developer needs to specify the component's
+    				label text as accessible name. This can be either be achieved through
+    				the Accessibility panel (for components placed on the stage during
+    				authoring) or through scripting (for components that are dynamically
+    				created at runtime). </p>
+      <!-- exsubhead? -->
+      <p>ActionScript 2</p>
+      <p>In ActionScript 2 the accessible name needs to be set on a component's
+    				<prop>_accProps</prop> property. This property must be an object. If the property
+    				has not been set yet, the developer needs to create a custom object
+    				and assign it to the <prop>_accProps</prop> property. The object itself can have
+    				several accessibility related properties, one of them being <prop>_accProps.name</prop>,
+    				which specifies the accessible name. When an <prop>_accProps</prop> property is
+    				updated, the developer must call <function>Accessibility.UpdateProperties()</function> for
+    				the changes to take effect. Before calling <function>Accessibility.UpdateProperties()</function>,
+    				it is recommended to check the <var>System.capabilities.hasAccessibility</var>
+    				flag. this will prevent an error on environments that do not support
+    				MSAA. </p>
+      <p>ActionScript 2 provides the following accessible components: </p>
+      <ulist>
+         <item>
+            <p> SimpleButton </p>
+         </item>
+         <item>
+            <p> CheckBox </p>
+         </item>
+         <item>
+            <p> RadioButton </p>
+         </item>
+         <item>
+            <p> Label </p>
+         </item>
+         <item>
+            <p> TextInput </p>
+         </item>
+         <item>
+            <p> TextArea </p>
+         </item>
+         <item>
+            <p> ComboBox </p>
+         </item>
+         <item>
+            <p> ListBox </p>
+         </item>
+         <item>
+            <p> Window </p>
+         </item>
+         <item>
+            <p> Alert </p>
+         </item>
+         <item>
+            <p> DataGrid </p>
+         </item>
+      </ulist>
+      <!-- exsubhead? -->
+      <p>ActionScript 3</p>
+      <p>In ActionScript 3 the accessible name needs to be set on a component's
+    				<prop>accessibilityProperties</prop> property. This property must be an an instance
+    				of <obj>flash.accessibility.AccessibilityProperties</obj>. If the property has
+    				not been set yet, the developer needs to create the a new <obj>AccessibilityProperties</obj>
+    				instance and assign it to the <prop>accessibilityProperties</prop> property. The
+    				object itself can have several accessibility related properties, one
+    				of them being <prop>accessibilityProperties.name</prop> which specifies the accessible
+    				name. When an <prop>accessibilityProperties property</prop> is updated, the developer
+    				must call <function>flash.accessibility.Accessibility.UpdateProperties()</function> for the
+    				changes to take effect. Before calling <function>Accessibility.UpdateProperties()</function>,
+    				it is recommended to check the <var>flash.system.capabilities.hasAccessibility</var>
+    				flag. this will prevent an error on environments that do not support
+    				MSAA. </p>
+      <p>ActionScript 3 provides the following accessible components. </p>
+      <ulist>
+         <item>
+            <p> Button </p>
+         </item>
+         <item>
+            <p> CheckBox </p>
+         </item>
+         <item>
+            <p> ComboBox </p>
+         </item>
+         <item>
+            <p> List </p>
+         </item>
+         <item>
+            <p> RadioButton </p>
+         </item>
+         <item>
+            <p> TileList </p>
+         </item>
+      </ulist>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Setting a component's accessible name using the Accessibility panel</head>
+         <description>
+            <p>To add and label a component control, follow these steps: </p>
+            <olist>
+               <item>
+                  <p> From the 'Components' panel, drag the component on to the stage,
+    							or use scripting to create a new instance. </p>
+               </item>
+               <item>
+                  <p> With the newly created component instance selected, enter its
+    							label text in the Accessibility Panel's Name field. </p>
+               </item>
+            </olist>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Setting the accessible name through ActionScript 2.0</head>
+         <description>
+            <p>The code example below shows how a ListBox component is created and assigned an accessible name. </p>
+         </description>
+         <code xml:space="preserve"><![CDATA[mx.accessibility.ListAccImpl.enableAccessibility();
+
+this.createClassObject(mx.controls.List, "my_list", 1);
+my_list.addItem({label: "R. Davis", data: 1});
+my_list.addItem({label: "V. Mann", data: 2});
+my_list.addItem({label: "L. Heart", data: 3});
+my_list.addItem({label: "P. Hill", data: dt4});
+my_list.addItem({label: "D. Gribble", data: 5});
+my_list.move(10, 10);
+
+if (System.capabilities.hasAccessibility) {
+  my_list._accProps = new Object();
+  my_list._accProps.name = "Staff Members";
+  Accessibility.updateProperties();
+}]]></code>
+         <description>
+            <p>This result can be viewed in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="accessible_name_for_form_components_as2.html"
+                    linktype="examples">working version of Setting the accessible name through ActionScript 2.0</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="accessible_name_for_form_components_as2.fla"
+                    linktype="examples">source of Setting the accessible name through ActionScript 2.0</loc> is available.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Setting the accessible name through ActionScript 3.0</head>
+         <description>
+            <p>The code example below shows how a ListBox component is created and assigned an accessible name. </p>
+         </description>
+         <code xml:space="preserve"><![CDATA[import fl.controls.List;
+import fl.accessibility.ListAccImpl;
+import flash.system.Capabilities;
+import flash.accessibility.*;
+
+ListAccImpl.enableAccessibility();
+var my_list:List = new List();
+my_list.addItem({label:"R. Davis", data:1});
+my_list.addItem({label:"V. Mann", data:2});
+my_list.addItem({label:"L. Heart", data:3});
+my_list.addItem({label:"P. Hill", data:4});
+my_list.addItem({label:"D. Gribble", data:5});
+my_list.x = my_list.y = 10;
+
+if (Capabilities.hasAccessibility) {
+  var accProps:AccessibilityProperties = new AccessibilityProperties();
+  accProps.name = "Staff Members";
+  my_list.accessibilityProperties = accProps;
+  Accessibility.updateProperties();
+}
+addChild(my_list);]]></code>
+         <description>
+            <p>This result can be viewed in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="accessible_name_for_form_components_as3.html"
+                    linktype="examples">working version of Setting the accessible name through ActionScript 3.0</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="accessible_name_for_form_components_as3.fla"
+                    linktype="examples">source of Setting the accessible name through ActionScript 3.0</loc> is available.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="G94"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For Flash movies that contain form components, confirm that either: </p>
+         <olist>
+            <item>
+               <p> The selected component's label text is specified in the Accessibility
+    					Panel's "name" field. </p>
+            </item>
+            <item>
+               <p> In ActionScript 2.0: Scripting is used to dynamically set the
+    					component's <prop>_accProps.name</prop> property </p>
+            </item>
+            <item>
+               <p> In ActionScript 3.0: Scripting is used to dynamically set the
+    					component's <prop>accessibilityProperties.name</prop> property </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>One of the above is true </p>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Labeling_a_form_control_by_setting_its_accessible_name"/>
+					</source>
+   </admin>
+</technique>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F43">
+   <short-name>Failure of Success Criterion 1.3.1 due to using structural markup in a way that does
+                    not represent relationships in the content</short-name>
+   <applicability>
+      <p>HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to describe a failure that occurs when
+                        structural markup is used to achieve a presentational effect, but indicates
+                        relationships that do not exist in the content. This is disorienting to
+                        users who are depending on those relationships to navigate the content or to
+                        understand the relationship of one piece of the content to another. Note
+                        that the use of HTML tables for layout is not an example of this failure as
+                        long as the layout table does not include improper structural markup such as
+                            <code><![CDATA[<th>]]></code> or <code><![CDATA[<caption>]]></code>
+                        elements.</p>
+      <note>
+         <p>Though an element's semantic meaning is generally exposed to AT, the WAI-ARIA presentation role can be used to suppress the native semantics of an element so that they are not mapped to the accessibility API. Setting an element's <att>role</att> to presentation may avoid this failure by hiding that element's semantics from the user.</p>
+      </note>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <head>A heading used only for visual effect</head>
+         <description>
+            <p>In this example, a heading element is used to display an address in a
+                                large, bold font. The address does not identify a new section of the
+                                document, however, so it should not be marked as a heading.</p>
+         </description>
+         <code role="html401"><![CDATA[
+<p>Interested in learning more? Write to us at</p> 
+<h4>3333 Third Avenue, Suite 300 · New York City</h4>
+
+<p>And we'll send you the complete informational packet absolutely Free!</p>
+]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <head>Using heading elements for presentational effect</head>
+         <description>
+            <p>In this example, heading markup is used in two different ways: to
+                                convey document structure and to create visual effects. The
+                                <code><![CDATA[h1]]></code> and <code><![CDATA[h2]]></code> elements are used appropriately
+                                to mark the beginning of the document as a whole and the beginning
+                                of the abstract. However, the <code><![CDATA[h3]]></code> and <code><![CDATA[h4]]></code>
+                                elements between the title and the abstract are used only for visual
+                                effect — to control the fonts used to display the authors' names and
+                                the date.</p>
+         </description>
+         <code role="html401"><![CDATA[
+<h1>Study on the Use of Heading  Elements in Web Pages</h1>
+<h3>Joe Jones and Mary Smith<h3>
+<h4>March 14, 2006</h4>
+<h2>Abstract</h2>
+<p>A study was conducted in early 2006 ...
+</p>
+]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <head>Using <el>blockquote</el> elements to provide additional
+                            indentation</head>
+         <description>
+            <p>The following example uses <code><![CDATA[blockquote]]></code> for text that is
+                                not a quotation to give it prominence by indenting it when displayed
+                                in graphical browsers.</p>
+         </description>
+         <code role="html401"><![CDATA[
+<p>After extensive study of the company Web site, the task force 
+identified the following common problem.</p>
+
+<blockquote>
+<p>The use of markup for presentational effects made Web 
+pages confusing to screen reader users.</p>
+</blockquote>
+
+<p>The committee lists particular examples of the problems 
+introduced by this practice below.</p>
+]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <head>Using the <code><![CDATA[fieldset]]></code> and <code><![CDATA[legend]]></code> elements to
+                            give a border to text</head>
+         <code role="html401"><![CDATA[
+<fieldset>
+<legend>Bargain Corner</legend>
+<p>Buy today, and save 20%</p>
+</fieldset>
+]]></code>
+      </eg-group>
+   </examples>
+   <resources/>
+   <related-techniques>
+      <relatedtech idref="F46"/>
+      <relatedtech idref="G115"/>
+      <relatedtech idref="H39"/>
+      <relatedtech idref="H42"/>
+      <relatedtech idref="H73"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Check that the element's semantic meaning is exposed to assistive technology and appropriate for the content of the element.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If check #1 is false then this failure condition applies.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

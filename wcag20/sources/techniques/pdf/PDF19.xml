@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="PDF19">
+   <short-name>Specifying the language for a passage or phrase with the Lang entry
+    			in PDF documents</short-name>
+   <applicability>
+      <p use-id="pdf.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="meaning-doc-lang-id" relationship="sufficient"/>
+      <success-criterion idref="meaning-other-lang-id" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="pdf.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to specify the language of a passage,
+    				phrase, or word using the /Lang entry to provide information in the
+    				PDF document that user agents need to present text and other linguistic
+    				content correctly. This is normally accomplished using a tool for authoring
+    				PDF. </p>
+      <p>Both assistive technologies and conventional user agents can render
+    				text more accurately when the language is identified. Screen readers
+    				can load the correct pronunciation rules.     				As a result, users with disabilities are better able to understand
+    				the content. </p>
+      <note>
+         <p>This technique can be used to set the default
+    				language for the entire document if the entire document is contained
+    				in the container or tag. In this case, this technique would apply to
+    				Success Criterion 3.1.1. </p>
+      </note>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Adding a /Lang entry to specify the language for a paragraph
+    					using Adobe Acrobat 9 Pro</head>
+         <description>
+            <p>This example is shown with Adobe Acrobat Pro. There are other software tools that perform similar functions. See the list of other software tools in <specref ref="pdf_notes_acc-sup_files_applications"/>.</p>
+            <olist>
+               <item>
+                  <p> In the Tools menu, select Advanced Editing. </p>
+               </item>
+               <item>
+                  <p> Select the TouchUp Reading Order Tool. </p>
+               </item>
+               <item>
+                  <p> Click the Show Order Panel button in the TouchUp Reading Order
+    						Tool </p>
+               </item>
+               <item>
+                  <p> Select the Tags tab in the Show Order Panel and select the paragraph
+    							that is in the different language. You can also use the Options menu
+    							in the Tags tab: select Find Tag from Selection. </p>
+               </item>
+               <item>
+                  <p> Right-click the selection and select Properties in the context
+    								menu. </p>
+               </item>
+               <item>
+                  <p> In the Tags tab in the Properties dialog, select the language
+    									from the drop-down list. </p>
+               </item>
+            </olist>
+            <note>
+               <p>Acrobat includes 16 preset language selections.
+    						If you need to specify a language that is not on the list, such as
+    						Russian, you must type the ISO 639 code for the language, not its name. </p>
+            </note>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Adding a /Lang entry to specify the language for a specific
+    				word or phrase using Adobe Acrobat 9 Pro</head>
+         <description>
+            <p>This example is shown with Adobe Acrobat Pro. There are other software tools that perform similar functions. See the list of other software tools in <specref ref="pdf_notes_acc-sup_files_applications"/>.</p>
+            <olist>
+               <item>
+                  <p> Select the word or phrase that is in a different language and
+    						create a tag for it in the Reading Order Panel (e.g., Text). </p>
+               </item>
+               <item>
+                  <p> Open the Tags tab in the Show Order Panel and select the tagged
+    							word or phrase that is in the different language. You can also use
+    							the Options menu in the Tags tab: select Create Tag from Selection. </p>
+               </item>
+               <item>
+                  <p> Right-click the selection and select Properties in the context
+    								menu. </p>
+               </item>
+               <item>
+                  <p> In the Tags tab in the Properties dialog, select the language
+    									from the drop-down list. </p>
+               </item>
+            </olist>
+            <p>When you tag a word or phrase, Acrobat splits the original content
+    						into three document content tags: one for the text that precedes your
+    						selection, one for the selection, and one for the text that follows
+    						the selection. As needed, drag the document content tag for the selected
+    						text into position between the other two tags, so that the text reads
+    						in the proper order. All three tags must also be at the same level
+    						beneath their parent tag. Drag them into place if they are not. </p>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF19/language.jpg"
+                       height="585"
+                       width="629"/>
+                  <alt>Specifying the language for a word in text using the Show Order Panel of the TouchUp Reading Order tool.</alt>
+               </image> 
+            </p>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="lang-of-phrase.pdf"
+                    linktype="examples">working example of marking a specific word or phrase in Acrobat Pro</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Specifying the language for a word or phrase in a PDF
+    				document using a /Lang entry</head>
+         <description>
+            <p>Below the level of the default document language, the language for
+    						a passage may be specified for the following items: </p>
+            <ulist>
+               <item>
+                  <p>Marked-content sequences that are not in the structure hierarchy,
+    						through a /Lang entry in a property list attached to the marked-content
+    						sequence with a Span tag. </p>
+               </item>
+               <item>
+                  <p>Structure elements of any type, through a /Lang entry in the structure
+    							element dictionary. </p>
+               </item>
+            </ulist>
+            <p>The following code fragment illustrates code that is typical for using
+    						the /Lang entry to override the default document language by specifying
+    						a marked-content sequence within a page's content stream: </p>
+            <codeblock xml:space="preserve"><![CDATA[   /P % Start of marked-content sequence
+   BDC
+      (See you later, or in Spanish you would say, ) Tj
+      /Span << /Lang (es-MX) >>% Start of nested marked-content sequence
+     BDC
+      (Hasta la vista.) Tj
+     EMC% End of nested marked-content sequence
+   EMC% End of marked-content sequence
+]]></codeblock>
+            <p>The following code fragment illustrates code that is typical for
+    						using the /Lang entry in the structure element dictionary. In this
+    						case, the /Lang entry applies to the marked-content sequence having
+    						an MCID (marked-content identifier) value of 0 within the indicated
+    						page's content stream. </p>
+            <codeblock xml:space="preserve"><![CDATA[1 0 obj% Structure element
+  << /Type /StructElem
+    /S /Span% Structure type
+    /P /P% Parent in structure hierarchy
+    /K<< /Type /MCR
+      /Pg 2 0 R% Page containing marked-content sequence
+      /MCID 0% Marked-content identifier
+     >>
+   /Lang (es-MX)% Language specification for this element
+   >>
+endobj
+2 0 obj% Page object
+  << /Type /Page
+     /Contents 3 0 R% Content stream
+   …
+   >>
+   endobj
+3 0 obj% Page's content stream
+  << /Length … >>
+    stream
+     BT
+      /P % Start of marked-content sequence
+      BDC
+     (See you later, or in Spanish you would say, ) Tj
+     /Span << /MCID 0 >>% Start of nested marked-content sequence
+    BDC
+     (Hasta la vista.) Tj
+    EMC% End of nested marked-content sequence
+  EMC% End of marked-content sequence
+ ET
+ endstream
+ endobj
+]]></codeblock>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> Section 14.9.2 (Natural Language Specification) in <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF
+    					1.7 (ISO 32000-1)</loc> 
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.loc.gov/standards/iso639-2/php/code_list.php">ISO
+    						639-2 Codes</loc> 
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://partners.adobe.com/public/developer/en/pdf/PDFReference16.pdf#page=886">PDF
+    							Reference 1.6, 10.8.1 Natural Language Specification (PDF 8.7 Mb)</loc> 
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://pdf.editme.com/pdfua-naturalLanguageSpecification">PDF
+    								Standards: Natural Language Specification</loc> 
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/content/dam/Adobe/en/accessibility/products/acrobat/pdfs/A9-accessible-pdf-from-word.pdf">Adobe®
+    									Acrobat® 9 Pro Accessibility Guide: Creating Accessible PDF from
+    									Microsoft® Word</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/accessibility/products/acrobat.html">PDF and Accessibility</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="PDF16"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Verify that the language of a passage, phrase, or word that differs
+    					from the language of the surrounding text is correctly specified
+    					by a /Lang entry on an enclosing tag or container:</p>
+               <ulist>
+                  <item>
+                     <p> Read the PDF document with a screen reader that supports the language of the phrase and the language of the surrounding text, listening to hear
+    						that the text is read in the correct natural language. </p>
+                  </item>
+                  <item>
+                     <p>Using a PDF editor, select the word or phrase that is in the different language and check that the language is set correctly. </p>
+                  </item>
+                  <item>
+                     <p> Use a tool which is capable of showing the /Lang entry value
+    								to open the PDF document and view the language settings. </p>
+                  </item>
+                  <item>
+                     <p> Use a tool that exposes the document through the accessibility
+    									API and verify that the language for the passage or phrase is
+    									set correctly. </p>
+                  </item>
+               </ulist>
+            </item>
+            <item>
+               <p> Verify that if the container or tag contains the entire document,
+    					the language setting is the language intended as the default for
+    					the document. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#1 and #2 are true. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Specifying_the_language_for_a_passage_or_phrase_with_the_Lang_entry_in_PDF_documents"/>
+      </source>
+   </admin>
+</technique>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SVR2">
+   <short-name>Using .htaccess to ensure that the only way to access non-conforming content is from conforming content</short-name>
+   <applicability>
+      <p>Content residing on a Web server that supports .htaccess (typically Apache) where a conforming version of content is provided as an alternative to a non-conforming version.</p>
+   </applicability>
+   <applies-to>
+      <conformance-criterion idref="cc1" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to ensure that users can always access an accessible version of the content when non-conforming versions are also available. Whenever content is provided in a format that does not conform to WCAG, the site as a whole can still conform if alternate versions of the inaccessible content are provided. Conformance Requirement 4 requires that alternate versions can be derived from the nonconforming content or from its URI. 
+</p>
+      <p>Since it is not always possible to provide an accessible link from within non-conforming content, this technique describes how authors can use Apache's Module "mod_access" to ensure that non-conforming content can only be accessed from URIs that serve as alternate versions to the non-conforming content or from pages that include links to both the non-conforming version and the alternative version.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>The following .htaccess file uses Apache's mod_redirect module to redirect requests for "inaccessible.html" to "accessible.html" unless the request comes from "accessible.html".</p>
+         </description>
+         <code role="htaccess"><![CDATA[
+# If the request for inaccessible content comes from a file 
+# called accessible.html, then set an environment variable that 
+# allows the inaccessible version to be displayed.
+SetEnvIf Referer .*(accessible.html)$ let_me_in
+<FilesMatch ^(inaccessible.html)$>
+    Order Deny,Allow
+    Deny from all
+    Allow from env=let_me_in
+</FilesMatch>
+
+# If the request comes from anyplace but accessible.html, then 
+# redirect the error condition to a location where the accessible 
+# version resides
+ErrorDocument 403 /example_directory/accessible.html
+]]></code>
+         <!--description><p>
+Refer to <loc href="inaccessible.html" linktype="examples">Inacessible Content</loc> for a working example.
+</p></description-->
+         <!-- BC: Working example at http://preview.trace.wisc.edu/test/force_accessible/accessible.html, but w3.org does not allow this (refer to April 9 sysreq email-->
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>This example assumes a directory structure where documents are available in multiple formats. One of the formats does not meet WCAG at the level claimed and uses the file extension "jna" (Just Not Accessible). All of these files are stored in a folder called "jna" with an .htaccess file which ensures that any direct request for a file with the .jna extension from pages where inaccessible versions are not already available is redirected to an index page that lists all of the available formats.</p>
+         </description>
+         <code role="htaccess"><![CDATA[
+# If the request for inaccessible content comes from a file at 
+# http://example.com/documents/index.html, then set an environment 
+# variable that allows the inaccessible version to be displayed.
+SetEnvIf Referer ^http://example.com/documents/index.html$ let_me_in
+<FilesMatch ^(.*\.jna)$>
+    Order Deny,Allow
+    Deny from all
+    Allow from env=let_me_in
+</FilesMatch>
+
+# If the request comes from anyplace but http://example.com/documents/index.html, then 
+# redirect the error condition to a location where a link the accessible 
+# version resides
+ErrorDocument 403 http://example.com/documents/index.html
+]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://httpd.apache.org/docs/2.4/mod/mod_env.html">Apache Module mod_env</loc> 
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://httpd.apache.org/docs/2.4/howto/auth.html">Authentication, Authorization and Access Control</loc> 
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://httpd.apache.org/docs/2.4/howto/htaccess.html">Apache Tutorial: .htaccess files</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G136"/>
+      <relatedtech idref="G190"/>
+      <relatedtech idref="SVR3"/>
+      <relatedtech idref="SVR4"/>
+      <relatedtech idref="C29"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Identify pages that do not conform to WCAG at the conformance Level claimed where accessible alternatives are served based on the use of .htaccess files.
+    </p>
+            </item>
+            <item>
+               <p>Visit the URI of the non-conforming content.
+    </p>
+            </item>
+            <item>
+               <p>Verify that the resulting page is one of the following:</p>
+               <olist>
+                  <item>
+                     <p>a <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                             href="conforming-alternate-versiondef"
+                             linktype="glossary">conforming alternate version</loc> for the non-conforming content</p>
+                  </item>
+                  <item>
+                     <p>a page that includes a link to both the conforming alternate version and the non-conforming content</p>
+                  </item>
+               </olist>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Check #3.1 or #3.2 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

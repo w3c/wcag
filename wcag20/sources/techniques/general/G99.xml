@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="G99">
+   <short-name>Providing the ability to recover deleted information</short-name>
+   <applicability>
+      <p>Content where user actions cause content to be deleted.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="minimize-error-reversible" relationship="sufficient"/>
+      <success-criterion idref="minimize-error-reversible-all" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>When a Web application provides the capability of deleting information, the server can provide a means to recover information that was deleted in error by a user. One approach is to delay deleting the data by merely marking it for deletion or moving it to a holding area (such as a trash can) and waiting some period of time before actually deleting it. During this time period, the user can request that the data be restored or can retrieve it from the holding area. Another approach is to record all delete transactions in such a way that data can be restored if requested by the user, such as in the edit history stored by wikis and source control applications.The retrievable information that is stored should be that which would be needed to correct the transaction.</p>
+   </description>
+   <examples>
+      <ulist>
+         <item>
+            <p>A Web application allows users to set up folders and store data within them. Each folder and data item is accompanied by a checkbox to mark it for action, and two buttons, one to move and one to delete. If the user selects the delete button by mistake, large amounts of data could be lost. The application presents the data as deleted to the user right away, but schedules it for actual deletion in one week. During the week, the user may go into a "deleted items" folder and request any folder or data item awaiting actual deletion to be restored.</p>
+         </item>
+      </ulist>
+   </examples>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Identify functionality that allows deleting content</p>
+            </item>
+            <item>
+               <p>Delete content and attempt to recover it.</p>
+            </item>
+            <item>
+               <p>Check if deleted information can be recovered.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#3 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F48">
+   <short-name>Failure of Success Criterion 1.3.1 due to using the <code><![CDATA[pre]]></code> element to markup
+                    tabular information</short-name>
+   <applicability>
+      <p>HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>This document describes a failure caused by use of the HTML <code><![CDATA[pre]]></code>
+                        element to markup tabular information. The <code><![CDATA[pre]]></code> element
+                        preserves only visual formatting. If the <code><![CDATA[pre]]></code> element is used to
+                        markup tabular information, the visually implied logical relationships
+                        between the table cells and the headers are lost if the user cannot see the
+                        screen or if the visual presentation changes significantly.</p>
+      <p>Instead, the HTML <code><![CDATA[table]]></code> element is intended to present tabular
+                        data. Assistive technologies use the structure of an HTML table to present
+                        data to the user in a logical manner. This structure is not available when
+                        using the <code><![CDATA[pre]]></code> element.</p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <head>A schedule formatted with tabs between columns </head>
+         <code role="html401"><![CDATA[
+ <pre>
+ 	Monday	Tuesday	Wednesday	Thursday	Friday
+ 8:00-
+ 9:00	Meet with Sam				
+ 9:00-
+ 10:00			Dr. Williams	Sam again	Leave for San Antonio
+ </pre>
+]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <head>Election results displayed using preformatted text</head>
+         <code role="html401"><![CDATA[
+ <pre>
+   CIRCUIT COURT JUDGE BRANCH 3
+                                                  W
+                                                   R
+                                          M R E     I
+                                           A . L     T
+                                     M L    R   B     E
+                                      I A    Y   E     -
+                                       K N        R     I
+                                        E G        T     N
+                                       -----   -----   -----
+0001 TOWN OF ALBION WDS 1-2               22      99       0
+0002 TOWN OF BERRY WDS 1-2                52     178       0
+0003 TOWN OF BLACK EARTH                  16      49       0
+0004 TOWN OF BLOOMING GROVE WDS 1-3       44     125       0
+0005 TOWN OF BLUE MOUNDS                  33     117       0
+0006 TOWN OF BRISTOL WDS 1-3             139     639       1
+0007 TOWN OF BURKE WDS 1-4                80     300       0
+0008 TOWN OF CHRISTIANA WDS 1-2           22      50       0
+
+ </pre>
+]]></code>
+      </eg-group>
+   </examples>
+   <resources/>
+   <related-techniques>
+      <relatedtech idref="H51"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Check to see if the <code><![CDATA[pre]]></code> element is used</p>
+            </item>
+            <item>
+               <p>For each occurrence of the <code><![CDATA[pre]]></code> element, check
+                                    whether the enclosed information is tabular.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If check #2 is true, then this failure condition applies and the
+                                    content fails the Success Criterion.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

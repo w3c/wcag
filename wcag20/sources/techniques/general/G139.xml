@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="G139">
+   <short-name>Creating a mechanism that allows users to jump to errors</short-name>
+   <applicability>
+      <p>Content that accepts user data input, with restrictions on the format, value, and/or type of the input.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="minimize-error-identified" relationship="sufficient"/>
+      <success-criterion idref="minimize-error-suggestions" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to help users find input errors where the information supplied by the user is not accepted. This includes fields with missing required information and fields with incorrect information. When users enter data input that is checked, and input errors are detected, a link to that error is provided so that the user does not have to search for it. One approach is to use server-side validation, and to re-display the form (including any previously entered data), and a text description at the top of the page that indicates the fact that there was an input error, describes the nature of the problem, and provides a link the field(s) with a problem.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Server-side error checking</head>
+         <description>
+            <p>The user inputs invalid data on a form field and submits the form. The server returns the form, with the user's data still present, and indicates clearly in text at the top of the page that there were not accepted. The text describes the nature of the error(s) and provides a link to the field that had the problem so the user can easily navigate to it to fix the problem.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Client-side error checking with a popup</head>
+         <description>
+            <p>The user inputs invalid data on a form field and attempts to submit the form. Client-side scripting detects the error, cancels the submit, and modifies the document to provide a text message describing the error, with links to the field(s) with the error. The script also modifies the labels of the fields with the problems to highlight them.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Client-side error checking with no popup</head>
+         <description>
+            <p>When the user submits a form, instead of taking them to a new page, a script automatically sets focus to a text link that says "Errors have occurred." The link goes to the first item in an ordered list of descriptive error messages. Each list item is a link to the control where the error had occurred. And there is a link from the error back to the ordered list of descriptive error messages. The process is repeated as needed.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="G83"/>
+      <relatedtech idref="G85"/>
+      <relatedtech idref="SCR18"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Fill out a form, deliberately leaving a required (mandatory) field blank, and make an input error on another field and submit the form.</p>
+            </item>
+            <item>
+               <p>Check that a text message is provided that identifies the field that is missing required data.</p>
+            </item>
+            <item>
+               <p>Check that a text message is provided that identifies the field with the input error.</p>
+            </item>
+            <item>
+               <p>Check that there is a link to each field that is missing required data from the missing data message</p>
+            </item>
+            <item>
+               <p>Check that there is a link to the list of errors from the error message.</p>
+            </item>
+         </olist>
+         <note>
+            <p>Success Criterion 3.3.2 requires that if an input error is detected and suggestions for correction are known and can be provided without jeopardizing the security or purpose of the content, the suggestions are provided to the user.</p>
+         </note>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If #2 is true, then #4 is true.</p>
+            </item>
+            <item>
+               <p>If #3 is true, then #5 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

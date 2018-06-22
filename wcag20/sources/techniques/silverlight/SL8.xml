@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SL8">
+   <short-name>Displaying HelpText in Silverlight User Interfaces</short-name>
+   <applicability>
+      <p use-id="silverlight.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+      <success-criterion idref="minimize-error-cues" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="silverlight.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to provide a long text alternative
+    				that replaces content when a short text alternative is not sufficient
+    				for a given user, and the user specifically requests that the application
+    				should provide more context or more information through the application
+    				user interface. The technique could also apply for providing a long
+    				text alternative for a nontext object, for example for an image that
+    				contains a level of detail that is difficult to capture in a standard
+    				visible-in-UI image caption. </p>
+      <p>Silverlight supports a UI Automation property named <prop>HelpText</prop>,
+    				to connote its possible usage to provide imperative instructions for
+    				interactive elements. <prop>HelpText</prop> is not always forwarded
+    				to users by existing assistive technologies, which is an issue discussed
+    				in the technique <specref ref="SL19"/>.
+    				Rather than relying on a particular assistive technology's support
+    				for enabling users to access the UIA <prop>HelpText</prop>, application
+    				authors can introduce user interface elements into their design that
+    				databind directly to the <prop>HelpText</prop> property, but where
+    				the interface element is not necessarily displayed by default. An interface
+    				update might be designed to occur if the application user specifically
+    				activates a "Get Help" action that is presented in the initial
+    				user interface. </p>
+      <p>This technique emphasises a "HelpText" model as a factoring
+    				practice. Silverlight application authors can use the <prop>HelpText</prop> as
+    				a data source that centralizes such information, because it already
+    				exists and has that intended purpose in accessibility frameworks. For
+    				example, the <prop>HelpText</prop> could be shown in a tooltip,
+    				a popup, a separate user interface element that is deliberately rendered
+    				in close proximity, etc. For accessibility support, a recommended display
+    				option for <prop>HelpText</prop> is to add or dynamically alter
+    				a Silverlight text element in the primary user interface. Silverlight
+    				supports an adaptive layout metaphor. Adding text to the runtime elements
+    				in the application generally causes an interface redraw, which in turn
+    				informs assistive technologies (through UIA properties and events)
+    				that content might have changed. </p>
+      <p>To set the UIA <prop>HelpText</prop> in Silverlight, you set the
+    				attached property <prop>AutomationProperties.HelpText</prop>. <prop>AutomationProperties.HelpText</prop> can
+    				be set in code, but is typically set in XAML that defines a Silverlight
+    				UI. </p>
+      <section id="SL8_helptext_tooltip">
+         <head>HelpText and Tooltip</head>
+         <p>The same information that is used for <prop>AutomationProperties.HelpText</prop> long
+    					text alternatives could also be useful to sighted users. In this case,
+    					the same text could be displayed in a Silverlight <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="https://msdn.microsoft.com/en-us/library/system.windows.controls.tooltip%28VS.95%29.aspx">ToolTip</loc> control.
+    					The reason that application authors should use both <prop>AutomationProperties.HelpText</prop> AND <obj>Tooltip</obj> in
+    					conjunction is because the <obj>Tooltip</obj> information is
+    					not introduced into the runtime accessibility framework information
+    					set by UI Automation, because that information set does not anticipate
+    					the mouse action triggers that cause tooltips to display. In Silverlight
+    					programming, a useful technique for sharing the same resource is to
+    					combine the Silverlight data binding feature with the .NET Framework
+    					embedded resource feature. For more information on combining Silverlight
+    					data binding and resources for common string sources, see <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="https://msdn.microsoft.com/en-us/library/dd882554%28VS.95%29.aspx">How
+    						to Make XAML Content Localizable</loc>. </p>
+      </section>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Displaying a long text alternative for an Image with
+    					XAML</head>
+         <description>
+            <p>Application authors can specify the <prop>AutomationProperties.HelpText</prop> attribute
+    						on the <obj>Image</obj> element. The value provided for the attribute
+    						should be a meaningful long text alternative for the image content.
+    						The value of <prop>AutomationProperties.HelpText</prop> should
+    						augment rather than duplicate any <prop>AutomationProperties.Name</prop> or
+    						an associated <obj>Label</obj> or <prop>LabeledBy</prop> caption.
+    						One or both of these is also typically specified to provide the basic
+    						(short-text) accessibility support for an image. </p>
+            <codeblock xml:space="preserve"><![CDATA[<StackPanel x:Name="imgContainer">
+ <Image
+   Height="400" Width="600"
+   Source="/office.png"
+   x:Name="imgOffice"
+   AutomationProperties.HelpText=”The standard office layout
+includes one corner desk unit in the corner farthest from the
+door, and one file cabinet against the same wall as the door.”/>
+ <sdk:Label x:Name="lblimgOffice" Target="{Binding ElementName=imgOffice}">Diagram of standard office layout</sdk:Label>
+ <Button x:Name="HelpButton" Click="HelpButton_Click">Provide text-only alternative description of the previous image</Button>
+</StackPanel>
+]]></codeblock>
+            <p>The following event handler removes the Help button and replaces
+    						it in UI with a <obj>TextBox</obj> that displays the long text
+    						alternative. </p>
+            <codeblock xml:space="preserve"><![CDATA[       private void HelpButton_Click(object sender, RoutedEventArgs e)
+       {
+           imgContainer.Children.Remove(HelpButton);
+           TextBox tb = new TextBox();
+           tb.IsReadOnly=true;
+           tb.Text = AutomationProperties.GetHelpText(imgOffice);
+           imgContainer.Children.Add(tb);
+           tb.Focus();
+       }
+]]></codeblock>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Using HelpText to augment existing form labels, to provide
+    				long text instructions</head>
+         <description>
+            <p>This example provides instructions for two form fields. The same text
+    						is also displayed for mouse users as a <obj>Tooltip</obj> and
+    						the <prop>AutomationProperties.HelpText</prop> string is used as
+    						a common source for both display options. In this example, the form
+    						submission does not perform client-side validation (although server-side
+    						validation following a data round trip might still exist, or validation
+    						could be added similar to the technique shown in <specref ref="SL35"/>). </p>
+            <p>The following is the XAML UI: </p>
+            <codeblock xml:space="preserve"><![CDATA[<UserControl xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" 
+   x:Class="HelpTextAndToolTip.MainPage"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+>
+       <Grid x:Name="LayoutRoot" Background="White" Margin="10">
+           <Grid.RowDefinitions>
+               <RowDefinition Height="Auto"/>
+               <RowDefinition Height="Auto"/>
+               <RowDefinition Height="Auto"/>
+               <RowDefinition Height="Auto"/>
+               <RowDefinition Height="Auto"/>
+           </Grid.RowDefinitions>
+           <Grid.ColumnDefinitions>
+               <ColumnDefinition Width="Auto"/>
+               <ColumnDefinition Width="200"/>
+               <ColumnDefinition Width="Auto"/>
+           </Grid.ColumnDefinitions>
+           <TextBlock Text="Form With Tooltips" FontSize="16" FontWeight="Bold"
+     Grid.Column="1" HorizontalAlignment="Center" />
+           <sdk:Label x:Name="NameLabel" Target="{Binding ElementName=NameTextBox}"
+     Grid.Row="2" Margin="3"/>
+           <TextBox x:Name="NameTextBox" 
+     AutomationProperties.Name="{Binding Content, ElementName=NameLabel}"
+     Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+     Grid.Column="1" Grid.Row="2" Margin="3"
+                    AutomationProperties.HelpText="{Binding NameTextBoxToolTipString,Source={StaticResource TooltipStrings}}">
+           <ToolTipService.ToolTip>
+               <ToolTip Content="{Binding NameTextBoxToolTipString,Source={StaticResource TooltipStrings}}" />
+           </ToolTipService.ToolTip>
+           </TextBox>
+           <sdk:Label x:Name="AgeLabel" Target="{Binding ElementName=AgeTextBox}"
+     Grid.Row="3" Margin="3" HorizontalAlignment="Right"/>
+           <TextBox x:Name="AgeTextBox" 
+     AutomationProperties.Name="{Binding Content, ElementName=AgeLabel}" 
+     Text="{Binding Age, Mode=TwoWay, UpdateSourceTrigger=Explicit}"  
+     Grid.Column="1" Grid.Row="3" Margin="3"
+    AutomationProperties.HelpText="{Binding AgeTextBoxToolTipString,Source={StaticResource TooltipStrings}}">
+           <ToolTipService.ToolTip>
+               <ToolTip Content="{Binding AgeTextBoxToolTipString,Source={StaticResource TooltipStrings}}" />
+           </ToolTipService.ToolTip>
+       </TextBox>
+       <StackPanel Orientation="Horizontal">
+           <Button x:Name="SubmitButton" Content="Submit" Click="SubmitButton_Click" Grid.Column="1" Grid.Row="4" Width="50" Margin="3" />
+           <Button x:Name="HelpButton" Click="HelpButton_Click">Get Help</Button>
+       </StackPanel>
+       </Grid>
+</UserControl>
+]]></codeblock>
+            <p>The following is the resource definition in app.xaml: </p>
+            <codeblock xml:space="preserve"><![CDATA[       <ResourceDictionary>
+           <resources:Resource1 x:Key="TooltipStrings"/>
+       </ResourceDictionary>
+       ]]></codeblock>
+            <p>The generated resource code that defines the "Resource1" class
+    						is not shown here because it is mostly infrastructure that is produced
+    						by a generation task in Visual Studio. For more information about
+    						embedded resources in Silverlight, see <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="https://msdn.microsoft.com/en-us/library/cc903945(VS.95).aspx">Resources
+    							Overview on MSDN</loc>. The resources here contain just two strings: </p>
+            <ulist>
+               <item>
+                  <p> NameTextBoxToolTipString: Must be 10 characters or less. Required. </p>
+               </item>
+               <item>
+                  <p> AgeTextBoxToolTipString Must be a value between 0 and 120. Required. </p>
+               </item>
+            </ulist>
+            <p>The following is the event handler code, which changes the interface. </p>
+            <codeblock xml:space="preserve"><![CDATA[       private void HelpButton_Click(object sender, RoutedEventArgs e)
+       {
+           AgeLabel.Content = AgeLabel.Content + ": " + AutomationProperties.GetHelpText(AgeTextBox);
+           NameLabel.Content = NameLabel.Content + ": " + AutomationProperties.GetHelpText(NameTextBox);
+           NameTextBox.Focus();
+       }
+       ]]></codeblock>
+            <p>Note the call to Focus() - this puts the screen reader focus on
+    						the first form element so that the added text can be read. The very
+    						same text source as used for the <obj>Tooltip</obj> is added
+    						programmatically to the existing <obj>Label</obj> controls. </p>
+            <p>After the Get Help button is clicked, the visual appearance of the
+    						application is modified: </p>
+            <p>
+               <emph role="strong">Before activating Get Help</emph> 
+            </p>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/SL8/BeforeTooltipForm.png"
+                       height="321"
+                       width="342"/>
+                  <alt>Image:BeforeTooltipForm.png</alt>
+               </image> 
+            </p>
+            <p>
+               <emph role="strong">After activating Get Help</emph> 
+            </p>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/SL8/AfterTooltipForm.png"
+                       height="321"
+                       width="609"/>
+                  <alt>Image:AfterTooltipForm.png</alt>
+               </image> 
+            </p>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="HelpTextAndToolTipTestPage.html"
+                    linktype="examples">working example of HelpText and Tooltip</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/ff400332%28VS.95%29.aspx">Automation
+    					Properties for Accessibility Support in UI</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/system.windows.automation.automationproperties.helptext%28VS.95%29.aspx">AutomationProperties.HelpText
+    						Attached Property</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="SL19"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. To see
+    					UI Automation, use Microsoft Windows as platform. </p>
+            </item>
+            <item>
+               <p> For a control where this technique is used to provide a long text
+    						alternative, verify that an identifiable and usable "Get Help"   control
+    						is present in the initial user interface or assistive technology
+    						representation of that interface. </p>
+            </item>
+            <item>
+               <p> Verify that activating the "Get Help" control changes
+    							the user interface, and the changed user interface now displays or
+    							reports long text alternatives that better address the user's information
+    							needs. </p>
+            </item>
+            <item>
+               <p> If using a screen reader, verify that the long text alternative
+    								can be read aloud. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>#2 and #3 are true. If testing with a screen reader, #4 is true. </p>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Displaying_HelpText_in_Silverlight_User_Interfaces"/>
+      </source>
+   </admin>
+</technique>

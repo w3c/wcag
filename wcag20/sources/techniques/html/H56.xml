@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H56">
+   <short-name>Using the <att>dir</att> attribute on an inline element to resolve problems
+          with nested directional runs</short-name>
+   <applicability>
+      <p>HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-sequence" relationship="cosufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to identify changes in the text direction of text that includes nested directional runs by providing the <att>dir</att> attribute on
+            inline elements. A nested directional run is a run of text that includes mixed directional text, for example, a paragraph in English containing a quoted Hebrew sentence which in turn includes an English phrase. Use of the <att>dir</att> attribute on an enclosing <el>span</el> or other inline element may be necessary because the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/International/articles/inline-bidi-markup/">Unicode bidirectional algorithm</loc> can produce undesirable results when mixed
+            directional text contains spaces or punctuation. The concepts used in this technique are described in <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/International/articles/inline-bidi-markup/">What you need to know about the bidi algorithm and inline markup</loc>. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>This example defines the text direction of a nested, mixed-direction phrase, in Hebrew and English, to be right-to-left. Because the whole quote is in Hebrew, and therefore runs right to left, the text "W3C" and the comma should appear to the left of (i.e., after) the Hebrew text, like this:</p>
+            <p>The title is "<phrase xml:lang="he" dir="rtl">פעילות הבינאום, W3C</phrase>" in Hebrew.</p>
+            <p>Visually-ordered ASCII version (RTL text in uppercase, LTR in lower):</p>
+            <p>the title is "w3c ,YTIVITCA NOITAZILANOITANRETNI" in hebrew.</p>
+            <p>The Unicode bidirection algorithm alone is insufficient to achieve the right result, and leaves the text 'W3C' on the right side of the quote:</p>
+            <p>The title is "<phrase xml:lang="he">פעילות הבינאום</phrase>, W3C" in Hebrew.</p>
+            <p>Visually-ordered ASCII version:</p>
+            <p>the title is "YTIVITCA NOITAZILANOITANRETNI, w3c" in hebrew.</p>
+            <p>The following markup will produce the expected result:</p>
+         </description>
+         <code role="html401"><![CDATA[
+<p>The title says "<span lang="he" 
+dir="rtl">]]><phrase dir="rtl">פעילות הבינאום, W3C</phrase><![CDATA[</span>" in Hebrew.</p> ]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html401/struct/dirlang.html#blocklevel-bidi">Inheritance of text direction information</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/i18n-html-tech-bidi/">Authoring Techniques for
+                    XHTML &amp; HTML Internationalization: Handling Bidirectional Text 1.0</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H34"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Examine the text direction of text in the document</p>
+            </item>
+            <item>
+               <p>If the text direction is right-to-left, check that for the ancestor element that
+                  has a <att>dir</att> attribute, the attribute has the value "rtl"</p>
+            </item>
+            <item>
+               <p>If the text direction is left-to-right, check that there is no ancestor element
+                  with a <att>dir</att> attribute, or that for the ancestor element that has a
+                    <att>dir</att> attribute, the attribute has the value "ltr"</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Checks #2 and #3 are true for all text.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

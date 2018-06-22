@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SL4">
+   <short-name>Declaring Discrete Silverlight Objects to Specify Language Parts
+    			in the HTML DOM</short-name>
+   <applicability>
+      <p use-id="silverlight.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="meaning-other-lang-id" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="silverlight.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is use the HTML <att>Lang</att> attribute on
+    				the object tag to describe each Silverlight plug-in instance on the
+    				HTML hosting page as a "part" that has a different language.
+    				Assistive technologies that use HTML Lang as a determinant of language
+    				of parts can thus treat all Silverlight content as using that HTML
+    				Lang-declared language. </p>
+      <p>Most assistive technologies that are capable of determining Language
+    				for Web content will use the HTML Lang tag value as the determinant
+    				of the language of the page. Assistive technologies would also use
+    				HTML Lang tag values for the language of parts. HTML Lang is not specifically
+    				reported in accessibility frameworks. Assistive technologies would
+    				typically access the HTML DOM to get this information. This technique
+    				specifically addresses this known situation regarding how ATs obtain
+    				Language information from HTML rather than from accessibility frameworks
+    				that otherwise report other aspects of HTML content. </p>
+      <p>In order to support different language parts that each contain Silverlight
+    				content, authors declare one Silverlight object tag per continuous
+    				language part region in the HTML. For example, the following HTML is
+    				a simplication of HTML markup for a page that contains two Silverlight
+    				content areas, the first declaring Lang as English (en), the second
+    				declaring Lang as German (de): </p>
+      <codeblock xml:space="preserve"><![CDATA[     <body>
+       <object type="application/x-silverlight-2" lang="en">
+       </object>
+       <object type="application/x-silverlight-2" lang="de">
+       </object>
+     </body>
+     ]]></codeblock>
+      <p>To support communication between different Silverlight plug-in instances
+    				that are hosted on the same HTML page, application authors can use
+    				various techniques, including the following </p>
+      <ulist>
+         <item>
+            <p> System.Windows.Messaging APIs: this is the simplest technique,
+    				and this is shown in Example 1 </p>
+         </item>
+         <item>
+            <p> Using a shared business object, and exchanging information by
+    					having each Silverlight instance reference two-way data binding to
+    					that business object's properties. </p>
+         </item>
+         <item>
+            <p> Exchanging information through the HTML DOM and declaring properties
+    					of one or both instances as Scriptable by the DOM. </p>
+         </item>
+      </ulist>
+      <section id="SL4_silverlight_runtime_language_determination">
+         <head>Silverlight runtime language determination</head>
+         <p>Regardless of how HTML Lang is declared on the defining object tags,
+    					many aspects of how Silverlight works with language and culture information
+    					at run time are not determined by HTML Lang, and are instead determined
+    					by the operating system and which culture that operating system is
+    					running. For more information, see <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="SL27"
+                 linktype="techniques">Understanding
+    						Language/Culture Properties as Used by Silverlight Applications and
+    						Assistive Technologies</loc>. </p>
+      </section>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Two Silverlight object tags, each with different HTML
+    					Lang, to support a simple language-translator application as a Web
+    					page</head>
+         <description>
+            <p>The Visual Studio solution for this example has a total of 4 project
+    						components: </p>
+            <ulist>
+               <item>
+                  <p> The Web project that declares the HTML or ASP page that shows
+    						the framework of how the two Silverlight object tags exist on a page.
+    						This is where the HTML Lang is actually set. </p>
+               </item>
+               <item>
+                  <p> A project for the English user control, a simple <obj>TextBox</obj>. </p>
+               </item>
+               <item>
+                  <p> A project for a German user control, also a simple <obj>TextBox</obj>. </p>
+               </item>
+               <item>
+                  <p> A library with a static translation function </p>
+               </item>
+            </ulist>
+            <p>In this example, the English user control implements a LocalMessageSender,
+    						which sends asynchronous messages to the German user control. The German
+    						user control has a LocalMessageReceiver, which is set to listen as
+    						soon as the control is instantiated. When a message is received, the
+    						German control calls a function of the translation library, and displays
+    						translated text. </p>
+            <p>The following is the HTML page (some infrastructure and parameters
+    					omitted for clarity): </p>
+            <codeblock xml:space="preserve"><![CDATA[<html xmlns="http://www.w3.org/1999/xhtml" >
+<body>
+
+    <object data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="100%" height="25px" lang="en">
+      <param name="source" value="ClientBin/SilverFish.xap"/>
+    </object>
+
+    <object data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="100%" height="25px" lang="de">
+      <param name="source" value="ClientBin/SilverFish_DE.xap"/>
+    </object>
+
+</body>
+</html>
+]]></codeblock>
+            <p>The following is the XAML for the English user control: </p>
+            <codeblock xml:space="preserve"><![CDATA[<UserControl x:Class="SilverFish.MainPage"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Height="20" 
+>
+   <Grid x:Name="LayoutRoot" Background="White">
+       <TextBox AcceptsReturn="False" Language="en-us"
+       Name="EnglishTranslationBox" 
+       LostFocus="EnglishTranslationBox_LostFocus"/>
+   </Grid>
+</UserControl>
+]]></codeblock>
+            <p>The following is the code-behind for the English user control: </p>
+            <codeblock xml:space="preserve"><![CDATA[   public partial class MainPage : UserControl
+   {
+       private LocalMessageSender messagesender;
+       public MainPage()
+       {
+           InitializeComponent();
+       }
+       private void EnglishTranslationBox_LostFocus(object sender, RoutedEventArgs e)
+       {
+           messagesender = new LocalMessageSender("receiver");
+           messagesender.SendAsync((sender as TextBox).Text);
+       }
+   }
+   ]]></codeblock>
+            <p>The following is the code-behind for the German user control (the
+    						XAML is minimal; the main relevant point is that it contains a <obj>TextBox</obj> target
+    						named GermanTranslationBox). The code invokes the translation function
+    						found in a separate library. The translation function is not shown,
+    						it simply takes an English string and returns a German translation. </p>
+            <codeblock xml:space="preserve"><![CDATA[   public partial class MainPage : UserControl
+   {
+       public MainPage()
+       {
+           InitializeComponent();
+           LocalMessageReceiver lmr = new LocalMessageReceiver("receiver");
+           lmr.MessageReceived += new EventHandler<MessageReceivedEventArgs>(lmr_MessageReceived);
+           try
+           {
+               lmr.Listen();
+           }
+           catch (ListenFailedException) {}
+       }
+       void lmr_MessageReceived(object sender, MessageReceivedEventArgs e)
+       {
+           if (e.Message!="") {
+               String translated;
+               translated = Translator.TranslateThat(e.Message);
+               GermanTranslationBox.Text = translated;
+               GermanTranslationBox.Focus();
+           }
+       }
+   }
+]]></codeblock>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="SilverFishTestPage.html"
+                    linktype="examples">working example of SilverFish</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/cc838238(VS.95).aspx">Localizing
+    					Silverlight-based Applications</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/dd833075%28VS.95%29.aspx">How
+    						to: Implement Communication Between Local Silverlight-Based Applications</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="SL27"/>
+      <relatedtech idref="H58"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Using a browser that supports Silverlight, open an HTML page that
+    					references multiple Silverlight object tags, each with different
+    					HTML Lang values. </p>
+            </item>
+            <item>
+               <p> Verify that language settings through HTML Lang on object tags
+    						are respected by assistive technologies that can use HTML Lang values
+    						for language of parts determination. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>#2 gives expected results. </p>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Declaring_Discrete_Silverlight_Objects_to_Specify_Language_Parts_in_the_HTML_DOM"/>
+      </source>
+   </admin>
+</technique>
