@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F12">
+   <short-name>Failure of Success Criterion 2.2.5 due to having a session time limit without a mechanism
+                    for saving user's input and re-establishing that information upon
+                    re-authentication</short-name>
+   <applicability>
+      <p>Sites that require user login to submit input and that terminate the session
+                        after a some period of inactivity.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="time-limits-server-timeout" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>Web servers that require user authentication usually have a session mechanism
+                        in which a session times out after a period of inactivity from the user.
+                        This is sometimes done for security reasons, to protect users who are
+                        assumed to have left their computer exposed in a state where someone could
+                        do something harmful to them such as transfer bank funds or make an
+                        unauthorized purchase. A user with a disability may actually still be
+                        working to complete the form as it may take him or her longer to complete
+                        the form than would normally be expected. Upon re-authentication, if the
+                        state of the user's session is not restored, including all data that had
+                        been previously entered into the form, he or she will have to start over.
+                        And for these users, it is likely that the session will time out again
+                        before they can complete the form. This sets up a situation where a user who
+                        needs more time to complete the form can never complete it.</p>
+   </description>
+   <examples>
+      <ulist>
+         <item>
+            <p>A user submits a form on an authenticated site after their login has
+                                expired. On submitting the form, they are prompted to log in again,
+                                and then taken to a general welcome page. The data is not processed
+                                and they must try again.</p>
+         </item>
+         <item>
+            <p>A user submits a form on an authenticated site after their login has
+                                expired. On submitting the form, they are prompted to log in again,
+                                and then taken back to the page they were on just before the login,
+                                which in this case contains the form they attempted to submit.
+                                However, the form is not populated with the data they just entered,
+                                and they must re-enter it.</p>
+         </item>
+      </ulist>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="G105"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>On a site where authentication is required, user input is collected, and
+                            which ends the user's session after a known period of inactivity:</p>
+         <olist>
+            <item>
+               <p>Provide user input as required but allow the session to time out,
+                                    then submit the form.</p>
+            </item>
+            <item>
+               <p>When requested, re-authenticate with the server.</p>
+            </item>
+            <item>
+               <p>Determine if the function is performed using the previously
+                                    submitted data.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If step #3 is false, the site fails the Success Criterion.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

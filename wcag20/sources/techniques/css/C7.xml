@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="C7">
+   <short-name>Using CSS to hide a portion of the link text </short-name>
+   <applicability>
+      <p>All technologies that support CSS .</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="navigation-mechanisms-refs" relationship="sufficient"/>
+      <success-criterion idref="navigation-mechanisms-link" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to supplement the link text by adding additional text that describes the unique function of the link and styling the additional text so that it is not rendered on the screen by user agents that support CSS. When information in the surrounding context is needed to interpret the displayed link text, this technique provides a complete description of the link's input function while permitting the less complete text to be displayed.</p>
+      <p>This technique works by creating a CSS selector to target text that is to be hidden. The rule set for the selector places the text to be hidden in a 1-pixel box with overflow hidden, and positions the text outside of the viewport. This ensures the text does not display on screen but remains accessible to assistive technologies such as screen readers and braille displays. Note that the technique does not use <code><![CDATA[visibility:hidden]]></code> or <code><![CDATA[display:none]]></code> properties, since these can have the unintentional effect of hiding the text from assistive technology in addition to preventing on-screen display.</p>
+      <note>
+         <p>This technique to hide link text has been advocated by some screen reader users and corporate Web authors. It has proved effective on some Web sites. Other screen reader users and accessibility experts don't recommend this as a general technique because the results can be overly chatty and constrain the ability of the experienced screen reader user to control the verbosity. The working group believes the technique can be useful for Web pages that do not have repetitive content in the hidden text areas.</p>
+         <p>This technique can be used in combination with a style switching technique to present a page that is a <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="conforming-alternate-versiondef"
+                 linktype="glossary">conforming alternate version</loc> for non-conforming content. Refer to <specref ref="C29"/> and <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="conformance"
+                 locn-note="uc-conforming-alt-versions-head"
+                 linktype="understanding">Understanding Conforming Alternate Versions</loc> for more information. </p>
+      </note>
+   </description>
+   <examples>
+      <p>The following examples use the CSS selector and rule set below:</p>
+      <code role="html401"><![CDATA[
+a span {
+height: 1px;
+width: 1px;
+position: absolute;
+overflow: hidden;
+top: -10px;
+}
+]]></code>
+      <eg-group>
+         <description>
+            <p>This example describes a news site that has a series of short synopsis of stories followed by a link that says "full story". Hidden link text describes the purpose of the link.</p>
+         </description>
+         <code role="html401"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" /> 
+<link href="access.css" rel="stylesheet" type="text/css" />
+<title>Hidden Link Text</title>
+</head>
+<body> 
+<p>Washington has announced plans to stimulate economic growth.
+  <a href="#"> <span>Washington stimulates economic growth </span>
+  Full Story</a></p>
+</body>
+</html>
+]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>This example describes a resource that has electronic books in different formats. The title of each book is followed by links that say "HTML" and "PDF." Hidden text describes the purpose of each link.</p>
+         </description>
+         <code role="html401"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" /> 
+<link href="access.css" rel="stylesheet" type="text/css" />
+<title>Hidden Link Text </title>
+</head>
+<body>
+<dl>
+<dt>Winnie the Pooh </dt>
+   <dd><a href="winnie_the_pooh.html">
+      <span>Winnie the Pooh </span>HTML</a></dd>
+   <dd><a href="winnie_the_pooh.pdf">
+         <span>Winnie the Pooh </span>PDF</a></dd>
+<dt>War and Peace</dt>
+    <dd><a href="war_and_peace.html">
+      <span>War and Peace </span>HTML</a></dd> 
+    <dd><a href="war_and_peace.pdf">
+      <span>War and Peace </span>PDF</a></dd>
+</dl>
+</body>
+</html>
+]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                  	href="http://www.rnib.org.uk/blogs/expert-series?Name=Hidden%20barriers">Hidden barriers - out of sight</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://webaim.org/techniques/css/invisiblecontent/">CSS in Action: Invisible Content Just for Screen Reader Users</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G91"/>
+      <!--<relatedtech idref="H30"/>-->
+      <relatedtech idref="H33"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each <code><![CDATA[anchor]]></code> element using this technique:
+							</p>
+         <olist>
+            <item>
+               <p>Check that an element has been defined that confines its display to a pixel and positions text outside the display with overflow hidden</p>
+            </item>
+            <item>
+               <p>Check that the element of that class is included in the content of the <code><![CDATA[anchor]]></code>
+								       </p>
+            </item>
+            <item>
+               <p>Check that the combined content of the <code><![CDATA[anchor]]></code> describes the purpose of the link</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>All checks above are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

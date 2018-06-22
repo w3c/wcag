@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="ARIA17">
+   <short-name>Using grouping roles to identify related form controls</short-name>
+   <applicability>
+      <p>Technologies that support <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+      <success-criterion idref="minimize-error-cues" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
+         <p>This technique works with:</p>
+         <ulist>
+            <item>
+               <p>JAWS 13 / 14 with Internet Explorer 8 / 9, Firefox</p>
+            </item>
+            <item>
+               <p>NVDA 2012 / 2013 with Firefox</p>
+            </item>
+            <item>
+               <p>VoiceOver with Safari on OSX 10.7.4  on MacBook Pro but not on later versions like OSX 10.8.
+(This has been reported to Apple along with broken support for the HTML "title" attribute)</p>
+            </item>
+         </ulist>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to mark up a set of related controls within a form  as a group. Any label associated with the group also serves as a common label or qualifier for individual controls in the group. Assistive technologies can indicate the start and end of the group and the group’s label as one navigates into and out of the group.  This is a viable alternative for grouping form controls programmatically when the user interface’s design makes it difficult to employ the fieldset-legend technique (<loc xmlns:xlink="http://www.w3.org/1999/xlink" href="H71">H71</loc>).</p>
+      <p>For a group of radio buttons, one could also use <code><![CDATA[role="radiogroup"]]></code> instead of <code><![CDATA[role="group"]]></code>.</p>
+      <p>The group can be labeled using <att>aria-labelledby</att>.</p>
+      <p>This technique is not meant for wrapping  all controls on a form within a single container with <code><![CDATA[role="group"]]></code>.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Social Security Number</head>
+         <description>
+            <p>Social security number fields which are 9 digits long and broken up into 3 segments can be grouped using <code><![CDATA[role="group"]]></code>.</p>
+            <codeblock xml:space="preserve"><![CDATA[<div role="group" aria-labelledby="ssn1">
+   <span id="ssn1">Social Security#</span> 
+   <span style="color: #D90D0D;"> * </span>
+   <input size="3" type="text" aria-required="true" title="First 3 digits" />-
+   <input size="2" type="text" aria-required="true" title="Next 2 digits" />-
+   <input size="4" type="text" aria-required="true" title="Last 4 digits" />
+</div>]]></codeblock>
+            <p>Working example: <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="ssn.html"
+                    linktype="examples">Multiple part field groups</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Identifying radio groups</head>
+         <description>
+            <p>This example demonstrates use role=radiogroup. Note also that the radio buttons are custom controls with role=radio. (But the script to make the span actually work like radio buttons is not included in this example. ) One may optionally employ CSS to place a border around groups of such fields to visually reinforce the group relationship. The CSS properties are available below the form.</p>
+            <codeblock xml:space="preserve"><![CDATA[<h3>Set Alerts for your Account</h3>
+  <div role="radiogroup" aria-labelledby="alert1">
+    <p id="alert1">Send an alert when balance exceeds $ 3,000</p>
+    <div>
+      <span role="radio" aria-labelledby="a1r1" name="a1radio"></span>
+      <span id="a1r1">Yes</span>
+    </div>
+    <div>
+      <span role="radio" aria-labelledby="a1r2" name="a1radio"></span>
+      <span id="a1r2">No</span>
+    </div>
+  </div>
+  <div role="radiogroup" aria-labelledby="alert2">
+    <p id="alert2">Send an alert when a charge exceeds $ 250</p>
+    <div>
+      <span role="radio" aria-labelledby="a2r1" name="a2radio"></span>
+      <span id="a2r1">Yes</span>
+    </div>
+    <div>
+      <span role="radio" aria-labelledby="a2r2" name="a2radio"></span>
+      <span id="a2r2">No</span>
+    </div>
+  </div>
+  <p><input type="submit" value="Continue" id="continue_btn" name="continue_btn" /></p>]]></codeblock>
+            <p>Related CSS Style Definition to place a border around the group of fields :</p>
+            <codeblock xml:space="preserve"><![CDATA[div[role=radiogroup] {
+  border: black thin solid;
+} ]]></codeblock>
+            <p>Working example: <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="grouping-roles-example.html"
+                    linktype="examples">using grouping roles to identify related form controls</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria/roles#group">Accessible Rich Internet Applications (WAI-ARIA) 1.0, The Roles Model</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H71"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For groups of related controls where the individual labels for each control do not provide a sufficient description, and an additional group level description is needed:
+</p>
+         <olist>
+            <item>
+               <p> Check that the group of logically related input or select elements are contained within an element with role=group. 
+</p>
+            </item>
+            <item>
+               <p> Check that this group has an accessible name defined using <att>aria-label</att> or <att>aria-labelledby</att>.
+</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#1 and #2 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H53"><!--MC to update wiki and review output-->
+   <short-name>Using the body of the <el>object</el> element</short-name>
+   <applicability>
+      <p>Documents that load media with the <el>object</el> element.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+      <success-criterion idref="media-equiv-audio-desc" relationship="sufficient"/>
+      <success-criterion idref="media-equiv-text-doc" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="general" version="">
+         <p>This technique is not supported well by assistive technologies and cross-browser
+              support is irregular.</p>
+      </ua-issue>
+   </ua-issues>
+   <description id="object_shortdescription_desc">
+      <p>The objective of this technique is to provide a text alternative for content rendered
+            using the object element. The body of the <el>object</el> element can be used to provide a
+            complete text alternative for the object, or may contain additional non-text content with
+            text alternatives.</p>
+   	<p>Fallback content for the <el>object</el> element is only available to the user when the media loaded by the element is not rendered by the user agent, because the user agent does not support the media technology or the user has instructed the user agent not to render that technology. In these situations, the fallback content will be presented to the user. If the media is rendered without the fallback content, the media needs to be directly accessible. Authors can only rely on this technique to satisfy the success criterion if they are not relying on the direct accessibility of the media's technology in their conformance claim, and reasonably expect users will be able to access the fallback.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>An object includes a long description that describes it</head>
+         <code><![CDATA[ <object classid="http://www.example.com/analogclock.py">
+  <p>Here is some text that describes the object and its operation.</p>
+</object>]]></code>
+      </eg-group>
+      <eg-group>
+         <head>An object includes non-text content with a text alternative </head>
+         <code><![CDATA[<object classid="http://www.example.com/animatedlogo.py">
+  <img src="staticlogo.gif" alt="Company Name" />
+</object>   
+            ]]></code>
+      </eg-group>
+      <eg-group>
+         <head>The image object has content that provides a brief description of the function of
+              the image</head>
+         <code><![CDATA[<object data="companylogo.gif" type="image/gif">
+  <p>Company Name</p>
+</object>]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>This example takes advantage of the fact the <el>object</el> elements may be nested
+                to provide for alternative representations of information.</p>
+         </description>
+         <code role="xhtml10"><![CDATA[<object classid="java:Press.class" width="500" height="500">
+  <object data="Pressure.mpeg" type="video/mpeg">
+    <object data="Pressure.gif" type="image/gif">
+      As temperature increases, the molecules in the balloon...
+    </object>
+  </object>
+</object>  ]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html401/struct/objects.html#edef-OBJECT">HTML 4.01
+                    OBJECT element</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://juicystudio.com/article/object-paranoia.php">Object
+                  Paranoia</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G92"/>
+      <relatedtech idref="H46"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Check that the body of each <el>object</el> element contains a text alternative
+                  for the object. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> #1 is true. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

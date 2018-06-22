@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F40">
+   <short-name>Failure of Success Criterion 2.2.1 and 2.2.4 due to using meta redirect with a time limit
+        </short-name>
+   <applicability>
+      <p> All pages</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="time-limits-required-behaviors" relationship="failure"/>
+      <success-criterion idref="time-limits-postponed" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p> 
+         <code><![CDATA[meta]]></code>
+						   <code><![CDATA[http-equiv]]></code> of {time-out}; url=... is often used to
+                        automatically redirect users. When this occurs after a time delay, it is an
+                        unexpected change of context that may interrupt the user.</p>
+      <p>It is acceptable to use the <code><![CDATA[meta]]></code> element to create a redirect
+                        when the time-out is set to zero, since the redirect is instant and will not
+                        be perceived as a change of context. However, it is preferable to use
+                        server-side methods to accomplish this. See <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="SVR1"
+              linktype="server">Implementing automatic redirects on the server side
+                            instead of on the client side</loc>.</p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <description>
+            <p> The page below is a failure because it will redirect to the URI
+                                http://www.example.com/newpage after a time limit of 5 seconds.</p>
+         </description>
+         <code><![CDATA[
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+   <head>     
+      <title>Do not use this!</title>     
+      <meta http-equiv="refresh"
+      content="5; url=http://www.example.com/newpage" />   
+   </head>   
+   <body>     
+      <p>       
+         If your browser supports Refresh, you'll be       
+         transported to our        
+         <a href="http://www.example.com/newpage">new site</a>        
+         in 5 seconds, otherwise, select the link manually.     
+      </p>   
+   </body> 
+</html>
+]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html401/struct/global.html#h-7.4.4">HTML 4.01 META element</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="SVR1"/>
+      <relatedtech idref="H76"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> View a page. </p>
+            </item>
+            <item>
+               <p> Check that the page does not redirect after a time-out. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <olist>
+            <item>
+               <p>If check #2 is false, this failure condition applies and content fails the Success Criterion.</p>
+            </item>
+         </olist>
+      </expected-results>
+   </tests>
+</technique>

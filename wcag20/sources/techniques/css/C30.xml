@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="C30">
+   <short-name>Using CSS to replace text with images of text and providing user interface controls to switch</short-name>
+   <applicability>
+      <p>Any technology that supports CSS. </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="visual-audio-contrast-text-presentation"
+                         relationship="sufficient"/>
+      <success-criterion idref="visual-audio-contrast-text-images" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to demonstrate how CSS can be used to replace structured HTML text with images of text in a way that makes it possible for users to view content according to their preferences. To use this technique, an author starts by creating an HTML page that uses semantic elements to mark up the structure of the page. The author then designs two or more stylesheets for that page. One stylesheet presents the HTML text as text and the second uses CSS features to replace some of the HTML text with images of text. Finally, through the use of server-side or client-side scripting, the author provides a control that allows the user to switch between the available views. </p>
+      <p>This technique can be used to meet Success Criterion 1.4.5 or 1.4.9 if a presentation that does not include images of text is available and as long as the user interface control that is provided to allow users to switch to an alternate presentation meets the relevant criteria. Where possible, authors should deliver the presentation that does not include images of text as the default presentation. In addition, the control used to switch should be located near the beginning of the page. </p>
+      <p>A variety of "image replacement" techniques have been developed to address a variety of user agent, configuration and compatibility with assistive technology issues (See resources for more information). While there are a variety of approaches authors may use to replace text, it is important to consider compatibility with assistive technology, whether the technique will work correctly if scripting, CSS, images (or combinations of these) are turned off. Since it can be difficult to find a single solution that works in all cases, this technique recommends the use of a control that allows users to switch to a presentation that does not include an image replacement technique. </p>
+      <note>
+         <p>This technique can be used in combination with a style switching technique to present a page that is a <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="conforming-alternate-versiondef"
+                 linktype="glossary">conforming alternate version</loc> for non-conforming content. Refer to <specref ref="C29"/> and <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="conformance"
+                 locn-note="uc-conforming-alt-versions-head"
+                 linktype="understanding">Understanding Conforming Alternate Versions</loc> for more information.</p>
+      </note>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>A design studio site uses a style switcher to allow users to view two presentations of their home page. For the default version, the heading text is replaced with images of text. A control on the page allows users to switch to a version that presents the headings as text. </p>
+            <p>The CSS component: </p>
+         </description>
+         <code><![CDATA[...
+<div id="Header"> 
+  <h1><span>Pufferfish Design Studio</span></h1> 
+  <h2><span>Surprising Identity and Design Solutions</span></h2> 
+  </div> 
+...
+]]></code>
+         <description>
+            <p>The CSS for the presentation that includes images of text follows. Note that the CSS uses positioning to place the contents of the heading elements offscreen so that the text remains available to screen reader users.</p>
+         </description>
+         <code><![CDATA[...
+#Header h1 {
+	background-image: url(pufferfish-logo.png);
+	height: 195px;
+	width: 290px;
+	background-repeat: no-repeat;
+	margin-top: 0;
+	position: absolute;
+	}
+#Header h1 span {
+	position: absolute;
+        left: -999em;
+	}
+#Header h2 {
+	background-image: url(beauty.png);
+	background-repeat: no-repeat;
+	height: 234px;
+	width: 33px;
+	margin-left: 8px;
+	position: absolute;
+	margin-top: 250px;
+	}
+#Header h2 span {
+	position: absolute;
+        left: -999em;
+	}
+	]]></code>
+         <description>
+            <p>The CSS for the presentation that does not include images of text. </p>
+         </description>
+         <code><![CDATA[...
+#Header h1 {
+	font: normal 200%/100% Garamond, "Times New Roman", serif;
+	margin-bottom: 0;
+	color: #000099;
+	background: #ffffff;
+	}
+
+#Header h2 {
+	font: normal 160%/100% Garamond, "Times New Roman", serif;
+	margin-bottom: 0;
+	color: #336600;
+	background: #ffffff;
+	}
+]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist><!-- BBC: Broken link, commenting out item><p><loc href="http://www.kryogenix.org/code/browser/lir/">Another image replacement technique</loc></p></item-->
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://wellstyled.com/css-replace-text-by-image.html">Replacing Text By An Image</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://alistapart.com/article/fir">Facts and Opinion About Fahrner Image Replacement</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.digital-web.com/articles/in_defense_of_fahrner_image_replacement/">In Defense of Fahrner Image Replacement</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://en.wikipedia.org/wiki/Fahrner_Image_Replacement">Fahrner Image Replacement</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/CSS2/colors.html#background-properties">CSS2: 14.2.1 Background properties: 'background-color', 'background-image', 'background-repeat', 'background-attachment', 'background-position', and 'background'</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="C29"/>
+      <relatedtech idref="F3"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Check that the Web page includes a control that allows users to select an alternate presentation. </p>
+            </item>
+            <item>
+               <p>Check that when the control is activated the resulting page includes text (programmatically determined text) wherever images of text had been used. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> All of the above checks are true. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="PDF18">
+   <short-name>Specifying the document title using the Title entry in the document
+    			information dictionary of a PDF document</short-name>
+   <applicability>
+      <p use-id="pdf.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="navigation-mechanisms-title" relationship="cosufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="pdf.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The intent of this technique is to show how a descriptive title for
+    				a PDF document can be specified for assistive technology by using the
+    				/Title entry in the document information dictionary and by setting
+    				the DisplayDocTitle flag to True in a viewer preferences dictionary.
+    				This is typically accomplished by using a tool for authoring PDF. </p>
+      <p>Document titles identify the current location without requiring users
+    				to read or interpret page content. User agents make the title of the
+    				page easily available to the user for identifying the page. For instance,
+    				a user agent may display the page title in the window title bar or
+    				as the name of the tab containing the page. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Setting the document title in the metadata and specifying
+    					that the title be displayed in the title bar using Adobe Acrobat 9 Pro</head>
+         <description>
+            <p>This example is shown with Adobe Acrobat Pro. There are other software tools that perform similar functions. See the list of other software tools in <specref ref="pdf_notes_acc-sup_files_applications"/>.</p>
+            <p>Open the PDF document in Adobe Acrobat Pro: </p>
+            <olist>
+               <item>
+                  <p> Select File &gt; Properties </p>
+               </item>
+               <item>
+                  <p> Select the Description tab to view the metadata in the document,
+    						including the document information dictionary </p>
+               </item>
+               <item>
+                  <p> Modify the Title field to add or change the document's Title entry </p>
+               </item>
+            </olist>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF18/title-entry.jpg"
+                       height="673"
+                       width="610"/>
+                  <alt>Viewing the Title field in the Description tab of the Properties dialog. The document title is entered in the field.</alt>
+               </image> 
+            </p>
+            <p>Note that, with Adobe Acrobat installed, you can also enter and read
+    						the data properties information from the desktop. Access the file's
+    						context menu, choose Properties, and select the PDF tab. Any information
+    						you type or edit in this dialog box also appears in the Document Properties
+    						Description when you open the file. </p>
+            <p>To display the document title in the title bar of a user agent: </p>
+            <olist>
+               <item>
+                  <p> Select File &gt; Properties </p>
+               </item>
+               <item>
+                  <p> Select the Initial View tab </p>
+               </item>
+               <item>
+                  <p> In the Window Options section, select Document Title in the Show
+    						pull-down list. </p>
+               </item>
+            </olist>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF18/doc-title.jpg"
+                       height="671"
+                       width="610"/>
+                  <alt>Specifying that the document title be displayed in the title bar. In the Window Options, Show Document Title is selected.</alt>
+               </image> 
+            </p>
+            <p>The title is displayed in the title bar, as shown in the image below. </p>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF18/title-bar.jpg"
+                       height="34"
+                       width="492"/>
+                  <alt>Image of the Adobe Acrobat Pro title bar with the title of the document displayed.</alt>
+               </image> 
+            </p>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="title-bar.pdf"
+                    linktype="examples">working example of displaying document title in the title bar</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>A /Title entry in the document information dictionary
+    				of a PDF document</head>
+         <description>
+            <p>The following code fragment illustrates code that is typical for providing
+    						a /Title entry in a document information dictionary that contains a
+    						document title. </p>
+            <codeblock xml:space="preserve"><![CDATA[1 0 obj   
+   << /Title (Applying Guerrilla Tactics to Usability Testing by People with Disabilities)    
+      /Author (Mary Smith) 
+      /CreationDate (D:19970915110347-08'00')    
+   >>   
+endobj
+]]></codeblock>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/accessibility/products/acrobat.html">PDF and Accessibility</loc>
+               </p>
+            </item>
+            <item>
+               <p> Section 14.3.3 (Document Information Dictionary) in <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF
+    					1.7 (ISO 32000-1)</loc> 
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://partners.adobe.com/public/developer/en/pdf/PDFReference16.pdf#page=794">PDF
+    					Reference 1.6, TITLE entry of the document information dictionary</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G88"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Verify that the title for the document is correctly specified and
+    					displayed in the user agent title bar by applying one of the following:</p>
+               <ulist>
+                  <item>
+                     <p> Open the PDF document with a screen reader, listening to hear
+    						that the document title is read correctly. </p>
+                  </item>
+                  <item>
+                     <p> Using a PDF editor, check that the document title is specified.
+    							Select the Initial View tab to check that the title will be displayed. </p>
+                  </item>
+                  <item>
+                     <p> Use a tool which is capable of showing the /Title entry value
+    								in the document catalog to open the PDF document and view the
+    								/Title entry and /DisplayDocTitle flag settings. </p>
+                  </item>
+               </ulist>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#1 is true. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Specifying_the_document_title_using_the_Title_entry_in_the_document_information_dictionary_of_a_PDF_document"/>
+      </source>
+   </admin>
+</technique>

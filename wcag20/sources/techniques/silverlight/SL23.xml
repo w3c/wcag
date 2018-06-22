@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SL23">
+   <short-name>Using A Style Switcher to Increase Font Size of Silverlight Text
+    			Elements</short-name>
+   <applicability>
+      <p use-id="silverlight.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="visual-audio-contrast-scale" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="silverlight.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to define style switching logic
+    				for Silverlight. In particular, the intent is to use the style switcher
+    				to change the font size of text elements. This technique could be used
+    				only for specific elements, or could also be applied to the entire
+    				Silverlight content area and all text elements therein (including elements
+    				such as <obj>TextBlock</obj> that are technically not controls).
+    				Examples are provided for these two cases. </p>
+      <p>The property to style or otherwise change is the <prop>FontSize</prop> property.
+    				Primarily, this is done using the API <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="https://msdn.microsoft.com/en-us/library/system.windows.controls.control.fontsize%28VS.95%29.aspx">Control.FontSize</loc>,
+    				but developers can also use similar properties on other objects that do not
+    				derive from <obj>Control</obj> (examples: <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="https://msdn.microsoft.com/en-us/library/system.windows.controls.textblock.fontsize%28VS.95%29.aspx">TextBlock</loc>; <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="https://msdn.microsoft.com/en-us/library/system.windows.controls.datagridtextcolumn.fontsize%28VS.95%29.aspx">DataGridTextColumn</loc>). </p>
+      <p>Silverlight uses a style system whereby many properties that affect
+    				UI appearance can be referred to and changed through a style resource.
+    				The style resource overrides the default code implementation and the
+    				default XAML template as provided by the Silverlight core implementation(or
+    				a third party control author). A style enables an application author
+    				to make a one-to-many change to property values in an efficient and
+    				reversible way, and also to group multiple related property changes
+    				as one unit of logic. Styles can be applied explicitly by referencing
+    				them by name, or implicitly by associating a style with a class (which
+    				then targets all instances of that class). This is analogous to how
+    				CSS can either define styles globally for tags or uniquely for classids
+    				and names. </p>
+      <p>Silverlight styles are always written in XAML. Silverlight event handlers
+    				are most often written in code (there are related techniques that can
+    				react to states with event associations, defined in pure XAML, but
+    				the specific style switching technique is most straightforward in code). </p>
+      <section id="SL23_zoom-comparison">
+         <head> Using this technique versus relying on browser zoom </head>
+         <p>Silverlight supports browser zoom when viewed in browser hosts that
+    					support a browser zoom feature. Specifically, Silverlight scales content
+    					within its content area when the user engages browser zoom, based on
+    					the browser zoom factor. However, not all browser hosts that Silverlight
+    					supports have a browser zoom feature, and/or users might choose not
+    					to use browser zoom. This technique presents an alternative technique
+    					for font scaling in cases when relying on browser zoom is not viable
+    					as a technique. Applications might use HTML DOM based logic to determine
+    					the user agent string of the browser host, and use that as a determinant
+    					of whether the user has browser zoom available as an option. If no
+    					browser zoom feature exists for that user and their user agent, that
+    					user could be served a version of the Silverlight application that
+    					presents a UI and logic for sizing the fonts using the Silverlight
+    					API, as described in this technique. </p>
+         <p>For more information about Silverlight and browser zoom, see the technique <specref ref="SL22"/>. </p>
+      </section>
+      <section id="SL23_percent">
+         <head> Sizing by percent </head>
+         <p>Generally, sizing Silverlight <prop>FontSize</prop> values by
+    					percentages is not recommended. Sizing by percentage produces non-integer
+    					font size values, which in turn produce aliasing artifacts. The Silverlight
+    					rendering routines for text work best when dealing with integer numbers.
+    					The entire Silverlight rendering system is based on pixel measurements.
+    					In particular, the behavior for text rendering produces optimized font
+    					shaping and subpixel rendering for text areas, and this behavior is
+    					based on the assumption that font unit measurements will be provided
+    					by applications using whole pixel values. </p>
+      </section>
+      <section id="SL23_units">
+         <head> Units for font sizing in Silverlight </head>
+         <p>Font sizing in Silverlight is always specified by a unit measure of
+    					pixels. Other unit measures such as ems or points that come from a
+    					migrated UI definition in XAML would need to be unit-converted to all
+    					use a purely numeric value, such that attribute values in XAML do not
+    					not include unit identifier suffixes such as "px", "pt", "em",
+    					or "cm". This note is most relevant if the application author
+    					is porting or migrating a Windows Presentation Framework (WPF) application
+    					to Silverlight, or is using a XAML-emitting design tool that is producing
+    					general XAML UI definitions and not targeting a specific framework. </p>
+      </section>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Style applied to all text elements within a RichTextBox
+    					container</head>
+         <description>
+            <p>Variations of this example could be employed to offer more choices.
+    						For example, multiple style switchers could be provided that gave three
+    						or more fontsize choices. </p>
+            <codeblock xml:space="preserve"><![CDATA[<UserControl x:Class="StyleSwitcherFontSize.MainPage"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+>
+   <UserControl.Resources>
+       <Style x:Key="BiggerRTBFonts" TargetType="RichTextBox">
+           <Setter Property="FontSize" Value="24"/>
+       </Style>
+   </UserControl.Resources>
+
+   <StackPanel x:Name="LayoutRoot" Background="White">
+       <Button Click="Button_Click">Super size fonts!</Button>
+       <Button Name="Undo" Click="Undo_Click">Make those big fonts stop!</Button>
+       <RichTextBox IsReadOnly="True" Name="rtb1">
+           <RichTextBox.Blocks>
+               <Paragraph>Various test text</Paragraph>
+               <Paragraph>
+                   <Bold>Some bold test text</Bold></Paragraph>
+               <Paragraph>
+                   <Italic>Some italic</Italic>
+               </Paragraph>
+               <Paragraph FontFamily="Times New Roman">A different font, why not?</Paragraph>
+           </RichTextBox.Blocks>
+       </RichTextBox>
+   </StackPanel>
+</UserControl>
+]]></codeblock>
+            <p>The second listing is the C# code for the event handler . Note that
+    						all it does is change a style property, using a value that keys into
+    						the .Resources collection from XAML where the Style is defined. Another
+    						event handler nulls out the style and returns values to defaults. </p>
+            <codeblock xml:space="preserve"><![CDATA[private void Button_Click(object sender, RoutedEventArgs e)
+{
+  rtb1.Style = this.Resources["BiggerRTBFonts"] as Style;
+}
+private void Undo_Click(object sender, RoutedEventArgs e)
+{
+   rtb1.Style = null;
+}
+]]></codeblock>
+            <p>The following images show the original, and the applied style. </p>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/SL23/originalfontsize.png"
+                       height="119"
+                       width="240"/>
+                  <alt>Screen shot with standard fonts and a button to enlarge</alt>
+               </image> 
+            </p>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/SL23/newfontsize.png"
+                       height="257"
+                       width="246"/>
+                  <alt>Screen shot with enlarged fonts after activating button to enlarge</alt>
+               </image> 
+            </p>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="StyleSwitcherFontSizeTestPage.html"
+                    linktype="examples">working example of Style Switcher Font Size</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Font size increase applied to all text content by applying
+    				at UserControl level, and by percent increase logic</head>
+         <description>
+            <p>This example uses the inheritance characteristics of the <prop>FontSize</prop>
+    						property that is available to all Silverlight controls. Rather than
+    						using a style, this example uses a <prop>HoldEnd</prop> animation, to take advantage
+    						of the "By" behavior of the animation system that can increment
+    						an existing value by 2 (pixels) rather than replacing the value with
+    						a fixed pixel value. </p>
+            <p>The following is the XAML UI: </p>
+            <codeblock xml:space="preserve"><![CDATA[<UserControl x:Class="StyleSwitcherFontSize.MainPage"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   Name="rootcontrol">
+   <UserControl.Resources>
+       <Storyboard x:Key="BySize">
+           <DoubleAnimation Storyboard.TargetName="rootcontrol" Storyboard.TargetProperty="FontSize" By="2" FillBehavior="HoldEnd" Duration="0"/>
+       </Storyboard>
+   </UserControl.Resources>
+   <StackPanel x:Name="LayoutRoot" Background="White">
+       <Button Click="Button_Click">Super size fonts!</Button>
+       <Button Name="Undo" Click="Undo_Click">Make those big fonts stop!</Button>
+       <TextBox Text="Various test text"/>
+       <TextBox FontWeight="Bold" Text="Some bold test text"/>
+       <TextBox FontStyle="Italic" Text="Some italic"/>
+       <TextBox FontFamily="Times New Roman" Text="A different font, why not?"/>
+   </StackPanel>
+</UserControl>
+]]></codeblock>
+            <p>The following are the C# event handlers. </p>
+            <codeblock xml:space="preserve"><![CDATA[private void Button_Click(object sender, RoutedEventArgs e)
+{
+   (this.Resources["BySize"] as Storyboard).Begin();
+}
+private void Undo_Click(object sender, RoutedEventArgs e)
+{
+   (this.Resources["BySize"] as Storyboard).Stop();
+}
+]]></codeblock>
+            <p>
+                This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="ByAnimationFontSizeTestPage.html"
+                    linktype="examples">working example of By Animation Font Size</loc>.
+              </p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/system.windows.style%28VS.95%29.aspx">Style
+    					Class</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/cc189010(VS.95).aspx">Text
+    					and Fonts</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/cc189019(VS.95).aspx">Animation
+    						Overview</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="C29"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. </p>
+            </item>
+            <item>
+               <p> Verify that the application provides a control that can increase
+    						font size. </p>
+            </item>
+            <item>
+               <p> Activate the control, and check that the font sizes increase. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>#2 and #3 are true. </p>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Using_A_Style_Switcher_to_Increase_Font_Size_of_Silverlight_Text_Elements"/>
+      </source>
+   </admin>
+</technique>

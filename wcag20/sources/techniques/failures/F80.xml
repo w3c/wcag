@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F80">
+   <short-name>Failure of Success Criterion 1.4.4 when text-based form controls do not resize when visually rendered text is resized up to 200%</short-name>
+   <applicability>
+      <p>HTML, XHTML, and CSS</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="visual-audio-contrast-scale" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>The objective of this failure condition is to describe a problem that occurs when changing the size of text does not cause the text-based form controls to resize accordingly. This means that the user may have difficulty entering text and being able to read what they have entered because the text is not displayed at the text size required by the user.</p>
+      <p>Text-based form controls include input boxes (text and textarea) as well as buttons.</p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <head>A Contact Form</head>
+         <description>
+            <p>A Contact Us form has some introductory information and then form controls for users to enter their first name, last name, telephone number and email address. The heading, introductory text and form control labels have been implemented in a scalable way but the form controls themselves have not.</p>
+            <p>The XHTML component:</p>
+         </description>
+         <code role="xhtml"><![CDATA[ <h1>Contact Us</h1>
+ <p>Please provide us with your details and we will contact you as soon as we can. Note that all of the form fields are required.</p>
+ <label for="fname">First Name</label><input type="text" name="fname" id="fname" /><br />
+ <label for="lname">Last Name</label><input type="text" name="lname" id="lname" /><br />
+ <label for="phone">Telephone</label><input type="text" name="phone" id="phone" /><br />
+ <label for="email">Email</label><input type="text" name="email" id="email" /><br />
+ <input type="submit" name="Submit" value="Submit" id="Submit" />]]></code>
+         <description>
+            <p>The CSS component:</p>
+         </description>
+         <code role="css"><![CDATA[ h1 { font-size: 2em; }
+ p, label { font-size: 1em; }
+ input {font-size: 12pt}]]></code>
+      </eg-group>
+   </examples>
+   <resources/>
+   <related-techniques/>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Enter some text into text-based form controls that receive user entered text. </p>
+            </item>
+            <item>
+               <p>Increase the text size of the content by 200%.</p>
+            </item>
+            <item>
+               <p>Check that the text in text-based form controls has increased by 200%.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If check #3 is false, then the failure condition applies and the content fails these Success Criteria.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

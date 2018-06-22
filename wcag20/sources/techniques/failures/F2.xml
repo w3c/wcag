@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F2">
+   <short-name>Failure of Success Criterion 1.3.1 due to using changes in text presentation to convey information without using the appropriate markup or text</short-name>
+   <applicability>
+      <p>All technologies that support images or presentation markup.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>This document describes a failure that occurs when a change in the appearance of text conveys meaning without using appropriate semantic markup. This failure also applies to images of text that are not enclosed in the appropriate semantic markup.</p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <head>Using CSS to style the <el>p</el> element to look like a heading</head>
+         <description>
+            <p>The author intended to make a heading but didn't want the look of the default HTML heading. So they used CSS to style the P element to look like a heading and they called it a heading. But they failed to use the proper HTML heading element. Therefore, the Assisitive Technology could not distinguish it as a heading.</p>
+         </description>
+         <code role="html401"><![CDATA[
+ <style type="text/css">
+ .heading1{
+        font-family: Times, serif;
+        font-size:200%;
+        font-weight:bold;
+ }
+ </style>
+
+ <p class="heading1">Introduction</p>
+ <p>This introduction provides detailed information about how to use this 
+ ........
+ </p>
+]]></code>
+         <description>
+            <note>
+               <p>In this case, the proper approach would be to use CSS to style the <el>H1</el> element in HTML.</p>
+            </note>
+         </description>
+      </eg-group>
+      <eg-group role="failure">
+         <head>Images of text used as headings where the images are not marked up with heading tags</head>
+         <description>
+            <p>Chapter1.gif is an image of the words, "Chapter One" in a Garamond font sized at 20 pixels. This is a failure because at a minimum the img element should be enclosed within a header element. A better solution would be to eliminate the image and to enclose the text within a header element which has been styled using CSS.</p>
+         </description>
+         <code role="html401"><![CDATA[
+<img src="Chapter1.gif" alt="Chapter One">
+ 
+<p>Once upon a time in the land of the Web.....
+</p>
+]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <head>Using CSS to visually emphasize a phrase or word without conveying that emphasis semantically</head>
+         <description>
+            <p>The following example fails because the information conveyed by using the CSS <code><![CDATA[font-weight]]></code> property to change to a bold font is not conveyed through semantic markup or stated explicitly in the text.</p>
+            <p>Here is a CSS class to specify bold:</p>
+            <codeblock xml:space="preserve"><![CDATA[
+.yell {
+  font-weight:bold;
+  text-transform: uppercase;
+}
+]]></codeblock>
+            <p>And here is the corresponding HTML:</p>
+            <codeblock role="html401" xml:space="preserve"><![CDATA[
+<p>
+ "I said, <span class="yell">no</span>, not before dinner!", 
+ was the exasperated response when Timmy asked his mother for the 
+ fourth time for an ice cream cone. 
+ </p>
+]]></codeblock>
+         </description>
+      </eg-group>
+   </examples>
+   <resources/>
+   <related-techniques>
+      <relatedtech idref="H42"/>
+      <relatedtech idref="H49"/>
+      <relatedtech idref="G115"/>
+      <relatedtech idref="G117"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>For images of text:</p>
+               <olist>
+                  <item>
+                     <p>Check if any images of text are used to convey structural information of the document.</p>
+                  </item>
+                  <item>
+                     <p>Check that the proper semantic structure (e.g., HTML headings) is used with the text to convey the information.</p>
+                  </item>
+               </olist>
+            </item>
+            <item>
+               <p>For styled text that conveys information:</p>
+               <olist>
+                  <item>
+                     <p>Check if there is any styled text that conveys structural information.</p>
+                  </item>
+                  <item>
+                     <p>Check that in addition to styling, the proper semantic structure is used with the text to convey the information.</p>
+                  </item>
+               </olist>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If check #1.1 is true, then #1.2 is true.</p>
+            </item>
+            <item>
+               <p>If check #2.1 is true, then #2.2 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

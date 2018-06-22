@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SCR28">
+   <short-name>Using an expandable and collapsible menu to bypass block of content</short-name>
+   <applicability>
+      <p>Technologies that provide client side scripting.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="navigation-mechanisms-skip" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>This technique allows users to skip repeated material by placing that material in a menu that can be expanded or collapsed under user control. The user can skip the repeated material by collapsing the menu. The user invokes a user interface control to hide or remove the elements of the menu. The resources section lists several techniques for menus, toolbars and trees, any of which can be used to provide a mechanism for skipping navigation.</p>
+      <note>
+         <p>Similiar approaches can be implemented using server-side scripting and reloading a modified version of the Web page.</p>
+      </note>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>The navigation links at top of a Web page are all entries in a menu implemented using HTML, CSS, and Javascript. When the navigation bar is expanded, the navigation links are available to the user. When the navigation bar is collapsed, the links are not available.</p>
+         </description>
+         <code><![CDATA[
+...
+
+  <script type="text/javascript">
+  function toggle(id){
+    var n = document.getElementById(id);
+    n.style.display =  (n.style.display != 'none' ? 'none' : '' );
+  }
+  </script>
+
+...
+
+  <a href="#" onclick="toggle('navbar')">Toggle Navigation Bar</a>
+
+  <ul id="navbar">
+  <li><a href="http://target1.html">Link 1</a></li>
+  <li><a href="http://target2.html">Link 2</a></li>
+  <li><a href="http://target3.html">Link 3</a></li>
+  <li><a href="http://target4.html">Link 4</a></li>
+  </ul>
+
+...
+]]></code>
+         <description>
+            <p>Working example of this code: <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="toggle-navbar.html"
+                    linktype="examples">Toggle navigation bar with a link</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>The table of contents for a set of Web pages is repeated near the beginning of each Web page. A button at the beginning of the table of contents lets the user remove or restore it on the page.</p>
+         </description>
+         <code><![CDATA[
+...
+
+   <script type="text/javascript">
+  function toggle(id){
+    var n = document.getElementById(id);
+    n.style.display =  (n.style.display != 'none' ? 'none' : '' );
+  }
+  </script>
+
+  ...
+
+  <button onclick="return toggle('toc');">Toggle Table of Contents</button>
+  <div id="toc">
+    ...
+  </div>
+
+...
+]]></code>
+         <description>
+            <p>Working example of this code: <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="toggle-toc.html"
+                    linktype="examples">Toggle table of contents with a button</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.bobbyvandersluis.com/articles/unobtrusive-show-hide/">Unobtrusive show/hide behavior reloaded</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.dustindiaz.com/seven-togglers/">Seven ways to toggle an element with JavaScript</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H69"/>
+      <relatedtech idref="H50"/>
+      <relatedtech idref="H70"/>
+      <!--  @@  the following were unaccepted wiki drafts at the time this tech was xmlized
+                    # Using lists and links to make a click menu
+                    # Using lists and links to make a hover menu
+                    # Using lists and links to make a toolbar
+                    # Using lists and links to make a menu bar
+                    # Using lists and links to make a tree control -->
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Check that some user interface control allows the repeated content to be expanded or collapsed.</p>
+            </item>
+            <item>
+               <p>Check that when the content is expanded, it is included in the programmatically determined content at a logical place in the reading order.</p>
+            </item>
+            <item>
+               <p>Check that when the content is collapsed, it is not part of the programmatically determined content.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>All checks above are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

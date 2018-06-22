@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SL10">
+   <short-name>Implementing a Submit-Form Pattern in Silverlight</short-name>
+   <applicability>
+      <p use-id="silverlight.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="consistent-behavior-unpredictable-change"
+                         relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="silverlight.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to declare Silverlight user interface
+    				elements related to user input and use the Silverlight two-way data
+    				binding techniques to provide a Submit button and opt-in forms submission
+    				logic pattern for forms. The Submit button serves as the final deliberate
+    				step of a form submission scenario. Silverlight programming techniques
+    				do not provide a "Submit button as a distinct object. Rather,
+    				application authors design their user input workflow such that it is
+    				a single user action that initiates change of context that is related
+    				to a data input scenario. The key to doing this in Silverlight is to
+    				use a data binding mode that sets <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="https://msdn.microsoft.com/en-us/library/system.windows.data.binding.updatesourcetrigger%28VS.95%29.aspx">UpdateSourceTrigger</loc> of
+    				all individual databound fields in that form or transaction. For any
+    				data binding where the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="https://msdn.microsoft.com/en-us/library/system.windows.data.binding.updatesourcetrigger%28VS.95%29.aspx">UpdateSourceTrigger</loc> is <prop>Explicit</prop>,
+    				no real-time change is made to the data, until the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="https://msdn.microsoft.com/en-us/library/system.windows.data.bindingexpression.updatesource%28VS.95%29.aspx">UpdateSource</loc> method
+    				is called on each of these bindings. The application-specific Submit
+    				button is connected to an event handler that calls <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="https://msdn.microsoft.com/en-us/library/system.windows.data.bindingexpression.updatesource%28VS.95%29.aspx">UpdateSource</loc> on
+    				all of the databound UI elements that comprise that form. </p>
+      <section id="SL10_validation">
+         <head> Validation of data </head>
+         <p>The Submit button itself can also be the UI element that provides
+    					warnings, instructions, etc. in a way that assistive technologies can
+    					report to users, through the <obj>AutomationProperties</obj> techniques.
+    					Using a Submit model for Silverlight form input to databound data sources
+    					relies on a particular data binding mode. The Submit model can be used
+    					either along with client-side or server-side validation techniques.
+    					The example does not explicitly include either validation technique. </p>
+      </section>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Two form fields with Submit</head>
+         <description>
+            <p>In this example, the form fields correspond to a data object that
+    						implements a view model. Silverlight uses the view model and data annotations
+    						to generate some of its UI, notably the names of the fields are bound
+    						to the original view model names from the data. This example has a
+    						UI defined in XAML and logic defined in C#. The following is the XAML
+    						UI , which also includes the binding definitions. Note the Mode=TwoWay,
+    						UpdateSourceTrigger=Explicit attributes in the bindings. This is the
+    						binding mode to use for the Submit button scenario. </p>
+            <codeblock xml:space="preserve"><![CDATA[<UserControl x:Class="BasicSubmitButton.MainPage"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk">
+ <StackPanel x:Name="LayoutRoot" Background="White" Margin="10">
+   <Grid>
+   <Grid.RowDefinitions>
+       <RowDefinition Height="Auto"/>
+       <RowDefinition Height="Auto"/>
+       <RowDefinition Height="Auto"/>
+       <RowDefinition Height="Auto"/>
+       <RowDefinition Height="Auto"/>
+   </Grid.RowDefinitions>
+   <Grid.ColumnDefinitions>
+       <ColumnDefinition Width="Auto"/>
+       <ColumnDefinition Width="200"/>
+       <ColumnDefinition Width="Auto"/>
+   </Grid.ColumnDefinitions>
+   <TextBlock Text="Form Input" FontSize="16" FontWeight="Bold"
+     Grid.Column="1" HorizontalAlignment="Center" />
+       <sdk:Label x:Name="NameLabel" Grid.Row="2" Margin="3"
+   HorizontalAlignment="Right"
+   Target="{Binding ElementName=NameTextBox}"/>
+   <TextBox x:Name="NameTextBox" 
+     AutomationProperties.Name="{Binding Content, ElementName=NameLabel}"
+     Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+     Grid.Column="1" Grid.Row="2" Margin="3" />
+       <sdk:Label x:Name="AgeLabel" Grid.Row="3" Margin="3"
+   HorizontalAlignment="Right"
+   Target="{Binding ElementName=AgeTextBox}"/>
+   <TextBox x:Name="AgeTextBox" 
+     AutomationProperties.Name="{Binding Content, ElementName=AgeLabel}" 
+     Text="{Binding Age, Mode=TwoWay, UpdateSourceTrigger=Explicit}"  
+     Grid.Column="1" Grid.Row="3" Margin="3" />
+   <Button x:Name="SubmitButton" Content="Submit" Click="SubmitButton_Click"
+     Grid.Column="1" Grid.Row="4" Width="50" Margin="3"
+   AutomationProperties.HelpText="Activate this button to submit form."/>
+   </Grid>
+ </StackPanel>
+</UserControl>
+]]></codeblock>
+            <p>The following is the C# logic for the page. Note the <function>SubmitButton_Click</function> handler.
+    						This implementation disables the Submit button (representative of
+    						a change of context, because now the form cannot be submitted again)
+    						and provides user feedback without performing any validation. The
+    						test file included in this technique sets up its data object as a
+    						purely client side entity and does no validation, so that no service/server
+    						is necessary to use the test file. Each element with a binding calls
+    						the <function>UpdateSource</function> method, such that the act of pressing
+    						the Submit button commits all the form's information all at once.
+    						A full implementation might replace this with a server side data
+    						object infrastructure. A full implementation might also provide a "Reset" or "Edit" button
+    						to enable form submission again if there were issues. </p>
+            <codeblock xml:space="preserve"><![CDATA[private void SubmitButton_Click(object sender, RoutedEventArgs e)
+{
+   (sender as Button).IsEnabled = false;
+   NameTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+   AgeTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+   TextBlock tb = new TextBlock();
+   tb.Text="Thank you, your form information was submitted.";
+   LayoutRoot.Children.Add(tb);
+}
+]]></codeblock>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="BasicSubmitButtonTestPage.html"
+                    linktype="examples">working example of Basic Submit Button</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/cc278072(VS.95).aspx">Data
+    						Binding</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G80"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. To test
+    					UI Automation based behavior such as reading AutomationProperties.HelpText,
+    					use Microsoft Windows as platform. </p>
+            </item>
+            <item>
+               <p> Verify that the user interface design of the form includes a clearly
+    						indicated Submit button (a control that adequately communicates to
+    						users that activating it will cause input to be submitted and might
+    						cause a change of context). </p>
+            </item>
+            <item>
+               <p> Provide values for the various input fields of the form, and verify
+    							that doing so does not in and of itself change the context. </p>
+            </item>
+            <item>
+               <p> Verify that if change of context occurs at all, that action is
+    								delayed until after the Submit button is activated. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>#2, #3, and #4 are true. </p>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Implementing_a_Submit-Form_Pattern_in_Silverlight"/>
+      </source>
+   </admin>
+</technique>
