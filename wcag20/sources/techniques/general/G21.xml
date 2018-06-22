@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="G21">
+   <short-name>Ensuring that users are not trapped in content</short-name>
+   <applicability>
+      <p>All technologies which support interactive operation.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="keyboard-operation-trapping" relationship="sufficient"/>
+      <!--<conformance-criterion idref="cc7"/>-->
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to ensure that keyboard users do not become trapped in a subset of the content that can only be exited using a mouse or pointing device. A common example is content rendered by plug-ins. Plug-ins are user agents that render content inside the user agent host window and respond to all user actions that takes place while the plug-in has the focus. If the plug-in does not provide a keyboard mechanism to return focus to the parent window, users who must use the keyboard may become trapped in the plug-in content.</p>
+      <p>This problem can be avoided by using one of the following mechanisms to provide a way for users to escape the subset of the content:</p>
+      <ulist>
+         <item>
+            <p>Ensuring that the keyboard function for advancing focus within content (commonly the tab key) exits the subset of the content after it reaches the final navigation location.</p>
+         </item>
+         <item>
+            <p>Providing a keyboard function to move the focus out of the subset of the content. Be sure to document the feature in an accessible manner within the subset.</p>
+         </item>
+         <item>
+            <p>If the technology used in the subset of the content natively provides a "move to parent" keyboard command, documenting that command before the user enters the plug-in so they know how to get out again.</p>
+         </item>
+      </ulist>
+      <p>If the author uses a technology that allows users to enter the sub-content with keyboard and does not allow users to exit the sub-content with keyboard by default (i.e., it is not a feature of the Web content technology or its user agents) then, in order to implement this technique the author would either build such a capability into their content or not use the technology.</p>
+   </description>
+   <examples>
+      <ulist>
+         <item>
+            <p>Once a user tabs into an applet, further tabs are handled by the applet preventing the person from tabbing out. However, the applet is designed so that it returns keyboard focus back to the parent window when the person finishes tabbing through the tab sequence in the applet.</p>
+         </item>
+         <item>
+            <p>A page that includes content that is not accessibility-supported contains instructions about how to move focus back to the accessibility-supported content via the keyboard. The instructions precede the non accessibility-supported content.</p>
+         </item>
+         <item>
+            <p>The help information available from the content that is not accessibility supported documents how to move focus back to the accessibility-supported content via the keyboard, and the help information can be accessed via the keyboard.</p>
+         </item>
+         <item>
+            <p>The help information available for the Web page documents how to move focus
+                from the content that is not accessibility supported to the accessibility-supported content via the keyboard, and the help information can be accessed via the keyboard.</p>
+         </item>
+      </ulist>
+   </examples>
+   <resources/>
+   <related-techniques/>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Tab through content from start to finish.</p>
+            </item>
+            <item>
+               <p>Check to see that keyboard focus is not trapped in any of the content.</p>
+            </item>
+            <item>
+               <p>If keyboard focus appears to be trapped in any of the content, check that help information is available explaining how to exit the content and can be accessed via the keyboard.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#2 is false</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

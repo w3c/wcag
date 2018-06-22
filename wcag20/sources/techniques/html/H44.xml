@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H44">
+   <short-name>Using label elements to associate text labels with form controls</short-name>
+   <applicability>
+      <p>HTML and XHTML controls that use external labels</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+      <success-criterion idref="minimize-error-cues" relationship="sufficient"/>
+      <success-criterion idref="ensure-compat-rsv" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues><!-- these ua issues also appear in H90 -->
+      <ua-issue name="" version="">
+         <p>The HTML and XHTML specifications allow both implicit and explicit labels. However, some
+              assistive technologies do not correctly handle implicit labels (for example,
+                <code><![CDATA[<label>First name <input type="text"
+                name="firstname"></label>]]></code>).</p>
+         <ulist>
+            <item>
+               <p>JAWS 7.10 was tested on Windows XP with Internet Explorer 6.0 and Firefox 1.5. It
+                  reads the label for explicit and implicit labels for text fields in both virtual
+                  PC cursor and forms reading mode. In forms mode it does not read the label for
+                  implicit labels on checkboxes and radio fields.</p>
+            </item>
+            <item>
+               <p>Window-Eyes 5.5 was tested on Windows XP with Internet Explorer 6.0 and Firefox
+                  1.5. It will always speak the label for an explicitly labelled form field. It does
+                  not speak the label for the implicitly labelled form control in browse on mode but
+                  will speak the implicit label when navigating from control to control in browse
+                  off mode. </p>
+            </item>
+         </ulist>
+      </ua-issue>
+      <ua-issue name="" version="">
+         <p>User agents will display a tool tip when the mouse hovers above an <el>input</el>
+              element containing a <att>title</att> attribute. Title attributes are exposed to
+              assistive technology and are displayed as tooltips in many graphical browsers.
+              Tooltips can't be opened via the keyboard, so this information may not be available to
+              sighted keyboard users. </p>
+      </ua-issue>
+      <ua-issue name="" version="">
+         <p>If no <el>label</el> is available, JAWS and Window-Eyes speak the
+              <att>title</att> attribute when the form control receives focus </p>
+         <ulist>
+            <item>
+               <p>JAWS 6.0 and later can be set to speak both <el>label</el> and
+                  <att>title</att> when the two items are different; however, very few users are
+                  aware of this setting.</p>
+            </item>
+            <item>
+               <p>WindowEyes 5.5 has a hot key, ins-E, that will display additional information,
+                  including the title attribute, for the item with focus. </p>
+            </item>
+         </ulist>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to use the <el>label</el> element to explicitly
+            associate a form control with a label. A <el>label</el> is attached to a specific
+            form control through the use of the <att>for</att> attribute. The value of the
+              <att>for</att> attribute must be the same as the value of the <att>id</att>
+            attribute of the form control. </p>
+      <p>The <att>id</att> attribute may have the same value as the <att>name</att>
+            attribute, but both must be provided, and the <att>id</att> must be unique in the Web
+            page.</p>
+      <p>This technique is sufficient for Success Criteria 1.1.1, 1.3.1 and 4.1.2 whether or not the <el>label</el> element is visible. That is, it may be hidden using CSS. However, for Success Criterion 3.3.2, the <el>label</el> element must be visible since it provides assistance to all users who need help understanding the purpose of the field. </p>
+      <p>An additional benefit of this technique is a larger clickable area for the control, since clicking on the label or the control will activate the control. This can be helpful for users with impaired motor control.</p>
+      <p>Note that the <el>label</el> is positioned after <el>input</el> elements of
+              <code><![CDATA[
+							]]><att>type</att><![CDATA[="checkbox"]]></code> and <code><![CDATA[
+							]]><att>type</att><![CDATA[="radio"]]></code>.</p>
+      <note>
+         <p>Elements that use explicitly associated labels are: </p>
+         <ulist>
+            <item>
+               <p>
+									         <code><![CDATA[
+										]]><el>input</el><![CDATA[
+										]]><att>type</att><![CDATA[="text"]]></code>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <code><![CDATA[
+										]]><el>input</el><![CDATA[
+										]]><att>type</att><![CDATA[="checkbox"]]></code>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <code><![CDATA[
+										]]><el>input</el><![CDATA[
+										]]><att>type</att><![CDATA[="radio"]]></code>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <code><![CDATA[
+										]]><el>input</el><![CDATA[
+										]]><att>type</att><![CDATA[="file"]]></code>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <code><![CDATA[
+										]]><el>input</el><![CDATA[
+										]]><att>type</att><![CDATA[="password"]]></code>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <el>textarea</el>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <el>select</el>
+								       </p>
+            </item>
+         </ulist>
+         <p>The <att>label</att> element is <emph role="bold">not</emph> used for the following
+              because labels for these elements are provided via the value attribute (for Submit and
+              Reset buttons), the <att>alt</att> attribute (for image buttons), or element content itself
+              (button). </p>
+         <ulist>
+            <item>
+               <p>Submit and Reset buttons (<code><![CDATA[
+										]]><el>input</el><![CDATA[
+										]]><att>type</att><![CDATA[="submit"]]></code> or <code><![CDATA[
+										]]><el>input</el><![CDATA[
+										]]><att>type</att><![CDATA[="reset"]]></code>)</p>
+            </item>
+            <item>
+               <p>Image buttons (<code><![CDATA[
+										]]><el>input</el><![CDATA[
+										]]><att>type</att><![CDATA[="image"]]></code>)</p>
+            </item>
+            <item>
+               <p>Hidden input fields (<code><![CDATA[
+										]]><el>input</el><![CDATA[
+										]]><att>type</att><![CDATA[="hidden"]]></code>)</p>
+            </item>
+            <item>
+               <p>Script buttons (<el>button</el> elements or <code><![CDATA[<]]><el>input</el><![CDATA[
+										]]><att>type</att><![CDATA[="button">]]></code>)</p>
+            </item>
+         </ulist>
+      </note>
+   </description>
+   <examples>
+      <eg-group>
+         <head>A text input field</head>
+         <description>
+            <p>The text field in the example below has the explicit label of "First name:". The
+                  <el>label</el> element's <att>for</att> attribute matches the
+                <att>id</att> attribute of the <el>input</el> element. </p>
+         </description>
+         <code role="html401"><![CDATA[<label for="firstname">First name:</label> 
+<input type="text" name="firstname" id="firstname" />]]></code>
+      </eg-group>
+      <eg-group>
+         <head>A checkbox</head>
+         <code role="html401"><![CDATA[<input type="checkbox" id="markuplang" name="computerskills" checked="checked">
+<label for="markuplang">HTML</label>]]></code>
+      </eg-group>
+      <eg-group>
+         <head>A group of radio buttons</head>
+         <description>
+            <p>A small, related group of radio buttons with a clear description and labels for
+                each individual element.</p>
+            <note>
+               <p>To provide clear associations and instructions for a large set of related radio
+                  buttons <specref ref="H71"/>, should be considered.</p>
+            </note>
+         </description>
+         <code role="html401"><![CDATA[ <h1>Donut Selection</h1>
+
+<p>Choose the type of donut(s) you would like then select 
+   the "purchase donuts" button.</p>
+
+<form action="http://example.com/donut" method="post">
+<p>
+  <input type="radio" name="flavor" id="choc" value="chocolate" />
+    <label for="choc">Chocolate</label><br/>
+  <input type="radio" name="flavor" id="cream" value="cream"/>
+    <label for="cream">Cream Filled</label><br/>
+  <input type="radio" name="flavor" id="honey" value="honey"/>
+    <label for="honey">Honey Glazed</label><br/>
+  <input type="submit" value="Purchase Donuts"/>
+</p>
+</form>]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html401/interact/forms.html#h-17.9">HTML 4.01 form labels</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://usability.com.au/2008/09/accessible-forms-using-wcag-2-0/">Accessible Forms using WCAG 2.0</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G167"/>
+      <relatedtech idref="H65"/>
+      <relatedtech idref="H71"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For all <el>input</el> elements of type <code><![CDATA[text]]></code>, <code><![CDATA[file]]></code> or
+                <code><![CDATA[password]]></code>, for all <el>textareas</el> and for all
+              <el>select</el> elements in the Web page: </p>
+         <olist>
+            <item>
+               <p>Check that there is a <el>label</el> element that identifies the purpose of
+                	the control before the <el>input</el>, <el>textarea</el>, or <el>select</el> element</p>
+            </item>
+            <item>
+               <p>Check that the <att>for</att> attribute of the <el>label</el> element
+                	matches the id of the <el>input</el>, <el>textarea</el>, or <el>select</el> element</p>
+            </item>
+            <item>
+               <p>Check that the <el>label</el> element is visible. </p>
+            </item>
+         </olist>
+         <p>For all <el>input</el> elements of type checkbox or radio in the Web page:: </p>
+         <olist>
+            <item>
+               <p>Check that there is a <el>label</el> element that identifies the purpose of
+                  the control after the <el>input</el> element</p>
+            </item>
+            <item>
+               <p>Check that the <att>for</att> attribute of the <el>label</el> element
+                  matches the <att>id</att> of the <el>input</el> element</p>
+            </item>
+            <item>
+               <p>Check that the <el>label</el> element is visible. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Checks #1 and #2 are true. For Success Criterion 3.3.2, Check #3 is also true. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

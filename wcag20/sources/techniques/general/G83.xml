@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="G83">
+   <short-name>Providing text descriptions to identify required fields that were not completed</short-name>
+   <applicability>
+      <p>Content that includes mandatory fields in user input</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="minimize-error-identified" relationship="sufficient"/>
+      <success-criterion idref="minimize-error-suggestions" relationship="sufficient"/>
+      <success-criterion idref="minimize-error-cues" relationship="cosufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to notify the user when a field that must be completed has not been completed. When users fail to provide input for any mandatory form fields, information is provided in text to enable the users to identify which fields were omitted. One approach is to use client-side validation and provide an alert dialog box identifying the mandatory fields which were omitted. Another approach, using server-side validation, is to re-display the form (including any  previously entered data), with either a text description at the location of the omitted mandatory field, or a text description that identifies the omitted mandatory fields.</p>
+      <note>
+         <p>The best practice is to include a message or alert, as some users may not be aware that an error has occurred and could assume that the form is not functioning correctly. It is also best practice to include an error notification in the page title (<el>title</el> element) since a screen reader user is likely to believe the page was submitted correctly and continue to navigate to another page as soon as the new page is returned instead of reading the main content area of the page again.</p>
+      </note>
+   </description>
+   <examples>
+      <ulist>
+         <item>
+            <p>A user attempts to submit a form but has neglected to provide input or select a choice in one or more mandatory fields. Using client-side validation, the omission is detected and an alert dialog appears informing the user that mandatory fields have not been completed. The labels of the fields with this problem are changed to identify the problem field, and links to the problem fields are inserted in the document after the submit button so the user can move to them after dismissing the alert.</p>
+         </item>
+         <item>
+            <p>A user attempts to submit a form but has neglected to provide input or select a choice in one or more mandatory fields. Using server-side validation, the omission is detected and the form is re-displayed with a text description at the top informing which mandatory fields were omitted. Each omitted mandatory field is also identified using a text label so that the user does not have to return to the list at the top of the form to find the omitted fields.</p>
+         </item>
+         <item>
+            <p>A user is completing a form that contains mandatory fields.  The labels of the fields indicate whether or not they are mandatory.  The user tabs to a mandatory field, and tabs out of the field without entering any data or selecting a choice.  A client-side script modifies the label of the field to indicate that leaving it blank was an error.</p>
+            <note>
+               <p>Some screen readers may not notice and announce the change to the label so screen reader users may be unaware of the error.</p>
+            </note>
+         </item>
+      </ulist>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="G85"/>
+      <relatedtech idref="SCR18"/>
+      <relatedtech>Including error notification information in the page title (future link)</relatedtech>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Fill out a form, deliberately leaving one or more required (mandatory) fields blank, and submit it.</p>
+            </item>
+            <item>
+               <p>Check that a text description is provided identifying the mandatory field(s) that was not completed.</p>
+            </item>
+            <item>
+               <p>Check that other data previously entered by the user is re-displayed, unless the data is in a security related field where it would be inappropriate to retain the data for re-display (e.g. password).</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#2 and #3 are true</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

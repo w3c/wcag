@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SCR18">
+   <short-name>Providing client-side validation and alert</short-name>
+   <applicability>
+      <p>Content that validates user input.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="minimize-error-identified" relationship="sufficient"/>
+      <success-criterion idref="minimize-error-suggestions" relationship="sufficient"/>
+      <success-criterion idref="minimize-error-reversible" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to validate user input as values are entered for each field, by means of client-side scripting. If errors are found, an alert dialog describes the nature of the error in text. Once the user dismisses the alert dialog, it is helpful if the script positions the keyboard focus on the field where the error occurred.</p>
+   </description>
+   <examples>
+      <eg-group>
+      	<head>Checking a single control with an event handler</head>
+         <description>
+            <p>The following script will check that a valid date has been entered in the form control.</p>
+         </description>
+         <code><![CDATA[
+<label for="date">Date:</label>
+<input type="text" name="date" id="date" 
+onchange="if(isNaN(Date.parse(this.value))) 
+alert('This control is not a valid date. 
+Please re-enter the value.');" />
+]]></code>
+      </eg-group>
+   	<eg-group>
+   		<head>Checking multiple controls when the user submits the form</head>
+   		<description>
+   			<p>The following sample shows multiple controls in a form. The <el>form</el> element uses the <att>onsubmit</att> attribute which creates an event handler to execute the validation script when the user attempts to submit the form. If the validation is successful, the event returns <propval>true</propval> and the form submission proceeds; if the validation finds errors, it displays an error message and returns <propval>false</propval> to cancel the submit attempt so the user can fix the problems.</p>
+   			<note>
+   				<p>This example demonstrates an alert for simplicity. A more helpful notification to the user would be to highlight the controls with problems and add information to the page about the nature of the errors and how to navigate to the controls that require data fixes.</p>
+   				<p>Although this example uses an <att>onsubmit</att> attribute on the <el>form</el> element for brevity, normal practice is to create a submit event listener when the page is loaded.</p>
+   			</note>
+   			<p>Script code:</p>
+   			<codeblock><![CDATA[
+function validate() {
+	// initialize error message
+	var msg = "";
+	
+	//validate name
+	var pattern = /^[a-zA-Z\s]+$/;
+	var el = document.getElementById("name");
+	if (!pattern.test(el.value))  msg += "Name can only have letters and spaces. ";
+	
+	// validate number
+	var pattern = /^[\d\-+\.\s]+$/;
+	var el = document.getElementById("tel");
+	if (!pattern.test(el.value))  msg += "Telephone number can only have digits and separators. ";
+	
+	if (msg != "") {
+		alert(msg);
+		return false;
+	} else return true;
+}
+]]></codeblock>
+   			<p>Form code:</p>
+   			<codeblock><![CDATA[
+<form action="multiple-controls.html" onsubmit="return validate()">
+	<p>
+		<label for="name">Name: </label>
+		<input type="text" name="name" id="name" />
+	</p>
+	<p>
+		<label for="tel">Telephone number: </label>
+		<input type="text" name="tel" id="tel" />				
+	</p>
+	<p>
+		<input type="submit" />
+	</p>
+</form>
+]]></codeblock>
+   			<p>This is demonstrated in the <loc href="multiple-controls.html" linktype="examples">working example of checking multiple controls when the user submits the form</loc>.</p>
+   		</description>
+   	</eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="G89"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For form fields that require specific input:</p>
+         <olist>
+            <item>
+               <p>enter invalid data</p>
+            </item>
+            <item>
+               <p>determine if an alert describing the error is provided.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#2 is true</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

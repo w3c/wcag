@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="ARIA10">
+   <short-name>Using aria-labelledby to provide a text alternative for non-text content</short-name>
+   <applicability>
+      <p>This technique applies to HTML with <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
+         <ulist>
+            <item>
+               <p> NVDA 2012.3 supports Example 1 with FF</p>
+            </item>
+         </ulist>
+         <p>As of March 2014, there is much wider <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="accessibility-supporteddef">accessibility support</loc> for the use of the <att>alt</att> attribute than for <att>aria-labelledby</att>. The use of the <att>alt</att> attribute is best practice and strongly encouraged. Especially for elements where the <att>alt</att> attribute can be used to provide text alternatives, authors must confirm accessibility support for <att>aria-labelledby</att> before relying on this technique in place of <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="H37">H37: Using <att>alt</att> attributes on img elements</loc>.</p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The purpose of this technique is to provide a short description for an element that can be read by assistive technologies (AT) by using the <att>aria-labelledby</att> attribute. The <att>aria-labelledby</att> attribute associates an element with text that is visible elsewhere on the page by using an ID reference value that matches the ID attribute of the labeling element. Assistive technology such as screen readers use the text of the element identified by the value of the <att>aria-labelledby</att> attribute as the text alternative for the element with the attribute.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Providing a short description for a complex graphic</head>
+         <description>
+            <p>This example shows how to use the <att>aria-labelledby</att> attribute to provide a short text description for a read-only complex graphic of an star rating pattern; the graphic is composed of several image elements. The text alternative for the graphic is the label, visible on the page beneath the star pattern.</p>
+            <codeblock xml:space="preserve"><![CDATA[<div role="img" aria-labelledby="star_id">
+<img src="fullstar.png" alt=""/>
+<img src="fullstar.png" alt=""/>
+<img src="fullstar.png" alt=""/>
+<img src="fullstar.png" alt=""/>
+<img src="emptystar.png" alt=""/>
+</div>
+
+<div id="star_id">4 of 5</div>]]></codeblock>
+            <p>Working example: <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="ARIA10-example1.html"
+                    linktype="examples">Providing a short description for a complex graphic</loc>.
+</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</loc> 
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc>
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria/roles#textalternativecomputation">Accessible Rich Internet Applications (WAI-ARIA) 1.0, Section 5.2.7.3. Text Alternative Computation</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H37"/>
+      <relatedtech idref="F65"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Examine each element where the <att>aria-labelledby</att> attribute is present and the element does not support the <att>alt</att> attribute.</p>
+            </item>
+            <item>
+               <p>Check whether the value of the <att>aria-labelledby</att> attribute is the id of an element on the web page.</p>
+            </item>
+            <item>
+               <p>Determine that the text of the element identified by the <att>aria-labelledby</att> attribute accurately labels the element, provides a description of its purpose, or provides equivalent information.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#2 and #3 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

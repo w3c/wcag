@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="ARIA19">
+   <short-name>Using ARIA role=alert or Live Regions to Identify Errors</short-name>
+   <applicability>
+      <p>Technologies that support <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="minimize-error-identified" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
+         <p>Supports this technique:
+</p>
+         <ulist>
+            <item>
+               <p> OS X 10.8.4 + Safari + VoiceOver
+</p>
+            </item>
+            <item>
+               <p> iOS 6 &amp; 7 + Mobile Safari + VoiceOver
+</p>
+            </item>
+            <item>
+               <p> Windows 7 + Firefox 20 + NVDA 2013.1
+</p>
+            </item>
+            <item>
+               <p> Windows 7 + Firefox 20 + JAWS 14
+</p>
+            </item>
+            <item>
+               <p> Windows 7 + IE 8 + JAWS 14 (aria-live=assertive ONLY)
+</p>
+            </item>
+            <item>
+               <p> Windows 7 + IE 7 + JAWS 14 (aria-live=assertive ONLY)
+</p>
+            </item>
+         </ulist>
+         <p>Does NOT support this technique:
+</p>
+         <ulist>
+            <item>
+               <p> Windows 7 + IE 8 + NVDA 2013.1 (NO support)
+</p>
+            </item>
+         </ulist>
+         <p>Support Notes:
+</p>
+         <p>When using Firefox with JAWS and NVDA role=alert is announced as "Alert" and aria-live=assertive does not include that extra text. There is NO support for NVDA 2013.1 + IE 8. The third example uses BOTH role=alert &amp; aria-live=assertive on the error container for wider UA/AT support working in all combinations listed.
+</p>
+         <p>There are different methods to display an alert or assertive live region on the page and depending on how you create the error container or inject the error messages determines if it will work in the more difficult browsers/screen reader combinations like IE 8 + JAWS 14 or VoiceOver + Safari.
+</p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The purpose of this technique is to notify Assistive Technologies (AT) when an input error occurs. The <att>aria-live</att> attribute makes it possible for an AT (such as a screen reader) to be notified when error messages are injected into a Live Region container. The content within the <att>aria-live</att> region is automatically read by the AT, without the AT having to focus on the place where the text is displayed.
+</p>
+      <p>There are also a number of <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/WAI/PF/aria-practices/#chobet">special case live region roles</loc> which can be used instead of applying live region properties directly.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Injecting error messages into a container with role=alert already present in the DOM</head>
+         <description>
+            <p>The following example uses <code><![CDATA[role=alert]]></code> which is equivalent to using <code><![CDATA[aria-live=assertive]]></code>.
+</p>
+            <p>In the example there is an empty error message container element with <code><![CDATA[aria-atomic=true]]></code> and an <code><![CDATA[aria-live]]></code> property or <code><![CDATA[alert]]></code> role present in the DOM on page load. The error container must be present in the DOM on page load for the error message to be spoken by most screen readers. <code><![CDATA[aria-atomic=true]]></code> is necessary to make Voiceover on iOS read the error messages after more than one invalid submission. 
+</p>
+            <p>jQuery is used to test if the inputs are empty on submit and inject error messages into the live region containers if so. Each time a new submit is attempted the previous error messages are removed from the container and new error messages injected.
+</p>
+            <codeblock xml:space="preserve"><![CDATA[<script src="http://code.jquery.com/jquery.js"></script>
+<script>
+$(document).ready(function(e) {
+	$('#signup').submit(function() {
+		$('#errors').html('');
+		if ($('#first').val() === '') {
+			$('#errors').append('<p>Please enter your first name.</p>');
+		}
+		if ($('#last').val() === '') {
+			$('#errors').append('<p>Please enter your last name.</p>');
+		} 
+		if ($('#email').val() === '') {
+			$('#errors').append('<p>Please enter your email address.</p>');
+		} 
+		return false;
+	});
+});
+</script>
+
+<form name="signup" id="signup" method="post" action="">
+  <p id="errors" role="alert" aria-atomic="true"></p>
+  <p>
+    <label for="first">First Name (required)</label><br>
+    <input type="text" name="first" id="first">
+  </p>
+  <p>
+    <label for="last">Last Name (required)</label><br>
+    <input type="text" name="last" id="last">
+  </p>
+  <p>
+    <label for="email">Email (required)</label><br>
+    <input type="text" name="email" id="email">
+  </p>
+  <p>
+    <input type="submit" name="button" id="button" value="Submit">
+  </p>
+</form>]]></codeblock>
+            <p>Working example: <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="aria-alert-validation.html"
+                    linktype="examples">Using role=alert to identify errors</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                  	href="https://www.paciellogroup.com/blog/2012/06/html5-accessibility-chops-aria-rolealert-browser-support/">HTML5 Accessibility Chops: ARIA role=alert browser support</loc>
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://html.cita.illinois.edu/nav/form/aria/">Form Labels, ARIA Examples (Experimental)</loc>
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.msfw.com/accessibility/">MSF&amp;W Accessibility</loc>
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://www.w3.org/TR/wai-aria/states_and_properties#aria-describedby">ARIA 1.0, Supported States and Properties, aria-describedby</loc>
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://www.w3.org/TR/wai-aria/roles#alert">WAI-ARIA 1.0, The Roles model, alert</loc>
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://www.w3.org/TR/html5/">HTML5, A vocabulary and associated APIs for HTML and XHTML</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques/>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Determine that an empty error container <code><![CDATA[role=alert]]></code> or <code><![CDATA[aria-live=assertive]]></code> attribute is present in the DOM at page load.</p>
+            </item>
+            <item>
+               <p> Trigger the error that causes the content in the live region to appear or update.
+</p>
+            </item>
+            <item>
+               <p> Determine that the error message was injected into the already present error container.
+</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#1 and #3 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

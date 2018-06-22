@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F44">
+   <short-name>Failure of Success Criterion 2.4.3 due to using tabindex to create a tab order that
+        	does not preserve meaning and operability</short-name>
+   <applicability>
+      <p>HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="navigation-mechanisms-focus-order" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>This document describes a failure that occurs when the tab order does not
+                        follow logical relationships and sequences in the content.</p>
+      <p>Focusable elements like links and form elements have a <code><![CDATA[tabindex]]></code>
+                        attribute. The elements receive focus in ascending order of the value of the
+                            <code><![CDATA[tabindex]]></code> attribute. When the values of the
+                        <code><![CDATA[tabindex]]></code> attribute are assigned in a different order than the
+                        relationships and sequences in the content, the tab order no longer follows
+                        the relationships and sequences in the content.</p>
+      <p>One of the most common causes of this failure occurs when editing a page
+                        where <code><![CDATA[tabindex]]></code> has been used. It is easy for the tab order and
+                        the content order to fall out of correspondence when the content is edited
+                        but the <code><![CDATA[tabindex]]></code> attributes are not updated to reflect the
+                        changes to the content.</p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <description>
+            <p>The following example incorrectly uses tabindex to specify an
+                                alternative tab order:</p>
+         </description>
+         <code role="html401"><![CDATA[
+<ol>
+   <li><a href="main.html" tabindex="1">Homepage</a></li>
+   <li><a href="chapter1.html" tabindex="4">Chapter 1</a></li>
+   <li><a href="chapter2.html" tabindex="3">Chapter 2</a></li>
+   <li><a href="chapter3.html" tabindex="2">Chapter 3</a></li>
+</ol>
+]]></code>
+         <description>
+            <p>If this list is navigated by the tab key, the list is navigated in
+                                the order Homepage, chapter 3, chapter 2, chapter 1, which does not
+                                follow the sequence in the content.</p>
+         </description>
+      </eg-group>
+      <eg-group role="failure">
+         <description>
+            <p>The tab order has been set explicitly in a Web page by providing
+                                    <code><![CDATA[tabindex]]></code> attributes for all fields. Later, the page
+                                is modified to add a new field in the middle of the page, but the
+                                author forgets to add a <code><![CDATA[tabindex]]></code> attribute to the new
+                                field. As a result, the new field is at the end of the tab
+                            order.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>HTML 4.01 <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html4/interact/forms.html#adef-tabindex">Tabbing navigation</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H4"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>If <code><![CDATA[tabindex]]></code> is used, check that the tab order
+                                    specified by the <code><![CDATA[tabindex]]></code> attributes follows
+                                    relationships in the content.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If check #1 is false, then this failure condition applies and
+                                    content fails the Success Criterion.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

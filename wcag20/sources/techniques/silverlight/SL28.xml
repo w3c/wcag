@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SL28">
+   <short-name>Using Separate Text-Format Text Captions for MediaElement Content</short-name>
+   <applicability>
+      <p use-id="silverlight.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="media-equiv-captions" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="silverlight.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to use text captioning that comes
+    				from a separate text file, synchronize the captions with the media
+    				in a Silverlight <obj>MediaElement</obj>, and display the captions
+    				in Silverlight. </p>
+      <p>There are two variations of the general theme of implementing Silverlight
+    				media player controls to work with external timed text: using built-in
+    				capabilities of the Microsoft Expression Encoder tool, and using parsing
+    				code that consumes caption as a raw file format and converts that format
+    				into the Silverlight API's <obj>TimelineMarkers</obj> representation.
+    				This technique primarily addresses how to use the Expression Encoder
+    				technique, along with media player templates that are also provided
+    				by Expression Encoder or related Silverlight SDKs such as the Smooth
+    				Streaming SDK. </p>
+      <p>At a pure architecture level, Silverlight uses the <obj>TimelineMarkers</obj> API
+    				to display caption text at synchronized times. The Expression Encoder
+    				and Expression Blend tools provide a front end to drive the <obj>TimelineMarkers</obj> API
+    				for the supported formats. The intention of the architecture is so
+    				that Silverlight as a run-time has a base architecture that could potentially
+    				use any existing or future timed text format, but the tools for Silverlight
+    				(rather than built-in features of the runtime) provide the optimized
+    				workflow for producing captioned media projects. </p>
+      <p>A procedure for using the Expression Encoder and Expression Blend
+    				tools to produce a Silverlight media player application that can consume
+    				timed text in TTML format is provided as Example 1 in this technique.
+    				(Note: prior to the approval of TTML by W3C, DFXP was a format that
+    				used much of the eventual TTML vocabulary. In tools that predate TTML,
+    				this format is often identified as DFXP.) </p>
+      <p>A purely code-based parsing technique, with the goal of avoiding Expression
+    				Encoder dependencies, is necessarily more complex. This is because
+    				there are multiple issues to solve: </p>
+      <ulist>
+         <item>
+            <p> Obtaining and validating the timed text file </p>
+         </item>
+         <item>
+            <p> Parsing the format into general information items like timings,
+    				text, format etc. that are either consumable directly in a Silverlight
+    				API, or useful as intermediates </p>
+         </item>
+         <item>
+            <p> Using the timecode information to create <obj>TimelineMarker</obj> representations
+    					for each timed text entity </p>
+         </item>
+         <item>
+            <p> Associating the <obj>TimelineMarkers</obj> with media loaded
+    						by the player </p>
+         </item>
+         <item>
+            <p> Finding a place to store the additional formatting that is conveyed,
+    							including the text and any formatting </p>
+         </item>
+         <item>
+            <p> Handling events from <obj>TimelineMarkers</obj> in the media
+    								player, in such a way that text and formatting behavior can be retrieved
+    								and presented in the Text part of the player UI </p>
+         </item>
+      </ulist>
+      <section id="SL28_formats">
+         <head> Text Captioning Formats </head>
+         <p>There are several existing text-based formats that are used for text
+    					captioning of prerecorded media. The following are supported as formats
+    					if using the Expression Encoder tool as shown in Example 1 (where the
+    					Expression Encoder generated Silverlight application uses the existing
+    					Silverlight MediaPlayerTemplate and the TimedTextLibrary component.)
+    					For more information on which timed text formats can be referenced
+    					in an Expression Encoder project, see <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="https://msdn.microsoft.com/en-us/library/ff723862%28Expression.40%29.aspx">About
+    						Captioning (Expression documentation on MSDN)</loc>. </p>
+         <ulist>
+            <item>
+               <p> SAMI (Synchronized Accessible Media Interchange). For more information
+    					on this format, see <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/ms971327.aspx">Understanding
+    						SAMI 1.0</loc> on MSDN. </p>
+            </item>
+            <item>
+               <p> SMIL (Synchronized Multimedia Integration Language). For more
+    							information on this format, see <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/2008/REC-SMIL3-20081201/">Synchronized
+    								Multimedia Integration Language (SMIL 3.0)</loc> on W3C site. </p>
+            </item>
+            <item>
+               <p> TT (Timed Text) in particular TTML (Timed Text Markup Language).
+    									For more information, see <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/ttaf1-dfxp/">Timed
+    										Text Markup Language (TTML) 1.0</loc> on W3C site. </p>
+            </item>
+            <item>
+               <p> TTML (previously known as DFXP). This is the Timed Text format
+    											used by Adobe Flash for its FLVPlaybackCaptioning component,
+    											and is produced by a variety of tools and full-service captioning
+    											vendors. For more information, see <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/accessibility.htmlproducts/flash/captions.html">Captions</loc> on
+    											the Adobe site. </p>
+            </item>
+         </ulist>
+         <p>The following are not supported directly in Expression Encoder templates.
+    					To use these formats, application authors would have to write parsing
+    					logic, as shown in Example 2: </p>
+         <ulist>
+            <item>
+               <p> MPEG Part 17 / 3GPP Timed Text. For more information, see <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=39478">ISO/IEC
+    					14496-17:2006</loc> on ISO site. </p>
+            </item>
+            <item>
+               <p> Other formats that have not realized wide adoption, for example
+    						Universal Subtitle Format. </p>
+            </item>
+            <item>
+               <p> In addition to these formats, other formats for device-specific
+    							recorded media (such as DVD encoded tracks) could be cross-purposed
+    							for use by streaming/online media. </p>
+            </item>
+         </ulist>
+         <p>Rather than build the parsing logic for all these formats into the
+    					Silverlight runtime, or choosing just one of these formats to support,
+    					the Silverlight design for text captioning at the core level instead
+    					makes the <obj>TimelineMarkers</obj> property of a <obj>MediaElement</obj> writeable,
+    					independently of the value of <prop>Source</prop>. The format of
+    					each <obj>TimelineMarker</obj> in the collection is very simple:
+    					a time value expressed in the format, and the text value of the text
+    					for that synchronized caption. The time format for <obj>TimelineMarkers</obj> is
+    					documented as <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="https://msdn.microsoft.com/en-us/library/system.windows.media.timelinemarker.time%28VS.95%29.aspx">TimelineMarker
+    						reference on MSDN</loc>. Converting timed text formats to <obj>TimelineMarkers</obj> form
+    					as consumed by the Silverlight core can be done by following any of
+    					the following application design patterns: </p>
+         <ulist>
+            <item>
+               <p> Authoring the project using Expression Encoder, and using the
+    					Expression MediaPlayerTemplate as the media player UI. In this case,
+    					Expression produces a Silverlight application that includes assemblies
+    					that are generated from code templates. The default build of the
+    					project provides a working library that handles all tasks related
+    					to timed-text format conversion, from the formats as documented at <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/ff723862%28Expression.40%29.aspx">About
+    						Captioning (Expression documentation on MSDN)</loc>. </p>
+            </item>
+            <item>
+               <p> The templates of an Expression Encoder project can also be edited,
+    							either editing the XAML for the UI by altering the template, or by
+    							altering the C# code files that define various aspects of the media
+    							player logic, including the timed text format parsers. Then the project
+    							can be rebuilt using the desired customizations. Using this technique,
+    							it is possible to adapt the code to support timed text formats that
+    							are not directly supported in the Expression Encoder project UI. </p>
+            </item>
+            <item>
+               <p> Using a 3rd party media player implementation that also includes
+    								a codebase for processing timed text formats, producing <obj>TimelineMarkers</obj>,
+    								and displaying the captions in the player-specific UI. </p>
+            </item>
+            <item>
+               <p> Including a library that handles just the format parsing, and
+    									using APIs of this library as part of the Silverlight application
+    									code-behind. </p>
+            </item>
+            <item>
+               <p> Writing all logic that is necessary for timed text parsing AND
+    										application UI display, and including it all in the main Silverlight
+    										application library. </p>
+            </item>
+         </ulist>
+      </section>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Using Expression Encoder and Expression Blend to produce
+    					a Silverlight media player project from tool output and templates</head>
+         <description>
+            <p>By far the simplest technique for incorporating existing timed-text
+    						information is to use Microsoft Expression Encoder and the media player
+    						templates that an Expression Encoder project produces by default. You
+    						can use timed text in any of the following formats: DFXP, SAMI, SRT,
+    						SUB, and LRC. Associating a caption file with a media source is done
+    						as an "import" operation in the Expression Encoder tool.
+    						However, the   "import" does not necessarily mean that the
+    						timed text file is integrated into the media stream; Silverlight authors have the option
+    						to preserve the file separation. This is useful if the application is obtaining
+    						timed text from a third party source in real-time, or if Silverlight authors have a
+    						production pipeline that makes it difficult to have the captioning
+    						ready in time to be encoded in the stream along with the audio-visual
+    						source files. For third-party timed text files that are served directly
+    						from the third party's HTTP servers, it can be useful to supply a dummy
+    						URL in the initial project encoding. The output of the Expression Encoder
+    						project parameterizes many of the project settings at the HTML level.
+    						This makes it possible to change the URL at any time prior to deployment
+    						without having to rebuild the project. The following code is the HTML
+    						output of a sample Expression Encoder project. Note the CaptionSources
+    						node in the initparams; that is the information item that informs the
+    						Expression Encoder templates where to find the timed text file. </p>
+            <codeblock xml:space="preserve"><![CDATA[     <object data="data:application/x-silverlight," type="application/x-silverlight" width="100%" height="100%">
+       <param name="source" value="MediaPlayerTemplate.xap"/>
+       <param name="onerror" value="onSilverlightError" />
+       <param name="autoUpgrade" value="true" />
+       <param name="minRuntimeVersion" value="4.0.50401.0" />
+       <param name="enableHtmlAccess" value="true" />
+       <param name="enableGPUAcceleration" value="true" />
+       <param name="initparams" value='playerSettings = 
+         <Playlist>
+           <AutoLoad>true</AutoLoad>
+           <AutoPlay>true</AutoPlay>
+           <DisplayTimeCode>false</DisplayTimeCode>
+           <EnableOffline>false</EnableOffline>
+           <EnablePopOut>false</EnablePopOut>
+           <EnableCaptions>true</EnableCaptions>
+           <EnableCachedComposition>true</EnableCachedComposition>
+           <StretchNonSquarePixels>NoStretch</StretchNonSquarePixels>
+           <StartMuted>false</StartMuted>
+           <StartWithPlaylistShowing>false</StartWithPlaylistShowing>
+           <Items>
+             <PlaylistItem>
+             <AudioCodec></AudioCodec>
+             <Description></Description>
+             <FileSize>2797232</FileSize>
+             <IsAdaptiveStreaming>false</IsAdaptiveStreaming>
+             <MediaSource>thebutterflyandthebear.wmv</MediaSource>
+             <ThumbSource></ThumbSource>
+             <Title>thebutterflyandthebear</Title>
+             <DRM>false</DRM>
+             <VideoCodec>VC1</VideoCodec>
+             <FrameRate>30.00012000048</FrameRate>
+             <Width>508</Width>
+             <Height>384</Height>
+             <AspectRatioWidth>4</AspectRatioWidth>
+             <AspectRatioHeight>3</AspectRatioHeight>
+             <CaptionSources>
+               <CaptionSource Language="English" LanguageId="eng" Type="Captions" Location="thebutterflyandthebear.eng.capt.dfxp"/>
+             </CaptionSources>
+           </PlaylistItem>
+         </Items>
+      </Playlist>'/>       
+   </object>
+   ]]></codeblock>
+            <p>The templates include a library that handles any parsing requirements
+    						for the chosen timed text format, both at the level of getting the
+    						basic text and timing into the <obj>TimelineMarkers</obj> used
+    						by the run-time <obj>MediaElement</obj>, and for preserving
+    						a subset of format information that can reasonably be crossmapped
+    						from the formatting paradigm of the source (typically HTML/CSS) into
+    						the Silverlight text object model of the text element that displays
+    						the captions in the running Silverlight application. </p>
+            <p>The following is a brief description of the procedure for creating
+    						a project that incorporates a separate timed text file. </p>
+            <olist>
+               <item>
+                  <p> From the initial Expression Encoder screen, select New Project
+    						from the File menu. </p>
+               </item>
+               <item>
+                  <p> In the <emph role="strong">Load a new project</emph> dialog, select <emph role="strong">Silverlight
+    							Project</emph>. </p>
+               </item>
+               <item>
+                  <p> From the File menu, select Import. Choose the primary media source
+    								file the project will use. </p>
+               </item>
+               <item>
+                  <p> In the Text tab, find the listing for the media source file. Click
+    									the <emph role="strong">+</emph> icon to the right of the file name. This opens
+    									a file dialog. </p>
+               </item>
+               <item>
+                  <p> Choose a timed text file to add to the project. </p>
+               </item>
+               <item>
+                  <p> Build the project. By default the project produces a complete
+    										output folder. The folder includes the media player template XAP,
+    										the timed text file as a separate file, and additional libraries
+    										and XAPs that support the basic template and/or the timed text capabilities. </p>
+               </item>
+               <item>
+                  <p> Optionally, use the features in the Templates tab of Expression
+    											Encoder to generate a template copy. You can edit the template copy
+    											in other tools such as Expression Blend or Visual Studio, to change
+    											the layout or behavior from the default media player template. Template
+    											editing can address requirements such as applying a particular branding
+    											or "look" to the player user interface. </p>
+               </item>
+            </olist>
+            <p>The following is a screenshot of the Expression Encoder (version 4)
+    						interface. The <emph role="strong">+</emph> icon mentioned in Step 4 is highlighted
+    						in this screenshot with a red diamond. The <emph role="strong">Templates</emph> tab
+    						mentioned in Step 7 is on the right side, top-middle. Note that all
+    						tabs of an Expression user interface are dockable; the orientations
+    						shown here are the default, but could be in different locations on
+    						any given computer or configuration. </p>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/SL28/encoder_scr.png"
+                       height="768"
+                       width="1024"/>
+                  <alt>Expression Encoder screenshot</alt>
+               </image> 
+            </p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Code parses timed text; MediaElement handles MarkerReached,
+    				displays marker text in application-defined TextBox</head>
+         <description>
+            <p>This example defines a very simple media player class that includes
+    						a display surface, basic controls, and a text display for captions
+    						as part of its default template. The usage code for this control in
+    						XAML is simple, but only because the majority of the implementation
+    						is present in the definition of the media player class. </p>
+            <p>
+    					The following is example usage XAML: </p>
+            <codeblock xml:space="preserve"><![CDATA[ <local:SimpleMediaPlayerWithTT Width="480" Height="360" CaptionUri="testttml.xml" MediaSourceUri="/xbox.wmv" />
+    					]]></codeblock>
+            <p>Note the attributes CaptionUri and SimpleMediaPlayerWithTT. Each
+    						of these is a custom property of the media control class TTReader.
+    						CaptionUri in particular references a URL, in this case a local URL
+    						from the same server that serves the Silverlight XAP. The timed text
+    						file could come from a different server also, but comes from a local
+    						server in this example to conform to the behavior of the test file. </p>
+            <p>The following is the generic.xaml default template for the media player
+    						control. The template is mainly relevant for showing the named elements
+    						that are shown in the initialization code. </p>
+            <codeblock xml:space="preserve"><![CDATA[               <ControlTemplate TargetType="local:SimpleMediaPlayerWithTT">
+                   <Border Background="{TemplateBinding Background}"
+                           BorderBrush="{TemplateBinding BorderBrush}"
+                           BorderThickness="{TemplateBinding BorderThickness}">
+                       <Grid x:Name="vroot">
+                           <Grid.RowDefinitions>
+                               <RowDefinition Height="*"/>
+                               <RowDefinition Height="50"/>
+                               <RowDefinition Height="80"/>
+                           </Grid.RowDefinitions>
+                           <MediaElement x:Name="player" AutoPlay="False"/>
+                           <StackPanel Orientation="Horizontal" Height="50" Grid.Row="1">
+                               <Button x:Name="player_play">Play</Button>
+                               <Button x:Name="player_pause">Pause</Button>
+                               <Button x:Name="player_stop">Stop</Button>
+                           </StackPanel>
+                           <ScrollViewer x:Name="scroller" Height="50" Grid.Row="2">
+                           <TextBox IsReadOnly="True" x:Name="captions"/>
+                           </ScrollViewer>
+                       </Grid>
+                   </Border>
+               </ControlTemplate>
+               ]]></codeblock>
+            <p>The following is the initialization code that is for general infrastructure. <function>OnApplyTemplate</function> represents
+    					the code wiring to the template-generated UI. </p>
+            <codeblock xml:space="preserve"><![CDATA[   public class SimpleMediaPlayerWithTT : Control
+   {
+       MediaElement player;
+       TextBox captions;
+       public SimpleMediaPlayerWithTT()
+       {
+           this.DefaultStyleKey = typeof(SimpleMediaPlayerWithTT);
+       }
+       public override void OnApplyTemplate()
+       {
+           base.OnApplyTemplate();
+           player = this.GetTemplateChild("player") as MediaElement;
+           captions = this.GetTemplateChild("captions") as TextBox;
+           scroller = this.GetTemplateChild("scroller") as ScrollViewer;
+           //event hookups and prop inits
+           player.MediaOpened += new RoutedEventHandler(OnMediaOpened);
+           player.MediaFailed += new EventHandler<ExceptionRoutedEventArgs>(OnMediaFailed);
+           player.Source = this.MediaSourceUri;
+           player.MarkerReached+=new TimelineMarkerRoutedEventHandler(player_MarkerReached);
+           Button player_play = this.GetTemplateChild("player_play") as Button;
+           player_play.Click += new RoutedEventHandler(player_play_click);
+           Button player_pause = this.GetTemplateChild("player_pause") as Button;
+           player_pause.Click += new RoutedEventHandler(player_pause_click);
+           Button player_stop = this.GetTemplateChild("player_stop") as Button;
+           player_stop.Click += new RoutedEventHandler(player_stop_click);
+       }
+       // mediaelement in template events
+       void OnMediaOpened(object sender, RoutedEventArgs e)
+       {
+           LoadCaptions(captionUri);
+       }
+       void OnMediaFailed(object sender, ExceptionRoutedEventArgs e)
+       {
+       }
+       void player_MarkerReached(object sender, TimelineMarkerRoutedEventArgs e)
+       {
+           captions.SelectedText = e.Marker.Text + "\n";
+           scroller.ScrollToVerticalOffset(scroller.ScrollableHeight);
+       }
+       void player_play_click(object sender, RoutedEventArgs e)
+       {
+           player.Play();
+       }
+       void player_pause_click(object sender, RoutedEventArgs e)
+       {
+           player.Pause();
+       }
+       void player_stop_click(object sender, RoutedEventArgs e)
+       {
+           player.Stop();
+       }
+       // properties
+       private Uri captionUri;
+       public Uri CaptionUri
+       {
+           get { return captionUri; }
+           set { captionUri = value; }
+       }
+       private Uri msUri;
+       public Uri MediaSourceUri
+       {
+           get { return msUri; }
+           set { msUri = value; }
+       }
+       ]]></codeblock>
+            <p>The following is the logic that is particular to obtaining the separate
+    						caption file. Some of this logic is referenced in the preceding template-specific
+    						event handlers. This example uses the asynchronous <obj>WebClient</obj> technique
+    						to request the file result of the <prop>CaptionUri</prop>. Make
+    						sure to use <prop>AutoPlay</prop>=false or some other means to allow
+    						time for the caption file to download before attempting to play the
+    						media file. </p>
+            <codeblock xml:space="preserve"><![CDATA[       private void LoadCaptions(Uri captionURL)
+       {
+           WebClient wc = new WebClient();   // Web Client to download data files
+           if (captionURL != null)
+           {
+               wc.DownloadStringCompleted +=
+                   new DownloadStringCompletedEventHandler(OnDownloadStringCompleted);
+               wc.DownloadStringAsync(captionURL);
+           }
+       }
+       private void OnDownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+       {
+           if (!e.Cancelled && e.Error == null && e.Result != "")
+           {
+               string xml = e.Result.Trim();
+               ParseCaptionData(new StringReader(xml));
+           }
+       }
+       ]]></codeblock>
+            <p>The actual parsing can be done using a combination of the "XML
+    						to Linq" facilities of an optional Silverlight library, and
+    						standard .NET Framework string format APIs from the Silverlight core.
+    						An implementation is NOT provided here, due to length considerations.
+    						TTML supports a number of profiles and capabilities. The basic pattern
+    						to follow in the implementation is to obtain the necessary text and
+    						timing information, and to pass it to a function that might resemble
+    						the following code template. This code template takes the raw information,
+    						generates a new <obj>TimelineMarker</obj>, and adds it to the
+    						collection assigned to the active <obj>MediaElement</obj> as
+    						identified by "player" in the application. </p>
+            <codeblock xml:space="preserve"><![CDATA[       public void AddMediaMarker(string time, string type, string data)
+       {
+           TimelineMarker marker = new TimelineMarker();
+           marker.Time = new TimeSpan(0,0,(Convert.ToInt32(time.Trim())/1000));
+           // this logic could vary depending on how time is formatted in the input string; this one assumes raw milliseconds
+           marker.Type = type;
+           marker.Text = data.Trim();
+           player.Markers.Add(marker);
+       }
+]]></codeblock>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/cc189078(VS.95).aspx">Audio
+    					and Video Overview</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/system.windows.controls.mediaelement%28VS.95%29.aspx">MediaElement
+    					Class</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/system.windows.media.timelinemarker%28VS.95%29.aspx">TimelineMarker.Time</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://amp.codeplex.com/">Accessible
+    						Media Project</loc> - a reference implementation MediaPlayer control
+    						from the Silverlight product team that includes several accessibility
+    						features including captioning; note that the codebase might not be
+    						updated to Silverlight version 4 </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="SL17"/>
+      <relatedtech idref="SL16"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. That
+    					application plays media that is expected to have text captioning. </p>
+            </item>
+            <item>
+               <p> Check that the text area in the textbox shows captions for the
+    						media, and that the captions synchronize with media in an expected
+    						way. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>#2 is true. </p>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Using_Separate_Text-Format_Text_Captions_for_MediaElement_Content"/>
+      </source>
+   </admin>
+</technique>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="ARIA12">
+   <short-name>Using role=heading to identify headings</short-name>
+   <applicability>
+      <p>Technologies that support <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
+         <ulist>
+            <item>
+               <p> Jaws 13 and higher supports this technique.
+</p>
+            </item>
+            <item>
+               <p> NVDA 2012.3 supports this technique.
+</p>
+            </item>
+         </ulist>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The purpose of this technique is to provide a way for Assistive Technologies (AT) to identify 
+a piece of content as a heading. Applying <code><![CDATA[role="heading"]]></code> to an element causes an AT (like a 
+screen reader) to treat it as though it were a heading. 
+</p>
+      <p>If there is more than one heading on the page and the heading hierarchy is defined through the 
+visual presentation, the <att>aria-level</att> attribute should be used to indicate the hierarchical level of 
+the heading. 
+</p>
+      <p>When possible, use native heading mark-up directly. For example, it is preferable 
+to use <el>h1</el> rather than using <code><![CDATA[<div role="heading" aria-level="1">]]></code>. However, the use of the 
+heading role, instead of heading mark-up, may be necessary. For example, when retrofitting a legacy site where scripts depend on the existing element hierarchy.
+</p>
+      <p>The use of the <prop>heading</prop> role and nesting levels is discussed in <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</loc>.
+</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Simple headings</head>
+         <description>
+            <p>This example demonstrates how to implement simple headings using role="heading" when retrofitting a legacy site where scripts depend on the existing element hierarchy or the level is unknown. For example, web content which is syndicated from various sources may be constructed without knowledge of what the final presentation will be.
+</p>
+            <codeblock xml:space="preserve"><![CDATA[<div role="heading">Global News items</div>
+... a list of global news with editorial comment....
+
+<div role="heading">Local News items</div>
+... a list of local news, with editorial comment ...]]></codeblock>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Additional heading levels</head>
+         <description>
+            <p>This example demonstrates how to implement a level 7 heading using role="heading" and the <att>aria-level</att> attribute. Since HTML only supports headings through level 6, there is no native element to provide these semantics.</p>
+            <codeblock xml:space="preserve"><![CDATA[...
+<h5>Fruit Trees</h5>
+...
+<h6>Apples</h6>
+<p>Apples grow on trees in areas known as orchards...</p>
+...
+<div role="heading" aria-level="7">Jonagold/div>
+<p>Jonagold is a cross between the Golden Delicious and Jonathan varieties...</p>]]></codeblock>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria/roles#heading">Accessible Rich Internet Applications (WAI-ARIA) 1.0, Heading in the Roles Model</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H42"/>
+      <relatedtech idref="H69"/>
+      <relatedtech idref="G141"/>
+      <relatedtech idref="F2"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Examine each element with the attribute role="heading".
+</p>
+            </item>
+            <item>
+               <p> Determine whether the content of the element is appropriate as a heading.
+</p>
+            </item>
+            <item>
+               <p> If the element has an <att>aria-level</att> attribute, determine whether the value is the appropriate hierarchical level.
+</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#2 and #3 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>
