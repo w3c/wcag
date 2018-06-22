@@ -1,0 +1,28 @@
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head xmlns:wcag="https://www.w3.org/WAI/GL/"><title>Saving data so that it can be used after a user re-authenticates</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body xmlns:wcag="https://www.w3.org/WAI/GL/"><h1>Saving data so that it can be used after a user re-authenticates</h1><section class="meta"><p class="id">ID: G105</p><p class="technology">Technology: general</p><p class="type">Type: Technique</p></section><section class="applicability"><h2>When to Use</h2>
+      <p>Web pages that require user authentication and limit the time available for submitting data.</p>
+   </section><section class="description"><h2>Description</h2>
+      <p>Web servers that require user authentication often terminate the session after a set period of time if there is no activity from the user. If the user is unable to input the data quickly enough and the session times out before they submit, the server will require re-authentication before proceeding. When this happens, the server stores the data in a temporary cache while the user logs in, and when the user has re-authenticated, the data is made available from the cache and the form is processed as if there had never been a session time-out. The server does not keep the cache indefinitely, merely long enough to ensure success after re-authentication in a single user session, such as one day.</p>
+   </section><section class="examples"><h2>Examples</h2>
+      <ul>
+         <li>A user logs in to use a forum and replies to a post. The time taken to write the reply  is longer than the time allowed by the server for a session of inactivity. The user submits the reply and is informed of the time out and prompted to log in again to submit the response. The user's post reply is retained by the server and if the user log-in is successful the reply  is processed as normal. If the log-in cannot be successfully completed the reply is discarded.</li>
+         <li>A user logs in to a secure area and fills out a form. The session times out for security reasons. The form data is retained by the server and the user is informed of the time  out and is prompted to log-in again. If the user logs in correctly, the form is presented to the user with all of the data previously entered and user can submit the form. If the log-in cannot be successfully completed the form data is discarded.</li>
+      </ul>
+   </section><section class="tests"><h2>Tests</h2>
+      <section class="procedure"><h3>Procedure</h3>
+         <p>On a site that requires user login to submit data,</p>
+         <ol>
+            <li>Log in and begin the timed activity.</li>
+            <li>Allow the session to time out.</li>
+            <li>Submit the data.</li>
+            <li>Re-authenticate.</li>
+            <li>Check that the process can continue and be completed without loss of data, including the original data and any changes made after re-authentication.</li>
+         </ol>
+      </section>
+      <section class="results"><h3>Expected Results</h3>
+         <ul>
+            <li>#5 is true.</li>
+         </ul>
+      </section>
+   </section><section class="related"><h2>Related Techniques</h2>
+      
+   </section></body></html>

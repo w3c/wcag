@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH33">
+   <short-name>Using relative values for Flash object dimensions</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="visual-audio-contrast-visual-presentation"
+                         relationship="cosufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to specify the width and/or height
+    				of an embedded Flash object using relative units such as <unit>em</unit> values.
+    				The size of the Flash object is allowed to expand to fill the size
+    				of its container (a parent element) by setting the movie width and
+    				height to 100%. The container's width and height is set with relative
+    				units. This will allow user agents that support text resizing to resize
+    				the Flash object in line with changes in text size settings. When the
+    				Flash object's dimensions are adjusted its contents will be scaled,
+    				making it easier to read for low vision users. </p>
+      <note>
+         <p>This technique is not necessary to support users who use zoom
+    				functionality in their browsers. </p>
+      </note>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Scaling text while keeping a minimum size</head>
+         <description>
+            <p>In this example, a Flash object is loaded into an HTML document using <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+            	href="https://github.com/swfobject/swfobject">SWFObject's
+    						dynamic publishing method</loc>. The Flash object's container element
+    						is given a class name of "flashPlaceHolder". This class
+    						name is then targeted using CSS to set its width and height using
+    						relative em values. When the user increases or decreases the browser's
+    						text size, the Flash object will scale accordingly. To ensure that
+    						the object does not become too small when text size is decreased,
+    						the <prop>min-width</prop> and <prop>min-height</prop> properties are set to the default dimensions. </p>
+         </description>
+         <code xml:space="preserve"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <title>Flash Resize example</title>
+    <script src="swfobject/swfobject.js" type="text/javascript"/>
+    <script type="text/javascript">
+    swfobject.embedSWF("scale_movie_dimensions_on_text_resize_as3.swf", 
+    "flashPlaceHolder", "100%", "100%", "8")      
+</script>
+
+    <style type="text/css">
+  #flashPlaceHolder {
+    width: 20em;
+    height: 15em;
+    min-width: 320px;
+    min-height: 240px;
+  }
+</style>
+  </head>
+  <body id="header">
+    <h1>Flash Resize Demonstration</h1>
+    <p>When the browser's text size is changed, the Flash movie will be
+      resized accordingly.</p>
+    <p id="flashPlaceHolder">Flash needs to be installed for this
+      example to work</p>
+  </body>
+</html>
+]]></code>
+         <description>
+            <p>The result of this technique can be viewed in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="scale_movie_dimensions_on_text_resize_as3.html"
+                    linktype="examples">working version of Scaling text while keeping a minimum size</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="scale_movie_dimensions_on_text_resize_as3.fla"
+                    linktype="examples">source of Scaling text while keeping a minimum size</loc> is available.</p>
+            <!--<ednote>
+								<edtext>The test zip contained a "swfobject" folder, which contained a number of files that looked redundant. Not sure if it needs to be packaged with the above .fla file, for the moment it's omitted.</edtext>
+							</ednote>-->
+         </description>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="C24"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Open a web page containing an embedded flash object </p>
+            </item>
+            <item>
+               <p> View the HTML to confirm that the width and height dimensions
+    					for the object containing the Flash object are specified using relative
+    					units such as em or percent (%). </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> Check #2 is true. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Using_relative_values_for_Flash_object_dimensions"/>
+					</source>
+   </admin>
+</technique>

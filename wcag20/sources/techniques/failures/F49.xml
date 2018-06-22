@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F49">
+   <short-name>
+          Failure of Success Criterion 1.3.2 due to using an HTML layout table that does not make sense when linearized  </short-name>
+   <applicability>
+      <p>HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-sequence" relationship="failure"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>Early screen readers literally read Web content from the screen, which
+                            lead to problems when tables were used for layout where one table cell
+                            was meant to be read in its entirety before reading the next table cell.
+                            Today's screen readers work with the underlying markup, which means that
+                            they do read a table cell in its entirety before moving on to the next
+                            cell, but layout tables may still inadvertently introduce problems with
+                            the natural reading order of the content.</p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>Although WCAG 2 does not prohibit the use of layout tables, CSS-based layouts are recommended in order to retain the defined semantic meaning of the HTML <el>table</el> elements and to conform to the coding practice of separating presentation from content. If a layout table is used, however, it is important that the content make sense when linearized.
+          </p>
+      <p>This failure occurs when a meaningful sequence of content conveyed through
+                        presentation is lost because HTML tables used to control the visual
+                        placement of the content do not “linearize" correctly. Tables present
+                        content in two visual dimensions, horizontal and vertical. However, screen
+                        readers present this two-dimensional content in linear order of the content
+                        in the source, beginning with the first cell in the first row and ending
+                        with the last cell in the last row. The screen reader reads the table from
+                        top to bottom, reading the entire contents of each row before moving to the
+                        next row. The complete content of each cell in each row is spoken—including
+                        the complete content of any table nested within a cell. This is called
+                        linearization.</p>
+      <p>Suppose that a Web page is laid out using a table with 9 columns and 22 rows.
+                        The screen reader speaks the content of the cell at Column 1, Row 1 followed
+                        by the cells in columns 2, 3, 4 and so on to column 9. However, if any cell
+                        contains a nested table, the screen reader will read the entire nested table
+                        before it reads the next cell in the original (outer) table. For example, if
+                        the cell at column 3, row 6 contains a table with 6 columns and 5 rows, all
+                        of those cells will be read before Column 4, Row 6 of the original (outer)
+                        table. As a result, the meaningful sequence conveyed through visual
+                        presentation may not be perceivable when the content is spoken by a screen
+                        reader.</p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <head>A layout table that does not linearize correctly</head>
+         <description>
+            <p>An advertisement makes clever use of visual positioning, but changes
+                                meaning when linearized.</p>
+         </description>
+         <code role="html401"><![CDATA[
+<table>
+<tr>
+  <td ><img src="logo.gif" alt="XYZ mountaineering"></td>
+  <td rowspan="2" valign="bottom">top!</td>
+</tr>
+<tr>
+  <td>XYZ gets you to the</td>
+</tr>
+</table>]]></code>
+         <description>
+            <p>The reading order from this example would be: </p>
+            <ulist>
+               <item>
+                  <p>XYZ mountaineering top! </p>
+               </item>
+               <item>
+                  <p>XYZ gets you to the</p>
+               </item>
+            </ulist>
+         </description>
+      </eg-group>
+      <eg-group role="failure">
+         <head>A layout table that separates a meaningful sequence when linearized</head>
+         <description>
+            <p>A Web page from a museum exhibition positions a navigation bar
+                                containing a long list of links on the left side of the page. To the
+                                right of the navigation bar is an image of one of the pictures from
+                                the exhibition. To the right of the image is the kind of "placard"
+                                text you'd see on the wall next to the object if you were at the
+                                museum. Below that text is a heading that says "Description," and
+                                below that heading is a description of the image. The image, placard
+                                text, Description heading, and text of the description form a
+                                meaningful sequence.</p>
+            <p>A layout table is used to position the elements of the page. The
+                                links in the navigation bar are split into different cells in the
+                                leftmost column.</p>
+         </description>
+         <code role="html401"><![CDATA[
+<table>
+<tr>
+	<td><a href="#">Link 1</a></td>
+	<td rowspan="20"><img src="img.png" alt="Museum Picture"></td>
+	<td rowspan="6"><img src="placard.png" alt="Placard text"></td> 
+</tr> 
+<tr>
+	<td><a href="#">Link 2</a></td>
+</tr>
+<tr>
+	<td><a href="#">Link 3</a></td>
+</tr>
+<tr>
+	<td><a href="#">Link 4</a></td>
+</tr>
+<tr>
+	<td><a href="#">Link 5</a></td>
+</tr>
+<tr>
+	<td><a href="#">Link 6</a></td>
+</tr>
+<tr>
+	<td><a href="#">Link 7</a></td>
+	<td rowspan="2"><h2>Image Heading</h2></td> 
+</tr> 
+<tr>
+	<td><a href="#">Link 8</a></td>
+</tr>
+<tr>
+	<td><a href="#">Link 9</a></td>
+	<td rowspan="12">Description of the image</td> 
+</tr> 
+<tr>
+	<td><a href="#">Link 10</a></td>
+</tr>
+ ...
+<tr>
+	<td><a href="#">Link 20</a></td>
+</tr>
+</table>
+]]></code>
+         <description>
+            <p>The reading order from this example would be: </p>
+            <ulist>
+               <item>
+                  <p>Link 1</p>
+               </item>
+               <item>
+                  <p>Image</p>
+               </item>
+               <item>
+                  <p>Placard Text</p>
+               </item>
+               <item>
+                  <p>Link 2</p>
+               </item>
+               <item>
+                  <p>Link 3</p>
+               </item>
+               <item>
+                  <p>Link 4</p>
+               </item>
+               <item>
+                  <p>Link 5</p>
+               </item>
+               <item>
+                  <p>Link 6</p>
+               </item>
+               <item>
+                  <p>Link 7</p>
+               </item>
+               <item>
+                  <p>Image Heading</p>
+               </item>
+               <item>
+                  <p>Link 8</p>
+               </item>
+               <item>
+                  <p>Link 9</p>
+               </item>
+               <item>
+                  <p>Link 10</p>
+               </item>
+               <item>
+                  <p>...</p>
+               </item>
+               <item>
+                  <p>Link 20</p>
+               </item>
+            </ulist>
+            <p>Because the navigation bar links are interleaved with the content
+                                describing the image, screen readers cannot present the content in a
+                                meaningful sequence corresponding to the sequence presented
+                                visually.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources/>
+   <related-techniques>
+      <relatedtech idref="C6"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Linearize the content in either of the following ways: </p>
+               <ulist>
+                  <item>
+                     <p>Present the content in source code order</p>
+                  </item>
+                  <item>
+                     <p>Remove the table markup from around the content</p>
+                  </item>
+               </ulist>
+            </item>
+            <item>
+               <p>Check that the linear reading order matches any meaningful
+                                    sequence conveyed through presentation.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If check #2 is false, then this failure condition applies and the
+                                    content fails this Success Criterion.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

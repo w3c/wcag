@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH19">
+   <short-name>Providing a script that warns the user a time limit is about to expire and provides a way to extend it</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="time-limits-required-behaviors" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to notify users that they are   almost out of time to complete an interaction. When scripts provide   functionality that has time limits, the script can include functionality   to warn the user of imminent time limits and provide a mechanism to   request more time. 20 seconds or more before the time limit occurs, the   script provides a confirm dialog that states that a time limit is   imminent and asks if the user needs more time. If the user answers "yes"   then the time limit is reset. If the user answers "no" or does not   respond, the time limit is allowed to expire. </p>
+      <p>This technique involves time limits set with the setTimeout()   method. If, for example, the time limit should be 60 seconds, you can   set the time limit for 40 seconds (20 seconds less than the desired   timeout) and show a confirm dialog. The confirm dialog sets a new   timeout for the remaining 20 seconds. If the user requests more time, a   new timeout is set. However, if the 20-second "grace period time limit"   expires (meaning 60 seconds have now elapsed), the action appropriate   for the expiry of the 60 second time limit in the original design is   taken. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Using ActionScript to offer a time limit extension before the timeout expires</head>
+         <description>
+            <p>This is a basic AS2 example of a time limit that can be extended by   the user.  An alert is shown after 40 seconds of inactivity, warning that the   session is about to expire. The user is given 20 seconds to press the   space bar or click on the "Yes" button.  Note that the 40 second   duration would be insufficient for most tasks and is artificially short   for ease of demonstration. </p>
+         </description>
+         <code xml:space="preserve"><![CDATA[import mx.controls.Alert;
+import flash.accessibility.Accessibility;
+
+mx.accessibility.AlertAccImpl.enableAccessibility();
+
+var sessionTimeout;
+var sessionNotificationTimeout;
+var timeLimit: Number = 60000;
+var sessionAlert: Alert;
+resetTimeout();
+
+testField.addEventListener("change", resetTimeout);
+
+function resetTimeout() {
+  clearTimeout(sessionTimeout);
+  clearTimeout(sessionNotificationTimeout);
+  sessionTimeout = setTimeout(endSession, timeLimit);
+  sessionNotificationTimeout = setTimeout(showTimeoutAlert, timeLimit - 20000);
+}
+
+function showTimeoutAlert() {
+  sessionAlert = Alert.show("Click the YES button to extend your session",
+  "Your login session is about to expire, do you need more time?",
+  Alert.YES | Alert.NO, null, handleAlertClick);
+}
+
+function endSession() {
+  sessionAlert.deletePopUp();
+  Alert.show("please log in again",
+  "Your session has expired");
+}
+
+function handleAlertClick(e) {
+  if (e && e.detail && e.detail == Alert.YES)
+  resetTimeout();
+}]]></code>
+         <description>
+            <p>For a demonstration, see a <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="timeout_extension_as2.html"
+                    linktype="examples">working example of Using ActionScript to offer a time limit extension before the timeout expires</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="timeout_extension_as2.fla"
+                    linktype="examples">source of Using ActionScript to offer a time limit extension before the timeout expires</loc> is available.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="SCR16"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> load the page and start a timer that is 20 seconds less than   the time limit. </p>
+            </item>
+            <item>
+               <p> when the timer expires, check that a confirmation dialog is   displayed warning of the impending time limit and allows the user to   extend the limit within 20 seconds. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>Check #2 is true </p>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Providing_a_script_that_warns_the_user_a_time_limit_is_about_to_expire_and_provides_a_way_to_extend_it"/>
+					</source>
+   </admin>
+</technique>

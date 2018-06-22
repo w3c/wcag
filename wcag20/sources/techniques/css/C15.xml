@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="C15"><!-- This technique was combined with C16 -->
+   <short-name>Using CSS to change the presentation of a user interface component when it receives focus</short-name>
+   <applicability>
+      <p>CSS, HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="visual-audio-contrast-without-color" relationship="sufficient"/>
+      <success-criterion idref="navigation-mechanisms-focus-visible" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>Internet Explorer 6.0 and earlier versions for Windows do not support dynamic pseudo-classes for any elements except hyperlinks. Internet Explorer 7 does not support :focus styles for elements other than hyperlinks. Include the :active CSS pseudo class to achieve the same effect as :focus in Internet Explorer for (X)HTML links (a element). </p>
+      </ua-issue>
+      <ua-issue name="" version="">
+         <p>Firefox 1.5, Firefox 2.0 and SeaMonkey 1.1 for Windows support dynamic pseudo-classes for text input fields, text areas, radio buttons, check boxes, select elements, submit/reset buttons, and button elements. However, setting different colors or borders when a radio button or a check box receives focus is not supported. </p>
+      </ua-issue>
+      <ua-issue name="" version="">
+         <p>Opera 9.02 for Windows supports dynamic pseudo-classes for text input fields, text areas, radio buttons, check boxes, select elements, submit/reset buttons, but not for button elements. </p>
+      </ua-issue>
+      <ua-issue name="" version="">
+         <p>Firefox 2.0, Opera 9.02 and SeaMonkey 1.1 for Windows also support adjacent sibling selectors for form labels. Firefox 1.5, Internet Explorer 6.0 and earlier versions for Windows do not support adjacent sibling selectors for form labels. </p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to demonstrate how visual appearance may be enhanced via style sheets to provide visual feedback when an interactive element has focus or when a user hovers over it using a pointing device. Highlighting the element that has focus or is hovered over can provide information such as the fact that the element is interactive or the scope of the interactive element. </p>
+      <p>Providing visual feedback may be possible through more than one mode. Usually, it is attained through using a mouse to hover over the element or a keyboard to tab to the element. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Link elements</head>
+         <description>
+            <p>In this example, mouse and keyboard focus indicators have been applied to the link elements. CSS has been used to apply a background color when the link elements receive focus. </p>
+            <p>Here is the content to be displayed:</p>
+         </description>
+         <code role="xhtml"><![CDATA[
+<ul id="mainnav">
+  <li class="page_item">Home</li>
+  <li class="page_item"><a href="/services">Services</a></li>
+  <li class="page_item"><a href="/projects">Projects</a></li>
+  <li class="page_item"><a href="/demos">Demos</a></li>
+  <li class="page_item"><a href="/about-us">About us</a></li>
+  <li class="page_item"><a href="/contact-us">Contact us</a></li>
+  <li class="page_item"><a href="/links">Links</a></li>
+</ul>]]></code>
+         <description>
+            <p>Here is the CSS that changes the background color for the above elements when they receive mouse or keyboard focus:</p>
+         </description>
+         <code role="css"><![CDATA[
+#mainnav a:hover, #mainnav a:active, #mainnav a:focus {
+  background-color: #DCFFFF;
+  color:#000066;
+}]]></code>
+      </eg-group>
+      <eg-group>
+         <head>Highlighting elements that receive focus</head>
+         <description>
+            <p>In this example, the :focus pseudo-class is used to change the style applied to input fields when they receive focus by changing the background color. </p>
+         </description>
+         <code role="xhtml"><![CDATA[
+<html>
+  <head>
+    <style type="text/css">
+      input.text:focus {
+        background-color: #7FFF00; 
+        color: #000;
+      }
+      input[type=checkbox]:focus + label, input[type=radio]:focus + label {
+        background-color: #FF6; 
+        color: #000; 
+      }
+    </style>
+  </head>
+  <body>
+    <form method="post" action="form.php">
+      <p><label for="fname">Name: </label>
+        <input class="text" type="text" name="fname" id="fname" />
+      </p>
+      <p>
+        <input type="radio" name="sex" value="male" id="sm" /> <label for="sm">Male</label><br />
+        <input type="radio" name="sex" value="female" id="sf" /> <label for="sf">Female</label>
+      <p>
+    </form>
+  </body>
+</html>
+
+            ]]></code>
+         <description>
+            <p>Working example of this code: <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="focus-pseudo-class.html"
+                    linktype="examples">Example of highlighting elements that receive focus</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://www.w3.org/TR/CSS2/selector.html#dynamic-pseudo-classes">CSS 2: 5.11.3 The dynamic pseudo-classes: :hover, :active, and :focus</loc>
+								       </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://www.w3.org/TR/CSS2/selector.html#adjacent-selectors">CSS 2: 5.7 Adjacent sibling selectors</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <tests>
+      <procedure>
+         <p>For each element able to attain focus: </p>
+         <olist>
+            <item>
+               <p>Using a mouse, hover over the element. </p>
+            </item>
+            <item>
+               <p>Check that the background or border changes color. </p>
+            </item>
+            <item>
+               <p>Move the mouse away from the object before attempting keyboard focus. </p>
+            </item>
+            <item>
+               <p>Using a keyboard, tab to the element.</p>
+            </item>
+            <item>
+               <p>Check that the background or border changes color.</p>
+            </item>
+            <item>
+               <p>Check that the background or border changes in color are removed when the element loses focus.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Checks #2, #5 and #6 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

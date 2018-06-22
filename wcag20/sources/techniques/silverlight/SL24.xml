@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SL24">
+   <short-name>Using AutoPlay to Keep Silverlight Media from Playing Automatically</short-name>
+   <applicability>
+      <p use-id="silverlight.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="visual-audio-contrast-dis-audio" relationship="sufficient"/>
+      <success-criterion idref="time-limits-pause" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="silverlight.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to use the <prop>AutoPlay</prop> property
+    				of <obj>MediaElement</obj> object, which prevents the <obj>MediaElement</obj> from
+    				playing its media source automatically. </p>
+      <p>By default the value of <prop>AutoPlay</prop> is true, which causes
+    				any media that is the <prop>Source</prop> of the <obj>MediaElement</obj> to
+    				play as soon as either the entire source file is loaded (for nonstreaming
+    				media) or an initial buffer is loaded (for streaming media). To prevent
+    				the possible accessibility issues, developers can instead specifically set <prop>AutoPlay</prop> to
+    				false, so that the user always controls whether the media plays. This
+    				technique would thus be used in combination with providing user interface
+    				controls that go along with the <obj>MediaElement</obj>, and
+    				that enable the user to control the media. In particular, the user
+    				interface controls enable the media to play, pause or stop, with event
+    				wiring for those controls associated with the <function>Play</function>, <function>Pause</function> or <function>Stop</function> methods
+    				of the <obj>MediaElement</obj> object. </p>
+      <ulist>
+         <item>
+            <p> 
+               <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="https://msdn.microsoft.com/en-us/library/system.windows.controls.mediaelement.pause%28VS.95%29.aspx">Pause</loc> 
+            </p>
+         </item>
+         <item>
+            <p> 
+               <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="https://msdn.microsoft.com/en-us/library/system.windows.controls.mediaelement.play%28VS.95%29.aspx">Play</loc> 
+            </p>
+         </item>
+         <item>
+            <p> 
+               <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="https://msdn.microsoft.com/en-us/library/system.windows.controls.mediaelement.stop%28VS.95%29.aspx">Stop</loc> 
+            </p>
+         </item>
+      </ulist>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Setting AutoPlay to false, and providing the typical MediaElement controls in the UI </head>
+         <description>
+            <p>This example has a UI definition in XAML and interaction logic in
+    						C#. </p>
+            <p>The following is the basic UI in XAML. Note the AutoPlay="false" setting. </p>
+            <codeblock xml:space="preserve"><![CDATA[<UserControl x:Class="MediaElementControlsAutoPlay.MainPage"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  >
+   <Grid x:Name="LayoutRoot">
+       <Grid.ColumnDefinitions>
+           <ColumnDefinition Width="*" />
+           <ColumnDefinition Width="*" />
+           <ColumnDefinition Width="*"/>
+       </Grid.ColumnDefinitions>
+       <Grid.RowDefinitions>
+           <RowDefinition Height="*" />
+           <RowDefinition Height="Auto" />
+       </Grid.RowDefinitions>
+       <MediaElement x:Name="media" Source="/xbox.wmv"
+          Width="300" Height="300" 
+          Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
+          AutoPlay="False"
+          AutomationProperties.Name="Video of new Fable game for XBox"           
+       />
+       <Button Click="StopMedia" 
+    Grid.Column="0" Grid.Row="1" Content="Stop" />
+       <Button Click="PauseMedia" 
+    Grid.Column="1" Grid.Row="1" Content="Pause" />
+       <Button Click="PlayMedia" 
+    Grid.Column="2" Grid.Row="1" Content="Play" />
+   </Grid>
+</UserControl>
+]]></codeblock>
+            <p>The following is the C# logic. </p>
+            <codeblock xml:space="preserve"><![CDATA[ private void StopMedia(object sender, RoutedEventArgs e)
+ {
+     media.Stop();
+ }
+ private void PauseMedia(object sender, RoutedEventArgs e)
+ {
+     media.Pause();
+ }
+ private void PlayMedia(object sender, RoutedEventArgs e)
+ {
+     media.Play();
+ }
+ 
+]]></codeblock>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="MediaElementControlsAutoPlayTestPage.html"
+                    linktype="examples">working example of Media Element Controls with AutoPlay False</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/cc189078(VS.95).aspx">Audio
+    					and Video Overview</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/system.windows.controls.mediaelement%28VS.95%29.aspx">MediaElement
+    					Class</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://smf.codeplex.com/">Silverlight
+    						Media Framework</loc> - a framework and a media player control implementation
+    						that incorporates many of the Silverlight techniques related to <obj>MediaElement</obj> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="SL17"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. The application
+    					is expected to use a <obj>MediaElement</obj> object to play
+    					prerecorded media. </p>
+            </item>
+            <item>
+               <p> Check that the media does not play automatically as soon as the
+    						application loads and displays. Rather, the user is presented with
+    						a user interface that can start the media per the user's action. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>#2 is true. </p>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Using_AutoPlay_to_Keep_Silverlight_Media_from_Playing_Automatically"/>
+      </source>
+   </admin>
+</technique>

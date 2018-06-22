@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SL11">
+   <short-name>Pausing or Stopping A Decorative Silverlight Animation</short-name>
+   <applicability>
+      <p use-id="silverlight.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="time-limits-pause" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="silverlight.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to associate a "Pause" or "Stop"   action
+    				for a Silverlight animation with a user interface control. This enables
+    				a user to pause or stop an animation in Silverlight content. </p>
+      <p>The Silverlight animation system is generalized such that nearly any
+    				Silverlight property of type <obj>Double</obj>, <obj>Point</obj> or <obj>Color</obj> can
+    				be animated, or a property can cycle through discrete object values.
+    				Thus the possibilities for which properties in the user interface can
+    				be animated are quite broad. The general technique shown can be used
+    				to pause or stop any Silverlight animation, including those that are
+    				purely decorative. </p>
+      <section id="SL11_pause_stop">
+         <head> Pause versus Stop </head>
+         <p>Silverlight has two discrete methods for animation control: a <function>Pause</function> method
+    					and a <function>Stop</function> method. The difference in behavior is that <function>Pause</function> uses
+    					whatever the last value was while the animation was still running,
+    					and holds that value permanenently (unless the animation is restarted). <function>Stop</function> sets
+    					the value to be whatever value existed before the animation was started.
+    					However, calling <function>Stop</function> on an animation often results
+    					in a behavior that looks like a "reset"   to the user; this
+    					is particularly true if the animation is animating an element's position
+    					on screen. In many cases, what might be a conceptual   "stop" for
+    					the user is better accomplished by a "permanent Pause" in
+    					the Silverlight animation API. Whether to call <function>Pause</function> or <function>Stop</function> is
+    					an aesthetic decision and application authors can experiment to see
+    					which behavior has the best appearance. If application authors choose
+    					to use <function>Stop</function>, authors can simply replace the call to
+    					.Pause() with a call to .Stop() for any code that is based on this
+    					technique's example. </p>
+      </section>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Pausing a decorative animation</head>
+         <description>
+            <p>The following is the XAML UI. The animated object and the animation
+    						behavior are both described in XAML, as is the control that users can
+    						activate to pause the animation. </p>
+            <codeblock xml:space="preserve"><![CDATA[<UserControl x:Class="PauseBouncyBall.MainPage"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+>
+ <UserControl.Resources>
+   <Storyboard x:Key="anim" RepeatBehavior="Forever" >
+       <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Ball"
+          Storyboard.TargetProperty="(Canvas.Top)"
+        FillBehavior="HoldEnd" AutoReverse="True">
+               <EasingDoubleKeyFrame Value="100" KeyTime="00:00:01">
+                   <EasingDoubleKeyFrame.EasingFunction>
+                       <BounceEase Bounces="-1" EasingMode="EaseIn"/>
+                   </EasingDoubleKeyFrame.EasingFunction>
+               </EasingDoubleKeyFrame>
+           </DoubleAnimationUsingKeyFrames>
+   </Storyboard>
+ </UserControl.Resources>
+ <Canvas x:Name="LayoutRoot" Background="White" Height="600" Width="800">
+   <Ellipse Name="Ball" Fill="Red" Width="20" Height="20" Canvas.Top="200">
+       <Ellipse.RenderTransform>
+           <TransformGroup>
+               <TranslateTransform/>
+           </TransformGroup>
+       </Ellipse.RenderTransform>
+   </Ellipse>
+   <Button HorizontalAlignment="Left" Width="200" Click="Button_Click">Stop the bouncy ball please!</Button>
+ </Canvas>
+</UserControl>
+]]></codeblock>
+            <p>The following is the C# logic. One function is the "page"   constructor,
+    						which is what starts and loops the animation. The other function
+    						is the event handler for the UI control (a button). The event handler
+    						retrieves the animation definition from the page resources, and calls
+    						the <function>Pause</function> method on the animation. </p>
+            <codeblock xml:space="preserve"><![CDATA[       public MainPage()
+       {
+           InitializeComponent();
+           (this.Resources["anim"] as Storyboard).Begin();
+       }
+       private void Button_Click(object sender, RoutedEventArgs e)
+       {
+           (this.Resources["anim"] as Storyboard).Pause();
+       }
+]]></codeblock>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="PauseBouncyBall.html"
+                    linktype="examples">working example of Pause Bouncy Ball</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/cc189019(VS.95).aspx">Animation
+    					Overview</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/cc189069(VS.95).aspx">Working
+    						with Animations Programmatically</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. For Silverlight
+    					content with moving, blinking, scrolling or auto-updating content
+    					that is the result of a running Silverlight animation: </p>
+            </item>
+            <item>
+               <p> Check for a mechanism to stop the movement, blinking, scrolling
+    						or auto-updating. </p>
+            </item>
+            <item>
+               <p> Check that the movement, blinking, scrolling or auto-updating
+    							stops when the mechanism is activated and does not restart by itself. </p>
+            </item>
+            <item>
+               <p> For pause, check that the animation can be restarted using a start
+    								mechanism. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>#3 is true. </p>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Pausing_or_Stopping_A_Decorative_Silverlight_Animation"/>
+      </source>
+   </admin>
+</technique>

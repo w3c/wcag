@@ -1,0 +1,99 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
+ <title>Expanding Scrolling Text in Place</title>
+
+    <style type="text/css">
+
+      #scrollContainer {
+        visibility: visible;
+        overflow: hidden;
+        top: 50px; left: 10px;
+        background-color: darkblue;
+        layer-background-color: darkblue;
+      }
+      .scrolling { 
+        position: absolute;
+        width: 200px; 
+        height: 50px;
+      }
+      .notscrolling { 
+        width: 500px; 
+        margin:10px;
+      }
+      #scrollingText {
+        top: 0px;
+        color: white; 
+      }
+      .scrolling #scrollingText {
+        position: absolute;
+      }
+
+    </style>
+
+    <script type="text/javascript">
+
+      var tid;
+      function init() {
+        var st = document.getElementById('scrollingText');
+        st.style.top = '0px';
+        initScrolling();
+      }
+      function initScrolling () {
+        tid = setInterval('scrollText()', 300);
+      }
+      function scrollText () {
+        var st = document.getElementById('scrollingText');
+        if (parseInt(st.style.top) > (st.offsetHeight*(-1) + 8)) {
+          st.style.top = (parseInt(st.style.top) - 5) + 'px';
+        } else {
+          var sc = document.getElementById('scrollContainer');
+          st.style.top = parseInt(sc.offsetHeight) + 8 + 'px';
+        }
+      }
+      function toggle() { 
+        var scr = document.getElementById('scrollContainer'); 
+        if (scr.className == 'scrolling') { 
+          scr.className = 'notscrolling'; 
+          clearInterval(tid); 
+           document.getElementById('scrollButton').value="Shrink";
+        } else { 
+          scr.className = 'scrolling'; 
+          initScrolling(); 
+          document.getElementById('scrollButton').value="Expand";
+        } 
+      } 
+
+  </script>
+
+</head><body onload="init()"> 
+    <p>
+  <input id="scrollButton" value="Expand" onclick="toggle()" type="button" /></p>
+  <div id="scrollContainer" class="scrolling"> 
+    <div style="top: -305px;" id="scrollingText" class="on"> 
+      <p>Four score and
+seven years ago our fathers brought forth on this continent, a new
+nation, conceived in Liberty, and dedicated to the proposition that
+all men are created equal.</p>
+     <p>Now we are engaged in a great civil war, testing whether that nation,
+or any nation so conceived and so dedicated, can long endure. We are
+met on a great battle-field of that war. We have come to dedicate a
+portion of that field, as a final resting place for those who here
+gave their lives that that nation might live. It is altogether fitting
+and proper that we should do this.</p>
+      <p>But, in a larger sense, we can not dedicate -- we can not consecrate
+-- we can not hallow -- this ground. The brave men, living and dead,
+who struggled here, have consecrated it, far above our poor power to
+add or detract. The world will little note, nor long remember what we
+say here, but it can never forget what they did here. It is for us the
+living, rather, to be dedicated here to the unfinished work which they
+who fought here have thus far so nobly advanced. It is rather for us
+to be here dedicated to the great task remaining before us -- that
+from these honored dead we take increased devotion to that cause for
+which they gave the last full measure of devotion -- that we here
+highly resolve that these dead shall not have died in vain -- that
+this nation, under God, shall have a new birth of freedom -- and that
+government of the people, by the people, for the people, shall not
+perish from the earth.</p>
+    </div>
+  </div>
+</body></html>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F78">
+   <short-name>Failure of Success Criterion 2.4.7 due to styling element outlines and borders in a way that removes or renders non-visible the visual focus indicator</short-name>
+   <applicability>
+      <p>Any technology</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="navigation-mechanisms-focus-visible" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>This describes a failure condition that occurs when the user agent's default visual indication of keyboard focus is turned off or rendered non-visible by other styling on the page without providing an author-supplied visual focus indicator. Turning off the focus indicator instructs the user agent not to present the focus indicator. Other styling may make it difficult to see the focus indicator even though it is present, such as outlines that look the same as the focus outline, or thick borders that are the same color as the focus indicator so it cannot be seen against them.</p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <head>The focus indicator is turned off with CSS</head>
+         <description>
+            <p>The following CSS example will remove the default focus indicator, which fails the requirement to provide a visible focus indicator.</p>
+         </description>
+         <code role="css"><![CDATA[:focus {outline: none}]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <head>The outline of elements is visually similar to the focus indicator</head>
+         <description>
+            <p>The following CSS example will create an outline around links that looks the same as the focus indicator. This makes it impossible for users to determine which one in fact has the focus, even though the user agent does draw the focus indicator.</p>
+         </description>
+         <code role="css"><![CDATA[a {outline: thin dotted black}]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <head>Elements have a border that occludes the focus indicator</head>
+         <description>
+            <p>The following CSS example creates a border around links that does not have enough contrast for the focus indicator to be seen when drawn on top of it. In this case the focus indicator is drawn just ouside the border, but as both are black and the border is thicker than the focus indicator, it no longer meets the definition of "visible".</p>
+         </description>
+         <code role="css"><![CDATA[a {border: medium solid black}]]></code>
+      </eg-group>
+   </examples>
+   <resources/>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Set the focus to all focusable elements on a page using the keyboard.</p>
+            </item>
+            <item>
+               <p>Check that the focus indicator is visible.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#2 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

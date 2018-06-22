@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F63">
+   <short-name>Failure of Success Criterion 2.4.4 due to providing link context only in content that is not related to the link</short-name>
+   <applicability>
+      <p>HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="navigation-mechanisms-refs" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>This describes a failure condition when the context needed for understanding the purpose of a link is located in content that is not programmatically determined link context.  If the context for the link is not provided in one of the following ways:</p>
+      <ulist>
+         <item>
+            <p>in the same sentence, paragraph, list item, or table cell as the link</p>
+         </item>
+         <item>
+            <p>in the preceding heading</p>
+         </item>
+         <item>
+            <p>via a suitable ARIA property such as <att>aria-label</att> or <att>aria-labelledby</att>
+            </p>
+         </item>
+      </ulist>
+      <p>then the user will not be able to find out where the link is going with any ease. If the user must leave the link to search for the context, the context is not programmatically determined link context and this failure condition occurs.</p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <head>A Link in an Adjacent Paragraph</head>
+         <description>
+            <p>
+A news service lists the first few sentences of an article in a paragraph. The next paragraph contains the link "Read More...". Because the link is not in the same paragraph as the lead sentence, the user cannot easily discover what the link will let the user read more about.</p>
+            <codeblock xml:space="preserve"><![CDATA[
+<p>A British businessman has racked up 2 million flyer miles and plans to 
+travel on the world's first commercial tourism flights to space.</p>
+
+<p><a href="ff.html">Read More...</a></p>
+]]></codeblock>
+         </description>
+      </eg-group>
+      <eg-group role="failure">
+         <head>A Link in an Adjacent Cell Within a Layout Table</head>
+         <description>
+            <p>An audio site provides links to where its player can be downloaded. The information about what would be downloaded by the link is in the preceding row of the layout table, which is not programmatically determined context for the link.</p>
+            <codeblock xml:space="preserve"><![CDATA[
+ <table>
+   <tr> 
+       <td>Play music from your browser</td>
+   </tr>
+   <tr>
+       <td>
+       <a href="http://www.example.com/download.htm">
+       <img src="download.jpg" width="165" height="32" alt="Download now"></a>
+       </td>
+   </tr>
+ </table>
+]]></codeblock>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA) 1.0</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="ARIA8"/>
+      <relatedtech idref="ARIA7"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>Locate links where some additional link context is needed to understand the purpose of the link. For each link:</p>
+         <olist>
+            <item>
+               <p>
+Check whether the context is contained in the same sentence, paragraph, list item, table cell, associated table headers, or preceding heading.</p>
+            </item>
+            <item>
+               <p>Check whether the link context can be programmatically determined in some other way, for example, by using a WAI-ARIA property such as <att>aria-label</att>, <att>aria-labelledby</att> or <att>aria-describedby</att> on the link to provide sufficient context</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If check #1 AND check #2 are false, the content fails the Success Criterion.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F89">
+   <short-name>Failure of Success Criteria 2.4.4, 2.4.9 and 4.1.2 due to not providing an accessible name for an image which is the only content in a link</short-name>
+   <applicability>
+      <p>Content that contains links.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="navigation-mechanisms-refs" relationship="failure"/>
+      <success-criterion idref="navigation-mechanisms-link" relationship="failure"/>
+      <success-criterion idref="ensure-compat-rsv" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>This failure condition occurs when a link contains only non-text content, such as an image, and that link cannot be identified by an accessible name. The accessible name for a link is defined according to the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/wai-aria/roles#textalternativecomputation">Accessible Name Calculation</loc>.</p>
+      <p>This also applies when both text and images are used separately on a page to link to the same target. In this case success technique <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="H2" linktype="html">H2: Combining adjacent image and text links for the same resource</loc> is the recommended approach to reduce the number of separate links and the undesirable redundancy.</p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <head>HTML Search Results</head>
+         <description>
+            <p>A search site returns search results that include both a text link and an image link to the match site. The image has a null <att>alt</att> attribute, since the result already contains a link with a text description. However, the screen reader does not ignore the image link but uses heuristics to find some text that might describe the purpose of the link. For example, the screen reader might announce, "football dot gif Football Scorecard." </p>
+         </description>
+         <code role="xhtml1"><![CDATA[ <a href="scores.html">
+   <img src="football.gif" alt="" />
+ </a>
+ <a href="scores.html">
+   Football Scoreboard
+ </a>
+}]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://webaim.org/techniques/alttext/">Appropriate Use of Alternative Text, Functional Images</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://jimthatcher.com/webcourse2.htm">Text Alternatives for Images (alt-text)</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H2"/>
+      <relatedtech idref="H30"/>
+      <relatedtech idref="ARIA7"/>
+      <!-- Using ARIA label for link purpose -->
+      <relatedtech idref="ARIA8"/>
+      <!-- Using ARIA labelledby for link purpose -->
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Check whether the link contains only non-text content.</p>
+            </item>
+            <item>
+               <p>Check whether the non-text content has been implemented in a way that it can be ignored by assistive <phrase>technologies, such as using <code><![CDATA[role="presentation"]]></code> or <code><![CDATA[alt=""]]></code>
+                  </phrase>.</p>
+            </item>
+            <item>
+               <p>Check that the link does not have an accessible name provided in another way such as <att>aria-label</att> or <att>aria-labelledby</att>.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If all checks are true, then this failure condition applies and the content fails the success criteria.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/WAI/GL/wiki/F89_Edit"/>
+      </source>
+   </admin>
+</technique>

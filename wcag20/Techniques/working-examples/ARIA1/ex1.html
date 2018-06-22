@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+<head>
+<meta http-equiv="content-type" content="text/xhtml; charset=utf-8" />
+<title>Demonstration of describedby property</title>
+<style type="text/css">
+div.form p { clear:left; margin: 0.3em 0;}
+.left {
+  float:left;
+  width:400px;
+}
+.right {
+	width:100px;
+	text-align:right;
+}
+</style>
+<script type="text/javascript">
+//<![CDATA[
+
+// array entries for each button on the page that associates the button id with the id of the element containing the text
+// which describes the button
+var buttonIds = new Array();
+buttonIds["fontB"]= "fontDesc";
+buttonIds["colorB"] = "colorDesc";
+buttonIds["customB"] = "customDesc";
+var linkIds = new Array();
+linkIds["iceberg"] = "icebergInfo";
+
+
+// function that is run after the page has loaded to set the describedBy  property on each of the elements referenced by
+// the array of id values
+function setDescribedBy(){
+	if (buttonIds){
+		var buttons = document.getElementsByTagName("button");
+		if (buttons){
+			var buttonId;
+			for(var i=0; i<buttons.length; i++){
+				buttonId = buttons[i].id;
+				if (buttonId && buttonIds[buttonId]){
+					setAttrNS(buttons[i], "describedby", buttonIds[buttonId]);
+				}
+			}
+		}
+	}
+	if (linkIds){
+		var links = document.getElementsByTagName("a");
+		if (links){
+			var linkId;
+			for(var k=0; k<links.length; k++){
+				linkId = links[k].id;
+				if (linkId && linkIds[linkId]){
+					setAttrNS(links[k], "describedby", linkIds[linkId]);
+				}
+			}
+		}
+	}
+}
+
+// method to set the attribute values based on the capability of the browser.  Use setAttributeNS if it is availaible,
+// otherwise append a namespace indicator string to the attribute and set its value.
+function setAttrNS(elemObj, theAttr, theValue){
+	if (typeof document.documentElement.setAttributeNS != 'undefined') {
+		elemObj.setAttributeNS("http://www.w3.org/2005/07/aaa", theAttr, theValue);
+	}else{
+		elemObj.setAttribute("aaa:" + theAttr, theValue);
+	}
+}
+
+function doAction(theAction){
+	alert("Perform the " + theAction + " action");
+}
+
+window.onload=setDescribedBy;
+
+//]]>
+</script>
+</head>
+<body>
+<p>The buttons on this page use the Accessible Rich Internet Applications describedby property to provide more detailed information about the button action</p>
+<div class="form">
+<p><span class="left" id="fontDesc" >Select the font faces and sizes to be used on this page</span><span class="right"><button id="fontB" onclick="doAction('Fonts');"> Fonts </button></span></p>
+<p><span class="left" id="colorDesc" >Select the colors to be used on this page</span><span class="right"><button id="colorB" onclick="doAction('Colors');"> Colors </button></span></p>
+<p><span class="left" id="customDesc" >Customize the layout and styles used on this page</span><span class="right"><button id="customB" onclick="doAction('Customize');"> Customize </button></span></p>
+</div>
+<p>The link in the next paragraph has been updated with the Accessible Rich Internet Applications describedby property to provide more information
+about the link</p>
+<p> <span id="icebergInfo">Alaskan storm cracks iceberg in Antarctica. </span> A bad storm in Alaska last October generated an ocean swell that broke apart a giant iceberg near Antarctica six days later, U.S. researchers reported on Monday. <a href="http://www.sciencemag.com/iceberg.html" id="iceberg">More Info...</a>.
+</p>
+</body>
+</html>

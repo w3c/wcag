@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H64">
+   <short-name>Using the <att>title</att> attribute of the <el>frame</el> and <el>iframe</el> elements</short-name>
+   <applicability>
+      <p>HTML and XHTML documents that use frames or iframes </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="navigation-mechanisms-skip" relationship="cosufficient"/>
+      <success-criterion idref="ensure-compat-rsv" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>The use of the <att>longdesc</att> attribute in HTML 4 on <el>frame</el> and <el>iframe</el> elements to specify a link to a long description of a frame is not supported well by assistive technologies. The use of <att>title</att> as described in this technique is recommended instead.</p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to demonstrate the use of the <att>title</att>
+            attribute of the <el>frame</el> or <el>iframe</el> element to describe the contents
+            of each frame. This provides a label for the frame so users can determine which frame to
+            enter and explore in detail. It does not label the individual page (frame) or inline
+            frame (iframe) in the frameset.</p>
+      <p>Note that the <att>title</att> attribute labels frames, and is different from the
+              <el>title</el> element which labels documents. Both should be provided, since the
+            first facilitates navigation among frames and the second clarifies the user's current
+            location.</p>
+      <p>The <att>title</att> attribute is not interchangeable with the <att>name</att>
+            attribute. The <att>title</att> labels the frame for users; the <att>name</att>
+            labels it for scripting and window targeting. The <att>name</att> is not presented to
+            the user, only the <att>title</att> is.</p>
+      <p>In HTML5 the <el>frame</el> element is marked as obsolete. The <el>iframe</el> element remains part of the HTML5 specification.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>This example shows how to use the <att>title</att> attribute with
+                <el>frame</el> to describe the frames containing the navigation bar and the
+                document.</p>
+         </description>
+         <code role="html401"><![CDATA[<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>A simple frameset document</title>
+  </head>
+  <frameset cols="10%, 90%">
+    <frame src="nav.html" title="Main menu" />
+    <frame src="doc.html" title="Documents" />
+    <noframes>
+      <body>
+        <a href="lib.html" title="Library link">Select to
+        go to the electronic library</a>
+      </body>
+    </noframes>
+  </frameset>
+</html> ]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>This example shows how to use the title attribute with <el>iframe</el> to
+                describe the contents of an inline frame. The example also includes an alternative
+                link to the page included by the iframe element for older browsers, which may not
+                understand the <el>iframe</el>element.</p>
+         </description>
+         <code role="html401"><![CDATA[ <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>A document using iframe</title>
+  </head>
+...
+<iframe src="banner-ad.html" id="testiframe" 
+  name="testiframe" title="Advertisement">
+    <a href="banner-ad.html">Advertisement</a>
+</iframe>
+...
+</html>  ]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html4/present/frames.html#h-16.2.2"> HTML 4.01
+                    FRAME element</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html4/present/frames.html#h-16.5">HTML 4.0.1
+                    Inline frames: the IFRAME element</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.jimthatcher.com/webcourse4.htm">Accessible Navigation,
+                    "Implementing Frame Titles"</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Check each frame and iframe element in the HTML or XHTML source code for the presence of a
+                  title attribute.</p>
+            </item>
+            <item>
+               <p>Check that the title attribute contains text that identifies the frame.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Checks #1 and #2 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

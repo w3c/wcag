@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F4">
+   <short-name>Failure of Success Criterion 2.2.2 due to using text-decoration:blink without a
+                    mechanism to stop it in less than five seconds</short-name>
+   <applicability>
+      <p>Cascading Style Sheets.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="time-limits-pause" relationship="failure"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="IE" version="*">
+         <p>The <code><![CDATA[blink]]></code> value of the <code><![CDATA[text-decoration]]></code> property
+                            is not supported by Internet Explorer. It is supported in
+                            Netscape/Mozilla family browsers. Not tested in others (e.g., Safari,
+                            Opera).</p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>CSS defines the <code><![CDATA[blink]]></code> value for the <code><![CDATA[text-decoration]]></code>
+                        property. When used, it causes any text in elements with this property to
+                        blink at a predetermined rate. This cannot be interrupted by the user, nor
+                        can it be disabled as a user agent preference. The blinking continues as
+                        long as the page is displayed. Therefore, content that uses
+                            <code><![CDATA[text-decoration:blink]]></code> fails the Success Criterion because
+                        blinking can continue for more than three seconds.</p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <description>
+            <p>A product list page uses the <code><![CDATA[text-decoration:blink]]></code> style
+                                on an element to draw attention to sale prices. This fails the
+                                Success Criterion because users cannot control the blink.</p>
+         </description>
+         <code><![CDATA[
+<p>My Great Product <span style="text-decoration:blink">Sale! $44,995!</span></p>
+]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/CSS2/text.html#propdef-text-decoration">CSS 2 text-decoration property</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="SCR22"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Examine inline styles, internal stylesheets, and external
+                                    stylesheets for the <code><![CDATA[text-decoration]]></code> property with a
+                                    value of "blink".</p>
+            </item>
+            <item>
+               <p>If the property is used, determine if the ID, class, or element
+                                    identified by selectors on which this property is defined are
+                                    used in the document.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If step #1 and step #2 are true, the content fails the success
+                                criterion.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

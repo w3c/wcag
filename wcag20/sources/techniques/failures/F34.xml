@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F34">
+   <short-name>Failure of Success Criterion 1.3.1 and 1.3.2 due to using white space characters to
+                    format tables in plain text content</short-name>
+   <applicability>
+      <p>All technologies.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="failure"/>
+      <success-criterion idref="content-structure-separation-sequence" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to describe how using white space
+                        characters, such as space, tab, line break, or carriage return, to format tables in text
+                        content is a failure to use structure properly. When tables are created in
+                        this manner there is no way to indicate that a cell is intended to be a
+                        header cell, no way to associate the table header cells with the table data
+                        cells, or to navigate directly to a particular cell in a table.</p>
+      <p>In addition, assistive technologies will interpret content in the reading
+                        order of the current language. Using white space to organize data in a
+                        visual table does not provide the information in a natural reading order in
+                        the source of the document. Thus, the assistive technology user will not be
+                        presented with the information in a logical reading order.</p>
+      <p>Plain text is not suitable for displaying complex information like tables
+                        because the structure of the table cannot be perceived. Rather than using
+                        visual formatting to represent tabular relations, 
+            tabular information would need to be presented using a different technology or presented linearly. (See Presenting tabular information in plain text)</p>
+      <!-- BBC: The above should link to the undrafted technique by the same name in 1.3.1-->
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <description>
+            <p>The following example incorrectly uses white space to format a Menu
+                                as a visual table.</p>
+         </description>
+         <code role="html401"><![CDATA[
+Menu
+         Breakfast        Lunch           Dinner
+
+Monday   2 fried eggs    tomato soup     garden salad
+         bacon           hamburger       Fried Chicken
+         toast           onion rings     green beans
+                         Oatmeal cookie  mashed potatoes
+
+Tuesday   Pancakes       vegetable soup  Caesar salad
+          sausage        hot dogs        Spaghetti with meatballs
+          orange juice   potato salad    Italian bread
+                         brownie         ice cream
+]]></code>
+         <description>
+            <p>If this table was to be interpreted and spoken by a screen reader it
+                                would speak the following lines:</p>
+            <ulist>
+               <item>
+                  <p>Menu</p>
+               </item>
+               <item>
+                  <p>Breakfast Lunch Dinner</p>
+               </item>
+               <item>
+                  <p>Monday 2 fried eggs tomato soup garden salad</p>
+               </item>
+               <item>
+                  <p>bacon hamburger Fried Chicken</p>
+               </item>
+               <item>
+                  <p>toast onion rings green beans</p>
+               </item>
+               <item>
+                  <p>Oatmeal cookie mashed potatoes</p>
+               </item>
+            </ulist>
+            <p>This reading order does not make sense since there is no structure in
+                                the table for the assistive technology to identify it as a table. If
+                                the text were reflowed, or changed from a fixed to a variable font,
+                                or increased in size until lines no longer fit on the page, similar
+                                issues would arise in the visual presentation.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources/>
+   <related-techniques>
+      <relatedtech idref="H51"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Examine the document for visually formatted tables.</p>
+            </item>
+            <item>
+               <p>Check whether the tables are created using white space characters
+                                    to layout the tabular data.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If step #2 is true, then this failure condition applies and the
+                                    content fails these Success Criteria.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

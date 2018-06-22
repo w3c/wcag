@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="PDF4">
+   <short-name>Hiding decorative images with the Artifact tag in PDF documents</short-name>
+   <applicability>
+      <p use-id="pdf.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="pdf.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The purpose of this technique is to show how purely decorative images
+    				in PDF documents can be marked so that they can be ignored by Assistive
+    				Technology by using the /Artifact tag. This is typically accomplished
+    				by using a tool for authoring PDF. </p>
+      <p>In PDF, artifacts are generally graphics objects or other markings
+    				that are not part of the authored content. Examples of artifacts include
+    				page header or footer information, lines or other graphics separating
+    				sections of the page, or decorative images. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Marking a background image as an artifact using Adobe
+    					Acrobat 9 Pro's TouchUp Reading Order Tool</head>
+         <description>
+            <p>This example is shown with Adobe Acrobat Pro. There are other software tools that perform similar functions. See the list of other software tools in <specref ref="pdf_notes_acc-sup_files_applications"/>.</p>
+            <p>The TouchUp Reading Order Tool can be used to mark an image as "Background," which
+    						removes it from the document tag structure. </p>
+            <olist>
+               <item>
+                  <p> Open the TouchUp Reading Order Tool in Acrobat Pro: Advanced &gt; Accessibility &gt; TouchUp
+    						Reading Order </p>
+               </item>
+               <item>
+                  <p> Select the decorative image in the document </p>
+               </item>
+               <item>
+                  <p> In the TouchUp Reading Order Tool, click the Background button
+    							to remove the selected image from the tag structure </p>
+               </item>
+            </olist>
+            <p>The screenshot below illustrates this example. </p>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF4/turo_background.gif"
+                       height="501"
+                       width="267"/>
+                  <alt>screen shot showing use of the TouchUp Reading Order panel to remove an image from the tag tree</alt>
+               </image> 
+            </p>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="decorative-image.docx"
+                    linktype="examples">working example of creating a decorative image (Word file)</loc> and <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="decorative-image.pdf"
+                    linktype="examples">working example of marking a background image as an artifact (PDF file)</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Marking an image as an artifact in a PDF document using
+    				an /Artifact tag or property list</head>
+         <description>
+            <p>The PDF specification allows images to be marked as "artifacts" as
+    						defined in Section 14.8.2.2 (Real Content and Artifacts) in <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="http://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF
+    							1.7 (ISO 32000-1)</loc>. An artifact is explicitly distinguished from
+    						real content by enclosing it in a marked-content sequence with the
+    						/Artifact tag. </p>
+            <p>/Artifact </p>
+            <codeblock xml:space="preserve"><![CDATA[BMC  ...  EMC    ]]></codeblock>
+            <p>or </p>
+            <p>/Artifact propertyList </p>
+            <codeblock xml:space="preserve"><![CDATA[BDC  ...  EMC  ]]></codeblock>
+            <p>The first is used to identify a generic artifact; the second is
+    						used for artifacts that have an associated property list. Note, to
+    						aid in text reflow, artifacts should be defined with property lists
+    						whenever possible. Artifacts lacking a specified bounding box are
+    						likely to be discarded during reflow. </p>
+            <p>Property list entries for artifacts include Type, BBox, Attached,
+    						and Subtype. </p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> Section 14.8.2.2 (Real Content and Artifacts) in <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF
+    					1.7 (ISO 32000-1)</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/accessibility/products/acrobat.html">PDF and Accessibility</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>For an image that is purely decorative, use one of the following
+    					to verify that it is marked as an artifact:</p>
+               <ulist>
+                  <item>
+                     <p> Read the PDF document with a screen reader, listening to hear
+    						that the decorative image is not announced when 
+reading the content line-by-line. </p>
+                  </item>
+                  <item>
+                     <p> Using a PDF editor, make sure the decorative image is marked as an artifact. </p>
+                  </item>
+                  <item>
+                     <p> Reflow the document and make sure the
+    								decorative image does not appear on the page. </p>
+                  </item>
+                  <item>
+                     <p> Use a tool that is capable of showing the /Artifact entry
+    									or property list, such as aDesigner, to open the PDF document
+    									and verify that decorative images are marked as artifacts. </p>
+                  </item>
+                  <item>
+                     <p> Use a tool
+that exposes the document through the accessibility API and verify that the
+decorative image is not exposed through the API. </p>
+                  </item>
+               </ulist>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#1 is true. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Hiding_decorative_images_with_the_Artifact_tag_in_PDF_documents"/>
+      </source>
+   </admin>
+</technique>

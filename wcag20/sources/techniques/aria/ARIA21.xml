@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="ARIA21">
+   <short-name>Using Aria-Invalid to Indicate An Error Field</short-name>
+   <applicability>
+      <p>HTML with <loc href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications</loc>.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="minimize-error-identified" relationship="sufficient"/>
+   </applies-to>
+   <description>
+<p>This technique demonstrates how <att>aria-invalid</att> may be employed to specifically identify fields that have failed validation. Its use is most suitable when:</p>   
+ <ulist>
+ <item><p>The error description does not programmatically identify the failed fields</p></item>
+ <item><p>The failed fields are identified in a manner that is not available to some users - for example by using an error-icon rendered visually by some technique that does not rely on color such as a visual cue like a border.</p></item>
+ </ulist>
+<note><p>One of the above two situations may be true for a field which has programmatically associated label and / or instructions that conveys data format, a data range, or the <prop>required</prop> property.</p></note>   
+<p>While it is always preferable to programmatically associate specific error description with the failed field, the page's design or the framework employed may sometimes constrain the author's ability to do so. In these cases, authors may programmatically set <att>aria-invalid</att> to "true" on the fields that have failed validation. This is interpretable mainly by assistive technologies (like screen readers / screen magnifiers) employed by users who are vision impaired. When a field has <att>aria-invalid</att> set to “true”, VoiceOver in Safari announces “invalid data” when the field gets focus; JAWS and NVDA notify the error as an “invalid entry”.</p>
+<p>This ARIA attribute has to be set / turned on programmatically. It should not be set to “true” before input validation is performed or the form is submitted. Setting <att>aria-invalid</att> to “false” is the same as not placing the attribute for the form control at all. Quite understandably, nothing is conveyed by assistive technology to users in this case.</p>
+<p>When visible text is used to programmatically identify a failed field and / or convey how the error can be corrected, setting <att>aria-invalid</att> to "true" is not required from a strict compliance standpoint but may still provide helpful information for users.</p>
+      </description>
+   <examples>
+      <eg-group>
+         <head>Using aria-invalid on required fields</head>
+         <description>
+            <p>The <att>aria-invalid</att> attribute is used on required fields that have no input. A message above the form conveys that form submission has failed due to this.</p>
+			<p>A portion of the jQuery code and the HTML form markup follow:</p>
+         <codeblock role="html5"><![CDATA[
+<code>
+<script>
+...
+...
+		if ($('#first').val() === '') {
+			$('#first').attr("aria-invalid", "true");
+$("label[for='first']").addClass('failed');
+		}
+		if ($('#last').val() === '') {
+			$('#last').attr("aria-invalid", "true");
+$("label[for='last']").addClass('failed');
+		} 
+		if ($('#email').val() === '') {
+			$('#email').attr("aria-invalid", "true");
+$("label[for='email']").addClass('failed');
+		} 
+...
+...
+</script>
+<style type="text/css">
+label.failed {
+	border: red thin solid;
+}
+</style>
+<form name="signup" id="signup" method="post" action="#">
+ <p>
+    <label for="first">First Name (required)</label><br>
+    <input type="text" name="first" id="first">
+  </p>
+  <p>
+    <label for="last">Last Name (required)</label><br>
+    <input type="text" name="last" id="last">
+  </p>
+  <p>
+    <label for="email">Email (required)</label><br>
+    <input type="text" name="email" id="email">
+  </p>
+  <p>
+    <input type="submit" name="button" id="button" value="Submit">
+  </p>
+</form>
+</code>            ]]></codeblock>
+            <p><loc href="Form-AriaLiveWithJQ.html" linktype="examples">Live example</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Identifying errors in data format</head>
+         <description>
+            <p><att>Aria-invalid</att> and <att>aria-describedby</att> are used together to indicate an error when the personal identification number (PIN), email address, or start date are not in the expected format. The error message is associated with the field using <att>aria-describedby</att>, and <att>aria-invalid</att> makes it easier to programmatically find fields with errors.</p>
+            <p>Below is the rendered HTML code for the email address field in Example 1: When an invalid email address is entered by the user such as "samexample.com" (instead of sam@example.com), the HTML code is:</p>
+         <codeblock role="html5"><![CDATA[
+<div class="control">
+<p><label for="email">Email address: [*]</label> 
+<input type="text" name="email" id="email" class="error" aria-invalid="true" aria-describedBy="err_1" /></p> 
+<span class="errtext" id="err_1">Error: Incorrect data</span></div>
+            ]]></codeblock>
+<p>And when no data is entered in the email field, the HTML code is:</p>
+         <codeblock role="html5"><![CDATA[
+<div class="control">
+<p><label for="email">Email address: [*]</label> 
+<input type="text" name="email" id="email" class="error" aria-invalid="true" aria-describedBy="err_2" /></p>
+<span class="errtext" id="err_2">
+ Error: Input data missing</span>
+</div>            ]]></codeblock>
+<p>jQuery code: jQuery is used to add aria-invalid or aria-describedby attributes as well as the class attribute and append the error text. This is the code that inserts aria-invalid and class="error" but does not associate the error text "incorrect data" with the control programmatically:</p>
+
+         <codeblock role="html5"><![CDATA[
+$(errFld).attr("aria-invalid", "true").attr("class", "error");
+// Suffix error text: 
+$(errFld).parent().append('<span class="errtext">Error: Incorrect data</span>');
+            ]]></codeblock>
+
+<p>CSS Code:</p>
+         <codeblock role="html5"><![CDATA[
+input.error {
+   border: red thin solid;}
+span.errtext {
+	margin-bottom: 1em; 	padding: .25em 1.4em .25em .25em;
+	border: red thin solid; 	background-color: #EEEEFF;
+	background-image:url('images/iconError.gif');
+	background-repeat:no-repeat; 	background-position:right;	
+}
+            ]]></codeblock>
+            <p><loc href="form-alert3.html" linktype="examples">Live example</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.w3.org/TR/wai-aria-1.1/#states_and_properties">Supported States and Properties: WAI-ARIA 1.1</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+               	<loc xmlns:xlink="http://www.w3.org/1999/xlink" href="http://www.deque.com/blog/aria-invalid-error-indication/">Using Aria-invalid for Error Indication</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G83"/>
+      <relatedtech idref="G85"/>
+      <relatedtech idref="G139"/>
+      <relatedtech idref="SCR32"/>
+      <relatedtech idref="ARIA18"/>
+      <relatedtech idref="ARIA19"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each form control that relies on <att>aria-invalid</att> to convey a validation failure:</p>
+         <olist>
+            <item>
+               <p>Check that <att>aria-invalid</att> is not set to true when a validation failure does not exist.</p>
+            </item>
+            <item>
+               <p>Check that <att>aria-invalid</att> is set to true when a validation failure does exist.</p>
+            </item>
+            <item>
+               <p>Check that the programmatically associated labels / programmatically associated instructional text for the field provide enough information to understand the error.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Checks #1-3 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

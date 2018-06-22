@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F47">
+   <short-name>Failure of Success Criterion 2.2.2 due to using the blink element</short-name>
+   <applicability>
+      <p>HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="time-limits-pause" relationship="failure"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="IE" version="*">
+         <p>The <code><![CDATA[blink]]></code> element is not supported by Internet Explorer 6 on Windows. It is supported in Netscape/Mozilla family of user agents and Opera on Windows.           </p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The <code><![CDATA[blink]]></code> element, while not part of the official HTML or XHTML
+                        specification, is supported by many user agents. It causes any text inside
+                        the element to blink at a predetermined rate. This cannot be interrupted by
+                        the user, nor can it be disabled as a preference. The blinking continues as
+                        long as the page is displayed. Therefore, content that uses
+                        <code><![CDATA[blink]]></code> fails the Success Criterion because blinking can continue
+                        for more than three seconds.</p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <description>
+            <p>A product list page uses the <code><![CDATA[blink]]></code> element to draw
+                                attention to sale prices. This fails the Success Criterion because
+                                users cannot control the blink.</p>
+         </description>
+         <code><![CDATA[
+<p>My Great Product <blink>Sale! $44,995!</blink></p>
+]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> 
+                  <loc href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/blink">Mozilla Developer Network: &lt;blink&gt;</loc> 
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/blink">Mozilla Developer Network: text-decoration</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Examine code for the presence of the <code><![CDATA[blink]]></code>
+                                element.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If #1 is true, the content fails the Success Criterion.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>
