@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F37">
+   <short-name>Failure of Success Criterion 3.2.2 due to launching a new window without prior warning
+                    when the selection of a radio button, check box or select list is changed</short-name>
+   <applicability>
+      <p>HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="consistent-behavior-unpredictable-change" relationship="failure"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="IE" version="6">
+         <p>Internet Explorer 6 also triggers the onclick event when a radio button
+                            with onclick receives focus; adding other event handlers (onxxx
+                            attributes) to prevent this does not work. </p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p> This document describes a failure that occurs when changing the selection of a
+                        radio button, a check box or an item in a select list causes a new window to
+                        open. It is possible to use scripting to create an <code><![CDATA[input]]></code>
+                        element that causes a change of context (submit the form, open a new page, a
+                        new window) when the element is selected. Developers can instead use a
+                        submit button (see <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="G80"
+              linktype="general">Providing a submit
+                            button to initiate a change of context</loc>) or clearly indicate the
+                        expected action. </p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <head/>
+         <description>
+            <p> The example below fails the Success Criterion because it processes
+                                the form when a radio button is selected instead of using a submit
+                                button. </p>
+         </description>
+         <code><![CDATA[  
+<script type="text/JavaScript"> 
+  function goToMirror(theInput) {
+   var mirrorSite = "http://download." + theInput.value + "/"; 
+   window.open(mirrorSite); 
+  }
+</script>
+  …
+<form name="mirror_form" id="mirror_form" action="" method="get">
+       <p>Please select a mirror download site:</p> 
+       <p> 
+       <input type="radio" onclick="goToMirror(this);" name="mirror" 
+       id="mirror_belnet" value="belnet.be" /> 
+       <label for="mirror_belnet">belnet (<abbr>BE</abbr>)</label><br /> 
+       <input type="radio" onclick="goToMirror(this);" name="mirror" 
+       id="mirror_surfnet" value="surfnet.nl" /> 
+       <label for="mirror_surfnet">surfnet (<abbr>NL</abbr>)</label><br /> 
+       <input type="radio" onclick="goToMirror(this);" name="mirror" 
+       id="mirror_puzzle" value="puzzle.ch" /> 
+       <label for="mirror_puzzle">puzzle (<abbr>CH</abbr>)</label><br /> 
+       <input type="radio" onclick="goToMirror(this);" name="mirror" 
+       id="mirror_voxel" value="voxel.com" /> 
+       <label for="mirror_voxel">voxel (<abbr>US</abbr>)</label><br /> 
+       </p> 
+</form>]]></code>
+      </eg-group>
+   </examples>
+   <resources/>
+   <related-techniques/>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Find each form in a page. </p>
+            </item>
+            <item>
+               <p> For each form control that is a radio button, check box or an
+                                    item in a select list, check if changing the selection of the
+                                    control launches a new window. </p>
+            </item>
+            <item>
+               <p> For each new window resulting from step 2, check if the user is
+                                    warned in advance. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p> If step #3 is false, then this failure condition applies and content
+                            fails the Success Criterion.</p>
+      </expected-results>
+   </tests>
+</technique>

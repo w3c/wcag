@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F54">
+   <short-name>Failure of Success Criterion 2.1.1 due to using only pointing-device-specific event
+                    handlers (including gesture) for a function</short-name>
+   <applicability>
+      <p>Technologies that have event handlers specific to pointing devices.</p>
+      <p> User Agent and Assistive Technology Support Notes</p>
+      <ulist>
+         <item>
+            <p> None listed. </p>
+         </item>
+      </ulist>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="keyboard-operation-keyboard-operable" relationship="failure"/>
+      <success-criterion idref="keyboard-operation-all-funcs" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>When pointing device-specific event handlers are the only mechanism available
+                        to invoke a function of the content, users with no vision (who cannot use
+                        devices such as mice that require eye-hand coordination) as well as users
+                        who must use alternate keyboards or input devices that act as keyboard
+                        emulators will be unable to access the function of the content. </p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <description>
+            <p>The following example is of an image that responds to a mouse click
+                                to go to another page. This is a failure because the keyboard cannot
+                                be used to move to the next page. <code><![CDATA[ 
+<p><img onmousedown="nextPage();" src="nextarrow.gif" 
+alt="Go to next page"></p>]]></code> 
+            </p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also/>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="SCR20"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Check to see whether pointing-device-specific event handlers are
+                                    the only means to invoke scripting functions.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If any are found, then this failure condition applies and content
+                                    fails the Success Criterion. </p>
+            </item>
+         </ulist>
+         <!--<p>Test n.n will fail the test (<code>onMouseDown</code> is used and  keyboard-specific event handler is not used)</p>
+            <p>
+              <code><![CDATA[   
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01  
+  Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Script has device dependent event handler (onmousedown)</title>
+  </head>
+  <body>
+    <p>
+      <a onMouseDown="window.location.href='nextpage.html';">mouse-only link</a>
+    </p>
+  </body>
+</html>]]></code>
+            </p>
+            <p>Test n.n will fail the test (<code>onMouseOver</code> is used and  keyboard-specific event handler is not used)</p>
+            <p>
+              <code><![CDATA[ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01  
+         Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+         <html> 
+         <head> 
+         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+         <title>Script has device dependent event handler (onmouseover)</title> 
+         </head> 
+         <body> 
+         <p><a onMouseOver="this.value='this will not work with the keyboard';">mouse-only link</a></p> 
+         </body> 
+         </html> ]]></code>
+            </p>-->
+      </expected-results>
+   </tests>
+</technique>

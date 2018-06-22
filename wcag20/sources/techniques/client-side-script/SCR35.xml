@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SCR35">
+   <short-name>Making actions keyboard accessible by using the onclick event of anchors and buttons</short-name>
+   <applicability>
+      <p>Script used with HTML or XHTML.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="keyboard-operation-keyboard-operable" relationship="sufficient"/>
+      <success-criterion idref="keyboard-operation-all-funcs" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to demonstrate how to invoke a scripting function in a way that is keyboard accessible by attaching it to a keyboard-accessible control. In order to ensure that scripted actions can be invoked from the keyboard, they are associated with "natively actionable" HTML elements (links and buttons). The onclick event of these elements is device independent. While "onclick" sounds like it is tied to the mouse, the onclick event is actually mapped to the default action of a link or button. The default action occurs when the user clicks the element with a mouse, but it also occurs when the user focuses the element and hits enter or space, and when the element is triggered via the accessibility API.</p>
+      <p>This technique relies on client-side scripting. However, it is beneficial to provide a backup implementation or explanation for environments in which scripting is not available.  When using anchor elements to invoke a JavaScript action, a backup implementation or explanation is provided via the <att>href</att> attribute. When using buttons, it is provided via a form post. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>Link that runs a script and has no fallback for non-scripted browsers. This approach should only be used when script is relied upon as an Accessibility Supported Technology.</p>
+            <p>Even though we do not want to navigate from this link, we must use the href attribute on the <el>a</el> element in order to make this a true link and get the proper eventing. In this case, we're using "#" as the link target, but you could use anything. This link will never be navigated.</p>
+            <p>The "return false;" at the end of the doStuff() event handling function tells the browser not to navigate to the URI. Without it, the page would refresh after the script ran. </p>
+         </description>
+         <code><![CDATA[
+<script> 
+function doStuff()
+ {
+  //do stuff
+    return false;
+  }
+</script>
+<a href="#" onclick="return doStuff();">do stuff</a>
+]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>Link that runs script, but navigates to another page when script is not available. This approach can be used to create sites that don't rely on script, if and only if the navigation target provides the same functionality as the script. This example is identical to the example 1, except that its href is now set to a real page, dostuff.htm. Dostuff.htm must provide the same functionality as the script.The "return false;" at the end of the doStuff() event handling function tells the browser not to navigate to the URI. Without it, the browser would navigate to dostuff.htm after the script ran.</p>
+         </description>
+         <code><![CDATA[
+<script> 
+function doStuff() 
+ {  
+  //do stuff  
+  return false; 
+ }
+</script>
+<a href="dostuff.htm" onclick="return doStuff();">do stuff</a>
+]]></code>
+         <description>
+            <p>A working example of this code is available. Refer to <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="jslink.html"
+                    linktype="examples">Creating Action Links using JavaScript</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>Button that runs a script and falls back to a form post for users without script. This approach can be used by sites that do not rely on script, if and only if the form post provides the same functionality as the script. The onsubmit="return false;" prevents the form from submitting. </p>
+         </description>
+         <code><![CDATA[
+<script>
+  function doStuff()
+ {
+     //do stuff
+ }
+</script>
+<form action="doStuff.aspx" onsubmit="return false;">
+ <input type="submit" value="Do Stuff" onclick="doStuff();" />
+</form>
+]]></code>
+         <description>
+            <p>A working example of this code is available. Refer to <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="jsbutton.html"
+                    linktype="examples">Creating Action Buttons using JavaScript</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>Button that runs a script, implemented with <code><![CDATA[input type="image"]]></code>. Note that an alt attribute must be added to the <el>input</el> to provide a text equivalent for the image. This approach should only be used when script is relied upon. </p>
+         </description>
+         <code><![CDATA[
+<script>
+  function doStuff()
+  {
+     //do stuff
+   return false;
+  }
+</script>
+<input  type="image"  src="stuff.gif"  alt="Do stuff"  onclick="return doStuff();" />
+]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>Button that runs a script, implemented with <code><![CDATA[input type="submit"]]></code>, <code><![CDATA[input type="reset"]]></code> or <code><![CDATA[input type="button"]]></code>. This approach should only be used when script is relied upon.  </p>
+         </description>
+         <code><![CDATA[
+<input type="submit" onclick="return doStuff();" value=”Do Stuff” />
+]]></code>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>Button that runs a script, implemented with <el>button</el>…<el>/button</el>. This is valuable when you want more control over the look of your button. In this particular example, the button contains both an icon and some text. This approach should only be used when script is relied upon. </p>
+         </description>
+         <code><![CDATA[
+<button onclick="return doStuff();">
+ <img src="stuff.gif" alt="stuff icon">
+ Do Stuff
+</button>
+]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/REC-html40/interact/scripts.html">HTML 4.01 Scripts</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/REC-html40/interact/forms.html">HTML 4.01 Forms</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/REC-html40/struct/links.html">HTML 4.01 Links</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/DOM/DOMTR">Document Object Model (DOM) Technical Reports</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G90"/>
+      <relatedtech idref="G108"/>
+      <relatedtech idref="H91"/>
+      <relatedtech idref="SCR20"/>
+      <relatedtech idref="SCR24"/>
+      <relatedtech idref="F42"/>
+      <relatedtech idref="F59"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For all script actions associated with <el>a</el>, <el>button</el>, or <el>input</el> elements: </p>
+         <olist>
+            <item>
+               <p>In a user agent that supports Scripting </p>
+               <ulist>
+                  <item>
+                     <p>Click on the control with the mouse. </p>
+                  </item>
+                  <item>
+                     <p>Check that the scripting action executes properly. </p>
+                  </item>
+                  <item>
+                     <p>If the control is an anchor element, check that the URI in the <att>href</att> attribute of the anchor element is not invoked. </p>
+                  </item>
+                  <item>
+                     <p>Check that it is possible to navigate to and give focus to the control via the keyboard.</p>
+                  </item>
+                  <item>
+                     <p>Set keyboard focus to the control.</p>
+                  </item>
+                  <item>
+                     <p>Check that pressing ENTER invokes the scripting action. </p>
+                  </item>
+                  <item>
+                     <p>If the control is an anchor element, check that the URI in the <att>href</att> attribute of the anchor element is not invoked. </p>
+                  </item>
+               </ulist>
+            </item>
+            <item>
+               <p>In a user agent that does not support Scripting </p>
+               <ulist>
+                  <item>
+                     <p>Click on the control with the mouse.</p>
+                  </item>
+                  <item>
+                     <p>If the control is an anchor element, check that the URI in the <att>href</att> attribute of the anchor element is invoked. </p>
+                  </item>
+                  <item>
+                     <p>Check that it is possible to navigate to and give focus to the control via the keyboard.</p>
+                  </item>
+                  <item>
+                     <p>Set keyboard focus to the control.</p>
+                  </item>
+                  <item>
+                     <p>If the control is an anchor element, check that pressing ENTER invokes the URI of the anchor element's <att>href</att> attribute.</p>
+                  </item>
+               </ulist>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>All of the above checks are true. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

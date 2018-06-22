@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F60">
+   <short-name>Failure of Success Criterion 3.2.5 due to launching a new window when a user enters
+                    text into an input field</short-name>
+   <applicability>
+      <p>General</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="consistent-behavior-no-extreme-changes-context"
+                         relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>This document describes a failure that occurs when a new window is created in
+                        response to a user filling in a text field for other than error reporting.
+                    </p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <head/>
+         <description>
+            <p> This is a deprecated example showing a failure: A user is filling in
+                                his mailing address. When he fills in his postal code, a new window
+                                opens containing advertisements for services available in his city.
+                            </p>
+         </description>
+      </eg-group>
+      <eg-group role="failure">
+         <head/>
+         <description>
+            <p>This example is acceptable: A user is filling in his mailing address
+                                in a form. When he fills in the postal code field, a script runs to
+                                validate that it is a valid postal code. If the value is not valid,
+                                a window opens with instructions on how to fill in the field. </p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also/>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="F37"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Find all text input form fields </p>
+            </item>
+            <item>
+               <p> Change the value in each form field </p>
+            </item>
+            <item>
+               <p> Check if new windows open </p>
+            </item>
+            <item>
+               <p> For any new windows that open, check if they contain an error
+                                    message and a button that closes the window returning focus to
+                                    the initiating form element. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> If #3 is true and #4 is false then failure condition applies and
+                                    the content fails this Success Criterion. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

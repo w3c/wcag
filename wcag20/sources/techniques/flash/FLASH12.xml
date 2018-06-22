@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH12">
+   <short-name>Providing client-side validation and adding error text via the accessible description</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="minimize-error-identified" relationship="sufficient"/>
+      <success-criterion idref="minimize-error-suggestions" relationship="sufficient"/>
+      <!--<success-criterion idref="minimize-error-reversible"/>-->
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to validate user input as values   are entered for each field, by means of client-side scripting. If errors   are found, a description is added to the controls that have invalid   data. Visually, the description will be placed adjacent to the control.   Additionally, the error message text is added to the control's   accessible description so that it is readable by assistive technology   when the control receives focus. </p>
+      <!--<ednote>
+						<edtext>In the wiki this technique was indicated as applying to SC 3.3.4. However, don't see how that fits and removed that.</edtext>
+					</ednote>-->
+   </description>
+   <examples>
+      <eg-group>
+         <head>Validating a text field</head>
+         <description>
+            <p>In this example, a sample form is shown with two text fields ('name'   and 'zip code'). Both fields are required. When the form's submit button   is pressed, the values of the text fields will be validated. If a   textfield contains an invalid value, an <obj>_accProps</obj> object is   created for the textfield, and its <prop>description</prop> property is   set the error message. </p>
+            <note>
+               <p>Instead of using the accessible description, the error text   can also be added to the accessible name (<prop>_accProps.name</prop>),   which is supported by a wider range of assistive technology than the <prop>_accProps.description</prop>   property. </p>
+            </note>
+            <p>ActionScript 2.0 Code</p>
+         </description>
+         <code xml:space="preserve"><![CDATA[import flash.accessibility. *;
+import mx.accessibilty.ButtonAccImpl;
+import mx.controls.Alert;
+import mx.accessibility.AlertAccImpl;
+
+AlertAccImpl.enableAccessibility();
+ButtonAccImpl.enableAccessibility;
+
+resetTextFieldAccNames();
+Accessibility.updateProperties();
+
+submit_btn.addEventListener("click", handleClick);
+function handleClick(e) {
+  //reset values
+  resetTextFieldAccNames();
+  resetTextFieldAccDescriptions();
+  resetErrorLabels();
+  //perform validation
+  var errors =[];
+  if (name_txt.text == '')
+    errors.push([name_txt, "You must enter your name", name_error_lbl]);
+  if (zipcode_txt.text == '')
+    errors.push([zipcode_txt, "You must enter your zip code", zipcode_error_lbl]);
+  else if (zipcode_txt.text.length != 5 || isNaN(zipcode_txt.text))
+    errors.push([zipcode_txt, "Zip code must be 5 digits", zipcode_error_lbl]);
+  
+  //add validation error messages, if any
+  var field, errorMsg, errorLabel;
+  if (errors.length > 0) {
+    //loop over encountered errors
+    for (var i = 0; i < errors.length; i++) {
+      field = errors[i][0];
+      errorMsg = errors[i][1];
+      errorLabel = errors[i][2];
+      
+      updateAccDescription(field, "Warning: " + errorMsg);
+      errorLabel.text = errorMsg;
+    }
+  } else {
+    Alert.show("Form field values were entered correctly");
+  }
+  Accessibility.updateProperties();
+}
+
+function updateAccName(obj, newName: String) {
+  if (! obj._accProps)
+  obj._accProps = new Object();
+  obj._accProps.name = newName;
+}
+
+function updateAccDescription(obj, newDescription: String) {
+  if (! obj._accProps)
+  obj._accProps = new Object();
+  obj._accProps.description = newDescription;
+}
+
+function getAccName(obj) {
+  return obj._accProps? obj._accProps.name: "";
+}
+
+function resetTextFieldAccNames() {
+  updateAccName(name_txt, "name, required");
+  updateAccName(zipcode_txt, "zip code, required");
+}
+
+function resetTextFieldAccDescriptions() {
+  updateAccDescription(name_txt, "");
+  updateAccDesciption(zipcode_txt, "");
+}
+
+function resetErrorLabels() {
+  name_error_lbl.text = "";
+  zipcode_error_lbl.text = "";
+}]]></code>
+         <description>
+            <p>This approach is demonstrated in <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="client_side_validation_flash_forms_using_alert_as2.html"
+                    linktype="examples">working version of Validating a text field</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="client_side_validation_flash_forms_using_alert_as2.fla"
+                    linktype="examples">source of Validating a text field</loc> is available.</p>
+            <!--<ednote>
+								<edtext>These files seem to be different from what was expected in the wiki. The files I was expecting were named client_side_validation_flash_forms_using_accessible_description_as2.*, while what we have are client_side_validation_flash_forms_using_alert_as2.*. And reading over the example in the wiki and looking at the example files, it seems they don't match. The example files use an alert, but the wiki describes updating the accessible name. The example seems good, but like it applies to a different technique, which maybe we should document. Either that, we should update the technique, particularly the example it claims to be a working example of, or get the correct example files in place.</edtext>
+							</ednote>-->
+         </description>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="SCR32"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>When a Flash movie provides interactive forms that can be submitted,   confirm that: </p>
+         <olist>
+            <item>
+               <p> The validation warnings are placed next to the control   visually. </p>
+            </item>
+            <item>
+               <p> The validation warnings are added to the accessible name or   description of each control. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> #1 and #2 are true </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Providing_client-side_validation_and_adding_error_text_via_the_accessible_description"/>
+					</source>
+   </admin>
+</technique>

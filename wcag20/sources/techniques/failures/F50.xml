@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F50">
+   <short-name>Failure of Success Criterion 2.2.2 due to a script that causes a blink effect without a
+                    mechanism to stop the blinking at 5 seconds or less</short-name>
+   <applicability>
+      <p>Technologies that support script-controlled blinking of content.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="time-limits-pause" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>Scripts can be used to blink content by toggling the content's visibility on and off at regular intervals. It is a failure for the script not to include a mechanism to stop the blinking at 5 seconds or earlier. See <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="SCR22"
+              linktype="script">Using scripts to control blinking and stop it in five seconds or less</loc> for information about how to modify the technique to stop the blinking.</p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <description>
+            <p>The following example uses script to blink content, but the blink
+                                continues indefinitely rather than stopping after five seconds.</p>
+         </description>
+         <code><![CDATA[
+...
+<script type="text/javascript">
+<!--
+// blink "on" state
+function show()
+{
+	if (document.getElementById)
+	document.getElementById("blink1").style.visibility = "visible";
+	settime-out("hide()", 450);
+}
+// blink "off" state
+function hide()
+{
+	if (document.getElementById)
+	document.getElementById("blink1").style.visibility = "hidden";
+	settime-out("show()", 450);
+}
+// kick it off
+show();
+//-->
+</script>
+...
+<span id="blink1">This content will blink</span>
+]]></code>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="SCR22"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each instance of blinking content:</p>
+         <olist>
+            <item>
+               <p>Determine if the blinking stops in 5 seconds or less.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>If #1 is false, then the content fails the Success Criterion.</p>
+      </expected-results>
+   </tests>
+</technique>

@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This is a build file for Apache ant (http://ant.apache.org/). This has been tested with Ant 1.7. -->
+<project name="wcag20" basedir="." default="usage">
+
+	<description>Generate WCAG 2.0 and related documents</description>
+	
+	<!-- Load overriding properties -->
+	<xmlproperty file="build.properties" keeproot="false" semanticattributes="true"/>
+	
+	<!-- The following properties need to be set appropriately before doing a build - they should all be overridden by the above property file, but are kept here to serve as defaults -->
+	<property name="pubdate" value="20090123" description="Publication date of this version of the documents, in YYYYMMDD format, used to generate the output directory"/>
+	<property name="pubdate.previous" value="20081211" description="Publication date of a previous version of the documents, used to find the folder from which to copy static files (images, CSS) into the new output directory"/>
+	
+	<property name="guidelines.w3c-version" value="REC" description="W3C version of the guidelines, used to generate the output directory"/>
+	<property name="understanding.w3c-version" value="NOTE" description="W3C version of understanding, used to generate the output directory"/>
+	<property name="techniques.w3c-version" value="NOTE" description="W3C version of the techniques, used to generate the output directory"/>
+	<property name="wcag2ict.w3c-version" value="WD" description="W3C version of WCAG2ICT, used to generate the output directory"/>
+
+	<property name="guidelines.w3c-version.previous" value="REC" description="W3C version of a previous version of the guidelines, used to find the folder from which to copy static files (images, CSS) into the new output directory"/>
+	<property name="understanding.w3c-version.previous" value="NOTE" description="W3C version of a previous version of understanding, used to find the folder from which to copy static files (images, CSS) into the new output directory"/>
+	<property name="techniques.w3c-version.previous" value="NOTE" description="W3C version of a previous version of the techniques, used to find the folder from which to copy static files (images, CSS) into the new output directory"/>
+	<property name="wcag2ict.w3c-version" value="WD" description="W3C version of a previous version of WCAG2ICT, used to find the folder from which to copy static files (images, CSS) into the new output directory"></property>
+	
+	<property name="outputdir" location="." description="Directory within which the output folders are created, normally &quot;../YYYY&quot; unless doing TR in which case it is &quot;../../../TR/&lt;YYYY&gt;&quot;"/>
+	<property name="outputdir.previous" location="." description="Directory in which previous build containing static files is located, almost always &quot;../YYYY&quot;"/>
+	<property name="outputdir.prefix" value="file:///" description="Prefix if any that must be prepended to the outputdir to make it resolve on the platform"/>
+
+	<property name="slices" value="true" description="Set to &quot;true&quot; to output mutliple-file versions"/>
+	
+	<property name="monolithic" value="true" description="Set to &quot;true&quot; to output single-file version"/>
+	
+	<property name="diffspec" value="false" description="Set to &quot;true&quot; to output a diff version (as a separate copy of monolithic versions, but as the only format for multiple-file versions)"/>
+	
+	<property name="ednotes" value="1" description="Whether to output editorial notes"/>
+	
+	<property name="xslt.factory" value="net.sf.saxon.TransformerFactoryImpl" description="Class name of the XSLT transformer factory, which sets which XSLT engine to use; must be an XSLT 2.0 processor"/>
+	
+	<property name="pubtarget" value="editors" description="Publication target, either 'tr' or 'editors', to allow build to output values appropriately"/>
+	
+	<!-- The following properties usually do not need to be adjusted -->
+	<property name="source.guidelines" location="sources/wcag2-src.xml"/>
+	<property name="source.understanding" location="sources/guide-to-wcag2-src.xml"/>
+	<property name="source.techniques" location="sources/wcag20-merged-techs.xml"/>
+	<property name="source.quickref" location="sources/wcag2-quickref.xml"/>
+	<property name="source.quickref.leadin" location="sources/quickref-leadin.php"/>
+	<property name="source.refs" location="sources/refs.xml"/>
+	<property name="source.wcag2ict" location="sources/wcag2ict.html"/>
+	
+	<property name="cvs.basedir" location="../../../../../"/>
+	
+	<property name="outputdir.guidelines" location="${outputdir}/${guidelines.w3c-version}-WCAG20-${pubdate}"/>
+	<property name="outputdir.understanding" location="${outputdir}/${understanding.w3c-version}-UNDERSTANDING-WCAG20-${pubdate}"/>
+	<property name="outputdir.techniques" location="${outputdir}/${techniques.w3c-version}-WCAG20-TECHS-${pubdate}"/>
+	<property name="outputdir.quickref" location="../../WCAG20/quickref/${pubdate}"/>
+	<property name="outputdir.wcag2ict" location="${outputdir}/${wcag2ict.w3c-version}-wcag2ict-${pubdate}"/>
+	
+	<property name="outputdir.guidelines.previous" location="${outputdir.previous}/${guidelines.w3c-version.previous}-WCAG20-${pubdate.previous}"/>
+	<property name="outputdir.understanding.previous" location="${outputdir.previous}/${understanding.w3c-version.previous}-UNDERSTANDING-WCAG20-${pubdate.previous}"/>
+	<property name="outputdir.techniques.previous" location="${outputdir.previous}/${techniques.w3c-version.previous}-WCAG20-TECHS-${pubdate.previous}"/>
+	<property name="outputdir.quickref.previous" location="../../WCAG20/quickref/${pubdate.previous}"/>
+	
+	<property name="outputdir.zip" location="../../WCAG20/versions"/>
+	<property name="outputdir.zip.guidelines" location="${outputdir.zip}/guidelines"/>
+	<property name="outputdir.zip.understanding" location="${outputdir.zip}/understanding"/>
+	<property name="outputdir.zip.techniques" location="${outputdir.zip}/techniques"/>
+	
+	<property name="outputdir.utility" location="../../../../WCAG/utility"/>
+	
+	<!--
+	<path id="saxon.classpath">
+		<fileset dir="C:\Documents\Java\saxonb9-1-0-2j">
+			<include name="saxon9.jar"/>
+			<include name="saxon9-dom.jar"/>
+			<include name="saxon9-xpath.jar"/>
+		</fileset>
+		<pathelement location="C:\Documents\Java\saxon-ant9-1\saxon9-ant.jar"/>
+	</path>
+	-->
+	
+	<filelist id="techs" description="Individual technique files" dir="sources/techniques">
+		<file name="aria.xml"/>
+		<file name="html.xml"/>
+		<file name="css.xml"/>
+		<file name="client-side-script.xml"/>
+		<file name="server-side-script.xml"/>
+		<file name="smil.xml"/>
+		<file name="text.xml"/>
+		<file name="failures.xml"/>
+		<file name="flash.xml"/>
+		<file name="pdf.xml"/>
+		<file name="silverlight.xml"/>
+		<file name="general.xml"/>
+	</filelist>
+	
+	<!-- Saxon XSLT -->
+	<!-- This task is not needed since Saxon can be called with the transformer factory, though it provides additional features -->
+	<!--
+	<taskdef name="saxon-xslt" classname="net.sf.saxon.ant.AntTransform">
+		<classpath refid="saxon.classpath"/>
+	</taskdef>
+	-->
+	
+	<target name="usage">
+		<echo level="info">Usage: &quot;ant &lt;target&gt;&quot; to execute a build task
+Enter &quot;ant -projecthelp&quot; to get list of available build tasks</echo>
+	</target>
+	
+	<target name="init">
+		<!-- Set properties that affect whether diff and slices output, done here because 1) the conditions in targets can only depend on whether a property is set, not its value, while it is more convenient to define the property so it isn't forgotten about, and 2) the conditions intersect, and this resolves those. -->
+		<condition property="monolithic.nodiff">
+			<equals arg1="${monolithic}" arg2="true"/>
+		</condition>
+		<condition property="slices.nodiff">
+			<and>
+				<equals arg1="${slices}" arg2="true"/>
+				<not>
+					<equals arg1="${diffspec}" arg2="true"/>
+				</not>
+			</and>
+		</condition>
+		<condition property="slices.diff">
+			<and>
+				<equals arg1="${slices}" arg2="true"/>
+				<equals arg1="${diffspec}" arg2="true"/>
+			</and>
+		</condition>
+		<!-- For now, not doing CVS within the build process -->
+		<!--<cvs command="update"/>-->
+	</target>
+	<!--<target name="clean" description="Clean up any temp files"></target>-->
+	
+	<!-- === Static content === -->
+	<target name="guidelines.static" description="Copy static files for guidelines into new directory" depends="init">
+		<copy todir="${outputdir.guidelines}">
+			<fileset dir="${outputdir.guidelines.previous}">
+				<exclude name="*.html"/>
+				<exclude name="CVS/"/>
+			</fileset>
+		</copy>
+	</target>
+	<target name="understanding.static" description="Copy static files for understanding into new directory" depends="init">
+		<copy todir="${outputdir.understanding}">
+			<fileset dir="${outputdir.understanding.previous}">
+				<exclude name="*.html"/>
+				<exclude name="CVS/"/>
+			</fileset>
+		</copy>
+	</target>
+	<target name="techniques.static" description="Copy static files for techniques into new directory" depends="init">
+		<copy todir="${outputdir.techniques}">
+			<fileset dir="${outputdir.techniques.previous}">
+				<exclude name="*.html"/>
+				<exclude name="CVS/"/>
+			</fileset>
+		</copy>
+	</target>
+	<target name="quickref.static" description="Copy static files for quickref into new directory" depends="init">
+		<copy todir="${outputdir.quickref}">
+			<fileset dir="${outputdir.quickref.previous}">
+				<exclude name="*.html"/>
+				<exclude name="*.php"/>
+				<exclude name="CVS/"/>
+			</fileset>
+		</copy>
+	</target>
+	<target name="all.static" description="Copy static files into new directories" depends="guidelines.static, understanding.static, techniques.static, quickref.static"/>
+	
+	<!-- === HTML versions === -->
+	<!-- Guidelines -->
+	<target name="guidelines.single" depends="init">
+		<mkdir dir="${outputdir.guidelines}"/>
+		<xslt in="${source.guidelines}" out="${outputdir.guidelines}/Overview.html" style="sources/diffspec.xsl" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl">
+				<attribute name="http://saxon.sf.net/feature/xinclude-aware" value="true"/>
+			</factory>
+			<param name="show.diff.markup" expression="0"/>
+			<param name="show.issue.links" expression="0"/>
+			<param name="show.ednotes" expression="${ednotes}" if="${ednotes}"/>
+			<param name="glthisversion" expression=""/>
+			<param name="guidethisversion" expression="${understanding.uri}" if="understanding.uri"/>
+			<param name="techsthisversion" expression="${techniques.uri}" if="techniques.uri"/>
+			<param name="guidelines.file" expression="file:///${source.guidelines}"/>
+			<param name="understanding.file" expression="file:///${source.understanding}"/>
+			<param name="techniques.file" expression="file:///${source.techniques}"/>
+			<param name="quickref.file" expression="file:///${source.quickref}"/>
+			<param name="refs.file" expression="file:///${source.refs}"/>
+		</xslt>
+	</target>
+	<target name="guidelines.single.diff" depends="init" if="monolithic">
+		<mkdir dir="${outputdir.guidelines}"/>
+		<xslt in="${source.guidelines}" out="${outputdir.guidelines}/Overview-diff.html" style="sources/diffspec.xsl" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl">
+				<attribute name="http://saxon.sf.net/feature/xinclude-aware" value="true"/>
+			</factory>
+			<param name="show.diff.markup" expression="1"/>
+			<param name="show.issue.links" expression="1"/>
+			<param name="show.ednotes" expression="${ednotes}" if="${ednotes}"/>
+			<param name="glthisversion" expression=""/>
+			<param name="guidethisversion" expression="${understanding.uri}" if="understanding.uri"/>
+			<param name="techsthisversion" expression="${techniques.uri}" if="techniques.uri"/>
+			<param name="guidelines.file" expression="file:///${source.guidelines}"/>
+			<param name="understanding.file" expression="file:///${source.understanding}"/>
+			<param name="techniques.file" expression="file:///${source.techniques}"/>
+			<param name="quickref.file" expression="file:///${source.quickref}"/>
+			<param name="refs.file" expression="file:///${source.refs}"/>
+		</xslt>
+	</target>
+	<target name="guidelines" depends="guidelines.single, guidelines.single.diff" description="Generate Guidelines"/>
+	
+	<!-- Understanding -->
+	<target name="understanding.single" depends="init">
+		<mkdir dir="${outputdir.understanding}"/>
+		<xslt in="${source.understanding}" out="${outputdir.understanding}/complete.html" style="sources/diffspec-howto.xsl" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl">
+				<attribute name="http://saxon.sf.net/feature/xinclude-aware" value="true"/>
+			</factory>
+			<param name="show.diff.markup" expression="0"/>
+			<param name="show.issue.links" expression="0"/>
+			<param name="show.ednotes" expression="${ednotes}" if="${ednotes}"/>
+			<param name="glthisversion" expression="${guidelines.uri}" if="guidelines.uri"/>
+			<param name="guidethisversion" expression=""/>
+			<param name="techsthisversion" expression="${techniques.uri}" if="techniques.uri"/>
+			<param name="guidelines.file" expression="file:///${source.guidelines}"/>
+			<param name="understanding.file" expression="file:///${source.understanding}"/>
+			<param name="techniques.file" expression="file:///${source.techniques}"/>
+			<param name="quickref.file" expression="file:///${source.quickref}"/>
+			<param name="refs.file" expression="file:///${source.refs}"/>
+		</xslt>
+	</target>
+	<target name="understanding.single.diff" depends="init" if="monolithic">
+		<mkdir dir="${outputdir.understanding}"/>
+		<xslt in="${source.understanding}" out="${outputdir.understanding}/complete-diff.html" style="sources/diffspec-howto.xsl" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl">
+				<attribute name="http://saxon.sf.net/feature/xinclude-aware" value="true"/>
+			</factory>
+			<param name="show.diff.markup" expression="1"/>
+			<param name="show.issue.links" expression="1"/>
+			<param name="show.ednotes" expression="${ednotes}" if="${ednotes}"/>
+			<param name="glthisversion" expression="${guidelines.uri}" if="guidelines.uri"/>
+			<param name="guidethisversion" expression=""/>
+			<param name="techsthisversion" expression="${techniques.uri}" if="techniques.uri"/>
+			<param name="guidelines.file" expression="file:///${source.guidelines}"/>
+			<param name="understanding.file" expression="file:///${source.understanding}"/>
+			<param name="techniques.file" expression="file:///${source.techniques}"/>
+			<param name="quickref.file" expression="file:///${source.quickref}"/>
+			<param name="refs.file" expression="file:///${source.refs}"/>
+		</xslt>
+	</target>
+	<target name="understanding.slices" depends="init">
+		<mkdir dir="${outputdir.understanding}"/>
+		<xslt in="${source.understanding}" out="temp.html" style="sources/slices-understanding-common.xsl" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl">
+				<attribute name="http://saxon.sf.net/feature/xinclude-aware" value="true"/>
+			</factory>
+			<param name="show.diff.markup" expression="0" if="slices.nodiff"/>
+			<param name="show.issue.links" expression="0" if="slices.nodiff"/>
+			<param name="show.diff.markup" expression="1" if="slices.diff"/>
+			<param name="show.issue.links" expression="1" if="slices.diff"/>
+			<param name="show.ednotes" expression="${ednotes}" if="${ednotes}"/>
+			<param name="output.dir" expression="${outputdir.understanding}"/>
+			<param name="output.dir.prefix" expression="${outputdir.prefix}"/>
+			<param name="glthisversion" expression="${guidelines.uri}" if="guidelines.uri"/>
+			<param name="guidethisversion" expression=""/>
+			<param name="techsthisversion" expression="${techniques.uri}" if="techniques.uri"/>
+			<param name="guidelines.file" expression="file:///${source.guidelines}"/>
+			<param name="understanding.file" expression="file:///${source.understanding}"/>
+			<param name="techniques.file" expression="file:///${source.techniques}"/>
+			<param name="quickref.file" expression="file:///${source.quickref}"/>
+			<param name="refs.file" expression="file:///${source.refs}"/>
+		</xslt>
+		<delete file="temp.html"/>
+	</target>
+	<target name="understanding" depends="understanding.single, understanding.single.diff, understanding.slices" description="Generate Understanding"/>
+
+	<!-- Techniques -->
+	
+	<!-- This target is only needed if generating an explicit merged techniques document, a pattern now removed. If returning to that pattern, targets that process wcag20-merged-techs.xml will need to change back to merged-techs.xml. -->
+	<target name="techniques-merge" depends="init">
+		<xslt in="${source.techniques}" out="sources/merged-techs.xml" style="sources/techs-merge.xslt">
+			<factory name="net.sf.saxon.TransformerFactoryImpl">
+				<attribute name="http://saxon.sf.net/feature/xinclude-aware" value="true"/>
+			</factory>
+		</xslt>
+	</target>
+	<target name="techniques.single" depends="init">
+		<mkdir dir="${outputdir.techniques}"/>
+		<xslt in="${source.techniques}" out="${outputdir.techniques}/complete.html" style="sources/diffspec-tech.xsl" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl">
+				<attribute name="http://saxon.sf.net/feature/xinclude-aware" value="true"/>
+			</factory>
+			<param name="show.diff.markup" expression="0"/>
+			<param name="show.issue.links" expression="0"/>
+			<param name="show.ednotes" expression="${ednotes}" if="${ednotes}"/>
+			<param name="glthisversion" expression="${guidelines.uri}" if="guidelines.uri"/>
+			<param name="guidethisversion" expression="${understanding.uri}" if="understanding.uri"/>
+			<param name="techsthisversion" expression="${techniques.uri}" if="techniques.uri"/>
+			<param name="guidelines.file" expression="file:///${source.guidelines}"/>
+			<param name="understanding.file" expression="file:///${source.understanding}"/>
+			<param name="techniques.file" expression="file:///${source.techniques}"/>
+			<param name="quickref.file" expression="file:///${source.quickref}"/>
+			<param name="refs.file" expression="file:///${source.refs}"/>
+		</xslt>
+	</target>
+	<target name="techniques.single.diff" depends="init" if="monolithic">
+		<mkdir dir="${outputdir.techniques}"/>
+		<xslt in="${source.techniques}" out="${outputdir.techniques}/complete-diff.html" style="sources/diffspec-tech.xsl" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl">
+				<attribute name="http://saxon.sf.net/feature/xinclude-aware" value="true"/>
+			</factory>
+			<param name="show.diff.markup" expression="1"/>
+			<param name="show.issue.links" expression="1"/>
+			<param name="show.ednotes" expression="${ednotes}" if="${ednotes}"/>
+			<param name="glthisversion" expression="${guidelines.uri}" if="guidelines.uri"/>
+			<param name="guidethisversion" expression="${understanding.uri}" if="understanding.uri"/>
+			<param name="techsthisversion" expression="${techniques.uri}" if="techniques.uri"/>
+			<param name="guidelines.file" expression="file:///${source.guidelines}"/>
+			<param name="understanding.file" expression="file:///${source.understanding}"/>
+			<param name="techniques.file" expression="file:///${source.techniques}"/>
+			<param name="quickref.file" expression="file:///${source.quickref}"/>
+			<param name="refs.file" expression="file:///${source.refs}"/>
+		</xslt>
+	</target>
+	<target name="techniques.slices" depends="init">
+		<mkdir dir="${outputdir.techniques}"/>
+		<xslt in="${source.techniques}" out="temp.html" style="sources/slices-techniques-common.xsl" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl">
+				<attribute name="http://saxon.sf.net/feature/xinclude-aware" value="true"/>
+			</factory>
+			<param name="show.diff.markup" expression="0" if="slices.nodiff"/>
+			<param name="show.issue.links" expression="0" if="slices.nodiff"/>
+			<param name="show.diff.markup" expression="1" if="slices.diff"/>
+			<param name="show.issue.links" expression="1" if="slices.diff"/>
+			<param name="show.ednotes" expression="${ednotes}" if="${ednotes}"/>
+			<param name="output.dir" expression="${outputdir.techniques}"/>
+			<param name="output.dir.prefix" expression="${outputdir.prefix}"/>
+			<param name="glthisversion" expression="${guidelines.uri}" if="guidelines.uri"/>
+			<param name="guidethisversion" expression="${understanding.uri}" if="understanding.uri"/>
+			<param name="techsthisversion" expression="${techniques.uri}" if="techniques.uri"/>
+			<param name="guidelines.file" expression="file:///${source.guidelines}"/>
+			<param name="understanding.file" expression="file:///${source.understanding}"/>
+			<param name="techniques.file" expression="file:///${source.techniques}"/>
+			<param name="quickref.file" expression="file:///${source.quickref}"/>
+			<param name="refs.file" expression="file:///${source.refs}"/>
+		</xslt>
+		<delete file="temp.html"/>
+	</target>
+	<target name="techniques.bytech" depends="init">
+		<mkdir dir="${outputdir.techniques}"/>
+		<xslt destdir="${outputdir.techniques}" style="sources/diffspec-tech.xsl" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl">
+				<attribute name="http://saxon.sf.net/feature/xinclude-aware" value="true"/>
+			</factory>
+			<param name="bytech" expression="1"/>
+			<param name="show.diff.markup" expression="0" if="slices.nodiff"/>
+			<param name="show.issue.links" expression="0" if="slices.nodiff"/>
+			<param name="show.diff.markup" expression="1" if="slices.diff"/>
+			<param name="show.issue.links" expression="1" if="slices.diff"/>
+			<param name="show.ednotes" expression="${ednotes}" if="${ednotes}"/>
+			<param name="glthisversion" expression="${guidelines.uri}" if="guidelines.uri"/>
+			<param name="guidethisversion" expression="${understanding.uri}" if="understanding.uri"/>
+			<param name="techsthisversion" expression="${techniques.uri}" if="techniques.uri"/>
+			<param name="guidelines.file" expression="file:///${source.guidelines}"/>
+			<param name="understanding.file" expression="file:///${source.understanding}"/>
+			<param name="techniques.file" expression="file:///${source.techniques}"/>
+			<param name="quickref.file" expression="file:///${source.quickref}"/>
+			<param name="refs.file" expression="file:///${source.refs}"/>
+			<filelist refid="techs"/>
+			<mapper>
+				<globmapper from="aria.xml" to="aria.html"/>
+				<globmapper from="html.xml" to="html.html"/>
+				<globmapper from="css.xml" to="css.html"/>
+				<globmapper from="client-side-script.xml" to="client-side-script.html"/>
+				<globmapper from="server-side-script.xml" to="server-side-script.html"/>
+				<globmapper from="smil.xml" to="smil.html"/>
+				<globmapper from="text.xml" to="text.html"/>
+				<globmapper from="failures.xml" to="failures.html"/>
+				<globmapper from="flash.xml" to="flash.html"/>
+				<globmapper from="pdf.xml" to="pdf.html"/>
+				<globmapper from="silverlight.xml" to="silverlight.html"/>
+				<globmapper from="general.xml" to="general.html"/>
+			</mapper>
+		</xslt>
+	</target>
+	<target name="techniques" description="Generate Techniques" depends="init, techniques.single, techniques.single.diff, techniques.slices, techniques.bytech"/>
+	
+	<!-- Quickref -->
+	<target name="quickref" depends="init" description="Generate Quickref">
+		<mkdir dir="${outputdir.quickref}"/>
+		<xslt in="${source.quickref}" out="quickref-temp.php" style="sources/diffspec-quickref.xsl" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl">
+				<attribute name="http://saxon.sf.net/feature/xinclude-aware" value="true"/>
+			</factory>
+			<param name="show.diff.markup" expression="1" if="${diffspec}"/>
+			<param name="show.ednotes" expression="${ednotes}" if="${ednotes}"/>
+			<param name="guidelines.file" expression="file:///${source.guidelines}"/>
+			<param name="understanding.file" expression="file:///${source.understanding}"/>
+			<param name="techniques.file" expression="file:///${source.techniques}"/>
+			<param name="quickref.file" expression="file:///${source.quickref}"/>
+			<param name="refs.file" expression="file:///${source.refs}"/>
+		</xslt>
+		<concat destfile="${outputdir.quickref}/Overview.php" force="true">
+			<filelist dir=".">
+				<file name="${source.quickref.leadin}"/>
+				<file name="quickref-temp.php"/>
+			</filelist>
+		</concat>
+		<delete file="quickref-temp.php"/>
+	</target>
+	
+	<!-- Everything -->
+	<target name="all" depends="guidelines, understanding, techniques, quickref" description="Generate entire suite"/>
+	
+	<!-- === Zip files of HTML versions === -->
+	<target name="guidelines.zip" depends="guidelines" description="Create zip and tgz files for the Guidelines">
+		<mkdir dir="${outputdir.zip.guidelines}"/>
+		<zip basedir="${outputdir.guidelines}" destfile="${outputdir.zip.guidelines}/wcag20-guidelines.zip" level="9">
+			<exclude name="CVS/"/>
+		</zip>
+		<tar basedir="${outputdir.guidelines}" destfile="${outputdir.zip.guidelines}/wcag20-guidelines.tar">
+			<exclude name="CVS/"/>
+		</tar>
+		<gzip src="${outputdir.zip.guidelines}/wcag20-guidelines.tar" destfile="${outputdir.zip.guidelines}/wcag20-guidelines.tgz"/>
+		<delete file="${outputdir.zip.guidelines}/wcag20-guidelines.tar"/>
+	</target>
+	<target name="understanding.zip" depends="understanding" description="Create zip and tgz files for  Understanding">
+		<mkdir dir="${outputdir.zip.understanding}"/>
+		<zip basedir="${outputdir.understanding}" destfile="${outputdir.zip.understanding}/wcag20-understanding.zip" level="9">
+			<exclude name="CVS/"/>
+		</zip>
+		<tar basedir="${outputdir.understanding}" destfile="${outputdir.zip.understanding}/wcag20-understanding.tar">
+			<exclude name="CVS/"/>
+		</tar>
+		<gzip src="${outputdir.zip.understanding}/wcag20-understanding.tar" destfile="${outputdir.zip.understanding}/wcag20-understanding.tgz"/>
+		<delete file="${outputdir.zip.understanding}/wcag20-understanding.tar"/>
+	</target>
+	<target name="techniques.zip" depends="techniques" description="Create zip and tgz files for the Techniques">
+		<mkdir dir="${outputdir.zip.techniques}"/>
+		<zip basedir="${outputdir.techniques}" destfile="${outputdir.zip.techniques}/wcag20-techniques.zip" level="9">
+			<exclude name="CVS/"/>
+		</zip>
+		<tar basedir="${outputdir.techniques}" destfile="${outputdir.zip.techniques}/wcag20-techniques.tar">
+			<exclude name="CVS/"/>
+		</tar>
+		<gzip src="${outputdir.zip.techniques}/wcag20-techniques.tar" destfile="${outputdir.zip.techniques}/wcag20-techniques.tgz"/>
+		<delete file="${outputdir.zip.techniques}/wcag20-techniques.tar"/>
+	</target>
+	<target name="all.zip" depends="guidelines.zip, understanding.zip, techniques.zip" description="Generate zip and tgz files for the entire suite">
+		<!-- Generate guidelines, understanding, and techniques slightly differently for the monolithic zip -->
+		<antcall>
+			<target name="guidelines"/>
+			<target name="understanding"/>
+			<target name="techniques"/>
+			<!-- Override the cross reference URIs to be appropriate to the zip file. The parameters are passed along only if these properties are set from this task. -->
+			<param name="guidelines.uri" value="../guidelines/"/>
+			<param name="understanding.uri" value="../understanding/"/>
+			<param name="techniques.uri" value="../techniques/"/>
+		</antcall>
+		<mkdir dir="${outputdir.zip}"/>
+		<zip destfile="${outputdir.zip}/wcag20-all.zip" level="9">
+			<zipfileset dir="${outputdir.guidelines}" prefix="guidelines">
+				<exclude name="CVS/"/>	
+			</zipfileset>
+			<zipfileset dir="${outputdir.understanding}" prefix="understanding">
+				<exclude name="CVS/"/>	
+			</zipfileset>
+			<zipfileset dir="${outputdir.techniques}" prefix="techniques">
+				<exclude name="CVS/"/>	
+			</zipfileset>
+		</zip>
+		<tar destfile="${outputdir.zip}/wcag20-all.tar">
+			<zipfileset dir="${outputdir.guidelines}" prefix="guidelines">
+				<exclude name="CVS/"/>	
+			</zipfileset>
+			<zipfileset dir="${outputdir.understanding}" prefix="understanding">
+				<exclude name="CVS/"/>	
+			</zipfileset>
+			<zipfileset dir="${outputdir.techniques}" prefix="techniques">
+				<exclude name="CVS/"/>	
+			</zipfileset>
+		</tar>
+		<gzip src="${outputdir.zip}/wcag20-all.tar" destfile="${outputdir.zip}/wcag20-all.tgz"/>
+		<delete file="${outputdir.zip}/wcag20-all.tar"/>
+		<!-- Delete the generated HTML files because they're no good for checking into CVS, relative urls are specific to the zip file -->
+		<delete>
+			<fileset dir="${outputdir.guidelines}" includes="*.html"/>
+			<fileset dir="${outputdir.understanding}" includes="*.html"/>
+			<fileset dir="${outputdir.techniques}" includes="*.html"/>
+		</delete>
+	</target>
+	
+	<!-- === XSL:FO versions === -->
+	<target name="guidelines.fo" depends="init"></target>
+	<target name="understanding.fo" depends="init"></target>
+	<target name="techniques.fo" depends="init"></target>
+	<target name="all.fo" depends="init, guidelines.fo, understanding.fo, techniques.fo"></target>
+	
+	<!-- === Sanity check === -->
+	<target name="sanity" depends="init" description="Identifies cross-referencing inconsistencies between documents">
+		<xslt in="${source.guidelines}" out="${outputdir.utility}/sanity.html" style="sources/misc/sanity-check.xslt" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl">
+				<attribute name="http://saxon.sf.net/feature/xinclude-aware" value="true"/>
+			</factory>
+			<param name="guidelines.file" expression="file:///${source.guidelines}"/>
+			<param name="understanding.file" expression="file:///${source.understanding}"/>
+			<param name="techniques.file" expression="file:///${source.techniques}"/>
+		</xslt>
+	</target>
+	
+	<!-- === ID List === -->
+	<target name="id-list" depends="init" description="Generates structured IDs for the comment form, technique submission form, and placeholder sections">
+		<xslt in="${source.guidelines}" out="${outputdir.utility}/id-list.html" style="sources/misc/id-list.xslt" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl">
+				<attribute name="http://saxon.sf.net/feature/xinclude-aware" value="true"/>
+			</factory>
+			<param name="techniques.file" expression="file:///${source.techniques}"/>
+		</xslt>
+	</target>
+	
+	<!-- === Comment Tracker List === -->
+	<target name="comment-tracking-lists-sql" depends="init" description="Generates structured IDs for the comment tracker form">
+		<xslt in="${source.guidelines}" out="${outputdir.utility}/comment-tracking-lists-sql.txt" style="sources/misc/comment-tracking-lists-sql.xslt" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl">
+				<attribute name="http://saxon.sf.net/feature/xinclude-aware" value="true"/>
+			</factory>
+			<param name="understanding.file" expression="file:///${source.understanding}"/>
+			<param name="techniques.file" expression="file:///${source.techniques}"/>
+			<param name="guidelines.specId" expression="${guidelines.w3c-version}-WCAG20-${pubdate}"/>
+			<param name="understanding.specId" expression="${understanding.w3c-version}-UNDERSTANDING-WCAG20-${pubdate}"/>
+			<param name="techniques.specId" expression="${techniques.w3c-version}-WCAG20-TECHS-${pubdate}"/>
+		</xslt>
+	</target>
+	
+	<!-- === Remove diff markup === -->
+	<target name="diff" depends="init" description="Remove diff markup from source files">
+		<xslt style="sources/remove-diff-markup.xsl" destdir="sources" useimplicitfileset="false" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl">
+				<attribute name="http://saxon.sf.net/feature/xinclude-aware" value="true"/>
+			</factory>
+			<filelist>
+				<file name="${source.guidelines}"/>
+				<file name="${source.understanding}"/>
+			</filelist>
+			<filelist refid="techs"/>
+			<chainedmapper>
+				<flattenmapper/>
+				<globmapper from="*.xml" to="*.xml.new"/>
+			</chainedmapper>
+		</xslt>
+		<copy todir="sources">
+			<filelist>
+				<file name="${source.guidelines}"/>
+				<file name="${source.understanding}"/>
+			</filelist>
+			<filelist refid="techs"/>
+			<chainedmapper>
+				<flattenmapper/>
+				<globmapper from="*.xml" to="*.xml.bak"/>
+			</chainedmapper>
+		</copy>
+		<move todir="sources">
+			<fileset dir="sources" includes="*.xml.new"/>
+			<globmapper from="*.xml.new" to="*.xml"/>
+		</move>
+	</target>
+
+	<!-- WCAG2ICT -->
+	<target name="wcag2ict" depends="init" description="Generate WCAG2ICT">
+		<xslt in="${source.wcag2ict}" out="${outputdir.wcag2ict}/Overview.html" style="sources/wcag2ict.xslt" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl">
+				<attribute name="http://saxon.sf.net/feature/xinclude-aware" value="true"/>
+			</factory>
+			<param name="show.diff.markup" expression="0"/>
+			<param name="show.ednotes" expression="${ednotes}" if="${ednotes}"/>
+			<param name="guidelines.file" expression="file:///${source.guidelines}"/>
+			<param name="understanding.file" expression="file:///${source.understanding}"/>
+			<param name="pubtarget" expression="${pubtarget}"/>
+		</xslt>
+	</target>
+	<target name="wcag2ict.accordion" depends="init" description="Generate WCAG2ICT accordion view">
+		<xslt in="${source.wcag2ict}" out="${outputdir.wcag2ict}/accordion.html" style="sources/wcag2ict.xslt" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl">
+				<attribute name="http://saxon.sf.net/feature/xinclude-aware" value="true"/>
+			</factory>
+			<param name="show.diff.markup" expression="0"/>
+			<param name="show.ednotes" expression="${ednotes}" if="${ednotes}"/>
+			<param name="guidelines.file" expression="file:///${source.guidelines}"/>
+			<param name="understanding.file" expression="file:///${source.understanding}"/>
+			<param name="pubtarget" expression="${pubtarget}"/>
+			<param name="expandable" expression="true"/>
+		</xslt>
+	</target>	
+	
+	<!-- publish to http://w3c.github.io/wcag/ -->
+	<target name="gh-pages">
+		<antcall target="understanding">
+			<param name="outputdir.understanding" value="../../../Generated/Understanding"/>
+			<param name="outputdir.prefix" value=""/>
+			<param name="publoc.understanding" value="http://w3c.github.io/wcag/Understanding"/>
+			<param name="publoc.techniques" value="http://w3c.github.io/wcag/Techniques"/>
+		</antcall>
+		<antcall target="techniques">
+			<param name="outputdir.techniques" value="../../../Generated/Techniques"/>
+			<param name="outputdir.prefix" value=""/>
+			<param name="publoc.understanding" value="http://w3c.github.io/wcag/Understanding"/>
+			<param name="publoc.techniques" value="http://w3c.github.io/wcag/Techniques"/>
+		</antcall>
+		<antcall target="guidelines">
+			<param name="outputdir.guidelines" value="../../../Generated/WCAG20"/>
+			<param name="outputdir.prefix" value=""/>
+			<param name="publoc.understanding" value="http://w3c.github.io/wcag/Understanding"/>
+			<param name="publoc.techniques" value="http://w3c.github.io/wcag/Techniques"/>
+		</antcall>
+	</target>
+</project>

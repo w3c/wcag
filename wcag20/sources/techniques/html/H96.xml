@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H96">
+   <short-name>Using the track element to provide audio descriptions</short-name>
+   <applicability>
+      <p>HTML5</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="media-equiv-av-only-alt" relationship="advisory"/>
+      <success-criterion idref="media-equiv-audio-desc" relationship="advisory"/>
+      <success-criterion idref="media-equiv-audio-desc-only" relationship="advisory"/>
+      <success-criterion idref="media-equiv-extended-ad" relationship="advisory"/>
+		<note><p>While this is currently an advisory technique, if it becomes a sufficient technique it will be sufficient for success criterion 1.2.7 only if the user agent has the ability to pause the video to allow the extended audio description to play completely without overlapping other important audio in the primary program.</p></note>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to use the HTML5 <el>track</el> element to specify a descriptions timed text track for a <el>video</el> element. Audio description timed text tracks contain textual descriptions of the video component of the media resource, intended for audio synthesis when the visual component is obscured, unavailable, or not usable. The user agent makes the cues available to the user in a non-visual fashion, for instance, by synthesizing them into speech.</p>
+		<p>The <att>src</att> attribute of the <el>track</el> element is an URL providing the text track data.</p>
+		<p>The audio description cues must fit into the gaps available in the audio component of the media resource. If there is not enough time to synthesize the description text in the track cue's time interval, user agents may truncate the speech. This limits the amount of supplementary information that can be added.</p>
+<p>User agents may also support extended audio descriptions by halting the video until the description has been completely synthesized, then restarting the video.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Audio description in one language</head>
+         <description>
+            <p>A <el>video</el> element for a video in the English language. The audio descriptions are provided in the WebVTT format.</p>
+         </description>
+         <code role="html5"><![CDATA[
+			 <video poster="myvideo.png" controls>
+				<source src="myvideo.mp4" srclang="en" type="video/mp4">
+				<track src="myvideo_en.vtt" kind="descriptions" srclang="en" label="English">
+			  </video>
+            ]]></code>
+      </eg-group>
+      <eg-group>
+         <head>Audio description in multiple languages</head>
+         <description>
+            <p>A <el>video</el> element for a video with both an English and French language source element, and with an English and a French audio description track using the WebVTT (vtt) file format.</p>
+         </description>
+         <code role="html5"><![CDATA[
+			 <video poster="myvideo.png" controls>
+				<source src="myvideo.mp4" srclang="en" type="video/mp4">
+				<source src="myvideo.webm" srclang="fr" type="video/webm">
+				<track src="myvideo_en.vtt" kind="descriptions" srclang="en" label="English">
+				<track src="myvideo_fr.vtt" kind="descriptions" srclang="fr" label="French">
+			  </video>            ]]></code>
+      </eg-group>
+      <eg-group>
+         <head>Captions in multiple languages</head>
+         <description>
+            <p>A <el>video</el>, "Google self-driving car". with an audio description track.</p>
+         </description>
+         <code role="html5"><![CDATA[
+			<video controls tabindex="1">
+				<source src="cdgQpa1pUUE.webm" type="video/webm">
+				<source src="cdgQpa1pUUE.mp4" type="video/mp4">
+				<track id="audesc" src="cdgQpa1pUUE.vtt" kind="descriptions" label="English descriptions" srclang="en-us"></track>
+			</video>            ]]></code>
+			<!--<p>The <loc href="http://html5videoguide.net/demos/uxresearch/selfdrivingcar.html" linktype="examples">live example</loc> can be tested on Chrome using the Chrome extensions listed above.</p>-->
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+               	<loc xmlns:xlink="http://www.w3.org/1999/xlink" href="https://www.w3.org/TR/html5/embedded-content-0.html#the-track-element">HTML5, the track element</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="https://github.com/w3c/webvtt">WebVTT: The Web Video Text Tracks Format</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G173"/>
+      <relatedtech idref="G8"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each <el>video</el> element used to play a video:</p>
+         <olist>
+            <item>
+               <p>Check that the video contains a <el>track</el> element of <att>kind</att> descriptions in the language of the video.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Check #1 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

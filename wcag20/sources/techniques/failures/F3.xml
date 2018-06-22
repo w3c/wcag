@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F3">
+   <short-name>Failure of Success Criterion 1.1.1 due to using CSS to include images that convey
+                    important information</short-name>
+   <applicability>
+      <p> All technologies that support CSS. </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p> The CSS background-image property provides a way to include images in the
+                        document with CSS without any reference in the HTML code. The CSS
+                        background-image property was designed for decorative purposes and it is not
+                        possible to associate text alternatives with images that are included via
+                        CSS. Text alternatives are necessary for people who cannot see images that
+                        convey important information. Therefore, it is a failure to use this
+                        property to add images to convey important information. This failure would apply equally in a case where the background image was declared in the HTML style attribute, as well as in a case where the background image declaration was created dynamically in a client script (see example 3 below).</p>
+      <note>
+         <p>Embedding information into a background image can also cause problems for people who use alternate backgrounds in order to increase legibility and for users of high contrast mode in some operating systems. These users, would lose the information in the background image due to lack of any alternative text.</p>
+      </note>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <head/>
+         <description>
+            <p> In the following example, part of the content is contained in an
+                                image that is presented by CSS alone. In this example, the image
+                                TopRate.png is a 180 by 200 pixel image that contains the text,
+                                "19.3% APR Typical Variable." </p>
+         </description>
+         <code><![CDATA[ The CSS contains: 
+p#bestinterest {
+  padding-left: 200px;
+  background: transparent url(/images/TopRate.png) no-repeat top left;
+}]]></code>
+         <description>
+            <p> It is used in this excerpt: </p>
+         </description>
+         <code><![CDATA[ 
+<p id="bestinterest">
+  Where else would you find a better interest rate?
+</p>]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <head/>
+         <description>
+            <p> A book distributor uses background images to provide icons against a
+                                list of book titles to indicate whether they are new, limited,
+                                in-stock, or out of stock. </p>
+            <p>The CSS contains: </p>
+         </description>
+         <code><![CDATA[
+ul#booklist li {
+  padding-left: 20px;
+}
+
+ul#booklist li.new {
+  background: transparent url(new.png) no-repeat top left; 
+}
+                            
+ul#booklist li.limited {
+  background: transparent url(limited.png) no-repeat top left; 
+}
+                            
+ul#booklist li.instock {
+  background: transparent url(instock.png) no-repeat top left; 
+}
+
+ul#booklist li.outstock {
+  background: transparent url(outstock.png) no-repeat top left; 
+}]]></code>
+         <description>
+            <p>It is used in this excerpt: </p>
+         </description>
+         <code><![CDATA[
+<ul id="booklist">
+  <li class="new">Some book</li>
+  <li class="instock">Some other book</li>
+  <li class="limited">A book we desperately want to get rid of</li>
+  ...
+  <li class="outstock">A book you actually want </li>
+</ul>]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <head/>
+         <description>
+            <p>Using the code from example 1, the same background image is declared in the HTML style attribute:</p>
+            <codeblock xml:space="preserve"><![CDATA[<p id="bestinterest" style="background: transparent url(/images/TopRate.png) no-repeat top left;" >
+Where else would you find a better interest rate?
+<p>]]></codeblock>
+            <p>In the following code, the background image declaration is created in a client script:</p>
+            <codeblock xml:space="preserve"><![CDATA[<script type="text/javascript">
+var newP = document.createElement('p');
+var newPText = document.createTextNode('Where else would you find a better interest rate?');
+newP.appendChild(newPText);
+newP.style.background = 'transparent url(/images/TopRate.png) no-repeat top left';
+document.body.appendChild(newP);
+</script> ]]></codeblock>
+         </description>
+      </eg-group>
+   </examples>
+   <resources/>
+   <related-techniques>
+      <relatedtech idref="H37"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Examine all images added to the content via CSS, HTML style attributes, or dynamically in script as background images. </p>
+            </item>
+            <item>
+               <p> Check that the images do not convey important information. </p>
+            </item>
+            <item>
+               <p>If an image does convey important information,  the information is
+                provided to assistive technologies and is also available when the CSS image is
+                not displayed.  </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> If step #2 and step #3 are both false, then this failure condition applies and the content fails this Success Criterion. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

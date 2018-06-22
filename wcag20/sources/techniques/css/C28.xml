@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="C28">
+   <short-name>Specifying the size of text containers using em units</short-name>
+   <applicability>
+      <p>CSS</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="visual-audio-contrast-scale" relationship="cosufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="IE" version="6">
+         <p>In Internet Explorer 6, Windows High Contrast Mode will resize percent-based fonts in nested tables to be too large. Firefox and later versions of IE do not resize fonts in High Contrast Mode, and don't have this issue. </p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to specify the width and/or height of containers, that contain text or that will accept text input, in <code><![CDATA[em]]></code> units. This will allow user agents that support text resizing to resize the text containers in line with changes in text size settings. </p>
+      <p>The width and/or height of text containers that have been specified using other units risk text cropping because it falls outside the container boundaries when the text size has been increased. </p>
+      <p>The containers generally control the placement of text within the Web page and can include layout elements, structural elements and form controls. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head> Em units for sizes for layout container containing text </head>
+         <description>
+            <p>In this example, a <el>div</el> element, with <att>id</att> value of "nav_menu", is used to position the navigation menu along the left-hand side of the main content area of the Web page. The navigation menu consists of a list of text links, with <att>id</att> value of "nav_list." The text size for the navigation links and the width of the container are specified in <code><![CDATA[em]]></code> units. </p>
+         </description>
+         <code><![CDATA[
+#nav_menu { width: 20em; height: 100em }
+
+#nav_list { font-size: 100%; }
+]]></code>
+      </eg-group>
+      <eg-group>
+         <head>Em units for text-based form controls </head>
+         <description>
+            <p>In this example, <el>input</el> elements that contain text or accept text input by the user have been given the class name "form1." CSS rules are used to define the font size in <code><![CDATA[percent]]></code> units and width for these elements in <code><![CDATA[em]]></code> units. This will allow the text within the form control to resize in response to changes in text size settings without being cropped (because the width of the form control itself also resizes according to the font size). </p>
+         </description>
+         <code><![CDATA[
+input.form1 { font-size: 100%; width: 15em; }
+]]></code>
+      </eg-group>
+      <eg-group>
+         <head>Em units in dropdown boxes </head>
+         <description>
+            <p>In this example, <el>select</el> elements have been given the class name "pick." CSS rules are used to define the font size in <code><![CDATA[percent]]></code> units and width in <code><![CDATA[em]]></code> units. This will allow the text within the form control to resize in response to changes in text size settings without being cropped. </p>
+         </description>
+         <code><![CDATA[
+input.pick { font-size: 100%; width: 10em; }
+]]></code>
+      </eg-group>
+      <eg-group>
+         <head>Em units for non-text-based form controls </head>
+         <description>
+            <p>In this example, <el>input</el> elements that define checkboxes or radio buttons have been given the class name "choose." CSS rules are used to define the width and height for these elements in em units. This will allow the form control to resize in response to changes in text size settings. </p>
+         </description>
+         <code><![CDATA[
+input.choose { width: 1.2em; height: 1.2em; }
+]]></code>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="C12"/>
+      <relatedtech idref="C14"/>
+      <relatedtech idref="C17"/>
+      <relatedtech idref="C20"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <ulist>
+            <item>
+               <p>Identify containers that contain text or allow text input.</p>
+            </item>
+            <item>
+               <p>Check the container's width and/or height are specified in <code><![CDATA[em]]></code> units.</p>
+            </item>
+         </ulist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Check #2 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

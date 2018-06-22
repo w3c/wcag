@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SVR3">
+   <short-name>Using HTTP referer to ensure that the only way to access non-conforming content is from conforming content</short-name>
+   <applicability>
+      <p>Content created using server-side scripting where a conforming version of content is provided as an alternative to a non-conforming version based on HTTP Referer.</p>
+   </applicability>
+   <applies-to>
+      <conformance-criterion idref="cc1" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues><!-- BBC: I was unable to find good resources on where these UA issues come up. However, indications seem to be that this was a larger issue in the IE 4.0 era... -->
+      <ua-issue name="general" version="4-">
+         <p>Because some user agents do not support the HTTP referer header, can be configured not to send one, or are behind a proxy or firewall that strips it out, it is possible that some users will be unable to access the non-conforming content when this technique is implemented.</p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to ensure that users can obtain an accessible version of content where both non-conforming and conforming versions are provided.</p>
+      <p>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="cc1"
+              linktype="guideline">Conformance Requirement 1</loc> allows non-conforming pages to be included within the scope of conformance as long as they have a "<loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="conforming-alternate-versiondef"
+              linktype="glossary">conforming alternate version</loc>". It is not always possible for authors to include accessibility supported links to conforming content from within non-conforming content. Therefore, authors may need to rely on the use of Server Side Scripting technologies (ex. PHP, ASP, JSP) to ensure that the non-conforming version can only be reached from a conforming page.</p>
+      <p>This technique describes how to use information provided by the <code><![CDATA[HTTP referer]]></code> to ensure that non-conforming content can only be reached from a conforming page. The <code><![CDATA[HTTP referer]]></code> header is set by the user agent and contains the URI of the page (if any) which referred the user agent to the non-conforming page.</p>
+      <p>To implement this technique, an author identifies the URI for the conforming version of the content, for each non-conforming page. When a request for the non-conforming version of a page is received, the server compares the value of the <code><![CDATA[HTTP referer]]></code> header against the URI of the conforming version to determine whether the link to the non-conforming version came from the conforming version. The non-conforming version is only served if the <code><![CDATA[HTTP referer]]></code> matches the URI of the non-conforming version. Otherwise, the user is redirected to the conforming version of the content. Note that when comparing the URI in the HTTP referer header, non-relevant variations in the URI, such as in the query and target, should be taken into account.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Interactive demonstrations of physical processes</head>
+         <description>
+            <p>An online physics course uses a proprietary modeling language to provide interactive demonstrations of physical processes. The user agent for the modeling language is not compatible with assistive technology. The site includes a script that uses the HTTP referer to ensure that unless users attempt to access the interactive demonstration from a page that contains a conforming description of the process and models, the server redirects the request to a conforming page which contains a link to the non-conforming version. Students may choose to access the non-conforming, interactive version, but those who do not are still able to learn about the process.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Using Http referer in PHP</head>
+         <description>
+            <p>The following example illustrates how this technique can be used in PHP. It includes two files, conforming.php and non-conforming.php which work together to ensure that the only way to access non-conforming content is from conforming content.</p>
+            <p>conforming.php:</p>
+         </description>
+         <code role="php"><![CDATA[
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+    		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    		<title>Conforming Content</title>
+    	</head>
+	<body>
+		<h1>This is a conforming page</h1>
+		<p>From here, you can visit the <a href="non-conforming.php">non-conforming 
+		page</a>. </p>
+	</body>
+</html>
+    				]]></code>
+         <description>
+            <p>non-conforming.php:</p>
+         </description>
+         <code role="php"><![CDATA[
+<?php 
+// if the request comes from a file that contains the string "conforming.php" then render the page
+	if(stristr($_SERVER['HTTP_REFERER'], "conforming.php")) {
+?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Non-Conforming Content</title>
+	</head>
+	<body>
+		<h1>This is a non-conforming page</h1>
+		<p>Because you came from <?php echo $_SERVER['HTTP_REFERER']; ?>, you are 
+			able to view the content on this page. </p>
+	</body>
+</html>
+<?php
+}
+// if the referring page is not conforming.php, then redirect the user to the conforming version
+else  {
+header("Location: conforming.php");
+}
+?>					
+    				]]></code>
+         <description>
+            <p>A working example, <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="non-conforming.php"
+                    linktype="examples">Conforming content</loc>, is available.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="G136"/>
+      <relatedtech idref="G190"/>
+      <relatedtech idref="SVR2"/>
+      <relatedtech idref="SVR4"/>
+      <relatedtech idref="C29"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>Where WCAG-conforming alternatives are provided for non-conforming content:</p>
+         <olist>
+            <item>
+               <p>Identify pages that do not conform to WCAG at the conformance Level claimed where accessible alternatives are served based on HTTP Referrer.</p>
+            </item>
+            <item>
+               <p>Visit the URI of the non-conforming content.</p>
+            </item>
+            <item>
+               <p>Verify that the resulting page is one of the following:</p>
+               <olist>
+                  <item>
+                     <p>a <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                             href="conforming-alternate-versiondef"
+                             linktype="glossary">conforming alternate version</loc> for the non-conforming content</p>
+                  </item>
+                  <item>
+                     <p>a page that includes a link to both the conforming alternate version and the non-conforming content</p>
+                  </item>
+               </olist>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Check #3.1 or #3.2 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>
