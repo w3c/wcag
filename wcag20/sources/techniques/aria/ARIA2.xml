@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="ARIA2">
+   <short-name>Identifying a required field with the aria-required property</short-name>
+   <applicability>
+      <p>Technologies that support <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+   	<success-criterion idref="minimize-error-suggestions" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to provide programmatic indication that a form field (which shown through presentation to be required) is mandatory for successful submission of a form.</p>
+      <p>The fact that the element is required is often visually presented (via a text or non-text symbol, or text indicating input is required or color / styling) but this is not programmatically determinable as part of the field's name.</p>
+      <p>The WAI-ARIA <prop>aria-required</prop> property indicates that user input is required before submission. The <prop>aria-required</prop> property can have values of <attval>true</attval> or <attval>false</attval>. For example, if a user must fill in an address field, then <att>aria-required</att> is set to <attval>true</attval>.</p>
+      <note>
+         <p>Note: Use of <code><![CDATA[aria-required="true"]]></code> might be beneficial even when an asterisk or other text symbol is programmatically associated with the field as it may reinforce its <prop>required</prop> property for some assistive technology users.</p>
+         <p>The fact that the element is required is often visually   presented (such as a sign or symbol after the control). Using the <prop>aria-required</prop> property in addition to the visual presentation makes it much easier   for user agents to pass on this important information to the user in a   user agent-specific manner.  Refer to <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="http://www.w3.org/TR/wai-aria-primer/#ariahtml">Supporting   ARIA in XHTML and HTML 4.01</loc> for information on how to provide   WAI-ARIA States and Properties with XHTML and HTML. WAI-ARIA States and   Properties is compatible with other languages as well; refer to documentation in those languages. </p>
+      </note>
+   </description>
+   <examples>
+      <eg-group>
+         <head/>
+         <description>
+            <p>The <prop>required</prop> property is indicated by an asterisk placed next to the label element:</p>
+            <codeblock xml:space="preserve"><![CDATA[
+<form action="#" method="post"  id="login1" onsubmit="return errorCheck1()">
+  <p>Note: [*]denotes mandatory field</p>
+  <p>
+    <label for="usrname">Login name: </label>
+    <input type="text" name="usrname" id="usrname" aria-required="true"/>[*]
+  </p>
+  <p>
+    <label for="pwd">Password</label>
+    <input type="password" name="pwd" id="pwd" size="12" aria-required="true" />[*]
+  </p>
+  <p>
+    <input type="submit" value="Login" id="next_btn" name="next_btn"/>
+  </p>
+
+</form>		]]></codeblock>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head/>
+         <description>
+            <p>The <prop>required</prop> property is indicated by the word "required" placed next to the <el>label</el> element:</p>
+            <codeblock xml:space="preserve"><![CDATA[
+<form action="#" method="post" id="step1" onsubmit="return errorCheck2()">
+  <p>
+    <label for="fname">First name: </label>
+    <input type="text" id="fname" aria-required="true" />
+    [required]
+  </p>
+  <p>
+    <label for="mname">Middle name: </label>
+    <input type="text" id="mname" />
+  </p>
+  <p>
+    <label for="lname">Last name: </label>
+    <input type="text" id="lname" aria-required="true" />
+    [required]
+  </p>
+  <p>
+    <label for="email">Email address: </label>
+    <input type="text" id="email" aria-required="true" />
+    [required]
+  </p>
+  <p>
+    <label for="zip_post">Zip / Postal code: </label>
+    <input type="text" id="zip_post" size="6" aria-required="true" />
+    [required]
+  </p>
+  <p>
+    <input type="submit" value="Next Step" id="step_btn" name="step_btn" />
+  </p>
+</form> ]]></codeblock>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head/>
+         <description>
+            <p>Required fields are indicated by a red border around the fields and a star icon rendered via CSS using <code role="css"><![CDATA[content:before]]></code>. This example also uses custom radio buttons with <code><![CDATA[role=radio]]></code> but the script to make the span actually work like radio buttons is not included in this example. The CSS properties are available below the form.
+</p>
+            <codeblock xml:space="preserve"><![CDATA[
+<form action="#" method="post" id="alerts1">
+  <label for="acctnum" data-required="true">Account Number</label>
+  <input size="12" type="text" id="acctnum"
+      aria-required="true" name="acctnum" />
+
+ <p id="radio_label" data-required="true">Please send an alert when balance exceeds $3,000.</p>
+
+ <ul  id="rg" role="radiogroup" aria-required="true" aria-labelledby="radio_label">
+    <li id="rb1" role="radio">Yes</li>
+    <li id="rb2" role="radio">No</li>
+ </ul>
+</form>
+ ]]></codeblock>
+ <p>Related CSS style definition for this example:</p>
+            <codeblock xml:space="preserve"><![CDATA[
+[aria-required=true] {
+  border: red thin solid;
+}
+[data-required=true]:after {
+  content: url('/iconStar.gif');
+}
+ ]]></codeblock>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>A required text input field in XHTML</head>
+         <description>
+            <p>The following example shows an XHTML document using the <prop>aria-required</prop> property to indicate that a form field must be submitted. The mandatory   nature of the field is also indicated in the label as a fallback for   user agents that do not support WAI-ARIA. </p>
+         </description>
+         <code xml:space="preserve"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1
+    For Accessible Adaptable Applications//EN"
+  "http://www.w3.org/WAI/ARIA/schemata/xhtml-aria-1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+          xml:lang="en">
+  <head>
+    <title>Required Input</title>
+  </head>
+  <body>
+    <h1>Required Input</h1>
+    <p>The following form input field must be completed by the user
+    before the form can be submitted.</p>
+    <form action="http://example.com/submit">
+      <p>
+        <label for="test">Test (required)</label>
+        <input name="ariaexample" id="example" aria-required="true" aria-label="Test"/>
+      </p>
+      <p>
+        <input type="submit" value="Submit" />
+      </p>
+    </form>
+  </body>
+</html>
+		]]></code>
+      </eg-group>
+      <eg-group>
+         <head>Adding <prop>aria-required</prop> property via script</head>
+         <description>
+            <p>This example uses scripting to add the <prop>aria-required</prop> property to a form element. The required property is assigned using the <function>setAttribute()</function>   API. </p>
+            <p>The array variable, <var>requiredIds</var>, is created with the   ids of the elements which need to be marked as required. The <function>setRequired()</function>   function is called from the <event>onload</event> event of the <obj>window</obj>   object. </p>
+            <p>The <function>setRequired()</function> function loops through all of the   ids provided, retrieves the element and assigns the <prop>aria-required</prop> property of true using the setAttribute() function. </p>
+            <p>When this page is accessed using Firefox 3.0 or later and a   screen reader that supports WAI-ARIA, the screen reader will speak   "required" when reading the label for the input fields. </p>
+         </description>
+         <code xml:space="preserve"><![CDATA[<head>
+ <script type="text/javascript">
+ //<![CDATA[
+
+ // array or ids on the required fields on this page
+ var requiredIds = new Array( "firstName", "lastName");
+
+ // function that is run after the page has loaded to set the aria-required property on each of the
+ //elements in requiredIds array of id values
+ function setRequired(){
+ 	if (requiredIds){
+ 		var field;
+ 		for (var i = 0; i< requiredIds.length; i++){
+ 			field = document.getElementById(requiredIds[i]);
+ 			field.setAttribute("aria-required", "true");
+ 		}
+ 	}
+ }
+ window.onload=setRequired;
+//]]]]><![CDATA[>
+ </script>
+ </head>
+ <body>
+ <p>Please enter the following data.  Required fields have been programmatically identified
+ as required and  marked with an asterisk (*) following the field label.</p>
+ <form action="submit.php">
+ <p>
+ <label for="firstName">First Name *: </label><input type="text" name="firstName"
+    id="firstName" value="" />
+ <label for="lastName">Last Name *: </label><input type="text" name="lastName"
+    id="lastName"  value="" />
+ </p>
+ </form>
+ </body>
+]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/WAI/intro/aria">WAI-ARIA Overview</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.deque.com/blog/aria-requiredtrue-wcag-2-compliance-practice/">Aria-required=true: WCAG 2 Compliance versus Best Practice</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <!--
+				<related-techniques>
+					<relatedtech idref="ARIA3"/>
+				</related-techniques>
+				-->
+   <tests>
+      <procedure>
+         <p>For each control which is shown via presentation to be required.</p>
+         <olist>
+			<item>
+				<p>Check whether the <att>aria-required</att> attribute is present:</p>
+			</item>
+            <item>
+               <p>Check whether the value of the <att>aria-required</att> attribute is the correct required state of the user interface component.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Checks #1 and #2 are true</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

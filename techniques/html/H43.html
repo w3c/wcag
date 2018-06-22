@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head xmlns:wcag="https://www.w3.org/WAI/GL/"><title>Using id and headers attributes to associate data cells with header cells in
+          data tables</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body xmlns:wcag="https://www.w3.org/WAI/GL/"><h1>Using id and headers attributes to associate data cells with header cells in
+          data tables</h1><section class="meta"><p class="id">ID: H43</p><p class="technology">Technology: html</p><p class="type">Type: Technique</p></section><section class="applicability"><h2>When to Use</h2>
+      <p>HTML and XHTML</p>
+   </section><section class="description"><h2>Description</h2>
+      <p>The objective of this technique is to associate each data cell (in a data table) with
+            the appropriate headers. This technique adds a headers attribute to each
+            data cell (td element). It also adds an id attribute to any
+            cell used as a header for other cells. The headers attribute of a cell
+            contains a list of the id attributes of the associated header cells. If
+            there is more than one id, they are separated by spaces.</p>
+      <p>This technique is used when data cells are associated with more than one row and/or one
+            column header. This allows screen readers to speak the headers associated with each data
+            cell when the relationships are too complex to be identified using the th
+            element alone or the th element with the scope attribute.
+            Using this technique also makes these complex relationships perceivable when the
+            presentation format changes.</p>
+      <p>This technique is not recommended for layout tables since its use implies a
+            relationship between cells that is not meaningful when tables are used for layout.</p>
+   </section><section class="examples"><h2>Examples</h2>
+      <section class="example">
+         <h3>Example 1: A table with multiple rows of headers</h3>
+         <pre xml:space="preserve">&lt;table&gt;
+   &lt;tr&gt;
+     &lt;th rowspan="2" id="h"&gt;Homework&lt;/th&gt;
+     &lt;th colspan="3" id="e"&gt;Exams&lt;/th&gt;
+     &lt;th colspan="3" id="p"&gt;Projects&lt;/th&gt;
+   &lt;/tr&gt;
+   &lt;tr&gt;
+     &lt;th id="e1" headers="e"&gt;1&lt;/th&gt;
+     &lt;th id="e2" headers="e"&gt;2&lt;/th&gt;
+     &lt;th id="ef" headers="e"&gt;Final&lt;/th&gt;
+     &lt;th id="p1" headers="p"&gt;1&lt;/th&gt;
+     &lt;th id="p2" headers="p"&gt;2&lt;/th&gt;
+     &lt;th id="pf" headers="p"&gt;Final&lt;/th&gt;
+   &lt;/tr&gt;
+   &lt;tr&gt;
+    &lt;td headers="h"&gt;15%&lt;/td&gt;
+    &lt;td headers="e e1"&gt;15%&lt;/td&gt;
+    &lt;td headers="e e2"&gt;15%&lt;/td&gt;
+    &lt;td headers="e ef"&gt;20%&lt;/td&gt;
+    &lt;td headers="p p1"&gt;10%&lt;/td&gt;
+    &lt;td headers="p p2"&gt;10%&lt;/td&gt;
+    &lt;td headers="p pf"&gt;15%&lt;/td&gt;
+   &lt;/tr&gt;
+  &lt;/table&gt;</pre>
+      </section>
+   </section><section class="tests"><h2>Tests</h2>
+      <section class="procedure"><h3>Procedure</h3>
+         <ol>
+            <li>Check for layout tables: determine whether the content has a relationship with
+                  other content in both its column and its row. If “no," the table is a layout
+                  table. If “yes," the table is a data table.</li>
+            <li>For data tables, check that any cell that is associated with more than one row
+                  and/or one column header contains a headers attribute that lists the
+                    id for all headers associated with that cell.</li>
+            <li>
+               <p>For data tables where any cell contains an id or
+                  headers attribute, </p>
+               <ol>
+                  <li>Check that each id listed in the headers attribute
+                      of the data cell matches the id attribute of a cell that is used
+                      as a header element</li>
+                  <li>Check that the headers attribute of a data cell contains the
+                        id attribute of all headers associated with the data cell</li>
+                  <li>Check that all ids are unique (that is, no two elements in the page have the
+                      same id)</li>
+               </ol>
+            </li>
+         </ol>
+      </section>
+      <section class="results"><h3>Expected Results</h3>
+         <ul>
+            <li>If table is a layout table, no cells contain headers or
+                  id attributes</li>
+            <li>If table is a data table and any cell contains an id attribute,
+                  checks #3.a, #3.b, and #3.c are true.</li>
+            <li>If table is a data table and any cell is associated with more than one row and/or
+                  one column header, check #2 is true.</li>
+         </ul>
+      </section>
+   </section><section class="related"><h2>Related Techniques</h2>
+      
+      
+      
+      
+   </section><section class="resources"><h2>Resources</h2>
+      
+         <ul>
+            <li>HTML 4.01 <a href="http://www.w3.org/TR/html4/struct/tables.html#h-11.4.1">header information with data cells</a>
+								       </li>
+         </ul>
+      
+   </section></body></html>

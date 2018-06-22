@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H91">
+   <short-name>Using HTML form controls and links</short-name>
+   <applicability>
+      <p>HTML form controls and links </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="keyboard-operation-keyboard-operable" relationship="sufficient"/>
+      <success-criterion idref="keyboard-operation-all-funcs" relationship="sufficient"/>
+      <success-criterion idref="ensure-compat-rsv" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="JAWS">
+         <p>JAWS does not insert a space between an image's alt text and any adjacent text. </p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to use standard HTML form controls and link elements to provide keyboard operation and assistive technology interoperability of interactive user interface elements.</p>
+      <p>User agents provide the keyboard operation of HTML form controls and links. In addition, the user agent maps the form controls and links to an accessibility API. Assistive technologies use the accessibility API to extract appropriate accessibility information, such as role, name, state, and value, and present them to users. The role is provided by the HTML element, and the name is provided by the text associated with that element. Elements for which values and states are appropriate also expose the values and states via multiple mechanisms. </p>
+      <p>In some cases, the text is already associated with the control through a required attribute. For example, submit buttons use the <el>button</el> element text or image '<att>alt</att>' attribute as the name. In the case of form controls, <el>label</el> elements or '<att>title</att>' attributes are used. The following table describes how the role, name, value, and state are determined for HTML links and form controls. </p>
+      <table border="1"
+             cellpadding="5"
+             summary="Table describing how the role, name, value and state are determined for HTML links and form controls."
+             id="H91_mappings">
+         <thead>
+            <tr>
+               <th rowspan="1" colspan="1">HTML element </th>
+               <th rowspan="1" colspan="1">Role</th>
+               <th rowspan="1" colspan="1">Name </th>
+               <th rowspan="1" colspan="1">Value </th>
+               <th rowspan="1" colspan="1">State </th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td rowspan="1" colspan="1">&lt;a&gt; </td>
+               <td rowspan="1" colspan="1"> link </td>
+               <td rowspan="1" colspan="1"> 'title' attribute, text within &lt;a&gt; element or 'alt' attribute if image link. Concatenated if both text and image 'alt' attribute are provided </td>
+               <td rowspan="1" colspan="1"> 'href' attribute </td>
+               <td rowspan="1" colspan="1"/>
+            </tr>
+            <tr>
+               <td rowspan="1" colspan="1">&lt;button&gt; </td>
+               <td rowspan="1" colspan="1"> push button </td>
+               <td rowspan="1" colspan="1"> text inside &lt;button&gt; element or 'title' attribute </td>
+               <td rowspan="1" colspan="1"/>
+               <td rowspan="1" colspan="1"/>
+            </tr>
+            <tr>
+               <td rowspan="1" colspan="1">&lt;fieldset&gt; </td>
+               <td rowspan="1" colspan="1"> grouping </td>
+               <td rowspan="1" colspan="1">text inside &lt;legend&gt; element within fieldset element</td>
+               <td rowspan="1" colspan="1"/>
+               <td rowspan="1" colspan="1"/>
+            </tr>
+            <tr>
+               <td rowspan="1" colspan="1">&lt;input type = "button", "submit", or "reset"&gt; </td>
+               <td rowspan="1" colspan="1"> push button </td>
+               <td rowspan="1" colspan="1"> 'value' attribute </td>
+               <td rowspan="1" colspan="1"/>
+               <td rowspan="1" colspan="1"/>
+            </tr>
+            <tr>
+               <td rowspan="1" colspan="1">&lt;input type = "image"&gt; </td>
+               <td rowspan="1" colspan="1"> push button </td>
+               <td rowspan="1" colspan="1"> 'alt' attribute or 'title' attribute </td>
+               <td rowspan="1" colspan="1"/>
+               <td rowspan="1" colspan="1"/>
+            </tr>
+            <tr>
+               <td rowspan="1" colspan="1">&lt;input type = "text"&gt; </td>
+               <td rowspan="1" colspan="1"> editable text </td>
+               <td rowspan="1" colspan="1">&lt;label&gt; element associated with it or 'title' attribute </td>
+               <td rowspan="1" colspan="1"> 'value' attribute </td>
+               <td rowspan="1" colspan="1"/>
+            </tr>
+            <tr>
+               <td rowspan="1" colspan="1">&lt;input type = "password"&gt; </td>
+               <td rowspan="1" colspan="1"> editable text </td>
+               <td rowspan="1" colspan="1">&lt;label&gt; element associated with it or 'title' attribute </td>
+               <td rowspan="1" colspan="1">value is purposefully hidden</td>
+               <td rowspan="1" colspan="1"/>
+            </tr>
+            <tr>
+               <td rowspan="1" colspan="1">&lt;input type="file"&gt; </td>
+               <td rowspan="1" colspan="1"> editable text </td>
+               <td rowspan="1" colspan="1">&lt;label&gt; element associated with it or 'title' attribute </td>
+               <td rowspan="1" colspan="1">'value' attribute</td>
+               <td rowspan="1" colspan="1"/>
+            <tr>
+               <td rowspan="1" colspan="1">&lt;input type="checkbox"&gt; </td>
+               <td rowspan="1" colspan="1"> checkbox </td>
+               <td rowspan="1" colspan="1">&lt;label&gt; element associated with it or 'title' attribute </td>
+               <td rowspan="1" colspan="1"/>
+               <td rowspan="1" colspan="1"> 'checked' attribute
+                            </td>
+            </tr>
+            <tr>
+               <td rowspan="1" colspan="1">&lt;input type="radio"&gt; </td>
+               <td rowspan="1" colspan="1"> radio button </td>
+               <td rowspan="1" colspan="1">&lt;label&gt; element associated with it or 'title' attribute </td>
+               <td rowspan="1" colspan="1"/>
+               <td rowspan="1" colspan="1"> 'checked' attribute
+                                
+                            </td>
+            </tr>
+            </tr>
+            <tr>
+               <td rowspan="1" colspan="1">&lt;select&gt; </td>
+               <td rowspan="1" colspan="1"> list box </td>
+               <td rowspan="1" colspan="1">&lt;label&gt; element associated with it or 'title' attribute </td>
+               <td rowspan="1" colspan="1">&lt;option&gt; element with 'selected' attribute set to "selected" </td>
+               <td rowspan="1" colspan="1"/>
+            </tr>
+            <tr>
+               <td rowspan="1" colspan="1">&lt;textarea&gt; </td>
+               <td rowspan="1" colspan="1"> editable text </td>
+               <td rowspan="1" colspan="1">&lt;label&gt; element associated with it or 'title' attribute </td>
+               <td rowspan="1" colspan="1"> text within  &lt;textarea&gt; element </td>
+               <td rowspan="1" colspan="1"/>
+            </tr>
+         </tbody>
+      </table>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Links</head>
+         <description>
+            <p>User agents provide mechanisms to navigate to and select links. In each of the following examples, the role is "link" from the &lt;a href&gt;.  Note that &lt;a name&gt; does not provide a role of "link". The value is the URI in the 'href' attribute. </p>
+            <exsubhead>Example 1a</exsubhead>
+            <p>In example 1a, the name is the text inside the link, in this case "Example Site". </p>
+         </description>
+         <code role="xhtml"><![CDATA[<a href="www.example.com">Example Site</a>
+                    ]]></code>
+         <description>
+            <exsubhead>Example 1b</exsubhead>
+            <p>In example 1b of an image inside a link, the 'alt' attribute for the image provides the name. Some tools for viewing APIs, such as Microsoft Inspect Objects, will not surface this, but AT does. </p>
+         </description>
+         <code role="xhtml"><![CDATA[<a href="www.example.com"><img src="example_logo.gif" alt="Example"></a>
+                    ]]></code>
+         <description>
+            <exsubhead>Example 1c</exsubhead>
+            <p>In example 1c, some assistive technology will not automatically insert a space character when concatenating the image's alt text and the text of the link. If the text should not be concatenated without a space, it is safest to insert a space between the image and the adjacent word so that words will not run together.</p>
+         </description>
+         <code role="xhtml"><![CDATA[<a href="www.example.com"><img src="example_logo.gif" alt="Example"> Text</a>
+]]></code>
+      </eg-group>
+      <eg-group>
+         <head>Buttons</head>
+         <description>
+            <p>There are several ways to create a button in HTML, and they all map to the "push button" role.</p>
+            <exsubhead>Example 2a</exsubhead>
+            <p>In example 2a, the text is contained in the <el>button</el> element, in this case "save", as the name. There is no value.</p>
+         </description>
+         <code role="xhtml"><![CDATA[<button>Save</button>
+                    ]]></code>
+         <description>
+            <exsubhead>Example 2b</exsubhead>
+            <p>Example 2b uses the 'value' attribute, in this case "Save", "Submit", or "Reset" as the name.</p>
+         </description>
+         <code role="xhtml"><![CDATA[<input type="button" value="Save" /> 
+<input type="submit" value="Submit" />  
+<input type="reset" value="Reset" />   
+                    ]]></code>
+         <description>
+            <exsubhead>Example 2c</exsubhead>
+            <p>Example 2c uses the 'alt' attribute, in this case "save", as the name.</p>
+         </description>
+         <code role="xhtml"><![CDATA[<input type="image" src="save.gif" alt="save" /> 
+                    ]]></code>
+         <description>
+            <exsubhead>Example 2d</exsubhead>
+            <p>In example 2d, there is no 'alt' attribute so the 'title' attribute, in this case "save", is used as the name.</p>
+         </description>
+         <code role="xhtml"><![CDATA[<input type="image" src="save.gif" title="save" />
+                    ]]></code>
+         <description>
+            <exsubhead>Example 2e</exsubhead>
+            <p>Example 2e clarifies how the user agent determines the name if the author specifies both the 'alt' and 'title' attributes of the input element. In this case, the user agent uses the 'alt' attribute ("Save") and ignores the 'title' attribute.</p>
+         </description>
+         <code role="xhtml"><![CDATA[<input type="image" src="save.gif" alt="save" title="save the file" />
+]]></code>
+      </eg-group>
+      <eg-group>
+         <head/>
+         <description>
+            <exsubhead>Example 3a</exsubhead>
+            <p>In example 3a, the input field has a role of "editable text". The <el>label</el> element is associated to the <el>input</el> element via the 'for' attribute which references the 'id' attribute of the <el>input</el>&gt; element. The name comes from the <el>label</el> element, in this case, "Type of fruit". Its value comes from its value attribute, in this case "bananas". </p>
+         </description>
+         <code role="xhtml"><![CDATA[<label for="text_1">Type of fruit</label>
+<input id="text_1" type="text" value="bananas">
+]]></code>
+         <description>
+            <exsubhead>Example 3b</exsubhead>
+            <p>In example 3b, the input field has the same role as example 3a, but the value is the empty string and the field gets its name from the 'title' attribute. </p>
+         </description>
+         <code role="xhtml"><![CDATA[<input id="text_1" type="text" title="Type of fruit">
+]]></code>
+      </eg-group>
+      <eg-group>
+         <head>Checkbox </head>
+         <description>
+            <p>Example 4 has a role of "checkbox", from the 'type' attribute of the <el>input</el> element. The <el>label</el> element is associated with the <el>input</el> element via the 'for' attribute which refers to the 'id' attribute of the <el>input</el> element. The name comes from the <el>label</el> element, in this case "cheese". Its state can be "checked" or "unchecked" and comes from the 'checked' attribute. The state can be changed by the user's interaction with the control. </p>
+         </description>
+         <code role="xhtml"><![CDATA[<label for="cb_1">Cheese</label> 
+<input id="cb_1" type="checkbox" checked="checked">
+                    ]]></code>
+      </eg-group>
+      <eg-group>
+         <head>Radio Buttons </head>
+         <description>
+            <p>Example 5 has a role of "radio button" from the 'type' attribute on the <el>input</el> element. Its name comes from the <el>label</el> element. The state can be "checked" or "unchecked" and comes from the 'checked' attribute. The state can be changed by the user. </p>
+         </description>
+         <code role="xhtml"><![CDATA[<input type="radio" name="color" id="r1" checked="checked"/><label for="r1">Red</label>
+<input type="radio" name="color" id="r2" /><label for="r2">Blue</label>
+<input type="radio" name="color" id="r3" /><label for="r3">Green</label>
+                    ]]></code>
+      </eg-group>
+      <eg-group>
+         <head/>
+         <description>
+            <exsubhead>Example 6a</exsubhead>
+            <p>Example 6a has a role of "list box" from the <el>select</el> element. Its name is "Numbers" from the <el>label</el> element. Forgetting to give a name to the select is a common error. The value is the <el>option</el> element that has the 'selected' attribute present (with a value of "selected" in XHTML). In this case, the default value is "Two". </p>
+         </description>
+         <code role="xhtml"><![CDATA[<label for="s1">Numbers</label>
+<select id="s1" size="1">
+ <option>One</option>
+ <option selected="selected">Two</option>
+ <option>Three</option>
+</select>
+                    ]]></code>
+         <description>
+            <exsubhead>Example 6b</exsubhead>
+            <p>Example 6b has the same name, role, and value as the above, but sets the name with the 'title' attribute on the <el>select</el> element. This technique can be used when a visible label is not desirable. </p>
+         </description>
+         <code role="xhtml"><![CDATA[<select id="s1" title="Numbers" size="1">
+ <option>One</option>
+ <option selected="selected">Two</option>
+ <option>Three</option>
+</select>
+                    ]]></code>
+      </eg-group>
+      <eg-group>
+         <head> Textarea</head>
+         <description>
+            <exsubhead>Example 7a</exsubhead>
+            <p>Example 7a has a role of "editable text" from the <el>textarea</el> element. The name is "Type your speech here" from the <el>label</el> element. The value is the content inside the <el>textarea</el> element, in this case "Four score and seven years ago". </p>
+         </description>
+         <code role="xhtml"><![CDATA[<label for="ta_1">Type your speech here</label>
+<textarea id="ta_1" >Four score and seven years ago</textarea>
+                    ]]></code>
+         <description>
+            <exsubhead>Example 7b</exsubhead>
+            <p>Example 7b has the same role, the name is set using the 'title' attribute, and the value is the empty string.</p>
+         </description>
+         <code role="xhtml"><![CDATA[<textarea id="ta_1" title="Type your speech here" >Four score and seven years ago</textarea>
+                    ]]></code>
+      </eg-group>
+      <eg-group>
+         <head/>
+         <description>
+            <exsubhead>Radio Fieldset</exsubhead>
+            <p>The radio fieldset in example 8 has a role of "grouping". The name comes from the <el>legend</el> element. </p>
+         </description>
+         <code role="xhtml"><![CDATA[<fieldset>
+  <legend>Choose a Color:</legend> 
+     <input id="red" type="radio" name="color" value="red" /><label for="red">Red</label><br /> 
+     <input id="blue" type="radio" name="color" value="blue" /><label for="blue">Blue</label><br /> 
+     <input id="green" type="radio" name="color" value="green" /><label for="green">Green</label> 
+</fieldset>
+                    ]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://usability.com.au/2008/09/accessible-forms-using-wcag-2-0/">Accessible Forms using WCAG 2.0</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/aa360193(VS.85).aspx">MSDN Accessible DHTML elements</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://wiki.mozilla.org/Accessibility/AT-Windows-API#MSAA_Role_Support">Mozilla Accessibility/AT-Windows-API </loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H44"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Inspect the HTML source code.</p>
+            </item>
+            <item>
+               <p>For each instance of links and form elements, check that the name, value, and state are specified as indicated in the table above. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Check #2 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="ARIA9">
+   <short-name>Using aria-labelledby to concatenate a label from several text nodes</short-name>
+   <applicability>
+      <p>Technologies that support <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+      <success-criterion idref="minimize-error-cues" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
+         <p>Note: In order to support IE, the attribute <code><![CDATA[tabindex="-1"]]></code> may need to be provided on non-interactive elements that are referenced by aria-labelledby attributes. For more details see <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="http://www.w3.org/TR/aria-in-html/#aria-labelledby-and-aria-describedby">Using WAI-ARIA in HTML</loc>.
+</p>
+         <ulist>
+            <item>
+               <p> Full support:
+<ulist>
+                     <item>
+                        <p> WIN7 / FF16 / NVDA 2012.2.1 (Example 2: also reads column headers)
+</p>
+                     </item>
+                     <item>
+                        <p> WIN7 / FF16 / JAWS 13  (Example 2: also reads column headers)
+</p>
+                     </item>
+                     <item>
+                        <p> WIN7 / IE9  / JAWS 13
+</p>
+                     </item>
+                     <item>
+                        <p> WIN XP /FF16 / NVDA 2011.3
+</p>
+                     </item>
+                     <item>
+                        <p> iOS X / VoiceOver
+</p>
+                     </item>
+                  </ulist>
+               </p>
+            </item>
+         </ulist>
+         <ulist>
+            <item>
+               <p> Partial support:
+<ulist>
+                     <item>
+                        <p> WIN7 / IE9  / NVDA 2012.2.1 (Example 1: drops default text of text field: <emph>"Extend time-out to minutes edit selected 20"</emph>)
+</p>
+                     </item>
+                  </ulist>
+               </p>
+            </item>
+         </ulist>
+         <ulist>
+            <item>
+               <p> Not supported:
+<ulist>
+                     <item>
+                        <p> WIN XP / IE8 / NVDA 2001.3  Example 1: Does not read text referenced by <code><![CDATA[aria-labelledby]]></code> ('20','minutes'): <emph>"Extend time-out to edit selected 20"</emph>
+                        </p>
+                     </item>
+                     <item>
+                        <p> System Access To Go (IE8)
+</p>
+                     </item>
+                  </ulist>
+               </p>
+            </item>
+         </ulist>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The <prop>aria-labelledby</prop> property can be used to label all visual objects. Applied to inputs, the <prop>aria-labelledby</prop> property can be used to label native inputs as well as non-native elements, such as custom text inputs constructed with <code><![CDATA[div contenteditable="true"]]></code>.</p>
+      <p>One particular use of <prop>aria-labelledby</prop> is for text inputs in situations where a meaningful label should consist of more than one label string.</p>
+      <p>Authors assign unique <att>id</att>s to the label strings to be concatenated as the label for the <el>input</el> element. The value of the <att>aria-labelledby</att> attribute is then a space-separated list of all <att>id</att>s in the order in which the label strings referenced should be read by screen readers. Supporting user agents will concatenate the label strings referenced and read them as one continuous label of the input.</p>
+      <p>The concatenation of label strings can be useful for different reasons. In example 1, an input is nested within the context of a full sentence. The desired screen reader output is "Extend time-out to [ 20 ] minutes - edit with autocomplete, selected 20". Since the <att>id</att> of the text input is included in the string of <att>id</att>s referenced by aria-labelledby, the value of the input is included in the concatenated label at the right position.</p>
+      <p>Another application of <att>aria-labelledby</att> is when there is no space to provide a visible label next to the input, or when using native labels would create unnecessary redundancy. Here, the use <att>aria-labelledby</att> makes it possible to associate visible elements on the page as label for such inputs. This is demonstrated in example 2 where table column and row headings are concatenated into labels for the text input elements inside the table.</p>
+      <note>
+         <p>The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">ARIA accessible name and description calculation</loc> specifies that the string specified in <att>aria-labelledby</att> should replace rather than add to the content of the element that carries the property. So adding the <att>aria-labelledby</att> property to a native label should replace the text content inside that label unless the label itself is referenced as part of the sequence of <att>id</att>s in <att>aria-labelledby</att>.</p>
+      </note>
+   </description>
+   <examples>
+      <eg-group>
+         <head> A time-out input field with concatenated label</head>
+         <description>
+            <p>A text input allows users to extend the default time before a time-out occurs.</p>
+            <p>The string "Extend time-out to" is contained in a native <el>label</el> element and is associated with the input with the input by <code><![CDATA[id="timeout-duration"]]></code> . This label is associated with this input using the for/id association only on user agents that don't support ARIA. On user agents that support ARIA, the for/id association is ignored and the label for the input is provided only by <att>aria-labelledby</att>, per the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">accessible name and description calculation</loc> in the HTML to Platform Accessibility APIs Implementation Guide.</p>
+            <p>The <att>aria-labelledby</att> attribute on the text input references three elements: (1) the <el>span</el> containing the native label, (2) the text input containing the default text '20' (recall that this input is not labelled with the for/id associated label text), and (3) the string 'minutes' contained in a <el>span</el>. These elements should be concatenated to provide the full label for the text input</p>
+            <note>
+               <p>The use of <code><![CDATA[tabindex="-1"]]></code> on the <el>span</el> element is not meant to support focusing by scripts - here, it merely serves to ensure that some browsers (IE9, IE10) will include the <el>span</el> element in the accessibility tree, thus making it available for reference by <att>aria-labelledby</att>. For more details see <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/ie/gg701963%28v=vs.85%29.aspx#Accessible_HTML_Elements">Accessible HTML Elements</loc>
+               </p>
+            </note>
+            <codeblock xml:space="preserve"><![CDATA[<form>
+<p><span id="timeout-label" tabindex="-1"><label for="timeout-duration">Extend time-out to</label></span>
+<input type="text" size="3" id="timeout-duration" value="20" 
+    aria-labelledby="timeout-label timeout-duration timeout-unit">
+<span id="timeout-unit" tabindex="-1"> minutes</span></p>
+</form>]]></codeblock>
+            <p>Working example, <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="ex1.html"
+                    linktype="examples">Time-out input field with concatenated label</loc>, adapted from Easy ARIA tip #2: <att>aria-labelledby</att> and <att>aria-describedby</att>, an example put together by Marco Zehe.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>A simple data table with text inputs</head>
+         <description>
+            <p>A simple data table containing text inputs. The input labels are concatenated through <att>aria-labelledby</att> referencing the respective column and row headers.</p>
+            <codeblock xml:space="preserve"><![CDATA[<table>
+	<tr>
+		<td></td>
+		<th id="tpayer">Taxpayer</th>
+		<th id="sp">Spouse</th>
+	</tr>
+
+	<tr>
+		<th id="gross">W2 Gross</th>
+		<td><input type="text" size="20" aria-labelledby="tpayer gross" /></td>
+		<td><input type="text" size="20" aria-labelledby="sp gross" /></td>
+	</tr>
+	
+	<tr>
+		<th id="div">Dividends</th>
+		<td><input type="text" size="20" aria-labelledby="tpayer div" /></td>
+		<td><input type="text" size="20" aria-labelledby="sp div" /></td>
+	</tr>
+</table>]]></codeblock>
+            <p>Working example, <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="ex2.html"
+                    linktype="examples">Using aria-labelledby for simple table with text inputs</loc>, based on an example by Jim Thatcher.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>A conference workshop booking table</head>
+         <description>
+            <p>A conference workshop booking table with two parallel tracks allows users to select the workshop they want to attend. When tabbing through the checkbox inputs in the table, the track (1 or 2), the title, and the speaker of the workshop followed by the adjacent checkbox label "Attend" are provided as concatenated label for the checkboxes via <att>aria-labelledby</att>.</p>
+            <p>Some browser / screen reader combinations (e.g. Mozilla Firefox and NVDA) will in addition speak the relevant table cell headers.</p>
+            <codeblock xml:space="preserve"><![CDATA[<h1>Dinosaur Conference workshops timetable Thursday, 14.  & Friday, 15. March 2013</h1>
+<table>
+<caption>Dinosaur Conference workshop booking table</caption>
+<tbody><tr>
+	<td rowspan="2"></td>
+	<th colspan="2" scope="colgroup">Thursday</th>
+	<th colspan="2" scope="colgroup">Friday</th>
+</tr>
+
+<tr>
+	<th scope="col" id="am1">9 to 12 AM</th>
+	<th scope="col" id="pm1">2 to 5 PM</th>
+	<th scope="col" id="am2">9 to 12 AM</th>
+	<th scope="col" id="pm2">2 to 5 PM</th>
+</tr>
+
+<tr>
+	<th id="track1" scope="row">track 1</th>
+	<td>
+		<h2 id="title-TM1">The Paleozoic era </h2>
+		<p>2 places left</p>
+		<p><input type="checkbox" id="TM1" aria-labelledby="title-TM1 track1 am1 TM1-att">
+                <label id="TM1-att" for="TM1">Attend</label></p>
+	</td>
+	
+	<td>
+		<h2 id="title-TA1">The Mesozoic era overview</h2>
+		<p>2 places left</p>
+		<p><input type="checkbox" id="TA1" aria-labelledby="title-TA1 track1 am2 TA1-att">
+                <label id="TA1-att" for="TA1">Attend</label></p>
+	</td>
+	
+	<td>
+		<h2 id="title-FM1">The Triassic period, rise of the dinosaurs</h2>
+		<p>1 place left</p>
+		<p><input type="checkbox" id="FM1" aria-labelledby="title-FM1 track1 pm1 FM1-att">
+                <label id="FM1-att" for="FM1">Attend</label></p>
+
+	</td>
+	
+	<td>
+		<h2 id="title-FA1">The Jurassic period</h2>
+		<p>11 places left</p>
+		<p><input type="checkbox" id="FA1" aria-labelledby="title-FA1 track1 pm2 FA1-att">
+                <label id="FA1-att" for="FA1">Attend</label></p>
+	</td>
+</tr>
+
+
+<tr>
+	<th id="track2" scope="row">track 2</th>
+	<td>
+		<h2 id="title-TM2">The Cretaceous period</h2>
+		<p>18 places left</p>
+		<p><input type="checkbox" id="TM2" aria-labelledby="title-TM2 track2 am1 TM2-att">
+                <label id="TM2-att" for="TM2">Attend</label></p>
+	</td>
+	
+	<td>
+		<h2 id="title-TA2">The end of the dinosaurs</h2>
+		<p>2 places left</p>
+		<p><input type="checkbox" id="TA2" aria-labelledby="title-TA2 track2 am2 TA2-att">
+                <label id="TA2-att" for="TA2">Attend</label></p>
+	</td>
+	
+	<td>
+		<h2 id="title-FM2">First discoveries of dinosaurs</h2>
+		<p>2 places left</p>
+		<p><input type="checkbox" id="FM2" aria-labelledby="title-FM2 track2 pm1 FM2-att">
+                <label id="FM2-att" for="FM2">Attend</label></p>
+	</td>
+	
+	<td>
+		<h2 id="title-FA2">Emerging scholarship</h2>
+		<p>19 places left</p>
+		<p><input type="checkbox" id="FA2" aria-labelledby="title-FA2 track2 pm2 FA2-att">
+                <label id="FA2-att" for="FA2">Attend</label></p>
+	</td>
+</tr>
+</tbody>
+</table>]]></codeblock>
+            <p>Working example: <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="ex3.html"
+                    linktype="examples">Conference workshop booking timetable</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/aria-in-html/">Using WAI-ARIA in HTML</loc>: Section 2.7 aria-labelledby and aria-describedby</p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="ARIA6"/>
+      <relatedtech idref="ARIA16"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For inputs that use <att>aria-labelledby</att>:</p>
+         <olist>
+            <item>
+               <p>Check that <att>id</att>s referenced in <att>aria-labelledby</att> are unique and match the <att>id</att>s of the text nodes that together provide the label</p>
+            </item>
+            <item>
+               <p>Check that the concatenated content of elements referenced by <att>aria-labelledby</att> is descriptive for the purpose or function of the element labeled</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#1 and #2 are true.</p>
+               <p>If this is a sufficient technique for a success criterion, failing this test procedure does not necessarily mean that the success criterion has not been satisfied in some other way, only that this technique has not been successfully implemented and can not be used to claim conformance.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

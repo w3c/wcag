@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H76">
+   <short-name>Using meta refresh to create an instant client-side redirect</short-name>
+   <applicability>
+      <p> HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="consistent-behavior-no-extreme-changes-context"
+                         relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p> The objective of this technique is to enable redirects on the client side without
+            confusing the user. Redirects are preferably implemented on the server side (see <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="SVR1"
+              linktype="server">Implementing automatic redirects on the server side
+              instead of on the client side</loc>), but authors do not always have control over
+            server-side technologies. </p>
+      <p>In HTML and XHTML, one can use the <el>meta</el> element with the value of
+            the <att>http-equiv</att> attribute set to "<code><![CDATA[Refresh]]></code>" and the value of the
+              <att>content</att> attribute set to "0" (meaning zero seconds), followed by the URI
+            that the browser should request. It is important that the time-out is set to zero, to
+            avoid that content is displayed before the new page is loaded. The page containing the
+            redirect code should only contain information related to the redirect. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <code><![CDATA[ <html xmlns="http://www.w3.org/1999/xhtml">    
+  <head>      
+    <title>The Tudors</title>      
+    <meta http-equiv="refresh" content="0;URL='http://thetudors.example.com/'" />    
+  </head>    
+  <body> 
+    <p>This page has moved to a <a href="http://thetudors.example.com/">
+      theTudors.example.com</a>.</p> 
+  </body>  
+</html>     ]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> See also <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="F41"
+                       linktype="failure">Failure due to using meta refresh
+                    with a time-out</loc>. </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G110"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Find all <el>meta</el> elements in the document. </p>
+            </item>
+            <item>
+               <p> For each meta element, check if it contains the attribute
+                  <att>http-equiv</att> with value "<code><![CDATA[refresh]]></code>" (case-insensitive) and the
+                    <att>content</att> attribute with a number greater than 0 followed by
+                    <code><![CDATA[;'URL=anyURL']]></code> (where anyURL stands for the URI that should replace
+                  the current page). </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p> Step 2 is false. </p>
+      </expected-results>
+   </tests>
+</technique>

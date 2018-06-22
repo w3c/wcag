@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="ARIA13">
+   <short-name>Using aria-labelledby to name regions and landmarks</short-name>
+   <applicability>
+      <p>Technologies that support <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The purpose of this technique is to provide names for regions of a page that can be read by assistive technology.  The <att>aria-labelledby</att> attribute provides a way to associate an section of the page marked up as a region or landmarks with text that is on the page that labels it.
+</p>
+      <p>Landmark roles (or "landmarks") programmatically identify sections of a page. Landmarks help assistive technology (AT) users orient themselves to a page and help them navigate easily to various sections of a page.
+</p>
+      <p>Like <att>aria-describedby</att>, <att>aria-labelledby</att> can accept multiple ids to point to other regions of the page using a space separated list. It is also limited to ids for defining these sets.
+</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Identify a landmark with on-page text</head>
+         <description>
+            <p>Below is an example of <att>aria-labelledby</att> used on a complementary Landmark. The region of the document to which the heading pertains could be marked with the <att>aria-labelledby</att> property containing the value of the <att>id</att> for the header.</p>
+            <codeblock xml:space="preserve"><![CDATA[<p role="complementary" aria-labelledby="hdr1">
+ <h1 id="hdr1">
+    Top News Stories
+ </h1>
+</p>]]></codeblock>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Identification for Application landmarks</head>
+         <description>
+            <p>The following code snippet for application landmarks with static prose. If you have a regional landmark of type application and static descriptive text is available, then on the application landmark, include an aria-describedby reference to associate the application and the static text as shown here:</p>
+            <codeblock xml:space="preserve"><![CDATA[<div role="application" aria-labelledby="p123" aria-describedby="info">
+<h1 id="p123">Calendar<h1>
+<p id="info">
+This calendar shows the game schedule for the Boston Red Sox.
+</p>
+<div role="grid">
+....
+</div>]]></codeblock>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</loc>
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="ARIA10"/>
+      <relatedtech idref="ARIA6"/>
+      <relatedtech idref="ARIA9"/>
+      <relatedtech idref="ARIA16"/>
+      <relatedtech idref="ARIA7"/>
+      <relatedtech idref="G92"/>
+      <relatedtech idref="H45"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Examine each element with attribute <code><![CDATA[role=region]]></code> or with a <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria/roles#landmark_roles">landmark role</loc>, where an <code><![CDATA[aria-labelledby]]></code> attribute is also present.
+</p>
+            </item>
+            <item>
+               <p>Check that the value of the <code><![CDATA[aria-labelledby]]></code> attribute is the <code><![CDATA[id]]></code> of an element on the page. 
+</p>
+            </item>
+            <item>
+               <p>Check that the text of the element with that <code><![CDATA[id]]></code> accurately labels the section of the page.
+</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#2 and #3 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

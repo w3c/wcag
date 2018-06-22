@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="C9">
+   <short-name>Using CSS to include decorative images</short-name>
+   <applicability>
+      <p> Any technology that can use CSS to include images. </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p> The objective of this technique is to provide a mechanism to add purely
+                        decorative images and images used for visual formatting to Web content
+                        without requiring additional markup within the content. This makes it
+                        possible for assistive technologies to ignore the non-text content. Some
+                        user agents can ignore or turn off CSS at the user's request, so that
+                        background images included with CSS simply "disappear" and do not interfere
+                        with display settings such as enlarged fonts or high contrast settings. </p>
+      <p>Background images can be included with the following CSS properties:</p>
+      <ulist>
+         <item>
+            <p> 
+               <code><![CDATA[background]]></code>, </p>
+         </item>
+         <item>
+            <p> 
+               <code><![CDATA[background-image]]></code>, </p>
+         </item>
+         <item>
+            <p>
+								       <code><![CDATA[content]]></code>, combined with the <code><![CDATA[:before]]></code> and
+                                    <code><![CDATA[:after]]></code> pseudo-elements, </p>
+         </item>
+         <item>
+            <p> 
+               <code><![CDATA[list-style-image]]></code>. </p>
+         </item>
+      </ulist>
+      <p>Note: This technique is not appropriate for any image that conveys
+                        information or provides functionality, or for any image primarily intended
+                        to create a specific sensory experience.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Background image for an HTML page </head>
+         <description>
+            <p> The stylesheet for a Web page specifies a background image for the
+                                whole page.</p>
+         </description>
+         <code><![CDATA[…
+  <style type="text/css">
+    body { background: #ffe url('/images/home-bg.jpg') repeat; }
+  </style>
+</head>
+<body>
+...
+]]></code>
+      </eg-group>
+      <eg-group>
+         <head>Background image with CSS for image rollovers </head>
+         <description>
+            <p> The stylesheet for a Web page uses the CSS <code><![CDATA[background]]></code>
+                                property to create a decorative rollover effects when a user hovers
+                                the mouse pointer over a link. </p>
+         </description>
+         <code><![CDATA[a:hover { background: #ffe url('/images/hover.gif') repeat; color: #000;
+  text-decoration: none;
+}]]></code>
+      </eg-group>
+      <eg-group>
+         <head>Background images with CSS to create rounded corners on
+                            tabs or other elements </head>
+         <description>
+            <p> The styleseet for a Web page uses the CSS <code><![CDATA[background]]></code>
+                                property to create rounded corners on elements. </p>
+         </description>
+         <code><![CDATA[…
+  <style type="text/css">
+    div#theComments { width:600px; }
+    div.aComment { background: url('images/middle.gif') repeat-y left top; 
+    margin:0 0 30px 0; }
+    div.aComment blockquote { background: url('images/top.gif') no-repeat left top; 
+    margin:0; padding:8px 16px; }
+    div.aComment div.submitter { background:#fff url('images/bottom.gif') no-repeat left top; 
+    margin:0; padding-top:30px; }
+  </style>
+</head>
+<body>
+  <div id="theComments">
+    <div class="aComment">
+      <blockquote>
+        <p>Hi John, I really like this technique and I'm gonna use it on my own Website!</p>
+      </blockquote>
+      <div class="submitter">
+        <cite><a href="http://example.com/">anonymous coward</a> from Elbonia</cite>
+      </div>
+    </div>
+    <div class="aComment">
+…
+ </div>
+</div>
+…]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://www.w3.org/TR/CSS2/colors.html#propdef-background">background property in the CSS 2 specification</loc> 
+               </p>
+            </item>
+            <item>
+               <p> The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/1999/REC-html401-19991224/struct/global.html#adef-background">HTML 4.01 specification</loc> states that the
+                                        <code><![CDATA[background]]></code> attribute of the <code><![CDATA[body]]></code>
+                                    element is deprecated </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="C30"/>
+      <relatedtech idref="F3"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Check for the presence of decorative images </p>
+            </item>
+            <item>
+               <p> Check that they are included with CSS </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> If #1 is true, then #2 is true. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

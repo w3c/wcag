@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH32">
+   <short-name>Using auto labeling to associate text labels with form controls</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+      <success-criterion idref="minimize-error-cues" relationship="sufficient"/>
+      <success-criterion idref="ensure-compat-rsv" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>Except for the <obj>CheckBox</obj> and <obj>RadioButton</obj> component, the built in Flash
+    				components are not automatically provided an associated label. For
+    				these components, label text has to be placed adjacent to their control
+    				manually, using the <obj>Label</obj> component. If the 'auto-label' feature is
+    				enabled in the Accessibility panel, then the Flash Player will automatically
+    				associate the label text for the <obj>TextInput</obj> and <obj>TextArea</obj> components.
+    				This means that for these components, it is not necessary to duplicate
+    				the label text for the control using the Accessibility panel. The auto
+    				label feature is enabled by default. </p>
+      <p>Additionally, the auto label feature will enable the Flash Player
+    				to automatically add text contained by Button symbols as the symbol's
+    				accessible name. This will only work if the Button symbol only consists
+    				of one layer, containing the text label. </p>
+      <note>
+         <p>Since auto-labeling associates labels without human intervention
+    				the accuracy of the association should be verified. For more predictable
+    				results authors are encouraged to explicitly add labels to all controls. </p>
+      </note>
+      <p>To auto labeling, perform the following steps: </p>
+      <olist>
+         <item>
+            <p> Ensure that the textual descriptions for each form control within
+    				the flash application are placed adjacent to the control itself. Text
+    				eligible to be used for auto-labeling must not be set to be hidden
+    				from assistive technology. </p>
+         </item>
+         <item>
+            <p> Select the movie stage, and open the Accessibility panel. </p>
+         </item>
+         <item>
+            <p> Ensure that the 'Auto Label' option is checked. This will automatically
+    					associate labels with their TextInput and TextArea controls, and
+    					add text inside custom button symbols as their accessible name. </p>
+         </item>
+         <item>
+            <p> If the auto label behavior is inappropriate to your Flash content,
+    						uncheck the 'Auto label' option, and ensure that each control receives
+    						a meaningful 'name' value in the Accessibility panel. </p>
+         </item>
+         <item>
+            <p> To disable auto labeling for a particular object but not the whole
+    							movie, convert the text to the 'dynamic text' type using the 'Property
+    							inspector'. Then select it, and uncheck its 'Make object accessible'
+    							option in the Accessibility panel. </p>
+         </item>
+      </olist>
+      <note>
+         <p>As an alternative to using the Accessibility panel, the auto
+    				label feature can also be turned off by setting the <prop>AccessibilityProperties.noAutoLabel</prop>
+    				to <propval>true</propval> for the stage object. </p>
+      </note>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Using the "Auto Label" option in the Accessibility panel</head>
+         <description>
+            <p>This example shows two TextInput components, a TextArea component
+    						and a custom button symbol instance. For the TextInput components,
+    						a separate label element has been placed to the left of the control.
+    						For the TextArea component, the label has been placed above the control.
+    						For the custom button, the label text is placed inside the button symbol.
+    						Because the "Auto Label" option is enabled in the Accessibility
+    						panel, all these controls will be provided an accessible name based
+    						on their label. </p>
+            <p>The screenshot below illustrates the example: <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/FLASH32/using_auto_label.png"
+                       height="300"
+                       width="593"/>
+                  <alt>Using the Auto Label feature in the Flash Authoring Environment</alt>
+               </image>
+							     </p>
+            <p>The results of this technique can be viewed in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="using_auto_labeling_to_associate_label_text_with_controls_as3.html"
+                    linktype="examples">working version of Using the "Auto Label" option in the Accessibility panel</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="using_auto_labeling_to_associate_label_text_with_controls_as3.fla"
+                    linktype="examples">source of Using the "Auto Label" option in the Accessibility panel</loc> is available.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="FLASH25"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>If a Flash form contains TextInput or TextArea components, or custom
+    					button symbols with text labels, confirm that: </p>
+         <olist>
+            <item>
+               <p> The Auto Label option is enabled in the movie's Accessibility
+    					panel </p>
+            </item>
+            <item>
+               <p> Use a screen reader or MSAA checker to ensure that the label text
+    					is indeed exposed as the control's accessible name </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> #1 and #2 are true </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Using_auto_labeling_to_associate_text_labels_with_form_controls"/>
+					</source>
+   </admin>
+</technique>

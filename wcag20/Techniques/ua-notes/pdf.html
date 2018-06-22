@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>User Agent Support Notes for for PDF Techniques</title></head><body><h1>User Agent Support Notes for PDF Techniques</h1><p>This page documents user agent support notes for <a href="/TR/WCAG20-TECHS/pdf">PDF Techniques</a>.</p><ul class="toc"><li class="toc"><a href="#PDF1">Applying text alternatives to images with the Alt entry in PDF documents</a></li><li class="toc"><a href="#PDF2">Creating bookmarks in PDF documents</a></li><li class="toc"><a href="#PDF3">Ensuring correct tab and reading order in PDF documents</a></li><li class="toc"><a href="#PDF4">Hiding decorative images with the Artifact tag in PDF documents</a></li><li class="toc"><a href="#PDF5">Indicating required form controls in PDF forms</a></li><li class="toc"><a href="#PDF6">Using table elements for table markup in PDF Documents</a></li><li class="toc"><a href="#PDF7">Performing OCR on a scanned PDF document to provide actual text</a></li><li class="toc"><a href="#PDF8">Providing definitions for abbreviations via an E entry for a structure
+    			element</a></li><li class="toc"><a href="#PDF9">Providing headings by marking content with heading tags in PDF documents</a></li><li class="toc"><a href="#PDF10">Providing labels for interactive form controls in PDF documents</a></li><li class="toc"><a href="#PDF11">Providing links and link text using the Link annotation and the /Link structure element in PDF documents</a></li><li class="toc"><a href="#PDF12">Providing name, role, value information for form fields in PDF documents</a></li><li class="toc"><a href="#PDF13">Providing replacement text using the /Alt entry for links in PDF
+    			documents</a></li><li class="toc"><a href="#PDF14">Providing running headers and footers in PDF documents</a></li><li class="toc"><a href="#PDF15">Providing submit buttons with the submit-form action in PDF forms</a></li><li class="toc"><a href="#PDF16">Setting the default language using the /Lang entry in the document
+    			catalog of a PDF document</a></li><li class="toc"><a href="#PDF17">Specifying consistent page numbering for PDF documents</a></li><li class="toc"><a href="#PDF18">Specifying the document title using the Title entry in the document
+    			information dictionary of a PDF document</a></li><li class="toc"><a href="#PDF19">Specifying the language for a passage or phrase with the Lang entry
+    			in PDF documents</a></li><li class="toc"><a href="#PDF20">Using Adobe Acrobat Pro's Table Editor to repair mistagged tables</a></li><li class="toc"><a href="#PDF21">Using List tags for lists in PDF documents</a></li><li class="toc"><a href="#PDF22">Indicating when user input falls outside the required format or
+    			values in PDF forms</a></li><li class="toc"><a href="#PDF23">Providing interactive form controls in PDF documents</a></li></ul><section id="pdf_notes"><div class="skiptarget"><a id="maincontent">-</a></div>
+<h3><a name="pdf_notes" id="pdf_notes"> </a>PDF Technology Notes</h3><div class="div3"><h3><a name="pdf_notes_intro" id="pdf_notes_intro"> </a>Introduction</h3><p>The Portable Document Format (PDF) is a file format for representing documents in a manner independent of the application software, hardware, and operating system used to create them, as well as of the output device on which they are to be displayed or printed. PDF files specify the appearance of pages in a document in a reliable, device-independent manner. The PDF specification was introduced by Adobe Systems in 1993 as a publicly available standard. In January 2008, PDF 1.7 became an ISO standard (ISO 32000-1). </p><p>Of note for accessibility is PDF/UA (Universal Accessibility) which became an ISO Standard in July 2012 (ISO 14289-1:2012 (See <a href="http://www.iso.org/iso/catalogue_detail.htm?csnumber=54564">PDF/UA (ISO 14289-1:2012)</a>.) The scope of PDF/UA is not meant to be a techniques (how-to) specification, but rather a set of guidelines for creating more accessible PDF. The specification describes the required and prohibited components and the conditions governing their inclusion in or exclusion from a PDF file in order for the file to be available to the widest possible audience, including those with disabilities. The mechanisms for including the components in the PDF stream are left to the discretion of the individual developer, PDF generator, or PDF viewing agent. PDF/UA also specifies the rules governing the behavior for a conforming reader. </p></div><div class="div3"><h3><a name="pdf_notes_acc-sup" id="pdf_notes_acc-sup"> </a>PDF Accessibility Support</h3><p>PDF includes several features in support of accessibility of documents
+  				to users with disabilities. The core of this support lies in the ability
+  				to determine the logical order of content in a PDF document, independently
+  				of the content's appearance or layout, through logical structure and
+  				Tagged PDF. Applications can extract the content of
+  				a document for presentation to users with disabilities by traversing
+  				the structure hierarchy and presenting the contents of each node. For
+  				this reason, producers of PDF files must ensure that all information
+  				in a document is reachable by means of the structure hierarchy. </p><div class="div4"><h4><a name="pdf_notes_acc-sup_structure" id="pdf_notes_acc-sup_structure"> </a>Logical Structure</h4><p>PDF's logical structure features (introduced in PDF 1.3) provide a
+  				mechanism for incorporating structural information about a document's
+  				content into a PDF file. Such information might include, for example,
+  				the organization of the document into chapters, headings, paragraphs
+  				and sections or the identification of special elements such as figures,
+  				tables, and footnotes. The logical structure features are extensible,
+  				allowing applications that produce PDF files to choose what structural
+  				information to include and how to represent it, while enabling PDF
+  				consumers to navigate a file without knowing the producer's structural
+  				conventions. </p><p>PDF logical structure shares basic features with standard document
+  				markup languages such as HTML, SGML, and XML. A document's logical
+  				structure is expressed as a hierarchy of structure elements, each represented
+  				by a dictionary object. Like their counterparts in other markup languages,
+  				PDF structure elements can have content and attributes. In PDF, rendered
+  				document content takes over the role occupied by text in HTML, SGML,
+  				and XML. </p><p>A PDF document's logical structure is stored separately from its visible
+  				content, with pointers from each to the other. This separation allows
+  				the ordering and nesting of logical elements to be entirely independent
+  				of the order and location of graphics objects on the document's pages. </p><p>The logical structure of a document is described by a hierarchy of
+  				objects called the structure hierarchy or structure tree. At the root
+  				of the hierarchy is a dictionary object called the structure tree root,
+  				located by means of the StructTreeRoot entry in the document catalog.
+    					See Section 14.7.2, ("Structure Hierarchy") in <a href="http://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF
+  					1.7 (ISO 32000-1)</a>: Table 322 shows the entries in the structure
+  				tree root dictionary. The K entry specifies the immediate children
+  				of the structure tree root, which are structure elements. </p></div><div class="div4"><h4><a name="pdf_notes_acc-sup_tagged" id="pdf_notes_acc-sup_tagged"> </a>Tagged PDF</h4><p>Tagged PDF (PDF 1.4) is a stylized use of PDF that builds on PDF's
+  			logical structure framework. It defines a set of standard structure
+  			types and attributes that allow page content (text, graphics, and images)
+  			to be extracted and reused for other purposes. It is intended for use
+  			by tools that perform the following types of operations: </p><ul><li><p>Simple extraction of text and graphics for pasting into other applications. </p></li><li><p>Automatic reflow of text and associated graphics to fit a page
+  			of a different size than was assumed for the original layout. </p></li><li><p>Processing text for such purposes as searching, indexing, and spell-checking. </p></li><li><p>Conversion to other common file formats (such as HTML, XML, and
+  			RTF) with document structure and basic styling information preserved. </p></li><li><p>Making content accessible to people who rely on assistive technology. </p></li></ul></div></div><div class="div3"><h3><a name="pdf_notes_acc-sup_files" id="pdf_notes_acc-sup_files"> </a>PDF File Production and Accessibility</h3><p>PDF files may be produced either directly by application programs or indirectly by conversion from other file formats or imaging models. In addition, tools exist for inspecting, checking, and repairing PDF files for accessibility. The following sections provide representative lists of applications and tools typically used for these functions. </p><p>These notes do not, and cannot, provide an exhaustive list, nor do they endorse particular applications and tools. Rather they provide a snapshot of tools in fairly wide use at the time the WCAG Working Group undertook to review and publish techniques for producing PDF documents. As with any software, application support for PDF accessibility will vary with different versions, with the formatting requirements of specific PDF documents, and with actual usage of the application. That is, the tools can be used properly to produce appropriate tags, etc.. </p><p>In general, newer tools will provide greater support than earlier ones. The tools' vendors are the source of authoritative information about their support for PDF accessibility. </p><div class="div4"><h4><a name="pdf_notes_acc-sup_files_generating" id="pdf_notes_acc-sup_files_generating"> </a>Generating PDF Files</h4><p>Many applications can generate PDF files directly, and some can import
+  			them as well. This direct approach is preferable, since it gives the
+  			application access to the full capabilities of PDF, including the imaging
+  			model and the interactive and document interchange features. Alternatively,
+  			applications that do not generate PDF directly can produce PDF output
+  			indirectly. There are two principal indirect methods: </p><ul><li><p>The application describes its printable output by making calls
+  			to an application programming interface (API) such as GDI in Microsoft®
+  			Windows® or QuickDraw in the Apple Mac OS. A software component called
+  			a printer driver intercepts these calls and interprets them to generate
+  			output in PDF form. </p></li><li><p>The application produces printable output directly in some other
+  				file format, such as PostScript, PCL, HPGL, or DVI, which is converted
+  				to PDF by a separate translation program. </p></li></ul><p>Although these indirect strategies are often the easiest way to obtain
+  			PDF output from an existing application, the resulting PDF files may
+  			not make the best use of the high-level PDF imaging model relied upon to expose the semantics of the document. This is
+  			because the information embodied in the application's API calls or
+  			in the intermediate output file often describes the desired results
+  			at too low a level. Any higher-level information maintained by the
+  			original application has been lost and is not available to the printer
+  			driver or translator. </p><p>For example, since the printer driver or translator targets correct visual output, information about the semantics of the document may not be sent at all or may be ignored when creating the PDF output. As a result, headings may not be tagged as such, or link text may not be associated with its link object. Check with the vendor of any PDF authoring tool in order to understand how to use the tool in a way that produces the best tagged output.</p></div><div class="div4"><h4><a name="pdf_notes_acc-sup_files_applications" id="pdf_notes_acc-sup_files_applications"> </a>PDF Authoring Tools that Provide Accessibility Support</h4><ul><li><p>Adobe Acrobat's PDFMaker - PDFMaker is part of Adobe Acrobat
+    					which adds macros to many business applications such as Microsoft
+    					Office, AutoCAD and Lotus Notes that support the conversion of content
+    					from the original format to tagged PDF. </p></li><li><p>Adobe FrameMaker - Desktop publishing application from Adobe Systems
+  			that directly exports tagged PDF and provides support for alternative
+  			text descriptions. </p></li><li><p>Adobe InDesign - Page layout and desktop publishing application
+  				from Adobe Systems that directly exports tagged PDF and provides
+  				support for alternative text descriptions. </p></li><li><p>Adobe LiveCycle Designer - Windows-based forms design application
+  					from Adobe Systems that directly exports tagged PDF interactive forms
+  					and provides support for alternative text descriptions; can be invoked
+  					standalone or from within Acrobat Pro. </p></li><li><p>LibreOffice - Open-source word processing software from The Document Foundation that can export tagged PDF. </p></li><li><p> Lotus Symphony Documents - Word-processing software from IBM that can export tagged PDF.</p></li><li><p> Microsoft® Word - Word processing application from Microsoft Corporation
+					that can export tagged PDF using the save as XPS or PDF utility. </p></li><li><p>OpenOffice.org Writer - Open source word-processing software from
+  							Sun Microsystems Inc. that can export tagged PDF using the Export
+  							as PDF utility. </p></li><li><p>CommonLook Office for Microsoft Office from Netcentric Technologies is an add-in to Microsoft® Word and PowerPoint that makes it possible to create tagged PDF documents. CommonLook Office provides tools to allow content authors to run accessibility tests in the Microsoft Word and PowerPoint environments and to remediate accessibility issues prior to conversion to PDF.</p></li><li><p>Xenos Axess™ for Accessible Statements - PDF software integrates with an organization's existing enterprise content management (ECM) infrastructure to capture high-volume print streams and automatically transform them into tagged PDFs. </p></li><li><p>WordPerfect® Office - Word-processing software from Corel that can be used to create, mark up, and share tagged PDF documents.</p></li><li><p>Microsoft Office 10 - a suite of desktop office applications  that creates tagged PDF.</p></li></ul><div class="note"><p class="prefix"><em>Note: </em>Care should be taken when choosing PDF creation tools from the many available, as some may not support creation of tagged PDF files. </p></div></div><div class="div4"><h4><a name="pdf_notes_acc-sup_files_checking" id="pdf_notes_acc-sup_files_checking"> </a>Accessibility Checking and Repair</h4><p><a href="http://www.adobe.com/products/acrobat.html">Adobe
+  			Acrobat Pro</a>. Adobe Acrobat Pro is an application that creates and edits PDF files.
+  			It has a number of tools for evaluating and repairing the accessibility
+  			of PDF files, including access to the structure root through the
+  			tags panel, the ability to directly manipulate the reading order
+  			through the order panel, a built-in accessibility checker, and the
+  			Touch Up Reading Order tool which provides a graphical mechanism for
+  			assessing and repairing the accessibility of a PDF document. </p><p><a href="http://www.commonlook.com/CommonLook-PDF">Commonlook™
+  			PDF</a>. Commonlook PDF. Commonlook PDF is a plug-in for Adobe Acrobat Pro from Netcentric Technologies. CommonLook PDF helps identify, report and correct the most common accessibility problems, including the proper tagging of images, tables, forms and other non-textual objects.</p><p><a href="http://www.access-for-all.ch/en/pdf-lab/pdf-accessibility-checker-pac.html">PAC
+  			- the PDF Accessibility Checker</a>. PAC is a free tool developed
+  			and distributed by the «Access for all» Foundation to evaluate the
+  			accessibility of PDF documents and PDF forms. PAC offers the added
+  			possibility of displaying a preview of the structured PDF document
+  			in a web browser. The PAC preview shows which tags are included in
+  			the PDF document and presents the accessible elements in the same
+  			way as they would be interpreted by assistive technologies (such
+  			as screen readers). PAC also provides an accessibility report which
+  			lists the detected accessibility errors. Clicking the links in the
+  			report displays the most probable source of the error within the
+  			document. </p><div><h5><a name="pdf_notes_acc-sup_files_checking_api" id="pdf_notes_acc-sup_files_checking_api"> </a>API Inspection Tools</h5><ul><li><p><a href="http://www.eclipse.org/actf/downloads/tools/aDesigner/">aDesigner</a> - a disability simulator from the Eclipse Foundation that helps designers ensure that content is accessible and usable by visually impaired users.</p></li><li><p><a href="http://msdn.microsoft.com/en-us/library/ms696079%28VS.85%29.aspx">inspect32</a> - part of the Microsoft Windows Software Development Kit (SDK) that allows developers and testers to examine the accessible properties of UI components. </p></li><li><p> <a href="http://download.macromedia.com/pub/developer/acrobat/acrobat_accessibility_9.1.zip">PDDOMView</a> - part
+  			of Acrobat_Accessibility_9.1.zip which contains files that can be
+  			used by Windows clients of the accessibility interfaces described
+  			in the Accessibility API Reference document. </p></li><li><p> <a href="http://msdn.microsoft.com/en-us/library/ms727247.aspx">UISpy</a> - part of the Microsoft Windows Software Development Kit (SDK) that allows developers and testers to view and interact with the user interface (UI) elements of an application.</p></li></ul></div></div></div><div class="div3"><h3><a name="pdf_notes_ua" id="pdf_notes_ua"> </a>User Agents</h3><p>PDF User Agents with accessibility support include:</p><ul><li><p>Adobe Acrobat Pro - PDF Authoring Tool, Editor, and Viewer from Adobe Systems which is compatible with MSAA devices on the Windows platform. Has a number of built in accessibility features including text to speech (Read Out Loud), high contrast display, reflow for large print display, auto scroll, accessibility full check, accessibility quick check, touch up reading order tool, and an accessibility setup assistant. </p></li><li><p>Adobe Reader – Freely distributed PDF Viewer from Adobe Systems which is compatible with MSAA devices on the Windows platform. Has a number of built in accessibility features including text to speech (Read Out Loud), high contrast display, reflow for large print display, auto scroll, accessibility quick check, and an accessibility setup assistant. </p></li><li><p>Kurzweil 3000™ - a comprehensive reading, writing and learning software solution from Kurzweil Educational Systems® which reads PDF files using text to speech facilities. </p></li></ul><div class="div4"><h4><a name="pdf_notes_acc-sup_at" id="pdf_notes_acc-sup_at"> </a>Adobe Reader and Acrobat Support for Accessibility APIs</h4><p>Adobe provides methods to make the content of a PDF file available
+    					to assistive technology such as screen readers: </p><ul><li><p>On the Microsoft® Windows® operating system, Acrobat and Adobe
+    					Reader export PDF content as Component Object Model (COM) objects. Accessibility applications
+    					such as screen readers can interface with Acrobat or Adobe Reader
+    					in two ways:</p><ul><li><p>Through the Microsoft Active Accessibility (MSAA) interface,
+    						using MSAA objects that Acrobat or Adobe Reader exports </p></li><li><p>Directly through exported COM objects that allow access to
+    							the PDF document's internal structure, called the Document Object
+    							Model (DOM). </p></li></ul></li><li><p>On UNIX® platforms, Adobe Reader supports the Gnome accessibility
+    					architecture. C-based Accessibility Toolkit (ATK) interfaces are
+    					available. </p></li></ul><p>The DOM and MSAA models are related, and developers can use either
+    					or both. Acrobat issues notifications to accessibility clients about
+    					interesting events occurring in the PDF file window and responds to
+    					requests from such clients. Recent versions of Acrobat and Reader have
+    					enhanced the support for accessibility interfaces: </p><ul><li><p>MSAA interfaces are supported in Acrobat/Reader 5.0 and later. </p></li><li><p>In Acrobat/Reader 6.0 and later, information about the underlying
+    					PDF structure is made available through direct COM objects that represent
+    					the PDF DOM. The DOM accessibility interfaces provide somewhat more
+    					extensive access. </p></li><li><p>In Acrobat/Reader 7.0 and later, ATK and expanded DOM support is
+    						available. </p></li><li><p>The Linux®, Solaris™, AIX®, and HP-UX versions of Adobe Reader
+    							implement C-based ATK interfaces, allowing screen readers, screen
+    							magnifiers, and on-screen keyboards to query an Accessibility Technology
+    							- Service Providers Interface (AT-SPI) registry for applications
+    							that are accessible. </p></li><li><p>The DOM has been expanded to provide enhanced caret, selection,
+    								and focus support, as well as the new interfaces IPDDomDocument,
+    								ISelectText, and IPDDomNodeExt. </p></li></ul></div><div class="div4"><h4><a name="pdf_notes_ua_at" id="pdf_notes_ua_at"> </a>Assistive Technology Support</h4><ul><li><p> JAWS 12 for Windows - screen reader from Freedom Scientific. Support
+  				for PDF started with JAWS version 4. </p></li><li><p> MAGic 11 - screen magnifier from Freedom Scientific </p></li><li><p> NVDA 2011.1 - NonVisual Desktop Access, open source screen reader
+  					distributed by NV Access. Providing feedback via synthetic speech
+  					and Braille, NVDA allows blind and vision-impaired people to access
+  					and interact with the Windows operating system and many third party
+  					applications. </p></li><li><p>Supernova Access Suite 12.02 – full screen reader offering magnification, speech, and Braille support from Dolphin. Support for PDF started with HAL version 5.</p></li><li><p> System Access To Go - screen reader from Serotek Corporation </p></li><li><p> VoiceOver - screen reader for Mac OS X v10.6 Snow Leopard </p></li><li><p> Window-Eyes 7.2 - screen reader from GW Micro. Window-Eyes was
+  						the first screen reader to provide support for PDF files, in Window-Eyes
+  						4.2. </p></li><li><p> ZoomText 9.1 - screen magnifier and screen reader from Ai Squared,
+  							with support for Adobe Acrobat and Reader:</p><ul><li><p>PDF documents can be read using both AppReader and DocReader
+  								(without special settings) </p></li><li><p>PDF documents can be read in all Windows operating systems
+  									(without special settings) </p></li><li><p>AppReader and DocReader start instantly in Adobe Reader </p></li><li><p>PDF documents can be read with greater accuracy and without
+  										paging delays </p></li><li><p>PDF documents can be read in Internet Explorer (with the Adobe
+  											Reader plug-in) </p></li><li><p>Special Adobe Reader settings are no longer needed to obtain
+  												optimal reading </p></li></ul></li></ul></div></div><div class="div3"><h3><a name="pdf_notes_references" id="pdf_notes_references"> </a>Related References</h3><ul><li><p><a href="http://help.adobe.com/en_US/acrobat/X/pro/using/WS58a04a822e3e50102bd615109794195ff-7ce6.w.html">Editing
+  					PDF Tags in Adobe Acrobat</a> </p></li><li><p><a href="http://help.adobe.com/en_US/acrobat/X/pro/using/WS58a04a822e3e50102bd615109794195ff-7cff.w.html">Editing
+  					PDF Tags with the Touch Up Reading Order Tool</a> </p></li><li><p><a href="http://www.adobe.com/accessibility.html">Adobe
+  					Accessibility Resource Center</a> </p></li><li><p><a href="http://www.adobe.com/accessibility/products/acrobat/training.html">Adobe
+  					Acrobat Accessibility Training Resources</a> </p></li><li><p><a href="http://www.adobe.com/content/dam/Adobe/en/accessibility/pdfs/accessing-pdf-sr.pdf">Accessing
+  					PDF Documents with Assistive Technology </a> </p></li><li><p><a href="http://www.adobe.com/devnet/pdf/pdf_reference.html">PDF
+  					Specification Archives</a> </p></li><li><p><a href="http://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF
+  					1.7 Reference: ISO approved copy of the ISO 32000-1</a> </p></li><li><p><a href="http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/access_v9.pdf">PDF
+  					Accessibility API Reference - How AT developers can use Acrobat MSAA
+  					and IPDDom interfaces to provide access to PDF content</a> </p></li><li><p><a href="http://www.iso.org/iso/catalogue_detail.htm?csnumber=54564">PDF/UA
+  					(ISO 14289-1:2012)</a> </p></li><li><p><a href="http://webaim.org/techniques/acrobat/">WebAIM
+  				PDF Accessibility</a> </p></li><li><p><a href="http://office.microsoft.com/en-us/excel-help/create-accessible-pdfs-HA102478227.aspx">Create accessible PDFs</a> using Microsoft Office 10</p></li></ul></div></section><section id="PDF1"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF1.html">PDF1</a>: Applying text alternatives to images with the Alt entry in PDF documents</h2><div class="ua-issue"><p>See <a href="http://www.w3.org/TR/WCAG20-TECHS/pdf_notes.html">PDF Technology Notes</a> for information on user agent and assistive
+    				technology support. </p></div></section><section id="PDF2"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF2.html">PDF2</a>: Creating bookmarks in PDF documents</h2><div class="ua-issue"></div></section><section id="PDF3"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF3.html">PDF3</a>: Ensuring correct tab and reading order in PDF documents</h2><div class="ua-issue"></div></section><section id="PDF4"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF4.html">PDF4</a>: Hiding decorative images with the Artifact tag in PDF documents</h2><div class="ua-issue"></div></section><section id="PDF5"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF5.html">PDF5</a>: Indicating required form controls in PDF forms</h2><div class="ua-issue"></div></section><section id="PDF6"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF6.html">PDF6</a>: Using table elements for table markup in PDF Documents</h2><div class="ua-issue"></div></section><section id="PDF7"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF7.html">PDF7</a>: Performing OCR on a scanned PDF document to provide actual text</h2><div class="ua-issue"></div></section><section id="PDF8"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF8.html">PDF8</a>: Providing definitions for abbreviations via an E entry for a structure
+    			element</h2><div class="ua-issue"></div></section><section id="PDF9"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF9.html">PDF9</a>: Providing headings by marking content with heading tags in PDF documents</h2><div class="ua-issue"></div></section><section id="PDF10"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF10.html">PDF10</a>: Providing labels for interactive form controls in PDF documents</h2><div class="ua-issue"></div></section><section id="PDF11"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF11.html">PDF11</a>: Providing links and link text using the Link annotation and the /Link structure element in PDF documents</h2><div class="ua-issue"></div></section><section id="PDF12"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF12.html">PDF12</a>: Providing name, role, value information for form fields in PDF documents</h2><div class="ua-issue"></div></section><section id="PDF13"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF13.html">PDF13</a>: Providing replacement text using the /Alt entry for links in PDF
+    			documents</h2><div class="ua-issue"></div></section><section id="PDF14"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF14.html">PDF14</a>: Providing running headers and footers in PDF documents</h2><div class="ua-issue"></div></section><section id="PDF15"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF15.html">PDF15</a>: Providing submit buttons with the submit-form action in PDF forms</h2><div class="ua-issue"></div></section><section id="PDF16"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF16.html">PDF16</a>: Setting the default language using the /Lang entry in the document
+    			catalog of a PDF document</h2><div class="ua-issue"></div></section><section id="PDF17"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF17.html">PDF17</a>: Specifying consistent page numbering for PDF documents</h2><div class="ua-issue"></div></section><section id="PDF18"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF18.html">PDF18</a>: Specifying the document title using the Title entry in the document
+    			information dictionary of a PDF document</h2><div class="ua-issue"></div></section><section id="PDF19"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF19.html">PDF19</a>: Specifying the language for a passage or phrase with the Lang entry
+    			in PDF documents</h2><div class="ua-issue"></div></section><section id="PDF20"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF20.html">PDF20</a>: Using Adobe Acrobat Pro's Table Editor to repair mistagged tables</h2><div class="ua-issue"></div></section><section id="PDF21"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF21.html">PDF21</a>: Using List tags for lists in PDF documents</h2><div class="ua-issue"></div></section><section id="PDF22"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF22.html">PDF22</a>: Indicating when user input falls outside the required format or
+    			values in PDF forms</h2><div class="ua-issue"></div></section><section id="PDF23"><h2><a href="http://www.w3.org/TR/WCAG20-TECHS/PDF23.html">PDF23</a>: Providing interactive form controls in PDF documents</h2><div class="ua-issue"></div></section></body></html>

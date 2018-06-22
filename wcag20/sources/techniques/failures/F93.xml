@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F93">
+   <short-name>Failure of Success Criterion 1.4.2 for absence of a way to pause or stop an HTML5 media element that autoplays</short-name>
+   <applicability>
+      <p>HTML5</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="visual-audio-contrast-dis-audio" relationship="failure"/>
+   </applies-to>
+   <description>
+<p>This failure occurs when an <el>audio</el> or <el>video</el> element with an audio track contains the <att>autoplay</att> attribute and does not contain the <att>muted</att> attribute, and no controls or commands have been provided to pause or stop the media resource.</p>
+<p>When the <att>autoplay</att> attribute is present, the user agent will automatically begin playback of the media resource as soon as it can do so without stopping. When the <att>muted</att> attribute is present, the user agent will initially mute the media resource's audio output, overriding any user preference.</p>
+<p>If the media element is shorter than 3 seconds, the failure does not occur. If the user agent provides user preferences to override autoplay behavior, the failure does not occur.</p>
+<p>The HTML spec contains the following notes:</p>
+<ulist><item><p>User agents do not need to support autoplay, and it is suggested that user agents honor user preferences on the matter. Authors are urged to use the <att>autoplay</att> attribute rather than using script to force the video to play, so as to allow the user to override the behavior if so desired.</p></item>
+<item><p>Authors are urged to use the <att>autoplay</att> attribute rather than using script to trigger automatic playback, as this allows the user to override the automatic playback when it is not desired, e.g. when using a screen reader. Authors are also encouraged to consider not using the automatic playback behavior at all, and instead to let the user agent wait for the user to start playback explicitly.</p></item></ulist>
+   </description>
+   <examples>
+      <eg-group>
+         <head>An auto-playing audio track</head>
+         <description>
+            <p>In this example, the advertising video contains an audio track. The video will play continuously because of the <att>loop</att> attribute, and the video will start automatically because of the <att>autoplay</att> attribute and because there does not appear to be any controls to allow the user to stop the video.</p>
+         </description>
+         <code role="html5"><![CDATA[
+				 <video src="ads.cgi?kind=video" autoplay loop></video>
+            ]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+               	<loc xmlns:xlink="http://www.w3.org/1999/xlink" href="https://www.w3.org/TR/html5/">HTML5</loc>
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="https://html.spec.whatwg.org/">HTML5 Living Standard</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques/>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Check if an <el>audio</el> or <el>video</el> element has an active audio track.</p>
+            </item>
+            <item>
+               <p>Check if the audio or video lasts longer than 3 seconds.</p>
+            </item>
+            <item>
+               <p>Check if the element has an <att>autoplay</att> attribute.</p>
+            </item>
+            <item>
+               <p>Check if the element does not have a <att>muted</att> attribute.</p>
+            </item>
+            <item>
+               <p>Check if no command or control has been provided to stop or pause the media element.</p>
+            </item>
+          </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If checks 1-5 are true, then this failure condition applies and the content fails the Success Criterion.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

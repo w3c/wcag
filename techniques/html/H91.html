@@ -1,0 +1,283 @@
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head xmlns:wcag="https://www.w3.org/WAI/GL/"><title>Using HTML form controls and links</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body xmlns:wcag="https://www.w3.org/WAI/GL/"><h1>Using HTML form controls and links</h1><section class="meta"><p class="id">ID: H91</p><p class="technology">Technology: html</p><p class="type">Type: Technique</p></section><section class="applicability"><h2>When to Use</h2>
+      <p>HTML form controls and links </p>
+   </section><section class="description"><h2>Description</h2>
+      <p>The objective of this technique is to use standard HTML form controls and link elements to provide keyboard operation and assistive technology interoperability of interactive user interface elements.</p>
+      <p>User agents provide the keyboard operation of HTML form controls and links. In addition, the user agent maps the form controls and links to an accessibility API. Assistive technologies use the accessibility API to extract appropriate accessibility information, such as role, name, state, and value, and present them to users. The role is provided by the HTML element, and the name is provided by the text associated with that element. Elements for which values and states are appropriate also expose the values and states via multiple mechanisms. </p>
+      <p>In some cases, the text is already associated with the control through a required attribute. For example, submit buttons use the button element text or image 'alt' attribute as the name. In the case of form controls, label elements or 'title' attributes are used. The following table describes how the role, name, value, and state are determined for HTML links and form controls. </p>
+      
+         
+            
+               HTML element 
+               Role
+               Name 
+               Value 
+               State 
+            
+         
+         
+            
+               &lt;a&gt; 
+                link 
+                'title' attribute, text within &lt;a&gt; element or 'alt' attribute if image link. Concatenated if both text and image 'alt' attribute are provided 
+                'href' attribute 
+               
+            
+            
+               &lt;button&gt; 
+                push button 
+                text inside &lt;button&gt; element or 'title' attribute 
+               
+               
+            
+            
+               &lt;fieldset&gt; 
+                grouping 
+               text inside &lt;legend&gt; element within fieldset element
+               
+               
+            
+            
+               &lt;input type = "button", "submit", or "reset"&gt; 
+                push button 
+                'value' attribute 
+               
+               
+            
+            
+               &lt;input type = "image"&gt; 
+                push button 
+                'alt' attribute or 'title' attribute 
+               
+               
+            
+            
+               &lt;input type = "text"&gt; 
+                editable text 
+               &lt;label&gt; element associated with it or 'title' attribute 
+                'value' attribute 
+               
+            
+            
+               &lt;input type = "password"&gt; 
+                editable text 
+               &lt;label&gt; element associated with it or 'title' attribute 
+               value is purposefully hidden
+               
+            
+            
+               &lt;input type="file"&gt; 
+                editable text 
+               &lt;label&gt; element associated with it or 'title' attribute 
+               'value' attribute
+               
+            
+               &lt;input type="checkbox"&gt; 
+                checkbox 
+               &lt;label&gt; element associated with it or 'title' attribute 
+               
+                'checked' attribute
+                            
+            
+            
+               &lt;input type="radio"&gt; 
+                radio button 
+               &lt;label&gt; element associated with it or 'title' attribute 
+               
+                'checked' attribute
+                                
+                            
+            
+            
+            
+               &lt;select&gt; 
+                list box 
+               &lt;label&gt; element associated with it or 'title' attribute 
+               &lt;option&gt; element with 'selected' attribute set to "selected" 
+               
+            
+            
+               &lt;textarea&gt; 
+                editable text 
+               &lt;label&gt; element associated with it or 'title' attribute 
+                text within  &lt;textarea&gt; element 
+               
+            
+         
+      
+   </section><section class="examples"><h2>Examples</h2>
+      <section class="example">
+         <h3>Example 1: Links</h3>
+         <section class="description"><h2>Description</h2>
+            <p>User agents provide mechanisms to navigate to and select links. In each of the following examples, the role is "link" from the &lt;a href&gt;.  Note that &lt;a name&gt; does not provide a role of "link". The value is the URI in the 'href' attribute. </p>
+            Example 1a
+            <p>In example 1a, the name is the text inside the link, in this case "Example Site". </p>
+         </section>
+         <pre xml:space="preserve">&lt;a href="www.example.com"&gt;Example Site&lt;/a&gt;
+                    </pre>
+         <section class="description"><h2>Description</h2>
+            Example 1b
+            <p>In example 1b of an image inside a link, the 'alt' attribute for the image provides the name. Some tools for viewing APIs, such as Microsoft Inspect Objects, will not surface this, but AT does. </p>
+         </section>
+         <pre xml:space="preserve">&lt;a href="www.example.com"&gt;&lt;img src="example_logo.gif" alt="Example"&gt;&lt;/a&gt;
+                    </pre>
+         <section class="description"><h2>Description</h2>
+            Example 1c
+            <p>In example 1c, some assistive technology will not automatically insert a space character when concatenating the image's alt text and the text of the link. If the text should not be concatenated without a space, it is safest to insert a space between the image and the adjacent word so that words will not run together.</p>
+         </section>
+         <pre xml:space="preserve">&lt;a href="www.example.com"&gt;&lt;img src="example_logo.gif" alt="Example"&gt; Text&lt;/a&gt;
+</pre>
+      </section>
+      <section class="example">
+         <h3>Example 2: Buttons</h3>
+         <section class="description"><h2>Description</h2>
+            <p>There are several ways to create a button in HTML, and they all map to the "push button" role.</p>
+            Example 2a
+            <p>In example 2a, the text is contained in the button element, in this case "save", as the name. There is no value.</p>
+         </section>
+         <pre xml:space="preserve">&lt;button&gt;Save&lt;/button&gt;
+                    </pre>
+         <section class="description"><h2>Description</h2>
+            Example 2b
+            <p>Example 2b uses the 'value' attribute, in this case "Save", "Submit", or "Reset" as the name.</p>
+         </section>
+         <pre xml:space="preserve">&lt;input type="button" value="Save" /&gt; 
+&lt;input type="submit" value="Submit" /&gt;  
+&lt;input type="reset" value="Reset" /&gt;   
+                    </pre>
+         <section class="description"><h2>Description</h2>
+            Example 2c
+            <p>Example 2c uses the 'alt' attribute, in this case "save", as the name.</p>
+         </section>
+         <pre xml:space="preserve">&lt;input type="image" src="save.gif" alt="save" /&gt; 
+                    </pre>
+         <section class="description"><h2>Description</h2>
+            Example 2d
+            <p>In example 2d, there is no 'alt' attribute so the 'title' attribute, in this case "save", is used as the name.</p>
+         </section>
+         <pre xml:space="preserve">&lt;input type="image" src="save.gif" title="save" /&gt;
+                    </pre>
+         <section class="description"><h2>Description</h2>
+            Example 2e
+            <p>Example 2e clarifies how the user agent determines the name if the author specifies both the 'alt' and 'title' attributes of the input element. In this case, the user agent uses the 'alt' attribute ("Save") and ignores the 'title' attribute.</p>
+         </section>
+         <pre xml:space="preserve">&lt;input type="image" src="save.gif" alt="save" title="save the file" /&gt;
+</pre>
+      </section>
+      <section class="example">
+         <h3>Example 3: </h3>
+         <section class="description"><h2>Description</h2>
+            Example 3a
+            <p>In example 3a, the input field has a role of "editable text". The label element is associated to the input element via the 'for' attribute which references the 'id' attribute of the input&gt; element. The name comes from the label element, in this case, "Type of fruit". Its value comes from its value attribute, in this case "bananas". </p>
+         </section>
+         <pre xml:space="preserve">&lt;label for="text_1"&gt;Type of fruit&lt;/label&gt;
+&lt;input id="text_1" type="text" value="bananas"&gt;
+</pre>
+         <section class="description"><h2>Description</h2>
+            Example 3b
+            <p>In example 3b, the input field has the same role as example 3a, but the value is the empty string and the field gets its name from the 'title' attribute. </p>
+         </section>
+         <pre xml:space="preserve">&lt;input id="text_1" type="text" title="Type of fruit"&gt;
+</pre>
+      </section>
+      <section class="example">
+         <h3>Example 4: Checkbox </h3>
+         <section class="description"><h2>Description</h2>
+            <p>Example 4 has a role of "checkbox", from the 'type' attribute of the input element. The label element is associated with the input element via the 'for' attribute which refers to the 'id' attribute of the input element. The name comes from the label element, in this case "cheese". Its state can be "checked" or "unchecked" and comes from the 'checked' attribute. The state can be changed by the user's interaction with the control. </p>
+         </section>
+         <pre xml:space="preserve">&lt;label for="cb_1"&gt;Cheese&lt;/label&gt; 
+&lt;input id="cb_1" type="checkbox" checked="checked"&gt;
+                    </pre>
+      </section>
+      <section class="example">
+         <h3>Example 5: Radio Buttons </h3>
+         <section class="description"><h2>Description</h2>
+            <p>Example 5 has a role of "radio button" from the 'type' attribute on the input element. Its name comes from the label element. The state can be "checked" or "unchecked" and comes from the 'checked' attribute. The state can be changed by the user. </p>
+         </section>
+         <pre xml:space="preserve">&lt;input type="radio" name="color" id="r1" checked="checked"/&gt;&lt;label for="r1"&gt;Red&lt;/label&gt;
+&lt;input type="radio" name="color" id="r2" /&gt;&lt;label for="r2"&gt;Blue&lt;/label&gt;
+&lt;input type="radio" name="color" id="r3" /&gt;&lt;label for="r3"&gt;Green&lt;/label&gt;
+                    </pre>
+      </section>
+      <section class="example">
+         <h3>Example 6: </h3>
+         <section class="description"><h2>Description</h2>
+            Example 6a
+            <p>Example 6a has a role of "list box" from the select element. Its name is "Numbers" from the label element. Forgetting to give a name to the select is a common error. The value is the option element that has the 'selected' attribute present (with a value of "selected" in XHTML). In this case, the default value is "Two". </p>
+         </section>
+         <pre xml:space="preserve">&lt;label for="s1"&gt;Numbers&lt;/label&gt;
+&lt;select id="s1" size="1"&gt;
+ &lt;option&gt;One&lt;/option&gt;
+ &lt;option selected="selected"&gt;Two&lt;/option&gt;
+ &lt;option&gt;Three&lt;/option&gt;
+&lt;/select&gt;
+                    </pre>
+         <section class="description"><h2>Description</h2>
+            Example 6b
+            <p>Example 6b has the same name, role, and value as the above, but sets the name with the 'title' attribute on the select element. This technique can be used when a visible label is not desirable. </p>
+         </section>
+         <pre xml:space="preserve">&lt;select id="s1" title="Numbers" size="1"&gt;
+ &lt;option&gt;One&lt;/option&gt;
+ &lt;option selected="selected"&gt;Two&lt;/option&gt;
+ &lt;option&gt;Three&lt;/option&gt;
+&lt;/select&gt;
+                    </pre>
+      </section>
+      <section class="example">
+         <h3>Example 7:  Textarea</h3>
+         <section class="description"><h2>Description</h2>
+            Example 7a
+            <p>Example 7a has a role of "editable text" from the textarea element. The name is "Type your speech here" from the label element. The value is the content inside the textarea element, in this case "Four score and seven years ago". </p>
+         </section>
+         <pre xml:space="preserve">&lt;label for="ta_1"&gt;Type your speech here&lt;/label&gt;
+&lt;textarea id="ta_1" &gt;Four score and seven years ago&lt;/textarea&gt;
+                    </pre>
+         <section class="description"><h2>Description</h2>
+            Example 7b
+            <p>Example 7b has the same role, the name is set using the 'title' attribute, and the value is the empty string.</p>
+         </section>
+         <pre xml:space="preserve">&lt;textarea id="ta_1" title="Type your speech here" &gt;Four score and seven years ago&lt;/textarea&gt;
+                    </pre>
+      </section>
+      <section class="example">
+         <h3>Example 8: </h3>
+         <section class="description"><h2>Description</h2>
+            Radio Fieldset
+            <p>The radio fieldset in example 8 has a role of "grouping". The name comes from the legend element. </p>
+         </section>
+         <pre xml:space="preserve">&lt;fieldset&gt;
+  &lt;legend&gt;Choose a Color:&lt;/legend&gt; 
+     &lt;input id="red" type="radio" name="color" value="red" /&gt;&lt;label for="red"&gt;Red&lt;/label&gt;&lt;br /&gt; 
+     &lt;input id="blue" type="radio" name="color" value="blue" /&gt;&lt;label for="blue"&gt;Blue&lt;/label&gt;&lt;br /&gt; 
+     &lt;input id="green" type="radio" name="color" value="green" /&gt;&lt;label for="green"&gt;Green&lt;/label&gt; 
+&lt;/fieldset&gt;
+                    </pre>
+      </section>
+   </section><section class="tests"><h2>Tests</h2>
+      <section class="procedure"><h3>Procedure</h3>
+         <ol>
+            <li>Inspect the HTML source code.</li>
+            <li>For each instance of links and form elements, check that the name, value, and state are specified as indicated in the table above. </li>
+         </ol>
+      </section>
+      <section class="results"><h3>Expected Results</h3>
+         <ul>
+            <li>Check #2 is true.</li>
+         </ul>
+      </section>
+   </section><section class="related"><h2>Related Techniques</h2>
+      
+   </section><section class="resources"><h2>Resources</h2>
+      
+         <ul>
+            <li>
+									         <a href="http://usability.com.au/2008/09/accessible-forms-using-wcag-2-0/">Accessible Forms using WCAG 2.0</a>
+								       </li>
+            <li>
+									         <a href="https://msdn.microsoft.com/en-us/library/aa360193(VS.85).aspx">MSDN Accessible DHTML elements</a>
+								       </li>
+            <li>
+									         <a href="https://wiki.mozilla.org/Accessibility/AT-Windows-API#MSAA_Role_Support">Mozilla Accessibility/AT-Windows-API </a>
+								       </li>
+         </ul>
+      
+   </section></body></html>

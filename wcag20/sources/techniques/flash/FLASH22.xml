@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH22">
+   <short-name>Adding keyboard-accessible actions to static elements</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="keyboard-operation-keyboard-operable" relationship="cosufficient"/>
+      <success-criterion idref="keyboard-operation-all-funcs" relationship="cosufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to demonstrate how to provide keyboard
+    				access to a Flash MovieClip that is not keyboard accessible by default.
+    				This technique ensures that the element is focusable by setting the
+    				<prop>tabEnabled</prop> property, and it ensures that the action can be triggered
+    				from the keyboard by providing a keydown handler in addition to a click
+    				handler. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>MovieClip used as a button</head>
+         <description>
+            <p>In this example, a custom MovieClip is used as a button. To make it
+    						keyboard accessible, the MovieClip is placed in the tab order using
+    						the tabEnabled. Additionally, redundant event handlers are added so
+    						that the custom button responds to both a mouse click and a space bar
+    						keypress. Finally, the custom button is provided an accessible name
+    						using the MovieClip's <obj>AccessibilityProperties</obj> object. This makes the
+    						button's label perceivable by assistive technology. </p>
+            <p>This result can be viewed in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="event_handlers_to_static_objects_as3.html"
+                    linktype="examples">working
+    						version of MovieClip used as a button</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="event_handlers_to_static_objects_as3.fla"
+                    linktype="examples">source of MovieClip used as a button</loc> is available.</p>
+            <note>
+               <p>Using a generic MovieClip is generally not recommended, since
+    						the custom button will be perceived as a focusable graphic rather than
+    						a button. Instead, a better approach would be to use the standard Flash
+    						Button component, or create a new symbol with a type of "button". </p>
+            </note>
+         </description>
+         <code xml:space="preserve"><![CDATA[import flash.accessibility. *
+import flash.events.KeyboardEvent;
+import flash.events.MouseEvent;
+import flash.net.navigateToURL;
+import flash.net.URLRequest;
+
+testMC.tabEnabled = true;
+updateAccName(testMC);
+testMC.addEventListener(MouseEvent.CLICK, clickHandler, false);
+testMC.addEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
+
+updateAccName(testMC);
+
+function clickHandler(e) {
+  testMC.labelText.text = "THANKS";
+  updateAccName(testMC);
+}
+
+function keyDownHandler(e) {
+  if (e.keyCode == 32)
+  clickHandler(e);
+}
+
+function updateAccName(mc: MovieClip) {
+  if (! mc.accessibilityProperties)
+  mc.accessibilityProperties = new AccessibilityProperties();
+  mc.accessibilityProperties.name = mc.labelText.text;
+  Accessibility.updateProperties();
+}]]></code>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="SCR29"/>
+      <relatedtech idref="FLASH17"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>When a Flash Movie contains generic MovieClip instances that are used
+    					as interactive controls, confirm that: </p>
+         <olist>
+            <item>
+               <p> The MovieClip instance has its <prop>tabEnabled</prop> property set to true </p>
+            </item>
+            <item>
+               <p> The MovieClip instance has event handlers for both mouse and keyboard events </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> #1 and #2 are true </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Adding_keyboard-accessible_actions_to_static_elements"/>
+					</source>
+   </admin>
+</technique>

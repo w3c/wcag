@@ -1,0 +1,114 @@
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head xmlns:wcag="https://www.w3.org/WAI/GL/"><title>Failure of Success Criterion 4.1.2 due to a user interface control not having a programmatically determined name
+   </title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body xmlns:wcag="https://www.w3.org/WAI/GL/"><h1>Failure of Success Criterion 4.1.2 due to a user interface control not having a programmatically determined name
+   </h1><section class="meta"><p class="id">ID: F68</p><p class="technology">Technology: failures</p><p class="type">Type: Failure</p></section><section class="applicability"><h2>When to Use</h2>
+      <p>HTML controls</p>
+   </section><section class="description"><h2>Description</h2>
+      <p>This failure describes a problem that occurs when a form control does not have a name exposed to assistive technologies. The result is that some users will not be able to identify the purpose of the form control. The name can be provided in multiple ways, including the label element. Other options include use of the title attribute and aria-label which are used to directly provide text that is used for the accessibility name or aria-labelledby which indicates an association with other text on a page that is providing the name. Button controls can have a name assigned in other ways, as indicated below, but in certain situations may require use of label, title, aria-label, or aria-labelledby.</p>
+      <div class="note">
+         <p>Elements that can use an explicitly-associated label element are:</p>
+         <ul>
+            <li>
+                  input
+               </li>
+            <li>
+                  textarea
+               </li>
+            <li>
+                  select
+               </li>
+         </ul>
+         <p>The label element is not used for the following because labels for these elements are provided via the value attribute (for Submit and Reset buttons), the alt attribute (for image buttons), or element content itself (button):</p>
+         <ul>
+            <li>Submit and Reset buttons (input type="submit" or input type="reset")</li>
+            <li>Image buttons (input type="image")</li>
+            <li>Hidden input fields (input type="hidden")</li>
+            <li>Buttons (button elements or &lt;input type="button"&gt;)</li>
+         </ul>
+      </div>
+   </section><section class="examples"><h2>Examples</h2>
+      <section class="example">
+         <h3>Example 1: </h3>
+         <section class="description"><h2>Description</h2>
+            <p>The following example demonstrates a form that visually presents labels for form controls, but does not use the label element to associate them with their controls. The code example below is a failure because assistive technology may not be able to determine which label goes with which control.</p>
+            <pre xml:space="preserve">
+&lt;form&gt;
+ First name: 
+ &lt;input type="text" name="firstname"&gt;
+ &lt;br&gt;
+ Last name: 
+ &lt;input type="text" name="lastname"&gt;
+ &lt;br&gt;
+ I have a dog &lt;input type="checkbox" name="pet" value="dog"&gt;
+ I have a cat &lt;input type="checkbox" name="pet" value="cat"&gt;
+&lt;/form&gt;
+</pre>
+         </section>
+      </section>
+      <section class="example">
+         <h3>Example 2: </h3>
+         <section class="description"><h2>Description</h2>
+            <p>In the following code example, label elements are present, but they are not programmatically linked to the corresponding input controls and may therefore not be properly determined by assistive technology.</p>
+            <pre xml:space="preserve">
+&lt;form action="..." method="post"&gt; 
+&lt;p&gt; 
+&lt;label&gt;First Name&lt;/label&gt;
+&lt;input type="text" name="firstname"&gt; 
+&lt;label&gt;Last Name&lt;/label&gt; 
+&lt;input type="text" name="lastname"&gt; 
+&lt;/p&gt; 
+&lt;/form&gt;
+</pre>
+         </section>
+      </section>
+      <section class="example">
+         <h3>Example 3: </h3>
+         <section class="description"><h2>Description</h2>
+            <p>The search text box in the following code example does not have a programmatically determinable name. The name can be supplied with any of the approaches mentioned above.</p>
+            <pre xml:space="preserve">
+&lt;input type="text" value="Type your search here"&gt;&lt;input type="submit" type="submit" value="Search"&gt;
+</pre>
+         </section>
+      </section>
+   </section><section class="tests"><h2>Tests</h2>
+      <section class="procedure"><h3>Procedure</h3>
+         <p>For all input, textarea and select elements in the Web page (except inputs of type hidden, submit, reset, or button:</p>
+         <ol>
+            <li>
+               <p>Check that each element has a programmatically determined name using one of the following ways:</p>
+               <ol>
+				  <li>the text label or labels are programmatically associated with the control element via the aria-labelledby attribute (each id given as a value in the aria-labelledby attribute matches the id of the text label element).</li>
+				  <li>the control is programmatically determined through the value of its aria-label attribute.</li>
+                  <li>the text label is contained in a label element that is correctly associated to the respective input element via the label's for attribute (the id given as value in the for attribute matches the id of the input element).</li>
+                  <li>the control is contained within a label element that also contains the label text.</li>
+				  <li>the control is an input of type image and the alt attribute provides a text label.</li>
+                  <li>the control is programmatically determined through the value of title attribute.</li>
+               </ol>
+            </li>
+         </ol>
+      </section>
+      <section class="results"><h3>Expected Results</h3>
+         <ul>
+            <li>If all options of check #1 are false, then this failure condition applies and the content fails the Success Criteria.</li>
+         </ul>
+      </section>
+   </section><section class="related"><h2>Related Techniques</h2>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+   </section><section class="resources"><h2>Resources</h2>
+      
+         <ul>
+            <li>
+                  <a href="http://www.w3.org/TR/wai-aria/roles#namecalculation">WAI-ARIA Accessible Name Calulation</a>
+               </li>
+         </ul>
+      
+   </section></body></html>

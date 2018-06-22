@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H24">
+   <short-name> Providing text alternatives for the <el>area</el> elements of image maps </short-name>
+   <applicability>
+      <p>HTML and XHTML Documents that contain <el>area</el> elements.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+      <success-criterion idref="navigation-mechanisms-refs" relationship="sufficient"/>
+      <success-criterion idref="navigation-mechanisms-link" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>The HTML 4.01 specification explains that the text of the <att>alt</att> attribute
+              is to be displayed when the element cannot be rendered normally. User Agents will
+              display the <att>alt</att> attribute text when images are not displayed. However,
+              currently, visual User Agents do not display the <att>alt</att> attribute text for area elements
+              of image maps when accessed by keyboard or when images are not displayed, and may clip
+              the area elements if the intrinsic size of the image is not used. In addition, the
+              display of <att>alt</att> attribute text in response to mouse-hover does not display in the font
+              size or color combination set in the User Agent. </p>
+         <p>The <att>title</att> attribute is meant to provide additional information. However,
+              current implementation in User Agents is access to either the title or <att>alt</att> attribute,
+              but not both. User Agents generally will display the <att>title</att> attribute text
+              when the mouse is placed over the element containing the <att>title</att> attribute.
+              </p>
+         <p>Therefore, when using image maps, successful implementation of this technique would
+              require either:</p>
+         <ulist>
+            <item>
+               <p>Ensuring the area element <att>alt</att> attribute value is displayed in response to
+                  attaining focus (including keyboard focus), and that this applies both to
+                  situations where images are loaded and not loaded. OR</p>
+            </item>
+            <item>
+               <p>A redundant mechanism serving the same purpose as the area elements is present in
+                  the Web Page.</p>
+            </item>
+         </ulist>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to provide text alternatives that serve the same
+            purpose as the selectable regions of an image map. An image map is an image divided into
+            selectable regions defined by <el>area</el> elements. Each area is a link to another
+            Web page or another part of the current Web page. The <att>alt</att> attribute of each
+              <el>area</el> element serves the same purpose as the selectable area of the
+          image.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>This example uses the <att>alt</att> attribute of the <el>area</el> element
+                to provide text that describes the purpose of the image map areas.</p>
+         </description>
+         <code role="html401"><![CDATA[<img src="welcome.gif" usemap="#map1" 
+    alt="Areas in the library. Select an area for
+more information on that area." /> 
+<map id="map1" name="map1">
+  <area shape="rect" coords="0,0,30,30"
+    href="reference.html" alt="Reference" />
+  <area shape="rect" coords="34,34,100,100"
+    href="media.html" alt="Audio visual lab" />
+</map>   ]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html401/struct/objects.html#h-13.6.1">HTML 4.01
+                    client-side image maps</loc>
+								       </p>
+            </item>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html401/struct/objects.html#h-13.8">HTML 4.01 -
+                    how to specify alt text</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G91"/>
+      <relatedtech idref="H30"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each <el>area</el> element in an image map: </p>
+         <olist>
+            <item>
+               <p>Check that the <el>area</el> element has an <att>alt</att> attribute.</p>
+            </item>
+            <item>
+               <p>Check that the text alternative specified by the <att>alt</att> attribute serves the same
+                  purpose as the part of image map image referenced by the <el>area</el> element
+                  of the imagemap.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>The above checks are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>
