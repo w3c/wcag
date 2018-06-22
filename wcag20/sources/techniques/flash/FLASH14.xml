@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="FLASH14">
+   <short-name>Using redundant keyboard and mouse event handlers in Flash</short-name>
+   <applicability>
+      <p use-id="flash.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="keyboard-operation-keyboard-operable" relationship="cosufficient"/>
+      <success-criterion idref="keyboard-operation-all-funcs" relationship="cosufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="flash.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to demonstrate how to provide   device independence by providing equivalent event handlers in response   to a mouse or focus event. Supporting both mouse and keyboard events   ensures that users will be able to perceive the same information,   regardless of the input device they used. If the event changes the state   of the control, it may be important to change the descriptive name of   the control in the event handlers. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Updating button text with multiple event handlers</head>
+         <description>
+            <p>In this example, a group of buttons is assigned the same event   handlers for the flash.events.FocusEvent.FOCUS_IN and flash.events.MouseEvent.MOUSE_OVER   events. When a button receives focus or is hovered over using a mouse,   text describing the button will be updated. </p>
+         </description>
+         <code xml:space="preserve"><![CDATA[import fl.accessibility.ButtonAccImpl;
+import fl.controls.Button;
+import flash.accessibility. *
+import flash.events.FocusEvent;
+import flash.events.MouseEvent;
+import flash.net.navigateToURL;
+import flash.net.URLRequest;
+
+ButtonAccImpl.enableAccessibility();
+var states: Object = {
+  "Alabama": "Alabama is a state located in the southeastern region of the \
+    United States of America.",
+  "California": "California is the most populous state in the United States",
+  "New York": "New York is a state in the Mid-Atlantic and Northeastern \
+    regions of the United States"
+};
+
+var buttons: Array =[];
+var button: Button;
+var accProps: AccessibilityProperties;
+var count = 0;
+for (var i in states) {
+  button = new Button();
+  button.label = i;
+  button.addEventListener(MouseEvent.CLICK, clickHandler);
+  button.addEventListener(MouseEvent.MOUSE_OVER, highlightHandler);
+  button.addEventListener(MouseEvent.MOUSE_OUT, unHighlightHandler);
+  button.addEventListener(FocusEvent.FOCUS_IN, highlightHandler);
+  button.addEventListener(FocusEvent.FOCUS_OUT, unHighlightHandler);
+  accProps = new AccessibilityProperties();
+  accProps.description = states[i];
+  button.accessibilityProperties = accProps;
+  addChild(button);
+  button.x = 30
+  button.y = 30 + count * 30;
+  buttons[i] = button;
+  count++;
+}
+
+function highlightHandler(e) {
+  descText.text = states[e.target.label];
+}
+
+function unHighlightHandler(e) {
+  descText.text = "";
+}
+
+
+function clickHandler(e) {
+  var url: URLRequest = new URLRequest("http://www.wikipedia.org/wiki/" + e.target.label);
+  navigateToURL(url, "_self");
+}]]></code>
+         <description>
+            <note>
+               <p>To improve accessibility for screen reader users, the   descriptive text is also attached to the buttons themselves as an   accessible description. Also note that for button components, the MouseEvent.CLICK   event will fire on mouse clicks as well as when the Enter key is   pressed. </p>
+            </note>
+            <p>This technique is illustrated in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="redundant_event_handlers_as3.html"
+                    linktype="examples">working version of Updating button text with multiple event handlers</loc>. The <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="redundant_event_handlers_as3.fla"
+                    linktype="examples">source of Updating button text with multiple event handlers</loc> is available. </p>
+         </description>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="SCR2"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For all scripted event handlers in a Flash Movie, </p>
+         <olist>
+            <item>
+               <p> Confirm that event handlers are assigned for both mouse and   keyboard events </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p> The above is true </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+						   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Using_redundant_keyboard_and_mouse_event_handlers_in_Flash"/>
+					</source>
+   </admin>
+</technique>

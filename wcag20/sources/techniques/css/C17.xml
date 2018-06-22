@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="C17">
+   <short-name>Scaling form elements which contain text</short-name>
+   <applicability>
+      <p>(X)HTML, CSS</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="visual-audio-contrast-scale" relationship="sufficient"/>
+      <!--success-criterion idref="visual-audio-contrast-visual-presentation"/-->
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to ensure text-based form controls resize when text size is changed in the user agent. This will allow users to enter text and read what they have entered in input boxes because the text is displayed at the size required by the user.</p>
+      <p>Text-based form controls include input boxes (text and textarea) as well as buttons.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>A Contact Form</head>
+         <description>
+            <p>A Contact Us form has some introductory information and then form controls for users to enter their first name, last name, telephone number and email address. All of the text and form controls have been implemented in a scalable way. This includes specifying a font size for the form controls themselves because the font size is not inherited in Internet Explorer.</p>
+            <p>The XHTML component:</p>
+         </description>
+         <code role="xhtml"><![CDATA[<h1>Contact Us</h1>
+<p>Please provide us with your details and we will contact you as soon as we can. Note that all of the form fields are required.</p>
+<label for="fname">First Name</label><input type="text" name="fname" id="fname" /><br />
+<label for="lname">Last Name</label><input type="text" name="lname" id="lname" /><br />
+<label for="phone">Telephone</label><input type="text" name="phone" id="phone" /><br />
+<label for="email">Email</label><input type="text" name="email" id="email" /><br />
+<input type="submit" name="Submit" value="Submit" id="Submit" />]]></code>
+         <description>
+            <p>The CSS component:</p>
+         </description>
+         <code role="css"><![CDATA[h1 { font-size: 2em; }
+            p, label, input { font-size: 1em; }]]></code>
+         <description>
+            <p>Working example of this code: <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="input-resize.html"
+                    linktype="examples">Example of resizing input with CSS</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Radio button</head>
+         <description>
+            <p>This example works in IE with its text size feature. However, it doesn't scale in Firefox 2.0.</p>
+            <p>The XHTML component:</p>
+         </description>
+         <code role="xhtml"><![CDATA[<input type="radio" name="r1" value="r1" id="r1" class="geomsize" />
+<input type="checkbox" name="c1" id="c1" value="c1" class="geomsize" />]]></code>
+         <description>
+            <p>The CSS component:</p>
+         </description>
+         <code role="css"><![CDATA[input.geomsize {
+width: 1.2em;
+height: 1.2em;}]]></code>
+         <description>
+            <p>Working example of this code: <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="radio-checkbox-resize.html"
+                    linktype="examples">Example of resizing radio buttons and checkboxes with CSS</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Enter some text into text-based form controls that receive user entered text.</p>
+            </item>
+            <item>
+               <p>Increase the text size of the content by 200%.</p>
+            </item>
+            <item>
+               <p>Check that the text in text-based form controls has increased by 200%.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#3 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

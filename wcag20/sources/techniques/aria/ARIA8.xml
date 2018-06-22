@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="ARIA8">
+   <short-name>Using aria-label for link purpose</short-name>
+   <applicability>
+      <p>Technologies that support <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="navigation-mechanisms-refs" relationship="sufficient"/>
+      <success-criterion idref="navigation-mechanisms-link" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
+         <ulist>
+            <item>
+               <p>Jaws V.11 and greater has complete support.
+</p>
+            </item>
+            <item>
+               <p>ChromeVox V.1 and greater has complete support 
+</p>
+            </item>
+            <item>
+               <p>VoiceOver V.3 and greater
+</p>
+            </item>
+         </ulist>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to describe the purpose of a link using the <att>aria-label</att> attribute. The <att>aria-label</att> attribute provides a way to place a descriptive text label on an object, such as a link, when there are no elements visible on the page that describe the object. If descriptive elements are visible on the page, the <att>aria-labelledby</att> attribute should be used instead of <att>aria-label</att>. Providing a descriptive text label lets a user distinguish the link from links in the Web page that lead to other destinations and helps the user determine whether to follow the link. In some assistive technologies the <att>aria-label</att> value will show in the list of links instead of the actual link text.</p>
+      <p>Per the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/wai-aria/roles#textalternativecomputation">WAI-ARIA specification</loc> and the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide</loc>, the <att>aria-label</att> text will override the text supplied within the link. As such the text supplied will be used instead of the link text by AT. Due to this it is recommended to start the text used in <att>aria-label</att> with the text used within the link. This will allow consistent communication between users.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Describing the purpose of a link in HTML using aria-label.</head>
+         <description>
+            <p>In some situations, designers may choose to lessen the visual appearance of links on a page by using shorter, repeated link text such as "read more". These situations provide a good use case for aria-label in that the simpler, non-descriptive "read more" text on the page can be replaced with a more descriptive label of the link. The words 'read more' are repeated in the aria-label (which replaces the original anchor text of "[Read more...]") to allow consistent communication between users.</p>
+            <codeblock xml:space="preserve"><![CDATA[ <h4>Neighborhood News</h4>
+ <p>Seminole tax hike:  Seminole city managers are proposing a 75% increase in 
+ property taxes for the coming fiscal year.
+ <a href="taxhike.html" aria-label="Read more about Seminole tax hike">[Read more...]</a>
+ </p> 
+
+ <p>Baby Mayor:  Seminole voters elect the city's youngest mayor ever by voting in 3 year
+ old Willy "Dusty" Williams in yesterday's mayoral election.
+ <a href="babymayor.html" aria-label="Read more about Seminole's new baby mayor">[Read more...]</a>
+ </p>]]></codeblock>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description Calculation</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria/roles#textalternativecomputation">WAI-ARIA Text Alternative Computation</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="ARIA6"/>
+      <relatedtech idref="ARIA14"/>
+      <relatedtech idref="ARIA7"/>
+      <relatedtech idref="G91"/>
+      <relatedtech idref="H30"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For link elements that use <att>aria-label</att>:</p>
+         <olist>
+            <item>
+               <p>Check that the value of the <att>aria-label</att> attribute properly describes the purpose of the link element.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#1 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

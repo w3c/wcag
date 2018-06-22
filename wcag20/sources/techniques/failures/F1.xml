@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F1">
+   <short-name>Failure of Success Criterion 1.3.2 due to changing the meaning of content by
+                    positioning information with CSS</short-name>
+   <applicability>
+      <p>All technologies that support CSS.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-sequence" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>This describes the failure condition that results when CSS, rather than
+                        structural markup, is used to modify the visual layout of the content, and
+                        the modified layout changes the meaning of the content. Using the
+                        positioning properties of CSS2, content may be displayed at any position on
+                        the user's viewport. The order in which items appear on a screen may be
+                        different than the order they are found in the source document. Assistive
+                        technologies rely on the source code or other programmatically determined
+                        order to render the content in the correct sequence. Thus, it is important
+                        not to rely on CSS to visually position content in a specific sequence if this sequence results in a meaning that is different from the programmatically determined reading order. 
+          </p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <description>
+            <p>The following example demonstrates how CSS has been improperly used
+                                to create a set of columns. In addition, the text appears visually
+                                in the browser in a different order than in the markup. </p>
+            <p>In this example a class is defined for each object that is being
+                                positioned. When style sheets are applied, the text appears in two
+                                columns. Elements of class "menu1" (Products) and "menu2"
+                                (Locations) appear as column headings. "Telephones, Computers, and
+                                Portable MP3 Players" are listed under Products and "Idaho" and
+                                "Wisconsin" are listed under Locations (note the different order for
+                                Idaho and Wisconsin in the source code order). </p>
+            <p>Since appropriate structural elements have not been used, when style
+                                sheets are not applied, all of the text appears in one line in the
+                                source order, "Products Locations Telephones Computers Portable MP3
+                                Players Wisconsin Idaho." </p>
+            <p>Here is the HTML content:</p>
+         </description>
+         <code role="html401"><![CDATA[
+<div class="box">      
+     <span class="menu1">Products</span>       
+     <span class="menu2">Locations</span>       
+     <span class="item1">Telephones</span>       
+     <span class="item2">Computers</span>       
+     <span class="item3">Portable MP3 Players</span>       
+     <span class="item5">Wisconsin</span>       
+     <span class="item4">Idaho</span>
+</div>
+]]></code>
+         <description>
+            <p>Here are the styles for the above content:</p>
+         </description>
+         <code role="html401"><![CDATA[
+.menu1 { 
+     position: absolute; 
+     top: 3em; 
+     left: 0em;     
+     margin: 0px; 
+     font-family: sans-serif;     
+     font-size: 120%; 
+     color: red; 
+     background-color: white 
+}        
+.menu2 { 
+     position: absolute; 
+     top: 3em; 
+     left: 10em;     
+     margin: 0px; 
+     font-family: sans-serif;     
+     font-size: 120%; 
+     color: red; 
+     background-color: white 
+}      
+.item1 { 
+     position: absolute; 
+     top: 7em; 
+     left: 0em; 
+     margin: 0px 
+}      
+.item2 { 
+     position: absolute; 
+     top: 8em; 
+     left: 0em; 
+     margin: 0px 
+}      
+.item3 { 
+     position: absolute; 
+     top: 9em; 
+     left: 0em; 
+     margin: 0px 
+}      
+.item4 { 
+     position: absolute; 
+     top: 7em; 
+     left: 14em; 
+     margin: 0px 
+}      
+.item5 { 
+     position: absolute; 
+     top: 8em; left: 14em; 
+     margin: 0px 
+}      
+#box { 
+     position: absolute; 
+     top: 5em; 
+     left: 5em 
+} 
+]]></code>
+         <description>
+            <p>A better solution for this content would be to use more meaningful
+                                elements, such as a table or a definition list.</p>
+            <ulist>
+               <item>
+                  <p> 
+                     <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                          href="cssposfailure.html"
+                          linktype="examples">Example
+                                            of CSS positioning failure</loc>
+									         </p>
+               </item>
+               <item>
+                  <p> 
+                     <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                          href="cssposfailurenostyle.html"
+                          linktype="examples">Example of CSS positioning failure with styles
+                                        removed</loc>
+									         </p>
+               </item>
+            </ulist>
+         </description>
+      </eg-group>
+   </examples>
+   <resources/>
+   <related-techniques>
+      <relatedtech idref="C6"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For content which uses CSS for positioning: </p>
+         <olist>
+            <item>
+               <p>Remove the style information from the document or turn off use of
+                                    style sheets in the user agent.</p>
+            </item>
+            <item>
+               <p>Check that the reading order of the content is correct and the
+                                    meaning of the content is preserved.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If step #2 is false, then this failure condition applies and the
+                                    content fails this Success Criterion.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

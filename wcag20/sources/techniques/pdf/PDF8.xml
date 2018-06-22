@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="PDF8">
+   <short-name>Providing definitions for abbreviations via an E entry for a structure
+    			element</short-name>
+   <applicability>
+      <p>Tagged PDF documents containing abbreviations or acronyms</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="meaning-located" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="pdf.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to provide an expansion or definition
+    				of an abbreviation for the first occurrence of the abbreviation. For
+    				example, a reference to an abbreviation, such as   "WCAG," should
+    				be available as   "Web Content Accessibility Guidelines (WCAG)" on
+    				its first occurrence in a document. </p>
+      <p>This is done by setting expansion text using an /E entry for a structure
+    				element, and is normally accomplished using a tool for authoring PDF.
+    				A Span structure element is typically used to tag the abbreviation,
+    				but the /E entry is valid with any structure element. </p>
+      <p>This technique is applicable for any abbreviation, including acronyms
+    				and initialisms. Note that on the first occurrence of the abbreviation,
+    				both the abbreviation and the expansion text must be provided. This
+    				will aid recognition of later use of the abbreviation. </p>
+      <p>PDF documents may be enhanced by providing expansions for abbreviations.
+    				In fact, such expansions are required for accessibility to ensure understanding
+    				by people who have difficulty decoding words; rely on screen magnification
+    				(which may obscure context); have limited memory; or who have difficulty
+    				using context to aid understanding. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Adding an /E entry to an abbreviation using Adobe Acrobat
+    					9 Pro's Tags panel</head>
+         <description>
+            <p>This example is shown with Adobe Acrobat Pro. There are other software tools that perform similar functions. See the list of other software tools in <specref ref="pdf_notes_acc-sup_files_applications"/>.</p>
+            <p>In a tagged PDF document: </p>
+            <olist>
+               <item>
+                  <p> Select the Tags panel, using Views &gt; Navigation Panes &gt; Tags </p>
+               </item>
+               <item>
+                  <p>Select the first instance of the abbreviated text that needs to be expanded. If the selected text is part of a larger tag, access the Tags panel options menu, select Create Tag from Selection, and create a new Span tag. In this example, the text "WCAG2" (within the LBody tag) has been enclosed in a Span tag.</p>
+               </item>
+               <item>
+                  <p> In the Tags panel, access the context menu for the spanned text
+    							and select Properties... to open the TouchUp Properties dialog for
+    							the Span tag. </p>
+               </item>
+               <item>
+                  <p> On the Content tab of the TouchUp Properties dialog, enter the
+    								expansion text, followed by the originally selected text. </p>
+               </item>
+            </olist>
+            <p>The following image illustrates this technique: </p>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF8/abbr.jpg"
+                       height="662"
+                       width="521"/>
+                  <alt>The addition of expansion text to an abbreviation using the Tags panel. The text 'WCAG2.0' has been selected and a Span tag created for it. The expansion text 'Web Content Accessibility Guidelines (WCAG) 2.0' is entered as the expansion of 'WCAG2.0' using the TouchUp Properties dialog </alt>
+               </image> 
+            </p>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="headers-definitions.docx"
+                    linktype="examples">working example of Providing definitions for Abbreviations (Word document)</loc>, <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="headers-definitions.odt"
+                    linktype="examples">working example of Providing definitions for Abbreviations (OpenOffice document)</loc>, and <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="headers-definitions.pdf"
+                    linktype="examples">working example of Providing definitions for Abbreviations (PDF document)</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Using a /Span structure element with an /E entry to define
+    				an abbreviation</head>
+         <description>
+            <p>The following code fragment illustrates code that is typical for using
+    						the /Span structure element to define an abbreviation. </p>
+            <p>This example uses the sentence "Sugar is commonly sold in 5 lb
+    						bags." The abbreviation "lb" is tagged as a /Span structure
+    						element with an /E entry (typically accomplished by an authoring tool). </p>
+            <codeblock xml:space="preserve"><![CDATA[ 1 0 obj                                  % structure element
+   << /Type /StructElemen
+            /S /Span                      % element type
+            /P ...                        % Parent in structure hierarchy
+            /K << /Type /MCR
+                        /Page 2 0 R       % Page containing marked-content sequence
+                        /MCID 0           % Marked content identifier for "lb"
+               >>
+            /E  (pound, lb)
+    >>
+ endobj
+]]></codeblock>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Using a /TH structure element with an /E entry to define
+    				an abbreviation</head>
+         <description>
+            <p>As noted in the Description, the /E entry is valid with any structure
+    						element. </p>
+            <p>The following code fragment illustrates code that is typical for using
+    						an /E entry to define an abbreviation. </p>
+            <p>A table that contains columns for each month uses abbreviations as
+    						the values of column headers. The expansion for each abbreviation is
+    						provided as the /E entry of the /TH structure element (typically accomplished
+    						by an authoring tool). </p>
+            <codeblock xml:space="preserve"><![CDATA[ 1 0 obj                                  % structure element
+   << /Type /StructElemen
+            /S /TH                        % element type
+            /P ...                        % Parent in structure hierarchy
+            /K << /Type /MCR
+                        /Page 2 0 R       % Page containing marked-content sequence
+                        /MCID 0           % Marked content identifier for "Dec"
+               >>
+            /E  (December, Dec)
+    >>
+ endobj
+]]></codeblock>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> Section 14.9.5 (Expansion of Abbreviations and Acronyms) in <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF
+    					1.7 (ISO 32000-1)</loc> 
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/dd318521%28VS.85%29.aspx">Microsoft
+    							Inspect.exe tool</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/accessibility/products/acrobat.html">PDF and Accessibility</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G102"/>
+      <relatedtech idref="G55"/>
+      <relatedtech idref="G62"/>
+      <relatedtech idref="G70"/>
+      <relatedtech idref="G97"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Verify that the first occurrence of abbreviations that require
+    					expansion text have /E entries on an enclosing tag by one of the
+    					following and that both the abbreviation and the expansion text are
+    					provided:</p>
+               <ulist>
+                  <item>
+                     <p> In Windows, use Microsoft's Inspect.exe tool, or some other
+    						tool that allows inspection of the MSAA interface, to locate
+    						the text of the abbreviation in the document tree and ensure
+    						that the value of the abbreviation is in the expansion text. </p>
+                  </item>
+                  <item>
+                     <p> In a PDF editor, locate the tag
+    							for the text that is the abbreviation, and check that an expansion
+    							or definition is provided for each abbreviation in the Expansion
+    							Text field in the corresponding tag's properties. </p>
+                  </item>
+                  <item>
+                     <p> Read the PDF document with a screen reader, listening to hear
+    								that on the first occurrence, the abbreviation and expansion
+    								are read when the screen reader reads the content line-by-line. </p>
+                  </item>
+                  <item>
+                     <p> Use a tool that is capable of showing the /E entry value,
+    									such as aDesigner to open the PDF document and view the GUI summary
+    									to read the text expansions for abbreviations. </p>
+                  </item>
+                  <item>
+                     <p> Use a tool that exposes the document through the accessibility
+    										API and verify that the text expansion of the abbreviation is
+    										properly implemented. </p>
+                  </item>
+               </ulist>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Check #1 is true. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Providing_definitions_for_abbreviations_via_an_E_entry_for_a_structure_element"/>
+      </source>
+   </admin>
+</technique>
