@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<title>Using media queries to un-fix sticky headers / footers</title>
+		<link rel="stylesheet" type="text/css" href="https://rawgit.com/w3c/wcag21/master/css/sources.css"/>
+	</head>
+	<body>
+		<h1>Using media queries to un-fix sticky headers / footers</h1>
+		<section id="meta">
+			<h2>Metadata</h2>
+			<p id="id"></p>
+			<p id="technology">css</p>
+			<p id="type">sufficient</p>
+		</section>
+		<section id="applicability">
+			<h2>When to Use</h2>
+			<p>This technique is applicable to Cascading Style Sheet / HTML technologies.</p>
+		</section>
+		<section id="description">
+			<h2>Description</h2>
+			<p>The objective of this technique is to be able to present content without sticky headers and footers when the device is held in landscape mode. This is done by using orientation techniques that adapt to the portrait or landscape mode of the device.</p>
+      <p>Sticky regions always stay visible in the viewport while the other content will disappear underneath when scrolling. This often is no problem in portrait mode but may block a big portion of the screen in landscape mode because of the height of the regions and leave only a small part of the screen for users to profit from. This is an effective way to create designs that present well in portrait mode while when users prefer landscape mode because of different reading and zoom preferences the sticky regions will be disabled.</p>
+      <p>The basic principle of un-fix sticky headers / footers is to:</p>
+      <ol>
+        <li>Define the sticky regions using orientation properties or properties for specific viewport sizes and media queries, so they get fixed or un-fixed depending on the portrait or landscape position of the device;</li>
+      </ol>
+		</section>
+		<section id="examples">
+			<h2>Examples</h2>
+			<section class="example">
+				<h3>Example 1: Medium complex un-fix sticky headers / footers in HTML and CSS</h3>
+				<p>The following medium complex example uses HTML and CSS to un-fix sticky headers / footers. The sticky regions get un-fixed as the orientation is changed. When the orientation property matches the device orientation defined via media queries, regions which are sticky in portrait mode will un-fix in landscape mode or vice versa. This particular example uses the CSS "orientation: portrait" property while it is also possible to use specific height properties.</p>
+        <code>
+        &lt;!DOCTYPE html&gt;
+          &lt;html lang="en"&gt;
+            &lt;head&gt;
+              &lt;meta charset="UTF-8"&gt;
+              &lt;title&gt;Using media queries to un-fix sticky headers / footers&lt;/title&gt;
+              &lt;style&gt;
+
+              /* Sticky Styling */
+
+              @media screen and (orientation: portrait) {
+                header { position: sticky; top: 0; }
+                footer { position: sticky; bottom: 0; }
+              }
+
+              &lt;/style&gt;
+
+            &lt;/head&gt;
+
+            &lt;body class="grid"&gt;
+
+              &lt;header role="banner" class="grid-item"&gt;
+                ...
+              &lt;/header&gt;
+
+              &lt;main role="main" class="grid-item"&gt;        
+                ...
+              &lt;/main&gt;
+
+              &lt;aside role="complementary" class="grid-item"&gt;
+                ...
+              &lt;/aside&gt;
+
+              &lt;footer role="contentinfo" class="grid-item"&gt;
+                ...
+              &lt;/footer&gt;
+
+            &lt;/body&gt;
+          &lt;/html&gt;
+        </code>
+				<p>Working example: <a href="https://rawgit.com/w3c/wcag/example-css-sticky/working-examples/css-sticky/index.html">Using CSS Flexbox for Reflow</a></p>
+			</section>
+		</section>
+		<section id="tests">
+			<h2>Tests</h2>
+			<section class="test-procedure">
+				<h3>Procedure</h3>
+				<ol>
+          <li>Display content on a mobile device / user agent in portrait mode.</li>
+          <li>Change the orientation to landscape.</li>
+          <li>Check whether the sticky header and footer will be un-fixed.</li>
+        </ol>
+			</section>
+			<section class="test-results">
+				<h3>Expected Results</h3>
+				<ul>
+          <li>Check #3 is true.</li>
+        </ul>
+        <p>If this is a sufficient technique for a success criterion, failing this test procedure does not necessarily mean that the success criterion has not been satisfied in some other way, only that this technique has not been successfully implemented and can not be used to claim conformance.</p>
+			</section>
+		</section>
+		<section id="related">
+			<h2>Related Techniques</h2>
+			<ul>
+				<li>ID</li>
+			</ul>
+		</section>
+	</body>
+</html>
