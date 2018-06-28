@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="G10">
+   <short-name>Creating components using a technology that supports the accessibility
+          API features of the platforms on which the user agents will be run to expose the
+          names and roles, allow user-settable properties to be directly set, and provide
+          notification of changes</short-name>
+   <applicability>
+      <p>Programming technologies that have standard components programmed to interface with accessibility APIs.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="ensure-compat-rsv" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to allow assistive technology to
+            understand Web content so that it can convey equivalent information to the
+            user through an alternate user interface.</p>
+      <p>Sometimes content is not created using markup language but rather using a
+            programming language or tools. In many cases, these technologies have
+            interface components that are already programmed to interface with
+            accessibility APIs. If an author uses these components and fills in the
+            properties (e.g., name, etc.), the resulting user interface components in the
+            content will be accessible to assistive technology.</p>
+      <p>However, if an author wants to create a user interface component that is new
+            and they cannot use standard components, then they need to be sure to add
+            the accessibility provisions themselves - and implement them in a way that
+            is compatible with the accessibility API.</p>
+      <p>After completion, the custom component should be tested for Accessibility Support.</p>
+   </description>
+   <examples>
+      <ulist>
+         <item>
+            <p>A Web page uses java to create an applet. A group of
+                authors wants to create an entirely new type of interface component
+                so they cannot use existing Java objects. They use Java swing classes
+                to create their component because the Java swing classes already
+                have provisions for connecting to different accessibility APIs.
+                Using the Java swing classes they are able to create an interface
+                component that exposes its name and role, is able to be set by AT
+                and alerts AT to any updates.</p>
+         </item>
+         <item>
+            <p>A Web page uses an original ActiveX control that is
+                written in the C++ programming language. The control is written to
+                explicitly support the Microsoft Active Accessibility (MSAA) API to
+                expose information about accept commands. The control then interacts
+                directly with assistive technology running the user agent on systems
+                that support MSAA.</p>
+         </item>
+      </ulist>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="H91"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Render content using an accessible User Agent.</p>
+            </item>
+            <item>
+               <p>Use an Accessibility Tool designed for the Accessibility API of the User agent to evaluate each user interface component.</p>
+            </item>
+            <item>
+               <p>Check that name and role for each user interface component is found by the tool.</p>
+            </item>
+            <item>
+               <p>Change the values on the component.</p>
+            </item>
+            <item>
+               <p>Check that the Accessibility tool is alerted.</p>
+            </item>
+            <item>
+               <p>Check that the component works with assistive technologies.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Checks #3, #5 and #6 are true for each user interface component.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

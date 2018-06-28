@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H73">
+   <short-name>Using the summary attribute of the table element to give an overview of data
+          tables</short-name>
+   <applicability>
+      <p>HTML 4.01, XHTML 1.x</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to provide a brief overview of how data has been organized into a table or a brief explanation of how to navigate the table. The <att>summary</att> attribute of the <el>table</el> element makes this information available to people who use screen readers; the information is not displayed visually.</p>
+      <p>The <att>summary</att> is useful when the table has a complex structure (for example,
+            when there are several sets of row or column headers, or when there are multiple groups
+            of columns or rows). The <att>summary</att> may also be helpful for simple data tables
+            that contain many columns or rows of data.</p>
+      <p>The <att>summary</att> attribute may be used whether or not the table includes a
+              <el>caption</el> element. If both are used, the <att>summary</att> should not
+            duplicate the <el>caption</el>.</p>
+      <note><p>In HTML5 the <att>summary</att> attribute is obsolete. Assistive technologies may or may not continue to support the attribute. Authors should consider alternatives and only use with caution.</p></note>
+      <note>
+         <p> Although WCAG 2 does not prohibit the use of layout tables, CSS-based layouts are
+               recommended in order to retain the defined semantic meaning of the HTML <el>table</el>
+               elements and to conform to the coding practice of separating presentation from content.
+               However, if a layout table is used, then the <att>summary</att> attribute is not used or
+               is null. The purpose of a layout table is simply to control the placement of content;
+               the table itself is “transparent" to the user. A <att>summary</att> would “break" this
+               transparency by calling attention to the table. A null <att>summary</att>
+                 (<code><att>summary</att><![CDATA[=""]]></code>) on layout tables is acceptable. See <loc href="F46" linktype="failure">F46</loc> for details.</p>
+      </note>
+   </description>
+   <examples>
+      <eg-group>
+         <head>A data table with a <att>summary</att> but no <el>caption</el></head>
+         <description>
+            <p>This example shows a bus schedule. The route number and direction are included in
+                the <att>summary</att> along with information on how to use the schedule.</p>
+         </description>
+         <code role="html401"><![CDATA[<table summary="Schedule for Route 7 going downtown. Service begins 
+at 4:00 AM and ends at midnight. Intersections are listed in the top row. 
+Find the intersection closest to your starting point or destination, then read 
+down that column to find out what time the bus leaves that intersection.">
+  <tr>
+    <th scope="col">State & First</th>
+    <th scope="col">State & Sixth</th>
+    <th scope="col">State & Fifteenth</th>
+    <th scope="col">Fifteenth & Morrison</th>
+  </tr>
+  <tr>
+    <td>4:00</td>
+    <td>4:05</td>
+    <td>4:11</td>
+    <td>4:19</td>
+  </tr>
+  …
+</table>  ]]></code>
+      </eg-group>
+      <eg-group>
+         <head>A data table with both a <att>summary</att> and a <el>caption</el>
+						   </head>
+         <description>
+            <p>In this example both a <att>summary</att> attribute and a <el>caption</el>
+                element are used. The <el>caption</el> identifies the bus route. The
+                  <att>summary</att> helps users who are blind understand how to use the schedule.
+                Screen readers read the <el>caption</el>, followed by the
+              <att>summary</att>.</p>
+         </description>
+         <code role="html401"><![CDATA[<table summary="Intersections are listed in row 1. 
+Find the intersection closest to your starting point 
+or destination, then read down that column to find 
+out what time the bus leaves that intersection.  
+Service begins at 4:00 AM and ends at midnight.">
+  <caption>Route 7 Downtown (Weekdays)</caption>
+…
+</table>]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>HTML 4.01 <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html4/struct/tables.html#adef-summary">summary attribute</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H39"/>
+      <relatedtech idref="H51"/>
+      <relatedtech idref="F46"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each data table: </p>
+         <olist>
+            <item>
+               <p>If a <att>summary</att> is present, check that the <att>summary</att>
+                  attribute describes the table's organization or explains how
+                  to use the table</p>
+            </item>
+            <item>
+               <p>If both a <att>summary</att> attribute and a <el>caption</el> element are present
+                  for the data table, check that the <att>summary</att> does not
+                  duplicate the <el>caption</el>.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#1 and #2 are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

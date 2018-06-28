@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="SL26">
+   <short-name>Using LabeledBy to Associate Labels and Targets in Silverlight</short-name>
+   <applicability>
+      <p use-id="silverlight.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="text-equiv-all" relationship="sufficient"/>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+      <success-criterion idref="minimize-error-cues" relationship="sufficient"/>
+      <success-criterion idref="ensure-compat-rsv" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="silverlight.ua-issue.general"/>
+      <ua-issue>
+         <p>MSAA clients might not use LabeledBy values appropriately, unless
+    				such clients are handling MSAA AND IAccessibleEx. See <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                 href="https://msdn.microsoft.com/en-us/library/dd561899%28VS.85%29.aspx">IAccessibleEx
+    					Implementation Guidelines</loc>. </p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to use the <prop>AutomationProperties.LabeledBy</prop> property
+    				to associate a non-interactive text label with an interactive field
+    				such as a Silverlight <obj>TextBox</obj> or <obj>RichTextBox</obj>.
+    				By using this technique, application authors can use the label text
+    				as the default source for <prop>AutomationProperties.Name</prop> on
+    				the target, and do not need to specify an explicit <prop>AutomationProperties.Name</prop>. </p>
+      <p>This technique relies on several Silverlight features: the <prop>Name</prop> property
+    				for identifying specific UI elements, the <obj>AutomationProperties</obj> API,
+    				and the ElementName variation of Silverlight data binding. <prop>AutomationProperties.Name</prop> can
+    				be set on and can target any Silverlight <obj>UIElement</obj>.
+    				The two most common uses of this labeling technique are for labeling
+    				a form field, and for associating an image caption with an image. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Two TextBox form fields, each with a LabeledBy reference
+    					to a text label</head>
+         <description>
+            <p>The following is XAML for the UI (and can be inserted into a UserControl
+    						XAML root or elsewhere). No code-behind is necessary for this example;
+    						the element relationships are established by the {Binding} values in
+    						the XAML and interpreted appropriately by the Silverlight run time. </p>
+            <codeblock xml:space="preserve"><![CDATA[   <StackPanel x:Name="LayoutRoot" Background="White">
+       <StackPanel Orientation="Horizontal">
+           <TextBlock Name="lbl_FirstName">First name</TextBlock>
+           <TextBox AutomationProperties.LabeledBy="{Binding ElementName=lbl_FirstName}" Name="tbFirstName" Width="100"/>
+       </StackPanel>
+       <StackPanel Orientation="Horizontal">
+           <TextBlock Name="lbl_LastName">Last name</TextBlock>
+           <TextBox AutomationProperties.LabeledBy="{Binding ElementName=lbl_LastName}" Name="tbLastName" Width="100"/>
+       </StackPanel>
+   </StackPanel>
+]]></codeblock>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="LabelsTestPage.html"
+                    linktype="examples">working example of Labels</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Labeling / captioning an image </head>
+         <description>
+            <codeblock xml:space="preserve"><![CDATA[       <Image HorizontalAlignment="Left" Width="480" Name="img_MyPix"
+                Source="snoqualmie-NF.jpg"
+                AutomationProperties.LabeledBy="{Binding ElementName=caption_MyPix}"/>
+       <TextBlock Name="caption_MyPix">Mount Snoqualmie North Bowl Skiing</TextBlock>
+       ]]></codeblock>
+            <note>
+               <p>If the caption is not a usable text alternative, use the technique <specref ref="SL5"/>, or change the caption
+    						text. </p>
+            </note>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="https://msdn.microsoft.com/en-us/library/system.windows.automation.automationproperties.labeledby%28VS.95%29.aspx">AutomationProperties.LabeledBy</loc> 
+               </p>
+            </item>
+            <item>
+               <p>Tools: <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://firstfloorsoftware.com/silverlightspy">SilverlightSpy</loc> or <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://uiautomationverify.codeplex.com/">UIAVerify</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="SL35"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. To see
+    					UI Automation, use Microsoft Windows as platform. </p>
+            </item>
+            <item>
+               <p> Use a verification tool that is capable of showing the full automation
+    						tree. (For example, use UIAVerify or Silverlight Spy; see Resources
+    						links.) </p>
+            </item>
+            <item>
+               <p> Verify that any element that has a <prop>LabeledBy</prop> value
+    							has an associated visible label. </p>
+            </item>
+            <item>
+               <p> Verify that any element that has a <prop>LabeledBy</prop> value
+    								uses the <prop>Name</prop> value from that label. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>#3 and #4 are true. </p>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Using_LabeledBy_to_Associate_Labels_and_Targets_in_Silverlight"/>
+      </source>
+   </admin>
+</technique>

@@ -1,0 +1,73 @@
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head xmlns:wcag="https://www.w3.org/WAI/GL/"><title>Using scripts to make nonessential alerts optional</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body xmlns:wcag="https://www.w3.org/WAI/GL/"><h1>Using scripts to make nonessential alerts optional</h1><section class="meta"><p class="id">ID: SCR14</p><p class="technology">Technology: client-side-script</p><p class="type">Type: Technique</p></section><section class="applicability"><h2>When to Use</h2>
+      <p>Scripting technologies which use scripting alerts for non-emergency communication.</p>
+   </section><section class="description"><h2>Description</h2>
+      <p>The objective of this technique is to display a dialog containing a message (alert) to the user.  When the alert is displayed, it receives focus and the user must activate the OK button on the dialog to dismiss it. Since these alerts cause focus to change they may distract the user, especially when used for non-emergency information. Alerts for non-emergency purposes such as displaying a quote of the day, helpful usage tip, or count down to a particular event, are not presented unless the user enables them through an option provided in the Web page.</p>
+      <p>This technique assigns a global JavaScript variable to store the user preference for displaying alerts. The default value is false. A wrapper function is created to check the value of this variable before displaying an alert. All calls to display an alert are made to this wrapper function rather than calling the alert() function directly. Early in the page, a button is provided for the user to enable the display of alerts on the page. This technique works on a visit by visit basis.     Each time the page is loaded, alerts will be disabled and the user must manually enable them. Alternatively, the author could use cookies to store user preferences across sessions.</p>
+   </section><section class="examples"><h2>Examples</h2>
+      <section class="example">
+         <section class="description"><h2>Description</h2>
+            <p>The script below will display a quote in an alert box every ten seconds, if the user selects the "Turn Alerts On" button. The user can turn the quotes off again by choosing "Turn Alerts Off".</p>
+         </section>
+         <pre xml:space="preserve">
+&lt;script type="text/javascript"&gt;
+var bDoAlerts = false;  // global variable which specifies whether to 
+                                       // display alerts or not
+/* function to enable/disable alerts.
+ * param boolean bOn - true to enable alerts, false to disable them.
+*/
+function modifyAlerts(isEnabled) {
+   bDoAlerts = isEnabled;
+}
+/* wrapper function for displaying alerts.  Checks the value of bDoAlerts
+*and only calls the alert() function when bDoAlerts is true.
+*/
+function doAlert(aMessage) {
+    if (bDoAlerts) {
+       alert(aMessage);
+    }
+}
+// example usage - a loop to display famous quotes.
+var gCounter = -1;  // global to store counter
+// quotes variable would be initialized with famous quotations
+var quotes = new Array("quote 1", "quote 2", "quote 3", "quote 4", "quote 5");
+function showQuotes() {
+   if (++gCounter &amp;gt;= quotes.length) {
+     gCounter = 0;
+   }
+   doAlert(quotes[gCounter]);
+   setTimeout("showQuotes();", 10000);
+}
+showQuotes();
+&lt;/script&gt;
+</pre>
+         <section class="description"><h2>Description</h2>
+            <p>Within the body of the page, include a way to turn the alerts on and off. Below is one example:</p>
+         </section>
+         <pre xml:space="preserve">
+&lt;body&gt;
+&lt;p&gt;Press the button below to enable the display of famous quotes 
+using an alert box&lt;br /&gt;
+&lt;button id="enableBtn" type="button" onclick="modifyAlerts(true);"&gt;
+Turn Alerts On&lt;/button&gt;&lt;br /&gt;
+&lt;button id="disableBtn" type="button" onclick="modifyAlerts(false);"&gt;
+Turn Alerts Off&lt;/button&gt;&lt;/p&gt;
+</pre>
+         <section class="description"><h2>Description</h2>
+            <p>Working example of this code: <a href="https://www.w3.org/WAI/WCAG20/Techniques/working-examples/enablealerts.html">Demonstration of Alerts</a>.</p>
+         </section>
+      </section>
+   </section><section class="tests"><h2>Tests</h2>
+      <section class="procedure"><h3>Procedure</h3>
+         <p>For a Web page that supports non-emergency interruptions using a JavaScript alert:</p>
+         <ol>
+            <li>Load the Web page and verify that no non-emergency alerts are displayed.</li>
+            <li>Verify there is a mechanism to activate the non-emergency alerts.</li>
+            <li>Activate the non-emergency alerts and verify that the alerts are displayed.</li>
+         </ol>
+      </section>
+      <section class="results"><h3>Expected Results</h3>
+         <ul>
+            <li>For a Web page that supports non-emergency interruptions using a JavaScript alert, checks 1, 2, and 3 above are true.</li>
+         </ul>
+      </section>
+   </section></body></html>

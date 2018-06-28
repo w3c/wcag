@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="ARIA18">
+   <short-name>Using aria-alertdialog to Identify Errors</short-name>
+   <applicability>
+      <p>Technologies that support <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</loc>. </p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="minimize-error-identified" relationship="sufficient"/>
+      <success-criterion idref="minimize-error-suggestions" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>See <specref ref="wai-aria_ua_support"/> for general information on user agent support.</p>
+         <ulist>
+            <item>
+               <p> Jaws 13 and higher supports this technique.
+</p>
+            </item>
+         </ulist>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The purpose of this technique is to alert people that an input error has occured. Using <code><![CDATA[role="alertdialog"]]></code> creates a notification. This notification should be modal with the following characteristics:
+</p>
+      <ulist>
+         <item>
+            <p>
+               <att>aria-label</att> or <att>aria-labelledby</att> attribute gives the alertdialog an accessible name.
+</p>
+         </item>
+         <item>
+            <p>
+               <att>aria-describedby</att> provides a reference to the text of the alert.
+</p>
+         </item>
+         <item>
+            <p>The alertdialog contains at least one focusable control, and the focus should move to that control when the alertdialog opens.
+</p>
+         </item>
+         <item>
+            <p>The tab order is constrained within the alertdialog whilst it is open.
+</p>
+         </item>
+         <item>
+            <p>When the dialog is dismissed, the focus moves back to the position it had before the dialog opened, if possible.
+</p>
+         </item>
+      </ulist>
+      <p>Note that the alertdialog should not be present in a way that it will be accessed by AT until it is needed. One way to do this is not to include it in the static HTML and instead to insert it into the DOM via script when the error condition is triggered. The insertion would correspond to the following HTML sample.
+</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Alert dialog</head>
+         <description>
+            <p>This example shows how a notification using <code><![CDATA[role="alertdialog"]]></code> can be used to notify someone they have entered invalid information.</p>
+            <codeblock xml:space="preserve"><![CDATA[<div role="alertdialog" aria-labelledby="alertHeading" aria-describedby="alertText">
+<h1 id="alertHeading">Error</h1>
+<div id="alertText">Employee's Birth Date is after their hire date. Please verify the birth date and hire date.</div>
+<button>Save and Continue</button>
+<button>Return to page and correct error</button>
+</div>]]></codeblock>
+            <p>Working example: <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="aria-role-alertdialog.html"
+                    linktype="examples">Alert dialog</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques/>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Trigger the error that causes the alertdialog to appear.
+</p>
+            </item>
+            <item>
+               <p>Determine that the alertdialog contains at least one focusable control, and the focus moves to that control when the alertdialog opens.
+</p>
+            </item>
+            <item>
+               <p>Determine that the tab order is constrained within the alertdialog while it is open, and when the dialog is dismissed, the focus moves back to the position it had before the dialog opene, if possible.
+</p>
+            </item>
+            <item>
+               <p>Examine the element with <code><![CDATA[role="alertdialog"]]></code> applied.
+</p>
+            </item>
+            <item>
+               <p>Determine that either the <att>aria-label</att> or <att>aria-labelledby</att> attribute has been correctly used to give the alertdialog an accessible name.
+</p>
+            </item>
+            <item>
+               <p>Determine that the contents of the alertdialog identifies the input error.
+</p>
+            </item>
+            <item>
+               <p>Determine whether contents of the alertdialog suggests how to fix the error.
+</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Checks 2, 3, 5 and 6 are true. For SC 3.3.3, Check 7 is also true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="PDF6">
+   <short-name>Using table elements for table markup in PDF Documents</short-name>
+   <applicability>
+      <p>Tagged PDF documents with tables</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="pdf.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The purpose of this technique is to show how tables in PDF documents
+    				can be marked up so that they are recognized by assistive technology.
+    				This is typically accomplished by using a tool for authoring PDF. </p>
+      <p>Tabular information must be presented in a way that preserves relationships
+    				within the information even when users cannot see the table or the
+    				presentation format is changed. Information is considered tabular when
+    				logical relationships among text, numbers, images, or other data exist
+    				in two dimensions (vertical and horizontal). These relationships are
+    				represented in columns and rows, and the columns and rows must be recognizable
+    				in order for the logical relationships to be perceived. </p>
+      <p>Tagged tables can be created using the Add Tags to Document feature
+    				in Adobe Acrobat, using the Object Library in Adobe LiveCycle, or converting
+    				tables to PDF from a third-party application, such as Microsoft Word.
+    				However, the resulting tables may not be tagged correctly and you should
+    				ensure that table tagging issues are resolved. </p>
+      <p>Within PDF documents, a table uses the following structure types for
+    				table elements: </p>
+      <ulist>
+         <item>
+            <p> A table element (<emph>Table</emph>). </p>
+         </item>
+         <item>
+            <p> One or more table row elements(<emph>TR</emph>) which define each
+    				row of table cells as immediate children of the <emph>Table</emph> element. </p>
+         </item>
+         <item>
+            <p> One or more table header elements (<emph>TH</emph>) or table data
+    					elements (<emph>TD</emph>) as the immediate children of each table row
+    					element. </p>
+         </item>
+         <item>
+            <p> Cells that span two or more rows or columns should use the <emph>RowSpan</emph> or <emph>ColSpan</emph> attribute. </p>
+         </item>
+         <item>
+            <p> For tables that contain blank cells, you may need to add empty <emph>TD</emph> cells
+    						so that each row or column has the same number of cells. </p>
+         </item>
+      </ulist>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Creating tables in Microsoft Word 2007 that have correctly
+    					tagged headings when converted to PDF</head>
+         <description>
+            <p>This example is shown with Microsoft Word. There are other software tools that perform similar functions. See the list of other software tools in <specref ref="pdf_notes_acc-sup_files_applications"/>.</p>
+            <olist>
+               <item>
+                  <p> Access the table header row's context menu and select Table Properties... </p>
+               </item>
+               <item>
+                  <p> Select the Row tab. </p>
+               </item>
+               <item>
+                  <p> Check "Repeat as header at the top of each page" as
+    						shown in the following image. </p>
+               </item>
+            </olist>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF6/word-table.jpg"
+                       height="440"
+                       width="414"/>
+                  <alt>Image of Table properties dialog for the first table row in Word, with the Row tab selected. 'Repeat as header at the top of each page' is checked to ensure that the first row is marked as header cells.</alt>
+               </image> 
+            </p>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="table-example-noheaderrow.docx"
+                    linktype="examples">working example of tagged table headings in Word 2007</loc>.</p>
+            <note>
+               <p>Microsoft Word can only mark up cells as column headings, not as row headings.  Only the first row can be marked as heading for all table columns.  When the table has row headings or a more complex heading structure, this mark-up must be added in a PDF editor such as Acrobat Pro.</p>
+            </note>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Creating tables in OpenOffice.org Writer 2.2 that have
+    				correctly tagged headings when converted to PDF</head>
+         <description>
+            <p>This example is shown with OpenOffice.org Writer. There are other software tools that perform similar functions. See the list of other software tools in <specref ref="pdf_notes_acc-sup_files_applications"/>.</p>
+            <olist>
+               <item>
+                  <p> Access the table's context menu and select Table... </p>
+               </item>
+               <item>
+                  <p> Select the Table Format tab. </p>
+               </item>
+               <item>
+                  <p> Check Repeat Heading and select "1" in the First Rows
+    						listbox as shown in the following image. </p>
+               </item>
+            </olist>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF6/openofficetableheads.jpg"
+                       height="445"
+                       width="556"/>
+                  <alt>Image of Table dialog in OpenOffice.org Writer with Table Format tab selected. Repeat Heading is checked and 1 is selected in the First Rows listbox to ensure that the first row is marked as header cells.</alt>
+               </image> 
+            </p>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="table-example-noheaderrow.odt"
+                    linktype="examples">working example of tagged table headings in OpenOffice Writer</loc>.</p>
+            <note>
+               <p>OpenOffice.org Writer can only mark up cells as column headings, not as row headings.  Only the first row can be marked as heading for all table columns.  When the table has row headings or a more complex heading structure, this mark-up must be added in a PDF editor such as Acrobat Pro.</p>
+            </note>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Modifying table tags using the Tags tab in Adobe Acrobat
+    				9 Pro</head>
+         <description>
+            <p>This example is shown with Adobe Acrobat Pro. There are other software tools that perform similar functions. See the list of other software tools in <specref ref="pdf_notes_acc-sup_files_applications"/>.</p>
+            <p>To check that a converted document with tables has correct table tagging: </p>
+            <ulist>
+               <item>
+                  <p> In the View menu, select Navigation Panel, then select Tags. </p>
+               </item>
+            </ulist>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF6/table-example.jpg"
+                       height="411"
+                       width="498"/>
+                  <alt>Table in Adobe Acrobat Pro showing the Tags tab opened to display the table tags. All table cells are marked TD.</alt>
+               </image> 
+            </p>
+            <p>Note that in this case, the table headers were not formatted as illustrated
+    						in Examples 1 and 2, and are marked as data cells (<emph>TD</emph>). To
+    						change these to <emph>TH</emph> tags: </p>
+            <olist>
+               <item>
+                  <p> On the Tags tab, open the table row that contains the header cells,
+    						as shown on the image above. </p>
+               </item>
+               <item>
+                  <p> Select on the first data cell and select Properties... </p>
+               </item>
+               <item>
+                  <p> On the Tags tab in the Properties dialog, use the Type dropdown
+    							to change Table Data Cell to Table Header Cell. </p>
+               </item>
+               <item>
+                  <p> Repeat for all the table header cells in the first table row. </p>
+               </item>
+            </olist>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF6/table-example2.jpg"
+                       height="635"
+                       width="833"/>
+                  <alt>Table in Adobe Acrobat Pro showing the use of the Tag Properties dialog to change data cells to header cells</alt>
+               </image> 
+            </p>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="table-example-repaired.pdf"
+                    linktype="examples">working example of tagged table headings in Acrobat</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Marking up a table using table structure elements</head>
+         <description>
+            <p>The following code fragment illustrates code that is typical for a
+    					simple table (header row and data row) such as shown in Examples 1-3: </p>
+            <codeblock xml:space="preserve"><![CDATA[95 0 obj                %Structure element for a table
+ << 
+  /A 39 0 R
+  /K[96 0 R 101 0 R 106 0 R 111 0 R]
+  /P 93 0 R
+  /S/Table              %standard structure type is table
+ >> 
+ endobj
+96 0 obj                %Structure element for a table row
+ << 
+  /K[97 0 R 98 0 R 99 0 R 100 0 R]
+  /P 95 0 R
+  /S/TR                 %standard structure type is table row
+ >> 
+ endobj
+97 0 obj                %Structure element for a table header
+ <</A[23 0 R 120 0 R]
+   /K 1
+   /P 96 0 R
+   /S/TH                 %standard structure type is table head
+   /Pg 8 0 R
+ >> 
+endobj
+104 0 obj                %Structure element for table data (cell contents)
+ << 
+  /A 29 0 R
+  /K 7
+  /P 101 0 R
+  /S/TD                  %standard structure type is table data
+  /Pg 8 0 R
+ >> 
+endobj
+]]></codeblock>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> Section 14.8.4.3.4 (Table Elements) in <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF
+    					1.7 (ISO 32000-1)</loc> 
+               </p>
+            </item>
+            <item>
+               <p>
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/accessibility/products/acrobat.html">PDF and Accessibility</loc>
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H51"/>
+      <relatedtech idref="PDF20"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>For each table, confirm one of the following:</p>
+               <ulist>
+                  <item>
+                     <p> Read the PDF document with a screen reader, listening to hear
+    						that the tabular information is presented in a way that preserves
+    						logical relationships among the table header and data cells. </p>
+                  </item>
+                  <item>
+                     <p> Using a PDF editor, verify that the appropriate <emph>TR</emph>, <emph>TH</emph>,
+    							and <emph>TD</emph> tags are in the proper reading order and hierarchy
+    							in the table tree. </p>
+                  </item>
+                  <item>
+                     <p> Use a tool which is capable of showing the table elements
+    								to open the PDF document, view the table structure, and verify
+    								that it contains the appropriate TR, TH, and TD structures. </p>
+                  </item>
+                  <item>
+                     <p> Use a tool that exposes the document through the accessibility
+    									API, and verify that the table structure contains the appropriate
+    									TR, TH, and TD structures, and that they are in the proper reading
+    									order and hierarchy. </p>
+                  </item>
+               </ulist>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#1 is true. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Making_tables_accessible_in_PDF_documents_by_using_table_elements"/>
+      </source>
+   </admin>
+</technique>

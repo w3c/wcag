@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F46">
+   <short-name>Failure of Success Criterion 1.3.1 due to using <code><![CDATA[th]]></code> elements,
+                    <code><![CDATA[caption]]></code> elements, or non-empty <code><![CDATA[summary]]></code> attributes in
+                    layout tables</short-name>
+   <applicability>
+      <p>HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to describe a failure that occurs when a
+                        table used only for layout includes either <code><![CDATA[th]]></code> elements, a
+                            <code><![CDATA[summary]]></code> attribute, or a <code><![CDATA[caption]]></code> element. This
+                        is a failure because it uses structural (or semantic) markup only for
+                        presentation. The intent of the HTML and XHTML table elements is to present data. </p>
+      <p>Although not commonly used in a layout table, the following structural markup would also be failures of Success Criterion 1.3.1 if used in a layout table: </p>
+      <ulist>
+         <item>
+            <p> 
+               <att>headers</att> attributes </p>
+         </item>
+         <item>
+            <p> 
+               <att>scope</att> attributes 
+              </p>
+         </item>
+      </ulist>
+      <p>Assistive technologies use the structure of an HTML or XHTML table to present data to
+                        the user in a logical manner. The <code><![CDATA[th]]></code> element is used to mark
+                        the column and row headers of the table. A screen reader uses the
+                        information in <code><![CDATA[th]]></code> elements to speak the header information that
+                        changes as the user navigates the table. The summary attribute on the
+                            <code><![CDATA[table]]></code> element provides a textual description of the table
+                        that describes its purpose and function. Assistive technologies make the
+                            <code><![CDATA[summary]]></code> attribute information available to users. The
+                            <code><![CDATA[caption]]></code> element is part of the table and identifies the
+                        table.</p>
+      <p>
+            Although WCAG 2 does not prohibit the use of layout tables, CSS-based layouts are recommended in order to retain the defined semantic meaning of the HTML table elements and to conform to the coding practice of separating presentation from content. 
+            When a table is used
+                        for layout purposes the <code><![CDATA[th]]></code> element should not be used. Since
+                        the table is not presenting data there is no need to mark any cells as
+                        column or row headers. Likewise, there is no need for an additional
+                        description of a table which is only used to layout content. Do not include
+                        a <code><![CDATA[summary]]></code> attribute and do not use the <code><![CDATA[summary]]></code>
+                        attribute to describe the table as, for instance, "layout table". When
+                        spoken, this information does not provide value and will only distract users
+                        navigating the content via a screen reader. Empty <code><![CDATA[summary]]></code>
+                        attributes are acceptable on layout tables, but not recommended.</p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <description>
+            <p>Here is a simple example that uses a table to layout content in a
+                                three column format. The navigation bar is in the left column, the
+                                main content in the middle column, and an additional sidebar is on
+                                the right. At the top is a page title. The example marks the page
+                                title as <code><![CDATA[<th>]]></code>, and provides a summary
+                                attribute indicating that the table is a layout table.</p>
+         </description>
+         <code role="html401"><![CDATA[
+ <table summary="layout table">
+ <tr>
+   <th colspan=3>Page Title</th>
+ </tr>
+ <tr>
+   <td><div>navigation content</div></td>
+   <td><div>main content</div></td>
+   <td><div>right sidebar content</div></td>
+ </tr>
+ <tr>
+   <td colspan=3>footer</td>
+ </tr>
+ </table>
+]]></code>
+      </eg-group>
+   </examples>
+   <resources/>
+   <related-techniques>
+      <relatedtech idref="H39"/>
+      <relatedtech idref="H51"/>
+      <relatedtech idref="H73"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Examine the source code of the HTML or XHTML document for the
+                                    <code><![CDATA[table]]></code> element</p>
+            </item>
+            <item>
+               <p>If the table is used only to visually lay out elements within the
+                                    content </p>
+               <olist>
+                  <item>
+                     <p>Check that the table does not contain any <code><![CDATA[th]]></code>
+                                            elements.</p>
+                  </item>
+                  <item>
+                     <p>Check that the <code><![CDATA[table]]></code> element does not
+                                            contain a non-empty summary attribute.</p>
+                  </item>
+                  <item>
+                     <p>Check that the <code><![CDATA[table]]></code> element does not
+                                            contain a <code><![CDATA[caption]]></code> element.</p>
+                  </item>
+               </olist>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If any check above is false, then this failure condition applies
+                                    and the content fails the Success Criterion.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

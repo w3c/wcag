@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="F84">
+   <short-name>Failure of Success Criterion 2.4.9 due to using a non-specific link such as "click here" or "more" without a mechanism to change the link text to specific text.</short-name>
+   <applicability>
+      <p>HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="navigation-mechanisms-link" relationship="failure"/>
+   </applies-to>
+   <description>
+      <p>This failure describes a common condition where links such as "click here" or "more" are used as anchor elements where you need to have the surrounding text to understand their purpose and where there isn't any mechanism to make the destination clear by itself, such as a button to expand the link text.</p>
+      <p>Many blind people who use screen readers call up a dialog box that has a list of links from the page. They use this list of links to decide where they will go. But if many of the links in that list simply say "click here" or "more" they will be unable to use this feature in their screen reader, which is a core navigation strategy. That's why it's a failure of 2.4.9 to not provide any way of allowing them to know the destination from the link text alone. It is also true for people who tab through links. If all they hear as they tab through the document is "click here, click here, click here etc." they will become confused. </p>
+   </description>
+   <examples>
+      <eg-group role="failure">
+         <code><![CDATA[<a href="file110.htm">Click here</a> for more information on the Rocky Mountains.]]></code>
+      </eg-group>
+      <eg-group role="failure">
+         <code><![CDATA[<h2>News headlines</h2>
+The middle east peace meetings have yielded fruitful dialogue. 
+<a href="r4300.htm">read more</a>]]></code>
+      </eg-group>
+   </examples>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Examine each link on the page.</p>
+            </item>
+            <item>
+               <p>Check to see if it has non-descript link text such as "click here" or "more" whose purpose can be determined from the surrounding text but not from the link text alone.</p>
+            </item>
+            <item>
+               <p>Check to see if there is a mechanism on the page which turns all non-descript links on the page into descriptive links.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>If step #2 is true AND #3 is false, then this failure condition applies and content fails the success criterion.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

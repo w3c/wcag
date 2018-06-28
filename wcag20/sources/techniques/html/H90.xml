@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H90">
+   <short-name>Indicating required form controls using label or legend</short-name>
+   <applicability>
+      <p>HTML and XHTML controls that use external labels.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="minimize-error-cues" relationship="cosufficient"/>
+   </applies-to>
+   <!-- these ua issues also appear in H44 -->
+   <ua-issues>
+      <ua-issue name="" version="">
+         <p>The HTML and XHTML specifications allow both implicit and explicit labels. However, some
+                        assistive technologies do not correctly handle implicit labels (for example,
+                        <code><![CDATA[<label>First name <input type="text"
+                            name="firstname"></label>]]></code>).</p>
+         <ulist>
+            <item>
+               <p>JAWS 7.10 was tested on Windows XP with Internet Explorer 6.0 and Firefox 1.5. It
+                                reads the label for explicit and implicit labels for text fields in both virtual
+                                PC cursor and forms reading mode. In forms mode it does not read the label for
+                                implicit labels on checkboxes and radio fields.</p>
+            </item>
+            <item>
+               <p>Window-Eyes 5.5 was tested on Windows XP with Internet Explorer 6.0 and Firefox
+                                1.5. It will always speak the label for an explicitly labelled form field. It does
+                                not speak the label for the implicitly labelled form control in browse on mode but
+                                will speak the implicit label when navigating from control to control in browse
+                                off mode. </p>
+            </item>
+         </ulist>
+      </ua-issue>
+      <ua-issue name="" version="">
+         <p>User agents will display a tool tip when the mouse hovers above an <el>input</el>
+                        element containing a <att>title</att> attribute. Title attributes are exposed to
+                        assistive technology and are displayed as tooltips in many graphical browsers.
+                        Tooltips can't be opened via the keyboard, so this information may not be available to
+                        sighted keyboard users. </p>
+      </ua-issue>
+      <ua-issue name="" version="">
+         <p>If no <el>label</el> is available, JAWS and Window-Eyes speak the
+                        <att>title</att> attribute when the form control receives focus </p>
+         <ulist>
+            <item>
+               <p>JAWS 6.0 and later can be set to speak both <el>label</el> and
+                                <att>title</att> when the two items are different; however, very few users are
+                                aware of this setting.</p>
+            </item>
+            <item>
+               <p>WindowEyes 5.5 has a hot key, ins-E, that will display additional information,
+                                including the title attribute, for the item with focus. </p>
+            </item>
+         </ulist>
+      </ua-issue>
+      <!-- BBC: This UA issue (below) is not shared with H44 -->
+      <ua-issue name="" version="">
+         <p>Some user agents (specifically the Window-Eyes screen reader) do not by default voice the asterisk character in form labels. There is a preference that Window-Eyes users can modify to adjust this behavior but many users should be expected not to have made this change. </p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to provide a clear indication that a specific form control in a Web application or form is required for successful data submission. A symbol or text indicating that the control is required is programmatically associated with the field by using the <el>label</el> element, or the <el>legend</el> for groups of controls associated via <el>fieldset</el>. If a symbol is used, the user is advised of its meaning before the first use. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Using text to indicate required state</head>
+         <description>
+            <p>The text field in the example below has the explicit label of "First name (required):". The <el>label</el> element's  <att>for</att> attribute matches the <att>id</att> attribute of the <el>input</el> element and the <el>label</el> text indicates that the control is required. </p>
+         </description>
+         <code><![CDATA[
+<label for="firstname">First name (required):</label> 
+<input type="text" name="firstname" id="firstname" />
+]]></code>
+         <description>
+            <note>
+               <p>Some authors abbreviate "required" to "req." but there is anecdotal evidence that suggests that this abbreviation is confusing. </p>
+            </note>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Using an asterisk to indicate required state</head>
+         <description>
+            <p>The text field in the example below has an explicit label that includes an asterisk to indicate the control is required. It is important that the asterisk meaning is defined at the start of the form. In this example, the asterisk is contained within a <el>abbr</el> element to allow for the asterisk character to be styled so that it is larger than the default asterisk character, since the asterisk character can be difficult to see for those with impaired vision. </p>
+         </description>
+         <code><![CDATA[
+CSS:
+.req {font-size: 150%} 
+
+HTML:
+
+<p> Required fields are marked with an asterisk (<abbr class="req" title="required">*</abbr>).</p>
+<form action="http://www.test.com" method="post">
+<label for="firstname">First name <abbr class="req" title="required">*</abbr>:</label> 
+<input type="text" name="firstname" id="firstname" />
+]]></code>
+      </eg-group>
+      <eg-group>
+         <head>Using an image to indicate required state</head>
+         <description>
+            <p>The text field in the example below has an explicit label that includes an image to indicate the control is required. It is important that the image meaning is defined at the start of the form.</p>
+         </description>
+         <code><![CDATA[
+<p><img src="req_img.gif" alt="Required Control" /> indicates that the form control is required</p>
+<form action="http://www.test.com" method="post">
+<label for="firstname">First name <img src="req_img.gif" alt="Required Control" />:</label> 
+<input type="text" name="firstname" id="firstname" />
+...
+]]></code>
+      </eg-group>
+      <eg-group>
+         <head>Indicating required state for groups of radio buttons or check box controls</head>
+         <description>
+            <p>Radio buttons and checkboxes are treated differently than other interactive controls since individual radio buttons and checkboxes are not required but indicates that a response for the group is required. The methods used in examples 1-3 apply to radio buttons and checkboxes, but the indication of the required state should be placed in the <el>legend</el> element instead of the <el>label</el> element. </p>
+         </description>
+         <code><![CDATA[
+<fieldset>
+<legend>I am interested in the following (Required):</legend>
+<input type="checkbox" id="photo" name="interests" value="ph">
+<label for="photo">Photography</label></br>
+<input type="checkbox" id="watercol" name="interests" checked="checked" value="wa">
+<label for="watercol">Watercolor</label></br>
+<input type="checkbox" id="acrylic" name="interests" checked="checked" value="ac">
+<label for="acrylic">Acrylic</label>
+…
+</fieldset>
+]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html401/interact/forms.html#h-17.9">HTML 4.01 form labels</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H44"/>
+      <relatedtech idref="H65"/>
+      <relatedtech idref="H71"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>For each required form control, check that the required status is indicated in the form control's <el>label</el> or <el>legend</el>. </p>
+            </item>
+            <item>
+               <p>For each indicator of required status that is not provided in text, check that the meaning of the indicator is explained before the form control that uses it. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>All checks above are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

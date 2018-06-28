@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="H84">
+   <short-name>Using a button with a select element to perform an action</short-name>
+   <applicability>
+      <p>HTML and XHTML</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="consistent-behavior-unpredictable-change"
+                         relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to allow the user to control when an action is performed, rather than having the action occur as a side effect of choosing a value for the <el>select</el> element. The user may inspect the different values of the <el>select</el> element, or may accidentally choose the wrong value, without causing the action to occur. When the user is satisfied with their choice, they select the button to perform the action.</p>
+      <p>This is particularly important for users who are choosing the value of the <el>select</el> element via the keyboard, since navigating through the options of the <el>select</el> element changes the value of the control. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>A Calendar</head>
+         <description>
+            <p>A Web page lets the user choose any month of any year and display the calendar for that month. After the user has set the month and year, he displays the calendar by pressing the "Show" button. This example relies on client-side scripting to implement the action.</p>
+         </description>
+         <code><![CDATA[
+<label for="month">Month:</label>
+<select name="month" id="month">
+  <option value="1">January</option>
+  <option value="2"> February</option>
+  ...
+  <option value="12">December</option>
+</select> 
+<label for="year">Year:</label>
+<input type="text" name="year" id="year">
+<input type="button" value="Show" onclick = "...">]]></code>
+      </eg-group>
+      <eg-group>
+         <head>Choosing an action</head>
+         <description>
+            <p>A <el>select</el> element contains a list of possible actions. The action is not performed until the user presses the "Do it" button.</p>
+         </description>
+         <code><![CDATA[
+<form action="http://somesite.com/action" method="post">
+  <label for="action">Options:</label>
+  <select name="action" id="action">
+    <option value="help">Help</option>
+    <option value="reset">Reset</option>
+    <option value="submit">Submit</option>
+  </select> 
+  <button type="submit" name="submit" value="submit">Do It </button>
+</form>              ]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.cs.tut.fi/~jkorpela/forms/navmenu.html">Jukka Korpela: Navigational pulldown menus in HTML</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H32"/>
+      <relatedtech idref="G80"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each <el>select</el> element/button element combination:</p>
+         <olist>
+            <item>
+               <p>Check that focus (including keyboard focus) on an option in the <el>select</el> element does not result in any actions</p>
+            </item>
+            <item>
+               <p>Check that selecting the button performs the action associated with the current <el>select</el> value</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>All checks are true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

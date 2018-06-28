@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="PDF22">
+   <short-name>Indicating when user input falls outside the required format or
+    			values in PDF forms</short-name>
+   <applicability>
+      <p use-id="pdf.applicability.general"/>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="minimize-error-identified" relationship="sufficient"/>
+      <success-criterion idref="minimize-error-suggestions" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue use-id="pdf.ua-issue.general"/>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to notify the user when user
+    				input to a field that requires a specific, required format (e.g.,
+    				date fields) is not submitted in that format. </p>
+      <p>If the required format is not used, an alert dialog describes the
+    				nature of the error in text. This may be accomplished through scripting
+    				created by the author (see, for example, <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://www.w3.org/TR/2010/NOTE-WCAG20-TECHS-20101014/SCR18">SCR18:
+    					Providing client-side validation and alert</loc>). User agents, such
+    				as Adobe LiveCycle can provide automatic alerts (as described in
+    				the examples below). </p>
+      <note>
+         <p>Once the user dismisses the alert dialog,
+    				it may be helpful if the script positions the keyboard focus on
+    				the field where the error occurred, although some users may expect
+    				the focus to remain on the last control focused prior to the alert
+    				appearing. Authors should exercise care to ensure that any movement
+    				of the focus will be expected. For example, if the alert announces
+    				an error in a phone number format, positioning the focus on the
+    				phone number field when the alert is dismissed can be regarded as
+    				helpful and expected. In some cases, however, this may not be possible.
+    				If multiple input errors occur on the page, an alternative approach
+    				to error notification should be implemented. </p>
+      </note>
+      <p>Ensuring that users are aware an error has occurred, can determine
+    				what is wrong, and can correct it are key to software usability
+    				and accessibility. Meeting this objective helps ensure that all
+    				users can complete for-based transactions with ease and confidence. </p>
+      <section>
+         <head>Labels for required formats in form controls</head>
+         <p>It is also important that users are aware that an error <emph role="strong">may</emph> occur.
+    					You can incorporate this information in labels; for example, "Date
+    					(MM/DD/YYYY)." See <specref ref="PDF10"/>. </p>
+      </section>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Providing validation for an input field format using
+    					Adobe Acrobat 9 Pro</head>
+         <description>
+            <p>This example is shown with Adobe Acrobat Pro. There are other software
+    						tools that perform similar functions. See the list of other software
+    						tools in <specref ref="pdf_notes_acc-sup_files_applications"/>. </p>
+            <p>Many fields -- telephone number, postal code, date -- must have
+    						data entered in a specific format or pattern. </p>
+            <olist>
+               <item>
+                  <p> Access the context menu for the form control that requires
+    						a specific format. </p>
+               </item>
+               <item>
+                  <p> Select Properties... </p>
+               </item>
+               <item>
+                  <p> In the Format tab, select the Format Category (in this case,
+    							Date). The Date Options appear. </p>
+               </item>
+               <item>
+                  <p> Select the format for this form control (in this case, mm/dd/yyyy). </p>
+               </item>
+               <item>
+                  <p> In the General tab, specify "Date (mm/dd/yyyy)" for
+    								the Name and Tooltip for the control. </p>
+               </item>
+            </olist>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF22/dateformat.jpg"
+                       height="611"
+                       width="661"/>
+                  <alt>Specifying a required format for an input field format using Adobe Acrobat 9 Pro </alt>
+               </image> 
+            </p>
+            <p>When a user types a recognized date format, it is converted automatically
+    						to the specified format. If the date format or value is not recognized,
+    						an error alert appears and provides further information, as shown
+    						in the image below. </p>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF22/dateerror.jpg"
+                       height="210"
+                       width="501"/>
+                  <alt>Error alert for date with unrecognized format or value.</alt>
+               </image> 
+            </p>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="required-fields.pdf"
+                    linktype="examples">working example of Required Fields in Acrobat</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Providing validation for an input field format using
+    					Adobe LiveCycle Designer ES 8.2.1</head>
+         <description>
+            <p>This example is shown with Adobe LiveCycle Designer. There are
+    						other software tools that perform similar functions. See the list
+    						of other software tools in <specref ref="pdf_notes_acc-sup_files_applications"/>. </p>
+            <olist>
+               <item>
+                  <p> Select the form control that has a required format. </p>
+               </item>
+               <item>
+                  <p> In the Object palette, click the Validation Pattern... button. </p>
+               </item>
+               <item>
+                  <p> Because this is a date field the Patterns-Date Field dialog
+    						appears. Select the pattern or format you want users to enter.
+    						Then click OK.</p>
+                  <p>
+                     <image>
+                        <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                             source="/WAI/WCAG20/Techniques/working-examples/PDF22/form-validation.jpg"
+                             height="510"
+                             width="903"/>
+                        <alt>Using LiveCycle to specify form fields that require pattern validation</alt>
+                     </image> 
+                  </p>
+               </item>
+               <item>
+                  <p> In the Object palette, use the Validation Pattern Message box
+    							to type a warning message. Be sure to include the required pattern.
+    							This message appears when a user tries to submit the form using
+    							an invalid date format. </p>
+               </item>
+            </olist>
+            <p>This example is shown in operation in the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="required-fields-lc.pdf"
+                    linktype="examples">working example of Required Fields in LiveCycle Designer</loc>.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Validating a required date format in a PDF form using
+    				JavaScript using Adobe Acrobat Pro 9</head>
+         <description>
+            <p>This example is shown with Adobe Acrobat Pro. There are other software
+    						tools that perform similar functions. See the list of other software
+    						tools in <specref ref="pdf_notes_acc-sup_files_applications"/>. </p>
+            <p>The following JavaScript code illustrates the use of a script to
+    						validate form fields, in this case, a date field. To add this script
+    						to the form field, open the Text Field Properties dialog, as shown
+    						in Example 1, and select Edit in the Validate tab: </p>
+            <p>
+               <image>
+                  <img xmlns:xlink="http://www.w3.org/1999/xlink"
+                       source="/WAI/WCAG20/Techniques/working-examples/PDF22/jscript.jpg"
+                       height="462"
+                       width="506"/>
+                  <alt> Text Field Properties dialog, with the Validate tab open to specify JavaScript validation code.</alt>
+               </image> 
+            </p>
+            <codeblock xml:space="preserve"><![CDATA[// JavaScript code for date mask format MM/DD/YYYY
+var re = /^[mdy0-9]{2}\/[mdy0-9]{2}\/[mdy0-9]{4}$/
+//Allow blank space in field
+if (event.value !="") {
+  if (re.test(event.value) == false) {
+    app.alert ({
+       cTitle: "Incorrect Format",
+       cMsg: "Please enter date using mm/dd/yyyy format"
+    });
+  }
+}
+]]></codeblock>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.adobe.com/devnet/acrobat/javascript.html">JavaScript
+    					for Acrobat</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G89"/>
+      <relatedtech idref="SCR18"/>
+      <relatedtech idref="PDF23"/>
+      <relatedtech idref="PDF10"/>
+      <relatedtech idref="PDF5"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For each form field that requires specific input, verify that validation
+    					information and instructions are provided by applying the following: </p>
+         <olist>
+            <item>
+               <p> Check that the format or value that is required is indicated
+    					in the form control's label. </p>
+            </item>
+            <item>
+               <p> Use an erroneous format or value and move off the field: make
+    						sure that an alert describing the error is provided. </p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>#1 and #2 are true. </p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+   <admin>
+      <source>
+         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+              href="http://trace.wisc.edu/wcag_wiki/index.php?title=Indicating_when_user_input_falls_outside_the_required_format_or_values_in_PDF_forms"/>
+      </source>
+   </admin>
+</technique>

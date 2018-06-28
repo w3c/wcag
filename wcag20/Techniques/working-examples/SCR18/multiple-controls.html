@@ -1,0 +1,56 @@
+<!DOCTYPE html SYSTEM "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Validate multiple controls</title>
+		<script type="text/ecmascript"><!--
+			function validate() {
+				// initialize error message
+				var msg = "";
+				
+				//validate name
+				var pattern = /^[a-zA-Z\s]+$/;
+				var el = document.getElementById("name");
+				if (!pattern.test(el.value))  msg += "Name can only have letters and spaces. ";
+				
+				// validate number
+				var pattern = /^[\d\-+\.\s]+$/;
+				var el = document.getElementById("tel");
+				if (!pattern.test(el.value))  msg += "Telephone number can only have digits and separators. ";
+				
+				if (msg != "") {
+					alert(msg);
+					return false;
+				} else return true;
+			}
+			
+			function getQueryVariable(variable){
+			       var query = window.location.search.substring(1);
+			       var vars = query.split("&");
+			       for (var i=0;i<vars.length;i++) {
+			               var pair = vars[i].split("=");
+			               if(pair[0] == variable){return true;}
+			       }
+			       return(false);
+			}
+			
+			if (getQueryVariable("name") && getQueryVariable("tel")) alert("You appear to have successfully validated and submitted the form.");
+		//--></script>
+	</head>
+	<body>
+		<h1>Validate multiple controls</h1>
+		<p>This page demonstrates validating multiple form controls at once. If there is invalid input, the user is alerted and the form is not submitted.</p>
+		<form action="multiple-controls.html" onsubmit="return validate()">
+			<p>
+				<label for="name">Name: </label>
+				<input type="text" name="name" id="name" />
+			</p>
+			<p>
+				<label for="tel">Telephone number: </label>
+				<input type="text" name="tel" id="tel" />				
+			</p>
+			<p>
+				<input type="submit"/>
+			</p>
+		</form>
+	</body>
+</html>
