@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="C12">
+   <short-name>Using percent for font sizes</short-name>
+   <applicability>
+      <p>CSS</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="visual-audio-contrast-scale" relationship="cosufficient"/>
+      <success-criterion idref="visual-audio-contrast-text-presentation"
+                         relationship="sufficient"/>
+      <success-criterion idref="visual-audio-contrast-visual-presentation"
+                         relationship="cosufficient"/>
+      <success-criterion idref="visual-audio-contrast-text-images" relationship="sufficient"/>
+   </applies-to>
+   <ua-issues>
+      <ua-issue name="IE" version="7-">
+         <p>When font size is specified in any absolute units of measurement, such as points or pixels, the Text Size menu commands in Internet Explorer 7 and earlier do not resize the text.</p>
+      </ua-issue>
+      <ua-issue name="windows" version="general">
+         <p>When High Contrast Mode has been set from the Accessibility Control Panel on Windows, IE6 increases the size of the page text as if a percentage change had been set for the outermost window via CSS. Standard CSS layout behavior causes relative scaling to be multiplied, so the scaling of text within elements will be different in subtle ways. Firefox and IE7 do not change the scaling of the content based on the system settings in a way that affects CSS layout, so this effect does not occur in those browsers.</p>
+      </ua-issue>
+   </ua-issues>
+   <description>
+      <p>The objective of this technique is to specify text font size proportionally so that user agents can scale content effectively. If a font-size is specified for the <el>body</el> element, all other elements inherit that value, unless overridden by a more specific selector.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>Percent font sizes in CSS</head>
+         <description>
+            <p>This example defines the font size for the <el>strong</el> element so that its text will always be larger than the surrounding text, in whatever context it is used. Assuming that headings and paragraphs use different font sizes, the emphasized words in this example will each be larger than their surrounding text.</p>
+         </description>
+         <code><![CDATA[
+strong {font-size: 120%}
+
+...
+
+<h1>Letting the <strong>user</strong> control text size</h1>
+<p>Since only the user can know what size text works for him, 
+it is <strong>very</strong> important to let him configure the text size.  
+…]]></code>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/CSS2/fonts.html">Cascading Style Sheets, Level 2 (CSS2), Fonts</loc> 
+               </p>
+            </item>
+            <item>
+               <p> 
+                  <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/CSS2/fonts.html#font-size-props">CSS 2 Font Size Property</loc> 
+               </p>
+            </item>
+         </ulist>
+      </see-also>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="C13"/>
+      <relatedtech idref="C14"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Check that the value of the CSS property that defines the font size is a percentage.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Check #1 is true</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

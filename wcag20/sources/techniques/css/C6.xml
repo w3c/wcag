@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="C6">
+   <short-name>Positioning content based on structural markup</short-name>
+   <applicability>
+      <p>All technologies that support CSS</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="navigation-mechanisms-skip" relationship="sufficient"/>
+      <success-criterion idref="content-structure-separation-sequence" relationship="cosufficient"/>
+      <success-criterion idref="visual-audio-contrast-text-presentation"
+                         relationship="sufficient"/>
+      <success-criterion idref="visual-audio-contrast-text-images" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to demonstrate how visual appearance may be enhanced via style sheets while still maintaining a meaningful presentation when style sheets are not applied. Using the positioning properties of CSS2, content may be displayed at any position on the user's viewport. Using structural elements ensures that the meaning of the content can still be determined when styling is not available. </p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>In this example structural markup (definition lists) have been applied to the content. CSS has been used to style the content into columnar form. Each class absolutely positions the content into columns and the margins have been set to 0 to override the default behavior of user agents to display HTML definition lists with the DD element indented. </p>
+            <p>Here is the content to be displayed:</p>
+         </description>
+         <code role="html401"><![CDATA[
+ <div class="box">
+  <dl>
+    <dt class="menu1">Products</dt>
+    <dd class="item1">Telephones</dd>
+    <dd class="item2">Computers</dd>
+    <dd class="item3">Portable MP3 Players</dd>
+    <dt class="menu2">Locations</dt>
+    <dd class="item4">Idaho</dd>
+    <dd class="item5">Wisconsin</dd>
+    </dt>
+  </dl>
+ </div>
+]]></code>
+         <description>
+            <p>Here is the CSS which positions and styles the above elements:</p>
+         </description>
+         <code role="html401"><![CDATA[
+ .item1 {
+   left: 0;
+   margin: 0;
+   position: absolute;
+   top: 7em;
+ }
+ .item2 {
+   left: 0;
+   margin: 0;
+   position: absolute;
+   top: 8em;
+ }
+ .item3 {
+   left: 0;
+   margin: 0;
+   position: absolute;
+   top: 9em;
+ }
+ .item4 {
+   left: 14em;
+   margin: 0;
+   position: absolute;
+   top: 7em;
+ }
+ .item5 {
+   left: 14em;
+   margin: 0;
+   position: absolute;
+   top: 8em;
+ }
+ .menu1 {
+   background-color: #FFFFFF;
+   color: #FF0000;
+   font-family: sans-serif;
+   font-size: 120%;
+   left: 0;
+   margin: 0;
+   position: absolute;
+   top: 3em;
+ }
+ .menu2 {
+   background-color: #FFFFFF;
+   color: #FF0000;
+   font-family: sans-serif;
+   font-size: 120%;
+   left: 10em;
+   margin: 0;
+   position: absolute;
+   top: 3em;
+ }
+ #box {
+   left: 5em;
+   position: absolute;
+   top: 5em;
+ }
+
+]]></code>
+         <description>
+            <p>When style sheets are applied, the data are displayed in two columns of "Products" and "Locations." When the style sheets are not applied, the text appears in a definition list which maintains the structure and reading order. </p>
+         </description>
+      </eg-group>
+   </examples>
+   <related-techniques>
+      <relatedtech idref="F1"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>For content which uses CSS for positioning
+							</p>
+         <olist>
+            <item>
+               <p>Remove the style information from the document or turn off use of style sheets in the user agent.</p>
+            </item>
+            <item>
+               <p>Check that the structural relations and the meaning of the content are preserved.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Check #2 is true.</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

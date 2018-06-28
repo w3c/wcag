@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="G110">
+   <short-name>Using an instant client-side redirect</short-name>
+   <applicability>
+      <p>Applies to all technologies.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="consistent-behavior-no-extreme-changes-context"
+                         relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to enable redirects on the client side
+            without confusing the user. Redirects are preferably implemented on the
+            server side (see <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="SVR1" linktype="server">Implementing automatic redirects on the server side instead of on the client side</loc>), because a server-side
+            redirect does not cause new content to be displayed before the server sends
+            the content located at the new URI. However, authors do not always have
+            control over server-side technologies; in that case, they can use a
+            client-side redirect. A client-side redirect is implemented by code inside
+            the content that instructs the user agent to retrieve content from a
+            different URI. It is important that the redirecting page or Web page
+            only contains information related to the redirect.</p>
+   </description>
+   <examples>
+      <eg-group>
+         <head>HTML:
+              <code><![CDATA[
+                meta
+              ]]></code>
+              Refresh With a URI and No Timeout</head>
+         <description>
+            <p>In HTML 4.x and XHTML 1.x, it is possible to implement a client-side
+                redirect using the
+                <code><![CDATA[
+                  meta
+                ]]></code>
+                element: see
+                <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="H76" linktype="html">Using
+                  meta refresh to create an instant client-side redirect</loc>.</p>
+         </description>
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also/>
+   </resources>
+   <related-techniques>
+      <relatedtech idref="H76"/>
+      <relatedtech idref="SVR1"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Find each link or programmatic reference to another page or
+                  Web page.</p>
+            </item>
+            <item>
+               <p>For each link or programmatic reference, check if the referenced
+                  Web page contains code (e.g., meta element or script) that
+                  causes a client-side redirect.</p>
+            </item>
+            <item>
+               <p>For each link or programmatic reference that causes a
+                  client-side redirect, check if the redirect is implemented
+                  without a time limit or delay and that the page only contains
+                  information related to the redirect.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <p>Step 2 is false or step 3 is true.</p>
+      </expected-results>
+   </tests>
+</technique>

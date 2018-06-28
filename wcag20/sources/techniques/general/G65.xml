@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="G65">
+   <short-name>Providing a breadcrumb trail</short-name>
+   <applicability>
+      <p>All technologies.</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="navigation-mechanisms-location" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>A breadcrumb trail helps the user to visualize how content has been structured and how to navigate back to previous Web pages, and may identify the current location within a series of Web pages. A breadcrumb trail either displays locations in the path the user took to reach the Web page, or it displays the location of the current Web page within the organization of the site.</p>
+      <p>Breadcrumb trails are implemented using links to the Web pages that have been accessed in the process of navigating to the current Web page. They are placed in the same location within each Web page in the set.</p>
+      <p>It can be helpful to users to separate the items in the breadcrumb trailing with a visible separator. Examples of separators include "&gt;", "|", "/", "::", and "&#8594;".</p>
+   </description>
+   <examples>
+      <eg-group>
+         <description>
+            <p>A developer searches within the Web site of an authoring tool manufacturer to find out how to create hyperlinks.  The search results bring him to a Web page with specific instructions for creating hyperlinks using the authoring tool.  It contains the following links to create a breadcrumb trail:</p>
+         </description>
+         <code><![CDATA[
+              Home :: Developer Center :: How To Center
+            ]]></code>
+         <description>
+            <p>In this example the breadcrumb trail does not contain the title of the current Web page, "How to create hyperlinks". That information is available as the title of the Web page.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <description>
+            <p>A photographer's portfolio Web site has been organized into different galleries and each gallery has further been divided into categories.   A user who navigates through the site to a Web page containing a photo of a Gentoo penguin would see the following breadcrumb trail at the top of the Web page:</p>
+         </description>
+         <code><![CDATA[
+              Home / Galleries / Antarctica / Penguins / Gentoo Penguin
+            ]]></code>
+         <description>
+            <p>All of the items except "Gentoo Penguin" are implemented as links.  The current location, Gentoo Penguin, is included in the breadcrumb trail but it is not implemented as a link.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+        <description>
+          <p>The information architecture of an ecommerce Web site is categorized from general to increasingly more specific product subsections.</p>
+          <p>You are here: Acme Company &#8594; Electronics &#8594; Computers &#8594; Laptops</p>
+          <p>The trail begins with "You are here" and ends with the current page. Items in the trail are clickable or tappable links with the exception of "You are here" and "Laptops." This example uses a right arrow symbol (&#8594;) as a separator.</p>
+          <p>In this example a <el>h2</el> element, a <el>nav</el> element with an <att>aria-label</att> attribute, and an unordered list are used to provide semantics. The markup would be styled using CSS to display the breadcrumb trail horizontally.</p>
+          <p>HTML for this example</p>
+        </description>
+        <code role="html5"><![CDATA[ 
+          <nav aria-label="Breadcrumbs"> 
+            <h2>You are here:</h2> 
+            <ul>
+              <li><a href="/">Acme Company</a> &#8594;</li> 
+              <li><a href="/electronics/">Electronics</a> &#8594;</li>
+              <li><a href="/electronics/computers/">Computers</a> &#8594;</li>
+              <li>Laptops</li>
+            </ul> 
+          </nav>
+      ]]></code>
+      <description>
+        <p>CSS for this example</p>
+      </description>
+              <code role="CSS"><![CDATA[ 
+      nav, h2, ul, ul li{ display: inline;}
+      nav > h2{ font-size: 1em; } 
+      ul { padding-left: 0em; }
+      ]]></code>
+            <p>Working example: <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                    href="ex3.html"
+                    linktype="examples">Breadcrumb example</loc></p>
+
+      </eg-group>
+   </examples>
+   <resources>
+      <see-also>
+         <ulist>
+            <item>
+               <p>
+									         <loc xmlns:xlink="http://www.w3.org/1999/xlink"
+                       href="http://www.w3.org/TR/html5/common-idioms.html#rel-up">HTML5 Bread crumb navigation</loc>
+								       </p>
+            </item>
+         </ulist>
+      </see-also>
+
+   </resources>
+   <related-techniques>
+      <relatedtech idref="G63"/>
+      <relatedtech idref="G128"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <p>When breadcrumb trails have been implemented in a set of Web pages:</p>
+         <olist>
+            <item>
+               <p>Navigate to a Web page.</p>
+            </item>
+            <item>
+               <p>Check that a breadcrumb trail is displayed.</p>
+            </item>
+            <item>
+               <p>Check that the breadcrumb trail displays the correct navigational sequence to reach the current location or the correct hierarchical path to the current location within the site structure.</p>
+            </item>
+            <item>
+               <p>For a breadcrumb trail that does
+                  <emph>not</emph>
+                  include the current location:</p>
+               <olist>
+                  <item>
+                     <p>Check that all elements in the breadcrumb trail are implemented as links.</p>
+                  </item>
+               </olist>
+            </item>
+            <item>
+               <p>For a breadcrumb trail that does include the current location:</p>
+               <olist>
+                  <item>
+                     <p>Check that all elements except for the current location are implemented as links.</p>
+                  </item>
+                  <item>
+                     <p>Check that the current location is not implemented as a link.</p>
+                  </item>
+               </olist>
+            </item>
+            <item>
+               <p>Check that all links navigate to the correct Web page as specified by the breadcrumb trail.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>For all Web pages in the set using breadcrumb trails,</p>
+               <ulist>
+                  <item>
+                     <p>Checks #2, #3, and #6 are true.</p>
+                  </item>
+                  <item>
+                     <p>Either check #4 or #5 is true.</p>
+                  </item>
+               </ulist>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>

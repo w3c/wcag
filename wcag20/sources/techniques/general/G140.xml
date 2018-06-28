@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE technique
+  SYSTEM "../../xmlspec.dtd">
+<technique id="G140">
+   <short-name>Separating information and structure from presentation to enable different presentations</short-name>
+   <applicability>
+      <p>Any technology</p>
+   </applicability>
+   <applies-to>
+      <success-criterion idref="content-structure-separation-programmatic"
+                         relationship="sufficient"/>
+      <success-criterion idref="visual-audio-contrast-text-presentation"
+                         relationship="sufficient"/>
+      <success-criterion idref="visual-audio-contrast-text-images" relationship="sufficient"/>
+   </applies-to>
+   <description>
+      <p>The objective of this technique is to facilitate the interaction of assistive technology with content by logically separating the content's structural encoding from the presentational encoding. Structural encoding is the indication of elements such as headings, paragraphs, lists, tables, etc., and is done by using technology features reserved for the purpose. By contrast, presentational encoding is the indication of formatting effects, such as typeface, color, size, position, borders, etc., and is also supported by technology features.</p>
+      <p>While presentational features visually imply structure — users can determine headings, paragraphs, lists, etc. from the formatting conventions used — these features do not encode the structure unambiguously enough for assistive technology to interact with the page effectively. Providing separate structure, functionality, and presentation layers allows the semantics implied by the formatting to become programmatically determined via the structure layer.</p>
+      <p>Following this technique allows user agents to:</p>
+      <!-- reverted edit to previous para per http://www.w3.org/WAI/GL/wiki/SC_1.3.1_and_Low_Vision <p>Examples of ways in which user agents can use structural information to transform the presentation of the content include:</p> -->
+      <ulist>
+         <item>
+            <p>Perform meaningful structure transformations based on the existing structure of the content, such as reordering sections or generating a list of sections or a list of links.</p>
+         </item>
+         <item>
+            <p>Support interaction with content based on structural characteristics that cannot be determined by assistive technology on the basis of presentational information alone. For instance, it may be desirable to provide special interactions with lists by indicating the number of list items or skipping to the end, but this is only possible if the list structure is encoded in addition to the list presentation.</p>
+         </item>
+         <item>
+            <p>Modify the presentation of content by substituting alternate presentation rules attached to structural features.</p>
+         </item>
+      </ulist>
+   </description>
+   <examples>
+      <eg-group>
+         <head>HTML with CSS</head>
+         <description>
+            <p>An HTML document uses the structural features of HTML, such as paragraphs, lists, headings, etc., and avoids presentational features such as font changes, layout hints, etc. CSS is used to format the document based on its structural properties. Well-crafted "class" attributes in the HTML extend the semantics of the structural markup if needed to allow more flexible formatting with CSS. Assistive technologies can substitute or extend the CSS to modify presentation, or ignore the CSS and interact directly with the structural encoding.</p>
+         </description>
+      </eg-group>
+      <eg-group>
+         <head>Tagged PDF</head>
+         <description>
+            <p>A PDF document consists mostly of the content embedded with formatting information. Information about the structure is provided in a separate section of the document using XML-like tags; this is called "tagged PDF". The information in these tags can be used by assistive technologies to perform meaningful structure transformations (e.g., generating a list of sections) or to support interaction with content based on structural characteristics (e.g., jumping to the start of forms). </p>
+         </description>
+      </eg-group>
+   </examples>
+   <!-- Removed per http://www.w3.org/WAI/GL/wiki/SC_1.3.1_and_Low_Vision
+      	<resources>
+      		<see-also>
+      			<ulist>
+      				<item><p><loc href="http://www.clarosoftware.com/index.php?cPath=355&amp;s=bgrrjpjkvotks1d4lcgccgnkq1">ClaroRead</loc></p></item>
+      			</ulist>
+      		</see-also>
+      	</resources>
+      	-->
+   <related-techniques>
+      <relatedtech idref="C29"/>
+   </related-techniques>
+   <tests>
+      <procedure>
+         <olist>
+            <item>
+               <p>Examine the encoding of a document.</p>
+            </item>
+            <item>
+               <p>Check that structural information and functionality are explicitly provided and is logically separated from presentational information.</p>
+            </item>
+         </olist>
+      </procedure>
+      <expected-results>
+         <ulist>
+            <item>
+               <p>Check #2 is true</p>
+            </item>
+         </ulist>
+      </expected-results>
+   </tests>
+</technique>
