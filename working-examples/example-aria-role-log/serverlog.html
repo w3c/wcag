@@ -6,56 +6,43 @@
 	</head>
 	<body>
 		<script>
-			var counter = 0;
-			var myVar;
-			function makeChat () {
-				var chatText = ["Hi!", "Pleased to meet you.", "We'll talk later, okay?", "Bye!"];
-				var chatContent = document.getElementById("converse");
-
-					var list = document.createElement("li")
-					var item = document.createTextNode(chatText[counter]);
-					list.appendChild(item);
-					chatContent.appendChild(list);
-					counter++;
-					if (counter > 3) {
-						clearInterval(myVar);
-						} 
-					}
 
 
-			function initiateChat () {
-					document.getElementById("converse").innerHTML += "<li style\=\"text-indent: 100px;\">Hello</li>";
-				myVar = setInterval(makeChat, 2000);
-			}
+			function ARIA_Append_Log() {
+				var d = new Date();
+				var list = document.createElement("li");
+				var logContent = document.getElementById('livelog1');
+			  	var txt = document.createTextNode([d] + ": Server was rebooted.");
+			  	list.appendChild(txt);
+			 	logContent.appendChild(list); 
+			 }
 
-function ARIA_Append_Log() {
-  var txt = document.createTextNode(Math.random() + " A line has been appended.");
-  document.getElementById('livelog1').appendChild(txt); 
-}
-			
+			// function ARIA_Remove_Log() {
+			// 	var node = document.getElementById('livelog1');
+			// 	node.removeChild(node.firstChild);
+			//  }
+
 		</script>
 
-Adding a log line to the end of the area.
 
-
-function ARIA_Append_Log() {
-  var txt = document.createTextNode(Math.random() + " A line has been appended.");
-  document.getElementById('livelog1').appendChild(txt); 
-}
 
 
 		<div role="main">
-			<h1>Using <code>role="log"</code> with chat conversation</h1>
-			<p>This simple script demonstrates how the conversation region in a chat is updated and surfaced to ATs using the aria <code>log</code> role. Here the role is placed on the region containing the dynamically updating conversation. This is not intended to be a fully-functional chat client, but to demonstrate the use of log role. In this mock demo, the conversation is updated with a brief, one-sided conversation, which is initiated by pressing Send.</p>	
+			<h1>Using <code>role="log"</code> with server log</h1>
+			<p>This simple script demonstrates how a log file can have new content surfaced to ATs using the aria <code>log</code> role. The  <code>aria-relevant</code> value of "additions" is specified so that entries removed due to log size limitations are ignored. Pressing the Reboot server button causes a time-stamped log entry to be added. For each activation of the button, only the changes will be surfaced by the screen reader due to the implicit <code>aria-atomic="false"</code> value.</p>	
 			<hr>
 			<h2>Log</h2>
-			<div id="livelog1" role="log" aria-atomic="false">
-				
+			<div role="log">
+				<ul id="livelog1" aria-relevant="additions">
+					
+				</ul>
 
 			</div>
 			<div style=";position: fixed; top: 350px;">
-				<h2>Mock log entry</h2>
-	<button onClick="ARIA_Append_Log();">Add a log entry</button>
+				<h2>Mock server action</h2>
+	<button onClick="ARIA_Append_Log();">Reboot server</button>
+	<!-- <button onClick="ARIA_Remove_Log();">Remove top log entry</button> -->
+
 			
 		</div>
 
