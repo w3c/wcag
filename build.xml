@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This is a build file for Apache ant (http://ant.apache.org/). This has been tested with Ant 1.7. -->
-<project name="wcag21" basedir="." default="usage">
+<project name="wcag" basedir="." default="usage">
 	
 	<description>Generate WCAG 2.1 and related documents</description>
 	
@@ -31,7 +31,7 @@
 	
 	<target name="clean" description="Clean up any temp files">
 		<delete file="${inputdir.guidelines}/index-flat.html" failonerror="false"/>
-		<delete file="${inputdir.guidelines}/wcag21.xml" failonerror="false"/>
+		<delete file="${inputdir.guidelines}/wcag.xml" failonerror="false"/>
 		<delete file="${inputdir.techniques}/techniques.xml" failonerror="false"/>
 		<delete file="output.html" failonerror="false"/>
 		<delete dir="output" failonerror="false"/>
@@ -46,7 +46,7 @@
 	</target>
 	
 	<target name="guidelines-xml" depends="flatten" description="Build an XML representation of the guidelines">
-		<xslt in="${inputdir.guidelines}/index-flat.html" out="${inputdir.guidelines}/wcag21.xml" style="xslt/generate-structure-xml.xslt">
+		<xslt in="${inputdir.guidelines}/index-flat.html" out="${inputdir.guidelines}/wcag.xml" style="xslt/generate-structure-xml.xslt">
 			<factory name="${xslt.factory}"/>
 		</xslt>
 	</target>
@@ -55,7 +55,7 @@
 	<target name="techniques-xml" depends="flatten, guidelines-xml" description="Build an XML structure of all techniques">
 		<makeurl file="${basedir}/techniques" property="techniques.dir"/>
 		<makeurl file="${basedir}/understanding" property="understanding.dir"/>
-		<xslt in="${inputdir.guidelines}/wcag21.xml" out="${inputdir.techniques}/techniques.xml" style="xslt/generate-technique-xml.xslt">
+		<xslt in="${inputdir.guidelines}/wcag.xml" out="${inputdir.techniques}/techniques.xml" style="xslt/generate-technique-xml.xslt">
 			<factory name="${xslt.factory}"/>
 			<param name="techniques.dir" expression="${techniques.dir}"/>
 			<param name="understanding.dir" expression="${understanding.dir}"/>
@@ -68,7 +68,7 @@
 		<mkdir dir="${basedir}/output/"/>
 		<makeurl file="${basedir}/output/" property="output.dir"/>
 		<echo message="Outputting Understanding to ${output.dir}"/>
-		<xslt in="${inputdir.guidelines}/wcag21.xml" out="output.html" style="xslt/generate-understanding.xslt" force="true">
+		<xslt in="${inputdir.guidelines}/wcag.xml" out="output.html" style="xslt/generate-understanding.xslt" force="true">
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.understanding}"/>
 			<param name="output.dir" expression="${output.dir}"/>
@@ -80,7 +80,7 @@
 	</target>
 	
 	<target name="understanding-toc" depends="guidelines-xml" description="Generate the TOC for Understanding">
-		<xslt in="${inputdir.guidelines}/wcag21.xml" out="understanding/toc.html" style="xslt/generate-understanding-toc.xslt" force="true">
+		<xslt in="${inputdir.guidelines}/wcag.xml" out="understanding/toc.html" style="xslt/generate-understanding-toc.xslt" force="true">
 			<factory name="${xslt.factory}"/>
 		</xslt>
 	</target>

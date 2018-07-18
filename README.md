@@ -22,7 +22,7 @@ Where <version> is "20", content came from WCAG 2.0. "21" is used for content in
 
 [Success Criteria Managers](https://www.w3.org/WAI/GL/wiki/SC_Managers_Phase1) will prepare candidate success criteria, ready for inclusion in the guidelines document. To prepare success criteria, follow these steps:
 
-1. [Clone the repository](https://help.github.com/articles/cloning-a-repository/), using the URI https://github.com/w3c/wcag21.git to clone.
+1. [Clone the repository](https://help.github.com/articles/cloning-a-repository/), using the URI https://github.com/w3c/wcag.git to clone.
 1. Switch to the working branch for the proposal, which is named for the shortname of the draft success criterion and the issue number, concatenated together.
 1. Find the appropriate file for the success criterion in the guidelines/sc/21 folder, named the same as the start of the branch name, and open in an HTML-capable editor. Do the same with any definitions referenced by the success criterion, in the guidelines/terms/21 folder.
 1. Open the guidelines/index.html file and remove comment marks around the lines that reference the success criterion and terms you have edited..
