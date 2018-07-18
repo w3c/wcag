@@ -9,13 +9,13 @@
 			var counter = 0;
 			var myVar;
 			function makeChat () {
-				var chatText = ["Hi!", "Pleased to meet you :)", "We'll talk later, okay?", "Bye!"];
+				var chatText = ["Hi!", "Pleased to meet you.", "We'll talk later, okay?", "Bye!"];
 				var chatContent = document.getElementById("converse");
 
-					var p = document.createElement("p")
-					var text = document.createTextNode(chatText[counter]);
-					p.appendChild(text);
-					chatContent.appendChild(p);
+					var list = document.createElement("li")
+					var item = document.createTextNode(chatText[counter]);
+					list.appendChild(item);
+					chatContent.appendChild(list);
 					counter++;
 					if (counter > 3) {
 						clearInterval(myVar);
@@ -23,7 +23,7 @@
 					}
 
 			function initiateChat () {
-					document.getElementById("converse").innerHTML += "<p style\=\"text-indent: 100px;\">Hello</p>";
+					document.getElementById("converse").innerHTML += "<li style\=\"text-indent: 100px;\">Hello</li>";
 				myVar = setInterval(makeChat, 2000);
 			}
 
@@ -33,9 +33,9 @@
 			<h1>Using <code>role="log"</code> with chat conversation</h1>
 			<p>This simple script demonstrates how the conversation region in a chat is updated and surfaced to ATs using the aria <code>log</code> role. Here the role is placed on the region containing the dynamically updating conversation. This is not intended to be a fully-functional chat client, but to demonstrate the use of log role. In this mock demo, the conversation is updated with a brief, one-sided conversation, which is initiated by pressing Send.</p>	
 			<hr>
-			<h2>Conversation</h2>
+			<h2 id="conversation">Conversation</h2>
 			<div role="log">
-				<p id="converse"></p>
+				<ul id="converse" aria-labelledby="conversation"></ul>
 			</div>
 			<div style=";position: fixed; top: 350px;">
 				<h2>Mock input</h2>
