@@ -22,6 +22,12 @@
 	<property name="outputdir.understanding" location="${outputdir}/understanding"/>
 	<property name="outputdir.techniques" location="${outputdir}/techniques"/>
 	
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="lib/ant-contrib-0.6.jar" />
+		</classpath>
+	</taskdef>
+	
 	<target name="usage">
 		<echo level="info">Usage: &quot;ant &lt;target&gt;&quot; to execute a build task
 			Enter &quot;ant -projecthelp&quot; to get list of available build tasks</echo>
@@ -52,6 +58,34 @@
 	</target>
 	
 	<!-- Techniques -->
+	<target name="techniques-list" description="Create XML list of all the technique files">
+		<property name="output.file" value="${inputdir.techniques}/techniques.xml"/>
+		<echo file="${output.file}"><![CDATA[<techniques>
+]]></echo>
+		<for param="current.dir">
+			<path><dirset dir="techniques" includes="*"/></path>
+			<sequential>
+				<local name="technology"/>
+				<basename file="@{current.dir}" property="technology"/>
+				<echo file="${output.file}" append="yes"><![CDATA[	<technology name="${technology}">
+]]></echo>
+				<for param="current.file">
+					<path><fileset dir="@{current.dir}" includes="*"/></path>
+					<sequential>
+						<local name="technique"/>
+						<basename file="@{current.file}" property="technique" suffix="html"/>
+						<echo file="${output.file}" append="yes"><![CDATA[		<technique id="${technique}" />
+]]></echo>
+					</sequential>
+				</for>
+				<echo file="${output.file}" append="yes"><![CDATA[	</technology>
+]]></echo>
+			</sequential>
+		</for>
+		<echo file="${output.file}" append="yes"><![CDATA[</techniques>
+]]></echo>
+	</target>
+	
 	<target name="techniques-xml" depends="flatten, guidelines-xml" description="Build an XML structure of all techniques">
 		<makeurl file="${basedir}/techniques" property="techniques.dir"/>
 		<makeurl file="${basedir}/understanding" property="understanding.dir"/>
