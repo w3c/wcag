@@ -39,6 +39,7 @@
 		<delete file="${inputdir.guidelines}/index-flat.html" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/wcag.xml" failonerror="false"/>
 		<delete file="${inputdir.techniques}/techniques.xml" failonerror="false"/>
+		<delete file="${inputdir.techniques}/technique-associations.xml" failonerror="false"/>
 		<delete file="output.html" failonerror="false"/>
 		<delete dir="output" failonerror="false"/>
 	</target>
@@ -86,10 +87,10 @@
 ]]></echo>
 	</target>
 	
-	<target name="techniques-xml" depends="flatten, guidelines-xml" description="Build an XML structure of all techniques">
+	<target name="techniques-association" depends="flatten, guidelines-xml" description="Build an XML structure of all techniques">
 		<makeurl file="${basedir}/techniques" property="techniques.dir"/>
 		<makeurl file="${basedir}/understanding" property="understanding.dir"/>
-		<xslt in="${inputdir.guidelines}/wcag.xml" out="${inputdir.techniques}/techniques.xml" style="xslt/generate-technique-xml.xslt">
+		<xslt in="${inputdir.guidelines}/wcag.xml" out="${inputdir.techniques}/technique-associations.xml" style="xslt/generate-technique-xml.xslt">
 			<factory name="${xslt.factory}"/>
 			<param name="techniques.dir" expression="${techniques.dir}"/>
 			<param name="understanding.dir" expression="${understanding.dir}"/>
