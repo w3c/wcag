@@ -75,7 +75,22 @@
 					<sequential>
 						<local name="technique"/>
 						<basename file="@{current.file}" property="technique" suffix="html"/>
-						<echo file="${output.file}" append="yes"><![CDATA[		<technique id="${technique}" />
+						<echo file="${output.file}" append="yes"><![CDATA[		<technique id="${technique}">
+]]></echo>
+						<local name="technique.title"/>
+						<loadfile srcFile="@{current.file}" property="technique.title">
+							<filterchain>
+								<linecontainsregexp>
+									<regexp pattern="&lt;/?h1>"/>
+								</linecontainsregexp>
+								<striplinebreaks/>
+								<replaceregex pattern=".*&lt;h1>(.*?)&lt;/h1>.*" replace="\1"/>
+								<replaceregex pattern="\s\s+" replace=" "/>
+							</filterchain>
+						</loadfile>
+						<echo file="${output.file}" append="yes"><![CDATA[			<title>${technique.title}</title>
+]]></echo>
+						<echo file="${output.file}" append="yes"><![CDATA[		</technique>
 ]]></echo>
 					</sequential>
 				</for>
