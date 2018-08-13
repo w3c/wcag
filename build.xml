@@ -112,6 +112,21 @@
 		</xslt>
 	</target>
 	
+	<target name="techniques" depends="techniques-list, techniques-association">
+		<makeurl file="${basedir}/techniques/" property="base.techniques"/>
+		<makeurl file="${basedir}/techniques/technique-associations.xml" property="associations.file"/>
+		<mkdir dir="${basedir}/output/"/>
+		<makeurl file="${basedir}/output/" property="output.dir"/>
+		<echo message="Outputting Techniques to ${output.dir}"/>
+		<xslt in="${inputdir.techniques}/techniques.xml" out="output.html" style="xslt/generate-techniques.xslt" force="true">
+			<factory name="${xslt.factory}"/>
+			<param name="techniques.dir" expression="${base.techniques}"/>
+			<param name="associations.file" expression="${associations.file}"/>
+			<param name="output.dir" expression="${output.dir}"/>
+		</xslt>
+		<copy file="techniques/techniques.css" todir="output/"/>
+	</target>
+	
 	<!-- Understanding -->
 	<target name="understanding" depends="guidelines-xml" description="Generate formatted Understanding docs">
 		<makeurl file="${basedir}/understanding/" property="base.understanding"/>

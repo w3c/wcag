@@ -98,7 +98,7 @@
 		<xsl:variable name="tech-technology" select="replace(@href, '^.*/([\w-]*)/[\w\d]*$', '$1')"/>
 		<xsl:variable name="tech-id" select="replace(@href, '^.*/([\w\d]*)$', '$1')"/>
 		<technique>
-			<id><xsl:value-of select="$tech-id"/></id>
+			<xsl:attribute name="id"><xsl:value-of select="$tech-id"/></xsl:attribute>
 			<xsl:if test="../html:ol or ../html:ul or ../../html:ol or ../../html:ul">
 				<using>
 					<xsl:apply-templates select="../html:ol | ../html:ul | ../../html:ol | ../../html:ul"/>
