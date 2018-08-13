@@ -178,40 +178,43 @@
 			<xsl:apply-templates select="@*"/>
 			<h2>Applicability</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.) or @id = 'benefits')]"/>
+			<!-- This has gotten really hairy, would like to find a more elegant way to sort the associations -->
 			<xsl:variable name="associations" select="$associations.doc//technique[@id = $meta/@id]"/>
 			<xsl:variable name="association-links">
 				<xsl:for-each select="$associations">
-					<xsl:call-template name="understanding-link">
-						<xsl:with-param name="understanding-id">
-							<xsl:choose>
-								<xsl:when test="ancestor::success-criterion"><xsl:value-of select="ancestor::success-criterion/@id"/></xsl:when>
-								<xsl:when test="ancestor::guideline"><xsl:value-of select="ancestor::guideline/@id"/></xsl:when>
-							</xsl:choose>
-						</xsl:with-param>
-					</xsl:call-template>
-					<xsl:text> (</xsl:text>
-					<xsl:call-template name="technique-sufficiency"/>
-					<xsl:text>)</xsl:text>
+					<span>
+						<xsl:call-template name="understanding-link">
+							<xsl:with-param name="understanding-id">
+								<xsl:choose>
+									<xsl:when test="ancestor::success-criterion"><xsl:value-of select="ancestor::success-criterion/@id"/></xsl:when>
+									<xsl:when test="ancestor::guideline"><xsl:value-of select="ancestor::guideline/@id"/></xsl:when>
+								</xsl:choose>
+							</xsl:with-param>
+						</xsl:call-template>
+						<xsl:text> (</xsl:text>
+						<xsl:call-template name="technique-sufficiency"/>
+						<xsl:text>)</xsl:text>
+					</span>
 				</xsl:for-each>
 			</xsl:variable>
 			<xsl:variable name="association-links-filtered">
-				<xsl:for-each select="$association-links/html:a">
-					<xsl:if test="not(preceding-sibling::html:a[. = current()])">
+				<xsl:for-each select="$association-links/html:span">
+					<xsl:if test="not(preceding-sibling::html:span[. = current()])">
 						<xsl:copy-of select="."/>
 					</xsl:if>
 				</xsl:for-each>
 			</xsl:variable>
 			<xsl:choose>
-				<xsl:when test="count($association-links-filtered/html:a) &gt; 1">
+				<xsl:when test="count($association-links-filtered/html:span) &gt; 1">
 					<p>This technique relates to:</p>
 					<ul>
-						<xsl:for-each select="$association-links-filtered/html:a">
-							<li><xsl:copy-of select="."/></li>
+						<xsl:for-each select="$association-links-filtered/html:span">
+							<li><xsl:copy-of select="node()"/></li>
 						</xsl:for-each>
 					</ul>
 				</xsl:when>
-				<xsl:when test="count($association-links-filtered/html:a) = 1">
-					<p>This technique relates to <xsl:copy-of select="$association-links-filtered"/>.</p>
+				<xsl:when test="count($association-links-filtered/html:span) = 1">
+					<p>This technique relates to <xsl:copy-of select="$association-links-filtered/node()"/>.</p>
 				</xsl:when>
 				<xsl:otherwise><p>This technique is not referenced from any Understanding document.</p></xsl:otherwise>
 			</xsl:choose>
