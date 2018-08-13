@@ -64,7 +64,7 @@
 	
 	<xsl:template name="technique-link">
 		<xsl:param name="technique" select="."/>
-		<a href="../{$technique/parent::technology}/{$technique/@id}"><xsl:value-of select="$technique/@id"/></a>
+		<a href="../{$technique/parent::technology/@name}/{$technique/@id}"><xsl:value-of select="$technique/@id"/></a>
 	</xsl:template>
 	
 	<xsl:template name="understanding-link">
@@ -93,7 +93,7 @@
 			<xsl:text>, together with </xsl:text>
 			<xsl:for-each select="parent::and/technique[not(@id = current()/@id)]">
 				<xsl:call-template name="technique-link">
-					<xsl:with-param name="technique" select="$meta//technique[@id = current()/@id]"/>
+					<xsl:with-param name="technique" select="$meta/ancestor::techniques//technique[@id = current()/@id]"/>
 				</xsl:call-template>
 				<xsl:if test="position() != last()"> and </xsl:if>
 			</xsl:for-each>
@@ -104,7 +104,7 @@
 		<xsl:if test="ancestor::using">
 			<xsl:text> as a way to meet </xsl:text>
 			<xsl:call-template name="technique-link">
-				<xsl:with-param name="technique" select="$meta//technique[@id = current()/ancestor::using/parent::technique/@id]"/>
+				<xsl:with-param name="technique" select="$meta/ancestor::techniques//technique[@id = current()/ancestor::using[1]/parent::technique/@id]"/>
 			</xsl:call-template>
 		</xsl:if>
 	</xsl:template>
