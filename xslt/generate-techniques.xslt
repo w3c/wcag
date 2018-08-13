@@ -145,7 +145,7 @@
 				<xsl:call-template name="navigation"/>
 				<xsl:call-template name="navtoc"/>
 				<xsl:apply-templates select="//html:h1"/>
-				<section id="important=information">
+				<section id="important-information">
 					<h2>Important Information about Techniques</h2>
 					<p>See <a href="{$loc.understanding}understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how they relate to the normative WCAG 2.0 success criteria. The Applicability section explains the scope of the technique, and the presence of techniques for a specific technology does not imply that the technology can be used in all situations to create content that meets WCAG 2.0.</p>
 				</section>
@@ -175,6 +175,7 @@
 	<xsl:template match="html:section[@id = 'applicability' or @class = 'applicability']">
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:copy>
+			<xsl:attribute name="id">applicability</xsl:attribute>
 			<xsl:apply-templates select="@*"/>
 			<h2>Applicability</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.) or @id = 'benefits')]"/>
@@ -223,6 +224,7 @@
 	
 	<xsl:template match="html:section[@id = 'description' or @class = 'description']">
 		<xsl:copy>
+			<xsl:attribute name="id">description</xsl:attribute>
 			<xsl:apply-templates select="@*"/>
 			<h2>Description</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
@@ -231,6 +233,7 @@
 	
 	<xsl:template match="html:section[@id = 'examples' or @class = 'examples']">
 		<xsl:copy>
+			<xsl:attribute name="id">examples</xsl:attribute>
 			<xsl:apply-templates select="@*"/>
 			<h2>Examples</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
@@ -239,6 +242,7 @@
 	
 	<xsl:template match="html:section[@id = 'resources' or @class = 'resources']">
 		<xsl:copy>
+			<xsl:attribute name="id">resources</xsl:attribute>
 			<xsl:apply-templates select="@*"/>
 			<h2>Resources</h2>
 			<p>Resources are for information purposes only, no endorsement implied.</p>
@@ -248,6 +252,7 @@
 	
 	<xsl:template match="html:section[@id = 'related' or @class = 'related']">
 		<xsl:copy>
+			<xsl:attribute name="id">related</xsl:attribute>
 			<xsl:apply-templates select="@*"/>
 			<h2>Related Techniques</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
@@ -256,6 +261,7 @@
 	
 	<xsl:template match="html:section[@id = 'tests' or @class = 'tests']">
 		<xsl:copy>
+			<xsl:attribute name="id">tests</xsl:attribute>
 			<xsl:apply-templates select="@*"/>
 			<h2>Tests</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
