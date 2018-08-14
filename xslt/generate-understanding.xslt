@@ -217,6 +217,7 @@
 				<title><xsl:apply-templates select="//html:h1"/></title>
 				<link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/base" />
 				<link rel="stylesheet" type="text/css" href="understanding.css" />
+				<link rel="stylesheet" type="text/css" href="slicenav.css" />
 			</head>
 			<body>
 				<xsl:call-template name="navigation"/>

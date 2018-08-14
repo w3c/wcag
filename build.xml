@@ -22,6 +22,12 @@
 	<property name="outputdir.understanding" location="${outputdir}/understanding"/>
 	<property name="outputdir.techniques" location="${outputdir}/techniques"/>
 	
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="lib/ant-contrib-0.6.jar" />
+		</classpath>
+	</taskdef>
+	
 	<target name="usage">
 		<echo level="info">Usage: &quot;ant &lt;target&gt;&quot; to execute a build task
 			Enter &quot;ant -projecthelp&quot; to get list of available build tasks</echo>
@@ -33,6 +39,7 @@
 		<delete file="${inputdir.guidelines}/index-flat.html" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/wcag.xml" failonerror="false"/>
 		<delete file="${inputdir.techniques}/techniques.xml" failonerror="false"/>
+		<delete file="${inputdir.techniques}/technique-associations.xml" failonerror="false"/>
 		<delete file="output.html" failonerror="false"/>
 		<delete dir="output" failonerror="false"/>
 	</target>
@@ -52,14 +59,73 @@
 	</target>
 	
 	<!-- Techniques -->
-	<target name="techniques-xml" depends="flatten, guidelines-xml" description="Build an XML structure of all techniques">
+	<target name="techniques-list" description="Create XML list of all the technique files">
+		<property name="output.file" value="${inputdir.techniques}/techniques.xml"/>
+		<echo file="${output.file}"><![CDATA[<techniques>
+]]></echo>
+		<for param="current.dir">
+			<path><dirset dir="techniques" includes="*"/></path>
+			<sequential>
+				<local name="technology"/>
+				<basename file="@{current.dir}" property="technology"/>
+				<echo file="${output.file}" append="yes"><![CDATA[	<technology name="${technology}">
+]]></echo>
+				<for param="current.file">
+					<path><fileset dir="@{current.dir}" includes="*"/></path>
+					<sequential>
+						<local name="technique"/>
+						<basename file="@{current.file}" property="technique" suffix="html"/>
+						<echo file="${output.file}" append="yes"><![CDATA[		<technique id="${technique}">
+]]></echo>
+						<local name="technique.title"/>
+						<loadfile srcFile="@{current.file}" property="technique.title">
+							<filterchain>
+								<linecontainsregexp>
+									<regexp pattern="&lt;/?h1>"/>
+								</linecontainsregexp>
+								<striplinebreaks/>
+								<replaceregex pattern=".*&lt;h1>(.*?)&lt;/h1>.*" replace="\1"/>
+								<replaceregex pattern="\s\s+" replace=" "/>
+							</filterchain>
+						</loadfile>
+						<echo file="${output.file}" append="yes"><![CDATA[			<title>${technique.title}</title>
+]]></echo>
+						<echo file="${output.file}" append="yes"><![CDATA[		</technique>
+]]></echo>
+					</sequential>
+				</for>
+				<echo file="${output.file}" append="yes"><![CDATA[	</technology>
+]]></echo>
+			</sequential>
+		</for>
+		<echo file="${output.file}" append="yes"><![CDATA[</techniques>
+]]></echo>
+	</target>
+	
+	<target name="techniques-association" depends="flatten, guidelines-xml" description="Build an XML structure of all techniques">
 		<makeurl file="${basedir}/techniques" property="techniques.dir"/>
 		<makeurl file="${basedir}/understanding" property="understanding.dir"/>
-		<xslt in="${inputdir.guidelines}/wcag.xml" out="${inputdir.techniques}/techniques.xml" style="xslt/generate-technique-xml.xslt">
+		<xslt in="${inputdir.guidelines}/wcag.xml" out="${inputdir.techniques}/technique-associations.xml" style="xslt/generate-technique-associations.xslt">
 			<factory name="${xslt.factory}"/>
 			<param name="techniques.dir" expression="${techniques.dir}"/>
 			<param name="understanding.dir" expression="${understanding.dir}"/>
 		</xslt>
+	</target>
+	
+	<target name="techniques" depends="techniques-list, techniques-association">
+		<makeurl file="${basedir}/techniques/" property="base.techniques"/>
+		<makeurl file="${basedir}/techniques/technique-associations.xml" property="associations.file"/>
+		<mkdir dir="${basedir}/output/"/>
+		<makeurl file="${basedir}/output/" property="output.dir"/>
+		<echo message="Outputting Techniques to ${output.dir}"/>
+		<xslt in="${inputdir.techniques}/techniques.xml" out="output.html" style="xslt/generate-techniques.xslt" force="true">
+			<factory name="${xslt.factory}"/>
+			<param name="techniques.dir" expression="${base.techniques}"/>
+			<param name="associations.file" expression="${associations.file}"/>
+			<param name="output.dir" expression="${output.dir}"/>
+		</xslt>
+		<copy file="techniques/techniques.css" todir="output/"/>
+		<copy file="css/slicenav.css" todir="output/"/>
 	</target>
 	
 	<!-- Understanding -->
@@ -74,6 +140,7 @@
 			<param name="output.dir" expression="${output.dir}"/>
 		</xslt>
 		<copy file="understanding/understanding.css" todir="output/"/>
+		<copy file="css/slicenav.css" todir="output/"/>
 		<copy todir="output/img/">
 			<fileset dir="understanding/21/img"/>
 		</copy>
