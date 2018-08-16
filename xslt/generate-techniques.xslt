@@ -64,7 +64,11 @@
 	
 	<xsl:template name="technique-link">
 		<xsl:param name="technique" select="."/>
-		<a href="../{$technique/parent::technology/@name}/{$technique/@id}"><xsl:value-of select="$technique/@id"/></a>
+		<xsl:choose>
+			<xsl:when test="$technique"><a href="../{$technique/parent::technology/@name}/{$technique/@id}"><xsl:value-of select="$technique/@id"/>: <xsl:value-of select="$technique/title"/></a></xsl:when>
+			<xsl:otherwise>an unwritten technique</xsl:otherwise>
+		</xsl:choose>
+		
 	</xsl:template>
 	
 	<xsl:template name="understanding-link">

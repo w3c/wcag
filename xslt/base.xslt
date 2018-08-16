@@ -24,5 +24,13 @@
 		<xsl:copy-of select="$el/html:h1[1] | $el/html:h2[1]| $el/html:h3[1] | $el/html:h4[1] | $el/html:h5[1] | $el/html:h6[1]"/>
 	</xsl:function>
 	
+	<xsl:function name="wcag:number-in-id">
+		<xsl:param name="value"/>
+		<xsl:analyze-string select="$value" regex="\d+">
+			<xsl:matching-substring>
+				<xsl:value-of select="."/>
+			</xsl:matching-substring>
+		</xsl:analyze-string>
+	</xsl:function>
 	
 </xsl:stylesheet>
