@@ -288,6 +288,24 @@
 		</xsl:copy>
 	</xsl:template>
 	
+	<xsl:template match="html:section[@class='example']">
+		<xsl:variable name="heading" select="wcag:find-heading(.)"/>
+		<xsl:variable name="heading-text">
+			<xsl:text>Example </xsl:text>
+			<xsl:value-of select="count(preceding-sibling::html:section[@class='example']) + 1"/>
+			<xsl:if test="normalize-space($heading) != ''">
+				<xsl:text>: </xsl:text>
+				<xsl:apply-templates select="$heading/node()"/>
+			</xsl:if>
+		</xsl:variable>
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:attribute name="id" select="wcag:generate-id($heading-text)"/>
+			<h3><xsl:copy-of select="$heading-text"/></h3>
+			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
+		</xsl:copy>
+	</xsl:template>
+	
 	<xsl:template match="html:section">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
