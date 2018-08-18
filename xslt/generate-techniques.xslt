@@ -31,7 +31,7 @@
 					<li><a href="{$meta/preceding-sibling::technique[1]/@id}">Previous Technique: <xsl:value-of select="$meta/preceding-sibling::technique[1]/@id"/></a></li>
 				</xsl:when>
 				<xsl:when test="$meta/parent::technology/preceding-sibling::technology">
-					<li><a href="../{$meta/parent::technology/preceding-sibling::technology[1]}/{$meta/parent::technology/preceding-sibling::technology[1]/technique[last()]/@id}">Previous Technique: <xsl:value-of select="$meta/parent::technology/preceding-sibling::technology[1]/technique[last()]/@id"/></a></li>
+					<li><a href="../{$meta/parent::technology/preceding-sibling::technology[1]/@name}/{$meta/parent::technology/preceding-sibling::technology[1]/technique[last()]/@id}">Previous Technique: <xsl:value-of select="$meta/parent::technology/preceding-sibling::technology[1]/technique[last()]/@id"/></a></li>
 				</xsl:when>
 			</xsl:choose>
 			<xsl:choose>
@@ -39,7 +39,7 @@
 					<li><a href="{$meta/following-sibling::technique[1]/@id}">Next Technique: <xsl:value-of select="$meta/following-sibling::technique[1]/@id"/></a></li>
 				</xsl:when>
 				<xsl:when test="$meta/parent::technology/following-sibling::technology">
-					<li><a href="../{$meta/parent::technology/following-sibling::technology[1]}/{$meta/parent::technology/following-sibling::technology[1]/technique[1]/@id}">Next Technique: <xsl:value-of select="$meta/parent::technology/following-sibling::technology[1]/technique[1]/@id"/></a></li>
+					<li><a href="../{$meta/parent::technology/following-sibling::technology[1]/@name}/{$meta/parent::technology/following-sibling::technology[1]/technique[1]/@id}">Next Technique: <xsl:value-of select="$meta/parent::technology/following-sibling::technology[1]/technique[1]/@id"/></a></li>
 				</xsl:when>
 			</xsl:choose>
 		</ul>
@@ -114,7 +114,27 @@
 	</xsl:template>
 	
 	<xsl:template match="/techniques">
-		<xsl:apply-templates select="//technique"/>
+		<xsl:variable name="techniques-sorted">
+			<xsl:apply-templates select="technology" mode="sorting">
+				<xsl:sort select="@name"/>
+			</xsl:apply-templates>
+		</xsl:variable>
+		<xsl:apply-templates select="$techniques-sorted//technique"/>
+	</xsl:template>
+	
+	<xsl:template match="technology" mode="sorting">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:apply-templates select="technique" mode="sorting">
+				<xsl:sort select="wcag:number-in-id(@id)" data-type="number"/>
+			</xsl:apply-templates>
+		</xsl:copy>
+	</xsl:template> 
+	
+	<xsl:template match="technique" mode="sorting">
+		<xsl:copy>
+			<xsl:apply-templates select="node()|@*"/>
+		</xsl:copy>
 	</xsl:template>
 	
 	<xsl:template match="technique">
