@@ -24,8 +24,8 @@
 		<xsl:param name="meta" tunnel="yes"/>
 		<nav>
 		<ul id="navigation">
-			<li><a href="{$loc.techniques}#toc" title="Table of Contents">Contents</a></li>
-			<li><a href="{$loc.techniques}intro" title="Introduction to Techniques">Intro</a></li>
+			<li><a href="{$loc.techniques}#techniques" title="Table of Contents">Contents</a></li>
+			<li><a href="{$loc.techniques}#introduction" title="Introduction to Techniques">Intro</a></li>
 			<xsl:choose>
 				<xsl:when test="$meta/preceding-sibling::technique">
 					<li><a href="{$meta/preceding-sibling::technique[1]/@id}">Previous Technique: <xsl:value-of select="$meta/preceding-sibling::technique[1]/@id"/></a></li>
