@@ -154,12 +154,12 @@
 					<p>See <a href="{$loc.understanding}understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how they relate to the normative WCAG 2.0 success criteria. The Applicability section explains the scope of the technique, and the presence of techniques for a specific technology does not imply that the technology can be used in all situations to create content that meets WCAG 2.0.</p>
 				</section>
 				<main>
-					<xsl:apply-templates select="//html:section[@id = 'applicability']"/>
-					<xsl:apply-templates select="//html:section[@id = 'description']"/>
-					<xsl:apply-templates select="//html:section[@id = 'examples']"/>
-					<xsl:apply-templates select="//html:section[@id = 'resources']"/>
-					<xsl:apply-templates select="//html:section[@id = 'related']"/>
-					<xsl:apply-templates select="//html:section[@id = 'tests']"/>
+					<xsl:call-template name="applicability"/>
+					<xsl:call-template name="description"/>
+					<xsl:call-template name="examples"/>
+					<xsl:call-template name="resources"/>
+					<xsl:call-template name="related"/>
+					<xsl:call-template name="tests"/>
 				</main>
 			</body>
 		</html>
@@ -176,13 +176,14 @@
 	
 	<xsl:template match="html:section[@id = 'meta']"/>
 	
-	<xsl:template match="html:section[@id = 'applicability']">
+	<xsl:template name="applicability">
 		<xsl:param name="meta" tunnel="yes"/>
-		<xsl:copy>
-			<xsl:attribute name="id">applicability</xsl:attribute>
-			<xsl:apply-templates select="@*"/>
+		<section id="applicability">
 			<h2>Applicability</h2>
-			<xsl:apply-templates select="html:*[not(wcag:isheading(.) or @id = 'benefits')]"/>
+			<xsl:call-template name="section-if-exists">
+				<xsl:with-param name="section" select="//html:section[@id = 'applicability']"></xsl:with-param>
+				<xsl:with-param name="name">applicability</xsl:with-param>
+			</xsl:call-template>
 			<!-- This has gotten really hairy, would like to find a more elegant way to sort the associations -->
 			<xsl:variable name="associations" select="$associations.doc//technique[@id = $meta/@id]"/>
 			<xsl:variable name="association-links">
@@ -223,53 +224,80 @@
 				</xsl:when>
 				<xsl:otherwise><p>This technique is not referenced from any Understanding document.</p></xsl:otherwise>
 			</xsl:choose>
-		</xsl:copy>
+		</section>
 	</xsl:template>
 	
-	<xsl:template match="html:section[@id = 'description']">
-		<xsl:copy>
-			<xsl:attribute name="id">description</xsl:attribute>
-			<xsl:apply-templates select="@*"/>
+	<xsl:template name="description">
+		<xsl:param name="meta" tunnel="yes"/>
+		<section id="description">
 			<h2>Description</h2>
-			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
-		</xsl:copy>
+			<xsl:call-template name="section-if-exists">
+				<xsl:with-param name="section" select="//html:section[@id = 'description']"></xsl:with-param>
+				<xsl:with-param name="name">description</xsl:with-param>
+			</xsl:call-template>
+		</section>
 	</xsl:template>
 	
-	<xsl:template match="html:section[@id = 'examples']">
-		<xsl:copy>
-			<xsl:attribute name="id">examples</xsl:attribute>
-			<xsl:apply-templates select="@*"/>
+	<xsl:template name="examples">
+		<xsl:param name="meta" tunnel="yes"/>
+		<section id="examples">
 			<h2>Examples</h2>
-			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
-		</xsl:copy>
+			<xsl:call-template name="section-if-exists">
+				<xsl:with-param name="section" select="//html:section[@id = 'examples']"></xsl:with-param>
+				<xsl:with-param name="name">examples</xsl:with-param>
+			</xsl:call-template>
+		</section>
 	</xsl:template>
 	
-	<xsl:template match="html:section[@id = 'resources']">
-		<xsl:copy>
-			<xsl:attribute name="id">resources</xsl:attribute>
-			<xsl:apply-templates select="@*"/>
+	<xsl:template name="resources">
+		<xsl:param name="meta" tunnel="yes"/>
+		<xsl:variable name="resources" select="//html:section[@id = 'resources']"/>
+		<section id="resources">
 			<h2>Resources</h2>
 			<p>Resources are for information purposes only, no endorsement implied.</p>
-			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
-		</xsl:copy>
+			<xsl:call-template name="section-if-exists">
+				<xsl:with-param name="section" select="//html:section[@id = 'resources']"></xsl:with-param>
+				<xsl:with-param name="name">resources</xsl:with-param>
+			</xsl:call-template>
+		</section>
+		
 	</xsl:template>
 	
-	<xsl:template match="html:section[@id = 'related']">
-		<xsl:copy>
-			<xsl:attribute name="id">related</xsl:attribute>
-			<xsl:apply-templates select="@*"/>
+	<xsl:template name="related">
+		<xsl:param name="meta" tunnel="yes"/>
+		<section id="related">
 			<h2>Related Techniques</h2>
-			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
-		</xsl:copy>
+			<xsl:call-template name="section-if-exists">
+				<xsl:with-param name="section" select="//html:section[@id = 'related']"></xsl:with-param>
+				<xsl:with-param name="name">related techniques</xsl:with-param>
+			</xsl:call-template>
+		</section>
 	</xsl:template>
 	
-	<xsl:template match="html:section[@id = 'tests']">
-		<xsl:copy>
-			<xsl:attribute name="id">tests</xsl:attribute>
-			<xsl:apply-templates select="@*"/>
+	<xsl:template name="tests">
+		<xsl:param name="meta" tunnel="yes"/>
+		<section id="tests">
 			<h2>Tests</h2>
-			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
-		</xsl:copy>
+			<xsl:call-template name="section-if-exists">
+				<xsl:with-param name="section" select="//html:section[@id = 'tests']"></xsl:with-param>
+				<xsl:with-param name="name">tests</xsl:with-param>
+			</xsl:call-template>
+		</section>
+	</xsl:template>
+	
+	<xsl:template name="section-if-exists">
+		<xsl:param name="meta" tunnel="yes"/>
+		<xsl:param name="section"/>
+		<xsl:param name="name"/>
+		<xsl:choose>
+			<xsl:when test="$section and $section/html:*[not(wcag:isheading(.))]">
+				<xsl:apply-templates select="$section/html:*[not(wcag:isheading(.))]"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:message>No <xsl:value-of select="$name"/> section in <xsl:value-of select="$meta/@id"/></xsl:message>
+				<p>No <xsl:value-of select="$name"/>.</p>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<xsl:template match="html:section[@class='test-procedure']">
