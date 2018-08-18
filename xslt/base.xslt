@@ -16,7 +16,7 @@
 	
 	<xsl:function name="wcag:generate-id">
 		<xsl:param name="title"/>
-		<xsl:value-of select="lower-case(replace(replace($title, ' ', '-'), '[,()]', ''))"/>
+		<xsl:value-of select="lower-case(replace(replace($title, ' ', '-'), '[,():]', ''))"/>
 	</xsl:function>
 	
 	<xsl:function name="wcag:find-heading">
