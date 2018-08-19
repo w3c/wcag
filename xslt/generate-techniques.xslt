@@ -24,14 +24,14 @@
 		<xsl:param name="meta" tunnel="yes"/>
 		<nav>
 		<ul id="navigation">
-			<li><a href="{$loc.techniques}#toc" title="Table of Contents">Contents</a></li>
-			<li><a href="{$loc.techniques}intro" title="Introduction to Techniques">Intro</a></li>
+			<li><a href="{$loc.techniques}#techniques" title="Table of Contents">Contents</a></li>
+			<li><a href="{$loc.techniques}#introduction" title="Introduction to Techniques">Intro</a></li>
 			<xsl:choose>
 				<xsl:when test="$meta/preceding-sibling::technique">
 					<li><a href="{$meta/preceding-sibling::technique[1]/@id}">Previous Technique: <xsl:value-of select="$meta/preceding-sibling::technique[1]/@id"/></a></li>
 				</xsl:when>
 				<xsl:when test="$meta/parent::technology/preceding-sibling::technology">
-					<li><a href="../{$meta/parent::technology/preceding-sibling::technology[1]}/{$meta/parent::technology/preceding-sibling::technology[1]/technique[last()]/@id}">Previous Technique: <xsl:value-of select="$meta/parent::technology/preceding-sibling::technology[1]/technique[last()]/@id"/></a></li>
+					<li><a href="../{$meta/parent::technology/preceding-sibling::technology[1]/@name}/{$meta/parent::technology/preceding-sibling::technology[1]/technique[last()]/@id}">Previous Technique: <xsl:value-of select="$meta/parent::technology/preceding-sibling::technology[1]/technique[last()]/@id"/></a></li>
 				</xsl:when>
 			</xsl:choose>
 			<xsl:choose>
@@ -39,7 +39,7 @@
 					<li><a href="{$meta/following-sibling::technique[1]/@id}">Next Technique: <xsl:value-of select="$meta/following-sibling::technique[1]/@id"/></a></li>
 				</xsl:when>
 				<xsl:when test="$meta/parent::technology/following-sibling::technology">
-					<li><a href="../{$meta/parent::technology/following-sibling::technology[1]}/{$meta/parent::technology/following-sibling::technology[1]/technique[1]/@id}">Next Technique: <xsl:value-of select="$meta/parent::technology/following-sibling::technology[1]/technique[1]/@id"/></a></li>
+					<li><a href="../{$meta/parent::technology/following-sibling::technology[1]/@name}/{$meta/parent::technology/following-sibling::technology[1]/technique[1]/@id}">Next Technique: <xsl:value-of select="$meta/parent::technology/following-sibling::technology[1]/technique[1]/@id"/></a></li>
 				</xsl:when>
 			</xsl:choose>
 		</ul>
@@ -114,7 +114,27 @@
 	</xsl:template>
 	
 	<xsl:template match="/techniques">
-		<xsl:apply-templates select="//technique"/>
+		<xsl:variable name="techniques-sorted">
+			<xsl:apply-templates select="technology" mode="sorting">
+				<xsl:sort select="@name"/>
+			</xsl:apply-templates>
+		</xsl:variable>
+		<xsl:apply-templates select="$techniques-sorted//technique"/>
+	</xsl:template>
+	
+	<xsl:template match="technology" mode="sorting">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:apply-templates select="technique" mode="sorting">
+				<xsl:sort select="wcag:number-in-id(@id)" data-type="number"/>
+			</xsl:apply-templates>
+		</xsl:copy>
+	</xsl:template> 
+	
+	<xsl:template match="technique" mode="sorting">
+		<xsl:copy>
+			<xsl:apply-templates select="node()|@*"/>
+		</xsl:copy>
 	</xsl:template>
 	
 	<xsl:template match="technique">
@@ -151,15 +171,15 @@
 				<xsl:apply-templates select="//html:h1"/>
 				<section id="important-information">
 					<h2>Important Information about Techniques</h2>
-					<p>See <a href="{$loc.understanding}understanding-techniques.html">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how they relate to the normative WCAG 2.0 success criteria. The Applicability section explains the scope of the technique, and the presence of techniques for a specific technology does not imply that the technology can be used in all situations to create content that meets WCAG 2.0.</p>
+					<p>See <a href="{$loc.understanding}understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how they relate to the normative WCAG 2.0 success criteria. The Applicability section explains the scope of the technique, and the presence of techniques for a specific technology does not imply that the technology can be used in all situations to create content that meets WCAG 2.0.</p>
 				</section>
 				<main>
-					<xsl:apply-templates select="html:body/html:section[@id = 'applicability' or @class = 'applicability']"/>
-					<xsl:apply-templates select="html:body/html:section[@id = 'description' or @class = 'description']"/>
-					<xsl:apply-templates select="html:body/html:section[@id = 'examples' or @class = 'examples']"/>
-					<xsl:apply-templates select="html:body/html:section[@id = 'resources' or @class = 'resources']"/>
-					<xsl:apply-templates select="html:body/html:section[@id = 'related' or @class = 'related']"/>
-					<xsl:apply-templates select="html:body/html:section[@id = 'tests' or @class = 'tests']"/>
+					<xsl:call-template name="applicability"/>
+					<xsl:call-template name="description"/>
+					<xsl:call-template name="examples"/>
+					<xsl:call-template name="resources"/>
+					<xsl:call-template name="related"/>
+					<xsl:call-template name="tests"/>
 				</main>
 			</body>
 		</html>
@@ -176,13 +196,14 @@
 	
 	<xsl:template match="html:section[@id = 'meta']"/>
 	
-	<xsl:template match="html:body/html:section[@id = 'applicability' or @class = 'applicability']">
+	<xsl:template name="applicability">
 		<xsl:param name="meta" tunnel="yes"/>
-		<xsl:copy>
-			<xsl:attribute name="id">applicability</xsl:attribute>
-			<xsl:apply-templates select="@*"/>
+		<section id="applicability">
 			<h2>Applicability</h2>
-			<xsl:apply-templates select="html:*[not(wcag:isheading(.) or @id = 'benefits')]"/>
+			<xsl:call-template name="section-if-exists">
+				<xsl:with-param name="section" select="//html:section[@id = 'applicability']"></xsl:with-param>
+				<xsl:with-param name="name">applicability</xsl:with-param>
+			</xsl:call-template>
 			<!-- This has gotten really hairy, would like to find a more elegant way to sort the associations -->
 			<xsl:variable name="associations" select="$associations.doc//technique[@id = $meta/@id]"/>
 			<xsl:variable name="association-links">
@@ -223,53 +244,80 @@
 				</xsl:when>
 				<xsl:otherwise><p>This technique is not referenced from any Understanding document.</p></xsl:otherwise>
 			</xsl:choose>
-		</xsl:copy>
+		</section>
 	</xsl:template>
 	
-	<xsl:template match="html:body/html:section[@id = 'description' or @class = 'description']">
-		<xsl:copy>
-			<xsl:attribute name="id">description</xsl:attribute>
-			<xsl:apply-templates select="@*"/>
+	<xsl:template name="description">
+		<xsl:param name="meta" tunnel="yes"/>
+		<section id="description">
 			<h2>Description</h2>
-			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
-		</xsl:copy>
+			<xsl:call-template name="section-if-exists">
+				<xsl:with-param name="section" select="//html:section[@id = 'description']"></xsl:with-param>
+				<xsl:with-param name="name">description</xsl:with-param>
+			</xsl:call-template>
+		</section>
 	</xsl:template>
 	
-	<xsl:template match="html:body/html:section[@id = 'examples' or @class = 'examples']">
-		<xsl:copy>
-			<xsl:attribute name="id">examples</xsl:attribute>
-			<xsl:apply-templates select="@*"/>
+	<xsl:template name="examples">
+		<xsl:param name="meta" tunnel="yes"/>
+		<section id="examples">
 			<h2>Examples</h2>
-			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
-		</xsl:copy>
+			<xsl:call-template name="section-if-exists">
+				<xsl:with-param name="section" select="//html:section[@id = 'examples']"></xsl:with-param>
+				<xsl:with-param name="name">examples</xsl:with-param>
+			</xsl:call-template>
+		</section>
 	</xsl:template>
 	
-	<xsl:template match="html:body/html:section[@id = 'resources' or @class = 'resources']">
-		<xsl:copy>
-			<xsl:attribute name="id">resources</xsl:attribute>
-			<xsl:apply-templates select="@*"/>
+	<xsl:template name="resources">
+		<xsl:param name="meta" tunnel="yes"/>
+		<xsl:variable name="resources" select="//html:section[@id = 'resources']"/>
+		<section id="resources">
 			<h2>Resources</h2>
 			<p>Resources are for information purposes only, no endorsement implied.</p>
-			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
-		</xsl:copy>
+			<xsl:call-template name="section-if-exists">
+				<xsl:with-param name="section" select="//html:section[@id = 'resources']"></xsl:with-param>
+				<xsl:with-param name="name">resources</xsl:with-param>
+			</xsl:call-template>
+		</section>
+		
 	</xsl:template>
 	
-	<xsl:template match="html:body/html:section[@id = 'related' or @class = 'related']">
-		<xsl:copy>
-			<xsl:attribute name="id">related</xsl:attribute>
-			<xsl:apply-templates select="@*"/>
+	<xsl:template name="related">
+		<xsl:param name="meta" tunnel="yes"/>
+		<section id="related">
 			<h2>Related Techniques</h2>
-			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
-		</xsl:copy>
+			<xsl:call-template name="section-if-exists">
+				<xsl:with-param name="section" select="//html:section[@id = 'related']"></xsl:with-param>
+				<xsl:with-param name="name">related techniques</xsl:with-param>
+			</xsl:call-template>
+		</section>
 	</xsl:template>
 	
-	<xsl:template match="html:body/html:section[@id = 'tests' or @class = 'tests']">
-		<xsl:copy>
-			<xsl:attribute name="id">tests</xsl:attribute>
-			<xsl:apply-templates select="@*"/>
+	<xsl:template name="tests">
+		<xsl:param name="meta" tunnel="yes"/>
+		<section id="tests">
 			<h2>Tests</h2>
-			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
-		</xsl:copy>
+			<xsl:call-template name="section-if-exists">
+				<xsl:with-param name="section" select="//html:section[@id = 'tests']"></xsl:with-param>
+				<xsl:with-param name="name">tests</xsl:with-param>
+			</xsl:call-template>
+		</section>
+	</xsl:template>
+	
+	<xsl:template name="section-if-exists">
+		<xsl:param name="meta" tunnel="yes"/>
+		<xsl:param name="section"/>
+		<xsl:param name="name"/>
+		<xsl:choose>
+			<xsl:when test="$section and $section/html:*[not(wcag:isheading(.))]">
+				<xsl:apply-templates select="$section/html:*[not(wcag:isheading(.))]"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:message>No <xsl:value-of select="$name"/> section in <xsl:value-of select="$meta/@id"/></xsl:message>
+				<p>No <xsl:value-of select="$name"/>.</p>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<xsl:template match="html:section[@class='test-procedure']">
@@ -284,6 +332,24 @@
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
 			<h2>Expected Results</h2>
+			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
+		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="html:section[@class='example']">
+		<xsl:variable name="heading" select="wcag:find-heading(.)"/>
+		<xsl:variable name="heading-text">
+			<xsl:text>Example </xsl:text>
+			<xsl:value-of select="count(preceding-sibling::html:section[@class='example']) + 1"/>
+			<xsl:if test="normalize-space($heading) != ''">
+				<xsl:text>: </xsl:text>
+				<xsl:apply-templates select="$heading/node()"/>
+			</xsl:if>
+		</xsl:variable>
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:attribute name="id" select="wcag:generate-id($heading-text)"/>
+			<h3><xsl:copy-of select="$heading-text"/></h3>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
