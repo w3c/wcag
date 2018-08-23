@@ -1,4 +1,4 @@
-function logincheck() { // For form-alert.htm: using JS alert 
+function logincheck() { // For form-alert.htm: using JS alert
 if(document.getElementById("lname").value == ""){
 alert("You forgot to enter your last name!");
 return false;
@@ -15,12 +15,12 @@ alert("Sorry cannot login: login and password mismatch. Please try again.");
 return true;
 } // end of logincheck function
 
-function showTooltip( tooltip_id ) { 
-document.getElementById( tooltip_id ).style.display = "inline"; 
-} 
-function hideTooltip( tooltip_id ) { 
-document.getElementById( tooltip_id ).style.display = "none"; 
-} 
+function showTooltip( tooltip_id ) {
+document.getElementById( tooltip_id ).style.display = "inline";
+}
+function hideTooltip( tooltip_id ) {
+document.getElementById( tooltip_id ).style.display = "none";
+}
 function keydownTooltip( event, tooltip_id ) {
 var e = window.event || event;
 if( e.keyCode == 27 ) {
@@ -30,7 +30,7 @@ return browser.stopPropagation( e );
 return true;
 }}  // end of function
 
-function errorAlert () { // For form-alert1.htm: using innerHTML for 1 alert at a time 
+function errorAlert () { // For form-alert1.htm: using innerHTML for 1 alert at a time
 if(document.getElementById("lname").value == ""){
 document.getElementById("errlist").innerHTML  = "<li role='alert'>You forgot to enter your last name!</li>";
 return false;
@@ -47,9 +47,9 @@ document.getElementById("errlist").innerHTML = "<li role='alert'>Sorry cannot lo
 return false; // with innerHTML this too has to be 'false'
 } // end of errorAlert function
 
-function errorAlert1 () {//  For form-alert2.htm: using DOM to add error text   
-// remove error messages already displayed: 
-var liTag = document.getElementById("errlist") ; 
+function errorAlert1 () {//  For form-alert2.htm: using DOM to add error text
+// remove error messages already displayed:
+var liTag = document.getElementById("errlist") ;
 while (liTag.firstChild) {
 liTag.removeChild(liTag.firstChild);
 }
@@ -64,19 +64,19 @@ $("input").removeAttr("aria-describedby");
 var fields = new Array() ;  // holds id of form controls sequentially
 fields[0] = "lname"; fields[1] = "usrname"; fields[2] = "pwd";
 
-var messages = new Array() ; // Holds error messages  
+var messages = new Array() ; // Holds error messages
 messages[0] = "You forgot to enter your last name!";
 messages[1] = "Please enter your login name";
-messages[2] = "Please enter your password"; 
+messages[2] = "Please enter your password";
 
-var errText = new Array() ;  // holds actual errors to be listed 
-var errId = new Array() ; // holds id of list items  
-var i = 0; var j = 0;  errText[i] = ""; 
+var errText = new Array() ;  // holds actual errors to be listed
+var errId = new Array() ; // holds id of list items
+var i = 0; var j = 0;  errText[i] = "";
 // i can range from 0 to 2 i.e. 1 to 3 error fields
 while(j<=2) {
 var thisFld = document.getElementById(fields[j]);
 if(thisFld.value == ""){
-errText[i] = messages[j] ; 
+errText[i] = messages[j] ;
 errId[i] = String(i) ;
 // Set aria-described for form control:
 thisFld.setAttribute("aria-describedby", "list_" +errId[i] ) ;
@@ -100,16 +100,16 @@ if(errText[0] != "") { // means at least one error is present
 var j = 0;
 while(j < i) {
 var liTag = document.createElement("li");
-var node=document.createTextNode(errText[j]); 
+var node=document.createTextNode(errText[j]);
 liTag.appendChild(node);
 liTag.setAttribute("id", "list_" + errId[j]); j++;
-document.getElementById("errlist").appendChild(liTag); 
+document.getElementById("errlist").appendChild(liTag);
 } // end of while
-document.getElementById("errlist").focus() 
+document.getElementById("errlist").focus()
 return false;
 } // end of if for errText[0] not blank i.e. errors present
 $(document.getElementById("errlist")).html("<li>Sorry cannot login: Login name and password mismatch.   Please try again.</li>");
-return false; 
+return false;
 } // end of errorAlert1 function
 
 function prependImage(elementId, strId) {
@@ -119,14 +119,14 @@ image.src = "images/iconError.gif";
 image.alt = "Error " + String(parseInt(strId) +1);
 image.id = "img_" + strId;
   // Add it to the DOM
-// This adds image before the label: 
+// This adds image before the label:
 $(document.getElementById(elementId)).parent().prepend(image);
-  // If all went well, return false so navigation can 
+  // If all went well, return false so navigation can
   // be cancelled based on function outcome
 return false;
 }
 
-function errorAlert2 () {//  For form-alert3.htm: using DOM to add error text   
+function errorAlert2 () {//  For form-alert3.htm: using DOM to add error text
 
 $("div.control span").remove(); // removes generic error message
 // remove aria-describedby, aria-invalid and class from form controls:
@@ -134,8 +134,8 @@ $("div.control input").removeAttr("aria-describedby aria-invalid class");
 // Define arrays
 var fields = new Array() ;  // holds id of form controls sequentially
 fields[0] = "pin4"; fields[1] = "email"; fields[2] = "lname"; fields[3] = "startDt";
-var eFlag = 0; 
-var i = 0; var j = 0;  
+var eFlag = 0;
+var i = 0; var j = 0;
 // i can range from 0 to 3 i.e. 1 to 4 error fields
 while(j<=3) {
 var thisFld = document.getElementById(fields[j]);
@@ -149,14 +149,14 @@ if (j == 3)  { // means j=3 and date is empty
 var dtString =formatDate() ;
 $(thisFld).prop("value", dtString);
 }
-} // end of  check for no input data 
+} // end of  check for no input data
 else if (j == 0 && ( (isNaN(thisFld.value)) || (thisFld.value.length != 4))) {
 eFlag = addErrText(thisFld) ;
 }  // end of if j == 0
 else if (j == 1 ) { // checking email field
 // Checks for syntax of an email:
-/* This means that the input data must contain an @ sign and at least one dot (.). 
-Also, the @ must not be the first character of the email address, and the last dot must be present after the @ sign, and minimum 2 characters before the end 
+/* This means that the input data must contain an @ sign and at least one dot (.).
+Also, the @ must not be the first character of the email address, and the last dot must be present after the @ sign, and minimum 2 characters before the end
 */
 var atpos = thisFld.value.indexOf("@");
 var dotpos = thisFld.value.lastIndexOf(".");
@@ -168,23 +168,23 @@ if (!checkAlpha(thisFld.value)) {
 eFlag = addErrText(thisFld) ;
 }  } // end of j == 2 for last name check
 
-else if (j == 3 ) { // checking non-empty policy start date field 
+else if (j == 3 ) { // checking non-empty policy start date field
 if(!ValidateDate(thisFld.value)) {
 eFlag = addErrText(thisFld) ;
-} 
+}
 else if (!dateLater(thisFld.value)) {
 tieErrText(thisFld, i, "Error: Date has passed");
 i++; eFlag++;
 }
 } // end of j == 3 for date check
 j++;
-} // end of while 
+} // end of while
 if (eFlag  > 0) {
 $(document.getElementById("err_final")).text("Sorry cannot login: Please fix the errors and retry").focus();
-return false; 
-} 
+return false;
+}
 $(document.getElementById("err_final")).html("Sorry cannot login: PIN / Email / Name mismatch. Please retry").focus();
-return false; 
+return false;
 } // end of errorAlert2 function
 
 function ValidateDate(dtValue) {
@@ -193,8 +193,8 @@ return dtRegex.test(dtValue);
  }
 
 function checkAlpha(aWord) {
-//regular expression defining aword with 2 or more alpha characters: 
-var alphaRegex  = new RegExp(/^[a-zA-Z]{2,}$/) ; 
+//regular expression defining aword with 2 or more alpha characters:
+var alphaRegex  = new RegExp(/^[a-zA-Z]{2,}$/) ;
 return alphaRegex.test(aWord);
  }
 
@@ -204,7 +204,7 @@ var yy = dtStr.substr(6) ;
 var dd = dtStr.substr(3,2) ;
 var mm = dtStr.substr(0,2) ;
 var d1 = Date.parse(yy + "-" +mm + "-" + dd);
-// var d1 = Date.parse("2013-12-25"); 
+// var d1 = Date.parse("2013-12-25");
 var dt = new Date() ;
 yy =dt.getFullYear();
 mm = dt.getMonth(); mm++;
@@ -228,7 +228,7 @@ errFld.setAttribute("class", "error") ;
 
 function addErrText(errFld) {
 $(errFld).attr("aria-invalid", "true").attr("class", "error");
-// Suffix error text: 
+// Suffix error text:
 $(errFld).parent().append('<span class="errtext">Error: Incorrect data</span>');
 return 1;
 }
@@ -237,7 +237,7 @@ function formatDate() {
 var dt1 = new Date();
 var mm = dt1.getMonth();  mm++ ;
 if (mm < 10) { mm ="0" + mm; }
-var dd = dt1.getDate() ; 
+var dd = dt1.getDate() ;
 if (dd < 10) { dd ="0" + dd; }
 var dtStr = mm + "/" + dd +"/" + dt1.getFullYear();
 return dtStr;

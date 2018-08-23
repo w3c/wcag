@@ -3,7 +3,7 @@
                     context</h1><section class="meta"><p class="id">ID: SCR19</p><p class="technology">Technology: client-side-script</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <p> HTML and XHTML with support for scripting. This technique uses the try/catch
                         construct of JavaScript 1.4. </p>
-   </section><section id="description"><h2>Description</h2>
+  </section><section id="description"><h2>Description</h2>
       <p> The objective of this technique is to demonstrate how to correctly use an
                         onchange event with a select element to update other elements on the Web page. This technique will not cause a change of context. When there are one
                         or more select elements on the Web page, an onchange event on one, can
@@ -14,9 +14,9 @@
                         that assistive technologies will pick up the change and users will encounter
                         the new data when the modified element receives focus. This technique relies
                         on JavaScript support in the user agent. </p>
-   </section><section id="examples"><h2>Examples</h2>
+  </section><section id="examples"><h2>Examples</h2>
       <section class="example">
-         
+
             <p> This example contains two select elements. When an item is selected
                                 in the first select, the choices in the other select are updated
                                 appropriately. The first select element contains a list of
@@ -29,64 +29,64 @@
                                 within the Web page. </p>
             <p>Overview of the code below</p>
             <ul>
-               <li> countryLists array variable which contains the list of
+              <li> countryLists array variable which contains the list of
                                         countries for each continent in the trigger select element.
                                     </li>
-               <li> countryChange() function which is called by the onchange
+              <li> countryChange() function which is called by the onchange
                                         event of the continent select element. </li>
-               <li> The XHTML code to create the select elements in the body of
+              <li> The XHTML code to create the select elements in the body of
                                         the Web page. </li>
             </ul>
-         
-         <pre xml:space="preserve">
-&lt;?xml version="1.0" encoding="UTF-8"?&gt; 
-&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-  "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt; 
-&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"&gt; 
-  &lt;head&gt; 
-    &lt;meta http-equiv="content-type" content="text/xhtml; charset=utf-8" /&gt; 
-    &lt;title&gt;Dynamic Select Statements&lt;/title&gt; 
+
+        <pre xml:space="preserve">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta http-equiv="content-type" content="text/xhtml; charset=utf-8" /&gt;
+    &lt;title&gt;Dynamic Select Statements&lt;/title&gt;
 &lt;script type="text/javascript"&gt;
- //&lt;![CDATA[ 
- // array of possible countries in the same order as they appear in the country selection list 
- var countryLists = new Array(4) 
- countryLists["empty"] = ["Select a Country"]; 
- countryLists["North America"] = ["Canada", "United States", "Mexico"]; 
- countryLists["South America"] = ["Brazil", "Argentina", "Chile", "Ecuador"]; 
- countryLists["Asia"] = ["Russia", "China", "Japan"]; 
- countryLists["Europe"]= ["Britain", "France", "Spain", "Germany"]; 
- /* CountryChange() is called from the onchange event of a select element. 
- * param selectObj - the select object which fired the on change event. 
- */ 
- function countryChange(selectObj) { 
- // get the index of the selected option 
- var idx = selectObj.selectedIndex; 
- // get the value of the selected option 
- var which = selectObj.options[idx].value; 
- // use the selected option value to retrieve the list of items from the countryLists array 
- cList = countryLists[which]; 
- // get the country select element via its known id 
- var cSelect = document.getElementById("country"); 
- // remove the current options from the country select 
- var len=cSelect.options.length; 
- while (cSelect.options.length &gt; 0) { 
- cSelect.remove(0); 
- } 
- var newOption; 
- // create new options 
- for (var i=0; i&lt;cList.length; i++) { 
- newOption = document.createElement("option"); 
- newOption.value = cList[i];  // assumes option string and value are the same 
- newOption.text=cList[i]; 
- // add the new option 
- try { 
- cSelect.add(newOption);  // this will fail in DOM browsers but is needed for IE 
- } 
- catch (e) { 
- cSelect.appendChild(newOption); 
- } 
- } 
- } 
+ //&lt;![CDATA[
+ // array of possible countries in the same order as they appear in the country selection list
+ var countryLists = new Array(4)
+ countryLists["empty"] = ["Select a Country"];
+ countryLists["North America"] = ["Canada", "United States", "Mexico"];
+ countryLists["South America"] = ["Brazil", "Argentina", "Chile", "Ecuador"];
+ countryLists["Asia"] = ["Russia", "China", "Japan"];
+ countryLists["Europe"]= ["Britain", "France", "Spain", "Germany"];
+ /* CountryChange() is called from the onchange event of a select element.
+ * param selectObj - the select object which fired the on change event.
+ */
+ function countryChange(selectObj) {
+ // get the index of the selected option
+ var idx = selectObj.selectedIndex;
+ // get the value of the selected option
+ var which = selectObj.options[idx].value;
+ // use the selected option value to retrieve the list of items from the countryLists array
+ cList = countryLists[which];
+ // get the country select element via its known id
+ var cSelect = document.getElementById("country");
+ // remove the current options from the country select
+ var len=cSelect.options.length;
+ while (cSelect.options.length &gt; 0) {
+ cSelect.remove(0);
+ }
+ var newOption;
+ // create new options
+ for (var i=0; i&lt;cList.length; i++) {
+ newOption = document.createElement("option");
+ newOption.value = cList[i];  // assumes option string and value are the same
+ newOption.text=cList[i];
+ // add the new option
+ try {
+ cSelect.add(newOption);  // this will fail in DOM browsers but is needed for IE
+ }
+ catch (e) {
+ cSelect.appendChild(newOption);
+ }
+ }
+ }
 //]]&gt;
 &lt;/script&gt;
 &lt;/head&gt;
@@ -108,15 +108,15 @@
   &lt;/select&gt;
 &lt;/body&gt;
  &lt;/html&gt;</pre>
-         
+
             <p class="working-example"> Here is a working example: <a href="../../working-examples/script-dynamic-select/">Dynamic
-                                    Select</a> 
+                                    Select</a>
             </p>
-         
+
       </section>
-   </section><section id="tests"><h2>Tests</h2>
+  </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
-         <ol>
+        <ol>
             <li> Navigate to the trigger select element (in this example, the one
                                     to select continents) and change the value of the select. </li>
             <li> Navigate to the select element that is updated by the trigger
@@ -127,25 +127,25 @@
                                     options but do not change the value. </li>
             <li> Check that the matching option values are still displayed in the
                                     associated element. </li>
-         </ol>
-         <p>It is recommended that the select elements are tested with an assistive
+        </ol>
+        <p>It is recommended that the select elements are tested with an assistive
                             technology to verify that the changes to the associated element are
                             recognized. </p>
       </section>
       <section class="results"><h3>Expected Results</h3>
-         <ul>
+        <ul>
             <li> Step #3 and #5 are true. </li>
-         </ul>
+        </ul>
       </section>
-   </section><section id="related"><h2>Related Techniques</h2></section><section id="resources"><h2>Resources</h2>
-      
-         <ul>
+  </section><section id="related"><h2>Related Techniques</h2></section><section id="resources"><h2>Resources</h2>
+
+        <ul>
             <li>
                   <a href="http://usability.com.au/2008/09/accessible-forms-using-wcag-2-0/">Accessible Forms using WCAG 2.0</a>
-               </li>
-             <li>
+              </li>
+            <li>
                   <a href="https://www.w3.org/TR/WCAG21/#dfn-change-of-context">Change of context definition</a>
-               </li>
-         </ul>
-      
-   </section></body></html>
+              </li>
+        </ul>
+
+  </section></body></html>

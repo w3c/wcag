@@ -27,7 +27,7 @@ function validateNumbers(objForm)
     var strID = 'firsterror';
     var strError;
     // The heading element will contain a link so that screen readers
-    // can use it to place focus - the destination for the link is 
+    // can use it to place focus - the destination for the link is
     // the first error contained in a list
     objAnchor.appendChild(document.createTextNode('Errors in Submission'));
     objAnchor.setAttribute('href', '#firsterror');
@@ -74,7 +74,7 @@ function validateNumbers(objForm)
 function isNumber(strValue)
 {
   return (!isNaN(strValue) && strValue.replace(/^\s+|\s+$/, '') !== '');
-} 
+}
 
 
 // Function to create a list item containing a link describing the error

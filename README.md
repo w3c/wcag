@@ -27,7 +27,7 @@ Where <version> is "20", content came from WCAG 2.0. "21" is used for content in
 1. Find the appropriate file for the success criterion in the guidelines/sc/21 folder, named the same as the start of the branch name, and open in an HTML-capable editor. Do the same with any definitions referenced by the success criterion, in the guidelines/terms/21 folder.
 1. Open the guidelines/index.html file and remove comment marks around the lines that reference the success criterion and terms you have edited..
 1. Follow the [success criteria format](#user-content-success-criteria-format) below to create the SC content.
-1. Save the file and commit the change. NOTE: It is important to also add a suitable 'commit message'. In the comments, reference the issue number from which the proposal was developed starting with a hash, e.g., `#1`. 
+1. Save the file and commit the change. NOTE: It is important to also add a suitable 'commit message'. In the comments, reference the issue number from which the proposal was developed starting with a hash, e.g., `#1`.
 1. When the success criterion is ready for Working Group review, inform the chairs. Once the proposal has been accepted by the Working Group, the editors will merge the working branch into the master branch, which puts it in the editors' draft and eventual Technical Report publication.
 
 ### Success Criteria Format
@@ -36,17 +36,17 @@ Success criteria use a simple structure of HTML elements, with a few class attri
 
 ```html
 <section class="sc">
-	<h4>{SC Handle}</h4>
-	<p class="conformance-level">{Level}</p>
-	<p class="change">{Change}</p>
-	<p>{Main SC Text}</p>
-	<!-- if SC has sub-points -->
-	<dl>
-		<dt>{Point Handle}</dt>
-		<dd>{Point Text}</dd>
-	</dl>
-	<!-- if SC has notes -->
-	<p class="note">{Note}</p>
+  <h4>{SC Handle}</h4>
+  <p class="conformance-level">{Level}</p>
+  <p class="change">{Change}</p>
+  <p>{Main SC Text}</p>
+  <!-- if SC has sub-points -->
+  <dl>
+    <dt>{Point Handle}</dt>
+    <dd>{Point Text}</dd>
+  </dl>
+  <!-- if SC has notes -->
+  <p class="note">{Note}</p>
 </section>
 ```
 
@@ -55,20 +55,20 @@ Note you do not provide the SC number. Numbers will be assigned, and most likely
 Values you provide are described below. Refer to [Success Criterion 2.2.1](https://www.w3.org/TR/WCAG20/#time-limits-required-behaviors) for an example of each of these pieces of content.
 
 <dl>
-	<dt>{SC Handle}</dt>
-	<dd>The short name of the SC. In SC 2.2.1 this is "Timing Adjustable".</dd>
-	<dt>{Level}</dt>
-	<dd>The conformance level of the SC. Values can be "A", "AA", or "AAA". Do not include the word "Level".</dd>
-	<dt>{Change}</dt>
-	<dd>Indicate whether the SC is unchanged from WCAG 2.0, changed, or new. Values can be "Unchanged", "Changed", or "New".</dd>
-	<dt>{Main SC Text}</dt>
-	<dd>The main text of the SC, or the starting paragraph. In SC 2.2.1 this is the content that begins "For each time limit...".</dd>
-	<dt>{Point Handle}</dt>
-	<dd>If the SC has bullets, each bullet has a handle. In SC 2.2.1 the first bullet point handle is "Turn off".</dd>
-	<dt>{Point Text}</dt>
-	<dd>The content of the bullet. In SC 2.2.1 the first bullet point text begins "The user is allowed...".</dd>
-	<dt>{Note}</dt>
-	<dd>If there is a note to the SC, provide it after the other content (without the starter "Note"). In SC 2.2.1, this is the content that begins "This success criterion...". If there is more than one note, multiple `<p class="note">`elements may be provided.</dd>
+  <dt>{SC Handle}</dt>
+  <dd>The short name of the SC. In SC 2.2.1 this is "Timing Adjustable".</dd>
+  <dt>{Level}</dt>
+  <dd>The conformance level of the SC. Values can be "A", "AA", or "AAA". Do not include the word "Level".</dd>
+  <dt>{Change}</dt>
+  <dd>Indicate whether the SC is unchanged from WCAG 2.0, changed, or new. Values can be "Unchanged", "Changed", or "New".</dd>
+  <dt>{Main SC Text}</dt>
+  <dd>The main text of the SC, or the starting paragraph. In SC 2.2.1 this is the content that begins "For each time limit...".</dd>
+  <dt>{Point Handle}</dt>
+  <dd>If the SC has bullets, each bullet has a handle. In SC 2.2.1 the first bullet point handle is "Turn off".</dd>
+  <dt>{Point Text}</dt>
+  <dd>The content of the bullet. In SC 2.2.1 the first bullet point text begins "The user is allowed...".</dd>
+  <dt>{Note}</dt>
+  <dd>If there is a note to the SC, provide it after the other content (without the starter "Note"). In SC 2.2.1, this is the content that begins "This success criterion...". If there is more than one note, multiple `<p class="note">`elements may be provided.</dd>
 </dl>
 
 ### Definitions
@@ -103,7 +103,7 @@ Techniques are in the techniques folder, and grouped by technology into sub-fold
 
 The [technique template](techniques/technique-template.html) shows the structure of techniques. Main sections are in top-level &lt;section> elements with specific IDs: meta, applicability, description, examples, tests, related, resources. The description and tests sections are required; the applicability and examples sections are recommended; the related and resources sections are optional. The meta section provides context for the technique during authoring but is removed for publication. The title of the technique is in the `<h1>` element. Elements with `class="instructions"` provide information about populating the template. They should be removed as the technique is developed but if not removed, will be ignored by the generator. **Do not copy `class="instructions"` on real content.**
 
-The generator used to publish techniques uses XML processing, so techniques must be well-formed XML. Techniques use HTML 5 structure so are actually [HTML Polyglot](https://www.w3.org/TR/html-polyglot/).  
+The generator used to publish techniques uses XML processing, so techniques must be well-formed XML. Techniques use HTML 5 structure so are actually [HTML Polyglot](https://www.w3.org/TR/html-polyglot/).
 
 ### Images, Examples, Cross References for Techniques
 
@@ -143,7 +143,7 @@ Once a technique branch and file is set up, populate the content and request rev
 * Populate the template with appropriate content, using other techniques as examples for code formatting choices. Keep the existing structural sections from the template in place.
 * When the technique is ready for review, make a pull request into master.
 * If you wish to reference the draft technique from an Understanding document, use the technique's rawgit URI.
-* After a technique is approved, the chairs will assign it an ID and update links to it in the Undestanding documents. 
+* After a technique is approved, the chairs will assign it an ID and update links to it in the Undestanding documents.
 
 ### Formatting Techniques
 

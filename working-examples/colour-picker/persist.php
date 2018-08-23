@@ -1,28 +1,28 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en">
 <head>
-	<title>Colour picker persistence</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<link href="style.css" rel="stylesheet" type="text/css">
+  <title>Colour picker persistence</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link href="style.css" rel="stylesheet" type="text/css">
 <?php
 // Get the foreground colour
 if (strlen($_COOKIE["forecolour"]) == 4)
 {
-	$strForecolour = $_COOKIE["forecolour"];
+  $strForecolour = $_COOKIE["forecolour"];
 }
 else
 {
-	$strForecolour = "#000";
+  $strForecolour = "#000";
 }
 
 // Get the background colour
 if (strlen($_COOKIE["backcolour"]) == 4)
 {
-	$strBackcolour = $_COOKIE["backcolour"];
+  $strBackcolour = $_COOKIE["backcolour"];
 }
 else
 {
-	$strBackcolour = "#FFF";
+  $strBackcolour = "#FFF";
 }
 
 // Set style block

@@ -1,6 +1,6 @@
-<?php 
+<?php
 // if the request comes from a file that contains the string "conforming.php" then render the page
-	if(stristr($_SERVER['HTTP_REFERER'], "conforming.php")) {
+  if(stristr($_SERVER['HTTP_REFERER'], "conforming.php")) {
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -19,7 +19,6 @@
 }
 // if the referring page is not conforming.php, then redirect the user to the conforming version
 else  {
-	header("Location: conforming.php");
+  header("Location: conforming.php");
 }
 ?>
-
