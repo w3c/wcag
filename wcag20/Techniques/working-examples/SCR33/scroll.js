@@ -30,7 +30,7 @@ function getElementStyle() {
 
 function addControls(){
 
-// test for CSS support first 
+// test for CSS support first
 // test for the overlow property value set in style element or external file
 
 if (getElementStyle()=="hidden") {
