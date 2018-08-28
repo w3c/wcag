@@ -97,11 +97,29 @@ The formal publication location for Understanding pages is currently https://www
 
 ## Editing Techniques
 
-Techniques are in the techniques folder, and grouped by technology into sub-folders. Each technique is a standalone file, which is in HTML format with a regular structure of elements, classes, and ids. Techniques previously published for WCAG 2.0 are currently have the assigned ID of the technique as the filename, but new techniques should use a filename that is derived from a shortened version of the technique title. 
+Techniques are in the techniques folder, and grouped by technology into sub-folders. Each technique is a standalone file, which is in HTML format with a regular structure of elements, classes, and ids.
 
-For example, a technique "Using the alt attribute on the img element to provide short text alternatives" might use "img-alt-short-text-alternatives.html" as the filename.
+### Technique File Structure
+
+The [technique template](techniques/technique-template.html) shows the structure of techniques. Main sections are in top-level &lt;section> elements with specific IDs: meta, applicability, description, examples, tests, related, resources. The description and tests sections are required; the applicability and examples sections are recommended; the related and resources sections are optional. The meta section provides context for the technique during authoring but is removed for publication. The title of the technique is in the `<h1>` element. Elements with `class="instructions"` provide information about populating the template. They should be removed as the technique is developed but if not removed, will be ignored by the generator. **Do not copy `class="instructions"` on real content.**
+
+The generator used to publish techniques uses XML processing, so techniques must be well-formed XML. Techniques use HTML 5 structure so are actually [HTML Polyglot](https://www.w3.org/TR/html-polyglot/).  
+
+### Images, Examples, Cross References for Techniques
+
+Techniques can include images. Place the image file in the `img` folder of the relevant technology - meaning all techniques for a technology share a common set of images. Use a relative link to load the image. Most images should be loaded with a `<figure>` element and labeled with a `<figcaption>` positioned at the bottom of the figure. Small inline images may be loaded with a `<img>` element with suitable `alt` text.
+
+Techniques should include brief code examples to demonstrate how to author content that follows the technique. Code examples should be easy to read, and usually not complete content in themselves. More complete examples can be provided as [working examples](#user-content-provide-working-examples-of-techniques) (see below). Link to working examples at the bottom of each example, in a `<p class="working-example">` element, containing a relative link to `../../working-examples/{example-name}/`.
+
+Cross references to other techniques may be provided where useful. Generally they should be provided in the "Related Techniques" section but can be provided elsewhere. Use a relative link to reference the technique, `{Technique ID}` if the same technology, or `../{Technology}/{Technique ID}` otherwise. If the technique is still under development and does not have a formal ID, reference the path to the development file. If the technique is under development in a different branch, use an absolute URI to the rawgit version of the technique.
+
+Cross references to guidelines and success criteria should use a relative URI to the *Understanding* page for that item. Cross references to other parts of the guidelines should use an absolute URI to the guidelines as published on the W3C TR page, a URI beginning with `https://www.w3.org/TR/WCAG21/#`. Note that references to guidelines or success criteria to which techniques relate are added by the generator upon publication based on information in the Understanding documents, so redundant links to those is not normally needed or advised.
 
 ### Create Techniques
+
+[General priorities and process to work on techniques are maintained in the wiki](https://www.w3.org/WAI/GL/wiki/Wcag21-techniques).
+
+New techniques should use a filename that is derived from a shortened version of the technique title. Editors will assign the technique an ID and rename the file when it is accepted by the Working Group. For example, a technique "Using the alt attribute on the img element to provide short text alternatives" might use "img-alt-short-text-alternatives.html" as the filename. The editors will assign it a formal ID, and rename the file, when it is accepted by the Working Group.
 
 Each new technique should be created in a new branch. Set-up of the branch and file is automated via the create-techniques.sh script, which can be run with bash. The command line is:
 
@@ -127,7 +145,13 @@ Once a technique branch and file is set up, populate the content and request rev
 * If you wish to reference the draft technique from an Understanding document, use the technique's rawgit URI.
 * After a technique is approved, the chairs will assign it an ID and update links to it in the Undestanding documents. 
 
-### Provide Working Examples of Techniques
+### Formatting Techniques
+
+Techniques in the repository are plain HTML files with minimal formatting. For publication to the editors' draft and W3C location, techniques are formatted by an XSLT-based generator managed by Apache Ant running in Java. Most people do not need to worry about this, but relevant files are the [Ant build file](build.xml) and [XSLT files](xslt).
+
+The generator compiles the techniques together as a suite with formatting and navigation. It enforces certain structures, such as ordering top-level sections described above and standardizing headings. It attempts to process cross reference links to make sure the URIs work upon publication. One of the most substantial roles is to populate the Applicability section with references to the guidelines or success criteria to which the technique relates. The information for this comes from the Understanding documents. Proper use of the technique template is important to enable this functionality, and mal-formed techniques may cause the generator to fail.
+
+## Working Examples
 
 Examples in techniques should be brief easy-to-consume code samples of how the technique is used in content. Therefore examples should focus on the specific features the technique describes, and not include related content such as style, script, surrounding web content, etc.
 
