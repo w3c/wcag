@@ -115,9 +115,11 @@
 	
 	<xsl:template match="/techniques">
 		<xsl:variable name="techniques-sorted">
-			<xsl:apply-templates select="technology" mode="sorting">
-				<xsl:sort select="@name"/>
-			</xsl:apply-templates>
+			<xsl:copy>
+				<xsl:apply-templates select="technology" mode="sorting">
+					<xsl:sort select="@name"/>
+				</xsl:apply-templates>
+			</xsl:copy>
 		</xsl:variable>
 		<xsl:apply-templates select="$techniques-sorted//technique"/>
 	</xsl:template>
