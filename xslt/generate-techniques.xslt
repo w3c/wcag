@@ -20,6 +20,19 @@
 	<xsl:variable name="associations.doc" select="document($associations.file)"/>
 	<xsl:variable name="guidelines.meta.doc" select="document($guidelines.meta.file)"/>
 	
+	<xsl:function name="wcag:section-meaningfully-exists" as="xs:boolean">
+		<xsl:param name="id"/>
+		<xsl:param name="section"/>
+		<xsl:choose>
+			<xsl:when test="$id = 'applicability'"><xsl:value-of select="$section and $section/html:p[not(@class = 'instructions')]"/></xsl:when>
+			<xsl:when test="$id = 'description'"><xsl:value-of select="$section and $section/html:p[not(@class = 'instructions')]"/></xsl:when>
+			<xsl:when test="$id = 'examples'"><xsl:value-of select="$section and $section/html:section[@class = 'example'] or $section/html:ul or $section/html:ol"/></xsl:when>
+			<xsl:when test="$id = 'resources'"><xsl:value-of select="$section and ($section/html:p[not(@class = 'instructions')] or $section//html:li[not(. = 'Resource')] or $section//html:a[@href])"/></xsl:when>
+			<xsl:when test="$id = 'related'"><xsl:value-of select="$section and $section//html:li//html:a[@href]"/></xsl:when>
+			<xsl:when test="$id = 'tests'"><xsl:value-of select="$section and $section//html:section[@class = 'test-procedure' or @class = 'procedure']//html:li and $section//html:section[@class = 'test-results' or @class = 'results']"/></xsl:when>
+		</xsl:choose>
+	</xsl:function>
+	
 	<xsl:template name="navigation">
 		<xsl:param name="meta" tunnel="yes"/>
 		<nav>
@@ -54,9 +67,9 @@
 				<li><a href="#important-information">Important Information about Techniques</a></li>
 				<li><a href="#applicability">Applicability</a></li>
 				<li><a href="#description">Description</a></li>
-				<li><a href="#examples">Examples</a></li>
-				<li><a href="#resources">Related Resources</a></li>
-				<li><a href="#related">Related Techniques</a></li>
+				<xsl:if test="wcag:section-meaningfully-exists('examples', //html:section[@id = 'examples'])"><li><a href="#examples">Examples</a></li></xsl:if>
+				<xsl:if test="wcag:section-meaningfully-exists('resources', //html:section[@id = 'resources'])"><li><a href="#resources">Related Resources</a></li></xsl:if>
+				<xsl:if test="wcag:section-meaningfully-exists('related', //html:section[@id = 'related'])"><li><a href="#related">Related Techniques</a></li></xsl:if>
 				<li><a href="#tests">Tests</a></li>
 			</ul>
 		</nav>
@@ -200,12 +213,75 @@
 	
 	<xsl:template name="applicability">
 		<xsl:param name="meta" tunnel="yes"/>
+		<xsl:variable name="technology" select="$meta/parent::technology/@name"/>
+		<xsl:variable name="applicability" select="//html:section[@id = 'applicability']"/>
 		<section id="applicability">
 			<h2>Applicability</h2>
-			<xsl:call-template name="section-if-exists">
-				<xsl:with-param name="section" select="//html:section[@id = 'applicability']"></xsl:with-param>
-				<xsl:with-param name="name">applicability</xsl:with-param>
-			</xsl:call-template>
+			
+			<!-- Copy applicability if provided, otherwise put in a stock one for technology -->
+			<xsl:choose>
+				<xsl:when test="wcag:section-meaningfully-exists('applicability', $applicability)">
+					<xsl:apply-templates select="$applicability/html:*[not(wcag:isheading(.))]"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:choose>
+						<xsl:when test="$technology = 'aria'">
+							<p>Content using <a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</a>.</p>
+						</xsl:when>
+						<xsl:when test="$technology = 'client-side-script'">
+							<p>Content using client-side script (JavaScript, ECMAScript).</p>
+						</xsl:when>
+						<xsl:when test="$technology = 'css'">
+							<p>Content using technologies that support <a href="https://www.w3.org/TR/CSS/">Cascading Style Sheets (CSS)</a>.</p>
+						</xsl:when>
+						<xsl:when test="$technology = 'failures'">
+							<xsl:message>No failures applicability statement in <xsl:value-of select="$meta/@id"/></xsl:message>
+						</xsl:when>
+						<xsl:when test="$technology = 'flash'">
+							<p>Content implemented in Adobe Flash.</p>
+						</xsl:when>
+						<xsl:when test="$technology = 'general'">
+							<p>Content implemented in any technology.</p>
+						</xsl:when>
+						<xsl:when test="$technology = 'html'">
+							<p>Content structured in <a href="https://www.w3.org/TR/html/">HyperText Markup Language (HTML)</a>.</p>
+						</xsl:when>
+						<xsl:when test="$technology = 'pdf'">
+							<p>Content implemented in Adobe Tagged PDF.</p>
+						</xsl:when>
+						<xsl:when test="$technology = 'server-side-script'">
+							<p>Content modified by the server before being sent to the user.</p>
+						</xsl:when>
+						<xsl:when test="$technology = 'silverlight'">
+							<p>Content implemented in Microsoft Silverlight.</p>
+						</xsl:when>
+						<xsl:when test="$technology = 'smil'">
+							<p>Content implemented in <a href="https://www.w3.org/TR/SMIL/">Synchronized Multimedia Integration Language (SMIL)</a>.</p>
+						</xsl:when>
+						<xsl:when test="$technology = 'text'">
+							<p>Content implemented in plain text without use of a structure technology.</p>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:otherwise>
+			</xsl:choose>
+			
+			<!-- Put in deprecation warning for out-dated technologies -->
+			<xsl:choose>
+				<xsl:when test="$technology = 'flash'">
+					<div class="note">
+						<div role="heading" class="note-title marker" aria-level="3">Note</div>
+						<p>Accessibility of Flash is no longer supported by Adobe. Authors are advised to implement content using another technology.</p>
+					</div>
+				</xsl:when>
+				<xsl:when test="$technology = 'silverlight'">
+					<div class="note">
+						<div role="heading" class="note-title marker" aria-level="3">Note</div>
+						<p>Accessibility of Silverlight is no longer supported by Microsoft. Authors are advised to implement content using another technology.</p>
+					</div>
+				</xsl:when>
+			</xsl:choose>
+			
+			<!-- Add links to the Understanding pages that reference this technique -->
 			<!-- This has gotten really hairy, would like to find a more elegant way to sort the associations -->
 			<xsl:variable name="associations" select="$associations.doc//technique[@id = $meta/@id]"/>
 			<xsl:variable name="association-links">
@@ -251,73 +327,69 @@
 	
 	<xsl:template name="description">
 		<xsl:param name="meta" tunnel="yes"/>
-		<section id="description">
-			<h2>Description</h2>
-			<xsl:call-template name="section-if-exists">
-				<xsl:with-param name="section" select="//html:section[@id = 'description']"></xsl:with-param>
-				<xsl:with-param name="name">description</xsl:with-param>
-			</xsl:call-template>
-		</section>
+		<xsl:variable name="description" select="//html:section[@id = 'description']"/>
+		<xsl:choose>
+			<xsl:when test="wcag:section-meaningfully-exists('description', $description)">
+				<section id="description">
+					<h2>Description</h2>
+					<xsl:apply-templates select="$description/html:*[not(wcag:isheading(.))]"/>
+				</section>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:message>Missing or incomplete description section in <xsl:value-of select="$meta/@id"/></xsl:message>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<xsl:template name="examples">
 		<xsl:param name="meta" tunnel="yes"/>
-		<section id="examples">
-			<h2>Examples</h2>
-			<xsl:call-template name="section-if-exists">
-				<xsl:with-param name="section" select="//html:section[@id = 'examples']"></xsl:with-param>
-				<xsl:with-param name="name">examples</xsl:with-param>
-			</xsl:call-template>
-		</section>
+		<xsl:variable name="examples" select="//html:section[@id = 'examples']"/>
+		<xsl:if test="wcag:section-meaningfully-exists('examples', $examples)">
+			<section id="examples">
+				<h2>Examples</h2>
+				<xsl:apply-templates select="$examples/html:*[not(wcag:isheading(.))]"/>
+			</section>
+		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template name="resources">
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:variable name="resources" select="//html:section[@id = 'resources']"/>
-		<section id="resources">
-			<h2>Resources</h2>
-			<p>Resources are for information purposes only, no endorsement implied.</p>
-			<xsl:call-template name="section-if-exists">
-				<xsl:with-param name="section" select="//html:section[@id = 'resources']"></xsl:with-param>
-				<xsl:with-param name="name">resources</xsl:with-param>
-			</xsl:call-template>
-		</section>
+		<!-- put in resources section if present and not template -->
+		<xsl:if test="wcag:section-meaningfully-exists('resources', $resources)">
+			<section id="resources">
+				<h2>Resources</h2>
+				<p>Resources are for information purposes only, no endorsement implied.</p>
+				<xsl:apply-templates select="$resources/html:*[not(wcag:isheading(.))]"/>
+			</section>
+		</xsl:if>
 		
 	</xsl:template>
 	
 	<xsl:template name="related">
 		<xsl:param name="meta" tunnel="yes"/>
-		<section id="related">
-			<h2>Related Techniques</h2>
-			<xsl:call-template name="section-if-exists">
-				<xsl:with-param name="section" select="//html:section[@id = 'related']"></xsl:with-param>
-				<xsl:with-param name="name">related techniques</xsl:with-param>
-			</xsl:call-template>
-		</section>
+		<xsl:variable name="related" select="//html:section[@id = 'related']"/>
+		<!-- put in related techniques section if present and not template -->
+		<xsl:if test="wcag:section-meaningfully-exists('related', $related)">
+			<section id="related">
+				<h2>Related Techniques</h2>
+				<xsl:apply-templates select="$related/html:*[not(wcag:isheading(.))]"/>
+			</section>
+		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template name="tests">
 		<xsl:param name="meta" tunnel="yes"/>
-		<section id="tests">
-			<h2>Tests</h2>
-			<xsl:call-template name="section-if-exists">
-				<xsl:with-param name="section" select="//html:section[@id = 'tests']"></xsl:with-param>
-				<xsl:with-param name="name">tests</xsl:with-param>
-			</xsl:call-template>
-		</section>
-	</xsl:template>
-	
-	<xsl:template name="section-if-exists">
-		<xsl:param name="meta" tunnel="yes"/>
-		<xsl:param name="section"/>
-		<xsl:param name="name"/>
+		<xsl:variable name="tests" select="//html:section[@id = 'tests']"/>
 		<xsl:choose>
-			<xsl:when test="$section and $section/html:*[not(wcag:isheading(.))]">
-				<xsl:apply-templates select="$section/html:*[not(wcag:isheading(.))]"/>
+			<xsl:when test="wcag:section-meaningfully-exists('tests', $tests)">
+				<section id="tests">
+					<h2>Tests</h2>
+					<xsl:apply-templates select="$tests/html:*[not(wcag:isheading(.))]"/>
+				</section>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:message>No <xsl:value-of select="$name"/> section in <xsl:value-of select="$meta/@id"/></xsl:message>
-				<p>No <xsl:value-of select="$name"/>.</p>
+				<xsl:message>Missing or incomplete tests section in <xsl:value-of select="$meta/@id"/></xsl:message>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
