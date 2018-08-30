@@ -259,7 +259,7 @@
 							<p>Content implemented in <a href="https://www.w3.org/TR/SMIL/">Synchronized Multimedia Integration Language (SMIL)</a>.</p>
 						</xsl:when>
 						<xsl:when test="$technology = 'text'">
-							<p>Content implemented in plain text without use of a structure technology.</p>
+							<p>Content implemented in plain text, including Markdown and similar formats, without use of a structure technology.</p>
 						</xsl:when>
 					</xsl:choose>
 				</xsl:otherwise>
@@ -270,13 +270,13 @@
 				<xsl:when test="$technology = 'flash'">
 					<div class="note">
 						<div role="heading" class="note-title marker" aria-level="3">Note</div>
-						<p>Accessibility of Flash is no longer supported by Adobe. Authors are advised to implement content using another technology.</p>
+						<p>Adobe has plans to stop updating and distributing the Flash Player at the end of 2020, and encourages authors interested in creating accessible web content to use HTML.</p>
 					</div>
 				</xsl:when>
 				<xsl:when test="$technology = 'silverlight'">
 					<div class="note">
 						<div role="heading" class="note-title marker" aria-level="3">Note</div>
-						<p>Accessibility of Silverlight is no longer supported by Microsoft. Authors are advised to implement content using another technology.</p>
+						<p>Microsoft has stopped updating and distributing Silverlight, and authors are encouraged to use HTML for accessible web content.</p>
 					</div>
 				</xsl:when>
 			</xsl:choose>
