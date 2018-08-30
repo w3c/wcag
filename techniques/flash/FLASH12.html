@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>FLASH12: Providing client-side validation and adding error text via the accessible description</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="FLASH11">Previous Technique: FLASH11</a></li>
+            <li><a href="FLASH13">Next Technique: FLASH13</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Providing client-side validation and adding error text via the accessible description</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>Content implemented in Adobe Flash.</p>
+            <div class="note">
+               <div role="heading" class="note-title marker" aria-level="3">Note</div>
+               <p>Accessibility of Flash is no longer supported by Adobe. Authors are advised to implement
+                  content using another technology.
+               </p>
+            </div>
+            <p>This technique relates to:</p>
+            <ul>
+               <li><a href="https://w3c.github.io/wcag/understanding/error-identification">Success Criterion 3.3.1: Error Identification</a> (Sufficient)
+               </li>
+               <li><a href="https://w3c.github.io/wcag/understanding/error-suggestion">Success Criterion 3.3.3: Error Suggestion</a> (Sufficient)
+               </li>
+            </ul>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to validate user input as values   are entered
+               for each field, by means of client-side scripting. If errors   are found, a description
+               is added to the controls that have invalid   data. Visually, the description will
+               be placed adjacent to the control.   Additionally, the error message text is added
+               to the control's   accessible description so that it is readable by assistive technology
+               when the control receives focus. 
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-validating-a-text-field">
+               <h3>Example 1: Validating a text field</h3>
+               <p>In this example, a sample form is shown with two text fields ('name'   and 'zip code').
+                  Both fields are required. When the form's submit button   is pressed, the values of
+                  the text fields will be validated. If a   textfield contains an invalid value, an
+                  _accProps object is   created for the textfield, and its description property is 
+                  set the error message. 
+               </p>
+               <div xmlns="" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:wcag="https://www.w3.org/WAI/GL/" class="note">
+                  <div role="heading" class="note-title marker" aria-level="4">Note</div>
+                  <div xmlns="http://www.w3.org/1999/xhtml">
+                     
+                     <p>Instead of using the accessible description, the error text   can also be added to
+                        the accessible name (_accProps.name),   which is supported by a wider range of assistive
+                        technology than the _accProps.description   property. 
+                     </p>
+                     
+                  </div>
+               </div>
+               <p>ActionScript 2.0 Code</p><pre xml:space="preserve">import flash.accessibility. *;
+import mx.accessibilty.ButtonAccImpl;
+import mx.controls.Alert;
+import mx.accessibility.AlertAccImpl;
+
+AlertAccImpl.enableAccessibility();
+ButtonAccImpl.enableAccessibility;
+
+resetTextFieldAccNames();
+Accessibility.updateProperties();
+
+submit_btn.addEventListener("click", handleClick);
+function handleClick(e) {
+  //reset values
+  resetTextFieldAccNames();
+  resetTextFieldAccDescriptions();
+  resetErrorLabels();
+  //perform validation
+  var errors =[];
+  if (name_txt.text == '')
+    errors.push([name_txt, "You must enter your name", name_error_lbl]);
+  if (zipcode_txt.text == '')
+    errors.push([zipcode_txt, "You must enter your zip code", zipcode_error_lbl]);
+  else if (zipcode_txt.text.length != 5 || isNaN(zipcode_txt.text))
+    errors.push([zipcode_txt, "Zip code must be 5 digits", zipcode_error_lbl]);
+  
+  //add validation error messages, if any
+  var field, errorMsg, errorLabel;
+  if (errors.length &gt; 0) {
+    //loop over encountered errors
+    for (var i = 0; i &lt; errors.length; i++) {
+      field = errors[i][0];
+      errorMsg = errors[i][1];
+      errorLabel = errors[i][2];
+      
+      updateAccDescription(field, "Warning: " + errorMsg);
+      errorLabel.text = errorMsg;
+    }
+  } else {
+    Alert.show("Form field values were entered correctly");
+  }
+  Accessibility.updateProperties();
+}
+
+function updateAccName(obj, newName: String) {
+  if (! obj._accProps)
+  obj._accProps = new Object();
+  obj._accProps.name = newName;
+}
+
+function updateAccDescription(obj, newDescription: String) {
+  if (! obj._accProps)
+  obj._accProps = new Object();
+  obj._accProps.description = newDescription;
+}
+
+function getAccName(obj) {
+  return obj._accProps? obj._accProps.name: "";
+}
+
+function resetTextFieldAccNames() {
+  updateAccName(name_txt, "name, required");
+  updateAccName(zipcode_txt, "zip code, required");
+}
+
+function resetTextFieldAccDescriptions() {
+  updateAccDescription(name_txt, "");
+  updateAccDesciption(zipcode_txt, "");
+}
+
+function resetErrorLabels() {
+  name_error_lbl.text = "";
+  zipcode_error_lbl.text = "";
+}</pre><p class="working-example">This approach is demonstrated in <a href="../../working-examples/flash-client-side-validation-forms-using-alert/">working version of Validating a text field</a>. The <a href="../../working-examples/flash-client-side-validation-forms-using-alert/client_side_validation_flash_forms_using_alert_as2.fla">source of Validating a text field</a> is available.
+               </p>
+            </section>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <p>When a Flash movie provides interactive forms that can be submitted,   confirm that:
+                  
+               </p>
+               
+               <ol>
+                  
+                  <li> The validation warnings are placed next to the control   visually. </li>
+                  
+                  <li> The validation warnings are added to the accessible name or   description of each
+                     control. 
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li> #1 and #2 are true </li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>FLASH4: Providing submit buttons in Flash</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="FLASH3">Previous Technique: FLASH3</a></li>
+            <li><a href="FLASH5">Next Technique: FLASH5</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Providing submit buttons in Flash</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>Content implemented in Adobe Flash.</p>
+            <div class="note">
+               <div role="heading" class="note-title marker" aria-level="3">Note</div>
+               <p>Accessibility of Flash is no longer supported by Adobe. Authors are advised to implement
+                  content using another technology.
+               </p>
+            </div>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/on-input">Success Criterion 3.2.2: On Input</a> (Sufficient as a way to meet <a href="../general/G80">G80: Providing a submit button to initiate a change of context</a>)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to use submit buttons to allow  users to take actions
+               that cause changes of context rather than  allowing changes in context to occur when
+               the value or state of a  non-submit button control is modified. The intended use of
+               a submit  button in this technique is to generate an HTTP request that submits  data
+               entered in a form or to perform an action that triggers a change  in context, so it
+               is an appropriate control to use to initiate this  change. 
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-actionscript-3-combobox-with-submit-button">
+               <h3>Example 1: ActionScript 3 combobox with submit button</h3>
+               <p>This is a basic ActionScript 3 example of a combobox component with  a submit button
+                  to redirect the user to a different resource. 
+               </p><pre xml:space="preserve">import fl.accessibility.ComboBoxAccImpl;
+import flash.net.navigateToURL;
+import flash.net.URLRequest;
+ComboBoxAccImpl.enableAccessibility();
+state_submit.addEventListener(MouseEvent.CLICK, submitHandler);
+function submitHandler(e) {
+  var url: URLRequest = new URLRequest("http://www.wikipedia.org/wiki/" + 
+    state_combo.selectedLabel);
+  navigateToURL(url, "_self");
+}</pre></section>
+            <section class="example" id="example-2-actionscript-2-combobox-with-submit-button">
+               <h3>Example 2: ActionScript 2 combobox with submit button</h3>
+               <p>This is a basic ActionScript 2 example of a combobox component with  a submit button
+                  to redirect the user to a different resource - the same  example as in example 1 except
+                  in ActionScript 2: 
+               </p><pre xml:space="preserve">import fl.accessibility.ComboBoxAccImpl;
+ComboBoxAccImpl.enableAccessibility();
+state_submit.addEventListener("click", submitHandler);
+function submitHandler(e) {
+  getURL("http://www.wikipedia.org/wiki/" + state_combo.selectedLabel, "_self");
+}</pre></section>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <ol>
+                  
+                  <li> Find all interactive control instances (that are not submit  buttons) in the flash
+                     movie that can initiate a change of context, e.g.  a combobox, radio button or checkbox.
+                     
+                  </li>
+                  
+                  <li> For each instance, confirm that the event handler(s)  responsible for the change
+                     of context are not associated with the  controls themselves, but with a separate button
+                     instead. 
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <p> #2 is true </p>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

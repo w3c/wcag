@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>H95: Using the track element to provide captions</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="H94">Previous Technique: H94</a></li>
+            <li><a href="H96">Next Technique: H96</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Using the track element to provide captions</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>HTML5</p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/captions-prerecorded">Success Criterion 1.2.2: Captions (Prerecorded)</a> (Sufficient as a way to meet <a href="../general/G87">G87: Providing closed captions</a>)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to use the HTML5 track element to specify a captions
+               timed text track for a video element. Caption timed text tracks contain transcription
+               or translation of the dialogue, sound effects, relevant musical cues, and other relevant
+               audio information, suitable for when sound is unavailable or not clearly audible.
+            </p>
+            <p>The src attribute of the track element is a URL that is the address of the text track
+               data.
+            </p>
+            <p>The kind attribute of the track element indicates the kind of information in the timed
+               text. captions text tracks provide a text version of dialogue and other sounds important
+               to understanding the video. Subtitles contain only the dialogue. If other audio information
+               is important to understanding the video, a subtitle track will not be sufficient to
+               meet the success criteria.
+            </p>
+            <div xmlns="" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:wcag="https://www.w3.org/WAI/GL/" class="note">
+               <div role="heading" class="note-title marker" aria-level="3">Note</div>
+               <div xmlns="http://www.w3.org/1999/xhtml">
+                  
+                  <p>Some regions use the term "subtitle" for any visible text representation of the audio
+                     track. An author may mark up a timed text track in the language of the audio track
+                     as kind=subtitles, instead of kind=captions, and may include additional relevant audio
+                     information. It is not best practice to use subtitles in this situation, since it
+                     may confuse users who are trying to find captions, but such a timed text track would
+                     meet the requirements of <a href="https://www.w3.org/WAI/WCAG21/Understanding/captions-prerecorded">Success Criterion 1.2.2</a>.
+                  </p>
+                  
+               </div>
+            </div>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-captions-in-one-language">
+               <h3>Example 1: Captions in one language</h3>
+               <p>A video element for a video in the English language with an English caption track.
+                  The captions are provided in the WebVTT format.
+               </p><pre xml:space="preserve">
+			 &lt;video poster="myvideo.png" controls&gt;
+				 &lt;source src="myvideo.mp4" srclang="en" type="video/mp4"&gt;
+				 &lt;track src="myvideo_en.vtt" kind="captions" srclang="en" label="English"&gt;
+			  &lt;/video&gt;
+            </pre></section>
+            <section class="example" id="example-2-captions-in-multiple-languages">
+               <h3>Example 2: Captions in multiple languages</h3>
+               <p>A video element for a video in the English language with an English caption track.
+                  The captions are provided in the WebVTT format.
+               </p><pre xml:space="preserve">
+			  &lt;video poster="myvideo.png" controls&gt;
+				&lt;source src="myvideo.mp4" srclang="en" type="video/mp4"&gt;
+				&lt;source src="myvideo.webm" srclang="fr" type="video/webm"&gt;
+				&lt;track src="myvideo_en.vtt" kind="captions" srclang="en" label="English"&gt;
+				&lt;track src="myvideo_fr.ttml" kind="captions" srclang="fr" label="French"&gt;
+			  &lt;/video&gt;            </pre></section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li>
+                  	<a href="https://www.w3.org/TR/html5/embedded-content-0.html#the-track-element">HTML5, the track element</a>
+                  
+               </li>
+               
+               <li>
+                  <a href="https://www.w3.org/TR/ttaf1-dfxp/">Timed Text Markup Language</a>
+                  
+               </li>
+               
+               <li>
+                  <a href="https://github.com/w3c/webvtt">WebVTT: The Web Video Text Tracks Format</a>
+                  
+               </li>
+               
+               <li>
+                  <a href="http://captionatorjs.com/">Captionator Polyfill</a>
+                  
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <p>For each video element used to play a video:</p>
+               
+               <ol>
+                  
+                  <li>Check that the video contains a track element of kind captions in the language of
+                     the video.
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>Check #1 is true.</li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>F36: Failure of Success Criterion 3.2.2 due to automatically submitting a form and
+         presenting new content without prior warning when the last field in the form is
+         given a value
+      </title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="F34">Previous Technique: F34</a></li>
+            <li><a href="F37">Next Technique: F37</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Failure of Success Criterion 3.2.2 due to automatically submitting a form and
+         presenting new content without prior warning when the last field in the form is
+         given a value
+      </h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>HTML and XHTML</p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/on-input">Success Criterion 3.2.2: On Input</a> (Failure)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>Forms are frequently designed so that they submit automatically when the user
+               has filled in all the fields, or when focus leaves the last field. There are
+               two problems with this approach. First is that a disabled user who needs
+               more context may move focus away from the field to the directions on how to
+               fill in the form, or to other text, accidentally submitting the form. The
+               other is that, with some form elements, the value of the field changes as
+               each item is navigated with the keyboard, again accidentally submitting the
+               form. It is better to rely on the standard form behavior of the submit
+               button and enter key. 
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1">
+               <h3>Example 1</h3>
+               <p> This failure example submits a form when the user leaves the last
+                  field of a three-field telephone number form. The form will submit
+                  if the user leaves the field after editing it, even navigating
+                  backwards in the tab order. Developers should not use this method to
+                  submit a form, and should instead use a submit button, or rely on
+                  the form's default behavior of submitting when the user hits enter
+                  in a text field. 
+               </p><pre xml:space="preserve"> 
+&lt;form method="get" id="form1"&gt;
+  &lt;input type="text" name="text1" size="3" maxlength="3"&gt; - 
+  &lt;input type="text" name="text2" size="3" maxlength="3"&gt; - 
+  &lt;input type="text" name="text3" size="4" maxlength="4" onchange="form1.submit();"&gt;
+&lt;/form&gt; </pre></section>
+            <section class="example" id="example-2">
+               <h3>Example 2</h3>
+               <p>This is a  example that submits a form when the user
+                  selects an option from the menu when there is no warning of this behavior in advance.
+                  The form will submit as soon as an item from the menu is selected. A user using a
+                  keyboard will not be able to navigate past the first item in the menu. Blind users
+                  and users with hand tremors can easily make a mistake on which item on the dropdown
+                  menu to choose and they are taken to the wrong destination before they can correct
+                  it.  
+               </p><pre xml:space="preserve"> 
+&lt;form method="get" id="form2"&gt;
+ &lt;input type="text" name="text1"&gt;
+  &lt;select name="select1" onchange="form2.submit();"&gt;
+    &lt;option&gt;one&lt;/option&gt;
+    &lt;option&gt;two&lt;/option&gt;
+    &lt;option&gt;three&lt;/option&gt;
+    &lt;option&gt;four&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/form&gt;</pre></section>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <ol>
+                  
+                  <li> Enter data in all fields on page starting at top. </li>
+                  
+                  <li> Enter data in last field and exit from it (tab out of it).</li>
+                  
+                  <li> Check whether leaving the last field causes change of
+                     context.
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li> If step #3 is true, then this failure condition applies and content
+                     fails the Success Criterion. 
+                  </li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

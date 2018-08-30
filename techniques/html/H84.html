@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>H84: Using a button with a select element to perform an action</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="H83">Previous Technique: H83</a></li>
+            <li><a href="H85">Next Technique: H85</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Using a button with a select element to perform an action</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>HTML and XHTML</p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/on-input">Success Criterion 3.2.2: On Input</a> (Sufficient as a way to meet <a href="../general/G80">G80: Providing a submit button to initiate a change of context</a>)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to allow the user to control when an action is
+               performed, rather than having the action occur as a side effect of choosing a value
+               for the select element. The user may inspect the different values of the select element,
+               or may accidentally choose the wrong value, without causing the action to occur. When
+               the user is satisfied with their choice, they select the button to perform the action.
+            </p>
+            <p>This is particularly important for users who are choosing the value of the select
+               element via the keyboard, since navigating through the options of the select element
+               changes the value of the control. 
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-a-calendar">
+               <h3>Example 1: A Calendar</h3>
+               <p>A Web page lets the user choose any month of any year and display the calendar for
+                  that month. After the user has set the month and year, he displays the calendar by
+                  pressing the "Show" button. This example relies on client-side scripting to implement
+                  the action.
+               </p><pre xml:space="preserve">
+&lt;label for="month"&gt;Month:&lt;/label&gt;
+&lt;select name="month" id="month"&gt;
+  &lt;option value="1"&gt;January&lt;/option&gt;
+  &lt;option value="2"&gt; February&lt;/option&gt;
+  ...
+  &lt;option value="12"&gt;December&lt;/option&gt;
+&lt;/select&gt; 
+&lt;label for="year"&gt;Year:&lt;/label&gt;
+&lt;input type="text" name="year" id="year"&gt;
+&lt;input type="button" value="Show" onclick = "..."&gt;</pre></section>
+            <section class="example" id="example-2-choosing-an-action">
+               <h3>Example 2: Choosing an action</h3>
+               <p>A select element contains a list of possible actions. The action is not performed
+                  until the user presses the "Do it" button.
+               </p><pre xml:space="preserve">
+&lt;form action="http://somesite.com/action" method="post"&gt;
+  &lt;label for="action"&gt;Options:&lt;/label&gt;
+  &lt;select name="action" id="action"&gt;
+    &lt;option value="help"&gt;Help&lt;/option&gt;
+    &lt;option value="reset"&gt;Reset&lt;/option&gt;
+    &lt;option value="submit"&gt;Submit&lt;/option&gt;
+  &lt;/select&gt; 
+  &lt;button type="submit" name="submit" value="submit"&gt;Do It &lt;/button&gt;
+&lt;/form&gt;              </pre></section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li>
+                  									         <a href="http://www.cs.tut.fi/~jkorpela/forms/navmenu.html">Jukka Korpela: Navigational pulldown menus in HTML</a>
+                  								       
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <p>For each select element/button element combination:</p>
+               
+               <ol>
+                  
+                  <li>Check that focus (including keyboard focus) on an option in the select element does
+                     not result in any actions
+                  </li>
+                  
+                  <li>Check that selecting the button performs the action associated with the current select
+                     value
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>All checks are true.</li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>SL21: Replacing A Silverlight Timed Animation With a Nonanimated Element</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="SL20">Previous Technique: SL20</a></li>
+            <li><a href="SL22">Next Technique: SL22</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Replacing A Silverlight Timed Animation With a Nonanimated Element</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>Content implemented in Microsoft Silverlight.</p>
+            <div class="note">
+               <div role="heading" class="note-title marker" aria-level="3">Note</div>
+               <p>Accessibility of Silverlight is no longer supported by Microsoft. Authors are advised
+                  to implement content using another technology.
+               </p>
+            </div>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/timing-adjustable">Success Criterion 2.2.1: Timing Adjustable</a> (Sufficient)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to replace a timed Silverlight
+               				animation with a non-timed user interface element that presents equivalent
+               				information. This is useful in cases where the Silverlight animation
+               				is a timed animation that may contain information that the user wants
+               				to see without a time limit, such as crawling text in a text area.
+               				The animated version of information in the user interface element can
+               				instead be swapped out for an equivalent static element. 
+            </p>
+            <p>The Silverlight animation system is generalized such that nearly any
+               				Silverlight property of type Double, Point or Color can
+               				be animated, or a property can cycle through discrete object values.
+               				Thus the possibilities for which properties in the user interface can
+               				be animated are quite broad. The general technique shown can be used
+               				to stop any animation. 
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-stopping-an-animation-that-is-scrolling-text-replacing-the-animation-with-a-full-text-alternative-">
+               <h3>Example 1: Stopping an animation that is scrolling text, replacing the animation with
+                  a full text alternative 
+               </h3>
+               <p>This example has a UI definition in XAML and interaction logic in C#. The following
+                  is the basic UI in XAML. 
+               </p><pre xml:space="preserve">&lt;UserControl x:Class="StopAnimation.MainPage"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:sys="clr-namespace:System;assembly=mscorlib"&gt;
+   &lt;UserControl.Resources&gt;
+       &lt;ImageBrush x:Key="Stars" ImageSource="/stars.jpg" Stretch="Fill"/&gt;
+       &lt;Storyboard x:Key="crawl"&gt;
+           &lt;DoubleAnimation From="700" To="-100" Duration="0:0:20"
+             Storyboard.TargetName="crawltext" Storyboard.TargetProperty="(Canvas.Top)"/&gt; 
+       &lt;/Storyboard&gt;
+       &lt;sys:String x:Key="crawlText"&gt;
+           Episode IV, A NEW HOPE It is a period of civil war. Rebel spaceships, striking from a hidden base, 
+           have won their first victory against the evil Galactic Empire. During the battle, Rebel spies managed 
+           to steal secret plans to the Empire’s ultimate weapon, the DEATH STAR, an armored space station with 
+           enough power to destroy an entire planet. Pursued by the Empire’s sinister agents, Princess Leia 
+           races home aboard her starship, custodian of the stolen plans that can save her people and restore 
+           freedom to the galaxy….
+       &lt;/sys:String&gt;
+   &lt;/UserControl.Resources&gt;
+   &lt;StackPanel x:Name="LayoutRoot"
+   Background="{StaticResource Stars}"
+   Height="600" Width="800"&gt;
+       &lt;Button Width="200"
+   Click="Button_Click"&gt;Stop crawling text, display fixed text&lt;/Button&gt;
+       &lt;Canvas Name="CrawlPanel" Width="605" Height="595" &gt;
+           &lt;Canvas.Projection&gt;
+               &lt;PlaneProjection RotationX="-75"/&gt;
+           &lt;/Canvas.Projection&gt;
+           &lt;Canvas.Clip&gt;
+               &lt;RectangleGeometry Rect="0 0 600 600"/&gt;
+           &lt;/Canvas.Clip&gt;
+           &lt;TextBlock Text="{StaticResource crawlText}"
+   TextWrapping="Wrap" FontSize="20"
+   Width="300" Canvas.Left="150" Name="crawltext"
+   Foreground="Goldenrod"/&gt;
+       &lt;/Canvas&gt;
+   &lt;/StackPanel&gt;
+&lt;/UserControl&gt;
+</pre><p>The following is the C# logic. In this example, the animation starts
+                  						automatically. When the user activates the control (the Button),
+                  						the event handler stops the animation, removes the animated element
+                  						from the visual tree, and replaces it with a fixed text element that
+                  						presents all text at once. Because it is a TextBox,
+                  						assistive technologies could identify the newly introduced text element
+                  						and present it, for example read the text in a screen reader. 
+               </p><pre xml:space="preserve">       public MainPage()
+       {
+           InitializeComponent();
+           (this.Resources["crawl"] as Storyboard).Begin();
+       }
+       private void Button_Click(object sender, RoutedEventArgs e)
+       {
+           (this.Resources["crawl"] as Storyboard).Stop();
+           LayoutRoot.Children.Remove(CrawlPanel);
+           TextBox tb = new TextBox();
+           tb.IsReadOnly = true;
+           tb.FontSize = 30;
+           tb.TextWrapping = TextWrapping.Wrap;
+           tb.Text = (string)this.Resources["crawlText"];
+           LayoutRoot.Children.Add(tb);
+       }
+</pre><p class="working-example">This example is shown in operation in the <a href="../../working-examples/silverlight-stop-animation/">working example of Stop Text Animation</a>.
+               </p>
+            </section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li>
+                  <a href="https://msdn.microsoft.com/en-us/library/cc189019(VS.95).aspx">Animation
+                     					Overview</a> 
+                  
+               </li>
+               
+               <li>
+                  <a href="https://msdn.microsoft.com/en-us/library/cc189069(VS.95).aspx">Working
+                     						with Animations Programmatically</a> 
+                  
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <ol>
+                  
+                  <li> Using a browser that supports Silverlight, open an HTML page that
+                     					references a Silverlight application through an object tag. For a
+                     					Silverlight application that has a time limit on interaction due
+                     					to an animated user interface element: 
+                  </li>
+                  
+                  <li> Check for a mechanism to stop the time limit on interaction. </li>
+                  
+                  <li> When the mechanism is activated, check that the element that is
+                     						animated and resulting in a time limit is removed, and the time-limited
+                     						element is replaced with static content that is equivalent and does
+                     						not have a time limit. 
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <p>#3 is true. </p>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

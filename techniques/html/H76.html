@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>H76: Using meta refresh to create an instant client-side redirect</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="H75">Previous Technique: H75</a></li>
+            <li><a href="H77">Next Technique: H77</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Using meta refresh to create an instant client-side redirect</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p> HTML and XHTML</p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/change-on-request">Success Criterion 3.2.5: Change on Request</a> (Sufficient as a way to meet <a href="../general/G110">G110: Using an instant client-side redirect</a>)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p> The objective of this technique is to enable redirects on the client side without
+               confusing the user. Redirects are preferably implemented on the server side (see <a href="https://www.w3.org/WAI/WCAG21/Techniques/server-side-script/SVR1">Implementing automatic redirects on the server side
+                  instead of on the client side</a>), but authors do not always have control over
+               server-side technologies. 
+            </p>
+            <p>In HTML and XHTML, one can use the meta element with the value of
+               the http-equiv attribute set to "Refresh" and the value of the
+               content attribute set to "0" (meaning zero seconds), followed by the URI
+               that the browser should request. It is important that the time-out is set to zero,
+               to
+               avoid that content is displayed before the new page is loaded. The page containing
+               the
+               redirect code should only contain information related to the redirect. 
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1">
+               <h3>Example 1</h3><pre xml:space="preserve"> &lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;    
+  &lt;head&gt;      
+    &lt;title&gt;The Tudors&lt;/title&gt;      
+    &lt;meta http-equiv="refresh" content="0;URL='http://thetudors.example.com/'" /&gt;    
+  &lt;/head&gt;    
+  &lt;body&gt; 
+    &lt;p&gt;This page has moved to a &lt;a href="http://thetudors.example.com/"&gt;
+      theTudors.example.com&lt;/a&gt;.&lt;/p&gt; 
+  &lt;/body&gt;  
+&lt;/html&gt;     </pre></section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li> See also <a href="https://www.w3.org/WAI/WCAG21/Techniques/failures/F41">Failure due to using meta refresh
+                     with a time-out</a>. 
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <ol>
+                  
+                  <li> Find all meta elements in the document. </li>
+                  
+                  <li> For each meta element, check if it contains the attribute
+                     http-equiv with value "refresh" (case-insensitive) and the
+                     content attribute with a number greater than 0 followed by
+                     ;'URL=anyURL' (where anyURL stands for the URI that should replace
+                     the current page). 
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <p> Step 2 is false. </p>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

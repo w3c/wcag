@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>SCR21: Using functions of the Document Object Model (DOM) to add content to a page</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="SCR20">Previous Technique: SCR20</a></li>
+            <li><a href="SCR22">Next Technique: SCR22</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Using functions of the Document Object Model (DOM) to add content to a page</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>ECMAScript used inside HTML and XHTML</p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/info-and-relationships">Success Criterion 1.3.1: Info and Relationships</a> (Sufficient as a way to meet an unwritten technique)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to demonstrate how to use functions of the Document
+               Object Model (DOM) to add content to a page instead of using document.write or object.innerHTML.
+               The document.write() method does not work with XHTML when served with the correct
+               MIME type (application/xhtml+xml), and the innerHTML property is not part of the DOM
+               specification and thus should be avoided.  If the DOM functions are used to add the
+               content, user agents can access the DOM to retrieve the content. The createElement()
+               function can be used to create elements within the DOM.  The createTextNode() is used
+               to create text associated with elements.  The appendChild(), removeChild(), insertBefore()
+               and replaceChild() functions are used to add and remove elements and nodes. Other
+               DOM functions are used to assign attributes to the created elements.
+            </p>
+            <div xmlns="" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:wcag="https://www.w3.org/WAI/GL/" class="note">
+               <div role="heading" class="note-title marker" aria-level="3">Note</div>
+               <div xmlns="http://www.w3.org/1999/xhtml">
+                  
+                  <p>When adding focusable elements into the document, do not add tabindex attributes to
+                     explicitly set the tab order as this can cause problems when adding focusable elements
+                     into the middle of a document. Let the default tab order be assigned to the new element
+                     by not explicitly setting a tabindex attribute.
+                  </p>
+                  
+               </div>
+            </div>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1">
+               <h3>Example 1</h3>
+               <p>This example demonstrates use of client-side scripting to validate a form. If errors
+                  are found appropriate error messages are displayed.  The example uses the DOM functions
+                  to add error notification consisting of a title, a short paragraph explaining that
+                  an error has occurred, and a list of errors in an ordered list. The content of the
+                  title is written as a link so that it can be used to draw the user's attention to
+                  the error using the focus method. Each item in the list is also written as a link
+                  that places the focus onto the form field in error when the link is followed.
+               </p>
+               <p>For simplicity, the example just validates two text fields, but can easily be extended
+                  to become a generic form handler. Client-side validation should not be the sole means
+                  of validation , and should be backed up with server-side validation. The benefit of
+                  client-side validation is that you can provide immediate feedback to the user to save
+                  them waiting for the errors to come back from the server, and it helps reduce unnecessary
+                  traffic to the server.
+               </p>
+               <p>Here is the script that adds the event handlers to the form. If scripting is enabled,
+                  the validateNumbers() function will be called to perform client-side validation before
+                  the form is submitted to the server. If scripting is not enabled, the form will be
+                  immediately submitted to the server, so validation should also be implemented on the
+                  server. 
+                  
+               </p><pre xml:space="preserve">
+window.onload = initialise;
+function initialise()
+{
+  // Ensure we're working with a relatively standards compliant user agent
+  if (!document.getElementById || !document.createElement || !document.createTextNode)
+    return;
+
+  // Add an event handler for the number form
+  var objForm = document.getElementById('numberform');
+  objForm.onsubmit= function(){return validateNumbers(this);};
+}
+</pre><p>Here is the validation function.  Note the use of the createElement(), createTextNode(),
+                  and appendChild() DOM functions to create the error message elements.
+               </p><pre xml:space="preserve">
+function validateNumbers(objForm)
+{
+  // Test whether fields are valid
+  var bFirst = isNumber(document.getElementById('num1').value);
+  var bSecond = isNumber(document.getElementById('num2').value);
+  // If not valid, display errors
+  if (!bFirst || !bSecond)
+  {
+    var objExisting = document.getElementById('validationerrors');
+    var objNew = document.createElement('div');
+    var objTitle = document.createElement('h2');
+    var objParagraph = document.createElement('p');
+    var objList = document.createElement('ol');
+    var objAnchor = document.createElement('a');
+    var strID = 'firsterror';
+    var strError;
+    // The heading element will contain a link so that screen readers
+    // can use it to place focus - the destination for the link is 
+    // the first error contained in a list
+    objAnchor.appendChild(document.createTextNode('Errors in Submission'));
+    objAnchor.setAttribute('href', '#firsterror');
+    objTitle.appendChild(objAnchor);
+    objParagraph.appendChild(document.createTextNode('Please review the following'));
+    objNew.setAttribute('id', 'validationerrors');
+    objNew.appendChild(objTitle);
+    objNew.appendChild(objParagraph);
+    // Add each error found to the list of errors
+    if (!bFirst)
+    {
+      strError = 'Please provide a numeric value for the first number';
+      objList.appendChild(addError(strError, '#num1', objForm, strID));
+      strID = '';
+    }
+    if (!bSecond)
+    {
+      strError = 'Please provide a numeric value for the second number';
+      objList.appendChild(addError(strError, '#num2', objForm, strID));
+      strID = '';
+    }
+    // Add the list to the error information
+    objNew.appendChild(objList);
+    // If there were existing errors, replace them with the new lot,
+    // otherwise add the new errors to the start of the form
+    if (objExisting)
+      objExisting.parentNode.replaceChild(objNew, objExisting);
+    else
+    {
+      var objPosition = objForm.firstChild;
+      objForm.insertBefore(objNew, objPosition);
+    }
+    // Place focus on the anchor in the heading to alert
+    // screen readers that the submission is in error
+    objAnchor.focus();
+    // Do not submit the form
+    objForm.submitAllowed = false;
+    return false;
+  }
+  return true;
+}
+
+// Function to validate a number
+function isNumber(strValue)
+{
+  return (!isNaN(strValue) &amp;&amp; strValue.replace(/^\s+|\s+$/, '') !== '');
+} 
+</pre><p>Below are the helper functions to create the error message and to set focus to the
+                  associated form field.
+               </p><pre xml:space="preserve">
+// Function to create a list item containing a link describing the error
+// that points to the appropriate form field
+function addError(strError, strFragment, objForm, strID)
+{
+  var objAnchor = document.createElement('a');
+  var objListItem = document.createElement('li');
+  objAnchor.appendChild(document.createTextNode(strError));
+  objAnchor.setAttribute('href', strFragment);
+  objAnchor.onclick = function(event){return focusFormField(this, event, objForm);};
+  objAnchor.onkeypress = function(event){return focusFormField(this, event, objForm);};
+  // If strID has a value, this is the first error in the list
+  if (strID.length &gt; 0)
+    objAnchor.setAttribute('id', strID);
+  objListItem.appendChild(objAnchor);
+  return objListItem;
+}
+
+// Function to place focus to the form field in error
+function focusFormField(objAnchor, objEvent, objForm)
+{
+  // Allow keyboard navigation over links
+  if (objEvent &amp;&amp; objEvent.type == 'keypress')
+    if (objEvent.keyCode != 13 &amp;&amp; objEvent.keyCode != 32)
+      return true;
+  // set focus to the form control
+  var strFormField = objAnchor.href.match(/[^#]\w*$/);
+  objForm[strFormField].focus();
+  return false;
+}</pre><p>Here is the HTML for the example form.</p><pre xml:space="preserve">
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "https://www.w3.org/TR/html4/strict.dtd"&gt;
+&lt;html&gt;
+&lt;head&gt;
+	&lt;title&gt;ECMAScript Form Validation&lt;/title&gt;
+	&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"&gt;
+	&lt;script type="text/javascript" src="validate.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Form Validation&lt;/h1&gt;
+&lt;form id="numberform" method="post" action="form.php"&gt;
+&lt;fieldset&gt;
+&lt;legend&gt;Numeric Fields&lt;/legend&gt;
+&lt;p&gt;
+&lt;label for="num1"&gt;Enter first number&lt;/label&gt;
+&lt;input type="text" size="20" name="num1" id="num1"&gt;
+&lt;/p&gt;
+&lt;p&gt;
+&lt;label for="num2"&gt;Enter second number&lt;/label&gt;
+&lt;input type="text" size="20" name="num2" id="num2"&gt;
+&lt;/p&gt;
+&lt;/fieldset&gt;
+&lt;p&gt;
+&lt;input type="submit" name="submit" value="Submit Form"&gt;
+&lt;/p&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre><p>This example is limited to client-side scripting, and should be backed up with server-side
+                  validation. The example is limited to the creation of error messages when client-side
+                  scripting is available. 
+                  
+               </p>
+               <p class="working-example">Here is a link to a working example: <a href="../../working-examples/script-form-validation/">Form Validation</a> 
+                  
+               </p>
+            </section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li>HTML 4.01  <a href="http://www.webreference.com/js/column44/index.html">The Document Object Model, More methods</a> from Webreference.com
+                  									
+               </li>
+               
+               <li>
+                  <a href="http://usability.com.au/2008/09/accessible-forms-using-wcag-2-0/">Accessible Forms using WCAG 2.0</a>
+                  
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <p>For pages that dynamically create new content:</p>
+               
+               <ol>
+                  
+                  <li>Examine the source code and check that the new content is not created using document.write(),
+                     innerHTML, outerHTML, innerText or outerText.
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>Check #1 is true.</li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

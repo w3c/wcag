@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>F87: Failure of Success Criterion 1.3.1 due to inserting non-decorative content by using
+         :before and :after pseudo-elements and the 'content' property in CSS
+      </title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="F86">Previous Technique: F86</a></li>
+            <li><a href="F88">Next Technique: F88</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Failure of Success Criterion 1.3.1 due to inserting non-decorative content by using
+         :before and :after pseudo-elements and the 'content' property in CSS
+      </h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>All technologies that support CSS.</p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/info-and-relationships">Success Criterion 1.3.1: Info and Relationships</a> (Failure)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The CSS :before and :after pseudo-elements specify the location of content before
+               and after an element's document tree content. The content property, in conjunction
+               with these pseudo-elements, specifies what is inserted. For users who need to customize
+               or turn off style information in order to view content according to their needs, assistive
+               technologies may not be able to access the information that is inserted using CSS.
+               Therefore, it is a failure to use these properties to insert non-decorative content.
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1">
+               <h3>Example 1</h3>
+               <p>In the following example, :before and :after are used to indicate speaker changes
+                  and to insert quotation marks in a screenplay.
+               </p>
+               <p>The CSS contains:</p><pre xml:space="preserve"> p.jim:before {	content: "Jim: " }
+p.mary:before { content: "Mary: " }
+
+q:before { content: open-quote }
+q:after  { content: close-quote }</pre><p>It is used in this excerpt:</p><pre xml:space="preserve"> &lt;p class="jim"&gt;
+ &lt;q&gt;Do you think he's going to make it?&lt;/q&gt;
+&lt;/p&gt;
+&lt;p class="mary"&gt;
+ &lt;q&gt;It's not looking good.&lt;/q&gt;
+&lt;/p&gt;</pre></section>
+            <section class="example" id="example-2">
+               <h3>Example 2</h3>
+               <p>In this example, :before is used to differentiate facts from opinions.</p>
+               <p>The CSS contains:</p><pre xml:space="preserve"> p.fact:before { content: "Fact: "; font-weight: bold; }
+ p.opinion:before { content: "Opinion: "; font-weight: bold; }</pre><p>It is used in this excerpt:</p><pre xml:space="preserve"> &lt;p class="fact"&gt;
+ The defendant was at the scene of the crime when it occurred. 
+&lt;/p&gt;
+&lt;p class="opinion"&gt;
+ The defendant committed the crime. 
+&lt;/p&gt;</pre></section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li>
+                  <a href="https://www.w3.org/TR/CSS21/generate.html">CSS 2.1: Generated content, automatic numbering, and lists</a>
+                  
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <ol>
+                  
+                  <li>Examine all content inserted through use of the :before and :after pseudo-elements
+                     and the content property
+                  </li>
+                  
+                  <li>Verify that the content is decorative.</li>
+                  
+                  <li>If the inserted content is not decorative, check that the information is provided
+                     to assistive technologies and is also available when CSS is turned off.
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>If checks #2 or #3 are false, then this failure condition applies and the content
+                     fails this Success Criterion.
+                  </li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

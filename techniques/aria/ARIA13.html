@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>ARIA13: Using aria-labelledby to name regions and landmarks</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="ARIA12">Previous Technique: ARIA12</a></li>
+            <li><a href="ARIA14">Next Technique: ARIA14</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Using aria-labelledby to name regions and landmarks</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>Technologies that support <a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</a>. 
+            </p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/info-and-relationships">Success Criterion 1.3.1: Info and Relationships</a> (Sufficient)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The purpose of this technique is to provide names for regions of a page that can be
+               read by assistive technology.  The aria-labelledby attribute provides a way to associate
+               an section of the page marked up as a region or landmarks with text that is on the
+               page that labels it.
+               
+            </p>
+            <p>Landmark roles (or "landmarks") programmatically identify sections of a page. Landmarks
+               help assistive technology (AT) users orient themselves to a page and help them navigate
+               easily to various sections of a page.
+               
+            </p>
+            <p>Like aria-describedby, aria-labelledby can accept multiple ids to point to other regions
+               of the page using a space separated list. It is also limited to ids for defining these
+               sets.
+               
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-identify-a-landmark-with-on-page-text">
+               <h3>Example 1: Identify a landmark with on-page text</h3>
+               <p>Below is an example of aria-labelledby used on a complementary Landmark. The region
+                  of the document to which the heading pertains could be marked with the aria-labelledby
+                  property containing the value of the id for the header.
+               </p><pre xml:space="preserve">&lt;p role="complementary" aria-labelledby="hdr1"&gt;
+ &lt;h1 id="hdr1"&gt;
+    Top News Stories
+ &lt;/h1&gt;
+&lt;/p&gt;</pre></section>
+            <section class="example" id="example-2-identification-for-application-landmarks">
+               <h3>Example 2: Identification for Application landmarks</h3>
+               <p>The following code snippet for application landmarks with static prose. If you have
+                  a regional landmark of type application and static descriptive text is available,
+                  then on the application landmark, include an aria-describedby reference to associate
+                  the application and the static text as shown here:
+               </p><pre xml:space="preserve">&lt;div role="application" aria-labelledby="p123" aria-describedby="info"&gt;
+&lt;h1 id="p123"&gt;Calendar&lt;h1&gt;
+&lt;p id="info"&gt;
+This calendar shows the game schedule for the Boston Red Sox.
+&lt;/p&gt;
+&lt;div role="grid"&gt;
+....
+&lt;/div&gt;</pre></section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li> 
+                  <a href="https://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</a>
+                  
+               </li>
+               
+               <li> 
+                  <a href="https://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description
+                     Calculation</a>
+                  
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <ol>
+                  
+                  <li>Examine each element with attribute role=region or with a <a href="https://www.w3.org/TR/wai-aria/roles#landmark_roles">landmark role</a>, where an aria-labelledby attribute is also present.
+                     
+                  </li>
+                  
+                  <li>Check that the value of the aria-labelledby attribute is the id of an element on the
+                     page. 
+                     
+                  </li>
+                  
+                  <li>Check that the text of the element with that id accurately labels the section of the
+                     page.
+                     
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>#2 and #3 are true.</li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

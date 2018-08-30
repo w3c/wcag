@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>H96: Using the track element to provide audio descriptions</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="H95">Previous Technique: H95</a></li>
+            <li><a href="H97">Next Technique: H97</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Using the track element to provide audio descriptions</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>HTML5</p>
+            <p>This technique relates to:</p>
+            <ul>
+               <li><a href="https://w3c.github.io/wcag/understanding/audio-only-and-video-only-prerecorded">Success Criterion 1.2.1: Audio-only and Video-only (Prerecorded)</a> (Advisory)
+               </li>
+               <li><a href="https://w3c.github.io/wcag/understanding/audio-description-or-media-alternative-prerecorded">Success Criterion 1.2.3: Audio Description or Media Alternative (Prerecorded)</a> (Advisory)
+               </li>
+               <li><a href="https://w3c.github.io/wcag/understanding/audio-description-prerecorded">Success Criterion 1.2.5: Audio Description (Prerecorded)</a> (Advisory)
+               </li>
+               <li><a href="https://w3c.github.io/wcag/understanding/extended-audio-description-prerecorded">Success Criterion 1.2.7: Extended Audio Description (Prerecorded)</a> (Advisory)
+               </li>
+            </ul>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to use the HTML5 track element to specify a descriptions
+               timed text track for a video element. Audio description timed text tracks contain
+               textual descriptions of the video component of the media resource, intended for audio
+               synthesis when the visual component is obscured, unavailable, or not usable. The user
+               agent makes the cues available to the user in a non-visual fashion, for instance,
+               by synthesizing them into speech.
+            </p>
+            <p>The src attribute of the track element is an URL providing the text track data.</p>
+            <p>The audio description cues must fit into the gaps available in the audio component
+               of the media resource. If there is not enough time to synthesize the description text
+               in the track cue's time interval, user agents may truncate the speech. This limits
+               the amount of supplementary information that can be added.
+            </p>
+            <p>User agents may also support extended audio descriptions by halting the video until
+               the description has been completely synthesized, then restarting the video.
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-audio-description-in-one-language">
+               <h3>Example 1: Audio description in one language</h3>
+               <p>A video element for a video in the English language. The audio descriptions are provided
+                  in the WebVTT format.
+               </p><pre xml:space="preserve">
+			 &lt;video poster="myvideo.png" controls&gt;
+				&lt;source src="myvideo.mp4" srclang="en" type="video/mp4"&gt;
+				&lt;track src="myvideo_en.vtt" kind="descriptions" srclang="en" label="English"&gt;
+			  &lt;/video&gt;
+            </pre></section>
+            <section class="example" id="example-2-audio-description-in-multiple-languages">
+               <h3>Example 2: Audio description in multiple languages</h3>
+               <p>A video element for a video with both an English and French language source element,
+                  and with an English and a French audio description track using the WebVTT (vtt) file
+                  format.
+               </p><pre xml:space="preserve">
+			 &lt;video poster="myvideo.png" controls&gt;
+				&lt;source src="myvideo.mp4" srclang="en" type="video/mp4"&gt;
+				&lt;source src="myvideo.webm" srclang="fr" type="video/webm"&gt;
+				&lt;track src="myvideo_en.vtt" kind="descriptions" srclang="en" label="English"&gt;
+				&lt;track src="myvideo_fr.vtt" kind="descriptions" srclang="fr" label="French"&gt;
+			  &lt;/video&gt;            </pre></section>
+            <section class="example" id="example-3-captions-in-multiple-languages">
+               <h3>Example 3: Captions in multiple languages</h3>
+               <p>A video, "Google self-driving car". with an audio description track.</p><pre xml:space="preserve">
+			&lt;video controls tabindex="1"&gt;
+				&lt;source src="cdgQpa1pUUE.webm" type="video/webm"&gt;
+				&lt;source src="cdgQpa1pUUE.mp4" type="video/mp4"&gt;
+				&lt;track id="audesc" src="cdgQpa1pUUE.vtt" kind="descriptions" label="English descriptions" srclang="en-us"&gt;&lt;/track&gt;
+			&lt;/video&gt;            </pre></section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li>
+                  	<a href="https://www.w3.org/TR/html5/embedded-content-0.html#the-track-element">HTML5, the track element</a>
+                  
+               </li>
+               
+               <li>
+                  <a href="https://github.com/w3c/webvtt">WebVTT: The Web Video Text Tracks Format</a>
+                  
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <p>For each video element used to play a video:</p>
+               
+               <ol>
+                  
+                  <li>Check that the video contains a track element of kind descriptions in the language
+                     of the video.
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>Check #1 is true.</li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

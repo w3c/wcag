@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>SCR20: Using both keyboard and other device-specific functions</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="SCR19">Previous Technique: SCR19</a></li>
+            <li><a href="SCR21">Next Technique: SCR21</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Using both keyboard and other device-specific functions</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>Applies to all content that uses Script to implement functionality.</p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/keyboard">Success Criterion 2.1.1: Keyboard</a> (Sufficient as a way to meet <a href="../general/G90">G90: Providing keyboard-triggered event handlers</a>)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>
+               The objective of this technique is to illustrate the use of both keyboard-specific
+               and mouse-specific events with code that has a scripting function associated with
+               an event. Using both keyboard-specific and mouse-specific events together ensures
+               that content can be operated by a wide range of devices. For example, a script may
+               perform the same action when a keypress is detected that is performed when a mouse
+               button is clicked. This technique goes beyond the Success Criterion requirement for
+               keyboard access by including not only keyboard access but access using other devices
+               as well. 
+               
+            </p>
+            <p>
+               In JavaScript, commonly used event handlers include, onblur, onchange, onclick, ondblclick,
+               onfocus, onkeydown, onkeypress, onkeyup, onload, onmousedown, onmousemove, onmouseout,
+               onmouseover, onmouseup, onreset, onselect, onsubmit, onunload. Some mouse-specific
+               functions have a logical corresponding keyboard-specific function (such as 'onmouseover'
+               and 'onfocus'). A keyboard event handler should be provided that executes the same
+               function as the mouse event handler.
+               
+            </p>
+            <p>
+               The following table suggests keyboard event handlers to pair mouse event handlers.
+               
+            </p>
+            <table id="SCR20_mappings">
+               		
+               <caption>Device Handler Correspondences</caption>
+               		
+               <tbody>
+                  			
+                  <tr>
+                     				
+                     <th scope="col">Use...</th>
+                     				
+                     <th scope="col">...with</th>
+                     			
+                  </tr>
+                  			
+                  <tr>
+                     				
+                     <td> 
+                        					<code>mousedown</code> 
+                        				
+                     </td>
+                     				
+                     <td> 
+                        					<code>keydown</code>
+                        				
+                     </td>
+                     			
+                  </tr>
+                  			
+                  <tr>
+                     				
+                     <td> 
+                        					<code>mouseup</code> 
+                        				
+                     </td>
+                     				
+                     <td> 
+                        					<code>keyup</code>
+                        				
+                     </td>
+                     			
+                  </tr>
+                  			
+                  <tr>
+                     				
+                     <td> 
+                        					<code>click 
+                           								</code> 
+                        					<sup>[1]</sup> 
+                        				
+                     </td>
+                     				
+                     <td> 
+                        					<code>keypress 
+                           								</code> 
+                        					<sup>[2]</sup> 
+                        				
+                     </td>
+                     			
+                  </tr>
+                  			
+                  <tr>
+                     				
+                     <td> 
+                        					<code>mouseover</code> 
+                        				
+                     </td>
+                     				
+                     <td> 
+                        					<code>focus</code>
+                        				
+                     </td>
+                     			
+                  </tr>
+                  			
+                  <tr>
+                     				
+                     <td> 
+                        					<code>mouseout</code> 
+                        				
+                     </td>
+                     				
+                     <td> 
+                        					<code>blur</code> 
+                        				
+                     </td>
+                     			
+                  </tr>
+                  		
+               </tbody>
+               	
+            </table>
+            <p>
+               						   1 Although click is in principle a mouse event handler, most HTML and XHTML
+               user agents also process this event when a native HTML control (e.g. a button or a
+               link) is activated, regardless of whether it was activated with the mouse or the keyboard.
+               In practice, therefore, it is not necessary to duplicate this event when adding handlers
+               to natively focusable HTML elements. However, it is necessary when adding handlers
+               to other events, such as in Example 2 below.
+            </p>
+            <p>
+               						   2 Since the keypress event handler reacts to any key, the event handler function
+               should check first to ensure the Enter key was pressed before proceeding to handle
+               the event. Otherwise, the event handler will run each time the user presses any key,
+               even the tab key to leave the control, and this is usually not desirable.
+               
+            </p>
+            <p>
+               Some mouse-specific functions (such as dblclick and mousemove) do  not have a corresponding
+               keyboard-specific function. This means that some functions may need  to be implemented
+               differently for each device (for example, including a series of buttons to execute,
+               via keyboard, the equivalent mouse-specific functions implemented).
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1">
+               <h3>Example 1</h3>
+               <p>In this example of an image link, the image is changed when the user positions the
+                  pointer over the image. To provide keyboard users with a similar experience, the image
+                  is also changed when the user tabs to it.
+                  
+               </p><pre xml:space="preserve">
+&lt;a href="menu.php" onmouseover="swapImageOn('menu')" onfocus="swapImageOn('menu')" 
+onmouseout="swapImageOff('menu')" onblur="swapImageOff('menu')"&gt; 
+&lt;img id="menu" src="menu_off.gif" alt="Menu" /&gt; 
+&lt;/a&gt;</pre></section>
+            <section class="example" id="example-2">
+               <h3>Example 2</h3>
+               <p>
+                  								This example shows a custom image control for which both the mouse and the
+                  keyboard can be used to activate the function. The mouse event onclick is duplicated
+                  by an appropriate keyboard event onkeypress. The tabindex attribute ensures that the
+                  keyboard will have a tab stop on the image. Note that in this example, the nextPage()
+                  function should check that the keyboard key pressed was Enter, otherwise it will respond
+                  to all keyboard actions while the image has focus, which is not the desired behavior.
+               </p><pre xml:space="preserve">
+&lt;img onclick="nextPage();" onkeypress="nextPage();" tabindex="0" src="arrow.gif" 
+alt="Go to next page"&gt; </pre><div xmlns="" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:wcag="https://www.w3.org/WAI/GL/" class="note">
+                  <div role="heading" class="note-title marker" aria-level="4">Note</div>
+                  <div xmlns="http://www.w3.org/1999/xhtml">
+                     
+                     <p>This example uses tabindex on an img element. Even though this is currently invalid,
+                        it is provided as a transitional technique to make this function work. Custom controls
+                        like this should also use WAI-ARIA to expose the role and state of the control.
+                     </p>
+                     
+                  </div>
+               </div>
+            </section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li> 
+                  <a href="http://webaim.org/techniques/javascript/">Overview of Creating Accessible JavaScript</a> 
+                  
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <ol>
+                  
+                  <li>
+                     Find all interactive functionality
+                     
+                  </li>
+                  
+                  <li>
+                     Check that all interactive functionality can be accessed using the keyboard alone
+                     
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>
+                     #2 is true
+                     
+                  </li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

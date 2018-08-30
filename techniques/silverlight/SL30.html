@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>SL30: Using Silverlight Control Compositing and AutomationProperties.Name</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="SL29">Previous Technique: SL29</a></li>
+            <li><a href="SL31">Next Technique: SL31</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Using Silverlight Control Compositing and AutomationProperties.Name</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>Content implemented in Microsoft Silverlight.</p>
+            <div class="note">
+               <div role="heading" class="note-title marker" aria-level="3">Note</div>
+               <p>Accessibility of Silverlight is no longer supported by Microsoft. Authors are advised
+                  to implement content using another technology.
+               </p>
+            </div>
+            <p>This technique relates to:</p>
+            <ul>
+               <li><a href="https://w3c.github.io/wcag/understanding/non-text-content">Success Criterion 1.1.1: Non-text Content</a> (Sufficient)
+               </li>
+               <li><a href="https://w3c.github.io/wcag/understanding/name-role-value">Success Criterion 4.1.2: Name, Role, Value</a> (Sufficient as a way to meet <a href="../general/G10">G10: Creating components using a technology that supports the accessibility notification
+                     of changes</a>)
+               </li>
+            </ul>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to properly apply Silverlight control
+               				composition techniques that can present text and non-text in UI as
+               				part of the same control. This technique explains the consequences
+               				that using control composition has on how that control is reported
+               				to the accessibility frameworks that Silverlight supports. 
+            </p>
+            <p>Silverlight control composition concepts are relevant either to Silverlight
+               				developers who define and package a Silverlight control for use by
+               				other Silverlight authors, or for Silverlight application authors that
+               				use Silverlight controls in their UI but use the content properties
+               				of such controls to include several other elements in a composite layout. 
+            </p>
+            <p>In Silverlight programming and UI definition, Silverlight authors can use control
+               				composition to define a parent control that initiates an action. The
+               				control can have component parts, such as text and non-text composition
+               				pieces that display within the control and have equivalent meaning.
+               				Silverlight authors can rely on the text component of the control to
+               				provide any text alternative for purposes other than the accessibility
+               				framework. However, Silverlight authors should declare alternative
+               				text on the control that is specifically consumed by accessibility
+               				frameworks, by setting AutomationProperties.Name as
+               				an attribute in XAML. In most cases, this text can be the same as the
+               				visible text in the control composition, per the definition of 'label'
+               				in SC 4.1.2. 
+            </p>
+            <p>Note that this technique does not result in a duplication of text,
+               				as explained in <a href="https://www.w3.org/WAI/WCAG21/Techniques/html/H2">H2</a>.
+               				This is because the element parts of control composition are either
+               				inherently not focusable separately, or can be specified by instance-specific
+               				properties to behave as if they cannot be focused. The parts in Silverlight
+               				composition are not promoted to the accessibility frameworks as parts
+               				of an application-specific UI Automation tree, so that control composition
+               				as an implementation detail does not interfere with the usage of controls
+               				by Silverlight application authors. The primary source of accessibility-related
+               				information is the specific AutomationProperties.Name property
+               				as set on the parent control in the composition, which is set by the
+               				application author rather than the control author. 
+            </p>
+            <p>The control author does specify the information that is reported to
+               				accessibility frameworks as the "ClassName", which is often
+               				used by assistive technologies for identification purposes and is appended
+               				to any "Name" value. For example, if an application author
+               				includes a   "Widget" control, and gives it an AutomationProperties.Name value
+               				of "Show Map", an assistive technology might identify the
+               				element as   "Show Map widget". The "Show Map" part
+               				comes from the application author code, and the "widget" part
+               				comes from the Widget control implementation code. 
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-button-is-composed-with-a-stackpanel-that-contains-nontext&#xA;----&#x9;&#x9;&#x9;&#x9;&#x9;and-text-content">
+               <h3>Example 1: Button is composed with a StackPanel that contains nontext
+                  					and text content
+               </h3>
+               <p>In this example the TextBlock that goes with the
+                  						graphic image conveys the text information for non-accessibility purposes.
+                  						The Button has internal composition that combines
+                  						text from a non-focusable TextBlock part and an image
+                  						part. Therefore the "Pause" Text is not promoted to serve
+                  						as "Name" through built-in Button automation
+                  						peer logic. The Silverlight application author is responsible for explicitly
+                  						setting AutomationProperties.Name on the Button so
+                  						that the text equivalent is available to the accessibility framework.
+                  						This example shows the XAML UI. The logic, which might be attached
+                  						to Button with a Click handler, is
+                  						not shown. 
+               </p><pre xml:space="preserve"> &lt;Button
+   Height="20" Width="50" AutomationProperties.Name="Pause" 
+ &gt;
+   &lt;StackPanel Orientation="Horizontal" &gt;
+     &lt;Image Height="12" Width="12" Source="/icon_pause.png"/&gt;
+     &lt;TextBlock Text="Pause"/&gt;
+   &lt;/StackPanel&gt;
+ &lt;/Button&gt;
+</pre><p class="working-example">This example is shown in operation in the <a href="../../working-examples/silverlight-button-nontext-text-composition/">working example of Button Nontext Text Composition</a>.
+               </p>
+            </section>
+            <section class="example" id="example-2-button-composed-using-binding-and-resource-references&#xA;----&#x9;&#x9;&#x9;&#x9;for-strings">
+               <h3>Example 2: Button composed, using binding and resource references
+                  				for strings
+               </h3>
+               <p>This example is similar to Example 1 and produces the same result
+                  						at run time. This example shows the preferred technique of using the
+                  						Silverlight data binding and resource features to ensure that the strings
+                  						for text content and accessibility are the same strings. Also, this
+                  						gets the strings out of the XAML source and makes them simpler to localize
+                  						or edit. For more information on using resource strings through binding,
+                  						see <a href="https://msdn.microsoft.com/en-us/library/dd882554%28VS.95%29.aspx">Localizing
+                     						XAML topic on MSDN</a>. 
+               </p><pre xml:space="preserve"> &lt;Application.Resources&gt;
+  &lt;resx:Resources x:Key="UIResourceStrings" /&gt;
+ &lt;/Application.Resources&gt;
+  ...
+ &lt;Button
+   Height="20" Width="50"
+   AutomationProperties.Name="{Binding PauseUIString, Source=UIResourceStrings}" /&gt;
+ &gt;
+   &lt;StackPanel Orientation="Horizontal" &gt;
+     &lt;Image Height="12" Width="12" Source="/icon_pause.png"/&gt;
+     &lt;TextBlock
+       Text="{Binding PauseUIString, Source=UIResourceStrings}"/&gt;
+   &lt;/StackPanel&gt;
+ &lt;/Button&gt;
+</pre></section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li>
+                  <a href="https://msdn.microsoft.com/en-us/library/cc645025(VS.95).aspx">Silverlight
+                     					Layout System</a> 
+                  
+               </li>
+               
+               <li>
+                  <a href="https://msdn.microsoft.com/en-us/library/system.windows.automation.automationproperties.name%28VS.95%29.aspx">AutomationProperties.Name
+                     					Attached Property</a> 
+                  
+               </li>
+               
+               <li>Tools: <a href="http://firstfloorsoftware.com/silverlightspy">SilverlightSpy</a> or <a href="http://uiautomationverify.codeplex.com/">UIAVerify</a> 
+                  
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="test" id="automation-tree-verifier">
+               
+               <h3>Automation tree verifier</h3>
+               
+               <section class="procedure" id="procedure">
+                  <h4>Procedure</h4>
+                  
+                  <ol>
+                     
+                     <li> Using a browser that supports Silverlight, open an HTML page that
+                        					references a Silverlight application through an object tag. 
+                     </li>
+                     
+                     <li> Use a verification tool that is capable of showing the full automation
+                        						tree, and an object’s name text alternative as part of the tree.
+                        						(For example, use UIAVerify or Silverlight Spy; see Resources links.) 
+                     </li>
+                     
+                     <li> Check that the AutomationProperties.Name appears
+                        							as the Name value for identification in the automation
+                        							tree, whenever a composite control that has both text and non-text
+                        							elements is encountered. 
+                     </li>
+                     
+                  </ol>
+                  
+               </section>
+               
+               <section class="results" id="expected-results">
+                  <h4>Expected Results</h4>
+                  
+                  <p>#3 is true. </p>
+                  
+               </section>
+               
+            </section>
+            <section class="test" id="screen-reader">
+               
+               <h3>Screen reader</h3>
+               
+               <section class="procedure" id="procedure">
+                  <h4>Procedure</h4>
+                  
+                  <ol>
+                     
+                     <li> Using a browser that supports Silverlight, open an HTML page that
+                        					references a Silverlight application through an object tag. 
+                     </li>
+                     
+                     <li> Engage the screen reader. With focus inside the Silverlight content
+                        						area, press TAB to focus to a composite control where both text and
+                        						non-text elements are present. 
+                     </li>
+                     
+                     <li> Check that the Name as applied to the control
+                        							instance, along with the class name of the control, is read by the
+                        							screen reader. 
+                     </li>
+                     
+                  </ol>
+                  
+               </section>
+               
+               <section class="results" id="expected-results">
+                  <h4>Expected Results</h4>
+                  
+                  <p>#3 is true. </p>
+                  
+               </section>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

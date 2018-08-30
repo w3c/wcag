@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>F44: Failure of Success Criterion 2.4.3 due to using tabindex to create a tab order that
+         	does not preserve meaning and operability
+      </title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="F43">Previous Technique: F43</a></li>
+            <li><a href="F46">Next Technique: F46</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Failure of Success Criterion 2.4.3 due to using tabindex to create a tab order that
+         	does not preserve meaning and operability
+      </h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>HTML and XHTML</p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/focus-order">Success Criterion 2.4.3: Focus Order</a> (Failure)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>This document describes a failure that occurs when the tab order does not
+               follow logical relationships and sequences in the content.
+            </p>
+            <p>Focusable elements like links and form elements have a tabindex
+               attribute. The elements receive focus in ascending order of the value of the
+               tabindex attribute. When the values of the
+               tabindex attribute are assigned in a different order than the
+               relationships and sequences in the content, the tab order no longer follows
+               the relationships and sequences in the content.
+            </p>
+            <p>One of the most common causes of this failure occurs when editing a page
+               where tabindex has been used. It is easy for the tab order and
+               the content order to fall out of correspondence when the content is edited
+               but the tabindex attributes are not updated to reflect the
+               changes to the content.
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1">
+               <h3>Example 1</h3>
+               <p>The following example incorrectly uses tabindex to specify an
+                  alternative tab order:
+               </p><pre xml:space="preserve">
+&lt;ol&gt;
+   &lt;li&gt;&lt;a href="main.html" tabindex="1"&gt;Homepage&lt;/a&gt;&lt;/li&gt;
+   &lt;li&gt;&lt;a href="chapter1.html" tabindex="4"&gt;Chapter 1&lt;/a&gt;&lt;/li&gt;
+   &lt;li&gt;&lt;a href="chapter2.html" tabindex="3"&gt;Chapter 2&lt;/a&gt;&lt;/li&gt;
+   &lt;li&gt;&lt;a href="chapter3.html" tabindex="2"&gt;Chapter 3&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</pre><p>If this list is navigated by the tab key, the list is navigated in
+                  the order Homepage, chapter 3, chapter 2, chapter 1, which does not
+                  follow the sequence in the content.
+               </p>
+            </section>
+            <section class="example" id="example-2">
+               <h3>Example 2</h3>
+               <p>The tab order has been set explicitly in a Web page by providing
+                  tabindex attributes for all fields. Later, the page
+                  is modified to add a new field in the middle of the page, but the
+                  author forgets to add a tabindex attribute to the new
+                  field. As a result, the new field is at the end of the tab
+                  order.
+               </p>
+            </section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li>HTML 4.01 <a href="https://www.w3.org/TR/html4/interact/forms.html#adef-tabindex">Tabbing navigation</a> 
+                  
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <ol>
+                  
+                  <li>If tabindex is used, check that the tab order
+                     specified by the tabindex attributes follows
+                     relationships in the content.
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>If check #1 is false, then this failure condition applies and
+                     content fails the Success Criterion.
+                  </li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

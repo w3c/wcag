@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>ARIA4: Using a WAI-ARIA role to expose the role of a user interface component</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="ARIA2">Previous Technique: ARIA2</a></li>
+            <li><a href="ARIA5">Next Technique: ARIA5</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Using a WAI-ARIA role to expose the role of a user interface component</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>Technologies that support <a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</a>.
+            </p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/name-role-value">Success Criterion 4.1.2: Name, Role, Value</a> (Sufficient as a way to meet <a href="../general/G10">G10: Creating components using a technology that supports the accessibility notification
+                     of changes</a>)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to define the role of an element using the role
+               attribute with one of the non-abstract values defined in the <a href="https://www.w3.org/TR/wai-aria/roles#role_definitions">WAI-ARIA Definition of Roles</a>. The WAI-ARIA specification provides an informative description of each role, how
+               it relates to other roles, and the states and properties for each role. When rich
+               internet applications define new user interface widgets, exposing the roles enables
+               users to understand the widget and how to interact with it.
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-a-simple-toolbar">
+               <h3>Example 1: A simple toolbar</h3>
+               <p>The WAI-ARIA Authoring Practices document <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#accessiblewidget">demonstrates a toolbar containing three buttons</a>. The div element has a role of "toolbar", and the img elements have "button" roles:
+               </p><pre xml:space="preserve">
+    &lt;div role="toolbar"
+      tabindex="0" 
+      id="customToolbar" 
+      onkeydown="return optionKeyEvent(event);"
+      onkeypress="return optionKeyEvent(event);"
+      onclick="return optionClickEvent(event);"
+      onblur="hideFocus()"
+      onfocus="showFocus()"
+      &gt; 
+      &lt;img src="img/btn1.gif" 
+           role="button" 
+           tabindex="-1" 
+           alt="Home" 
+           id="b1" 
+           title="Home"&gt;
+      &lt;img src="img/btn2.gif" 
+           role="button" 
+           tabindex="-1" 
+           alt="Refresh" 
+           id="b2" 
+           title="Refresh"&gt;
+     &lt;img src="img/btn3.gif" 
+           role="button" 
+           tabindex="-1" 
+           alt="Help" 
+           id="b3" 
+           title="Help"&gt; 
+ &lt;/div&gt;  
+                        </pre><p>The Authoring Practices Toolbar Pattern <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#toolbar">provides a working example of a toolbar.</a>.
+               </p>
+            </section>
+            <section class="example" id="example-2-a-tree-widget">
+               <h3>Example 2: A Tree Widget</h3>
+               <p>The WAI-ARIA Authoring Practices <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#exampletree">demonstrates a tree widget</a>. Note the use of the roles "tree", "treeitem", and "group" to identify the tree and
+                  its structure. Here is a simplified excerpt from the code:
+               </p><pre xml:space="preserve">
+&lt;ul role="tree" tabindex="0"&gt;
+  &lt;li role="treeitem"&gt;Birds&lt;/li&gt;
+  &lt;li role="treeitem"&gt;Cats
+    &lt;ul role="group"&gt;
+      &lt;li role="treeitem"&gt;Siamese&lt;/li&gt;
+      &lt;li role="treeitem"&gt;Tabby&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li role="treeitem"&gt;Dogs
+    &lt;ul role="group"&gt;
+      &lt;li role="treeitem"&gt;Small Breeds
+        &lt;ul role="group"&gt;
+          &lt;li role="treeitem"&gt;Chihuahua&lt;/li&gt;
+          &lt;li role="treeitem"&gt;Italian Greyhound&lt;/li&gt;
+          &lt;li role="treeitem"&gt;Japanese Chin&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li role="treeitem"&gt;Medium Breeds
+        &lt;ul role="group"&gt;
+          &lt;li role="treeitem"&gt;Beagle&lt;/li&gt;
+          &lt;li role="treeitem"&gt;Cocker Spaniel&lt;/li&gt;
+          &lt;li role="treeitem"&gt;Pit Bull&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li role="treeitem"&gt;Large Breeds
+        &lt;ul role="group"&gt;
+          &lt;li role="treeitem"&gt;Afghan&lt;/li&gt;
+          &lt;li role="treeitem"&gt;Great Dane&lt;/li&gt;
+          &lt;li role="treeitem"&gt;Mastiff&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</pre><p>The Authoring Practices Tree View Pattern <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#TreeView"> provides a working example of a tree</a>.
+               </p>
+            </section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li>
+                  <a href="https://www.w3.org/TR/wai-aria/usage#usage_intro">Accessible Rich Internet Applications (WAI-ARIA) 1.0, Roles</a>
+                  
+               </li>
+               
+               <li>
+                  <a href="https://www.w3.org/TR/wai-aria/roles">Accessible Rich Internet Applications (WAI-ARIA) 1.0, The Roles Model</a>
+                  
+               </li>
+               
+               <li>
+                  <a href="https://www.w3.org/TR/html-aam-1.0/">HTML Accessibility API Mappings 1.0</a>
+                  
+               </li>
+               	
+               <li>
+                  <a href="https://www.w3.org/TR/wai-aria-practices-1.1/">WAI-ARIA 1.1 Authoring Practices</a> 
+                  
+               </li>
+               
+               <li>
+                  <a href="https://www.w3.org/TR/aria-in-html/">Notes on using ARIA in HTML</a> 
+                  
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <p>For a user interface component using the role attribute:</p>
+               
+               <ol>
+                  
+                  <li>Check that the value of the role attribute is one of the non-abstract roles from the
+                     values defined in the WAI-ARIA specification.
+                  </li>
+                  
+                  <li>Check that the characteristics of the user interface component are described by the
+                     role.
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>#1 and #2 are true.</li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

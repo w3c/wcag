@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>F3: Failure of Success Criterion 1.1.1 due to using CSS to include images that convey
+         important information
+      </title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="F2">Previous Technique: F2</a></li>
+            <li><a href="F4">Next Technique: F4</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Failure of Success Criterion 1.1.1 due to using CSS to include images that convey
+         important information
+      </h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p> All technologies that support CSS. </p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/non-text-content">Success Criterion 1.1.1: Non-text Content</a> (Failure)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p> The CSS background-image property provides a way to include images in the
+               document with CSS without any reference in the HTML code. The CSS
+               background-image property was designed for decorative purposes and it is not
+               possible to associate text alternatives with images that are included via
+               CSS. Text alternatives are necessary for people who cannot see images that
+               convey important information. Therefore, it is a failure to use this
+               property to add images to convey important information. This failure would apply equally
+               in a case where the background image was declared in the HTML style attribute, as
+               well as in a case where the background image declaration was created dynamically in
+               a client script (see example 3 below).
+            </p>
+            <div xmlns="" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:wcag="https://www.w3.org/WAI/GL/" class="note">
+               <div role="heading" class="note-title marker" aria-level="3">Note</div>
+               <div xmlns="http://www.w3.org/1999/xhtml">
+                  
+                  <p>Embedding information into a background image can also cause problems for people who
+                     use alternate backgrounds in order to increase legibility and for users of high contrast
+                     mode in some operating systems. These users, would lose the information in the background
+                     image due to lack of any alternative text.
+                  </p>
+                  
+               </div>
+            </div>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1">
+               <h3>Example 1</h3>
+               <p> In the following example, part of the content is contained in an
+                  image that is presented by CSS alone. In this example, the image
+                  TopRate.png is a 180 by 200 pixel image that contains the text,
+                  "19.3% APR Typical Variable." 
+               </p><pre xml:space="preserve"> The CSS contains: 
+p#bestinterest {
+  padding-left: 200px;
+  background: transparent url(/images/TopRate.png) no-repeat top left;
+}</pre><p> It is used in this excerpt: </p><pre xml:space="preserve"> 
+&lt;p id="bestinterest"&gt;
+  Where else would you find a better interest rate?
+&lt;/p&gt;</pre></section>
+            <section class="example" id="example-2">
+               <h3>Example 2</h3>
+               <p> A book distributor uses background images to provide icons against a
+                  list of book titles to indicate whether they are new, limited,
+                  in-stock, or out of stock. 
+               </p>
+               <p>The CSS contains: </p><pre xml:space="preserve">
+ul#booklist li {
+  padding-left: 20px;
+}
+
+ul#booklist li.new {
+  background: transparent url(new.png) no-repeat top left; 
+}
+                            
+ul#booklist li.limited {
+  background: transparent url(limited.png) no-repeat top left; 
+}
+                            
+ul#booklist li.instock {
+  background: transparent url(instock.png) no-repeat top left; 
+}
+
+ul#booklist li.outstock {
+  background: transparent url(outstock.png) no-repeat top left; 
+}</pre><p>It is used in this excerpt: </p><pre xml:space="preserve">
+&lt;ul id="booklist"&gt;
+  &lt;li class="new"&gt;Some book&lt;/li&gt;
+  &lt;li class="instock"&gt;Some other book&lt;/li&gt;
+  &lt;li class="limited"&gt;A book we desperately want to get rid of&lt;/li&gt;
+  ...
+  &lt;li class="outstock"&gt;A book you actually want &lt;/li&gt;
+&lt;/ul&gt;</pre></section>
+            <section class="example" id="example-3">
+               <h3>Example 3</h3>
+               <p>Using the code from example 1, the same background image is declared in the HTML style
+                  attribute:
+               </p><pre xml:space="preserve">&lt;p id="bestinterest" style="background: transparent url(/images/TopRate.png) no-repeat top left;" &gt;
+Where else would you find a better interest rate?
+&lt;p&gt;</pre><p>In the following code, the background image declaration is created in a client script:</p><pre xml:space="preserve">&lt;script type="text/javascript"&gt;
+var newP = document.createElement('p');
+var newPText = document.createTextNode('Where else would you find a better interest rate?');
+newP.appendChild(newPText);
+newP.style.background = 'transparent url(/images/TopRate.png) no-repeat top left';
+document.body.appendChild(newP);
+&lt;/script&gt; </pre></section>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <ol>
+                  
+                  <li> Examine all images added to the content via CSS, HTML style attributes, or dynamically
+                     in script as background images. 
+                  </li>
+                  
+                  <li> Check that the images do not convey important information. </li>
+                  
+                  <li>If an image does convey important information,  the information is
+                     provided to assistive technologies and is also available when the CSS image is
+                     not displayed.  
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li> If step #2 and step #3 are both false, then this failure condition applies and the
+                     content fails this Success Criterion. 
+                  </li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

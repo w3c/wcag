@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>F58: Failure of Success Criterion 2.2.1 due to using server-side techniques to automatically
+         redirect pages after a time-out
+      </title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="F55">Previous Technique: F55</a></li>
+            <li><a href="F59">Next Technique: F59</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Failure of Success Criterion 2.2.1 due to using server-side techniques to automatically
+         redirect pages after a time-out
+      </h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/timing-adjustable">Success Criterion 2.2.1: Timing Adjustable</a> (Failure)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p> Server-side scripting languages allow developers to set the non-standard
+               HTTP header "Refresh" with a time-out (in seconds) and a URI to which the
+               browser is redirected after the specified time-out. If the time interval is
+               too short, people who are blind will not have enough time to make their
+               screen readers read the page before the page refreshes unexpectedly and
+               causes the screen reader to begin reading at the top. Sighted users may also
+               be disoriented by the unexpected refresh.
+            </p>
+            <p>The HTTP header that is set is Refresh: {time in seconds}; url={URI of
+               new location}. It is also possible to omit the URI and obtain a
+               periodically refreshing page, which causes the same problem. The HTTP header
+               that is set is Refresh: {time in seconds}.
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1">
+               <h3>Example 1</h3>
+               <p> The following example is a failure because a timed server-side
+                  redirect is implemented in Java Servlets or JavaServer Pages
+                  (JSP).
+               </p><pre xml:space="preserve">
+public void doGet (HttpServletRequest request, HttpServletResponse response)
+      throws IOException, ServletException {
+        response.setContentType("text/html");
+	PrintWriter out = response.getWriter();
+	response.setHeader("Refresh", "10; URL=TargetPage.html");
+	out.println("&lt;!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
+	 \"https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"&gt;");
+	out.println("&lt;html&gt;&lt;head&gt;&lt;title&gt;Redirect&lt;/title&gt;&lt;/head&gt;&lt;body&gt;");
+	out.println("&lt;p&gt;This page will redirect you in 10 seconds.&lt;/p&gt;");
+	out.println("&lt;/body&gt;&lt;/html&gt;");
+  }
+</pre></section>
+            <section class="example" id="example-2">
+               <h3>Example 2</h3>
+               <p>The following example is a failure because a timed server-side
+                  redirect is implemented in Active Server Pages (ASP) with VBScript.
+               </p><pre xml:space="preserve">
+ &lt;% @Language = "VBScript" %&gt;
+ &lt;% option explicit 
+ Response.Clear
+ Response.AddHeader "Refresh", "5; URL=TargetPage.htm"
+ %&gt;&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+ "https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
+ &lt;html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"&gt;
+ …
+ &lt;!--HTML code for content that is shown before the redirect is triggered--&gt;
+ </pre></section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li> 
+                  <a href="http://www.ietf.org/rfc/rfc1945.txt">Hypertext
+                     Transfer Protocol -- HTTP/1.0 (IETF Request for Comments
+                     1945)</a> (plain text) 
+               </li>
+               
+               <li> 
+                  <a href="http://www.ietf.org/rfc/rfc2616.txt">Hypertext
+                     Transfer Protocol -- HTTP/1.1 (IETF Request for Comments
+                     2616)</a> (plain text) 
+               </li>
+               
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <ol>
+                  
+                  <li> When a Web page is rendered, check to see if it automatically
+                     redirects to another page after some period of time without the
+                     user taking any action. 
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li> If such a redirect is found then this failure condition applies
+                     and content fails the Success Criterion.
+                  </li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

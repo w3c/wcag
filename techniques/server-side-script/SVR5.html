@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>SVR5: Specifying the default language in the HTTP header</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="SVR4">Previous Technique: SVR4</a></li>
+            <li><a href="../silverlight/SL1">Next Technique: SL1</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Specifying the default language in the HTTP header</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>Server-side technologies, including server-side scripting languages and server configuration
+               files for setting HTTP headers. 
+            </p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/language-of-page">Success Criterion 3.1.1: Language of Page</a> (Advisory)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to provide information on the  primary language
+               or languages in a Web Page, in order to identify the  audience of the content. The
+               Content-Language HTTP header can contain a  list of one or more language codes, which
+               can be used for language  negotiation between a user agent and a server. If the language
+               preferences in a user agent are set correctly, language negotiation can  help the
+               user to find a language version of the content that suits  his/her preferences. 
+            </p>
+            <p>Note that the Content-Language HTTP header does not serve to  identify the language
+               used for processing the content. The content  processing language can be identified
+               by means of other techniques,  such as the attributes lang and xml:lang in markup
+               languages. 
+            </p>
+            <p>This technique ensures that the primary language of the  document, as specified for
+               example in the lang or xml:lang attribute,  is listed in the Content-Language HTTP
+               header. 
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-setting-content-language-in-java-servlet-and-jsp">
+               <h3>Example 1: Setting content language in Java Servlet and JSP</h3>
+               <p>In Java Servlet or JavaServer Pages (JSP), developers can use response.setHeader("Content-Language",
+                  lang), in which "lang" stands for a language tag (for example, "en" for English):
+                  
+               </p><pre xml:space="preserve">…
+public void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException 
+{
+…
+  response.setHeader("Content-Language", "en");
+  PrintWriter out = response.getWriter();
+…
+}</pre></section>
+            <section class="example" id="example-2-setting-content-language-in-php">
+               <h3>Example 2: Setting content language in PHP</h3>
+               <p>In PHP, developers can send a raw HTTP header with the header method. The following
+                  example sets the language to French: 
+               </p><pre xml:space="preserve">&lt;?php  header('Content-language: fr');  …  ?&gt;  </pre></section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <p> 
+               <a href="https://www.w3.org/International/questions/qa-http-and-lang">W3C Internationalization FAQ: HTTP and meta for language information</a>
+               						   
+            </p>
+            <p> 
+               <a href="https://www.w3.org/TR/2014/NOTE-i18n-html-tech-lang-20140603/#metadata">Declaring metadata about the language(s) of the intended audience</a> in Authoring HTML: Language declarations - W3C Working Group Note 3 June 2014. 
+            </p>
+            <p> 
+               <a href="https://tools.ietf.org/html/rfc7231#section-3.1.3.2">RFC 7321 3.1.3.2.  Content-Language</a></p>
+            <p> 
+               <a href="http://php.net/manual/en/function.header.php">header</a> in the PHP Manual. 
+            </p>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <ol>
+                  
+                  <li> Use a Live HTTP Header viewer to find the value of the "Content-Language" header.
+                     
+                  </li>
+                  
+                  <li> Check that this value matches the default language of the Web page. </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li> Step #2 is true. </li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

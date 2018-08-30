@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>FLASH25: Labeling a form control by setting its accessible name</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="FLASH24">Previous Technique: FLASH24</a></li>
+            <li><a href="FLASH26">Next Technique: FLASH26</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Labeling a form control by setting its accessible name</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>Content implemented in Adobe Flash.</p>
+            <div class="note">
+               <div role="heading" class="note-title marker" aria-level="3">Note</div>
+               <p>Accessibility of Flash is no longer supported by Adobe. Authors are advised to implement
+                  content using another technology.
+               </p>
+            </div>
+            <p>This technique relates to:</p>
+            <ul>
+               <li><a href="https://w3c.github.io/wcag/understanding/non-text-content">Success Criterion 1.1.1: Non-text Content</a> (Sufficient)
+               </li>
+               <li><a href="https://w3c.github.io/wcag/understanding/info-and-relationships">Success Criterion 1.3.1: Info and Relationships</a> (Sufficient as a way to meet an unwritten technique)
+               </li>
+               <li><a href="https://w3c.github.io/wcag/understanding/labels-or-instructions">Success Criterion 3.3.2: Labels or Instructions</a> (Sufficient)
+               </li>
+            </ul>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to provide an accessible name to
+               				the built in form components provided by Flash. Some components, such
+               				as radio buttons, checkboxes and buttons, have their own label property.
+               				For other components, the developer needs to specify the component's
+               				label text as accessible name. This can be either be achieved through
+               				the Accessibility panel (for components placed on the stage during
+               				authoring) or through scripting (for components that are dynamically
+               				created at runtime). 
+            </p>
+            <p>ActionScript 2</p>
+            <p>In ActionScript 2 the accessible name needs to be set on a component's
+               				_accProps property. This property must be an object. If the property
+               				has not been set yet, the developer needs to create a custom object
+               				and assign it to the _accProps property. The object itself can have
+               				several accessibility related properties, one of them being _accProps.name,
+               				which specifies the accessible name. When an _accProps property is
+               				updated, the developer must call Accessibility.UpdateProperties() for
+               				the changes to take effect. Before calling Accessibility.UpdateProperties(),
+               				it is recommended to check the System.capabilities.hasAccessibility
+               				flag. this will prevent an error on environments that do not support
+               				MSAA. 
+            </p>
+            <p>ActionScript 2 provides the following accessible components: </p>
+            <ul>
+               
+               <li> SimpleButton </li>
+               
+               <li> CheckBox </li>
+               
+               <li> RadioButton </li>
+               
+               <li> Label </li>
+               
+               <li> TextInput </li>
+               
+               <li> TextArea </li>
+               
+               <li> ComboBox </li>
+               
+               <li> ListBox </li>
+               
+               <li> Window </li>
+               
+               <li> Alert </li>
+               
+               <li> DataGrid </li>
+               
+            </ul>
+            <p>ActionScript 3</p>
+            <p>In ActionScript 3 the accessible name needs to be set on a component's
+               				accessibilityProperties property. This property must be an instance
+               				of flash.accessibility.AccessibilityProperties. If the property has
+               				not been set yet, the developer needs to create the a new AccessibilityProperties
+               				instance and assign it to the accessibilityProperties property. The
+               				object itself can have several accessibility related properties, one
+               				of them being accessibilityProperties.name which specifies the accessible
+               				name. When an accessibilityProperties property is updated, the developer
+               				must call flash.accessibility.Accessibility.UpdateProperties() for the
+               				changes to take effect. Before calling Accessibility.UpdateProperties(),
+               				it is recommended to check the flash.system.capabilities.hasAccessibility
+               				flag. this will prevent an error on environments that do not support
+               				MSAA. 
+            </p>
+            <p>ActionScript 3 provides the following accessible components. </p>
+            <ul>
+               
+               <li> Button </li>
+               
+               <li> CheckBox </li>
+               
+               <li> ComboBox </li>
+               
+               <li> List </li>
+               
+               <li> RadioButton </li>
+               
+               <li> TileList </li>
+               
+            </ul>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-setting-a-component's-accessible-name-using-the-accessibility-panel">
+               <h3>Example 1: Setting a component's accessible name using the Accessibility panel</h3>
+               <p>To add and label a component control, follow these steps: </p>
+               <ol>
+                  
+                  <li> From the 'Components' panel, drag the component on to the stage,
+                     							or use scripting to create a new instance. 
+                  </li>
+                  
+                  <li> With the newly created component instance selected, enter its
+                     							label text in the Accessibility Panel's Name field. 
+                  </li>
+                  
+               </ol>
+            </section>
+            <section class="example" id="example-2-setting-the-accessible-name-through-actionscript-2.0">
+               <h3>Example 2: Setting the accessible name through ActionScript 2.0</h3>
+               <p>The code example below shows how a ListBox component is created and assigned an accessible
+                  name. 
+               </p><pre xml:space="preserve">mx.accessibility.ListAccImpl.enableAccessibility();
+
+this.createClassObject(mx.controls.List, "my_list", 1);
+my_list.addItem({label: "R. Davis", data: 1});
+my_list.addItem({label: "V. Mann", data: 2});
+my_list.addItem({label: "L. Heart", data: 3});
+my_list.addItem({label: "P. Hill", data: dt4});
+my_list.addItem({label: "D. Gribble", data: 5});
+my_list.move(10, 10);
+
+if (System.capabilities.hasAccessibility) {
+  my_list._accProps = new Object();
+  my_list._accProps.name = "Staff Members";
+  Accessibility.updateProperties();
+}</pre><p class="working-example">This result can be viewed in the <a href="../../working-examples/flash-accessible-name-for-form_components-as2/">working version of Setting the accessible name through ActionScript 2.0</a>. The <a href="../../working-examples/flash-accessible-name-for-form_components-as2/accessible_name_for_form_components_as2.fla">source of Setting the accessible name through ActionScript 2.0</a> is available.
+               </p>
+            </section>
+            <section class="example" id="example-3-setting-the-accessible-name-through-actionscript-3.0">
+               <h3>Example 3: Setting the accessible name through ActionScript 3.0</h3>
+               <p>The code example below shows how a ListBox component is created and assigned an accessible
+                  name. 
+               </p><pre xml:space="preserve">import fl.controls.List;
+import fl.accessibility.ListAccImpl;
+import flash.system.Capabilities;
+import flash.accessibility.*;
+
+ListAccImpl.enableAccessibility();
+var my_list:List = new List();
+my_list.addItem({label:"R. Davis", data:1});
+my_list.addItem({label:"V. Mann", data:2});
+my_list.addItem({label:"L. Heart", data:3});
+my_list.addItem({label:"P. Hill", data:4});
+my_list.addItem({label:"D. Gribble", data:5});
+my_list.x = my_list.y = 10;
+
+if (Capabilities.hasAccessibility) {
+  var accProps:AccessibilityProperties = new AccessibilityProperties();
+  accProps.name = "Staff Members";
+  my_list.accessibilityProperties = accProps;
+  Accessibility.updateProperties();
+}
+addChild(my_list);</pre><p class="working-example">This result can be viewed in the <a href="../../working-examples/flash-accessible-name-for-form_components-as3/">working version of Setting the accessible name through ActionScript 3.0</a>. The <a href="../../working-examples/flash-accessible-name-for-form_components-as3/accessible_name_for_form_components_as3.fla">source of Setting the accessible name through ActionScript 3.0</a> is available.
+               </p>
+            </section>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <p>For Flash movies that contain form components, confirm that either: </p>
+               
+               <ol>
+                  
+                  <li> The selected component's label text is specified in the Accessibility
+                     					Panel's "name" field. 
+                  </li>
+                  
+                  <li> In ActionScript 2.0: Scripting is used to dynamically set the
+                     					component's _accProps.name property 
+                  </li>
+                  
+                  <li> In ActionScript 3.0: Scripting is used to dynamically set the
+                     					component's accessibilityProperties.name property 
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <p>One of the above is true </p>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

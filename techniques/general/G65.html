@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>G65: Providing a breadcrumb trail</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="G64">Previous Technique: G64</a></li>
+            <li><a href="G68">Next Technique: G68</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Providing a breadcrumb trail</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>All technologies.</p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/location">Success Criterion 2.4.8: Location</a> (Sufficient)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>A breadcrumb trail helps the user to visualize how content has been structured and
+               how to navigate back to previous Web pages, and may identify the current location
+               within a series of Web pages. A breadcrumb trail either displays locations in the
+               path the user took to reach the Web page, or it displays the location of the current
+               Web page within the organization of the site.
+            </p>
+            <p>Breadcrumb trails are implemented using links to the Web pages that have been accessed
+               in the process of navigating to the current Web page. They are placed in the same
+               location within each Web page in the set.
+            </p>
+            <p>It can be helpful to users to separate the items in the breadcrumb trailing with a
+               visible separator. Examples of separators include "&gt;", "|", "/", "::", and "→".
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1">
+               <h3>Example 1</h3>
+               <p>A developer searches within the Web site of an authoring tool manufacturer to find
+                  out how to create hyperlinks.  The search results bring him to a Web page with specific
+                  instructions for creating hyperlinks using the authoring tool.  It contains the following
+                  links to create a breadcrumb trail:
+               </p><pre xml:space="preserve">
+              Home :: Developer Center :: How To Center
+            </pre><p>In this example the breadcrumb trail does not contain the title of the current Web
+                  page, "How to create hyperlinks". That information is available as the title of the
+                  Web page.
+               </p>
+            </section>
+            <section class="example" id="example-2">
+               <h3>Example 2</h3>
+               <p>A photographer's portfolio Web site has been organized into different galleries and
+                  each gallery has further been divided into categories.   A user who navigates through
+                  the site to a Web page containing a photo of a Gentoo penguin would see the following
+                  breadcrumb trail at the top of the Web page:
+               </p><pre xml:space="preserve">
+              Home / Galleries / Antarctica / Penguins / Gentoo Penguin
+            </pre><p>All of the items except "Gentoo Penguin" are implemented as links.  The current location,
+                  Gentoo Penguin, is included in the breadcrumb trail but it is not implemented as a
+                  link.
+               </p>
+            </section>
+            <section class="example" id="example-3">
+               <h3>Example 3</h3>
+               <p>The information architecture of an ecommerce Web site is categorized from general
+                  to increasingly more specific product subsections.
+               </p>
+               <p>You are here: Acme Company → Electronics → Computers → Laptops</p>
+               <p>The trail begins with "You are here" and ends with the current page. Items in the
+                  trail are clickable or tappable links with the exception of "You are here" and "Laptops."
+                  This example uses a right arrow symbol (→) as a separator.
+               </p>
+               <p>In this example a h2 element, a nav element with an aria-label attribute, and an unordered
+                  list are used to provide semantics. The markup would be styled using CSS to display
+                  the breadcrumb trail horizontally.
+               </p>
+               <p>HTML for this example</p><pre xml:space="preserve"> 
+          &lt;nav aria-label="Breadcrumbs"&gt; 
+            &lt;h2&gt;You are here:&lt;/h2&gt; 
+            &lt;ul&gt;
+              &lt;li&gt;&lt;a href="/"&gt;Acme Company&lt;/a&gt; &amp;#8594;&lt;/li&gt; 
+              &lt;li&gt;&lt;a href="/electronics/"&gt;Electronics&lt;/a&gt; &amp;#8594;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="/electronics/computers/"&gt;Computers&lt;/a&gt; &amp;#8594;&lt;/li&gt;
+              &lt;li&gt;Laptops&lt;/li&gt;
+            &lt;/ul&gt; 
+          &lt;/nav&gt;
+      </pre><p>CSS for this example</p><pre xml:space="preserve"> 
+      nav, h2, ul, ul li{ display: inline;}
+      nav &gt; h2{ font-size: 1em; } 
+      ul { padding-left: 0em; }
+      </pre><p class="working-example">Working example: <a href="../../working-examples/breadcrumb-trail/">Breadcrumb example</a></p>
+            </section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li>
+                  									         <a href="https://www.w3.org/TR/html5/common-idioms.html#rel-up">HTML5 Bread crumb navigation</a>
+                  								       
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <p>When breadcrumb trails have been implemented in a set of Web pages:</p>
+               
+               <ol>
+                  
+                  <li>Navigate to a Web page.</li>
+                  
+                  <li>Check that a breadcrumb trail is displayed.</li>
+                  
+                  <li>Check that the breadcrumb trail displays the correct navigational sequence to reach
+                     the current location or the correct hierarchical path to the current location within
+                     the site structure.
+                  </li>
+                  
+                  <li>
+                     
+                     <p>For a breadcrumb trail that does
+                        <em>not</em>
+                        include the current location:
+                     </p>
+                     
+                     <ol>
+                        
+                        <li>Check that all elements in the breadcrumb trail are implemented as links.</li>
+                        
+                     </ol>
+                     
+                  </li>
+                  
+                  <li>
+                     
+                     <p>For a breadcrumb trail that does include the current location:</p>
+                     
+                     <ol>
+                        
+                        <li>Check that all elements except for the current location are implemented as links.</li>
+                        
+                        <li>Check that the current location is not implemented as a link.</li>
+                        
+                     </ol>
+                     
+                  </li>
+                  
+                  <li>Check that all links navigate to the correct Web page as specified by the breadcrumb
+                     trail.
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>
+                     
+                     <p>For all Web pages in the set using breadcrumb trails,</p>
+                     
+                     <ul>
+                        
+                        <li>Checks #2, #3, and #6 are true.</li>
+                        
+                        <li>Either check #4 or #5 is true.</li>
+                        
+                     </ul>
+                     
+                  </li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

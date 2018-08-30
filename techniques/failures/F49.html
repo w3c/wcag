@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>F49: 
+         Failure of Success Criterion 1.3.2 due to using an HTML layout table that does not
+         make sense when linearized  
+      </title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="F48">Previous Technique: F48</a></li>
+            <li><a href="F50">Next Technique: F50</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>
+         Failure of Success Criterion 1.3.2 due to using an HTML layout table that does not
+         make sense when linearized  
+      </h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>HTML and XHTML</p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/meaningful-sequence">Success Criterion 1.3.2: Meaningful Sequence</a> (Failure)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>Although WCAG 2 does not prohibit the use of layout tables, CSS-based layouts are
+               recommended in order to retain the defined semantic meaning of the HTML table elements
+               and to conform to the coding practice of separating presentation from content. If
+               a layout table is used, however, it is important that the content make sense when
+               linearized.
+               
+            </p>
+            <p>This failure occurs when a meaningful sequence of content conveyed through
+               presentation is lost because HTML tables used to control the visual
+               placement of the content do not “linearize" correctly. Tables present
+               content in two visual dimensions, horizontal and vertical. However, screen
+               readers present this two-dimensional content in linear order of the content
+               in the source, beginning with the first cell in the first row and ending
+               with the last cell in the last row. The screen reader reads the table from
+               top to bottom, reading the entire contents of each row before moving to the
+               next row. The complete content of each cell in each row is spoken—including
+               the complete content of any table nested within a cell. This is called
+               linearization.
+            </p>
+            <p>Suppose that a Web page is laid out using a table with 9 columns and 22 rows.
+               The screen reader speaks the content of the cell at Column 1, Row 1 followed
+               by the cells in columns 2, 3, 4 and so on to column 9. However, if any cell
+               contains a nested table, the screen reader will read the entire nested table
+               before it reads the next cell in the original (outer) table. For example, if
+               the cell at column 3, row 6 contains a table with 6 columns and 5 rows, all
+               of those cells will be read before Column 4, Row 6 of the original (outer)
+               table. As a result, the meaningful sequence conveyed through visual
+               presentation may not be perceivable when the content is spoken by a screen
+               reader.
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-a-layout-table-that-does-not-linearize-correctly">
+               <h3>Example 1: A layout table that does not linearize correctly</h3>
+               <p>An advertisement makes clever use of visual positioning, but changes
+                  meaning when linearized.
+               </p><pre xml:space="preserve">
+&lt;table&gt;
+&lt;tr&gt;
+  &lt;td &gt;&lt;img src="logo.gif" alt="XYZ mountaineering"&gt;&lt;/td&gt;
+  &lt;td rowspan="2" valign="bottom"&gt;top!&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;XYZ gets you to the&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;</pre><p>The reading order from this example would be: </p>
+               <ul>
+                  
+                  <li>XYZ mountaineering top! </li>
+                  
+                  <li>XYZ gets you to the</li>
+                  
+               </ul>
+            </section>
+            <section class="example" id="example-2-a-layout-table-that-separates-a-meaningful-sequence-when-linearized">
+               <h3>Example 2: A layout table that separates a meaningful sequence when linearized</h3>
+               <p>A Web page from a museum exhibition positions a navigation bar
+                  containing a long list of links on the left side of the page. To the
+                  right of the navigation bar is an image of one of the pictures from
+                  the exhibition. To the right of the image is the kind of "placard"
+                  text you'd see on the wall next to the object if you were at the
+                  museum. Below that text is a heading that says "Description," and
+                  below that heading is a description of the image. The image, placard
+                  text, Description heading, and text of the description form a
+                  meaningful sequence.
+               </p>
+               <p>A layout table is used to position the elements of the page. The
+                  links in the navigation bar are split into different cells in the
+                  leftmost column.
+               </p><pre xml:space="preserve">
+&lt;table&gt;
+&lt;tr&gt;
+	&lt;td&gt;&lt;a href="#"&gt;Link 1&lt;/a&gt;&lt;/td&gt;
+	&lt;td rowspan="20"&gt;&lt;img src="img.png" alt="Museum Picture"&gt;&lt;/td&gt;
+	&lt;td rowspan="6"&gt;&lt;img src="placard.png" alt="Placard text"&gt;&lt;/td&gt; 
+&lt;/tr&gt; 
+&lt;tr&gt;
+	&lt;td&gt;&lt;a href="#"&gt;Link 2&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;&lt;a href="#"&gt;Link 3&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;&lt;a href="#"&gt;Link 4&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;&lt;a href="#"&gt;Link 5&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;&lt;a href="#"&gt;Link 6&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;&lt;a href="#"&gt;Link 7&lt;/a&gt;&lt;/td&gt;
+	&lt;td rowspan="2"&gt;&lt;h2&gt;Image Heading&lt;/h2&gt;&lt;/td&gt; 
+&lt;/tr&gt; 
+&lt;tr&gt;
+	&lt;td&gt;&lt;a href="#"&gt;Link 8&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;&lt;a href="#"&gt;Link 9&lt;/a&gt;&lt;/td&gt;
+	&lt;td rowspan="12"&gt;Description of the image&lt;/td&gt; 
+&lt;/tr&gt; 
+&lt;tr&gt;
+	&lt;td&gt;&lt;a href="#"&gt;Link 10&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+ ...
+&lt;tr&gt;
+	&lt;td&gt;&lt;a href="#"&gt;Link 20&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+</pre><p>The reading order from this example would be: </p>
+               <ul>
+                  
+                  <li>Link 1</li>
+                  
+                  <li>Image</li>
+                  
+                  <li>Placard Text</li>
+                  
+                  <li>Link 2</li>
+                  
+                  <li>Link 3</li>
+                  
+                  <li>Link 4</li>
+                  
+                  <li>Link 5</li>
+                  
+                  <li>Link 6</li>
+                  
+                  <li>Link 7</li>
+                  
+                  <li>Image Heading</li>
+                  
+                  <li>Link 8</li>
+                  
+                  <li>Link 9</li>
+                  
+                  <li>Link 10</li>
+                  
+                  <li>...</li>
+                  
+                  <li>Link 20</li>
+                  
+               </ul>
+               <p>Because the navigation bar links are interleaved with the content
+                  describing the image, screen readers cannot present the content in a
+                  meaningful sequence corresponding to the sequence presented
+                  visually.
+               </p>
+            </section>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <ol>
+                  
+                  <li>
+                     
+                     <p>Linearize the content in either of the following ways: </p>
+                     
+                     <ul>
+                        
+                        <li>Present the content in source code order</li>
+                        
+                        <li>Remove the table markup from around the content</li>
+                        
+                     </ul>
+                     
+                  </li>
+                  
+                  <li>Check that the linear reading order matches any meaningful
+                     sequence conveyed through presentation.
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>If check #2 is false, then this failure condition applies and the
+                     content fails this Success Criterion.
+                  </li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

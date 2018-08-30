@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>SCR28: Using an expandable and collapsible menu to bypass block of content</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="SCR27">Previous Technique: SCR27</a></li>
+            <li><a href="SCR29">Next Technique: SCR29</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Using an expandable and collapsible menu to bypass block of content</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>Technologies that provide client side scripting.</p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/bypass-blocks">Success Criterion 2.4.1: Bypass Blocks</a> (Sufficient as a way to meet an unwritten technique)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>This technique allows users to skip repeated material by placing that material in
+               a menu that can be expanded or collapsed under user control. The user can skip the
+               repeated material by collapsing the menu. The user invokes a user interface control
+               to hide or remove the elements of the menu. The resources section lists several techniques
+               for menus, toolbars and trees, any of which can be used to provide a mechanism for
+               skipping navigation.
+            </p>
+            <div xmlns="" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:wcag="https://www.w3.org/WAI/GL/" class="note">
+               <div role="heading" class="note-title marker" aria-level="3">Note</div>
+               <div xmlns="http://www.w3.org/1999/xhtml">
+                  
+                  <p>Similiar approaches can be implemented using server-side scripting and reloading a
+                     modified version of the Web page.
+                  </p>
+                  
+               </div>
+            </div>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1">
+               <h3>Example 1</h3>
+               <p>The navigation links at top of a Web page are all entries in a menu implemented using
+                  HTML, CSS, and Javascript. When the navigation bar is expanded, the navigation links
+                  are available to the user. When the navigation bar is collapsed, the links are not
+                  available.
+               </p><pre xml:space="preserve">
+...
+
+  &lt;script type="text/javascript"&gt;
+  function toggle(id){
+    var n = document.getElementById(id);
+    n.style.display =  (n.style.display != 'none' ? 'none' : '' );
+  }
+  &lt;/script&gt;
+
+...
+
+  &lt;a href="#" onclick="toggle('navbar')"&gt;Toggle Navigation Bar&lt;/a&gt;
+
+  &lt;ul id="navbar"&gt;
+  &lt;li&gt;&lt;a href="http://target1.html"&gt;Link 1&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="http://target2.html"&gt;Link 2&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="http://target3.html"&gt;Link 3&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="http://target4.html"&gt;Link 4&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+
+...
+</pre><p class="working-example">Working example of this code: <a href="../../working-examples/script-toggle-navbar-link/">Toggle navigation bar with a link</a>.
+               </p>
+            </section>
+            <section class="example" id="example-2">
+               <h3>Example 2</h3>
+               <p>The table of contents for a set of Web pages is repeated near the beginning of each
+                  Web page. A button at the beginning of the table of contents lets the user remove
+                  or restore it on the page.
+               </p><pre xml:space="preserve">
+...
+
+   &lt;script type="text/javascript"&gt;
+  function toggle(id){
+    var n = document.getElementById(id);
+    n.style.display =  (n.style.display != 'none' ? 'none' : '' );
+  }
+  &lt;/script&gt;
+
+  ...
+
+  &lt;button onclick="return toggle('toc');"&gt;Toggle Table of Contents&lt;/button&gt;
+  &lt;div id="toc"&gt;
+    ...
+  &lt;/div&gt;
+
+...
+</pre><p class="working-example">Working example of this code: <a href="../../working-examples/script-toggle-toc-button/">Toggle table of contents with a button</a>.
+               </p>
+            </section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li>
+                  <a href="http://www.bobbyvandersluis.com/articles/unobtrusive-show-hide/">Unobtrusive show/hide behavior reloaded</a>
+                  
+               </li>
+               
+               <li>
+                  <a href="http://www.dustindiaz.com/seven-togglers/">Seven ways to toggle an element with JavaScript</a>
+                  
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <ol>
+                  
+                  <li>Check that some user interface control allows the repeated content to be expanded
+                     or collapsed.
+                  </li>
+                  
+                  <li>Check that when the content is expanded, it is included in the programmatically determined
+                     content at a logical place in the reading order.
+                  </li>
+                  
+                  <li>Check that when the content is collapsed, it is not part of the programmatically determined
+                     content.
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>All checks above are true.</li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>H56: Using the dir attribute on an inline element to resolve problems
+         with nested directional runs
+      </title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="H54">Previous Technique: H54</a></li>
+            <li><a href="H57">Next Technique: H57</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Using the dir attribute on an inline element to resolve problems
+         with nested directional runs
+      </h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>HTML and XHTML</p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/meaningful-sequence">Success Criterion 1.3.2: Meaningful Sequence</a> (Sufficient as a way to meet <a href="../general/G57">G57: Ordering the content in a meaningful sequence</a>)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to identify changes in the text direction of text
+               that includes nested directional runs by providing the dir attribute on
+               inline elements. A nested directional run is a run of text that includes mixed directional
+               text, for example, a paragraph in English containing a quoted Hebrew sentence which
+               in turn includes an English phrase. Use of the dir attribute on an enclosing span
+               or other inline element may be necessary because the <a href="https://www.w3.org/International/articles/inline-bidi-markup/">Unicode bidirectional algorithm</a> can produce undesirable results when mixed
+               directional text contains spaces or punctuation. The concepts used in this technique
+               are described in <a href="https://www.w3.org/International/articles/inline-bidi-markup/">What you need to know about the bidi algorithm and inline markup</a>. 
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1">
+               <h3>Example 1</h3>
+               <p>This example defines the text direction of a nested, mixed-direction phrase, in Hebrew
+                  and English, to be right-to-left. Because the whole quote is in Hebrew, and therefore
+                  runs right to left, the text "W3C" and the comma should appear to the left of (i.e.,
+                  after) the Hebrew text, like this:
+               </p>
+               <p>The title is "פעילות הבינאום, W3C" in Hebrew.</p>
+               <p>Visually-ordered ASCII version (RTL text in uppercase, LTR in lower):</p>
+               <p>the title is "w3c ,YTIVITCA NOITAZILANOITANRETNI" in hebrew.</p>
+               <p>The Unicode bidirection algorithm alone is insufficient to achieve the right result,
+                  and leaves the text 'W3C' on the right side of the quote:
+               </p>
+               <p>The title is "פעילות הבינאום, W3C" in Hebrew.</p>
+               <p>Visually-ordered ASCII version:</p>
+               <p>the title is "YTIVITCA NOITAZILANOITANRETNI, w3c" in hebrew.</p>
+               <p>The following markup will produce the expected result:</p><pre xml:space="preserve">
+&lt;p&gt;The title says "&lt;span lang="he" 
+dir="rtl"&gt;פעילות הבינאום, W3C&lt;/span&gt;" in Hebrew.&lt;/p&gt; </pre></section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li>
+                  									         <a href="https://www.w3.org/TR/html401/struct/dirlang.html#blocklevel-bidi">Inheritance of text direction information</a>
+                  								       
+               </li>
+               
+               <li>
+                  									         <a href="https://www.w3.org/TR/i18n-html-tech-bidi/">Authoring Techniques for
+                     XHTML &amp; HTML Internationalization: Handling Bidirectional Text 1.0</a>
+                  								       
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <ol>
+                  
+                  <li>Examine the text direction of text in the document</li>
+                  
+                  <li>If the text direction is right-to-left, check that for the ancestor element that
+                     has a dir attribute, the attribute has the value "rtl"
+                  </li>
+                  
+                  <li>If the text direction is left-to-right, check that there is no ancestor element
+                     with a dir attribute, or that for the ancestor element that has a
+                     dir attribute, the attribute has the value "ltr"
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>Checks #2 and #3 are true for all text.</li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>ARIA14: Using aria-label to provide an invisible label where a visible label cannot be used</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="ARIA13">Previous Technique: ARIA13</a></li>
+            <li><a href="ARIA15">Next Technique: ARIA15</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Using aria-label to provide an invisible label where a visible label cannot be used</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>Technologies that support <a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</a>. 
+            </p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/name-role-value">Success Criterion 4.1.2: Name, Role, Value</a> (Sufficient)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>For sighted users, the context and visual appearance of an element can provide sufficient
+               cues to determine the purpose. An example is the 'X' often used in the top right corner
+               of pop-up divs (light boxes) to indicate the control for closing the div.  
+               
+            </p>
+            <p>In some situations, elements can be given the attribute aria-label to provide an accessible
+               name for situations when there is no visible label due to a chosen design approach
+               or layout but the context and visual appearance of the control make its purpose clear.
+               
+            </p>
+            <p>In other situations, elements can be given the attribute aria-label to provide an
+               accessible name when the native HTML labeling element is not supported by the control
+               - for example, when a div set to contentEditable is used instead of native form elements
+               such as input type="text" or textarea in order to provide a richer text editing experience.
+               
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-a-close-button-x-in-a-pop-up-box">
+               <h3>Example 1: A close button (X) in a pop-up box</h3>
+               <p>On a page, a link displays a pop-up box (a div) with additional information. The 'close'
+                  element is implemented as a button containing merely the letter 'x'. The property
+                  aria-label="close" is used to provide an accessible name to the button.
+                  
+               </p><pre xml:space="preserve">&lt;div id="box"&gt;
+   This is a pop-up box.
+   &lt;button aria-label="Close" onclick="document.getElementById('box').style.display='none';" class="close-button"&gt;X&lt;/button&gt;				
+&lt;/div&gt;</pre><p class="working-example">Working example: <a href="../../working-examples/aria-label-invisible-label-box/">Close button example</a>.
+                  
+               </p>
+            </section>
+            <section class="example" id="example-2-a-phone-number-with-multiple-fields">
+               <h3>Example 2: A phone number with multiple fields</h3><pre xml:space="preserve">&lt;div role="group" aria-labelledby="groupLabel"&gt;
+  &lt;span id="groupLabel&gt;Work Phone&lt;/span&gt;
+  +&lt;input type="number" aria-label="country code"&gt;
+  &lt;input type="number" aria-label="area code"&gt;
+  &lt;input type="number" aria-label="subscriber number"&gt;
+&lt;/div&gt;</pre></section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li> 
+                  <a href="https://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</a>
+                  
+               </li>
+               
+               <li> 
+                  <a href="https://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description
+                     Calculation</a>
+                  
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <p>For elements that use aria-label:
+                  
+               </p>
+               
+               <ol>
+                  
+                  <li>Check that the value of the aria-label attribute properly describes the purpose of
+                     an element where user input is required
+                     
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>#1 is true.</li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

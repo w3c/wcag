@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>FLASH35: Using script to scroll Flash content, and providing a mechanism to pause it</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="FLASH34">Previous Technique: FLASH34</a></li>
+            <li><a href="FLASH36">Next Technique: FLASH36</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Using script to scroll Flash content, and providing a mechanism to pause it</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>Content implemented in Adobe Flash.</p>
+            <div class="note">
+               <div role="heading" class="note-title marker" aria-level="3">Note</div>
+               <p>Accessibility of Flash is no longer supported by Adobe. Authors are advised to implement
+                  content using another technology.
+               </p>
+            </div>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/pause-stop-hide">Success Criterion 2.2.2: Pause, Stop, Hide</a> (Sufficient)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to provide a way for users to stop
+               				scrolling content when the scrolling is created by a script. Scrolling
+               				content can be difficult or impossible to read by users with low vision
+               				or with cognitive disabilities. The movement can also be distracting
+               				for some people making it difficult for them to concentrate on other
+               				parts of the Web page. 
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-a-toggle-button-to-pause-and-resume-scrolling">
+               <h3>Example 1: A toggle button to pause and resume scrolling</h3>
+               <p>In this example, text scrolls from left to right. A toggle button
+                  						is provided that allows the user to pause and resume the scrolling
+                  						behavior. Additionally, a checkbox is provided which can be used to
+                  						slow down the scrolling speed. 
+               </p>
+               <div xmlns="" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:wcag="https://www.w3.org/WAI/GL/" class="note">
+                  <div role="heading" class="note-title marker" aria-level="4">Note</div>
+                  <div xmlns="http://www.w3.org/1999/xhtml">
+                     
+                     <p>Users may prefer a greater variety of scrolling speed options
+                        						than are offered in this example. Developers might choose to provide
+                        						several speed choices with a slider or drop down list control in order
+                        						to accomplish this. 
+                     </p>
+                     
+                  </div>
+               </div><pre xml:space="preserve">import fl.accessibility.ButtonAccImpl;
+import fl.accessibility.CheckBoxAccImpl;
+
+ButtonAccImpl.enableAccessibility();
+CheckBoxAccImpl.enableAccessibility();
+
+var scrollInterval: int;
+var intervalLength: int = 15;
+
+var expandedViewer: MovieClip = exampleScroller.expandedViewer;
+var scrollText: MovieClip = exampleScroller.scrollText;
+var scrollViewer: MovieClip = exampleScroller.scrollViewer;
+
+var scrollingPaused: Boolean = true;
+
+scrollStopper.addEventListener(MouseEvent.CLICK, handleBtnClick, false);
+slowDown_chk.addEventListener(MouseEvent.CLICK, handleChkClick, false);
+
+function handleBtnClick(e) {
+  toggleScroll(false);
+  e.target.label = scrollingPaused? "Resume Scrolling": "Stop Scrolling";
+}
+
+//slow down scrolling speed
+function handleChkClick(e) {
+  intervalLength = e.target.selected? 50: 15;
+  if (! scrollingPaused) {
+    clearTimeout(scrollInterval);
+    toggleScroll(true);
+  }
+}
+
+//pause or resume scrolling
+function toggleScroll(noToggle: Boolean) {
+  if (noToggle || scrollingPaused)
+  scrollInterval = setInterval(moveText, intervalLength); else
+  clearTimeout(scrollInterval);
+  if (! noToggle)
+  scrollingPaused = ! scrollingPaused;
+}
+
+function moveText() {
+  if (scrollText.x + scrollText.width &lt; scrollViewer.x)
+  scrollText.x = scrollViewer.x + scrollViewer.width;
+  scrollText.x -= 1;
+}
+
+//initiate scrolling
+toggleScroll(false);
+</pre><p class="working-example">The technique is demonstrated in the <a href="../../working-examples/flash-pause-scrolling/">working version of A toggle button to pause and resume scrolling</a>. The <a href="../../working-examples/flash-pause-scrolling/pause_scrolling_as3.fla">source of A toggle button to pause and resume scrolling</a> is available.
+               </p>
+            </section>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <p>When a Flash Movie contains scrolling content:</p>
+               
+               <ol>
+                  
+                  <li>Confirm that a button is provided that allows users to pause and resume the scrolling
+                     behavior
+                  </li>
+                  
+                  <li>Confirm that pressing the button stops the scrolling</li>
+                  
+                  <li>Confirm that pressing the button again restarts the scrolling</li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>Checks #1, #2, and #3 are true.</li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

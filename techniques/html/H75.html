@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>H75: Ensuring that Web pages are well-formed</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="H74">Previous Technique: H74</a></li>
+            <li><a href="H76">Next Technique: H76</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Ensuring that Web pages are well-formed</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p> Any XML-based markup languages. </p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/parsing">Success Criterion 4.1.1: Parsing</a> (Sufficient as a way to meet an unwritten technique)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p> The objective of this technique is to avoid key errors that are known to cause
+               problems for assistive technologies when they are trying to parse contents.
+               Well-formedness is checked by parsing the document with a conforming XML parser and
+               checking if the validation report mentions well-formedness errors. Every conforming
+               XML
+               parser is required to check well-formedness and stop normal processing when a
+               well-formedness error is found (a conforming XML parser does not need to support
+               validation).
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1">
+               <h3>Example 1</h3>
+               <p>XML files include a document type declaration, a xsi:schemaLocation attribute or
+                  other type of reference to a schema. The developer can use off-line or online
+                  validators, an XML editor or an IDE with XML support (see Resources below) to check
+                  well-formedness. 
+               </p>
+            </section>
+            <section class="example" id="example-2">
+               <h3>Example 2</h3>
+               <p> When XML files do not include a document type declaration, a xsi:schemaLocation
+                  attribute or a processing instruction referencing a schema even though there is a
+                  schema for them, the relevant schema is specified by a command line instruction, a
+                  user dialog or a configuration file, and the XML files are checked against the
+                  schema.
+               </p>
+            </section>
+            <section class="example" id="example-3">
+               <h3>Example 3</h3>
+               <p>When XML files do not include a document type declaration, a xsi:schemaLocation
+                  attribute or a processing instruction referencing a schema even though there is a
+                  schema for them, the namespace is dereferenced to retrieve a schema document or
+                  resource directory (Resource Directory Description Language: <a href="http://www.rddl.org/">RDDL</a>), and the XML files are checked against the
+                  schema.
+               </p>
+            </section>
+            <section class="example" id="example-4">
+               <h3>Example 4</h3>
+               <p>When a Website generates XML dynamically instead of serving only static documents,
+                  a developer can use <a href="http://xmlunit.sourceforge.net/">XMLUnit</a>, <a href="http://xmltestsuite.sourceforge.net/">XML Test Suite</a> or a similar
+                  framework to test the generated XML code. 
+               </p>
+            </section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li>
+                  									         <a href="https://www.w3.org/TR/2004/REC-xml-20040204/Overview.html#sec-well-formed">Well-Formed XML Documents</a> in Extensible Markup Language (XML) 1.0 (Third
+                  Edition), W3C Recommendation 04 February 2004. 
+               </li>
+               
+               <li>
+                  									         <a href="https://www.w3.org/TR/2004/REC-xml11-20040204/#sec-well-formed">Well-Formed XML Documents</a> in Extensible Markup Language (XML) 1.1, W3C
+                  Recommendation 04 February 2004. 
+               </li>
+               
+               <li>
+                  									         <a href="https://www.w3.org/TR/REC-xml/#wf-entities">4.3.2 Well-Formed Parsed
+                     Entities</a> in Extensible Markup Language (XML) 1.1, W3C Recommendation 04
+                  February 2004.
+               </li>
+               
+            </ul>
+            <p> For other resources, see <a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G134">Validating Web
+                  pages</a>. 
+            </p>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <ol>
+                  
+                  <li> Load each file into a validating XML parser. </li>
+                  
+                  <li> Check that there are no well-formedness errors. </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <p>Step 2 is true.</p>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

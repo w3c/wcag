@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>ARIA12: Using role=heading to identify headings</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="ARIA11">Previous Technique: ARIA11</a></li>
+            <li><a href="ARIA13">Next Technique: ARIA13</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Using role=heading to identify headings</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>Technologies that support <a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</a>. 
+            </p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/info-and-relationships">Success Criterion 1.3.1: Info and Relationships</a> (Sufficient)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The purpose of this technique is to provide a way for Assistive Technologies (AT)
+               to identify 
+               a piece of content as a heading. Applying role="heading" to an element causes an AT
+               (like a 
+               screen reader) to treat it as though it were a heading. 
+               
+            </p>
+            <p>If there is more than one heading on the page and the heading hierarchy is defined
+               through the 
+               visual presentation, the aria-level attribute should be used to indicate the hierarchical
+               level of 
+               the heading. 
+               
+            </p>
+            <p>When possible, use native heading mark-up directly. For example, it is preferable
+               
+               to use h1 rather than using &lt;div role="heading" aria-level="1"&gt;. However, the use
+               of the 
+               heading role, instead of heading mark-up, may be necessary. For example, when retrofitting
+               a legacy site where scripts depend on the existing element hierarchy.
+               
+            </p>
+            <p>The use of the heading role and nesting levels is discussed in <a href="https://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</a>.
+               
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-simple-headings">
+               <h3>Example 1: Simple headings</h3>
+               <p>This example demonstrates how to implement simple headings using role="heading" when
+                  retrofitting a legacy site where scripts depend on the existing element hierarchy
+                  or the level is unknown. For example, web content which is syndicated from various
+                  sources may be constructed without knowledge of what the final presentation will be.
+                  
+               </p><pre xml:space="preserve">&lt;div role="heading"&gt;Global News items&lt;/div&gt;
+... a list of global news with editorial comment....
+
+&lt;div role="heading"&gt;Local News items&lt;/div&gt;
+... a list of local news, with editorial comment ...</pre></section>
+            <section class="example" id="example-2-additional-heading-levels">
+               <h3>Example 2: Additional heading levels</h3>
+               <p>This example demonstrates how to implement a level 7 heading using role="heading"
+                  and the aria-level attribute. Since HTML only supports headings through level 6, there
+                  is no native element to provide these semantics.
+               </p><pre xml:space="preserve">...
+&lt;h5&gt;Fruit Trees&lt;/h5&gt;
+...
+&lt;h6&gt;Apples&lt;/h6&gt;
+&lt;p&gt;Apples grow on trees in areas known as orchards...&lt;/p&gt;
+...
+&lt;div role="heading" aria-level="7"&gt;Jonagold/div&gt;
+&lt;p&gt;Jonagold is a cross between the Golden Delicious and Jonathan varieties...&lt;/p&gt;</pre></section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li>
+                  <a href="https://www.w3.org/TR/wai-aria/roles#heading">Accessible Rich Internet Applications (WAI-ARIA) 1.0, Heading in the Roles Model</a>
+                  
+               </li>
+               
+               <li>
+                  <a href="https://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</a> 
+                  
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <ol>
+                  
+                  <li> Examine each element with the attribute role="heading".
+                     
+                  </li>
+                  
+                  <li> Determine whether the content of the element is appropriate as a heading.
+                     
+                  </li>
+                  
+                  <li> If the element has an aria-level attribute, determine whether the value is the appropriate
+                     hierarchical level.
+                     
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>#2 and #3 are true.</li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

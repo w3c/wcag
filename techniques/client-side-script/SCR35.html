@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>SCR35: Making actions keyboard accessible by using the onclick event of anchors and buttons</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="SCR34">Previous Technique: SCR34</a></li>
+            <li><a href="SCR36">Next Technique: SCR36</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Making actions keyboard accessible by using the onclick event of anchors and buttons</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>Script used with HTML or XHTML.</p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/keyboard">Success Criterion 2.1.1: Keyboard</a> (Sufficient as a way to meet <a href="../general/G90">G90: Providing keyboard-triggered event handlers</a>)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to demonstrate how to invoke a scripting function
+               in a way that is keyboard accessible by attaching it to a keyboard-accessible control.
+               In order to ensure that scripted actions can be invoked from the keyboard, they are
+               associated with "natively actionable" HTML elements (links and buttons). The onclick
+               event of these elements is device independent. While "onclick" sounds like it is tied
+               to the mouse, the onclick event is actually mapped to the default action of a link
+               or button. The default action occurs when the user clicks the element with a mouse,
+               but it also occurs when the user focuses the element and hits enter or space, and
+               when the element is triggered via the accessibility API.
+            </p>
+            <p>This technique relies on client-side scripting. However, it is beneficial to provide
+               a backup implementation or explanation for environments in which scripting is not
+               available.  When using anchor elements to invoke a JavaScript action, a backup implementation
+               or explanation is provided via the href attribute. When using buttons, it is provided
+               via a form post. 
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1">
+               <h3>Example 1</h3>
+               <p>Link that runs a script and has no fallback for non-scripted browsers. This approach
+                  should only be used when script is relied upon as an Accessibility Supported Technology.
+               </p>
+               <p>Even though we do not want to navigate from this link, we must use the href attribute
+                  on the a element in order to make this a true link and get the proper eventing. In
+                  this case, we're using "#" as the link target, but you could use anything. This link
+                  will never be navigated.
+               </p>
+               <p>The "return false;" at the end of the doStuff() event handling function tells the
+                  browser not to navigate to the URI. Without it, the page would refresh after the script
+                  ran. 
+               </p><pre xml:space="preserve">
+&lt;script&gt; 
+function doStuff()
+ {
+  //do stuff
+    return false;
+  }
+&lt;/script&gt;
+&lt;a href="#" onclick="return doStuff();"&gt;do stuff&lt;/a&gt;
+</pre></section>
+            <section class="example" id="example-2">
+               <h3>Example 2</h3>
+               <p>Link that runs script, but navigates to another page when script is not available.
+                  This approach can be used to create sites that don't rely on script, if and only if
+                  the navigation target provides the same functionality as the script. This example
+                  is identical to the example 1, except that its href is now set to a real page, dostuff.htm.
+                  Dostuff.htm must provide the same functionality as the script.The "return false;"
+                  at the end of the doStuff() event handling function tells the browser not to navigate
+                  to the URI. Without it, the browser would navigate to dostuff.htm after the script
+                  ran.
+               </p><pre xml:space="preserve">
+&lt;script&gt; 
+function doStuff() 
+ {  
+  //do stuff  
+  return false; 
+ }
+&lt;/script&gt;
+&lt;a href="dostuff.htm" onclick="return doStuff();"&gt;do stuff&lt;/a&gt;
+</pre><p class="working-example">A working example of this code is available. Refer to <a href="../../working-examples/script-action-links/">Creating Action Links using JavaScript</a>.
+               </p>
+            </section>
+            <section class="example" id="example-3">
+               <h3>Example 3</h3>
+               <p>Button that runs a script and falls back to a form post for users without script.
+                  This approach can be used by sites that do not rely on script, if and only if the
+                  form post provides the same functionality as the script. The onsubmit="return false;"
+                  prevents the form from submitting. 
+               </p><pre xml:space="preserve">
+&lt;script&gt;
+  function doStuff()
+ {
+     //do stuff
+ }
+&lt;/script&gt;
+&lt;form action="doStuff.aspx" onsubmit="return false;"&gt;
+ &lt;input type="submit" value="Do Stuff" onclick="doStuff();" /&gt;
+&lt;/form&gt;
+</pre><p class="working-example">A working example of this code is available. Refer to <a href="../../working-examples/script-action-buttons/">Creating Action Buttons using JavaScript</a>.
+               </p>
+            </section>
+            <section class="example" id="example-4">
+               <h3>Example 4</h3>
+               <p>Button that runs a script, implemented with input type="image". Note that an alt attribute
+                  must be added to the input to provide a text equivalent for the image. This approach
+                  should only be used when script is relied upon. 
+               </p><pre xml:space="preserve">
+&lt;script&gt;
+  function doStuff()
+  {
+     //do stuff
+   return false;
+  }
+&lt;/script&gt;
+&lt;input  type="image"  src="stuff.gif"  alt="Do stuff"  onclick="return doStuff();" /&gt;
+</pre></section>
+            <section class="example" id="example-5">
+               <h3>Example 5</h3>
+               <p>Button that runs a script, implemented with input type="submit", input type="reset"
+                  or input type="button". This approach should only be used when script is relied upon.
+                  
+               </p><pre xml:space="preserve">
+&lt;input type="submit" onclick="return doStuff();" value=”Do Stuff” /&gt;
+</pre></section>
+            <section class="example" id="example-6">
+               <h3>Example 6</h3>
+               <p>Button that runs a script, implemented with button…/button. This is valuable when
+                  you want more control over the look of your button. In this particular example, the
+                  button contains both an icon and some text. This approach should only be used when
+                  script is relied upon. 
+               </p><pre xml:space="preserve">
+&lt;button onclick="return doStuff();"&gt;
+ &lt;img src="stuff.gif" alt="stuff icon"&gt;
+ Do Stuff
+&lt;/button&gt;
+</pre></section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li>
+                  <a href="https://www.w3.org/TR/REC-html40/interact/scripts.html">HTML 4.01 Scripts</a>
+                  
+               </li>
+               
+               <li>
+                  <a href="https://www.w3.org/TR/REC-html40/interact/forms.html">HTML 4.01 Forms</a>
+                  
+               </li>
+               
+               <li>
+                  <a href="https://www.w3.org/TR/REC-html40/struct/links.html">HTML 4.01 Links</a>
+                  
+               </li>
+               
+               <li>
+                  <a href="https://www.w3.org/DOM/DOMTR">Document Object Model (DOM) Technical Reports</a>
+                  
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <p>For all script actions associated with a, button, or input elements: </p>
+               
+               <ol>
+                  
+                  <li>
+                     
+                     <p>In a user agent that supports Scripting </p>
+                     
+                     <ul>
+                        
+                        <li>Click on the control with the mouse. </li>
+                        
+                        <li>Check that the scripting action executes properly. </li>
+                        
+                        <li>If the control is an anchor element, check that the URI in the href attribute of the
+                           anchor element is not invoked. 
+                        </li>
+                        
+                        <li>Check that it is possible to navigate to and give focus to the control via the keyboard.</li>
+                        
+                        <li>Set keyboard focus to the control.</li>
+                        
+                        <li>Check that pressing ENTER invokes the scripting action. </li>
+                        
+                        <li>If the control is an anchor element, check that the URI in the href attribute of the
+                           anchor element is not invoked. 
+                        </li>
+                        
+                     </ul>
+                     
+                  </li>
+                  
+                  <li>
+                     
+                     <p>In a user agent that does not support Scripting </p>
+                     
+                     <ul>
+                        
+                        <li>Click on the control with the mouse.</li>
+                        
+                        <li>If the control is an anchor element, check that the URI in the href attribute of the
+                           anchor element is invoked. 
+                        </li>
+                        
+                        <li>Check that it is possible to navigate to and give focus to the control via the keyboard.</li>
+                        
+                        <li>Set keyboard focus to the control.</li>
+                        
+                        <li>If the control is an anchor element, check that pressing ENTER invokes the URI of
+                           the anchor element's href attribute.
+                        </li>
+                        
+                     </ul>
+                     
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>All of the above checks are true. </li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

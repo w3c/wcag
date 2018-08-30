@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>FLASH3: Marking objects in Flash so that they can be ignored by AT</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="FLASH2">Previous Technique: FLASH2</a></li>
+            <li><a href="FLASH4">Next Technique: FLASH4</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Marking objects in Flash so that they can be ignored by AT</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>Content implemented in Adobe Flash.</p>
+            <div class="note">
+               <div role="heading" class="note-title marker" aria-level="3">Note</div>
+               <p>Accessibility of Flash is no longer supported by Adobe. Authors are advised to implement
+                  content using another technology.
+               </p>
+            </div>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/non-text-content">Success Criterion 1.1.1: Non-text Content</a> (Sufficient)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The purpose of this technique is to show how images can be marked so that they can
+               be ignored by Assistive Technology. 
+            </p>
+            <p>The Flash Player supports the ability for authors to control  which graphics appear
+               to assistive technologies using the silent  property of the accessibility object,
+               as indicated in the examples  below. 
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-hiding-a-graphic-in-the-flash-professional-authoring-tool">
+               <h3>Example 1: Hiding a graphic in the Flash Professional authoring tool</h3>
+               <p>The Flash Professional authoring tool's Accessibility panel lets  authors provide
+                  accessibility information to assistive technology and  set accessibility options for
+                  individual Flash objects or entire Flash  applications. 
+               </p>
+               <ol>
+                  
+                  <li> To apply changes to accessibility properties for a graphic, it must be saved as a
+                     symbol in the movie's library. <em>Note:</em> Flash does not support text alternatives for graphic symbols. Instead,  the graphic
+                     must be converted to or stored in a movie clip or button  symbol. 
+                  </li>
+                  
+                  <li> Bring up the Accessibility panel by selecting "Window &gt;  Other Panels &gt; Accessibility"
+                     in the application menu, or through  the shortcut ALT + F11. 
+                  </li>
+                  
+                  <li> Select the graphic object </li>
+                  
+                  <li> If the 'Make object accessible' checkbox in the Accessibility  control panel is checked,
+                     uncheck this option to remove the graphic  from the accessiblity information conveyed
+                     to assistive technologies. 
+                  </li>
+                  
+               </ol>
+            </section>
+            <section class="example" id="example-2-applying-textual-alternatives-programmatically-in-actionscript-2.0">
+               <h3>Example 2: Applying textual alternatives programmatically in ActionScript 2.0</h3>
+               <p>To manage an object's text equivalents programmatically using  ActionScript, the _accProps
+                  property must be used. This references an  object containing accessibility related
+                  properties set for the object.  The code example below shows a simple example of how
+                  the _accProps  property is used to remove an object from the accessibility information
+                  for the movie using ActionScript. 
+               </p><pre xml:space="preserve">// 'decorative_mc' is an instance placed on the movie's main timeline
+_root.decorative_mc._accProps = new Object();
+_root.decorative_mc._accProps.silent = true; </pre></section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li>
+                  									         <a href="http://help.adobe.com/en_US/AS2LCR/Flash_10.0/help.html?content=00000619.html">Flash 10 Documention _accProps property</a>
+                  								       
+               </li>
+               
+               <li>
+                  									         <a href="http://www.eclipse.org/actf/downloads/tools/aDesigner/">aDesigner</a>
+                  								       
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <ol>
+                  
+                  <li> Publish the SWF file </li>
+                  
+                  <li> Open the SWF file in Internet Explorer 6 or higher (using  Flash Player 6 or higher),
+                     or Firefox 3 or higher (using Flash Player 9  or higher) 
+                  </li>
+                  
+                  <li> Use a tool which is capable of showing an object's accessibility information, such
+                     as ACTF aDesigner 1.0 to open the Flash movie. 
+                  </li>
+                  
+                  <li> In the GUI summary panel, loop over each object which is  contained by the Flash
+                     movie and ensure the object that was designed to  be hidden does not appear in the
+                     tool's display. 
+                  </li>
+                  
+                  <li> Authors may also test with a screen reader, by reading the  Flash content and listening
+                     to hear that object is not mentioned when  the page is read. 
+                  </li>
+                  
+                  <li> Non-text objects that are coded to be hidden from assistive technologies are not
+                     available to assistive technology. 
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <p>Check #6 is true. </p>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

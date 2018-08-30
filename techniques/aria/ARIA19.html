@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>ARIA19: Using ARIA role=alert or Live Regions to Identify Errors</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="ARIA18">Previous Technique: ARIA18</a></li>
+            <li><a href="ARIA20">Next Technique: ARIA20</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Using ARIA role=alert or Live Regions to Identify Errors</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>Technologies that support <a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</a>. 
+            </p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/error-identification">Success Criterion 3.3.1: Error Identification</a> (Sufficient)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The purpose of this technique is to notify Assistive Technologies (AT) when an input
+               error occurs. The aria-live attribute makes it possible for an AT (such as a screen
+               reader) to be notified when error messages are injected into a Live Region container.
+               The content within the aria-live region is automatically read by the AT, without the
+               AT having to focus on the place where the text is displayed.
+               
+            </p>
+            <p>There are also a number of <a href="https://www.w3.org/WAI/PF/aria-practices/#chobet">special case live region roles</a> which can be used instead of applying live region properties directly.
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-injecting-error-messages-into-a-container-with-role=alert-already-present-in-the-dom">
+               <h3>Example 1: Injecting error messages into a container with role=alert already present
+                  in the DOM
+               </h3>
+               <p>The following example uses role=alert which is equivalent to using aria-live=assertive.
+                  
+               </p>
+               <p>In the example there is an empty error message container element with aria-atomic=true
+                  and an aria-live property or alert role present in the DOM on page load. The error
+                  container must be present in the DOM on page load for the error message to be spoken
+                  by most screen readers. aria-atomic=true is necessary to make Voiceover on iOS read
+                  the error messages after more than one invalid submission. 
+                  
+               </p>
+               <p>jQuery is used to test if the inputs are empty on submit and inject error messages
+                  into the live region containers if so. Each time a new submit is attempted the previous
+                  error messages are removed from the container and new error messages injected.
+                  
+               </p><pre xml:space="preserve">&lt;script src="http://code.jquery.com/jquery.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+$(document).ready(function(e) {
+	$('#signup').submit(function() {
+		$('#errors').html('');
+		if ($('#first').val() === '') {
+			$('#errors').append('&lt;p&gt;Please enter your first name.&lt;/p&gt;');
+		}
+		if ($('#last').val() === '') {
+			$('#errors').append('&lt;p&gt;Please enter your last name.&lt;/p&gt;');
+		} 
+		if ($('#email').val() === '') {
+			$('#errors').append('&lt;p&gt;Please enter your email address.&lt;/p&gt;');
+		} 
+		return false;
+	});
+});
+&lt;/script&gt;
+
+&lt;form name="signup" id="signup" method="post" action=""&gt;
+  &lt;p id="errors" role="alert" aria-atomic="true"&gt;&lt;/p&gt;
+  &lt;p&gt;
+    &lt;label for="first"&gt;First Name (required)&lt;/label&gt;&lt;br&gt;
+    &lt;input type="text" name="first" id="first"&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;label for="last"&gt;Last Name (required)&lt;/label&gt;&lt;br&gt;
+    &lt;input type="text" name="last" id="last"&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;label for="email"&gt;Email (required)&lt;/label&gt;&lt;br&gt;
+    &lt;input type="text" name="email" id="email"&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;input type="submit" name="button" id="button" value="Submit"&gt;
+  &lt;/p&gt;
+&lt;/form&gt;</pre><p class="working-example">Working example: <a href="../../working-examples/aria-alert-identify-errors/">Using role=alert to identify errors</a>.
+               </p>
+            </section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li>
+                  <a href="https://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</a>
+                  
+               </li>
+               
+               <li>
+                  <a href="https://www.paciellogroup.com/blog/2012/06/html5-accessibility-chops-aria-rolealert-browser-support/">HTML5 Accessibility Chops: ARIA role=alert browser support</a>
+                  
+               </li>
+               
+               <li> 
+                  <a href="http://html.cita.illinois.edu/nav/form/aria/">Form Labels, ARIA Examples (Experimental)</a>
+                  
+               </li>
+               
+               <li> 
+                  <a href="http://www.msfw.com/accessibility/">MSF&amp;W Accessibility</a>
+                  
+               </li>
+               
+               <li> 
+                  <a href="https://www.w3.org/TR/wai-aria/states_and_properties#aria-describedby">ARIA 1.0, Supported States and Properties, aria-describedby</a>
+                  
+               </li>
+               
+               <li> 
+                  <a href="https://www.w3.org/TR/wai-aria/roles#alert">WAI-ARIA 1.0, The Roles model, alert</a>
+                  
+               </li>
+               
+               <li> 
+                  <a href="https://www.w3.org/TR/html5/">HTML5, A vocabulary and associated APIs for HTML and XHTML</a>
+                  
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <ol>
+                  
+                  <li>Determine that an empty error container role=alert or aria-live=assertive attribute
+                     is present in the DOM at page load.
+                  </li>
+                  
+                  <li> Trigger the error that causes the content in the live region to appear or update.
+                     
+                  </li>
+                  
+                  <li> Determine that the error message was injected into the already present error container.
+                     
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>#1 and #3 are true.</li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>C15: Using CSS to change the presentation of a user interface component when it receives
+         focus
+      </title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="C14">Previous Technique: C14</a></li>
+            <li><a href="C17">Next Technique: C17</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Using CSS to change the presentation of a user interface component when it receives
+         focus
+      </h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>CSS, HTML and XHTML</p>
+            <p>This technique relates to:</p>
+            <ul>
+               <li><a href="https://w3c.github.io/wcag/understanding/use-of-color">Success Criterion 1.4.1: Use of Color</a> (Advisory)
+               </li>
+               <li><a href="https://w3c.github.io/wcag/understanding/focus-visible">Success Criterion 2.4.7: Focus Visible</a> (Sufficient)
+               </li>
+            </ul>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to demonstrate how visual appearance may be enhanced
+               via style sheets to provide visual feedback when an interactive element has focus
+               or when a user hovers over it using a pointing device. Highlighting the element that
+               has focus or is hovered over can provide information such as the fact that the element
+               is interactive or the scope of the interactive element. 
+            </p>
+            <p>Providing visual feedback may be possible through more than one mode. Usually, it
+               is attained through using a mouse to hover over the element or a keyboard to tab to
+               the element. 
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-link-elements">
+               <h3>Example 1: Link elements</h3>
+               <p>In this example, mouse and keyboard focus indicators have been applied to the link
+                  elements. CSS has been used to apply a background color when the link elements receive
+                  focus. 
+               </p>
+               <p>Here is the content to be displayed:</p><pre xml:space="preserve">
+&lt;ul id="mainnav"&gt;
+  &lt;li class="page_item"&gt;Home&lt;/li&gt;
+  &lt;li class="page_item"&gt;&lt;a href="/services"&gt;Services&lt;/a&gt;&lt;/li&gt;
+  &lt;li class="page_item"&gt;&lt;a href="/projects"&gt;Projects&lt;/a&gt;&lt;/li&gt;
+  &lt;li class="page_item"&gt;&lt;a href="/demos"&gt;Demos&lt;/a&gt;&lt;/li&gt;
+  &lt;li class="page_item"&gt;&lt;a href="/about-us"&gt;About us&lt;/a&gt;&lt;/li&gt;
+  &lt;li class="page_item"&gt;&lt;a href="/contact-us"&gt;Contact us&lt;/a&gt;&lt;/li&gt;
+  &lt;li class="page_item"&gt;&lt;a href="/links"&gt;Links&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</pre><p>Here is the CSS that changes the background color for the above elements when they
+                  receive mouse or keyboard focus:
+               </p><pre xml:space="preserve">
+#mainnav a:hover, #mainnav a:active, #mainnav a:focus {
+  background-color: #DCFFFF;
+  color:#000066;
+}</pre></section>
+            <section class="example" id="example-2-highlighting-elements-that-receive-focus">
+               <h3>Example 2: Highlighting elements that receive focus</h3>
+               <p>In this example, the :focus pseudo-class is used to change the style applied to input
+                  fields when they receive focus by changing the background color. 
+               </p><pre xml:space="preserve">
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;style type="text/css"&gt;
+      input.text:focus {
+        background-color: #7FFF00; 
+        color: #000;
+      }
+      input[type=checkbox]:focus + label, input[type=radio]:focus + label {
+        background-color: #FF6; 
+        color: #000; 
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;form method="post" action="form.php"&gt;
+      &lt;p&gt;&lt;label for="fname"&gt;Name: &lt;/label&gt;
+        &lt;input class="text" type="text" name="fname" id="fname" /&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        &lt;input type="radio" name="sex" value="male" id="sm" /&gt; &lt;label for="sm"&gt;Male&lt;/label&gt;&lt;br /&gt;
+        &lt;input type="radio" name="sex" value="female" id="sf" /&gt; &lt;label for="sf"&gt;Female&lt;/label&gt;
+      &lt;p&gt;
+    &lt;/form&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+
+            </pre><p class="working-example">Working example of this code: <a href="../../working-examples/focus-pseudo-class/">Example of highlighting elements that receive focus</a>.
+               </p>
+            </section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li> 
+                  <a href="https://www.w3.org/TR/CSS2/selector.html#dynamic-pseudo-classes">CSS 2: 5.11.3 The dynamic pseudo-classes: :hover, :active, and :focus</a>
+                  								       
+               </li>
+               
+               <li> 
+                  <a href="https://www.w3.org/TR/CSS2/selector.html#adjacent-selectors">CSS 2: 5.7 Adjacent sibling selectors</a> 
+                  
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <p>For each element able to attain focus: </p>
+               
+               <ol>
+                  
+                  <li>Using a mouse, hover over the element. </li>
+                  
+                  <li>Check that the background or border changes color. </li>
+                  
+                  <li>Move the mouse away from the object before attempting keyboard focus. </li>
+                  
+                  <li>Using a keyboard, tab to the element.</li>
+                  
+                  <li>Check that the background or border changes color.</li>
+                  
+                  <li>Check that the background or border changes in color are removed when the element
+                     loses focus.
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>Checks #2, #5 and #6 are true.</li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

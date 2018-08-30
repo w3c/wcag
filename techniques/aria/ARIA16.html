@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>ARIA16: Using aria-labelledby to provide a name for user interface controls</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="ARIA15">Previous Technique: ARIA15</a></li>
+            <li><a href="ARIA17">Next Technique: ARIA17</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Using aria-labelledby to provide a name for user interface controls</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>Technologies that support <a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</a>. 
+            </p>
+            <p>This technique relates to:</p>
+            <ul>
+               <li><a href="https://w3c.github.io/wcag/understanding/info-and-relationships">Success Criterion 1.3.1: Info and Relationships</a> (Sufficient)
+               </li>
+               <li><a href="https://w3c.github.io/wcag/understanding/name-role-value">Success Criterion 4.1.2: Name, Role, Value</a> (Sufficient)
+               </li>
+               <li><a href="https://w3c.github.io/wcag/understanding/name-role-value">Success Criterion 4.1.2: Name, Role, Value</a> (Sufficient as a way to meet an unwritten technique)
+               </li>
+               <li><a href="https://w3c.github.io/wcag/understanding/name-role-value">Success Criterion 4.1.2: Name, Role, Value</a> (Sufficient as a way to meet <a href="../general/G10">G10: Creating components using a technology that supports the accessibility notification
+                     of changes</a>)
+               </li>
+            </ul>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The purpose of this technique is to provide names for user interface controls that
+               can be read by assistive technology.  WAI-ARIA provides a way to associate text with
+               a section, drawing, form element, picture, and so on, using the aria-labelledby property.
+               This techniques uses the aria-labelledby attribute to associate a user interface control,
+               such as a form field, with text on the page that labels it.
+               
+            </p>
+            <p>Like aria-describedby, aria-labelledby can accept multiple ids to point to other elements
+               of the page using a space separated list. This capability makes aria-labelledby especially
+               useful in situations where sighted users use information from the surrounding context
+               to identify a control. <a href="ARIA9">Using aria-labelledby to concatenate a label from several text nodes</a> contains more examples of situations where names are created from several other text
+               elements on the page.
+               
+            </p>
+            <p>While the function of aria-labelledby appears similar to the native HTML label element,
+               there are some differences:
+               
+            </p>
+            <ul>
+               
+               <li> 
+                  aria-labelledby can reference more than one text element; label can only reference
+                  one.
+               </li>
+               
+               <li> 
+                  aria-labelledby can be used for a variety of elements while the label element can
+                  only be used on form elements.
+               </li>
+               
+               <li> Clicking on a label focuses the associated form field. This does not occur with aria-labelledby.
+                  If this behaviour is required then use label or implement this functionality using
+                  scripting.
+                  
+               </li>
+               
+            </ul>
+            <p>Note that as of December 2013, label has better support than aria-labelledby, especially
+               in older browsers and assistive technologies.
+               
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-labelling-a-simple-text-field">
+               <h3>Example 1: Labelling a simple text field</h3>
+               <p>The following is an example of aria-labelledby used on a simple text field to provide
+                  a label in a situation where there is no text available for a dedicated label but
+                  there is other text on the page that can be used to accurately label the control.
+               </p><pre xml:space="preserve">&lt;input name="searchtxt" type="text" aria-labelledby="searchbtn"&gt;
+&lt;input name="searchbtn" id="searchbtn" type="submit" value="Search"&gt;</pre></section>
+            <section class="example" id="example-2-labelling-a-slider">
+               <h3>Example 2: Labelling a slider</h3>
+               <p>Below is an example of aria-labelledby used to provide a label for a slider control.
+                  In this case the label text is selected from within a longer adjacent text string.
+                  Please note that this example is simplified to show only the labeling relationship;
+                  authors implementing custom controls also need to ensure that controls meet other
+                  success criteria.
+               </p><pre xml:space="preserve">&lt;p&gt;Please select the &lt;span id="mysldr-lbl"&gt;number of days for your trip&lt;/span&gt;&lt;/p&gt;
+&lt;div id="mysldr" role="slider" aria-labelledby="mysldr-lbl"&gt;&lt;/div&gt;</pre></section>
+            <section class="example" id="example-3-a-label-from-multiple-sources">
+               <h3>Example 3: A label from multiple sources</h3>
+               <p>The following example of aria-labelledby with multiple references uses the label element.
+                  For additional detail on concatenating multiple sources of information into a label
+                  with aria-labelledby, please view the technique <a href="ARIA9">Using ARIA labelledby to concatenate a label from several text nodes</a>.
+                  
+               </p><pre xml:space="preserve">&lt;label id="l1" for="f3"&gt;Notify me&lt;/label&gt;
+&lt;select name="amt" id="f3" aria-labelledby="l1 f3 l2"&gt;
+  &lt;option value="1"&gt;1&lt;/option&gt;
+  &lt;option value="2"&gt;2&lt;/option&gt;
+&lt;/select&gt;
+&lt;span id="l2" tabindex="-1"&gt;days in advance&lt;/span&gt;</pre><p>Note: The use of the label element is included for a number of reasons. If the user
+                  clicks on the text of the label element, the corresponding form field will receive
+                  focus, which makes the clicking target larger for people with dexterity problems.
+                  Also the label element will always be exposed via the accessibility API. A span could
+                  have been used (but if so, it should receive a tabindex="-1" so that it will be exposed
+                  via the accessibility API in all versions of Internet Explorer). However, a span would
+                  lose the advantage of the larger clickable region.
+                  
+               </p>
+            </section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li> 
+                  <a href="https://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</a>
+                  
+               </li>
+               
+               <li> 
+                  <a href="https://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description
+                     Calculation</a>
+                  
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <p>For each user interface control element where an aria-labelledby attribute is present:
+                  
+               </p>
+               
+               <ol>
+                  
+                  <li>Check that the value of the aria-labelledby attribute is the id of an element or a
+                     space separated list of ids on the web page. 
+                     
+                  </li>
+                  
+                  <li>Check that the text of the referenced element or elements accurately labels the user
+                     interface control.
+                     
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>#1 and #2 are true.</li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

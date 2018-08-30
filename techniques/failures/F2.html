@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>F2: Failure of Success Criterion 1.3.1 due to using changes in text presentation to convey
+         information without using the appropriate markup or text
+      </title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="F1">Previous Technique: F1</a></li>
+            <li><a href="F3">Next Technique: F3</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Failure of Success Criterion 1.3.1 due to using changes in text presentation to convey
+         information without using the appropriate markup or text
+      </h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>All technologies that support images or presentation markup.</p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/info-and-relationships">Success Criterion 1.3.1: Info and Relationships</a> (Failure)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>This document describes a failure that occurs when a change in the appearance of text
+               conveys meaning without using appropriate semantic markup. This failure also applies
+               to images of text that are not enclosed in the appropriate semantic markup.
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-using-css-to-style-the-p-element-to-look-like-a-heading">
+               <h3>Example 1: Using CSS to style the p element to look like a heading</h3>
+               <p>The author intended to make a heading but didn't want the look of the default HTML
+                  heading. So they used CSS to style the P element to look like a heading and they called
+                  it a heading. But they failed to use the proper HTML heading element. Therefore, the
+                  Assisitive Technology could not distinguish it as a heading.
+               </p><pre xml:space="preserve">
+ &lt;style type="text/css"&gt;
+ .heading1{
+        font-family: Times, serif;
+        font-size:200%;
+        font-weight:bold;
+ }
+ &lt;/style&gt;
+
+ &lt;p class="heading1"&gt;Introduction&lt;/p&gt;
+ &lt;p&gt;This introduction provides detailed information about how to use this 
+ ........
+ &lt;/p&gt;
+</pre><div xmlns="" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:wcag="https://www.w3.org/WAI/GL/" class="note">
+                  <div role="heading" class="note-title marker" aria-level="4">Note</div>
+                  <div xmlns="http://www.w3.org/1999/xhtml">
+                     
+                     <p>In this case, the proper approach would be to use CSS to style the H1 element in HTML.</p>
+                     
+                  </div>
+               </div>
+            </section>
+            <section class="example" id="example-2-images-of-text-used-as-headings-where-the-images-are-not-marked-up-with-heading-tags">
+               <h3>Example 2: Images of text used as headings where the images are not marked up with
+                  heading tags
+               </h3>
+               <p>Chapter1.gif is an image of the words, "Chapter One" in a Garamond font sized at 20
+                  pixels. This is a failure because at a minimum the img element should be enclosed
+                  within a header element. A better solution would be to eliminate the image and to
+                  enclose the text within a header element which has been styled using CSS.
+               </p><pre xml:space="preserve">
+&lt;img src="Chapter1.gif" alt="Chapter One"&gt;
+ 
+&lt;p&gt;Once upon a time in the land of the Web.....
+&lt;/p&gt;
+</pre></section>
+            <section class="example" id="example-3-using-css-to-visually-emphasize-a-phrase-or-word-without-conveying-that-emphasis-semantically">
+               <h3>Example 3: Using CSS to visually emphasize a phrase or word without conveying that
+                  emphasis semantically
+               </h3>
+               <p>The following example fails because the information conveyed by using the CSS font-weight
+                  property to change to a bold font is not conveyed through semantic markup or stated
+                  explicitly in the text.
+               </p>
+               <p>Here is a CSS class to specify bold:</p><pre xml:space="preserve">
+.yell {
+  font-weight:bold;
+  text-transform: uppercase;
+}
+</pre><p>And here is the corresponding HTML:</p><pre xml:space="preserve">
+&lt;p&gt;
+ "I said, &lt;span class="yell"&gt;no&lt;/span&gt;, not before dinner!", 
+ was the exasperated response when Timmy asked his mother for the 
+ fourth time for an ice cream cone. 
+ &lt;/p&gt;
+</pre></section>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <ol>
+                  
+                  <li>
+                     
+                     <p>For images of text:</p>
+                     
+                     <ol>
+                        
+                        <li>Check if any images of text are used to convey structural information of the document.</li>
+                        
+                        <li>Check that the proper semantic structure (e.g., HTML headings) is used with the text
+                           to convey the information.
+                        </li>
+                        
+                     </ol>
+                     
+                  </li>
+                  
+                  <li>
+                     
+                     <p>For styled text that conveys information:</p>
+                     
+                     <ol>
+                        
+                        <li>Check if there is any styled text that conveys structural information.</li>
+                        
+                        <li>Check that in addition to styling, the proper semantic structure is used with the
+                           text to convey the information.
+                        </li>
+                        
+                     </ol>
+                     
+                  </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>If check #1.1 is true, then #1.2 is true.</li>
+                  
+                  <li>If check #2.1 is true, then #2.2 is true.</li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

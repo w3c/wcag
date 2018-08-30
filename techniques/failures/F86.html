@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>F86: Failure of Success Criterion 4.1.2 due to not providing names for each part of a multi-part
+         form field, such as a US telephone number
+      </title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="F85">Previous Technique: F85</a></li>
+            <li><a href="F87">Next Technique: F87</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Failure of Success Criterion 4.1.2 due to not providing names for each part of a multi-part
+         form field, such as a US telephone number
+      </h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>General</p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/name-role-value">Success Criterion 4.1.2: Name, Role, Value</a> (Failure)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>This describes a failure condition of Success Criterion 4.1.2 where some or all of
+               the parts of multi-part form field do not have names. Often there is a label for the
+               multi-part field, which is either programatically associated with the first part,
+               or not programatically associated with any parts.
+            </p>
+            <div xmlns="" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:wcag="https://www.w3.org/WAI/GL/" class="note">
+               <div role="heading" class="note-title marker" aria-level="3">Note</div>
+               <div xmlns="http://www.w3.org/1999/xhtml">
+                  
+                  <p>A name does not necessarily have to be visible, but is visible to assistive technologies.</p>
+                  
+               </div>
+            </div>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1">
+               <h3>Example 1</h3>
+               <p>A US telephone number consists of a 3-digit area code, a 3-digit prefix, and a 4-digit
+                  suffix. They are typically formatted as follows ([area code]) [prefix]-[suffix], such
+                  as (206) 555-1212. Often, forms asking for a telephone number will include 3 separate
+                  fields, but with a single label, such as:
+               </p><pre xml:space="preserve">Phone number: 
+(&lt;input type="text" size="3"&gt;) &lt;input type="text" size="3"&gt;-&lt;input type="text" size="4"&gt;</pre><p>The failure occurs when there is not a name for each of the 3 fields in the Accessibility
+                  API. A user with assistive technology will experience these as three undefined text
+                  fields. Some assistive technologies will read the punctuation as identification for
+                  the text fields, which can be even more confusing. In the case of a 3-field US phone
+                  number, some assistive technologies would name the fields "(", ")" and "-", which
+                  is not very useful.
+               </p>
+            </section>
+            <section class="example" id="example-2">
+               <h3>Example 2</h3>
+               <p>The same US telephone number. In this case, the label is not programatically associated
+                  with any of the parts. 
+               </p><pre xml:space="preserve">Phone number: (&lt;input type="text" size="3"&gt;) &lt;input type="text" size="3"&gt;-&lt;input type="text" size="4"&gt;</pre><p> A user with assistive technology will experience these as three undefined text fields.
+                  
+               </p>
+            </section>
+            <section class="example" id="example-3">
+               <h3>Example 3</h3>
+               <p>The same US telephone number. In this case, the label is programatically associated
+                  with the first part.
+               </p><pre xml:space="preserve">&lt;label for="area"&gt;Phone number:&lt;/label&gt; 
+(&lt;input id="area" type="text" size="3"&gt;) &lt;input type="text" size="3"&gt;-&lt;input type="text" size="4"&gt;</pre><p>A user with assistive technology will be led to believe that the first field is for
+                  the entire phone number, and will experience the second and third fields as undefined
+                  text fields.
+               </p>
+            </section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li>
+                  <a href="https://msdn.microsoft.com/en-us/library/ms695716.aspx">Microsoft Active Accessibility 2.0 SDK</a>. Includes Inspect32.exe and other MSAA tools.
+               </li>
+               
+               <li>
+                  <a href="https://developer.gnome.org/atk/unstable/">Gnome Accessibility Toolkit documentation</a>
+                  
+               </li>
+               
+               <li>
+                  <a href="http://www.microsoft.com/en-us/download/details.aspx?id=18359">Microsoft Internet Explorer Developer Toolbar</a>. Allows examination of script-generated DOM in Microsoft Internet Explorer.
+               </li>
+               
+               <li>
+                  <a href="http://getfirebug.com/">Firebug</a>. Allows examination of script-generated DOM in Firefox.
+               </li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <p>For each subfield in the multi-part form field:</p>
+               
+               <ol>
+                  
+                  <li>Check that there is a programmatically determined name for the field.</li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li>If check #1 is false for any subfield, then the failure condition applies and the
+                     content fails the success criterion.
+                  </li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>

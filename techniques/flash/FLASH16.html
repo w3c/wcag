@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>FLASH16: Making actions keyboard accessible by using the click event on standard components</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="FLASH15">Previous Technique: FLASH15</a></li>
+            <li><a href="FLASH17">Next Technique: FLASH17</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Making actions keyboard accessible by using the click event on standard components</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>Content implemented in Adobe Flash.</p>
+            <div class="note">
+               <div role="heading" class="note-title marker" aria-level="3">Note</div>
+               <p>Accessibility of Flash is no longer supported by Adobe. Authors are advised to implement
+                  content using another technology.
+               </p>
+            </div>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/keyboard">Success Criterion 2.1.1: Keyboard</a> (Sufficient as a way to meet <a href="../flash/FLASH17">FLASH17: Providing keyboard access to a Flash object and avoiding a keyboard trap</a>)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to demonstrate how to invoke a   scripting function
+               in a way that is keyboard accessible by attaching it   to keyboard-accessible, standard
+               Flash components provided by the Adobe   Flash Professional authoring tool. In order
+               to ensure that scripted   actions can be invoked from the keyboard, they are associated
+               with   standard Flash components such as the Button component. The click event   of
+               these components is device independent. While the "CLICK" event is a   mouse event,
+               it is actually mapped to the default action of a button.   The default action occurs
+               when the user clicks the element with a mouse,   but it also occurs when the user
+               focuses the element and hits the space   key, and when the element is triggered via
+               the accessibility API. 
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-click-event-on-a-button">
+               <h3>Example 1: Click event on a button</h3>
+               <p>This example shows a button that uses the MouseEvent.CLICK   event to change its label.
+                  This event will fire both on mouse click and   when the space key is pressed 
+               </p><pre xml:space="preserve">import fl.controls.Button;
+import fl.accessibility.ButtonAccImpl;
+
+ButtonAccImpl.enableAccessibility();
+
+var testBtn = new Button();
+testBtn.label = "click me";
+testBtn.addEventListener(MouseEvent.CLICK, clickHandler, false);
+addChild(testBtn);
+testBtn.x = testBtn.y = 10;
+
+function clickHandler(e) {
+  e.target.label = "Thanks";
+}</pre><p class="working-example">This approach is demonstrated in the <a href="../../working-examples/flash-device-independent-event-handler-on-component/">working version of click event on a button</a>. The <a href="../../working-examples/flash-device-independent-event-handler-on-component/device_independent_event_handler_on_component_as3.fla">source of click event on a button</a> is available. 
+               </p>
+            </section>
+            <section class="example" id="example-2-pending-example">
+               <h3>Example 2: Pending example</h3><a href="http://trace.wisc.edu/wcag_wiki/index.php?title=Making_actions_keyboard_accessible_by_using_the_click_event_on_standard_components">wiki source for FLASH16</a></section>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               <h3>Procedure</h3>
+               
+               <p>When a Flash Movie contains interactive controls, confirm that: </p>
+               
+               <ol>
+                  
+                  <li> Standard Flash components are used for the controls </li>
+                  
+                  <li> The controls use the "click" event </li>
+                  
+               </ol>
+               
+            </section>
+            <section class="results" id="expected-results">
+               <h3>Expected Results</h3>
+               
+               <ul>
+                  
+                  <li> #1 and #2 are true </li>
+                  
+               </ul>
+               
+            </section>
+         </section>
+      </main>
+   </body>
+</html>
