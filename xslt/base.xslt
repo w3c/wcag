@@ -33,4 +33,21 @@
 		</xsl:analyze-string>
 	</xsl:function>
 	
+	<xsl:template match="html:p[@class = 'note'] | html:div[@class = 'note']">
+		<div class="note">
+			<div role="heading" class="note-title marker" aria-level="{count(ancestor::html:section) + 2}">Note</div>
+			<xsl:copy><xsl:apply-templates select="@*[not(name() = 'class')]|node()"/></xsl:copy>
+		</div>
+	</xsl:template>
+	
+	<xsl:template match="html:li[@class = 'note']">
+		<xsl:copy>
+			<xsl:apply-templates select="@*[not(name() = 'class')]"/>
+			<div class="note">
+				<div role="heading" class="note-title marker" aria-level="{count(ancestor::html:section) + 2}">Note</div>
+				<xsl:apply-templates/>
+			</div>
+		</xsl:copy>
+	</xsl:template>
+	
 </xsl:stylesheet>
