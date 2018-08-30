@@ -13,9 +13,6 @@
 	<xsl:param name="output.dir">output/</xsl:param>
 	<xsl:param name="associations.file">technique-assocations.xml</xsl:param>
 	<xsl:param name="guidelines.meta.file">../guidelines/wcag.xml</xsl:param>
-	<xsl:param name="loc.guidelines">https://www.w3.org/TR/WCAG21/</xsl:param>
-	<xsl:param name="loc.understanding">https://www.w3.org/WAI/WCAG21/Understanding/</xsl:param>
-	<xsl:param name="loc.techniques">https://www.w3.org/WAI/WCAG21/Techniques/</xsl:param>
 	
 	<xsl:variable name="associations.doc" select="document($associations.file)"/>
 	<xsl:variable name="guidelines.meta.doc" select="document($guidelines.meta.file)"/>
@@ -446,13 +443,6 @@
 		<xsl:element name="h{$level}">
 			<xsl:apply-templates/>
 		</xsl:element>
-	</xsl:template>
-	
-	<xsl:template match="html:a[not(node()) and starts-with(@href, 'https://www.w3.org/WAI/WCAG21/Techniques/')]">
-		<xsl:copy>
-			<xsl:apply-templates select="@*"/>
-			<xsl:value-of select="replace(@href, '^.*/([\w\d]*)$', '$1')"/>
-		</xsl:copy>
 	</xsl:template>
 	
 	<xsl:template match="html:a[not(@href)]">

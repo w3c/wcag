@@ -11,7 +11,6 @@
 	
 	<xsl:param name="base.dir">understanding/</xsl:param>
 	<xsl:param name="output.dir">output/</xsl:param>
-	<xsl:param name="loc.guidelines">https://www.w3.org/TR/WCAG21/</xsl:param>
 	
 	<xsl:template name="name">
 		<xsl:param name="meta" tunnel="yes"/>
@@ -355,13 +354,6 @@
 		<xsl:element name="h{$level}">
 			<xsl:apply-templates/>
 		</xsl:element>
-	</xsl:template>
-	
-	<xsl:template match="html:a[not(node()) and starts-with(@href, 'https://www.w3.org/WAI/WCAG21/Techniques/')]">
-		<xsl:copy>
-			<xsl:apply-templates select="@*"/>
-			<xsl:value-of select="replace(@href, '^.*/([\w\d]*)$', '$1')"/>
-		</xsl:copy>
 	</xsl:template>
 	
 	<xsl:template match="html:a[not(@href)]">
