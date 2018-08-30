@@ -7,7 +7,7 @@
 	
 	<xsl:import href="base.xslt"/>
 	
-	<xsl:output method="html" indent="yes"/>
+	<xsl:output method="xhtml" indent="yes" omit-xml-declaration="yes" encoding="UTF-8"/>
 	
 	<xsl:template match="techniques">
 		<xsl:result-document href="toc.html">
