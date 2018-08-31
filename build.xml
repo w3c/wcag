@@ -115,8 +115,9 @@
 	<target name="techniques" depends="techniques-list, techniques-association">
 		<makeurl file="${basedir}/techniques/" property="base.techniques"/>
 		<makeurl file="${basedir}/techniques/technique-associations.xml" property="associations.file"/>
-		<mkdir dir="${basedir}/output/"/>
-		<makeurl file="${basedir}/output/" property="output.dir"/>
+		<mkdir dir="${basedir}/output/techniques/"/>
+		<local name="output.dir"/>
+		<makeurl file="${basedir}/output/techniques/" property="output.dir"/>
 		<echo message="Outputting Techniques to ${output.dir}"/>
 		<xslt in="${inputdir.techniques}/techniques.xml" out="output.html" style="xslt/generate-techniques.xslt" force="true">
 			<factory name="${xslt.factory}"/>
@@ -124,9 +125,9 @@
 			<param name="associations.file" expression="${associations.file}"/>
 			<param name="output.dir" expression="${output.dir}"/>
 		</xslt>
-		<copy file="techniques/techniques.css" todir="output/"/>
-		<copy file="css/slicenav.css" todir="output/"/>
-		<copy todir="output/">
+		<copy file="techniques/techniques.css" todir="output/techniques/"/>
+		<copy file="css/slicenav.css" todir="output/techniques/"/>
+		<copy todir="output/techniques/">
 			<fileset dir="techniques" includes="**/img/*"/>
 		</copy>
 	</target>
@@ -140,17 +141,18 @@
 	<!-- Understanding -->
 	<target name="understanding" depends="guidelines-xml, techniques-list" description="Generate formatted Understanding docs">
 		<makeurl file="${basedir}/understanding/" property="base.understanding"/>
-		<mkdir dir="${basedir}/output/"/>
-		<makeurl file="${basedir}/output/" property="output.dir"/>
+		<mkdir dir="${basedir}/output/understanding/"/>
+		<local name="output.dir"/>
+		<makeurl file="${basedir}/output/understanding/" property="output.dir"/>
 		<echo message="Outputting Understanding to ${output.dir}"/>
 		<xslt in="${inputdir.guidelines}/wcag.xml" out="output.html" style="xslt/generate-understanding.xslt" force="true">
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.understanding}"/>
 			<param name="output.dir" expression="${output.dir}"/>
 		</xslt>
-		<copy file="understanding/understanding.css" todir="output/"/>
-		<copy file="css/slicenav.css" todir="output/"/>
-		<copy todir="output/img/">
+		<copy file="understanding/understanding.css" todir="output/understanding/"/>
+		<copy file="css/slicenav.css" todir="output/understanding/"/>
+		<copy todir="output/understanding/img/">
 			<fileset dir="understanding/21/img"/>
 		</copy>
 	</target>
