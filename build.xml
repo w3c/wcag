@@ -124,6 +124,12 @@
 			<param name="techniques.dir" expression="${base.techniques}"/>
 			<param name="associations.file" expression="${associations.file}"/>
 			<param name="output.dir" expression="${output.dir}"/>
+			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG21/" if="publication"/>
+			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG21/Understanding/" if="publication"/>
+			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG21/Techniques/" if="publication"/>
+			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
+			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
+			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
 		</xslt>
 		<copy file="techniques/techniques.css" todir="output/techniques/"/>
 		<copy file="css/slicenav.css" todir="output/techniques/"/>
@@ -149,6 +155,12 @@
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.understanding}"/>
 			<param name="output.dir" expression="${output.dir}"/>
+			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG21/" if="publication"/>
+			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG21/Understanding/" if="publication"/>
+			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG21/Techniques/" if="publication"/>
+			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
+			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
+			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
 		</xslt>
 		<copy file="understanding/understanding.css" todir="output/understanding/"/>
 		<copy file="css/slicenav.css" todir="output/understanding/"/>
@@ -164,7 +176,13 @@
 	</target>
 	
 	<!-- Publish -->
-	<target name="publish" description="Publish resources to w3c">
+	<target name="publish-w3c" description="Publish resources to w3c">
+		<property name="publication" value="true"/>
+		<antcall target="techniques"/>
+		<antcall target="understanding"/>
+		<copy todir="../../../smartcvs/WWW/WAI/WCAG21/">
+			<fileset dir="output"/>
+		</copy>
 		<copy todir="../../../smartcvs/WWW/WAI/WCAG21/working-examples/">
 			<fileset dir="working-examples/"/>
 			<globmapper from="*index.html" to="*Overview.html"/>

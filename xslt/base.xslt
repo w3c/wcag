@@ -6,9 +6,9 @@
 	exclude-result-prefixes="xs"
 	version="2.0">
 	
-	<xsl:param name="loc.guidelines">https://www.w3.org/TR/WCAG21/</xsl:param>
-	<xsl:param name="loc.understanding">https://www.w3.org/WAI/WCAG21/Understanding/</xsl:param>
-	<xsl:param name="loc.techniques">https://www.w3.org/WAI/WCAG21/Techniques/</xsl:param>
+	<xsl:param name="loc.guidelines">/guidelines/</xsl:param>
+	<xsl:param name="loc.understanding">/understanding/</xsl:param>
+	<xsl:param name="loc.techniques">/techniques/</xsl:param>
 	
 	<xsl:param name="techniques.file">../techniques/techniques.xml</xsl:param>
 	<xsl:variable name="techniques.doc" select="document($techniques.file)"/>
