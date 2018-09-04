@@ -48,7 +48,7 @@
 		<makeurl file="${basedir}/guidelines/" property="base.guidelines"/>
 		<xslt in="${inputdir.guidelines}/index.html" out="${inputdir.guidelines}/index-flat.html" style="xslt/flatten-document.xslt">
 			<factory name="${xslt.factory}"/>
-			<param name="base" expression="${base.guidelines}"/>
+			<param name="base.dir" expression="${base.guidelines}"/>
 		</xslt>
 	</target>
 	
@@ -131,6 +131,10 @@
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
 		</xslt>
+		<xslt in="${inputdir.techniques}/index.html" out="${basedir}/output/techniques/" style="xslt/flatten-document.xslt">
+			<factory name="${xslt.factory}"/>
+			<param name="base.dir" expression="${base.techniques}"/>
+		</xslt>
 		<copy file="techniques/techniques.css" todir="output/techniques/"/>
 		<copy file="css/slicenav.css" todir="output/techniques/"/>
 		<copy todir="output/techniques/">
@@ -161,6 +165,10 @@
 			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
+		</xslt>
+		<xslt in="${inputdir.understanding}/index.html" out="${basedir}/output/understanding//index.html" style="xslt/flatten-document.xslt">
+			<factory name="${xslt.factory}"/>
+			<param name="base.dir" expression="${base.understanding}"/>
 		</xslt>
 		<copy file="understanding/understanding.css" todir="output/understanding/"/>
 		<copy file="css/slicenav.css" todir="output/understanding/"/>
