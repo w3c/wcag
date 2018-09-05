@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Using a client-side JavaScript to change a CSS property</title>
+
+<script type="text/javascript">
+function changeColor(hghltColor)
+{
+  // collects table data cells into an array
+ 
+ var els = document.getElementsByTagName('td');
+
+  // for each item in the array, look for a class name starting with "hghlt"
+  // if found, change the class value to the current selection
+  // note that this script assumes the  'td' class attribute is only used for highlighting
+
+  for (var i=0; i<els.length; i++)
+  {
+    if (els[i].className.indexOf("hghlt") == 0) { els[i].className = hghltColor; }
+  }
+}
+</script>
+
+<style type="text/css">
+body { color:#000000; background-color:#FFFFFF; }
+
+.hghltLightYellow { color: #000000; background-color: #FFFF99; font-style:oblique; }
+.hghltBrightYellow { color: #000000; background-color: #FFFF00; font-style:oblique; }
+.hghltLightBlue { color: #000000; background-color: #33FFFF; font-style:oblique; }
+.hghltBrightBlue { color: #FFFFFF; background-color: #0000FF; font-style:oblique; }
+.hghltLightRed { color: #000000; background-color: #FF6266; font-style:oblique; }
+.hghltDrkRed { color: #FFFFFF; background-color: #993300; font-style:oblique; }
+
+.inlinePara {display:inline; }
+.inline {display: inline; margin-left:0px; padding-left:0px; line-height:3em; }
+.inline li { display:inline; }
+.inline li a {padding: 0.5em 1em; border: 2px solid #000000; }
+</style>
+
+</head>
+
+<body>
+
+<h1>Product comparison</h1>
+<p>The products you selected to compare are listed below. 
+Any differences between the products are highlighted and italicized.</p>
+<p class="inlinePara">Change hightlight color: </p>
+<ul class="inline">
+  <li><a href="#" onClick="changeColor('hghltLightYellow');return false;" class="hghltLightYellow">light yellow</a></li>
+  <li><a href="#" onClick="changeColor('hghltBrightYellow');return false;" class="hghltBrightYellow">bright yellow</a></li>
+  <li><a href="#" onClick="changeColor('hghltLightBlue');return false;" class="hghltLightBlue">light blue</a></li>
+  <li><a href="#" onClick="changeColor('hghltBrightBlue');return false;" class="hghltBrightBlue">bright blue</a></li>
+  <li><a href="#" onClick="changeColor('hghltLightRed');return false;" class="hghltLightRed">light red</a></li>
+  <li><a href="#" onClick="changeColor('hghltDrkRed');return false;" class="hghltDrkRed">dark red</a></li>
+</ul>
+<table width="400" border="1">
+  <tr>
+    <td>&nbsp;</td>
+    <th scope="col">Product 1</th>
+    <th scope="col">Product 2</th>
+  </tr>
+  <tr>
+    <th scope="row">Aspect 1</th>
+    <td>Yes</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <th scope="row">Aspect 2</th>
+    <td class="hghltLightYellow">Yes</td>
+    <td class="hghltLightYellow">No</td>
+  </tr>
+  <tr>
+    <th scope="row">Aspect 3</th>
+    <td>Yes</td>
+    <td>Yes</td>
+  </tr>
+</table>
+
+</body>
+</html>

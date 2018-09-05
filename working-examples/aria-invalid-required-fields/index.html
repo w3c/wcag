@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="en">
+ <head> <title>Input Error Notification with aria-live=assertive and aria-invalid using jQuery</title> 
+<meta charset="utf-8">
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script> 
+<script>
+$(document).ready(function(e) {
+	$('#signup').submit(function() {
+		$('#errText').html('');
+$('input').removeAttr("aria-invalid");
+$('label').removeAttr("class");
+var eFlag = 0;
+		if ($('#first').val() === '') {
+			$('#first').attr("aria-invalid", "true");
+$("label[for='first']").addClass('failed');
+eFlag++;
+		}
+		if ($('#last').val() === '') {
+			$('#last').attr("aria-invalid", "true");
+$("label[for='last']").addClass('failed');
+eFlag++;
+		} 
+		if ($('#email').val() === '') {
+			$('#email').attr("aria-invalid", "true");
+$("label[for='email']").addClass('failed');
+eFlag++;
+		} 
+if (eFlag > 0) {
+		$('#errText').html("Please complete  all required fields (" + eFlag + ") and retry").focus();
+}
+		return false;
+	});
+});
+</script>
+<style type="text/css">
+label.failed {
+	border: red thin solid;
+}
+</style>
+
+</head>
+<body>
+<h2 tabindex="-1" id="errText" aria-live="assertive"></h2>
+<form name="signup" id="signup" method="post" action="#">
+ <p>
+    <label for="first">First Name (required)</label><br>
+    <input type="text" name="first" id="first">
+  </p>
+  <p>
+    <label for="last">Last Name (required)</label><br>
+    <input type="text" name="last" id="last">
+  </p>
+  <p>
+    <label for="email">Email (required)</label><br>
+    <input type="text" name="email" id="email">
+  </p>
+  <p>
+    <input type="submit" name="button" id="button" value="Submit">
+  </p>
+</form>
+</body>
+</html>
