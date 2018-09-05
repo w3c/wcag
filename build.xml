@@ -12,6 +12,7 @@
 	<property name="uri.prefix" value="file:///" description="Prefix if any that must be prepended to URIs to make it resolve on the platform"/>
 	
 	<property name="xslt.factory" value="net.sf.saxon.TransformerFactoryImpl" description="Class name of the XSLT transformer factory, which sets which XSLT engine to use; must be an XSLT 2.0 processor"/>
+	<property name="classpath.saxon" value="lib/saxon9he.jar" description="Path to Saxon jar in order to run XSLT 2.0"/>
 	
 	<!-- The following properties usually do not need to be adjusted -->
 	<property name="inputdir.guidelines" location="guidelines"/>
@@ -47,6 +48,7 @@
 	<target name="flatten" depends="init" description="Build a copy of guidelines with all data-include files incorporated">
 		<makeurl file="${basedir}/guidelines/" property="base.guidelines"/>
 		<xslt in="${inputdir.guidelines}/index.html" out="${inputdir.guidelines}/index-flat.html" style="xslt/flatten-document.xslt">
+			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.guidelines}"/>
 		</xslt>
@@ -54,6 +56,7 @@
 	
 	<target name="guidelines-xml" depends="flatten" description="Build an XML representation of the guidelines">
 		<xslt in="${inputdir.guidelines}/index-flat.html" out="${inputdir.guidelines}/wcag.xml" style="xslt/generate-structure-xml.xslt">
+			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 		</xslt>
 	</target>
@@ -106,6 +109,7 @@
 		<makeurl file="${basedir}/techniques" property="techniques.dir"/>
 		<makeurl file="${basedir}/understanding" property="understanding.dir"/>
 		<xslt in="${inputdir.guidelines}/wcag.xml" out="${inputdir.techniques}/technique-associations.xml" style="xslt/generate-technique-associations.xslt">
+			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="techniques.dir" expression="${techniques.dir}"/>
 			<param name="understanding.dir" expression="${understanding.dir}"/>
@@ -120,6 +124,7 @@
 		<makeurl file="${basedir}/output/techniques/" property="output.dir"/>
 		<echo message="Outputting Techniques to ${output.dir}"/>
 		<xslt in="${inputdir.techniques}/techniques.xml" out="output.html" style="xslt/generate-techniques.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="techniques.dir" expression="${base.techniques}"/>
 			<param name="associations.file" expression="${associations.file}"/>
@@ -132,6 +137,7 @@
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
 		</xslt>
 		<xslt in="${inputdir.techniques}/index.html" out="${basedir}/output/techniques/" style="xslt/flatten-document.xslt">
+			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.techniques}"/>
 		</xslt>
@@ -144,6 +150,7 @@
 	
 	<target name="techniques-toc" depends="techniques-list" description="Generate the TOC for Techniques">
 		<xslt in="${inputdir.techniques}/techniques.xml" out="techniques/toc.html" style="xslt/generate-techniques-toc.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 		</xslt>
 	</target>
@@ -156,6 +163,7 @@
 		<makeurl file="${basedir}/output/understanding/" property="output.dir"/>
 		<echo message="Outputting Understanding to ${output.dir}"/>
 		<xslt in="${inputdir.guidelines}/wcag.xml" out="output.html" style="xslt/generate-understanding.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.understanding}"/>
 			<param name="output.dir" expression="${output.dir}"/>
@@ -167,6 +175,7 @@
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
 		</xslt>
 		<xslt in="${inputdir.understanding}/index.html" out="${basedir}/output/understanding//index.html" style="xslt/flatten-document.xslt">
+			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.understanding}"/>
 		</xslt>
@@ -179,6 +188,7 @@
 	
 	<target name="understanding-toc" depends="guidelines-xml" description="Generate the TOC for Understanding">
 		<xslt in="${inputdir.guidelines}/wcag.xml" out="understanding/toc.html" style="xslt/generate-understanding-toc.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 		</xslt>
 	</target>
