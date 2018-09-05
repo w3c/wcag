@@ -103,12 +103,27 @@ For example, a technique "Using the alt attribute on the img element to provide 
 
 ### Create Techniques
 
+Each new technique should be created in a new branch. Set-up of the branch and file is automated via the create-techniques.sh script, which can be run with bash. The command line is:
+
+```Shell
+bash create-techniques.sh <technology> <filename> <type> "<title>"
+```
+\<technology> is the technology directory for the technique
+\<filename> is the temporary filename (without extension) for the technique
+\<type> is "technique" or "failure"
+\<title> is the title of the technique, enclosed in quotes and escaping special characters with \\
+
+This automates the following steps:
+
 * Determine a filename for the technique that is likely to be descriptive, unique, and short.
 * Create a working branch named the same as the technique filename.
 * Copy the techniques/technique-template.html file into the appropriate technology folder for the technique, and give it the chosen file name.
 * In the section element with id "meta", indicate to which guideline or success criterion the technique relates, and whether the technique is sufficient, advisory, or a failure for that item. Multiple applicability are allowed.
+
+Once a technique branch and file is set up, populate the content and request review:
+
 * Populate the template with appropriate content, using other techniques as examples for code formatting choices. Keep the existing structural sections from the template in place.
-* When the technique is ready for review, ask the chairs to arrange WG review and merge.
+* When the technique is ready for review, make a pull request into master.
 * If you wish to reference the draft technique from an Understanding document, use the technique's rawgit URI.
 * After a technique is approved, the chairs will assign it an ID and update links to it in the Undestanding documents. 
 
