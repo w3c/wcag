@@ -136,7 +136,7 @@
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
 		</xslt>
-		<xslt in="${inputdir.techniques}/index.html" out="${basedir}/output/techniques/" style="xslt/flatten-document.xslt">
+		<xslt in="${inputdir.techniques}/index.html" out="${basedir}/output/techniques/index.html" style="xslt/flatten-document.xslt">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.techniques}"/>
@@ -174,7 +174,7 @@
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
 		</xslt>
-		<xslt in="${inputdir.understanding}/index.html" out="${basedir}/output/understanding//index.html" style="xslt/flatten-document.xslt">
+		<xslt in="${inputdir.understanding}/index.html" out="${basedir}/output/understanding/index.html" style="xslt/flatten-document.xslt">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.understanding}"/>
@@ -194,7 +194,16 @@
 	</target>
 	
 	<!-- Publish -->
-	<target name="publish-w3c" description="Publish resources to w3c">
+	<target name="deploy" depends="init, understanding-toc, techniques-toc" description="Generate content ready to deploy to gh-pages">
+		<property name="editors" value="true"/>
+		<antcall target="techniques"/>
+		<antcall target="understanding"/>
+		<copy todir="output/working-examples/">
+			<fileset dir="working-examples/"/>
+		</copy>
+	</target>
+	
+	<target name="publish-w3c" depends="init, understanding-toc, techniques-toc" description="Publish resources to w3c">
 		<property name="publication" value="true"/>
 		<antcall target="techniques"/>
 		<antcall target="understanding"/>
