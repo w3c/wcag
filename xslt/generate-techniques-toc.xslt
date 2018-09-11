@@ -11,16 +11,15 @@
 	
 	<xsl:template match="techniques">
 		<xsl:result-document href="toc.html">
-			<ul>
-				<xsl:apply-templates select="technology">
-					<xsl:sort select="@name"/>
-				</xsl:apply-templates>
-			</ul>
+			<xsl:apply-templates select="technology">
+				<xsl:sort select="@name"/>
+			</xsl:apply-templates>
 		</xsl:result-document>
 	</xsl:template>
 	
 	<xsl:template match="technology">
-		<li>
+		<xsl:variable name="technology-id" select="wcag:generate-id(@name)"/>
+		<xsl:variable name="technology-title">
 			<xsl:choose>
 				<xsl:when test="@name = 'aria'">ARIA Techniques</xsl:when>
 				<xsl:when test="@name = 'client-side-script'">Client-Side Script Techniques</xsl:when>
@@ -35,12 +34,16 @@
 				<xsl:when test="@name = 'smil'">SMIL Techniques</xsl:when>
 				<xsl:when test="@name = 'text'">Plain-Text Techniques</xsl:when>
 			</xsl:choose>
-			<ul>
-				<xsl:apply-templates select="technique">
-					<xsl:sort select="wcag:number-in-id(@id)" data-type="number"/>
-				</xsl:apply-templates>
-			</ul>
-		</li>
+		</xsl:variable>
+		<h3 id="{$technology-id}">
+			<xsl:value-of select="$technology-title"/>
+			<span class="permalink"><a href="#{$technology-id}" aria-label="Permalink for {$technology-title}" title="Permalink for {$technology-title}"><span>§</span></a></span>
+		</h3>
+		<ul>
+			<xsl:apply-templates select="technique">
+				<xsl:sort select="wcag:number-in-id(@id)" data-type="number"/>
+			</xsl:apply-templates>
+		</ul>
 	</xsl:template>
 	
 	<xsl:template match="technique">
