@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>F94: Failure of Success Criterion 1.4.4 due to text sized in viewport units</title>
+      <link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="F93">Previous Technique: F93</a></li>
+            <li><a href="../flash/FLASH1">Next Technique: FLASH1</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#related">Related Techniques</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Failure of Success Criterion 1.4.4 due to text sized in viewport units</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>This technique is not referenced from any Understanding document.</p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to document the failure of text to re-scale when
+               <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">viewport units</a> are used on text. As these units are relative to the viewport, it means they cannot
+               be resized by zooming or adjusting text-size.
+            </p>
+            <p>There are various methods to increase and decrease the size of text and other content,
+               but viewport units applied to text (generally via <code>font-size</code> in CSS) prevent most available methods. Attempts to use browser controls to zoom
+               or adjust text-size will not work. Only methods that completely override the CSS will
+               work, and those could cause other issues such as layouts collapsing or text overlapping.
+            </p>
+            <div xmlns="" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:wcag="https://www.w3.org/WAI/GL/" class="note">
+               <div role="heading" class="note-title marker" aria-level="3">Note</div>
+               <p xmlns="http://www.w3.org/1999/xhtml">If media queries were used to adjust the size of text or unit of measure at different
+                  screen sizes, it may not be a failure of <a href="https://www.w3.org/WAI/WCAG21/Understanding/resize-text.html">Resize text</a>. On-page controls provided by the author are also a way of passing the resize text
+                  success criteria.
+               </p>
+            </div>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-failure-example-1">
+               <h3>Example 1: Failure example 1</h3>
+               <p>The following CSS and HTML snippet uses VW units to size the text.</p><pre><code>/* CSS */
+.callout {
+    font-size:1vw;
+}
+
+&lt;p class="callout"&gt;
+  Text that scales by viewport units&lt;p/&gt;</code></pre><p class="working-example">Example <a href="../../working-examples/failure-viewport-units/">page with an example of text sized in <code>vh</code> units</a>.
+               </p>
+            </section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               					
+               <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length"><abbr title="Mozilla Development Network">MDN</abbr> CSS units</a> including <code>vh</code> and <code>vw</code> units.
+               </li>
+               					
+               <li><a href="https://www.w3.org/TR/css-values/#viewport-relative-lengths">Viewport percentage lengths</a> in the CSS Values and Units Module Level 4 specification.
+               </li>
+               				
+            </ul>
+         </section>
+         <section id="related">
+            <h2>Related Techniques</h2>
+            <ul>
+               
+               <li><a href="https://w3c.github.io/wcag/techniques/general/G179">G179: Ensuring that there is no loss of content or functionality when the text resizes and
+                     text containers do not change their width</a></li>
+               
+               <li><a href="https://w3c.github.io/wcag/techniques/css/C12">C12: Using percent for font sizes</a></li>
+               				
+               <li><a href="https://w3c.github.io/wcag/techniques/css/C13">C13: Using named font sizes</a></li>
+               				
+               <li><a href="https://w3c.github.io/wcag/techniques/css/C14">C14: Using em units for font sizes</a></li>
+               			
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="test-procedure">
+               <h2>Procedure</h2>
+               <p>In a desktop browser with a resizable window:</p>
+               <ol>
+                  					
+                  <li>Set zoom level to 100%.</li>
+                  
+                  <li>Set window size to 1280 pixels wide.</li>
+                  
+                  <li>Visit the page to be tested.</li>
+                  
+                  <li>Use any of the following methods to resize text when available:
+                     						
+                     <ul>
+                        							
+                        <li>the zoom feature of the browser</li>
+                        							
+                        <li>the text-sizing feature of the browser,</li>
+                        							
+                        <li>on-page controls for resizing text.</li>
+                        						
+                     </ul>
+                     					
+                  </li>
+                  
+                  <li>Check that the text resizes by one of the methods above, and can be resized to at
+                     least 200% of the default.
+                  </li>
+                  				
+               </ol>
+            </section>
+            <section class="test-results">
+               <h2>Expected Results</h2>
+               <ul>
+                  					
+                  <li>If step #5 is false, then this failure condition applies and the content fails Success
+                     Criteria 1.4.4, Resize Text.
+                  </li>
+                  				
+               </ul>
+            </section>
+         </section>
+      </main>
+   </body>
+</html>
