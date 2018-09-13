@@ -53,7 +53,7 @@
 	</xsl:function>
 	
 	<xsl:template match="html:a[wcag:is-technique-link(.)]">
-		<xsl:variable name="technique-id" select="replace(@href, '^.*/([\w\d]*)$', '$1')"/>
+		<xsl:variable name="technique-id" select="replace(@href, '^.*/([\w\d]*)(\.html)?$', '$1')"/>
 		<xsl:choose>
 			<xsl:when test="$technique-id">
 				<xsl:variable name="technique" select="$techniques.doc//technique[@id = $technique-id]"/>
