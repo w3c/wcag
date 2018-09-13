@@ -94,9 +94,8 @@
 		
 	</xsl:template>
 	
-	<xsl:template match="html:a[starts-with(@href, 'https://www.w3.org/WAI/WCAG21/Techniques/')]">
-		<xsl:variable name="tech-technology" select="replace(@href, '^.*/([\w-]*)/[\w\d]*$', '$1')"/>
-		<xsl:variable name="tech-id" select="replace(@href, '^.*/([\w\d]*)$', '$1')"/>
+	<xsl:template match="html:a[wcag:is-technique-link(.)]">
+		<xsl:variable name="tech-id" select="replace(@href, '^.*/([\w\d]*)(\.html)?$', '$1')"/>
 		<technique>
 			<xsl:attribute name="id"><xsl:value-of select="$tech-id"/></xsl:attribute>
 			<xsl:if test="../html:ol or ../html:ul or ../../html:ol or ../../html:ul">
