@@ -7,7 +7,7 @@
 	<xsl:output method="xhtml" indent="yes" omit-xml-declaration="yes" encoding="UTF-8"/>
 	
 	<xsl:template match="guidelines">
-		<xsl:result-document href="toc.html" method="html">
+		<xsl:result-document href="toc.html" method="xhtml">
 			<nav id="toc">
 				<h2 class="introductory" id="understanding-pages">Understanding Pages</h2>
 				<ol class="toc">
