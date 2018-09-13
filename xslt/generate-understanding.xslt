@@ -11,7 +11,6 @@
 	
 	<xsl:param name="base.dir">understanding/</xsl:param>
 	<xsl:param name="output.dir">output/</xsl:param>
-	<xsl:param name="loc.guidelines">https://www.w3.org/TR/WCAG21/</xsl:param>
 	
 	<xsl:template name="name">
 		<xsl:param name="meta" tunnel="yes"/>
@@ -193,7 +192,7 @@
 				<xsl:when test="version = 'WCAG21'">21/</xsl:when>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:result-document href="{$output.dir}/{file/@href}.html" encoding="utf-8" exclude-result-prefixes="#all" indent="yes" method="xml" omit-xml-declaration="yes">
+		<xsl:result-document href="{$output.dir}/{file/@href}.html" encoding="utf-8" exclude-result-prefixes="#all" indent="yes" method="xhtml" omit-xml-declaration="yes">
 			<xsl:apply-templates select="document(resolve-uri(concat(file/@href, '.html'), concat($base.dir, $subpath)))">
 				<xsl:with-param name="meta" select="." tunnel="yes"/>
 			</xsl:apply-templates>
@@ -215,8 +214,9 @@
 			<head>
 				<meta charset="UTF-8" />
 				<title><xsl:apply-templates select="//html:h1"/></title>
-				<link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/2016/base" />
+				<link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/base" />
 				<link rel="stylesheet" type="text/css" href="understanding.css" />
+				<link rel="stylesheet" type="text/css" href="slicenav.css" />
 			</head>
 			<body>
 				<xsl:call-template name="navigation"/>
@@ -354,13 +354,6 @@
 		<xsl:element name="h{$level}">
 			<xsl:apply-templates/>
 		</xsl:element>
-	</xsl:template>
-	
-	<xsl:template match="html:a[not(node()) and starts-with(@href, 'https://www.w3.org/WAI/WCAG21/Techniques/')]">
-		<xsl:copy>
-			<xsl:apply-templates select="@*"/>
-			<xsl:value-of select="replace(@href, '^.*/([\w\d]*)$', '$1')"/>
-		</xsl:copy>
 	</xsl:template>
 	
 	<xsl:template match="html:a[not(@href)]">

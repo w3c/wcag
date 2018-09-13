@@ -4,7 +4,7 @@
 	exclude-result-prefixes="xs"
 	version="2.0">
 	
-	<xsl:param name="base.dir">file:///C:/Documents/code/GitHub/w3c/wcag21/guidelines/</xsl:param>
+	<xsl:param name="base.dir">file:///C:/Documents/code/GitHub/w3c/wcag/guidelines/</xsl:param>
 	
 	<xsl:template match="node()|@*">
 		<xsl:copy>

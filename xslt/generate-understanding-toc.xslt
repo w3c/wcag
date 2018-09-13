@@ -4,6 +4,8 @@
 	exclude-result-prefixes="xs"
 	version="2.0">
 	
+	<xsl:output method="xhtml" indent="yes" omit-xml-declaration="yes" encoding="UTF-8"/>
+	
 	<xsl:template match="guidelines">
 		<xsl:result-document href="toc.html" method="html">
 			<nav id="toc">
