@@ -10,7 +10,7 @@
 	<xsl:output method="xhtml" indent="yes" omit-xml-declaration="yes" encoding="UTF-8"/>
 	
 	<xsl:template match="techniques">
-		<xsl:result-document href="toc.html">
+		<xsl:result-document href="toc.html" method="xhtml">
 			<xsl:apply-templates select="technology">
 				<xsl:sort select="@name"/>
 			</xsl:apply-templates>

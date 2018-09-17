@@ -39,6 +39,7 @@
 	<target name="clean" description="Clean up any temp files">
 		<delete file="${inputdir.guidelines}/index-flat.html" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/wcag.xml" failonerror="false"/>
+		<delete file="${inputdir.guidelines}/wcag.json" failonerror="false"/>
 		<delete file="${inputdir.techniques}/techniques.xml" failonerror="false"/>
 		<delete file="${inputdir.techniques}/technique-associations.xml" failonerror="false"/>
 		<delete file="output.html" failonerror="false"/>
@@ -227,6 +228,14 @@
 		<copy todir="../../../smartcvs/WWW/WAI/WCAG21/working-examples/">
 			<fileset dir="working-examples/" excludes="**/index.html"/>
 		</copy>
+	</target>
+	
+	<!-- JSON -->
+	<target name="json" depends="init, guidelines-xml, techniques-list, techniques-association">
+		<xslt in="${inputdir.guidelines}/wcag.xml" out="${inputdir.guidelines}/wcag.json" style="xslt/xml-to-json.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+		</xslt>
 	</target>
 	
 	<!-- Everything -->
