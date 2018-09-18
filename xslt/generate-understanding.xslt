@@ -155,7 +155,11 @@
 	
 	<xsl:template match="html:p" mode="sc-info">
 		<xsl:param name="sc-info"/>
-		<p><xsl:copy-of select="$sc-info"/><xsl:apply-templates/></p>
+		<p><xsl:apply-templates select="$sc-info"/><xsl:apply-templates mode="sc-info"/></p>
+	</xsl:template>
+	
+	<xsl:template match="html:a[starts-with(@href, '#')]" mode="sc-info">
+		<a href="{$loc.guidelines}{@href}"><xsl:apply-templates mode="sc-info"/></a>
 	</xsl:template>
 	
 	<xsl:template name="key-terms">
@@ -199,9 +203,9 @@
 		</xsl:result-document>
 	</xsl:template>
 	
-	<xsl:template match="node()|@*">
+	<xsl:template match="node()|@*" mode="#all">
 		<xsl:copy>
-			<xsl:apply-templates select="node()|@*"/>
+			<xsl:apply-templates select="node()|@*" mode="#current"/>
 		</xsl:copy>
 	</xsl:template>
 	
@@ -228,7 +232,7 @@
 							<xsl:apply-templates select="$meta/content/html:p[1]" mode="sc-info">
 								<xsl:with-param name="sc-info"><xsl:call-template name="sc-info"/></xsl:with-param>
 							</xsl:apply-templates>
-							<xsl:apply-templates select="$meta/content/html:*[position() &gt; 1]"/>
+							<xsl:apply-templates select="$meta/content/html:*[position() &gt; 1]" mode="sc-info"/>
 						</blockquote>
 						<main>
 							<xsl:apply-templates select="//html:section[@id = 'intent']"/>
