@@ -2,58 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>Using media queries and grid CSS to reflow columns</title>
+    <title>Fitting Images Reflow</title>
     <style>
 
-    /* Reflow Styling */
-    header[role="banner"]       { grid-area: header; }
-    main[role="main"]           { grid-area: main; }
-    aside[role="complementary"] { grid-area: aside; }
-    footer[role="contentinfo"]  { grid-area: footer; }
+    /* Fitting Images Styling */
 
-    .grid,
-    .subgrid {
-      display: grid;
-      grid-template-columns: 1fr;
-    }
-
-    .grid {
-      grid-template-areas:
-      'header'
-      'main'
-      'aside'
-      'footer';
+    .img-reflow {
       width: 100%;
-    }
-
-    .subgrid {
-      width: calc(100% + 2em);
-      margin: 0 -1em;
-    }
-
-    .grid-item,
-    .subgrid-item {
-      padding: 1em;
-    }
-
-    @media all and (min-width: 576px) {
-      .subgrid {
-        grid-template-columns: 1fr 1fr;
-        margin-bottom: 1rem;
-      }
-      .subgrid-item {
-        padding-bottom: 0.25em;
-      }
-    }
-
-    @media all and (min-width: 992px) { 
-      .grid {
-        grid-template-areas:
-          'header header header'
-          'main main aside'
-          'footer footer footer';
-        grid-template-columns: 1fr 1fr 1fr;
-      }
     }
 
     /* Content Styling */
@@ -97,6 +52,58 @@
       margin-top: 0;
     }
 
+    .row {
+      width: 100%;
+      display: flex;
+      flex-flow: row wrap;
+    }
+
+    .row-nested {
+      width: calc(100% + 2em);
+      margin: 0 -1em 1em -1em;
+    }
+
+    .col {
+      padding: 1em;
+      flex: 0 1 100%;
+    }
+
+    @media all and (min-width: 576px) {
+      .col-panel {
+        flex: 0 1 50%;
+        padding-bottom: 0.25em;
+      }
+    }
+
+    @media all and (min-width: 992px) { 
+      main[role="main"] {
+        flex: 0 1 66.333333%;
+      }
+      aside[role="complementary"] {
+        flex: 0 1 33.333333%;
+        margin-top: 0;
+      }
+    }
+
+    .container {
+      position: relative;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    @media (min-width: 768px) {
+      .container {
+        width: 720px;
+        max-width: 100%;
+        padding-right: 15px;
+        padding-left: 15px; }
+    }
+
+    @media (min-width: 1200px) {
+      .container {
+        width: 1140px;
+        max-width: 100%; }
+    }
+
     header[role="banner"] {
       background-color: #005a9c;
       margin-top: 1em;
@@ -104,6 +111,7 @@
 
     header nav ul {
       list-style: none;
+      margin: 0;
     }
 
     header nav ul li {
@@ -116,11 +124,10 @@
       border-top: 1px solid #005a9c;
       border-bottom: 1px solid #005a9c;
       background-color: #003366;
-      margin: 0 -1em -1em -1em;
     }
 
     nav ul {
-      padding-left: 1em;
+      padding-left: 0;
     }
 
     a {
@@ -130,11 +137,17 @@
     main[role="main"] {
       background: #ffffff;
       padding-bottom: 0;
+      border-left: 1px solid #dddddd;
+      border-right: 1px solid #dddddd;
     }
+
+    @media (min-width: 992px) { main[role="main"] { border-right: none; } }
 
     aside[role="complementary"] {
       border-left: 1px solid #dddddd;
+      border-right: 1px solid #dddddd;
     }
+
 
     footer[role="contentinfo"] {
       color: #ffffff;
@@ -154,6 +167,10 @@
     .panel {
       background-color: #fafafc;
       border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .panel-body {
       padding: 1rem;
     }
     
