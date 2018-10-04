@@ -32,8 +32,8 @@
    } else if (event) {
      key = event.keyCode;
    }
-   // Was the Enter key pressed?
-   if (key == 13) {
+   // Was the Enter or Space key pressed?
+   if (key == 13 || key == 32) {
      return doSomething(event);
    } 
    // The event has not been handled, so return true
@@ -46,8 +46,6 @@
    // get the div object
    var active=document.getElementById("active");
    // assign the onclick handler to the object.
-   // It is important to return false from the onclick handler to prevent the href attribute
-   // from being followed after the function returns.
    active.onclick=doSomething;
    // assign the onkeyup handler to the object.
    active.onkeyup=doSomethingOnEnter;
@@ -57,9 +55,11 @@
  &lt;body onload="setUpActions();"&gt;
  &lt;p&gt;Here is the link to modify with a javascript action:&lt;/p&gt;
  &lt;div&gt;
-  &lt;span id="active" tabindex="0"&gt;Do Something&lt;/span&gt;
+  &lt;span id="active" tabindex="0" role="button" &gt;Do Something&lt;/span&gt;
  &lt;/div&gt;
+ &lt;div aria-live="polite"&gt;
  &lt;div id="message"&gt;Hello, world!&lt;/div&gt;
+ &lt;/div&gt;
 ...
 </pre>
          
@@ -74,7 +74,7 @@
             <li>Check that the scripting action executes properly</li>
             <li>Check that it is possible to navigate to and give focus to the control via the keyboard</li>
             <li>Set keyboard focus to the control</li>
-            <li>Check that pressing ENTER invokes the scripting action.</li>
+            <li>Check that pressing ENTER or SPACE invokes the scripting action.</li>
          </ol>
       </section>
       <section class="results"><h3>Expected Results</h3>

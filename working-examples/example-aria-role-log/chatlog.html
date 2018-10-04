@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<title>Using role=log with chat conversation</title>
+		<link rel="stylesheet" type="text/css" href="sources.css"/>
+		<style>
+			.scrollable {
+			    height: 10rem;
+			    overflow-y: auto;
+			}
+		</style>
+	</head>
+	<body>
+		<script>
+			var counter = 0;
+			var myVar;
+			var onetime = 0;
+			function makeChat () {
+				var chatText = ["Hi!", "Pleased to meet you.", "We'll talk later, okay?", "Bye!"];
+				var chatContent = document.getElementById("converse");
+
+					var list = document.createElement("li")
+					var item = document.createTextNode(chatText[counter]);
+					list.appendChild(item);
+					chatContent.appendChild(list);
+					counter++;
+					if (counter > 3) {
+						clearInterval(myVar);
+						} 
+					}
+
+			function initiateChat () {
+				
+				if (onetime < 1) {
+					document.getElementById("converse").innerHTML += "<li style\=\"text-indent: 100px;\">Hello</li>";
+					myVar = setInterval(makeChat, 2000);
+					document.getElementById("btn"); btn.disabled = true;
+					onetime++;
+				}
+				else {
+					 return false;
+
+				}
+
+			}
+
+			
+		</script>
+		<div role="main">
+			<h1>Using <code>role="log"</code> with chat conversation</h1>
+			<p>This simple script demonstrates how the conversation region in a chat is updated and surfaced to ATs using the aria <code>log</code> role. Here the role is placed on the region containing the dynamically updating conversation. This is not intended to be a fully-functional chat client, but to demonstrate the use of log role. In this mock demo, the conversation is updated with a brief, one-sided conversation, which is initiated by pressing Send.</p>	
+			<hr>
+			<h2>Conversation</h2>
+			<div class="scrollable" role="log">
+				<ul id="converse" style="list-style-type: none;"></ul>
+			</div>
+			<div>
+				<h2>Mock input</h2>
+				<input type="text" name="fakeinput" readonly value="Hello"> <button id="btn" onclick="initiateChat()">Send</button>
+			</div>
+			
+		</div>
+
+
+	</body>
+	</html>
