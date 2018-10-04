@@ -89,7 +89,7 @@
 			"details": [{
 				"type": "ulist",
 				"items": [
-					<xsl:apply-templates select="content/html:dt"/>
+					<xsl:apply-templates select="content/html:dl/html:dt"/>
 				]
 			}],
 		</xsl:if>

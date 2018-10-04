@@ -97,4 +97,8 @@
 		</xsl:copy>
 	</xsl:template>
 	
+	<xsl:template match="html:*[@class = 'generate-date']">
+		<xsl:value-of select="format-date(current-date(), '[D] [MNn] [Y]')"/>
+	</xsl:template>
+	
 </xsl:stylesheet>
