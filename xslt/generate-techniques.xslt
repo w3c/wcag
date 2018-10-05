@@ -391,18 +391,26 @@
 		</xsl:choose>
 	</xsl:template>
 	
-	<xsl:template match="html:section[@class='test-procedure']">
+	<xsl:template match="html:section[@class='test']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Procedure</h2>
+			<h3><xsl:value-of select="html:*[wcag:isheading(.)][1]"/></h3>
+			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
+		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="html:section[@class='test-procedure']">
+		<xsl:copy>
+			<xsl:apply-templates select="@*[not(name(.) = 'id')]"/>
+			<xsl:element name="h{count(ancestor::html:section[@class = 'test' or @id = 'tests']) + 2}">Procedure</xsl:element>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
 	
 	<xsl:template match="html:section[@class='test-results']">
 		<xsl:copy>
-			<xsl:apply-templates select="@*"/>
-			<h2>Expected Results</h2>
+			<xsl:apply-templates select="@*[not(name(.) = 'id')]"/>
+			<xsl:element name="h{count(ancestor::html:section[@class = 'test' or @id = 'tests']) + 2}">Expected Results</xsl:element>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
