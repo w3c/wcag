@@ -26,41 +26,19 @@ aside[role="complementary"] {
 footer[role="contentinfo"] {
 	grid-area: footer;
 }
-.grid,  .subgrid {
+.grid {
 	display: grid;
-	grid-template-columns: 1fr;
+	overflow-x: auto;
 }
 .grid {
 	grid-template-areas: 'header'  'main'  'aside'  'footer';
-	width: 100%;
+	width: 320px;
 }
-.subgrid {
-	width: calc(100% + 2em);
-	margin: 0 -1em;
-}
-.grid-item,  .subgrid-item {
+.grid-item {
 	padding: 1em;
 }
 .grid > * {
 min-width: 0;
-}
-.subgrid > * {
-min-width: 0;
-}
- @media all and (min-width: 576px) {
-.subgrid {
-	grid-template-columns: 1fr 1fr;
-	margin-bottom: 1rem;
-}
-.subgrid-item {
-	padding-bottom: 0.25em;
-}
-}
- @media all and (min-width: 992px) {
-.grid {
-	grid-template-areas: 'header header header'  'main main aside'  'footer footer footer';
-	grid-template-columns: 1fr 1fr 1fr;
-}
 }
 
 /* Content Styling */
@@ -169,93 +147,29 @@ word-wrap: break-word;
     </head>
 
     <body class="grid">
-<header role="banner" class="grid-item"> <a href="https://w3.org/"><img alt="W3C" class="logo" src="https://www.w3.org/WAI/assets/images/w3c.svg">Header</a>
-      <nav>
-    <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Products</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-  </nav>
+<header role="banner" class="grid-item"> <a href="https://w3.org/"><img alt="W3C" class="logo" src="https://www.w3.org/WAI/assets/images/w3c.svg"></a>
     </header>
 <main role="main" class="grid-item">
-      <h1>Allowing for Reflow with Long URLs</h1>
-      <p>Long URLs can break reflow when the page is zoomed. The objective of this technique is to present URLs without introducing a horizontal scroll bar at a width equivalent to 320 CSS pixels or a vertical scroll bar at a height equivalent to 256 CSS pixels. This is done by using CSS techniques that adapt to the available viewport space. Note: Using human readable text links, rather than long URLS, is better for usability and accessibility. </p>
-      <p>By default most browsers will wrap long URLs at the following characters: </p>
-      <ul>
-    <li>&quot;-&quot; Hyphen </li>
-    <li>&quot; &quot; Space</li>
-    <li>"?" Question (IE, Chrome, Safari) </li>
-    <li>&quot;&amp;&quot; Ampersand (Firefox only)</li>
-  </ul>
-      <p>Sometimes these are not enough to ensure that long URLs will not overflow the viewport. Because of browser link wrapping rules (see list above), links will wrap or not in different places.  Note: Due to browser specific CSS, all examples below wrap in IE/Edge. The button has no effect in IE/Edge.</p>
-  <p>The default state of this page is that no anchors are styled. You should see links breaking the boundaries of their containers. Some of which will cause horizontal scrolling. When the style 'a.wrapped {overflow-wrap: break-word;} is toggled with the button, the long URLs will wrap within their respective containers. </p>
- <button>Toggle CSS for long URLs</button>  
-      <p>Example 1 - URL with words, spaces, dashes, and underscores</p>
-           <ul>
+  <h1>Allowing for Reflow with Long URLs</h1>
+  <p>Long URLs can break reflow when the page is zoomed. See the technique <a href="../../techniques/css/TBC">Allowing for Reflow with Long URLs</a> for further details.</p>
+
+  <p>The default state of this page is to be 320px wide (like a mobile-sized display) with no styling on the links. You should see link-text breaking the boundaries of their containers. Some of which will cause horizontal scrolling at 320px wide, or you will see the URLs break-out of their container. When the style 'a.wrapped {overflow-wrap: break-word;} is toggled with the button, the long URLs will wrap within their respective containers. </p>
+  <button>Toggle CSS for long URLs</button>  
+
+  <p>Example 1 - URL with words, spaces, dashes, and underscores which allow the URL to wrap in some browsers:</p>
+  <ul>
     <li>No style applied: <a href="#">http://Iterative.approaches-to-corporate_strategy.net/foster collaborative thinking.to.further/the_overall-value proposition.htm</a></li>
   </ul>
-      <p>Example 2 - URL with equal signs, underscores, ampersands, and dashes.
-    Note: due to the * selector all examples work in IE/Edge styled or not.</p>
-      <ul>
-    <li>No style applied: <a href="#">https://www.somecompany.com/gp/product/0060899220/ref=s9u_ri_gw_i7/135-1685811-9188658?ie=UTF8&amp;fpl=fresh&amp;pd_rd_i=0060899220&amp;pd_rd_r=83748ec1-7f08-11e8-98f0-e51cfb7ffc73&amp;pd_rd_w=KYrDt&amp;pd_rd_wg=lx9SR&amp;pf_rd_m=ATVPDKIKX0DER&amp;pf_rd_s=&amp;pf_rd_r=3868N2MAQAMF45G1WDFW&amp;pf_rd_t=36701&amp;pf_rd_p=5cd472c0-39fe-4ebd-be4b-f95163d1a3f5&amp;pf_rd_i=desktop</a></li>
+
+  <p>Example 2 - URL with equal signs, underscores, ampersands, and dashes, but some long sections of unbroken alphanumeric characters.
+  Note: due to the * selector all examples work in IE/Edge styled or not.</p>
+  <ul>
+    <li>No style applied: <a href="#">https://www.somecompany.com/gp/product/0060899220/ref=s9u_ri_gw_i7/135-1685811-9188658?ie=UTF8&amp;pd_rd_r=83748ec1-7f0811e898f0e51cfb7ffc73&amp;pd_rd_w=KYrDt&amp;pd_rd_wg=lx9SR&amp;pf_rd_m=ATVPDKIKX0DER&amp;pf_rd_s=&amp;pf_rd_r=3868N2MAQAMF45G1WDFW&amp;pf_rd_t=367013868N2MAQAMF45G1WDFW&amp;pf_rd_p=5cd472c0-39fe-4ebd-be4b-f95163d1a3f5&amp;pf_rd_i=desktop</a></li>
   </ul>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc porttitor lorem vitae quam aliquam, vel vulputate dolor ultricies. Sed sed nunc ipsum. Aliquam rhoncus risus pellentesque, faucibus nunc sodales, laoreet risus. Nulla interdum purus at facilisis porta.</p>
-<div class="subgrid">
-    <div class="subgrid-item">
-          <div class="panel">
-        <h3>Panel 1</h3>
-        <p>Nam venenatis turpis in erat tincidunt, non laoreet sem egestas. Etiam feugiat vehicula risus, non lobortis turpis aliquam nec. Nunc nec cursus arcu. In felis sapien, dictum a metus in, vehicula fermentum sem. Morbi in aliquam lorem. Suspendisse in interdum nunc.</p>
-        <p>Example 1 - URL with words, spaces, dashes, and underscores<br>
-          Note: Due to specific browser CSS, all examples work in IE/Edge. The button has no effect.</p>
-        <ul>
-          <li>No style applied: <a href="#">http://Iterative.approaches-to-corporate_strategy.net/foster collaborative thinking.to.further/the_overall-value proposition.htm</a></li>
-            </ul>
-        <p>Example 2 - URL with equal signs, underscores, ampersands, and dashes.<br>
-          Note: Due to specific browser CSS, all examples work in IE/Edge. The button has no effect.</p>
-        <ul>
-          <li>No style applied: <a href="#">https://www.somecompany.com/gp/product/0060899220/ref=s9u_ri_gw_i7/135-1685811-9188658?ie=UTF8&amp;fpl=fresh&amp;pd_rd_i=0060899220&amp;pd_rd_r=83748ec1-7f08-11e8-98f0-e51cfb7ffc73&amp;pd_rd_w=KYrDt&amp;pd_rd_wg=lx9SR&amp;pf_rd_m=ATVPDKIKX0DER&amp;pf_rd_s=&amp;pf_rd_r=3868N2MAQAMF45G1WDFW&amp;pf_rd_t=36701&amp;pf_rd_p=5cd472c0-39fe-4ebd-be4b-f95163d1a3f5&amp;pf_rd_i=desktop</a></li>
-            </ul>
-      </div>
-        </div>
-    <div class="subgrid-item">
-          <div class="panel">
-        <h3>Panel 2</h3>
-        <p>Curabitur semper dui dui, quis interdum felis ullamcorper ut. Sed mauris eros, ullamcorper eget dolor a, fringilla consequat mi. In tortor lorem, varius in accumsan et, volutpat eu dolor. Proin fermentum velit non nulla blandit pharetra.</p>
-        <p>Example 1 - URL with words, spaces, dashes, and underscores<br>
-Note: Due to specific browser CSS, all examples work in IE/Edge. The button has no effect.</p>
-        <ul>
-          <li>No style applied: <a href="#">http://Iterative.approaches-to-corporate_strategy.net/foster collaborative thinking.to.further/the_overall-value proposition.htm</a></li>
-        </ul>
-        <p>Example 2 - URL with equal signs, underscores, ampersands, and dashes.
-              <br>
-              Note: Due to specific browser CSS, all examples work in IE/Edge. The button has no effect.</p>
-        <ul>
-          <li>No style applied: <a href="#">https://www.somecompany.com/gp/product/0060899220/ref=s9u_ri_gw_i7/135-1685811-9188658?ie=UTF8&amp;fpl=fresh&amp;pd_rd_i=0060899220&amp;pd_rd_r=83748ec1-7f08-11e8-98f0-e51cfb7ffc73&amp;pd_rd_w=KYrDt&amp;pd_rd_wg=lx9SR&amp;pf_rd_m=ATVPDKIKX0DER&amp;pf_rd_s=&amp;pf_rd_r=3868N2MAQAMF45G1WDFW&amp;pf_rd_t=36701&amp;pf_rd_p=5cd472c0-39fe-4ebd-be4b-f95163d1a3f5&amp;pf_rd_i=desktop</a></li>
-            </ul>
-      </div>
-        </div>
- </div>
-    </main>
-<aside role="complementary" class="grid-item">
-      <h2>Aside</h2>
-      <p>Quisque ac ultricies massa. Ut eu aliquam sem. Aenean sit amet pharetra tellus, eu sollicitudin sem. Curabitur sit amet erat mi. Proin rutrum pretium nisl nec ornare. Curabitur ultricies eros justo, vel tempus augue consequat eget. Ut lacinia orci a eleifend facilisis.</p>
-      <p>Example 1 - URL with words, spaces, dashes, and underscores<br>
-      Note: Due to specific browser CSS, all examples work in IE/Edge. The button has no effect.</p>
-      <ul>
-    <li>No style applied: <a href="#">http://Iterative.approaches-to-corporate_strategy.net/foster collaborative thinking.to.further/the_overall-value proposition.htm</a></li>
-  </ul>
-      <p>Example 2 - URL with equal signs, underscores, ampersands, and dashes.
-        <br>
-        Note: Due to specific browser CSS, all examples work in IE/Edge. The button has no effect.</p>
-      <ul>
-    <li>No style applied: <a href="#">https://www.somecompany.com/gp/product/0060899220/ref=s9u_ri_gw_i7/135-1685811-9188658?ie=UTF8&amp;fpl=fresh&amp;pd_rd_i=0060899220&amp;pd_rd_r=83748ec1-7f08-11e8-98f0-e51cfb7ffc73&amp;pd_rd_w=KYrDt&amp;pd_rd_wg=lx9SR&amp;pf_rd_m=ATVPDKIKX0DER&amp;pf_rd_s=&amp;pf_rd_r=3868N2MAQAMF45G1WDFW&amp;pf_rd_t=36701&amp;pf_rd_p=5cd472c0-39fe-4ebd-be4b-f95163d1a3f5&amp;pf_rd_i=desktop</a></li>
-  </ul>
-    </aside>
+  
+</main>
 <footer role="contentinfo" class="grid-item">
-      <h2>Footer</h2>
-      <p>Copyright © 2018 W3C <sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>) <a href="/Consortium/Legal/ipr-notice">Usage policies apply</a>. </p>
-    </footer>
+    <h2>Footer</h2>
+</footer>
 </body>
 </html>
