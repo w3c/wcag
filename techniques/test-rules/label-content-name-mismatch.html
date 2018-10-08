@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <title>label and name from content mismatch</title>
+        <link rel="stylesheet" type="text/css" href="https://rawgit.com/w3c/wcag21/master/css/sources.css"/>
+    </head>
+    <body> 
+        <h1>label and name from content mismatch</h1>
+        <section id="meta">
+            <h2>Metadata</h2>
+            <p id="id">ID: label-content-name-mismatch</p>
+            <p id="technology">Technology: HTML</p>
+            <p id="aspects">Test aspects: DOM Tree, CSS Styling</p>
+            <p id="type">Type: Atomic Test Rule</p>
+        </section>
+        <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to ensure that elements such as buttons, that are labelled by the text inside of it, have an <a href="#def-accessible-name">accessible name</a> that matches (or includes) the content of that element.</p>
+            <p>By ensuring the label is part of the accessible name, assistive technologies can follow instructions based on the presentation of the application. For example, if a button with the text "log in" has an accessible name of "sign in", a user of speach recognistion software could not activate that button with a "click log in button" command.</p>
+        </section>
+        <section id="requirements">
+            <h2>Accessibility requirements</h2>
+            <p>Failing this test rule is a failure for the following success criteria. Passing this rule does not mean the success criteria have passed however.</p>
+            <ul>
+                <li><a href="https://www.w3.org/TR/WCAG21/#label-in-name">2.3.5: Label in name</a></li>
+            </ul>
+        </section>
+        <section id="applicability">
+            <h2>When to Use</h2>
+
+            <p>This rule applies to any element that has:</p>
+            <ul>
+                <li>a <a href="https://www.w3.org/TR/wai-aria-1.1/#widget_roles">widget role</a> that <a href="https://www.w3.org/TR/wai-aria-1.1/#namefromcontent">supports name from content</a>, and </li>
+                <li><a href="#def-visible-text-content">visible text content</a>, and</li>
+                <li>an <code>aria-label</code> or <code>aria-labelledby</code> attribute.</li>
+            </ul>
+            <p><strong>Note:</strong><a href="https://www.w3.org/TR/wai-aria-1.1/#widget_roles">widget roles</a> that <a href="https://www.w3.org/TR/wai-aria-1.1/#namefromcontent">supports name from content</a> are: <code>button</code>, <code>checkbox</code>, <code>gridcell</code>, <code>link</code>, <code>menuitem</code>, <code>menuitemcheckbox</code>, <code>menuitemradio</code>, <code>option</code>, <code>radio</code>, <code>searchbox</code>, <code>switch</code>, <code>tab</code>, <code>treeitem</code>.</p>
+        </section>
+        <section id="expectation">
+            <h2>When not to fail</h2>
+            <p>The complete <a href="#def-visible-text-content">visible text content</a> of the target element either matches or is contained within it's <a href="#def-accessible-name">accessible name</a>. Leading and trailing whitespace and difference in case sensitivity should be ignored.</p>
+        </section>
+        <section id="assumptions">
+            <h2>Assuptions</h2>
+            <p></p>
+        </section>
+        <section id="accessibility-support">
+            <h2>Accessibility Support</h2>
+            <p>This rule is known to work with most (if not all) major assistive technologies.</p>
+        </section>
+        <section id="examples">
+            <h2>Examples</h2>
+            <section class="example">
+                <h3>Passing examples</h3>
+                <h4>Passing example 1</h4>
+                <p>Visible label and accessible name matches when trailing white spaces are removed</p>
+                <code>
+                    &lt;div role="link" aria-label="next page "&gt;next page&lt;/div&gt;
+                </code>
+                <p>Working example: <a href="">TODO</a></p>
+                
+                <h4>Passing example 2</h4>
+                <p>Character insensitivity between visible label and accessible name</p>
+                <code>
+                    &lt;div role="link" aria-label="Next Page"&gt;next page&lt;/div&gt;
+                </code>
+                <p>Working example: <a href="">TODO</a></p>
+                
+                <h4>Passing example 3</h4>
+                <p>Full visible label is contained in the accessible name</p>
+                <code>
+                    &lt;button name="link" aria-label="Next Page in the list"&gt;Next Page&lt;/div&gt;
+                </code>
+                <p>Working example: <a href="">TODO</a></p>
+                
+                <h3>Failing examples</h3>
+                <h4>Failing example 1</h4>
+                <p>Visible label doesn't match accessible name</p>
+                <code>
+                    &lt;div role="link" aria-label="OK"&gt;Next&lt;/a&gt;
+                </code>
+                <p>Working example: <a href="">TODO</a></p>
+                
+                <h4>Failing example 2</h4>
+                <p>Not all of visible label is included in accessible name</p>
+                <code>
+                    &lt;button name="link" aria-label="the full"&gt;The full label&lt;/div&gt;
+                </code>
+                <p>Working example: <a href="">TODO</a></p>
+                
+                <h3>Inapplicable examples</h3>
+                <h4>Inapplicable example 1</h4>
+                <p>Not a widget role </p>
+                <code>
+                    &lt;a aria-label="OK"&gt;Next&lt;/a&gt;
+                </code>
+                <p>Working example: <a href="">TODO</a></p>
+
+                <h4>Inapplicable example 2</h4>
+                <p>Widget role that does not support name from content</p>
+                <code>
+                    &lt;input type="email" aria-label="E-mail"&gt;Contact&lt;/input&gt;
+                </code>
+                <p>Working example: <a href="">TODO</a></p>
+
+                <h4>Inapplicable example 3</h4>
+                <p>Non-widget role that supports name from content</p>
+                <code>
+                    &lt;div role="tooltip" aria-label="OK"&gt;Next&lt;/div&gt;
+                </code>
+                <p>Working example: <a href="">TODO</a></p>
+
+                <h4>Inapplicable example 4</h4>
+                <p>No rendered text in name from content</p>
+                <code>
+                    &lt;div role="tooltip" aria-label="OK"&gt;&lt;/div&gt;
+                </code>
+                <p>Working example: <a href="">TODO</a></p>
+
+                <h4>Inapplicable example 5</h4>
+                <p>Non-text content</p>
+                <code>
+                    &lt;button aria-label="close"&gt;X&lt;/button&gt;
+                </code>
+                <p>Working example: <a href="">TODO</a></p>
+            </section>
+        </section>
+        <section id="definitions">
+            <dl>
+                <dt id="def-accessible-name">Accessible name</dt>
+                <dd>
+                    <p>The programatically determined name of a user interface element that is exposed to assistive technologies.</p>
+                    <p>The accessible name is calculated using the accessible name computation.</p>
+                    <p>For native markup languages, such as HTML and SVG, additional information on how to calculate the accessible name can be found in <a href="https://www.w3.org/TR/html-aam/#accessible-name-and-description-computation and https://www.w3.org/TR/svg-aam/#mapping_additional">https://www.w3.org/TR/html-aam/#accessible-name-and-description-computation and https://www.w3.org/TR/svg-aam/#mapping_additional</a>.</p>
+                </dd>
+                <dt id="def-visible-text-content">Visible text content</dt>
+                <dd>
+                    <p>TODO</p>
+                </dd>
+            </dl>
+        </section>
+        <section id="related">
+            <h2>Related Techniques</h2>
+            <ul>
+                <li>ID</li>
+            </ul>
+        </section>
+        <section id="authors">
+            <h2>Authors</h2>
+            <ul>
+                <li>Anne Thyme Nørregaard</li>
+                <li>Bryn Anderson</li>
+                <li>Jey Nandakumar</li>
+            </ul>
+        </section>
+    </body>
+</html>
