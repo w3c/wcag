@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
    <head>
-      <title>Semantically identifying an icon font with role="img"</title>
+      <title>Semantically identifying a font icon with role="img"</title>
       <link rel="stylesheet" type="text/css" href="https://rawgit.com/w3c/wcag21/master/css/sources.css"/>
    </head>
    <body>
-      <h1>Semantically identifying an icon font with <code>role=&quot;img&quot;</code></h1>
+      <h1>Semantically identifying a font icon with <code>role=&quot;img&quot;</code></h1>
       <section id="meta">
          <h2>Metadata</h2>
          <p id="id"></p>
@@ -14,12 +14,14 @@
       </section>
       <section id="applicability">
          <h2>When to Use</h2>
-         <p class="instructions">This technique is applicable to Cascading Style Sheet/HTML technologies.</p>
+         <p class="instructions">This technique is applicable to Markup languages that support ARIA.</p>
       </section>
       <section id="description">
          <h2>Description</h2>
-         <p>The objective of this technique is to show how to provide a semantically identified icon font that does not disappear if a user overrides font-family via user stylesheet, script, or extension. The point is to provide a technique to differentiate icons fonts from general font (text) usage.</p>
-         <p>Some low vision users rely on user stylesheets to override fonts to perceive content. However, they need to be able to perceive icon fonts that are meaningful, for instance indicators (e.g. a star signifying a favorite) and interactive ones (e.g. an email link).</p>
+         <p>The objective of this technique is to show how to semantically identify an element that uses a font to create an icon. When a user  overrides font-family these icons typically disappear unless there is a means to identify them. The point is to provide a technique to differentiate icons fonts from general font (text) usage.</p>
+
+         <p>Some low vision users need user stylesheets, scripts, or extensions to override the fonts on a page to perceive text content. However, they need to be able to perceive icon fonts that are meaningful, such as a star signifying a favorite, or an email icon in a link.</p>
+
          <p>The key is for the author to semantically markup icon fonts with <code>role=&quot;img&quot;</code>. Then the user's font replacement selector can hook into that semantic and exclude <code>role=&quot;img&quot;</code>. This results in those icon fonts being shown. </p>
       </section>
       <section id="examples">
@@ -38,44 +40,18 @@
             <code>*:not([role=&quot;img&quot;]) {<br>
             font-family: Comic Sans MS, sans-serif;<br>
             }</code>
-            <h4>Author CSS</h4>
+            <h4>Partial author CSS</h4>
             <code>&lt;style&gt;<br>
-            @font-face {<br>
-            /* Specify font-family name to identify the font */<br>
-            font-family: 'FontAwesome';<br>
-            /* Paths to icons */<br>
-            src: url('icons/fontawesome-webfont.eot');<br>
-            src: url('icons/fontawesome-webfont.eot?#iefix')<br>
-            format('embedded-opentype'), <br>
-            url('icons/fontawesome-webfont.woff2') <br>
-            format('woff2'), <br>
-            url('icons/fontawesome-webfont.woff') <br>
-            format('woff'), <br>
-            url('icons/fontawesome-webfont.ttf') <br>
-            format('truetype'), <br>
-            url('icons/fontawesome-webfont.svg#fontawesomeregular') <br>
-            format('svg');<br>
+            @font-face {
+                /* Specify font-family name to identify the font */<br>
             }<br>
             .fa {<br>
             font: normal 1em/1 FontAwesome;<br>
-            text-rendering: auto;<br>
             }<br>
             .fa-star:before {<br>
             /* Icon added via generated content  
             from Unicode Private Use Area (PUA) */<br>
             content: &quot;\f005&quot;;<br>
-            }<br>
-            span.fa-star { <br>
-            color:purple;<br>
-            background:white;<br>
-            font-size:3em;<br>
-            padding-left:0.2em;<br>
-            }<br>
-            p&gt;span+span {<br>
-            font-family:sans-serif;<br>
-            font-size:1.1em;<br>
-            display:block;<br>
-            padding-left:0.2em;<br>
             }<br>
             &lt;/style&gt;</code>
             <p>Working example:</p>
@@ -100,39 +76,19 @@
             <code>*:not([role=&quot;img&quot;]) {<br>
             font-family: Verdana, sans-serif;<br>
             }</code>
-            <h4>Author CSS</h4>
+            <h4>Partial Author CSS</h4>
             <code>&lt;style&gt;<br>
             @font-face {<br>
             /* Specify font-family name to identify the font */<br>
-            font-family: 'FontAwesome';<br>
-            /* Paths to icons */<br>
-            src: url('icons/fontawesome-webfont.eot');<br>
-            src: url('icons/fontawesome-webfont.eot?#iefix') <br>
-            format('embedded-opentype'), <br>
-            url('icons/fontawesome-webfont.woff2') <br>
-            format('woff2'), <br>
-            url('icons/fontawesome-webfont.woff') <br>
-            format('woff'), <br>
-            url('icons/fontawesome-webfont.ttf') <br>
-            format('truetype'), <br>
-            url('icons/fontawesome-webfont.svg#fontawesomeregular') <br>
-            format('svg');<br>
             }<br>
             .fa {<br>
             font: normal 1em/1 FontAwesome;<br>
-            text-rendering: auto;<br>
             }<br>
             .fa-envelope:before {<br>
             /* Icon added via generated content  
             from Unicode Private Use Area (PUA) */<br>
             content: &quot;\f0e0&quot;; <br>
-            background:white;<br>
-            color:blue;<br>
-            font-size: 3em;<br>
-            } <br>
-            a {<br>
-            text-decoration:none;<br>
-            }<br>
+            }
             &lt;/style&gt;</code>
             <p>Working example:</p>
             <ul>
@@ -161,39 +117,14 @@
             <code>&lt;style&gt;<br>
             @font-face {<br>
             /* Specify font-family name to identify the font */<br>
-            font-family: 'FontAwesome';<br>
-            /* Paths to icons */<br>
-            src: url('icons/fontawesome-webfont.eot');<br>
-            src: url('icons/fontawesome-webfont.eot?#iefix') <br>
-            format('embedded-opentype'), <br>
-            url('icons/fontawesome-webfont.woff2') <br>
-            format('woff2'), <br>
-            url('icons/fontawesome-webfont.woff') <br>
-            format('woff'), <br>
-            url('icons/fontawesome-webfont.ttf') <br>
-            format('truetype'), <br>
-            url('icons/fontawesome-webfont.svg#fontawesomeregular') <br>
-            format('svg');<br>
             }<br>
             .fa {<br>
             font: normal 1em/1 FontAwesome;<br>
-            text-rendering: auto;<br>
             }<br>
             .fa-envelope:before {<br>
             /* Icon added via generated content from Unicode Private Use Area (PUA) */<br>
             content: &quot;\f0e0&quot;; <br>
-            background:white;<br>
-            color:blue;<br>
-            font-size: 3em;<br>
             } <br>
-            a {<br>
-            text-decoration:none;<br>
-            }<br>
-            h2 {<br>
-            font-family:sans-serif;<br>
-            font-size:1.1em;<br>
-            margin:0em;<br>
-            }<br>
             &lt;/style&gt;</code>
             <p>Working example: </p>
             <ul>
@@ -211,8 +142,9 @@
          <h2>Tests</h2>
          <section class="test-procedure">
             <h3>Procedure</h3>
+            <p>For each icon created with a font check that:</p>
             <ol>
-               <li>Check that the element providing the icon font has <code>role="img"</code>.</li>
+               <li>The element providing the icon font has <code>role="img"</code>.</li>
             </ol>
          </section>
          <section class="test-results">
