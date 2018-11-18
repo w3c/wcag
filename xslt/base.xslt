@@ -102,4 +102,6 @@
 		<xsl:value-of select="format-date(current-date(), '[D] [MNn] [Y]')"/>
 	</xsl:template>
 	
+	<xsl:template match="html:link[@href][contains(@href, 'css/editors.css')]"/>
+	
 </xsl:stylesheet>
