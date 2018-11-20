@@ -1,6 +1,9 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head xmlns:wcag="https://www.w3.org/WAI/GL/"><title>Using Silverlight Text Elements for Appropriate Accessibility Role</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body xmlns:wcag="https://www.w3.org/WAI/GL/"><h1>Using Silverlight Text Elements for Appropriate Accessibility Role</h1><section class="meta"><p class="id">ID: SL32</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section class="applicability"><h2>When to Use</h2>
-      <p use-id="silverlight.applicability.general"></p>
-   </section><section class="description"><h2>Description</h2>
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using Silverlight Text Elements for Appropriate Accessibility Role</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using Silverlight Text Elements for Appropriate Accessibility Role</h1><section class="meta"><p class="id">ID: SL32</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+      <ul id="silverlight.applicability.general">
+         <li> Microsoft Silverlight, versions 3 and greater </li>
+         <li> Silverlight managed programming model and Silverlight XAML </li>
+      </ul>
+   </section><section id="description"><h2>Description</h2>
       <p>The objective of this technique is to choose a Silverlight text container
     				that provides appropriate behavior and accessibility roles for different
     				types of text content. How those roles interact with existing assistive
@@ -25,8 +28,8 @@
                <a href="https://msdn.microsoft.com/en-us/library/system.windows.controls.textblock%28VS.95%29.aspx">TextBlock</a> 
             </li>
       </ul>
-      
-         <h> UI Automation programmatic access </h>
+   	<section id="SL32_programmatic">
+         <h4> UI Automation programmatic access </h4>
          <p>For programming information that is relevant for how Silverlight application
     					authors produce the application, each text container has its own object
     					model/API. That API is documented on MSDN, specifically for each class <a href="https://msdn.microsoft.com/en-us/library/system.windows.controls.textbox%28VS.95%29.aspx">TextBox</a>; <a href="https://msdn.microsoft.com/en-us/library/system.windows.controls.richtextbox%28VS.95%29.aspx">RichTextBox</a>; <a href="https://msdn.microsoft.com/en-us/library/system.windows.controls.textblock%28VS.95%29.aspx">TextBlock</a>.)
@@ -44,9 +47,9 @@
     					application in a platform view. Different types of "text" in
     					a general sense might appear as different UI Automation patterns, as
     					is described below. </p>
-      
-      
-         <h> TextBox </h>
+   	</section>
+   	<section id="SL32_textbox">
+         <h4> TextBox </h4>
          <p>A TextBox within the Silverlight content area is
     					reported to UI Automation as an Edit role (through MSAA, as Editable
     					Text). </p>
@@ -61,9 +64,9 @@
     					general model should also be used for Silverlight user interface design.
     					For more information on labeling for TextBox controls,
     					see <a href="#SL26"></a>. </p>
-      
-      
-         <h> RichTextBox </h>
+   	</section>
+   	<section id="SL32_richtextbox">
+         <h4> RichTextBox </h4>
          <p>A RichTextBox within the Silverlight content area
     					is reported to UI Automation and MSAA as a Document role. </p>
          <p>A RichTextBox can either be set to be a read-only
@@ -78,9 +81,9 @@
     					the assistive technology does not necessarily have to implement code
     					that handles the entirety of the information that the Text pattern
     					reports. </p>
-      
-      
-         <h> More about the Text pattern </h>
+   	</section>
+   	<section id="SL32_text-pattern">
+         <h4> More about the Text pattern </h4>
          <p>The Text pattern provides APIs to iterate over the internal structure
     					of a document and return text ranges. Each such text range can be queried
     					for specific properties, and can return its plain text string value
@@ -120,9 +123,9 @@ private void GetAllSilverlight()
 </pre>
          <p>MSAA has only limited possibilities for interacting with a Document
     				role, and MSAA code for attempting to do so is not shown. </p>
-      
-      
-         <h> TextBlock </h>
+   	</section>
+   	<section id="SL32_textblock">
+         <h4> TextBlock </h4>
          <p>
             TextBlock is reported as a Text role in UI Automation. TextBlock has
     					several important characteristics: </p>
@@ -154,12 +157,12 @@ private void GetAllSilverlight()
     					modes that screen readers use for a conventional non-interactive HTML
     					document text. For example, some screen readers support a mode that
     					reads text by line, or by word. These modes can read text from a TextBlock. </p>
-      
-   </section><section class="examples"><h2>Examples</h2>
+   	</section>
+   </section><section id="examples"><h2>Examples</h2>
       <section class="example">
-         <h3>Example 1: Structure from a container that has non-semantic role
+         <h3>Structure from a container that has non-semantic role
     					in UI Automation, and TextBlock for text</h3>
-         <section class="description"><h2>Description</h2>
+         
             <p>If viewed as a UI Automation tree, the StackPanel and Grid do
     						not exist explicitly in the tree view, because they do not serve a
     						semantic role (only a presentation role). Rather, the tree consists
@@ -219,11 +222,11 @@ How  then is this? Are the green fields gone? What do they here?
           &lt;/TextBlock&gt;
   &lt;/StackPanel&gt;
 </pre>
-         </section>
+         
       </section>
       <section class="example">
-         <h3>Example 2: Text containers and their UIA representation</h3>
-         <section class="description"><h2>Description</h2>
+         <h3>Text containers and their UIA representation</h3>
+         
             <p>The following example is intended as sample XAML to view in an accessibility
     						framework viewer, to see the various names, roles, and patterns for
     						obtaining value. </p>
@@ -235,9 +238,9 @@ How  then is this? Are the green fields gone? What do they here?
        &lt;TextBlock Text="This is a TextBlock"/&gt;
    &lt;/StackPanel&gt;
 </pre>
-         </section>
+         
       </section>
-   </section><section class="tests"><h2>Tests</h2>
+   </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
          <ol>
             <li> Using a browser that supports Silverlight, open an HTML page that
@@ -257,11 +260,11 @@ How  then is this? Are the green fields gone? What do they here?
       <section class="results"><h3>Expected Results</h3>
          <p>#3 and #4 are true. </p>
       </section>
-   </section><section class="related"><h2>Related Techniques</h2>
+   </section><section id="related"><h2>Related Techniques</h2>
       
       
       
-   </section><section class="resources"><h2>Resources</h2>
+   </section><section id="resources"><h2>Resources</h2>
       
          <ul>
             <li>
