@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head xmlns:wcag="https://www.w3.org/WAI/GL/"><title>Implementing automatic redirects on the server side instead of on the
-                    client side</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body xmlns:wcag="https://www.w3.org/WAI/GL/"><h1>Implementing automatic redirects on the server side instead of on the
-                    client side</h1><section class="meta"><p class="id">ID: SVR1</p><p class="technology">Technology: server-side-script</p><p class="type">Type: Technique</p></section><section class="applicability"><h2>When to Use</h2>
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Implementing automatic redirects on the server side instead of on the
+                    client side</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Implementing automatic redirects on the server side instead of on the
+                    client side</h1><section class="meta"><p class="id">ID: SVR1</p><p class="technology">Technology: server-side-script</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <p> Server-side technologies, including server-side scripting languages and
                         server configuration files with URLs or URL patterns for redirects. </p>
-   </section><section class="description"><h2>Description</h2>
+   </section><section id="description"><h2>Description</h2>
       <p> The objective of this technique is to avoid confusion that may be caused
                         when two new pages are loaded in quick succession because one page (the one
                         requested by the user) redirects to another. Some user agents support the
@@ -15,13 +15,13 @@
                         appropriate HTTP response with a status code in the 3xx range and a Location
                         header with another URL. When the browser receives this response, the location
                         bar changes and the browser makes a request with the new URL. </p>
-   </section><section class="examples"><h2>Examples</h2>
+   </section><section id="examples"><h2>Examples</h2>
       <section class="example">
-         <h3>Example 1: JSP/Servlets</h3>
-         <section class="description"><h2>Description</h2>
+         <h3>JSP/Servlets</h3>
+         
             <p> In Java Servlets or JavaServer Pages (JSP), developers can use
                                     HttpServletResponse.sendRedirect(String url). </p>
-         </section>
+         
          <pre xml:space="preserve">
 …
 public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -29,14 +29,14 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
 …
   response.sendRedirect("/newUserLogin.do");
 }</pre>
-         <section class="description"><h2>Description</h2>
+         
             <p> This sends a response with a 302 status code ("Found") and a
                                 Location header with the new URL to the user agent. It is also
                                 possible to set another status code with
                                     response.sendError(int code, String message) with
                                 one of the constants defined in the interface
                                 javax.servlet.http.HttpServletResponse as status code. </p>
-         </section>
+         
          <pre xml:space="preserve">
 …
 public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -44,7 +44,7 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
 …
   response.sendError(response.SC_MOVED_PERMANENTLY, "/newUserLogin.do");
 }</pre>
-         <section class="description"><h2>Description</h2>
+         
             <p> If an application uses HttpServletResponse.encodeURL(String
                                     url) for URL rewriting because the application depends on
                                 sessions, the method
@@ -55,25 +55,25 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
                                     HttpServletResponse.encodeURL(String url) and then
                                 pass this URL to HttpServletResponse.sendRedirect(String
                                 url). </p>
-         </section>
+         
       </section>
       <section class="example">
-         <h3>Example 2: ASP</h3>
-         <section class="description"><h2>Description</h2>
+         <h3>ASP</h3>
+         
             <p> In Active Server Page (ASP) with VBScript, developers can use
                                     Response.Redirect. </p>
-         </section>
+         
          <pre xml:space="preserve">
   Response.Redirect "newUserLogin.asp"</pre>
-         <section class="description"><h2>Description</h2>
+         
             <p> or </p>
-         </section>
+         
          <pre xml:space="preserve">
 Response.Redirect("newUserLogin.asp")</pre>
-         <section class="description"><h2>Description</h2>
+         
             <p> The code below is a more complete example with a specific HTTP
                                 status code. </p>
-         </section>
+         
          <pre xml:space="preserve">
 Response.Clear
 Response.Status = 301
@@ -82,13 +82,13 @@ Response.Flush
 Response.End</pre>
       </section>
       <section class="example">
-         <h3>Example 3: PHP</h3>
-         <section class="description"><h2>Description</h2>
+         <h3>PHP</h3>
+         
             <p> In PHP, developers can send a raw HTTP header with the
                                 header method. The code below sends a 301 status code
                                 and a new location. If the status is not explicitly set, the
                                 redirect response sends an HTTP status code 302. </p>
-         </section>
+         
          <pre xml:space="preserve">
  &lt;?php
 header("HTTP/1.1 301 Moved Permanently);
@@ -96,15 +96,15 @@ header("Location: http://www.example.com/newUserLogin.php");
 ?&gt;</pre>
       </section>
       <section class="example">
-         <h3>Example 4: Apache</h3>
-         <section class="description"><h2>Description</h2>
+         <h3>Apache</h3>
+         
             <p> Developers can configure the Apache Web server to handle redirects,
                                 as in the following example. </p>
-         </section>
+         
          <pre xml:space="preserve">
 redirect 301 /oldUserLogin.jsp http://www.example.com/newUserLogin.do</pre>
       </section>
-   </section><section class="tests"><h2>Tests</h2>
+   </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
          <ol>
             <li> Find each link or programmatic reference to another page or
@@ -124,11 +124,11 @@ redirect 301 /oldUserLogin.jsp http://www.example.com/newUserLogin.do</pre>
             <li> Step 2 is false AND step 3 is true. </li>
          </ul>
       </section>
-   </section><section class="related"><h2>Related Techniques</h2></section><section class="resources"><h2>Resources</h2>
+   </section><section id="related"><h2>Related Techniques</h2></section><section id="resources"><h2>Resources</h2>
       
          <ul>
             <li> 
-                  <a href="http://www.w3.org/QA/Tips/reback">Use standard
+                  <a href="https://www.w3.org/QA/Tips/reback">Use standard
                                         redirects: do not break the back button!</a> (W3C QA Tip).
                                 </li>
             <li> 

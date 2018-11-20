@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<title>Using role=log with server logs</title>
+		<link rel="stylesheet" type="text/css" href="sources.css"/>
+		<style>
+			.scrollable {
+			    height: 10rem;
+			    overflow-y: auto;
+			}
+		</style>
+	</head>
+	<body>
+		<script>
+
+
+			function ARIA_Append_Log() {
+				var d = new Date();
+				var list = document.createElement("li");
+				var logContent = document.getElementById('livelog1');
+			  	var txt = document.createTextNode([d] + ": Server was rebooted.");
+			  	list.appendChild(txt);
+			 	logContent.appendChild(list); 
+			 }
+
+			// function ARIA_Remove_Log() {
+			// 	var node = document.getElementById('livelog1');
+			// 	node.removeChild(node.firstChild);
+			//  }
+
+		</script>
+
+
+
+
+		<div role="main">
+			<h1>Using <code>role="log"</code> with server log</h1>
+			<p>This simple script demonstrates how a log file can have new content surfaced to ATs using the aria <code>log</code> role. The  <code>aria-relevant</code> value of "additions" is specified so that entries removed due to log size limitations are ignored (however this is strictly for demonstration purposes since "additions" is the implicit default value). Pressing the Reboot server button causes a time-stamped log entry to be added. For each activation of the button, only the changes will be surfaced by the screen reader due to the implicit <code>aria-atomic="false"</code> value.</p>	
+			<hr>
+			<h2>Log</h2>
+			<div class="scrollable" role="log">
+				<ul id="livelog1" aria-relevant="additions">
+					
+				</ul>
+
+			</div>
+			<div>
+				<h2>Mock server action</h2>
+	<button onClick="ARIA_Append_Log();">Reboot server</button>
+	<!-- <button onClick="ARIA_Remove_Log();">Remove top log entry</button> -->
+
+			
+		</div>
+
+
+	</body>
+	</html>
