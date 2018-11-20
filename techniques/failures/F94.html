@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<title>Failure of Success Criterion 1.4.4 due to text sized in viewport units</title>
+		<link rel="stylesheet" type="text/css" href="https://rawgit.com/w3c/wcag21/master/css/sources.css"/>
+	</head>
+	<body>
+		<h1>Failure of Success Criterion 1.4.4 due to text sized in viewport units</h1>
+		<section id="meta">
+			<h2>Metadata</h2>
+			<p id="id"></p>
+			<p id="technology">CSS</p>
+			<p id="type"></p>
+		</section>
+		<section id="applicability">
+
+		</section>
+		<section id="description">
+			<h2>Description</h2>
+			<p>The objective of this technique is to document the failure of text to re-scale when <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">viewport units</a> are used on text. As these units are relative to the viewport, it means they cannot be resized by zooming or adjusting text-size.</p>
+			<p>There are various methods to increase and decrease the size of text and other content, but viewport units applied to text (generally via <code>font-size</code> in CSS) prevent most available methods. Attempts to use browser controls to zoom or adjust text-size will not work. Only methods that completely override the CSS will work, and those could cause other issues such as layouts collapsing or text overlapping.</p>
+
+            <p class="note">If media queries were used to adjust the size of text or unit of measure at different screen sizes, it may not be a failure of <a href="https://www.w3.org/WAI/WCAG21/Understanding/resize-text.html">Resize text</a>. On-page controls provided by the author are also a way of passing the resize text success criteria.</p>
+		</section>
+		<section id="examples">
+			<h2>Examples</h2>
+			<section class="example">
+				<h3>Failure example 1</h3>
+				<p>The following CSS and HTML snippet uses VW units to size the text.</p>
+				<pre><code>/* CSS */
+.callout {
+    font-size:1vw;
+}
+
+&lt;p class="callout"&gt;
+  Text that scales by viewport units&lt;p/&gt;</code></pre>
+  <p class="working-example">Example <a href="../../working-examples/failure-viewport-units/">page with an example of text sized in <code>vh</code> units</a>.</p>
+			</section>
+		</section>
+		<section id="tests">
+			<h2>Tests</h2>
+			<section class="test-procedure">
+				<h3>Procedure</h3>
+				<p>In a desktop browser with a resizable window:</p>
+				<ol>
+					<li>Set zoom level to 100%.</li>
+                    <li>Set window size to 1280 pixels wide.</li>
+                    <li>Visit the page to be tested.</li>
+                    <li>Use any of the following methods to resize text when available:
+						<ul>
+							<li>the zoom feature of the browser</li>
+							<li>the text-sizing feature of the browser,</li>
+							<li>on-page controls for resizing text.</li>
+						</ul>
+					</li>
+                    <li>Check that the text resizes by one of the methods above, and can be resized to at least 200% of the default.</li>
+				</ol>
+			</section>
+			<section class="test-results">
+				<h3>Expected Results</h3>
+				<ul>
+					<li>If step #5 is false, then this failure condition applies and the content fails Success Criteria 1.4.4, Resize Text.</li>
+				</ul>
+			</section>
+		</section>
+		<section id="related">
+			<h2>Related Techniques</h2>
+			<ul>
+                <li><a href="../../techniques/general/G179">G179</a></li>
+                <li><a href="../../techniques/css/C12">C12</a></li>
+				<li><a href="../../techniques/css/C13">C13</a></li>
+				<li><a href="../../techniques/css/C14">C14</a></li>
+			</ul>
+		</section>
+		<section id="resources">
+				<h2>Related Resources</h2>
+				<ul>
+					<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length"><abbr title="Mozilla Development Network">MDN</abbr> CSS units</a> including <code>vh</code> and <code>vw</code> units.</li>
+					<li><a href="https://www.w3.org/TR/css-values/#viewport-relative-lengths">Viewport percentage lengths</a> in the CSS Values and Units Module Level 4 specification.</li>
+				</ul>
+			</section>
+	</body>
+</html>
