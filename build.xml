@@ -12,6 +12,7 @@
 	<property name="uri.prefix" value="file:///" description="Prefix if any that must be prepended to URIs to make it resolve on the platform"/>
 	
 	<property name="xslt.factory" value="net.sf.saxon.TransformerFactoryImpl" description="Class name of the XSLT transformer factory, which sets which XSLT engine to use; must be an XSLT 2.0 processor"/>
+	<property name="classpath.saxon" value="lib/saxon9he.jar" description="Path to Saxon jar in order to run XSLT 2.0"/>
 	
 	<!-- The following properties usually do not need to be adjusted -->
 	<property name="inputdir.guidelines" location="guidelines"/>
@@ -21,6 +22,12 @@
 	<property name="outputdir.guidelines" location="${outputdir}/guidelines"/>
 	<property name="outputdir.understanding" location="${outputdir}/understanding"/>
 	<property name="outputdir.techniques" location="${outputdir}/techniques"/>
+	
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="lib/ant-contrib-0.6.jar" />
+		</classpath>
+	</taskdef>
 	
 	<target name="usage">
 		<echo level="info">Usage: &quot;ant &lt;target&gt;&quot; to execute a build task
@@ -32,7 +39,9 @@
 	<target name="clean" description="Clean up any temp files">
 		<delete file="${inputdir.guidelines}/index-flat.html" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/wcag.xml" failonerror="false"/>
+		<delete file="${inputdir.guidelines}/wcag.json" failonerror="false"/>
 		<delete file="${inputdir.techniques}/techniques.xml" failonerror="false"/>
+		<delete file="${inputdir.techniques}/technique-associations.xml" failonerror="false"/>
 		<delete file="output.html" failonerror="false"/>
 		<delete dir="output" failonerror="false"/>
 	</target>
@@ -40,53 +49,201 @@
 	<target name="flatten" depends="init" description="Build a copy of guidelines with all data-include files incorporated">
 		<makeurl file="${basedir}/guidelines/" property="base.guidelines"/>
 		<xslt in="${inputdir.guidelines}/index.html" out="${inputdir.guidelines}/index-flat.html" style="xslt/flatten-document.xslt">
+			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
-			<param name="base" expression="${base.guidelines}"/>
+			<param name="base.dir" expression="${base.guidelines}"/>
 		</xslt>
 	</target>
 	
 	<target name="guidelines-xml" depends="flatten" description="Build an XML representation of the guidelines">
 		<xslt in="${inputdir.guidelines}/index-flat.html" out="${inputdir.guidelines}/wcag.xml" style="xslt/generate-structure-xml.xslt">
+			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 		</xslt>
 	</target>
 	
 	<!-- Techniques -->
-	<target name="techniques-xml" depends="flatten, guidelines-xml" description="Build an XML structure of all techniques">
+	<target name="techniques-list" description="Create XML list of all the technique files">
+		<property name="output.file" value="${inputdir.techniques}/techniques.xml"/>
+		<echo file="${output.file}"><![CDATA[<techniques>
+]]></echo>
+		<for param="current.dir">
+			<path><dirset dir="techniques" includes="*"/></path>
+			<sequential>
+				<local name="technology"/>
+				<basename file="@{current.dir}" property="technology"/>
+				<echo file="${output.file}" append="yes"><![CDATA[	<technology name="${technology}">
+]]></echo>
+				<for param="current.file">
+					<path><fileset dir="@{current.dir}" includes="*"/></path>
+					<sequential>
+						<local name="technique"/>
+						<basename file="@{current.file}" property="technique" suffix="html"/>
+						<echo file="${output.file}" append="yes"><![CDATA[		<technique id="${technique}">
+]]></echo>
+						<local name="technique.title"/>
+						<loadfile srcFile="@{current.file}" property="technique.title">
+							<filterchain>
+								<linecontainsregexp>
+									<regexp pattern="&lt;/?h1>"/>
+								</linecontainsregexp>
+								<striplinebreaks/>
+								<replaceregex pattern=".*&lt;h1>(.*?)&lt;/h1>.*" replace="\1"/>
+								<replaceregex pattern="\s\s+" replace=" "/>
+							</filterchain>
+						</loadfile>
+						<echo file="${output.file}" append="yes"><![CDATA[			<title>${technique.title}</title>
+]]></echo>
+						<echo file="${output.file}" append="yes"><![CDATA[		</technique>
+]]></echo>
+					</sequential>
+				</for>
+				<echo file="${output.file}" append="yes"><![CDATA[	</technology>
+]]></echo>
+			</sequential>
+		</for>
+		<echo file="${output.file}" append="yes"><![CDATA[</techniques>
+]]></echo>
+	</target>
+	
+	<target name="techniques-association" depends="flatten, guidelines-xml" description="Build an XML structure of all techniques">
 		<makeurl file="${basedir}/techniques" property="techniques.dir"/>
 		<makeurl file="${basedir}/understanding" property="understanding.dir"/>
-		<xslt in="${inputdir.guidelines}/wcag.xml" out="${inputdir.techniques}/techniques.xml" style="xslt/generate-technique-xml.xslt">
+		<xslt in="${inputdir.guidelines}/wcag.xml" out="${inputdir.techniques}/technique-associations.xml" style="xslt/generate-technique-associations.xslt">
+			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="techniques.dir" expression="${techniques.dir}"/>
 			<param name="understanding.dir" expression="${understanding.dir}"/>
 		</xslt>
 	</target>
 	
+	<target name="techniques" depends="techniques-list, techniques-association, techniques-index">
+		<makeurl file="${basedir}/techniques/" property="base.techniques"/>
+		<makeurl file="${basedir}/techniques/technique-associations.xml" property="associations.file"/>
+		<mkdir dir="${basedir}/output/techniques/"/>
+		<local name="output.dir"/>
+		<makeurl file="${basedir}/output/techniques/" property="output.dir"/>
+		<echo message="Outputting Techniques to ${output.dir}"/>
+		<xslt in="${inputdir.techniques}/techniques.xml" out="output.html" style="xslt/generate-techniques.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+			<param name="techniques.dir" expression="${base.techniques}"/>
+			<param name="associations.file" expression="${associations.file}"/>
+			<param name="output.dir" expression="${output.dir}"/>
+			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG21/" if="publication"/>
+			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG21/Understanding/" if="publication"/>
+			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG21/Techniques/" if="publication"/>
+			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
+			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
+			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
+		</xslt>
+		<copy file="techniques/techniques.css" todir="output/techniques/"/>
+		<copy file="css/slicenav.css" todir="output/techniques/"/>
+		<copy todir="output/techniques/">
+			<fileset dir="techniques" includes="**/img/*"/>
+		</copy>
+	</target>
+	
+	<target name="techniques-toc" depends="techniques-list" description="Generate the TOC for Techniques">
+		<xslt in="${inputdir.techniques}/techniques.xml" out="techniques/toc.html" style="xslt/generate-techniques-toc.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+		</xslt>
+	</target>
+	
+	<target name="techniques-index" depends="techniques-toc" description="Flatten the techniques index file">
+		<makeurl file="${basedir}/techniques/" property="base.techniques"/>
+		<mkdir dir="${basedir}/output/techniques/"/>
+		<xslt in="${inputdir.techniques}/index.html" out="${basedir}/output/techniques/index.html" style="xslt/flatten-document.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+			<param name="base.dir" expression="${base.techniques}"/>
+		</xslt>
+	</target>
+	
 	<!-- Understanding -->
-	<target name="understanding" depends="guidelines-xml" description="Generate formatted Understanding docs">
+	<target name="understanding" depends="guidelines-xml, techniques-list, understanding-index" description="Generate formatted Understanding docs">
 		<makeurl file="${basedir}/understanding/" property="base.understanding"/>
-		<mkdir dir="${basedir}/output/"/>
-		<makeurl file="${basedir}/output/" property="output.dir"/>
+		<mkdir dir="${basedir}/output/understanding/"/>
+		<local name="output.dir"/>
+		<makeurl file="${basedir}/output/understanding/" property="output.dir"/>
 		<echo message="Outputting Understanding to ${output.dir}"/>
 		<xslt in="${inputdir.guidelines}/wcag.xml" out="output.html" style="xslt/generate-understanding.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.understanding}"/>
 			<param name="output.dir" expression="${output.dir}"/>
+			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG21/" if="publication"/>
+			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG21/Understanding/" if="publication"/>
+			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG21/Techniques/" if="publication"/>
+			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
+			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
+			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
 		</xslt>
-		<copy file="understanding/understanding.css" todir="output/"/>
-		<copy todir="output/img/">
+		<copy file="understanding/understanding.css" todir="output/understanding/"/>
+		<copy file="css/slicenav.css" todir="output/understanding/"/>
+		<copy todir="output/understanding/img/">
 			<fileset dir="understanding/21/img"/>
 		</copy>
 	</target>
 	
 	<target name="understanding-toc" depends="guidelines-xml" description="Generate the TOC for Understanding">
 		<xslt in="${inputdir.guidelines}/wcag.xml" out="understanding/toc.html" style="xslt/generate-understanding-toc.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+		</xslt>
+	</target>
+	
+	<target name="understanding-index" depends="understanding-toc" description="Flatten the understanding index file">
+		<makeurl file="${basedir}/understanding/" property="base.understanding"/>
+		<mkdir dir="${basedir}/output/understanding/"/>
+		<xslt in="${inputdir.understanding}/index.html" out="${basedir}/output/understanding/index.html" style="xslt/flatten-document.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+			<param name="base.dir" expression="${base.understanding}"/>
+		</xslt>
+	</target>
+	
+	<!-- Publish -->
+	<target name="deploy" depends="init, understanding-toc, techniques-toc" description="Generate content ready to deploy to gh-pages">
+		<property name="editors" value="true"/>
+		<antcall target="techniques"/>
+		<antcall target="understanding"/>
+		<copy todir="output/working-examples/">
+			<fileset dir="working-examples/"/>
+		</copy>
+	</target>
+	
+	<target name="publish-w3c" depends="init, understanding-toc, techniques-toc" description="Publish resources to w3c">
+		<property name="publication" value="true"/>
+		<antcall target="techniques"/>
+		<antcall target="understanding"/>
+		<copy todir="../../../smartcvs/WWW/WAI/WCAG21/">
+			<fileset dir="output/"/>
+			<globmapper from="*index.html" to="*Overview.html"/>
+		</copy>
+		<copy todir="../../../smartcvs/WWW/WAI/WCAG21/">
+			<fileset dir="output"/>
+		</copy>
+		<copy todir="../../../smartcvs/WWW/WAI/WCAG21/working-examples/">
+			<fileset dir="working-examples/"/>
+			<globmapper from="*index.html" to="*Overview.html"/>
+		</copy>
+		<copy todir="../../../smartcvs/WWW/WAI/WCAG21/working-examples/">
+			<fileset dir="working-examples/" excludes="**/index.html"/>
+		</copy>
+	</target>
+	
+	<!-- JSON -->
+	<target name="json" depends="init, guidelines-xml, techniques-list, techniques-association">
+		<xslt in="${inputdir.guidelines}/wcag.xml" out="${inputdir.guidelines}/wcag.json" style="xslt/xml-to-json.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 		</xslt>
 	</target>
 	
 	<!-- Everything -->
-	<target name="all" depends="init" description="Generate entire suite"/>
+	<target name="all" depends="init, understanding, techniques" description="Generate entire suite"/>
 	
 	<!-- === Sanity check === -->
 	<target name="sanity" depends="init" description="Identifies inconsistencies in documents"></target>

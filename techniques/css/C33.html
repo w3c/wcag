@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<title>Allowing for Reflow with Long URLs and Strings of Text</title>
+<link rel="stylesheet" type="text/css" href="../../css/sources.css"/>
+
+</head>
+<body>
+<h1>Allowing for Reflow with Long URLs and Strings of Text</h1>
+<section id="meta"></section>
+<section id="applicability">
+  <h2>When to Use</h2>
+  <p>This technique is applicable to Cascading Style Sheet / HTML technologies.</p>
+</section>
+<section id="description">
+  <h2>Description</h2>
+  <p>Long sets of characters without a space, such as URLs shown as content, can break reflow when the page is zoomed. The objective of this technique is to present URLs without introducing a horizontal scroll bar at a width equivalent to 320 CSS pixels or a vertical scroll bar at a height equivalent to 256 CSS pixels. This is done by using CSS techniques that adapt to the available viewport space. Note: Using a human readable text link, rather than a long URL, is better for usability and accessibility.</p>
+  <p>By default most browsers will wrap long URLs at the following characters:</p>
+  <ul>
+    <li>&quot;-&quot; Hyphen  </li>
+    <li>&quot; &quot; Space</li>
+    <li>"?" Question (IE,  Chrome, Safari) </li>
+    <li>&quot;&amp;&quot; Ampersand (Firefox only)</li>
+  </ul> 
+  <p>Sometimes these are not enough to ensure that long URLs will not overflow the viewport.</p>
+</section>
+<section id="examples">
+  <h2>Examples</h2>
+  <section class="example">
+    <h3>Breaking long URLs</h3>
+    <p>Using the following CSS will cause long URLs to break at appropriate places (hyphens, spaces, etc.) and within words without causing reflow. </p>
+    <p>List of CSS declarations used and why they are used:</p>
+    <ul>
+     <li><strong>overflow-wrap: break-word</strong>: Allows words to be broken and wrapped within words. </li>
+	    <li><strong>word-wrap: break-word</strong>: Allows words to be broken and wrapped within. (Microsoft only)</li>
+    </ul>
+    <pre>    a {overflow-wrap: break-word;}</pre>
+    <p class="note">IE and Edge  only support this declaration when used with the * (wildcard) selector</p>
+    <pre>    * { word-wrap: break-word;}</pre>
+  <p><a href="../../working-examples/css-reflow-url/">Working Example</a></p>
+  </section>
+</section>
+<section id="tests">
+  <h2>Tests</h2>
+  <section class="test-procedure">
+    <h3>Procedure</h3>
+    <p>For strings of text that are wider than 320px check:</p>
+    <ol>
+      <li>Display the web page in a user agent capable of 400% zoom and set the viewport dimensions (in CSS pixels) to 1280 wide and 1024 high.</li>
+      <li>Zoom in by 400%.</li>
+      <li>For content read horizontally, check that all content and functionality is available without horizontal scrolling.</li>
+      <li>For content read vertically, check that all content and functionality is available without vertical scrolling.</li>
+    </ol>
+
+    <p class="note">If the browser is not capable of zooming to 400%, you can reduce the width of the browser proportionally. For example, at 300% zoom the viewport should be sized to 960px wide.</p>
+  </section>
+  <section class="test-results">
+    <h3>Expected Results</h3>
+
+    <p>#3 and #4 are true.</p>
+  
+  </section>
+</section>
+<section id="related">
+  <h2>Related Techniques</h2>
+</section>
+</body>
+</html>

@@ -11,7 +11,6 @@
 	
 	<xsl:param name="base.dir">understanding/</xsl:param>
 	<xsl:param name="output.dir">output/</xsl:param>
-	<xsl:param name="loc.guidelines">https://www.w3.org/TR/WCAG21/</xsl:param>
 	
 	<xsl:template name="name">
 		<xsl:param name="meta" tunnel="yes"/>
@@ -65,7 +64,7 @@
 							<li><a href="{$meta/parent::guideline/preceding-sibling::guideline[1]/success-criterion[1]/file/@href}">Previous <abbr title="Success Criterion">SC</abbr>: <xsl:value-of select="$meta/ancestor::principle/preceding-sibling::principle[1]/guideline[1]/success-criterion[1]/name"/></a></li>
 						</xsl:when>
 						<xsl:when test="$meta/ancestor::principle/preceding-sibling::principle">
-							<li><a href="{$meta/parent::guideline/preceding-sibling::guideline[1]/success-criterion[last()]/file/@href}">Previous <abbr title="Success Criterion">SC</abbr>: <xsl:value-of select="$meta/parent::guideline/preceding-sibling::guideline[1]/success-criterion[last()]/name"/></a></li>
+							<li><a href="{$meta/ancestor::principle/preceding-sibling::principle[1]/guideline[last()]/success-criterion[last()]/file/@href}">Previous <abbr title="Success Criterion">SC</abbr>: <xsl:value-of select="$meta/ancestor::principle/preceding-sibling::principle[1]/guideline[last()]/success-criterion[last()]/name"/></a></li>
 						</xsl:when>
 						<xsl:when test="$meta/ancestor::principle/preceding-sibling::understanding">
 							<li><a href="{$meta/ancestor::principle/preceding-sibling::understanding[1]/file/@href}">Previous: <xsl:value-of select="$meta/ancestor::principle/preceding-sibling::understanding[1]/name"/></a></li>
@@ -156,7 +155,11 @@
 	
 	<xsl:template match="html:p" mode="sc-info">
 		<xsl:param name="sc-info"/>
-		<p><xsl:copy-of select="$sc-info"/><xsl:apply-templates/></p>
+		<p><xsl:apply-templates select="$sc-info"/><xsl:apply-templates mode="sc-info"/></p>
+	</xsl:template>
+	
+	<xsl:template match="html:a[starts-with(@href, '#')]" mode="sc-info">
+		<a href="{$loc.guidelines}{@href}"><xsl:apply-templates mode="sc-info"/></a>
 	</xsl:template>
 	
 	<xsl:template name="key-terms">
@@ -193,16 +196,16 @@
 				<xsl:when test="version = 'WCAG21'">21/</xsl:when>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:result-document href="{$output.dir}/{file/@href}.html" encoding="utf-8" exclude-result-prefixes="#all" indent="yes" method="xml" omit-xml-declaration="yes">
+		<xsl:result-document href="{$output.dir}/{file/@href}.html" encoding="utf-8" exclude-result-prefixes="#all" indent="yes" method="xhtml" omit-xml-declaration="yes">
 			<xsl:apply-templates select="document(resolve-uri(concat(file/@href, '.html'), concat($base.dir, $subpath)))">
 				<xsl:with-param name="meta" select="." tunnel="yes"/>
 			</xsl:apply-templates>
 		</xsl:result-document>
 	</xsl:template>
 	
-	<xsl:template match="node()|@*">
+	<xsl:template match="node()|@*" mode="#all">
 		<xsl:copy>
-			<xsl:apply-templates select="node()|@*"/>
+			<xsl:apply-templates select="node()|@*" mode="#current"/>
 		</xsl:copy>
 	</xsl:template>
 	
@@ -217,6 +220,7 @@
 				<title><xsl:apply-templates select="//html:h1"/></title>
 				<link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/base" />
 				<link rel="stylesheet" type="text/css" href="understanding.css" />
+				<link rel="stylesheet" type="text/css" href="slicenav.css" />
 			</head>
 			<body>
 				<xsl:call-template name="navigation"/>
@@ -228,7 +232,7 @@
 							<xsl:apply-templates select="$meta/content/html:p[1]" mode="sc-info">
 								<xsl:with-param name="sc-info"><xsl:call-template name="sc-info"/></xsl:with-param>
 							</xsl:apply-templates>
-							<xsl:apply-templates select="$meta/content/html:*[position() &gt; 1]"/>
+							<xsl:apply-templates select="$meta/content/html:*[position() &gt; 1]" mode="sc-info"/>
 						</blockquote>
 						<main>
 							<xsl:apply-templates select="//html:section[@id = 'intent']"/>
@@ -354,13 +358,6 @@
 		<xsl:element name="h{$level}">
 			<xsl:apply-templates/>
 		</xsl:element>
-	</xsl:template>
-	
-	<xsl:template match="html:a[not(node()) and starts-with(@href, 'https://www.w3.org/WAI/WCAG21/Techniques/')]">
-		<xsl:copy>
-			<xsl:apply-templates select="@*"/>
-			<xsl:value-of select="replace(@href, '^.*/([\w\d]*)$', '$1')"/>
-		</xsl:copy>
 	</xsl:template>
 	
 	<xsl:template match="html:a[not(@href)]">
