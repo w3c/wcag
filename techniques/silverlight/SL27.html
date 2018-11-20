@@ -1,8 +1,11 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head xmlns:wcag="https://www.w3.org/WAI/GL/"><title>Using Language/Culture Properties as Exposed by Silverlight Applications
-    			and Assistive Technologies</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body xmlns:wcag="https://www.w3.org/WAI/GL/"><h1>Using Language/Culture Properties as Exposed by Silverlight Applications
-    			and Assistive Technologies</h1><section class="meta"><p class="id">ID: SL27</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section class="applicability"><h2>When to Use</h2>
-      <p use-id="silverlight.applicability.general"></p>
-   </section><section class="description"><h2>Description</h2>
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using Language/Culture Properties as Exposed by Silverlight Applications
+    			and Assistive Technologies</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using Language/Culture Properties as Exposed by Silverlight Applications
+    			and Assistive Technologies</h1><section class="meta"><p class="id">ID: SL27</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+      <ul id="silverlight.applicability.general">
+         <li> Microsoft Silverlight, versions 3 and greater </li>
+         <li> Silverlight managed programming model and Silverlight XAML </li>
+      </ul>
+   </section><section id="description"><h2>Description</h2>
       <p>The objective of this technique is to use the combination of HTML
     				Lang attribute, CultureInfo and Language to
     				correctly specify the language of the entirety of Silverlight content,
@@ -12,7 +15,7 @@
     				content area, Silverlight uses language definition concepts that relate
     				to XML (Language is a remapping of xml:lang) or .NET
     				Framework programming (CultureInfo). For these reasons,
-    				HTML Lang techniques as described in [<a href="https://www.w3.org/TR/WCAG20-TECHS/H58">H58</a>]
+    				HTML Lang techniques as described in [<a href="https://www.w3.org/WAI/WCAG21/Techniques/html/H58">H58</a>]
     				are not useful for Silverlight programming of Silverlight-specific "parts". </p>
       <p>What becomes important in Silverlight application programming then
     				is to make sure that the HTML language concept of Lang and the Silverlight
@@ -43,7 +46,7 @@
     					presenting textual information with A SINGLE particular language
     					association, HTML Lang should be assigned to report that specific
     					language either for whole page or at least for the Silverlight object
-    					tag. This enables assistive technologies to pick up the value, per <a href="https://www.w3.org/TR/WCAG20-TECHS/H57">H57:
+    					tag. This enables assistive technologies to pick up the value, per <a href="https://www.w3.org/WAI/WCAG21/Techniques/html/H57">H57:
     						Using language attributes on the html element HTML</a>. Aside from
     					due diligence during development and deployment, Silverlight application
     					code might choose to enforce that its runtime CultureInfo is really
@@ -56,16 +59,16 @@
     						is actively resetting CurrentCulture away from the user settings
     						of platform or user agent. For more information, see <a href="#SL4"></a>. </li>
       </ul>
-      
-         <h> HTML Lang </h>
+   	<section id="SL27_html-lang">
+         <h4> HTML Lang </h4>
          <p>When Silverlight is embedded in an HTML document with the   &lt;object&gt; element,
     					the value of the HTML Lang attribute of the surrounding HTML becomes
     					a factor. Browsers process the outer HTML, and the browser's processing
     					has possible influence over values reported to any DOM script that
     					acts, or to any accessibility framework that is reporting the browser
-    					content. The preferred way for a Silverlight application to address <a href="https://www.w3.org/TR/UNDERSTANDING-WCAG20/meaning-doc-lang-id">SC
+    					content. The preferred way for a Silverlight application to address <a href="https://www.w3.org/WAI/WCAG21/Understanding/language-of-page">SC
     						3.1.1</a> is to correctly specify the HTML Lang value in the hosting
-    					HTML page. This technique should be used in conjunction with <a href="https://www.w3.org/TR/WCAG20-TECHS/H57">H57:
+    					HTML page. This technique should be used in conjunction with <a href="https://www.w3.org/WAI/WCAG21/Techniques/html/H57">H57:
     						Using language attributes on the html element HTML</a>. By using the
     					same language values with both techniques as a better practice, H57
     					will satisfy 3.1.1 while setting the language value of the Silverlight
@@ -90,9 +93,9 @@
     					HTML from within the Silverlight API, by using the DOM-bridging method <a href="https://msdn.microsoft.com/en-us/library/system.windows.browser.htmlelement.getattribute%28VS.95%29.aspx">HtmlElement.GetAttribute</a>.
     					Otherwise, this can be determined by techniques other than Silverlight's
     					(such as scripting to the HTML DOM of the hosting browser). </p>
-      
-      
-         <h> Silverlight Language property </h>
+   	</section>
+   	<section id="SL27-language-property">
+         <h4> Silverlight Language property </h4>
          <p>
             Language is an attribute that is available on all
     					Silverlight objects that directly represent a UI element. Language
@@ -123,9 +126,9 @@
     					affect considerations such as: how white space is processed (in particular
     					CR or LF); character sets for fonts; string formatting when using APIs
     					specifically on that part. </p>
-      
-      
-         <h> CultureInfo </h>
+   	</section>
+   	<section id="SL27_cultureinfo">
+         <h4> CultureInfo </h4>
          <p>
             CultureInfo is a concept that is relevant to .NET
     					Framework programming. This concept applies to Silverlight because
@@ -174,8 +177,8 @@
     					declare specific language settings for a part (component, region or
     					control) of the Silverlight application, a different Silverlight-specific
     					property Language is used. </p>
-      
-   </section><section class="examples"><h2>Examples</h2>
+   	</section>
+   </section><section id="examples"><h2>Examples</h2>
       <p>These examples show Silverlight behaviors that are based on interpreting
     				the Language property value, as a way of illustrating
     				the programmatic determination of language values specifically in the
@@ -185,8 +188,8 @@
     				because they are specific to browsers or scripting frameworks, not
     				to Silverlight. </p>
       <section class="example">
-         <h3>Example 1: Language set at root-level of Silverlight content, inherits</h3>
-         <section class="description"><h2>Description</h2>
+         <h3>Language set at root-level of Silverlight content, inherits</h3>
+         
             <p>This example features a XAML UI and logic that reports information
     						to demonstrate that the information is programmatically determinable.
     						This example shows determination of the <a href="https://msdn.microsoft.com/en-us/library/system.windows.frameworkelement.language%28VS.95%29.aspx">Language</a> property. </p>
@@ -212,12 +215,12 @@ private void button1_Click(object sender, RoutedEventArgs e)
    // this will be 'en-gb' because inherits from the root
 }
 </pre>
-            <p>This example is shown in operation in the <a href="https://www.w3.org/WAI/WCAG20/Techniques/working-examples/LangPropertiesTestPage.html">working example of Language Properties</a>.</p>
-         </section>
+            <p class="working-example">This example is shown in operation in the <a href="../../working-examples/silverlight-lang-properties/">working example of Language Properties</a>.</p>
+         
       </section>
       <section class="example">
-         <h3>Example 2: Determine CurrentCulture; runtime verification that CurrentCulture and the surrounding HTML's current Lang value do not report different language settings </h3>
-         <section class="description"><h2>Description</h2>
+         <h3>Determine CurrentCulture; runtime verification that CurrentCulture and the surrounding HTML's current Lang value do not report different language settings </h3>
+         
             <p>The following is an event handler that can be hooked to an object
     						lifetime event such as UserControl.Loaded on the Silverlight
     						XAML root. This example demonstrates property access to several of
@@ -250,9 +253,9 @@ private void button1_Click(object sender, RoutedEventArgs e)
            }
        }
 </pre>
-         </section>
+         
       </section>
-   </section><section class="tests"><h2>Tests</h2>
+   </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
          <ol>
             <li> Using a browser that supports Silverlight, open an HTML page that
@@ -272,7 +275,7 @@ private void button1_Click(object sender, RoutedEventArgs e)
       <section class="results"><h3>Expected Results</h3>
          <p>#2 and #3 are true. </p>
       </section>
-   </section><section class="resources"><h2>Resources</h2>
+   </section><section id="resources"><h2>Resources</h2>
       
          <ul>
             <li>
