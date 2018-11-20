@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 	<head>
-		<title>Ensure the accessible name starts with the full string of visible text</title>
-		<link rel="stylesheet" type="text/css" href="https://rawgit.com/w3c/wcag21/master/css/sources.css"/>
+		<title>Ensure the &quot;accessible name&quot; includes the visible text</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css"/>
 	</head>
 	<body>
-		<h1>Ensure the accessible name starts with the full string of visible text</h1>
+		<h1>Ensure the &quot;accessible name&quot; includes the visible text</h1>
 		<section id="meta">
 			<h2>Metadata</h2>
 			<p id="id"></p>
@@ -20,44 +20,45 @@
 			<h2>Description</h2>
 			<p>The objective of this technique is to ensure that speech input users can operate web content reliably. The secondary objective is to prevent speech input users from accidentally activating controls. When the accessible names of controls are visually hidden, speech users may accidentally activate these controls when they happen to speak words that map to these hidden accessible names.</p>
 			<p>When speech input users interact with a web page, they usually speak a command followed by the reference to some visible label (like the text in a button or a link, or the text labelling some input). For example, they may speak "click search" to activate a search button. The speech recognition software can then process the input, match the name of the label to the control, and carry out the command (here, activate the search button).</p>
-			<p>This Technique aims to ensure that this matching of speech input to controls will be successful. When speech recognition software processes speech input and looks for matches, it uses the so-called "accessible name" of controls, which is not necessarily identical to the visible label. For example, a  button following a search input field may contain the text "go" but use an invisible aria-label attribute with the value "search". Since aria-label takes precedence over the text included in the button, the accessible name of this button will be "search", not "go". (Compare the <a href="https://www.w3.org/TR/accname/">Accessible Name and Description Computation</a> algorithm). Another example is links that contain visually hidden text. A visible link may just read "go home", the actual accessible name however may be "go to the home page" where CSS has been used to hide the portions around and in between the string "go home". This would create problems for speech input users when they say "click go home" to activate the link, because the entire string 'go home' does not match (parts of) the accessible name of that control.</p>
+			<p>This Technique aims to ensure that this matching of speech input to controls will be successful. When speech recognition software processes speech input and looks for matches, it uses the so-called "accessible name" of controls, which is not necessarily identical to the visible label. For example, a  button following a search input field may contain the text "go" but use an invisible aria-label attribute with the value "search". Since aria-label takes precedence over the text included in the button, the accessible name of this button will be "search", not "go". The <a href="https://www.w3.org/TR/accname/">Accessible Name and Description Computation</a> algorithm defines .</p>
+			<p>Another example is links that contain visually hidden text. A visible link may just read "go home", the actual accessible name however may be "go to the home page" where CSS has been used to hide the portions around and in between the string "go home". This would create problems for speech input users when they say "click go home" to activate the link, because the entire string 'go home' does not match (parts of) the accessible name of that control.</p>
 			<p>When authors make sure that the visible label of a control (the text in a link or button, the value set for an input type=submit, or the label programmatically associated to another type of input) corresponds to the accessible name of that control, speech input users can be confident that their input is correctly interpreted.</p>
 			<p>Sometimes authors want to add additional text provide more context to a link or other control to make it more descriptive for users of assistive technologies. In this case, it is a recommended practice to add that text <strong>after</strong> the visible label so the accessible name starts with the visible label. In the case of the search button, the accessible name could be "search this site", in the case of the home link, the text could be "home - go to start page". In both cases, the hidden portion of the label may be supplied by different means, for example, as text accessibly hidden via CSS or by using the aria-label or the aria-labelledby attribute.</p>
 		</section>
 <section id="examples">
 	<h2>Examples</h2>
 	<section class="example">
-		<h3>Example 1: Link text equals the accessible name</h3>
+		<h3>Link text equals the accessible name</h3>
 			<p>In this example, the link text provides the accessible name:</p>		
 			<code>&lt;p&gt;Go to &lt;a href="code-of-conduct.html"&gt;Code of conduct&lt;/a&gt;&lt;/p&gt;</code>
 	</section>	
 	<section class="example">
-		<h3>Example 2: Link text matches the beginning of the accessible name</h3>
+		<h3>Link text matches the beginning of the accessible name</h3>
 		<p>Here, the link contains visible text and hidden link text. Both together make up the link's accessible name. The visible text comes first. The idea is to make the link more descriptive for users of assistive technologies. </p>	
 		<code>&lt;p&gt;Go to &lt;a href="code-of-conduct.html"&gt;Code of conduct &lt;span class="accessibly-hidden"&gt; of ACME Corporation&lt;/span&gt;&lt;/a&gt;&lt;p&gt;</code>
 	</section>	
 	<section class="example">
-		<h3>Example 3: A visible label provides the accessible name for a checkbox</h3>
+		<h3>A visible label provides the accessible name for a checkbox</h3>
 		<p>A checkbox is labelled by a programmatically linked and visible <code>label</code> element which thereby provides its accessible name:</p>	
 		<code>&lt;input type="checkbox" id="notification" name="notify" value="delays"&gt;
     		&lt;label for="notification"&gt;Notify me of delays&lt;/label&gt;</code>
 	</section>	
 	<section class="example">			
-		<h3>Example 4: The button text provides the accessible name</h3>
+		<h3>The button text provides the accessible name</h3>
 		<p>The visible text inside a <code>button</code> element makes up its accessible name:</p>	
 		<code>&lt;button&gt;Send&lt;/button&gt;</code>	
 	</section>	
 	<section class="example">		
-		<h3>Example 5: The visible button text matches the beginning of the accessible name</h3>
+		<h3>The visible button text matches the beginning of the accessible name</h3>
 		<p>The visible text inside a <code>button</code> element matches the beginning of accessible name, which also includes hidden text. The idea of the hidden text is to make the button more descriptive for users of assistive technologies.</p>	
 		<code>&lt;button&gt;Send &lt;span class="accessibly-hidden"&gt; Mail&lt;/span&gt;&lt;/button&gt;</code>			</section>	
 	<section class="example">				
-		<h3>Example 6: The button text matches the first part of a concatenated accessible name</h3>
+		<h3>The button text matches the first part of a concatenated accessible name</h3>
 		<p>The accessible name of an "order" button is concatenated via <code>aria-labelledby</code> (first referencing the button itself, then the contents of a text field, then the label of that text field). The accessible name is "order 3 things". The idea is to provide more programmatic context of the order for users of assistive technologies. Speech input users can still activate the button by speaking the command "click order" because the button text comes first.</p>
 		<code>&lt;p&gt;&lt;label id="thinglabel" for="thingnum"&gt;Things&lt;/label&gt;: &lt;input id="thingnum" type="text" value="3" /&gt;&lt;/p&gt;<br />
 		&lt;button id="compbtn" aria-labelledby="compbtn thingnum thinglabel"&gt;Order&lt;/button&gt;</code>
 		
-		<h4>Working example</h4>
+		<h4>Rendered example</h4>
 		<p><label id="thinglabel" for="thingnum">Things</label>: <input id="thingnum" type="text" value="3" /></p>
 <button id="compbtn" aria-labelledby="compbtn thingnum thinglabel">Order</button>
 	</section>
@@ -66,9 +67,9 @@
 			<h2>Tests</h2>
 			<section class="test-procedure">
 				<h3>Procedure</h3>
-				<p>For all controls with a visible label (e.g. link text, text in an image-link, button text, programmatically linked label, value of input), check that</p>
+				<p>For all controls with a visible label (e.g., link text, text in an image-link, button text, programmatically linked label, value of input), check that:</p>
 				<ol>
-					<li>The visible label is contained as exact string at the beginning of the accessible name of the control</li>
+					<li>The accessible name of the control contains the exact string of the visible label</li>
 				</ol>
 			</section>
 			<section class="test-results">
@@ -82,13 +83,13 @@
 			<section id="related">
 			<h2>Related Techniques</h2>
 			<ul>
-        <li><a href="https://www.w3.org/TR/WCAG20-TECHS/G131.html">G131: Providing descriptive labels</a></li>
-        <li><a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA7">ARIA7: Using aria-labelledby for link purpose</a></li>
-        <li><a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA8">ARIA8: Using aria-label for link purpose</a></li>
-        <li><a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA9">ARIA9: Using aria-labelledby to concatenate a label from several text nodes</a></li>
-				<li><a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA14">ARIA14: Using aria-label to provide an invisible label where a visible label cannot be used</a></li>
-        <li><a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA16">ARIA16: Using aria-labelledby to provide a name for user interface controls</a></li>
-        <li><a href="https://www.w3.org/TR/WCAG20-TECHS/SCR30.html">SCR30: Using scripts to change the link text</a></li>
+				<li><a href="https://www.w3.org/TR/WCAG20-TECHS/G131.html">G131: Providing descriptive labels</a></li>
+				<li><a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA7">ARIA7: Using aria-labelledby for link purpose</a></li>
+				<li><a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA8">ARIA8: Using aria-label for link purpose</a></li>
+				<li><a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA9">ARIA9: Using aria-labelledby to concatenate a label from several text nodes</a></li>
+						<li><a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA14">ARIA14: Using aria-label to provide an invisible label where a visible label cannot be used</a></li>
+				<li><a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA16">ARIA16: Using aria-labelledby to provide a name for user interface controls</a></li>
+				<li><a href="https://www.w3.org/TR/WCAG20-TECHS/SCR30.html">SCR30: Using scripts to change the link text</a></li>
 			</ul>
 		</section>
 	</body>
