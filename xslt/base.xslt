@@ -48,6 +48,7 @@
 			<xsl:when test="starts-with($link/@href, 'https://w3c.github.io/techniques/')"><xsl:value-of select="true()"/></xsl:when>
 			<xsl:when test="starts-with($link/@href, 'https://rawgit.com/w3c/wcag/') and contains($link/@href, '/techniques/')"><xsl:value-of select="true()"/></xsl:when>
 			<xsl:when test="starts-with($link/@href, '../') and contains($link/@href, '/techniques/')"><xsl:value-of select="true()"/></xsl:when>
+			<xsl:when test="matches($link/@href, '^[A-Z]+\d+(.html)?$')"><xsl:value-of select="true()"/></xsl:when>
 			<xsl:otherwise><xsl:value-of select="false()"/></xsl:otherwise>
 		</xsl:choose>
 	</xsl:function>
@@ -100,5 +101,7 @@
 	<xsl:template match="html:*[@class = 'generate-date']">
 		<xsl:value-of select="format-date(current-date(), '[D] [MNn] [Y]')"/>
 	</xsl:template>
+	
+	<xsl:template match="html:link[@href][contains(@href, 'css/editors.css')]"/>
 	
 </xsl:stylesheet>
