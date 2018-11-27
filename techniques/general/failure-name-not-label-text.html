@@ -14,11 +14,11 @@
 		</section>
 		<section id="applicability">
 			<h2>When to Use</h2>
-			<p>This Failure applies to all web technologies that include interactive controls (such as links or form inputs)</p>
+			<p>This Failure applies to all technologies that include interactive controls (such as links or form inputs)</p>
 		</section>
 		<section id="description">
 			<h2>Description</h2>
-			<p>The objective of this Failure is to capture situations where speech input users cannot operate web content reliably.</p>
+			<p>The objective of this Failure is to describe situations where speech input users cannot reliably speak the name of a control because it differs from the visible label.</p>
 			<p>When speech input users interact with a web page, they usually speak a command followed by the reference to some visible label (like the text in a button or a link, or the text labelling some input). If the visible label does not match the accessible name of the control, speech users may be unable to directly activate that control.</p>	
 			<p>There are techniques that go beyond the visible label text of elements. The idea is to provide more context for users of assistive technologies to whom the visible context may not be available. Examples are the use of accessible hidden (e.g., offscreen-positioned) text, the use of the aria-label attribute to overwrite the label text, or the use of the aria-labelledby attribute to compose a label text from one or more strings strings on the page.</p>
 			<p>When the use of these techniques results in an accessible name in which the exact string of the visible label does not occur in the accessible name, speech users may be unable to activate that control. Refer to the <a href="https://www.w3.org/TR/accname/">Accessible Name and Description Computation</a> algorithm to work out the order of precendence in computing the accessible name of a control.</p>
@@ -37,8 +37,8 @@
       </section>
       
       <section class="example">
-				<h3>Invisible link text part of the accessible name</h3>
-				<p>A download link reads "Download specification" but there is invisible link text so that the accessible name of that link is "Download gizmo specification". While the visble label text is contained in the accessible name, there is no string match which may prevent the link from being activated by speech input.</p>
+				<h3>Invisible link text disrupts visible label text string in accessible name</h3>
+				<p>A download link reads "Download specification" but there is invisible link text so that the accessible name of that link is "Download gizmo specification". While the visible label text is contained in the accessible name, there is no string match which may prevent the link from being activated by speech input.</p>
         <pre><code>
         &lt;a href="#"&gt;Download &lt;span class="accessibly-hidden"&gt;gizmo&lt;/span&gt; specification&lt;/a&gt;
         </code></pre>
@@ -60,16 +60,17 @@
 			<h2>Tests</h2>
 			<section class="test-procedure">
 				<h3>Procedure</h3>
-				<p>For all controls with a visible label (e.g. link text, button text, programmatically linked label, value of input, images in links with text), check that</p>
+				<p>For all controls with a visible label (e.g. link text, button text, programmatically linked label, images in links with text), check that</p>
 				<ol>
-					<li>The visible label string does not match the accessible name of the control, or</li>
-					<li>The visible label string is included in the accessible name of the control, but parts of the string are in a different order or interspersed with other words</li>
+					<li>The accessible name is the same as the visible label.</li>
+          <li>The accessible name contains a match for the string of the visible label</li>
+        </li>
 				</ol>
 			</section>
 			<section class="test-results">
 				<h3>Expected Results</h3>
 				<ul>
-					<li>If step #1 or step #2 are true, the content fails the Success Criterion.</li>
+					<li>If checks #1 and #2 are false, the content fails the Success Criterion.</li>
 				</ul>
 			</section>
 		</section>
