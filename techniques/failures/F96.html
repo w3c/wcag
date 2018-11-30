@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charset="UTF-8" />
+      <title>F96: Failure due to "accessible name" not containing the visible label text</title>
+      <link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="F95">Previous Technique: F95</a></li>
+            <li><a href="../flash/FLASH1">Next Technique: FLASH1</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#related">Related Techniques</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Failure due to "accessible name" not containing the visible label text</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>All technologies that include interactive controls (such as links or form inputs).</p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/label-in-name">Success Criterion 2.5.3: Label in Name</a> (Failure)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this Failure is to describe situations where speech input users cannot
+               reliably speak the name of a control because it differs from the visible label.
+            </p>
+            <p>When speech input users interact with a web page, they usually speak a command followed
+               by the reference to some visible label (like the text in a button or a link, or the
+               text labelling some input). If the visible label does not match the accessible name
+               of the control, speech users may be unable to directly activate that control.
+            </p>
+            <p>There are techniques that go beyond the visible label text of elements. The idea is
+               to provide more context for users of assistive technologies to whom the visible context
+               may not be available. Examples are the use of accessible hidden (e.g., offscreen-positioned)
+               text, the use of the aria-label attribute to overwrite the label text, or the use
+               of the aria-labelledby attribute to compose a label text from one or more strings
+               strings on the page.
+            </p>
+            <p>When the use of these techniques results in an accessible name in which the exact
+               string of the visible label does not occur in the accessible name, speech users may
+               be unable to activate that control. Refer to the <a href="https://www.w3.org/TR/accname/">Accessible Name and Description Computation</a> algorithm to work out the order of precedence in computing the accessible name of
+               a control.
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-mismatch-of-visible-button-text-and-accessible-name-supplied-via-aria-label">
+               <h3>Example 1: Mismatch of visible button text and accessible name supplied via aria-label</h3>
+               <p>The text in a search button reads "Go" but the accessible name provided in an aria-label
+                  attribute is "Find in this site"
+               </p><pre><code>
+        &lt;button id="sitesearch" aria-label="Find in this site"&gt;Go&lt;/button&gt;
+        </code></pre></section>
+            <section class="example" id="example-2-invisible-link-text-disrupts-visible-label-text-string-in-accessible-name">
+               <h3>Example 2: Invisible link text disrupts visible label text string in accessible name</h3>
+               <p>A download link reads "Download specification" but there is invisible link text so
+                  that the accessible name of that link is "Download gizmo specification". While the
+                  visible label text is contained in the accessible name, there is no string match which
+                  may prevent the link from being activated by speech input.
+               </p><pre><code>
+        &lt;a href="#"&gt;Download &lt;span class="accessibly-hidden"&gt;gizmo&lt;/span&gt; specification&lt;/a&gt;
+        </code></pre></section>
+            <section class="example" id="example-3-input-with-a-hidden-label-carrying-text-that-differs-from-the-input's-value-attribute">
+               <h3>Example 3: Input with a hidden label carrying text that differs from the input's value
+                  attribute
+               </h3>
+               <p>An input of type="submit" with the value="search" which is exposed as visible label
+                  of the input, has a programmatically linked and accessibly hidden label enclosing
+                  the text "Find in this site" referenced by aria-labelledby. Because aria-labelledby
+                  takes precedence over the value of the input, the accessible name of the input in
+                  most browser / screen reader combinations will be "Find in this site". Speech users
+                  speaking a command such as "Click search" will be unable to activate the input.
+               </p><pre><code>
+        &lt;div id="hidden-label"&gt;Find in this site&lt;/div&gt;
+        &lt;input type="submit" aria-labelledby="hidden-label" value="search"&gt;
+        </code></pre></section>
+         </section>
+         <section id="related">
+            <h2>Related Techniques</h2>
+            <ul>
+               
+               <li><a href="https://w3c.github.io/wcag/techniques/general/G131">G131: Providing descriptive labels</a></li>
+               
+               <li><a href="https://w3c.github.io/wcag/techniques/aria/ARIA7">ARIA7: Using aria-labelledby for link purpose</a></li>
+               
+               <li><a href="https://w3c.github.io/wcag/techniques/aria/ARIA8">ARIA8: Using aria-label for link purpose</a></li>
+               
+               <li><a href="https://w3c.github.io/wcag/techniques/aria/ARIA9">ARIA9: Using aria-labelledby to concatenate a label from several text nodes</a></li>
+               				
+               <li><a href="https://w3c.github.io/wcag/techniques/aria/ARIA14">ARIA14: Using aria-label to provide an invisible label where a visible label cannot be used</a></li>
+               
+               <li><a href="https://w3c.github.io/wcag/techniques/aria/ARIA16">ARIA16: Using aria-labelledby to provide a name for user interface controls</a></li>
+               
+               <li><a href="https://w3c.github.io/wcag/techniques/client-side-script/SCR30">SCR30: Using scripts to change the link text</a></li>
+               			
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="test-procedure">
+               <h3>Procedure</h3>
+               <p>For all controls with a visible label (e.g., link text, button text, programmatically
+                  linked label, images in links with text), check that:
+               </p>
+               <ol>
+                  					
+                  <li>The accessible name is the same as the visible label.</li>
+                  
+                  <li>The accessible name contains a match for the string of the visible label.</li>
+                  				
+               </ol>
+            </section>
+            <section class="test-results">
+               <h3>Expected Results</h3>
+               <ul>
+                  					
+                  <li>If checks #1 and #2 are false, the content fails the Success Criterion.</li>
+                  				
+               </ul>
+            </section>
+         </section>
+      </main>
+   </body>
+</html>
