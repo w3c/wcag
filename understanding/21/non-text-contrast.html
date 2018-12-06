@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<title>Understanding Non-text Contrast</title>
-		<link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove" />
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove" />
 	</head>
 	<body>
 		<h1>Understanding Non-text Contrast</h1>
@@ -20,29 +20,36 @@
 
 				<p>For active controls on the page, such as buttons and form fields, any visual information provided that is necessary for a user to identify that a control exists and how to operate it must have sufficient contrast with the adjacent background. Also, any visual effects implemented which are necessary to indicate state, such as whether a component is selected or focused, must also ensure that the information used to identify the control in that state has a minimum 3:1 contrast ratio.</p>
         
-				<p class="note">In cases where the state of a user interface component is apparent without relying on visual information, this Success Criterion does not require that visual information meet the 3:1 contrast ratio. For example, the Active state on a link does not rely on the visual information because the user is actively clicking on the component at the same time.</p>
+				<p>This Success Criterion does not require that all states are differentiated within the component. With the exception of focus indicators, links and buttons are not required to differentiate states such as hover. Controls which convey the value of an input, such as checkboxes, sliders, and radio buttons must meet the contrast requirement for those states. For example, the tick in a checkbox must meet the contrast requirement.</p>
 
-				<figure>
-					<!-- example from https://getbootstrap.com/docs/4.1/components/buttons/ -->
-					<img alt="Two buttons on a white background. The first has a blue border to indicate its boundary, white internal background and blue text. The second adds a thick blue-grey outer border to show focus." src="img/first-button-example.png" /> 
-					<figcaption>An active control showing the visual boundary by default (color of <code>#007bff</code> on white), and the focus indicator</figcaption>
-				</figure>
+				<h4>Boundaries</h4>
 				
 				<p>This success criteria does not require that controls have a visual boundary indicating the hit area, but if the visual indicator of the control is the only way to identify the control, then that indicator must have sufficient contrast. If text (or an icon) within a button is visible and there is no visual indication of the hit area, or the visual indication does not provide the only indication, then there is no contrast requirement beyond the text contrast (<a href="contrast-minimum">1.4.3 Contrast (Minimum)</a>) or icon contrast covered by the Graphical Objects part of this Success Criteria. Note that for people with cognitive disabilities it is recommended to delineate the boundary of controls to aid in the recognition of controls and therefore the completion of activities.</p>
-        
-				<p>The visual focus indicator for a component must have sufficient contrast against the adjacent background when the component is focused, except where the appearance of the component is determined by the user agent and not modified by the author.</p>
-
+				
 				<figure>
-					<img alt="Two buttons, the first with no visual indicator except text saying 'button'. The second is the same but with an added grey border." src="img/minimal-button.png" /> 
-					<figcaption>An active control without a visual boundary, but with a focus indicator when focused</figcaption>
+						<img alt="Two buttons, the first with no visual indicator except text saying 'button'. The second is the same but with an added grey border." src="img/minimal-button.png" /> 
+						<figcaption>An active control without a visual boundary, but with a focus indicator when focused</figcaption>
 				</figure>
+
+				<h4>Focus indicator and Use of Color</h4>
 
 				<p>The <a href="use-of-color">Use of Color</a> success criteria addresses changing <strong>only the color</strong> of an object (or text) without otherwise altering the object's form. If a control's indicator of state (e.g., button background) varies only by color this is acceptable if the luminosity contrast ratio between the colors of the states differ by at least 3:1, or if there is another indicator of state. For example, a text link that only differs from adjacent text using color where there is no other visual indication that the text is linked (i.e., the link underline is removed) needs to ensure that the link color meets the 3:1 luminosity contrast ratio relative to the non-linked text color in order to meet the related Success Criteria 1.4.1.</p>
 
+				<p>The visual focus indicator for a component <em>must</em> have sufficient contrast against the adjacent background when the component is focused, except where the appearance of the component is determined by the user agent and not modified by the author. If the focus state relies on color (e.g., changing <em>only</em> the background color of a button), then changing from one color to another that has at least a 3:1 contrast ratio is a method of meeting <a href="../20/focus-visible.html">2.4.7 Focus Visible</a>.</p>
+
 				<figure>
-					<img alt="Two buttons, the first has a blue outline and inner white background with blue text. The second has a blue background with white text, reversing the color scheme." src="img/button-example2.png" /> 
-					<figcaption>An active control with a visual boundary, and a focus (or other) state that is highlighted with a contrasting change of color</figcaption>
+						<img alt="Two buttons, the first has a blue outline and inner white background with blue text. The second has a blue background with white text, reversing the color scheme." src="img/button-example2.png" /> 
+						<figcaption>An active control with a visual boundary, and a focus (or other) state that is highlighted with a contrasting change of color</figcaption>
 				</figure>
+
+				<p>Another method to provide a visual focus indicator that requires contrast is changing the shape of the control. For example, if a button has a dark border the focus states could add a dark outline, effectively changing the shape of the component. This method does not require contrast with both the component and the background, because the shape of the component has changed.</p>
+
+				<figure>
+						<!-- example from https://getbootstrap.com/docs/4.1/components/buttons/ -->
+						<img alt="Two buttons on a white background. The first has a blue border to indicate its boundary, white internal background and blue text. The second adds a thick blue-grey outer border to show focus." src="img/first-button-example.png" /> 
+						<figcaption>An active control showing the visual boundary by default, and the focus indicator which changes the shape of the component</figcaption>
+				</figure>
+
 
 				<section>
 					<h4>Active User Interface Component Examples</h4>
@@ -276,8 +283,8 @@
 					<ul>
 						<li>Identify each user-interface component (link, button, form control) on the page and:
 							<ul>
-								<li>Identify the visual (non-text) indicators of the component in the default (on page load) state and test the contrast ratio against the adjacent colors.</li>
-								<li>Identify the state indicators and test the contrast ratio against the adjacent colors.</li>
+								<li>Identify the visual (non-text) indicators of the component that are required to identify that a control exists. In the default (on page load) state, test the contrast ratio against the adjacent colors.</li>
+								<li>Identify the state indicators that are required for operation (focus-state, and functional states such as checked / selected) and test the contrast ratio against the adjacent colors.</li>
 							</ul>
 						</li>
 						<li>Identify each graphic on the page that includes information required for understanding the content (i.e. excluding graphics which have visible text for the same information, or are decorative) and:
@@ -397,6 +404,7 @@
 				<h3>Failures</h3>
 				<ul>
 					<li><a href="https://www.w3.org/WAI/WCAG21/Techniques/failures/F78" class="general">F78: Failure of Success Criterion 2.4.7 due to styling element outlines and borders in a way that removes or renders non-visible the visual focus indicator</a></li>
+					<li>@@ A component that only changes the focus state by changing colour without sufficient contrast (may be better placed under 2.4.7?)</li>
 				</ul>
 			</section>
 		</section>
