@@ -11,9 +11,15 @@
 	
 	<xsl:template match="techniques">
 		<xsl:result-document href="toc.html" method="xhtml">
-			<xsl:apply-templates select="technology">
-				<xsl:sort select="@name"/>
-			</xsl:apply-templates>
+			<nav id="toc">
+				<h2 class="introductory" id="techniques-pages">
+					Techniques
+					<!-- <span class="permalink"><a href="#toc" aria-label="Permalink for Techniques" title="Permalink for Techniques"><span>§</span></a></span> -->
+				</h2>
+				<xsl:apply-templates select="technology">
+					<xsl:sort select="@name"/>
+				</xsl:apply-templates>
+			</nav>
 		</xsl:result-document>
 	</xsl:template>
 	

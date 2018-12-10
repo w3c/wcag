@@ -9,7 +9,10 @@
 	<xsl:template match="guidelines">
 		<xsl:result-document href="toc.html" method="xhtml">
 			<nav id="toc">
-				<h2 class="introductory" id="understanding-pages">Understanding Pages</h2>
+				<h2 class="introductory" id="understanding-pages">
+					Understanding Pages
+					<!-- <span class="permalink"><a href="#toc" aria-label="Permalink for Understanding Pages" title="Permalink for Understanding Pages"><span>§</span></a></span> -->
+				</h2>
 				<ol class="toc">
 					<xsl:apply-templates select="principle | understanding | guideline | success-criterion"/>
 				</ol>
