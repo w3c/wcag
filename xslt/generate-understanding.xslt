@@ -196,7 +196,7 @@
 				<xsl:when test="version = 'WCAG21'">21/</xsl:when>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:result-document href="{$output.dir}/{file/@href}.html" encoding="utf-8" exclude-result-prefixes="#all" indent="yes" method="xhtml" omit-xml-declaration="yes">
+		<xsl:result-document href="{$output.dir}/{file/@href}.html" encoding="utf-8" exclude-result-prefixes="#all" include-content-type="no" indent="yes" method="xhtml" omit-xml-declaration="yes">
 			<xsl:apply-templates select="document(resolve-uri(concat(file/@href, '.html'), concat($base.dir, $subpath)))">
 				<xsl:with-param name="meta" select="." tunnel="yes"/>
 			</xsl:apply-templates>

@@ -6,6 +6,8 @@
 	
 	<xsl:param name="base.dir">file:///C:/Documents/code/GitHub/w3c/wcag/guidelines/</xsl:param>
 	
+	<xsl:output method="xhtml" indent="yes" encoding="UTF-8" include-content-type="no" omit-xml-declaration="yes"/>
+	
 	<xsl:include href="base.xslt"/>
 	
 	<xsl:template match="node()|@*">
