@@ -14,26 +14,43 @@
       background-color: black;
       color: white;
       padding: 1em 2em;
-      transition: all 2s ease-out;
     }
 
     button:focus,
     button:hover {
-      background-color: white;
-      color: black;
+      animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    @keyframes shake {
+      10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+      }
+      
+      20%, 80% {
+        transform: translate3d(2px, 0, 0);
+      }
+
+      30%, 50%, 70% {
+        transform: translate3d(-4px, 0, 0);
+      }
+
+      40%, 60% {
+        transform: translate3d(4px, 0, 0);
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-
-      button {
-        transition: none;
+      button:focus,
+      button:hover {
+        animation: none;
       }
     }
   </style>
 </head>
 <body>
 <h1>Motion triggered by user interaction</h1>
-<p>This example demonstrates hover motion on a button that is disabled in the 'prefers-reduced-motion' CSS Media Query</p>
+<p>This example demonstrates hover (and focus) motion on a button that is disabled when the 'prefers-reduced-motion' CSS Media Query is set to 'reduce', and the user-agent has that option set.</p>
 <p>
   <button>Motion disabled when 'prefers-reduced-motion' Media Query triggered</button>
 </p>
