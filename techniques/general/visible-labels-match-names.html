@@ -18,12 +18,10 @@
 		</section>
 		<section id="description">
 			<h2>Description</h2>
-			<p>The objective of this technique is to ensure that speech input users can operate web content reliably. The secondary objective is to prevent speech input users from accidentally activating controls. When the accessible names of controls are visually hidden, speech users may accidentally activate these controls when they happen to speak words that map to these hidden accessible names.</p>
-			<p>When speech input users interact with a web page, they usually speak a command followed by the reference to some visible label (like the text in a button or a link, or the text labelling some input). For example, they may speak "click search" to activate a search button. The speech recognition software can then process the input, match the name of the label to the control, and carry out the command (here, activate the search button).</p>
-			<p>This Technique aims to ensure that this matching of speech input to controls will be successful. When speech recognition software processes speech input and looks for matches, it uses the so-called "accessible name" of controls, which is not necessarily identical to the visible label. For example, a  button following a search input field may contain the text "go" but use an invisible aria-label attribute with the value "search". Since aria-label takes precedence over the text included in the button, the accessible name of this button will be "search", not "go". The <a href="https://www.w3.org/TR/accname/">Accessible Name and Description Computation</a> algorithm defines .</p>
-			<p>Another example is links that contain visually hidden text. A visible link may just read "go home", the actual accessible name however may be "go to the home page" where CSS has been used to hide the portions around and in between the string "go home". This would create problems for speech input users when they say "click go home" to activate the link, because the entire string 'go home' does not match (parts of) the accessible name of that control.</p>
-			<p>When authors make sure that the visible label of a control (the text in a link or button, the value set for an input type=submit, or the label programmatically associated to another type of input) corresponds to the accessible name of that control, speech input users can be confident that their input is correctly interpreted.</p>
-			<p>Sometimes authors want to add additional text provide more context to a link or other control to make it more descriptive for users of assistive technologies. In this case, it is a recommended practice to add that text <strong>after</strong> the visible label so the accessible name starts with the visible label. In the case of the search button, the accessible name could be "search this site", in the case of the home link, the text could be "home - go to start page". In both cases, the hidden portion of the label may be supplied by different means, for example, as text accessibly hidden via CSS or by using the aria-label or the aria-labelledby attribute.</p>
+			<p>The objective of this technique is to ensure that speech input users can operate web content reliably.</p>
+			<p>When speech input users interact with a web page, they usually speak a command followed by the reference to some visible label (like the text in a button or a link, or the text labelling some input). For example, they may speak "click search" to activate a search button.</p>
+			<p>When speech recognition software processes speech input and looks for matches, it uses the "accessible name" of controls, which is not necessarily identical to the visible label. For example, a  button following a search input field may contain the text "go" but use an invisible <code>aria-label</code> attribute with the value "search". Since aria-label takes precedence over the text included in the button, the accessible name of this button will be "search", not "go". The <a href="https://www.w3.org/TR/accname/">Accessible Name and Description Computation</a> defines how the accessible name is created.</p>
+			<p>When authors make sure that the visible label of a control (the text in a link or button, the value set for an <code>input</code> with <code>type=&quot;submit&quot;</code>, or the label programmatically associated to another type of input) corresponds to the accessible name of that control, speech input users can be confident that their input is correctly interpreted.</p>
 		</section>
 <section id="examples">
 	<h2>Examples</h2>
@@ -51,7 +49,13 @@
 	<section class="example">		
 		<h3>The visible button text matches the beginning of the accessible name</h3>
 		<p>The visible text inside a <code>button</code> element matches the beginning of accessible name, which also includes hidden text. The idea of the hidden text is to make the button more descriptive for users of assistive technologies.</p>	
-		<code>&lt;button&gt;Send &lt;span class="accessibly-hidden"&gt; Mail&lt;/span&gt;&lt;/button&gt;</code>			</section>	
+		<code>&lt;button&gt;Send &lt;span class="accessibly-hidden"&gt; Mail&lt;/span&gt;&lt;/button&gt;</code>			
+	</section>
+	<section class="example">		
+		<h3>The visible button text matches the end of the accessible name - Japanese</h3>
+		<p>The visible text inside a <code>button</code> element matches the end of accessible name, which also includes hidden text. The order of words varies for some languages.</p>
+		<code lang="ja">&lt;button&gt;メールを&lt;span class="accessibly-hidden"&gt;送信する&lt;/span&gt;&lt;/button&gt;</code>			
+	</section>	
 	<section class="example">				
 		<h3>The button text matches the first part of a concatenated accessible name</h3>
 		<p>The accessible name of an "order" button is concatenated via <code>aria-labelledby</code> (first referencing the button itself, then the contents of a text field, then the label of that text field). The accessible name is "order 3 things". The idea is to provide more programmatic context of the order for users of assistive technologies. Speech input users can still activate the button by speaking the command "click order" because the button text comes first.</p>
@@ -69,7 +73,7 @@
 				<h3>Procedure</h3>
 				<p>For all controls with a visible label (e.g., link text, text in an image-link, button text, programmatically linked label, value of input), check that:</p>
 				<ol>
-					<li>The accessible name of the control contains the exact string of the visible label</li>
+					<li>The accessible name of the control contains the same letters in the same order as the visible label.</li>
 				</ol>
 			</section>
 			<section class="test-results">
