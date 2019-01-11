@@ -44,12 +44,15 @@
 	<xsl:function name="wcag:is-technique-link" as="xs:boolean">
 		<xsl:param name="link"/>
 		<xsl:choose>
+			<!--
 			<xsl:when test="$link/@class and index-of(('aria', 'client-side-script', 'css', 'failure', 'failures', 'flash', 'general', 'html', 'pdf', 'server-side-script', 'silverlight', 'smil', 'text', 'technqiues'), $link/@class)"><xsl:value-of select="true()"/></xsl:when>
 			<xsl:when test="starts-with($link/@href, 'https://www.w3.org/WAI/WCAG21/Techniques/')"><xsl:value-of select="true()"/></xsl:when>
 			<xsl:when test="starts-with($link/@href, 'https://w3c.github.io/techniques/')"><xsl:value-of select="true()"/></xsl:when>
 			<xsl:when test="starts-with($link/@href, 'https://rawgit.com/w3c/wcag/') and contains($link/@href, '/techniques/')"><xsl:value-of select="true()"/></xsl:when>
 			<xsl:when test="starts-with($link/@href, '../') and contains($link/@href, '/techniques/')"><xsl:value-of select="true()"/></xsl:when>
-			<xsl:when test="matches($link/@href, '[A-Z]+\d+(.html)?$')"><xsl:value-of select="true()"/></xsl:when>
+			-->
+			<xsl:when test="(starts-with($link/@href, 'https://www.w3.org/WAI/WCAG21/Techniques/') or starts-with($link/@href, 'https://w3c.github.io/techniques/') or starts-with($link/@href, 'https://rawgit.com/w3c/wcag/') or starts-with($link/@href, '../')) and matches($link/@href, '[A-Z]+\d+(.html)?$')"><xsl:value-of select="true()"/></xsl:when>
+			<xsl:when test="matches($link/@href, '^([a-z\-]+/)?[A-Z]+\d+(.html)?$')"><xsl:value-of select="true()"/></xsl:when>
 			<xsl:otherwise><xsl:value-of select="false()"/></xsl:otherwise>
 		</xsl:choose>
 	</xsl:function>
