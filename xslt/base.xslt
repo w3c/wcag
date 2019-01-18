@@ -108,4 +108,10 @@
 	
 	<xsl:template match="html:link[@href][contains(@href, 'css/editors.css')]"/>
 	
+	<xsl:template match="html:a[not(@href)]" mode="#all">
+		<xsl:param name="meta" tunnel="yes"/>
+		<xsl:variable name="dfn" select="lower-case(.)"/>
+		<a href="{$loc.guidelines}#{$meta/ancestor::guidelines/term[name = $dfn]/id}" target="terms"><xsl:value-of select="."/></a>
+	</xsl:template>
+	
 </xsl:stylesheet>
