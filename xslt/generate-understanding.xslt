@@ -155,7 +155,7 @@
 	
 	<xsl:template match="html:p" mode="sc-info">
 		<xsl:param name="sc-info"/>
-		<p><xsl:apply-templates select="$sc-info"/><xsl:apply-templates mode="sc-info"/></p>
+		<p><xsl:apply-templates select="@*"/><xsl:apply-templates select="$sc-info"/><xsl:apply-templates mode="sc-info"/></p>
 	</xsl:template>
 	
 	<xsl:template match="html:a[starts-with(@href, '#')]" mode="sc-info">
