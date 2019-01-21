@@ -166,8 +166,13 @@
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:variable name="termrefs" select="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]"/>
 		<xsl:if test="$termrefs">
-			<xsl:variable name="termids" as="node()*">
+			<xsl:variable name="termrefs-canonical">
 				<xsl:for-each select="$termrefs">
+					<xsl:copy-of select="$meta/ancestor::guidelines/term[name = lower-case(normalize-space(current()))]/name[1]"/>
+				</xsl:for-each>
+			</xsl:variable>
+			<xsl:variable name="termids" as="node()*">
+				<xsl:for-each select="distinct-values($termrefs-canonical/name)">
 					<xsl:copy-of select="$meta/ancestor::guidelines/term[name = current()]"/>
 				</xsl:for-each>
 			</xsl:variable>
