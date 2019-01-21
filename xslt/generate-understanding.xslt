@@ -122,6 +122,9 @@
 					<li><a href="#advisory">Advisory Techniques</a></li>
 					<li><a href="#success-criteria">Success Criteria</a></li>
 				</xsl:if>
+				<xsl:if test="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]">
+					<li><a href="#key-terms">Key Terms</a></li>
+				</xsl:if>
 			</ul>
 		</nav>
 	</xsl:template>
