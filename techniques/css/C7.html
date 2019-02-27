@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
    <head>
       <meta charset="UTF-8" />
-      <title>C7: Using CSS to hide a portion of the link text </title>
+      <title>C7: Using CSS to hide a portion of the link text</title>
       <link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/base" />
       <link rel="stylesheet" type="text/css" href="../techniques.css" />
       <link rel="stylesheet" type="text/css" href="../slicenav.css" />
@@ -28,7 +28,7 @@
             <li><a href="#tests">Tests</a></li>
          </ul>
       </nav>
-      <h1>Using CSS to hide a portion of the link text </h1>
+      <h1>Using CSS to hide a portion of the link text</h1>
       <section id="important-information">
          <h2>Important Information about Techniques</h2>
          <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
@@ -61,11 +61,13 @@
             </p>
             <p>This technique works by creating a CSS selector to target text that is to be hidden.
                The rule set for the selector places the text to be hidden in a 1-pixel box with overflow
-               hidden, and positions the text outside of the viewport. This ensures the text does
-               not display on screen but remains accessible to assistive technologies such as screen
-               readers and braille displays. Note that the technique does not use visibility:hidden
-               or display:none properties, since these can have the unintentional effect of hiding
-               the text from assistive technology in addition to preventing on-screen display.
+               hidden. This ensures the text does not display on screen but remains accessible to
+               assistive technologies such as screen readers and braille displays. Note that the
+               technique does not use visibility:hidden or display:none properties, since these can
+               have the unintentional effect of hiding the text from assistive technology in addition
+               to preventing on-screen display.
+            </p>
+            <p>This technique is <strong>not</strong> a method for hiding complete links, only a section of text within a link. The <a href="#resources">resources</a> below include methods for hiding and showing links aimed at screenreader users.
             </p>
             <div class="note">
                <div role="heading" class="note-title marker" aria-level="3">Note</div>
@@ -88,80 +90,49 @@
          </section>
          <section id="examples">
             <h2>Examples</h2>
-            <p>The following examples use the CSS selector and rule set below:</p><pre><code>a span {
-height: 1px;
-width: 1px;
-position: absolute;
-overflow: hidden;
-top: -10px;
+            <p>The following examples use the CSS selector and rule set below:</p><pre><code>.visually-hidden {
+   clip-path: inset(100%);
+   clip: rect(1px, 1px, 1px, 1px);
+   height: 1px;
+   overflow: hidden;
+   position: absolute;
+   white-space: nowrap;
+   width: 1px;
 }</code></pre><section class="example" id="example-1">
                <h3>Example 1</h3>
                <p>This example describes a news site that has a series of short synopsis of stories
                   followed by a link that says "full story". Hidden link text describes the purpose
                   of the link.
-               </p><pre xml:space="preserve">
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
-  "https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt; 
-&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"&gt; 
-&lt;head&gt;
-&lt;meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" /&gt; 
-&lt;link href="access.css" rel="stylesheet" type="text/css" /&gt;
-&lt;title&gt;Hidden Link Text&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt; 
+               </p><pre><code>
 &lt;p&gt;Washington has announced plans to stimulate economic growth.
-  &lt;a href="#"&gt; &lt;span&gt;Washington stimulates economic growth &lt;/span&gt;
-  Full Story&lt;/a&gt;&lt;/p&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</pre></section>
+  &lt;a href="#"&gt;&lt;span class="visually-hidden"&gt;Washington stimulates economic growth &lt;/span&gt;
+  Full Story&lt;/a&gt;&lt;/p&gt;</code></pre></section>
             <section class="example" id="example-2">
                <h3>Example 2</h3>
                <p>This example describes a resource that has electronic books in different formats.
                   The title of each book is followed by links that say "HTML" and "PDF." Hidden text
                   describes the purpose of each link.
-               </p><pre xml:space="preserve">
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
- "https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt; 
-&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"&gt; 
-&lt;head&gt;
-&lt;meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" /&gt; 
-&lt;link href="access.css" rel="stylesheet" type="text/css" /&gt;
-&lt;title&gt;Hidden Link Text &lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;dl&gt;
+               </p><pre><code>&lt;dl&gt;
 &lt;dt&gt;Winnie the Pooh &lt;/dt&gt;
    &lt;dd&gt;&lt;a href="winnie_the_pooh.html"&gt;
-      &lt;span&gt;Winnie the Pooh &lt;/span&gt;HTML&lt;/a&gt;&lt;/dd&gt;
+      &lt;span class="visually-hidden"&gt;Winnie the Pooh &lt;/span&gt;HTML&lt;/a&gt;&lt;/dd&gt;
    &lt;dd&gt;&lt;a href="winnie_the_pooh.pdf"&gt;
-         &lt;span&gt;Winnie the Pooh &lt;/span&gt;PDF&lt;/a&gt;&lt;/dd&gt;
+         &lt;span class="visually-hidden"&gt;Winnie the Pooh &lt;/span&gt;PDF&lt;/a&gt;&lt;/dd&gt;
 &lt;dt&gt;War and Peace&lt;/dt&gt;
     &lt;dd&gt;&lt;a href="war_and_peace.html"&gt;
-      &lt;span&gt;War and Peace &lt;/span&gt;HTML&lt;/a&gt;&lt;/dd&gt; 
+      &lt;span class="visually-hidden"&gt;War and Peace &lt;/span&gt;HTML&lt;/a&gt;&lt;/dd&gt; 
     &lt;dd&gt;&lt;a href="war_and_peace.pdf"&gt;
-      &lt;span&gt;War and Peace &lt;/span&gt;PDF&lt;/a&gt;&lt;/dd&gt;
-&lt;/dl&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</pre></section>
+      &lt;span class="visually-hidden"&gt;War and Peace &lt;/span&gt;PDF&lt;/a&gt;&lt;/dd&gt;
+&lt;/dl&gt;</code></pre></section>
          </section>
          <section id="resources">
             <h2>Resources</h2>
             <p>Resources are for information purposes only, no endorsement implied.</p>
             <ul>
                
-               <li>
-                  <a href="http://www.rnib.org.uk/blogs/expert-series?Name=Hidden%20barriers">Hidden barriers - out of sight</a>
-                  
-               </li>
+               <li><a href="https://developer.paciellogroup.com/blog/2012/05/html5-accessibility-chops-hidden-and-aria-hidden/">HTML5 Accessibility Chops: hidden and aria-hidden</a></li>
                
-               <li>
-                  <a href="http://webaim.org/techniques/css/invisiblecontent/">CSS in Action: Invisible Content Just for Screen Reader Users</a>
-                  
-               </li>
+               <li><a href="http://webaim.org/techniques/css/invisiblecontent/">CSS in Action: Invisible Content Just for Screen Reader Users</a></li>
                
             </ul>
          </section>
@@ -169,8 +140,7 @@ top: -10px;
             <h2>Related Techniques</h2>
             <ul>
                
-               <li><a href="https://w3c.github.io/wcag/techniques/general/G91">G91: Providing link text that describes the purpose of a link</a></li>
-               
+               <li><a href="https://w3c.github.io/wcag/techniques/general/G91">G91: Providing link text that describes the purpose of a link</a></li>      
                
                <li><a href="https://w3c.github.io/wcag/techniques/html/H33">H33: Supplementing link text with the title attribute</a></li>
                
@@ -181,19 +151,15 @@ top: -10px;
             <section class="procedure" id="procedure">
                <h3>Procedure</h3>
                
-               <p>For each anchor element using this technique:
-                  							
-               </p>
+               <p>For each anchor element using this technique:</p>
                
                <ol>
                   
-                  <li>Check that an element has been defined that confines its display to a pixel and positions
-                     text outside the display with overflow hidden
+                  <li>Check that an element has been defined that confines its display to a pixel and hides
+                     the text
                   </li>
                   
-                  <li>Check that the element of that class is included in the content of the anchor
-                     								       
-                  </li>
+                  <li>Check that the element of that class is included in the content of the anchor</li>
                   
                   <li>Check that the combined content of the anchor describes the purpose of the link</li>
                   
