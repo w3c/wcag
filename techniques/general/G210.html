@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<title>Matching the Accessible Name to the Visible Label</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css"/>
+	</head>
+	<body>
+		<h1>Matching the Accessible Name to the Visible Label</h1>
+		<section id="meta">
+			<h2>Metadata</h2>
+			<p id="id"></p>
+			<p id="technology"></p>
+			<p id="type"></p>
+		</section>
+		<section id="applicability">
+			<h2>When to Use</h2>
+			<p class="instructions">This technique applies to all web technologies that include interactive controls (such as links or form inputs).</p>
+		</section>
+		<section id="description">
+			<h2>Description</h2>
+			<p class="instructions">The objective of this technique is to ensure that speech input users can operate web content reliably while not adversely affecting other users of assistive technology.</p>
+			<p>When speech input users interact with a web page, they usually speak a command followed by the reference to some visible label (like text in a button, a link's text, or the text labelling input fields). For example, they may speak "click search" to activate a search button. When speech recognition software processes speech input and looks for matches, it uses the "accessible name" of controls. Where there is a mismatch between the text in the label and the text in the accessible name, it can cause issues for the user. The simplest way to enable speech input users and meet 2.5.3 Label in Name is to ensure that the accessible name exactly matches the visible text label.</p>
+			<h3>Matching through native semantics</h3>
+			<p>Mapping a visible label to the accessible name is achieved in many technologies by meeting <a href="https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships.html"> 1.3.1 Information and Relationships</a> through the proper use of native semantics. Many controls derive accessible names by correct nesting of elements, while other elements have specific attributes which are a valid means of providing or referencing an accessible name.</p>
+			<p>The accessible name should be assigned through native elements and semantics where possible. That helps ensure an exact match between the visible label and name.</p>
+			<h3>Matching through use of ARIA roles and attributes</h3>
+			<p>Where it is not possible to match the adjacent visible text label through native semantics, authors may use aria-label and aria-labelledby to match the string. Such situations are unusual and tend to occur when there is not a clear 1:1 relationship between User Interface Components and labels. Sometimes users may perceive a disparity; either there seem to be more labels than inputs or more inputs than labels. Each scenario can cause confusion about how to properly meet 2.5.3.</p>
+			<p>The remainder of this document outlines scenarios where this may be the case, but where it is still possible to match the accessible name to the label by applying the guidance in the <a href="https://www.w3.org/WAI/WCAG21/Understanding/label-in-name"> 2.5.3 Understanding document</a>.</p>
+		</section>
+		<section id="examples">
+			<h2>Examples</h2>
+			<p>Note: These examples are drawn from the web and are not offered as examples of excellent design. They serve as examples of common implementations which pose challenges when trying to meet 2.5.3 as well as incorporate other considerations such as those for <a href="https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships.html"> 1.3.1 Information and Relationships</a> and <a href="https://www.w3.org/WAI/WCAG21/Understanding/labels-or-instructions">3.3.2 Labels or Instructions</a>.</p>
+			<h3>Choosing between multiple potential labels for an input</h3>
+			<p>Sometimes more than one text string will be positioned in the vicinity of a control that could be considered a candidate for its label. For example, a set of inputs that each have their own labels may also be preceded by a heading, an instruction or a group label (such as an HTML legend/fieldset or an ARIA group or radiogroup). Note that the term "group label" means something different than "label", both programmatically and in regard to 2.5.3 Label in Name.</p>
+			<p>The <a href="https://www.w3.org/WAI/WCAG21/Understanding/label-in-name">Understanding 2.5.3 Label in Name document</a> recommends that only the text string adjacent to or in close proximity to an input should be treated as the label when assessing a control's label for the purposes of meeting 2.5.3 (see the section "Confining the label to adjacent text"). There are both practical and technical reasons for restricting the designation of an input's label in this way. The technical reasons are discussed in the Understanding document's section called Accessible Name and Description Computation specification.</p>
+			<p>Here are some examples which follow the 'adjacent text' guidance, along with rationales.</p>
+			<section class="example">
+				<h4>Simple Radio Button Group</h4>
+				<p>Radio buttons typically appear in a group, where each button is labelled and the group of buttons is preceded by information which explains or categorizes the group.</p>
+				<figure>
+					<img src="img/call-me-radio-button-group.png" alt="Call me when balance exceeds $10,000, Yes No">
+					<figcaption>Figure 1 "Call me when balance exceeds $10,000 radio group, with Yes and No choices</figcaption>
+				</figure>
+				<p>The label for each component should be restricted to "Yes" and "No". To meet <a href="https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships"> 1.3.1 Information and Relationships</a> and <a href="https://www.w3.org/WAI/WCAG21/Understanding/labels-or-instructions.html"> 3.3.2 Labels or Instructions</a>, the "Call me&hellip;" text can be coded to convey the relationship to ATs, in this example by using a <code>fieldset</code> and <code>legend</code>.</p>
+				<p>If the label is not restricted to the string adjacent to the radio button, multiple interpretations of what constitutes the label can result in less uniform functionality. If "Yes" alone is not the label for the first radio button, is it "Call me when balance exceeds $10,000"? Or is it a combination of text strings, in which case is the order "Call me when balance exceeds $10,000 Yes" or "Yes, Call me when balance exceeds $10,000"? Decisions to combine text strings can have negative effects on screen reader users since the order of concatenation can affect meaning. In this example, "No, call me when balance exceeds $10,000" could be very confusing to a screen reader user.</p>
+				<code>
+					&lt;fieldset&gt;<br />
+					&lt;legend&gt;Call me when balance exceeds $10,000?&lt;/legend&gt;&lt;br /&gt;<br />
+					&lt;input type="radio" id="yes" name="callme" value="yes"&gt;<br />
+					&lt;label for="yes"&gt;Yes&lt;/label&gt;<br />
+					&lt;input type="radio" id="no" name="callme" value="no"&gt;<br />
+					&lt;label for="no"&gt;No&lt;/label&gt;<br />
+				&lt;/fieldset&gt;<br />
+			</code>
+				<p class="working-example"><a href="../../working-examples/label-in-name-general/example1.html">Working example of Simple Radio Button Group</a></p>
+			</section>
+			<section class="example">
+				<h4>Checkbox Groupings</h4>
+				<p>For checkbox groupings, implementations that attempt to incorporate more than just the immediate checkbox label into the accessible name can also be problematic if not isolated to the adjacent text string.</p>
+				<figure>
+					<img src="img/value-checkbox.png" alt="What do you value in our service? (Check all that apply) Courtesy, Promptness, Store Hours, Knowledge">
+					<figcaption>Figure 2 What do you value in our service? checkbox group, with 4 choices.</figcaption>
+				</figure>
+				
+				<p>In Figure 2, there is a long text string that combines a group label and instruction, "What do you value in our service (check all that apply)?" Each of the checkboxes also has its own one- or two-word label. In regard to 2.5.3, the labels for the components should be restricted to "Courtesy", "Promptness", "Store Hours" and "Knowledge".</p>
+				<p>Attempting to include the preceding text as part of the accessible name can potentially make it more difficult to isolate a control by spoken commands for speech-input users. Such a construction will also negatively increase verbosity for screen reader users (with the combined text strings read out for each of the inputs before the input's state). The simplest solution is to restrict the accessible name to the text immediately beside the checkboxes.</p>
+				<p>[Need to add code example]</p>
+		</section>
+
+		<h3>Deciding which elements are labeled if there are fewer labels than controls</h3>
+		<p>Determining the appropriate text to designate as the label (and by extension the accessible name) can also be confusing when the controls outnumber the potential labels.</p>
+				<section class="example">
+				<h4>A single label for multiple controls: telephone number</h4>
+				<p>A series of inputs may only have a single group label between them. A common occurrence of this is a telephone entry that has multiple inputs.</p>
+				<figure>
+					<img src="img/work-phone.png" alt="Work Phone:">
+					<figcaption>Figure 3 Three text input fields preceded by a single label "Work Phone:".</figcaption>
+				</figure>
+				<p>"Work Phone " is adjacent to the first of the three inputs, so for the purposes of 2.5.3 it should be considered the first input's label.  However, "Work Phone" also describes the group of three inputs. Text in such a scenario is normally referred to as a "group label", but it is important to emphasize that group labels are not part of the accessible name using native HTML semantics. As well, according to the guidance on "Confining the label to adjacent text" in the 2.5.3 Understanding document, the "Work Phone" text should not be considered the label for the other inputs.</p>
+				<p>Associating the label with the first input can be accomplished through <code>aria-labelledby</code>, which can reference the <code>id</code> of the element containing the string (in the following code example, a <code>span</code> nested inside a parent <code>div</code>).</p>
+				<p>The same parent <code>div</code> can be used to nest the group of related inputs to meet 1.3.1 Information and Relationships, with <code>aria-labelledby</code> providing the group label by pointing to the same nested <code>span</code>. </p>
+				<p>To meet 3.3.2 ("Labels or instructions are provided when content requires user input."), each of the fields can be given a unique name through the use of the <code>title</code> attribute. Where an accessible name already exists (for the first input), the <code>title</code> value becomes part of the accessible description. In the absence of another candidate for accessible name, the <code>title</code> value is used in the calculation for the name (for the second and third inputs).</p>
+				<code>
+&lt;div role="group" aria-labelledby="groupLabel"&gt;<br />
+ &lt;span id="groupLabel"&gt;Work Phone:&lt;/span&gt;<br />
+ &lt;input type="number" aria-labelledby="groupLabel" title="Area Code" min="3" max="3" /&gt;<br />
+ &lt;input type="number" title="Prefix" min="3" max="3" /&gt;<br />
+ &lt;input type="number" title="Line Number" min="4" max="4" /&gt;<br />
+&lt;/div&gt;<br />
+
+				</code>
+				<p>There are several advantages to constructing the inputs this way, some of which go beyond the requirements of 2.5.3 but are relevant when considering the most appropriate techniques:
+					<ol>
+						<li>Speech-input users who say "move to work phone" will be moved to the first of the three fields, which is where they would typically wish to begin. If they wish to reposition to the other inputs, it is simple for them to issue a "Press tab" command.</li>
+						<li>Sighted users who wish to have more context can use hover to reveal the <code>title</code> value as a tool tip. This can be beneficial for users with low vision or with some cognitive disabilities.</li>
+						<li>Since the <code>title</code> attribute is used across all three inputs, the behaviour of the inputs is consistent for many users.</li>
+						<li>The computation for accessible name and description ensures that the value of <code>title</code> is always available programmatically, either as the accessible name or description. Thus screen readers will always have access to this information. </li>
+					</ol>
+				</p>
+				<p>There are a couple of disadvantages to this construction:
+					<ol>
+						<li>Screen reader users will hear "Work Phone:" announced twice – as the group name and as the label of the first field. (This is an unfortunate outcome of the new 2.5.3 requirement and will occur for at least one input in a set of inputs with a group label in all implementations.)</li>
+						<li>The keyboard user cannot see a label for the second and third inputs since most browsers do not provide a mechanism to display <code>title</code> via keyboard. (Unless telephone inputs are redesigned to provide persistently visible labels, this will remain a challenge.)</li>
+					</ol>
+				</p>
+				<p class="working-example"><a href="../../working-examples/label-in-name-general/example3.html">Working example of Work Phone input set</a></p>
+		</section>
+					<section class="example">
+				<h4>Range of inputs with few labels</h4>
+				<p>A less common disparity between labels and inputs can occur when a group of radio buttons is set up to elicit a choice across a range. The labels may only be located at each end of the range or may be dispersed at various points in the range.</p>
+				<figure>
+					<img src="img/rate-response.png" alt="Rate your response, Hated it, Loved it">
+					<figcaption>Figure 4 Line of 5 radio buttons with Hated it and Loved it labels at each end</figcaption>
+				</figure>
+				
+				<p>The two labels, "Hated it" and "Loved it", are adjacent to the first and last radio buttons, and should be their accessible names. "Rate your response" is the text describing the whole widget and can be associated as the group label. The three middle radio buttons do not have visible labels. In the code example they are given title attributes of "Disliked", "So-so" and "Liked" in order to meet 3.3.2 Labels or Instructions.</p>
+
+				<p>
+					<code>
+						&lt;legend&gt;Rate your response&lt;/legend&gt;<br />
+    &lt;label for="hated"&gt;Hated it&lt;/label&gt; <br />
+    &lt;input type="radio" name="meal" id="hated" value="hated"&gt;<br />
+    &lt;input type="radio" name="meal" id="poor" value="poor" title="Disliked"&gt;<br />
+    &lt;input type="radio" name="meal" id="neutral" value="neutral" title="So-so"&gt;<br />
+    &lt;input type="radio" name="meal" id="okay" value="okay" title="Liked"&gt;<br />
+    &lt;input type="radio" name="meal" id="loved" value="loved"&gt;<br />
+    &lt;label for="loved"&gt;Loved it&lt;/label&gt;<br />
+&lt;/fieldset&gt;<br />
+</code>
+</p>
+				<p class="working-example"><a href="../../working-examples/label-in-name-general/example4.html">Working example of range of inputs</a></p>
+		</section>
+							<section class="example">
+				<h4>Radio butons laid out in a matrix</h4>
+				<p>A more complex construction involves inputs that are laid out in a grid, with the row and column headings serving as the only possible "labels". This is a common construction in a survey.</p>
+				<figure>
+					<img src="img/matrix-buttons.png" alt="How satisfied or dissatisfied are you with each of the following? The interaction with sales staff, Your experience at the register, The organziation of the store, The products offered in the store, The price of the product,The sizes available">
+					<figcaption>Figure 7 6x6 matrix question covering satisfaction of a number of experiences in the rows, with ratings from Very Satisfied to Very dissatisfied in the columns.</figcaption>
+				</figure>
+				
+				<p>When considering this complex component, it is important to remember that the purpose of 2.5.3 Label in Name is to enable speech input. For such users, the text at the start of each row ("The interaction with the sales staff", "Your experience at the the register", etc ) should be treated as the labels for the first radio buttons to meet 2.5.3. The column headers could also be assigned as names for the corresponding radio buttons in the first row, given their proximity.</p>
+				<p>To meet 2.5.3, it is not necessary to assign every radio button the table header text as its accessible name. The text is not adjacent to most of them and may not offer a significant improvement in user experience for speech recognition users. For instance, in this example each row logically represents a radio button group – for instance a user should only be able to give one rating to the interaction of the sales staff. As such, if the speech recognition user can navigate to the first choice in that group via the row header label, the user can use the keyboard API to easily navigate between the choices.</p>
+				<p>From a strictly programmatic perspective, authors may be tempted to treat the column headers ("Very satisfied", "Somewhat satisfied", etc) as the labels for each of the radio buttons. This is consistent with how the simple radio button group was done. However, especially in a survey which contains a number of similar questions, the result does not necessarily improve the speech interaction since there may be dozens of "Very satisfied" radio buttons.</p>
+				<p>Many authors will assign the table header values to each input. This may provide better context for screen reader users or potentially more navigation options for a user of speech recognition. However, it should be noted that popular screen readers already extract the table's scope information to provide context to users, and wordy table headers will likely decrease the experience for users rather than enhance it. For instance, relying on only scope attributes of the table headers, some screen readers will announce each row header as a user traverses to new rows, but depending on the configuration will not announce the row header while the user navigates between cells on the same row. This is an established and efficient means of navigating by screen reader. In contrast, concatenating the row and column headers for every cell into its accessible name will result in the screen reader user hearing that combination announced before the radio button's state for each radio button, for example "The interaction with the sales staff Neither satisfied nor dissatisfied, not checked". Depending on the label length, that may result in verbose output.</p>
+				<p>To summarize, this matrix is a good example of the need to distinguish between a visible label, as discussed in 2.5.3, and notions of a programmatic <code>label</code> (and other programmatic relationships) covered in 1.3.1 Information and Relationships.</p>
+
+				<p>
+					<code>
+						&lt;table&gt;<br />
+	&lt;caption&gt;2. How satisfied or dissatisfied are you with each of the following?&lt;/caption&gt;<br />
+	&lt;thead&gt;<br />
+		&lt;tr&gt;<br />
+			&lt;th scope="col" title="Feature"&gt;&lt;/th&gt;<br />
+			&lt;th scope="col" id="VS"&gt;Very satisfied&lt;/th&gt;<br />
+			&lt;th scope="col" id="SS"&gt;Somewhat satisfied&lt;/th&gt;<br />
+			&lt;th scope="col" id="NSD"&gt;Neither satisfied nor dissatisfied&lt;/th&gt;<br />
+			&lt;th scope="col" id="SD"&gt;Somewhat dissatisfied&lt;/th&gt;<br />
+			&lt;th scope="col" id="VD"&gt;Very dissatisfied&lt;/th&gt;<br />
+		&lt;/tr&gt;<br />
+	&lt;/thead&gt;<br />
+	&lt;tbody&gt;<br />
+		&lt;tr&gt;<br />
+			&lt;th scope="row" id="interaction"&gt;The interaction with the sales staff&lt;/th&gt;<br />
+			&lt;td&gt;&lt;input type="radio" name="interaction" id="VS1" value="VS1" aria-labelledby="interaction VS"&gt;&lt;/td&gt;<br />
+			&lt;td&gt;&lt;input type="radio" name="interaction" id="SS1" value="SS1" title="Somewhat satisfied"&gt;&lt;/td&gt;<br />
+			&lt;td&gt;&lt;input type="radio" name="interaction" id="NSD1" value="NSD1" title="Neither satisfied nor dissatisfied"&gt;&lt;/td&gt;<br />
+			&lt;td&gt;&lt;input type="radio" name="interaction" id="SD1" value="SD1" title="Somewhat dissatisfied"&gt;&lt;/td&gt;<br />
+			&lt;td&gt;&lt;input type="radio" name="interaction" id="VD1" value="VD1" title="Very dissatisfied"&gt;&lt;/td&gt;<br />
+		&lt;/tr&gt;<br />
+...<br />
+&lt;tr&gt;<br />
+			&lt;th scope="row" id="price"&gt;The price of the products&lt;/th&gt;<br />
+			&lt;td&gt;&lt;input type="radio" name="price" id="VS5" value="VS5" aria-labelledby="price"&gt;&lt;/td&gt;<br />
+			&lt;td&gt;&lt;input type="radio" name="price" id="SS5" value="SS5"&gt;&lt;/td&gt;<br />
+			&lt;td&gt;&lt;input type="radio" name="price" id="NSD5" value="NSD5"&gt;&lt;/td&gt;<br />
+			&lt;td&gt;&lt;input type="radio" name="price" id="SD5" value="SD5"&gt;&lt;/td&gt;<br />
+			&lt;td&gt;&lt;input type="radio" name="price" id="VD5" value="VD5"&gt;&lt;/td&gt;<br />
+		&lt;/tr&gt;<br />
+		&lt;tr&gt;<br />
+			&lt;th scope="row" id="sizes"&gt;The sizes available at the store&lt;/th&gt;<br />
+			&lt;td&gt;&lt;input type="radio" name="sizes" id="VS6" value="VS6" aria-labelledby="sizes"&gt;&lt;/td&gt;<br />
+			&lt;td&gt;&lt;input type="radio" name="sizes" id="SS6" value="SS6"&gt;&lt;/td&gt;<br />
+			&lt;td&gt;&lt;input type="radio" name="sizes" id="NSD6" value="NSD6"&gt;&lt;/td&gt;<br />
+			&lt;td&gt;&lt;input type="radio" name="sizes" id="SD6" value="SD6"&gt;&lt;/td&gt;<br />
+			&lt;td&gt;&lt;input type="radio" name="sizes" id="VD6" value="VD6"&gt;&lt;/td&gt;<br />
+		&lt;/tr&gt;<br />
+	&lt;/tr&gt;<br />
+&lt;/tbody&gt;<br />
+&lt;/table&gt;<br />
+
+</code>
+</p>
+				<p>[need to create working example]</p>
+		</section>
+					<section class="example">
+				<h4>Inputs laid out in a matrix</h4>
+				<p>Other inputs besides radio buttons may be laid out in a matrix. In Figure 8, the cells in a grid are primarily text inputs, with column and row headers.</p>
+				<figure>
+					<img src="img/matrix-inputs.jpg" alt="Column headers: competency, cost, viability, desirability, alignment, total. Row headers: criteria rating, idea A, weighted rating">
+					<figcaption>Figure 8 Decision 7x10 matrix with row and column headers and text input cells</figcaption>
+				</figure>
+				
+				<p>The same basic proximity guidance applies, as in the radio button matrix – since the first column text is adjacent to the second column input, it should be considered its visible label; the top row may also be considered to supply labels for the second row's cells. The correct names for the second column/row cells will be sufficient to allow a speech-input user to reposition to the first editable cell in each row of the matrix by voice command.</p>
+				<p>As with the prior example, some authors may elect to use the column and row headers as the accessible names for all the cells. User testing will help determine the best implementation for the target audience. Here are some considerations for matrixes:
+					<ul>
+						<li><strong>The table header text length.</strong> The short text strings in this example could provide context without adding too much verbosity (for screen reader users). Longer strings may be more intrusive. </li>
+						<li><strong>The size of the matrix.</strong> Low-vision users who use magnification may have difficulty orienting themselves in large tables (since the text at the beginning of the row and/or column may be out of the viewport). Concatenated header text used as a <code>title</code> value for each cell would provide context as a tool tip.</li>
+						<li><strong>The nature of the table and position of the inputs.</strong> Sometimes the text appearing in the first row or first column of the table is not intended as context for a particular input. The table may not have column or row headers; the value in the first cells may not be meaningful.</li>
+						<li><strong>The value of information in neighbouring cells.</strong> If a cell is not neighboring a row or column header, then any text in adjacent cells is likely the text closest in proximity. However, whether text in adjacent cells could serve as a label for the cell is entirely dependent on context. Generally, the text content of cells not serving a header function should be disregarded as potential labels for neighbouring cells, particularly if the cell is itself a user input.</li>
+					</ul>
+					</p>
+					<p>Such considerations will help to determine if there is an appropriate label for any given actionable cell in a grid.</p>
+				<p>[Need to add code example]</p>
+		</section>
+	</section>
+		<section id="tests">
+			<h2>Tests</h2>
+			<section class="test-procedure">
+				<h3>Procedure</h3>
+				<p>For input controls
+
+
+
+				<ol>
+					<li>Examine each input that has adjacent text which serves as its label</li>
+					<li>The entire string of text (disregarding letter case and punctuation) is included in the accessible name for the input [according to the accessible name computation]</li>
+				</ol></p>
+				<p>For buttons, links, menus and other non-input controls
+					<ol><li>Examine each control that contains text which serves as its label</li>
+						<li>The entire string of text (disregarding letter case and punctuation) is included in the accessible name for the input</li></ol></p>
+			</section>
+			<section class="test-results">
+				<h3>Expected Results</h3>
+				<ul>
+					<li>#2 is true</li>
+				</ul>
+			</section>
+		</section>
+		<section id="related">
+			<h2>Related Techniques</h2>
+			<p class="instructions">Provide links to other techniques that users should consider. This section is optional.</p>
+			<ul>
+				<li><a href="http://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/H44"> H44: Using label elements to associate text labels with form controls</a></li>
+<li><a href="http://www.w3.org/WAI/GL/2016/WD-WCAG20-TECHS-20160105/H71"> H71: Providing a description for groups of form controls using fieldset and legend elements</a></li>
+<li><a href="http://www.w3.org/WAI/GL/2016/WD-WCAG20-TECHS-20160105/H85"> H85: Using OPTGROUP to group OPTION elements inside a SELECT</a></li>
+<li><a href="http://www.w3.org/WAI/GL/2016/WD-WCAG20-TECHS-20160105/ARIA17"> ARIA17: Using grouping roles to identify related form controls</a> 
+</li>
+			</ul>
+		</section>
+		<section id="resources">
+			<h2>Resources</h2>
+			<p class="instructions">Provide links to external resources that are relevant to users of the technique. This section is optional.</p>
+			<ul>
+				<li><a href="https://www.w3.org/TR/accname-aam-1.1/"> Accessible Name and Description Computation</a></li>
+<li><a href="https://www.w3.org/TR/html-aam-1.0/#accessible-name-and-description-computation"> Accessible Name and Description Computation in HTML Accessibility API Mappings 1.0</a></li>
+			</ul>
+		</section>
+	</body>
+</html>
