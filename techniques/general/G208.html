@@ -14,7 +14,7 @@
 		</style>
 	</head>
 	<body>
-		<h1>Ensure the &quot;accessible name&quot; includes the visible text</h1>
+		<h1>Including the text of the visible label as part of the &quot;accessible name&quot;</h1>
 		<section id="meta">
 			<h2>Metadata</h2>
 			<p id="id"></p>
@@ -30,43 +30,31 @@
 			<p>The objective of this technique is to ensure that speech input users can operate web content reliably.</p>
 			<p>When speech input users interact with a web page, they usually speak a command followed by the reference to some visible label (like text in a button, the link text, or the text labelling input fields). For example, they may speak "click search" to activate a search button.</p>
 			<p>When speech recognition software processes speech input and looks for matches, it uses the "accessible name" of controls, which can be different from the visible label. For example, a  button following a search input field may contain the text "go" but uses an invisible <code>aria-label</code> attribute with the value "search". Since aria-label takes precedence over the text included in the button, the accessible name of this button will be "search", not "go". The <a href="https://www.w3.org/TR/accname/">Accessible Name and Description Computation</a> defines how the accessible name is constructed.</p>
-			<p>When authors make sure that the visible label of a control is included in the accessible name of that control, speech input users can be confident that their input is correctly interpreted.</p>
+			<p>In situations where the visible label is considered inadequate as the accessible name, it is possible to supplement text in the accessible name. However, in order to meet 2.5.3 Label in Name, the text string that makes up the visible label must occur in its entirety in the accessible name. When authors make sure that the visible label of a control is included, intact, in the accessible name of that control, speech input users can be confident that their input is correctly interpreted.</p>
 		</section>
 <section id="examples">
 	<h2>Examples</h2>
-	<section class="example">
-		<h3>Link text equals the accessible name</h3>
-			<p>In this example, the link text provides the accessible name:</p>		
-			<code>&lt;p&gt;Go to &lt;a href="code-of-conduct.html"&gt;Code of conduct&lt;/a&gt;&lt;/p&gt;</code>
-	</section>	
+
 	<section class="example">
 		<h3>Link text matches the beginning of the accessible name</h3>
 		<p>Here, the link contains visible text and hidden link text. Both together make up the link's accessible name. The visible text comes first. The idea is to make the link more descriptive for users of assistive technologies. </p>	
-		<code>&lt;p&gt;Go to &lt;a href="code-of-conduct.html"&gt;Code of conduct &lt;span class="accessibly-hidden"&gt; of ACME Corporation&lt;/span&gt;&lt;/a&gt;&lt;p&gt;</code>
+		<code>&lt;p&gt;Go to &lt;a href="code-of-conduct.html"&gt;Code of conduct &lt;span class="hidden_accessibly"&gt; of ACME Corporation&lt;/span&gt;&lt;/a&gt;&lt;p&gt;</code>
 	</section>	
-	<section class="example">
-		<h3>A visible label provides the accessible name for a checkbox</h3>
-		<p>A checkbox is labelled by a programmatically linked and visible <code>label</code> element which thereby provides its accessible name:</p>	
-		<code>&lt;input type="checkbox" id="notification" name="notify" value="delays"&gt;
-    		&lt;label for="notification"&gt;Notify me of delays&lt;/label&gt;</code>
-	</section>	
-	<section class="example">			
-		<h3>The button text provides the accessible name</h3>
-		<p>The visible text inside a <code>button</code> element makes up its accessible name:</p>	
-		<code>&lt;button&gt;Send&lt;/button&gt;</code>	
-	</section>	
+
 	<section class="example">		
 		<h3>The visible button text matches the beginning of the accessible name</h3>
 		<p>The visible text inside a <code>button</code> element matches the beginning of accessible name, which also includes hidden text. The idea of the hidden text is to make the button more descriptive for users of assistive technologies.</p>	
 		<code>&lt;button&gt;Send &lt;span class="accessibly-hidden"&gt; Mail&lt;/span&gt;&lt;/button&gt;</code>			
 	</section>
-	<section class="example">		
+	<section class="example">	
+	
 		<h3>The visible button text matches the end of the accessible name - Japanese</h3>
-		<p>The visible text inside a <code>button</code> element matches the end of accessible name, which also includes hidden text. The order of words varies for some languages.</p>
+		<p>The visible kanji text inside a <code>button</code> element matches the end of accessible name, which is preceded by hidden katakana characters that provide a phonetic spelling for the kanji characters.  The addition of the katakana provides a phonetic variation on pronunciation which the speech recognition application can use to match the spoken phrase.</p>
 		<code>&lt;button&gt;&lt;span class="accessibly-hidden"&gt;<span lang="ja">メールを</span>&lt;/span&gt;<span lang="ja">送信する</span>&lt;/button&gt;</code>
 		<p>Rendered example:
 			<button lang="ja"><span class="accessibly-hidden">メールを</span>送信する</button>
-		</p>			
+		</p>
+
 	</section>	
 	<section class="example">				
 		<h3>The button text matches the first part of a concatenated accessible name</h3>
