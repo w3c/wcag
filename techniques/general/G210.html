@@ -77,7 +77,7 @@
 					&lt;label for="no"&gt;No&lt;/label&gt;<br />
 				&lt;/fieldset&gt;<br />
 			</code>
-				<p class="working-example"><a href="../../working-examples/label-in-name-general/example1.html">Working example of Simple Radio Button Group</a></p>
+				<p class="working-example"><a href="../../working-examples/label-in-name-general/example1.html" target="_blank">Working example of Simple Radio Button Group</a></p>
 			</section>
 			<section class="example">
 				<h4>Checkbox Groupings</h4>
@@ -91,6 +91,24 @@
 				<p>Attempting to include the preceding text as part of the accessible name can potentially make it more difficult to isolate a control by spoken commands for speech-input users. Such a construction will also negatively increase verbosity for screen reader users (with the combined text strings read out for each of the inputs before the input's state). The simplest solution is to restrict the accessible name to the text immediately beside the checkboxes.</p>
 				<p>[Need to add code example]</p>
 		</section>
+					<section class="example">
+				<h4>Stacked Labels</h4>
+				<p>Although labels for comboboxes, dropdown lists, text inputs, and other widgets are typically oriented immediately to the left of the component, there is an alternative established convention where labels are stacked above the inputs, aligned with their left edge.
+				</p>
+				<figure>
+					<img src="img/stacked-label.png" alt="two inputs labelled Email and Password">
+					<figcaption>Figure 3 Two inputs with the labels positioned above and to the left.</figcaption>
+				</figure>
+				
+				<p>In Figure 3, the inputs are stacked and left-aligned, with the labels immediately preceding each input, also left-aligned. There is additional white space between the label and the preceding input so that the label is closest to its associated text input. Stacked labels are relatively common in mobile designs, where horizontal space is constrained.</p>
+				<p>Figure 4 shows a variation on stacked labels, where hints and guidance are included between the label and the input. This design contradicts the 2.5.3 directive that labels should be interpretted as the text adjacent to the input. However, the label's size and boldness, relative to the smaller and lower-contrast guidance text, overcome the proximity factor. The associations are reinforced programmatically, where the hint text is given a role of <code>aria-describedby</code> and the label is properly associated with the input.</p>
+								<figure>
+					<img src="img/new-password.png" alt="New Password. Passwords must be 10 or more characters, and contain at least one capital, numeric and non-alphanumeric.'">
+					<figcaption>Figure 4 New Password label positioned above input with a smaller-point text string about the password requirements positioned between the large label and the input.</figcaption>
+				</figure>
+				<p>Such implementations can create accessibility issues, especially when the hint between the label and input exceeds a single line, further separating the label from its input. However, Figure 4 illustrates that concepts of "adjacent text" and "close proximity" are guides for interpretation, but cannot always serve as hard rules.</p>
+				<p class="working-example"><a href="../../working-examples/label-in-name-general/example2.html" target="_blank">Working example of stacked labels</a></p>
+		</section>
 
 		<h3>Deciding which elements are labeled if there are fewer labels than controls</h3>
 		<p>Determining the appropriate text to designate as the label (and by extension the accessible name) can also be confusing when the controls outnumber the potential labels.</p>
@@ -99,7 +117,7 @@
 				<p>A series of inputs may only have a single group label between them. A common occurrence of this is a telephone entry that has multiple inputs.</p>
 				<figure>
 					<img src="img/work-phone.png" alt="Work Phone:">
-					<figcaption>Figure 3 Three text input fields preceded by a single label "Work Phone:".</figcaption>
+					<figcaption>Figure 5 Three text input fields preceded by a single label "Work Phone:".</figcaption>
 				</figure>
 				<p>"Work Phone " is adjacent to the first of the three inputs, so for the purposes of 2.5.3 it should be considered the first input's label.  However, "Work Phone" also describes the group of three inputs. Text in such a scenario is normally referred to as a "group label", but it is important to emphasize that group labels are not part of the accessible name using native HTML semantics. As well, according to the guidance on "Confining the label to adjacent text" in the 2.5.3 Understanding document, the "Work Phone" text should not be considered the label for the other inputs.</p>
 				<p>Associating the label with the first input can be accomplished through <code>aria-labelledby</code>, which can reference the <code>id</code> of the element containing the string (in the following code example, a <code>span</code> nested inside a parent <code>div</code>).</p>
@@ -125,17 +143,17 @@
 				<p>There are a couple of disadvantages to this construction:
 					<ol>
 						<li>Screen reader users will hear "Work Phone:" announced twice – as the group name and as the label of the first field. (This is an unfortunate outcome of the new 2.5.3 requirement and will occur for at least one input in a set of inputs with a group label in all implementations.)</li>
-						<li>The keyboard user cannot see a label for the second and third inputs since most browsers do not provide a mechanism to display <code>title</code> via keyboard. (Unless telephone inputs are redesigned to provide persistently visible labels, this will remain a challenge.)</li>
+						<li>The keyboard user cannot see a label for the second and third inputs since most browsers do not provide a mechanism to display <code>title</code> via keyboard. (Unless the telephone inputs are redesigned to provide persistently visible labels, this will remain a challenge.)</li>
 					</ol>
 				</p>
-				<p class="working-example"><a href="../../working-examples/label-in-name-general/example3.html">Working example of Work Phone input set</a></p>
+				<p class="working-example"><a href="../../working-examples/label-in-name-general/example3.html" target="_blank">Working example of Work Phone input set</a></p>
 		</section>
 					<section class="example">
 				<h4>Range of inputs with few labels</h4>
 				<p>A less common disparity between labels and inputs can occur when a group of radio buttons is set up to elicit a choice across a range. The labels may only be located at each end of the range or may be dispersed at various points in the range.</p>
 				<figure>
 					<img src="img/rate-response.png" alt="Rate your response, Hated it, Loved it">
-					<figcaption>Figure 4 Line of 5 radio buttons with Hated it and Loved it labels at each end</figcaption>
+					<figcaption>Figure 6 Line of 5 radio buttons with Hated it and Loved it labels at each end</figcaption>
 				</figure>
 				
 				<p>The two labels, "Hated it" and "Loved it", are adjacent to the first and last radio buttons, and should be their accessible names. "Rate your response" is the text describing the whole widget and can be associated as the group label. The three middle radio buttons do not have visible labels. In the code example they are given title attributes of "Disliked", "So-so" and "Liked" in order to meet 3.3.2 Labels or Instructions.</p>
@@ -153,20 +171,20 @@
 &lt;/fieldset&gt;<br />
 </code>
 </p>
-				<p class="working-example"><a href="../../working-examples/label-in-name-general/example4.html">Working example of range of inputs</a></p>
+				<p class="working-example"><a href="../../working-examples/label-in-name-general/example4.html" target="_blank">Working example of range of inputs</a></p>
 		</section>
 							<section class="example">
 				<h4>Radio butons laid out in a matrix</h4>
 				<p>A more complex construction involves inputs that are laid out in a grid, with the row and column headings serving as the only possible "labels". This is a common construction in a survey.</p>
 				<figure>
 					<img src="img/matrix-buttons.png" alt="How satisfied or dissatisfied are you with each of the following? The interaction with sales staff, Your experience at the register, The organziation of the store, The products offered in the store, The price of the product,The sizes available">
-					<figcaption>Figure 7 6x6 matrix question covering satisfaction of a number of experiences in the rows, with ratings from Very Satisfied to Very dissatisfied in the columns.</figcaption>
+					<figcaption>Figure 9 6x6 matrix question covering satisfaction of a number of experiences in the rows, with ratings from Very Satisfied to Very dissatisfied in the columns.</figcaption>
 				</figure>
 				
 				<p>When considering this complex component, it is important to remember that the purpose of 2.5.3 Label in Name is to enable speech input. For such users, the text at the start of each row ("The interaction with the sales staff", "Your experience at the the register", etc ) should be treated as the labels for the first radio buttons to meet 2.5.3. The column headers could also be assigned as names for the corresponding radio buttons in the first row, given their proximity.</p>
 				<p>To meet 2.5.3, it is not necessary to assign every radio button the table header text as its accessible name. The text is not adjacent to most of them and may not offer a significant improvement in user experience for speech recognition users. For instance, in this example each row logically represents a radio button group – for instance a user should only be able to give one rating to the interaction of the sales staff. As such, if the speech recognition user can navigate to the first choice in that group via the row header label, the user can use the keyboard API to easily navigate between the choices.</p>
 				<p>From a strictly programmatic perspective, authors may be tempted to treat the column headers ("Very satisfied", "Somewhat satisfied", etc) as the labels for each of the radio buttons. This is consistent with how the simple radio button group was done. However, especially in a survey which contains a number of similar questions, the result does not necessarily improve the speech interaction since there may be dozens of "Very satisfied" radio buttons.</p>
-				<p>Many authors will assign the table header values to each input. This may provide better context for screen reader users or potentially more navigation options for a user of speech recognition. However, it should be noted that popular screen readers already extract the table's scope information to provide context to users, and wordy table headers will likely decrease the experience for users rather than enhance it. For instance, relying on only scope attributes of the table headers, some screen readers will announce each row header as a user traverses to new rows, but depending on the configuration will not announce the row header while the user navigates between cells on the same row. This is an established and efficient means of navigating by screen reader. In contrast, concatenating the row and column headers for every cell into its accessible name will result in the screen reader user hearing that combination announced before the radio button's state for each radio button, for example "The interaction with the sales staff Neither satisfied nor dissatisfied, not checked". Depending on the label length, that may result in verbose output.</p>
+				<p>Many authors will assign the table header values to each input. This may provide better context for screen reader users or potentially more navigation options for a user of speech recognition. However, it should be noted that popular screen readers already extract the table's scope information to provide context to users, and wordy table headers will likely decrease the experience for users rather than enhance it. For instance, relying on only scope attributes of the table headers, some screen readers will announce each row header as a user traverses to new rows, but (depending on the screen reader's configuration) will not announce the row header while the user navigates between cells on the same row. This is an established and efficient means of navigating by screen reader. In contrast, concatenating the row and column headers for every cell into its accessible name will result in the screen reader user hearing that combination announced before the radio button's state for each radio button, for example "The interaction with the sales staff Neither satisfied nor dissatisfied, not checked". Depending on the label length, that may result in verbose output.</p>
 				<p>To summarize, this matrix is a good example of the need to distinguish between a visible label, as discussed in 2.5.3, and notions of a programmatic <code>label</code> (and other programmatic relationships) covered in 1.3.1 Information and Relationships.</p>
 
 				<p>
@@ -219,10 +237,10 @@
 		</section>
 					<section class="example">
 				<h4>Inputs laid out in a matrix</h4>
-				<p>Other inputs besides radio buttons may be laid out in a matrix. In Figure 8, the cells in a grid are primarily text inputs, with column and row headers.</p>
+				<p>Other inputs besides radio buttons may be laid out in a matrix. In Figure 10, the cells in a grid are primarily text inputs, with column and row headers.</p>
 				<figure>
 					<img src="img/matrix-inputs.jpg" alt="Column headers: competency, cost, viability, desirability, alignment, total. Row headers: criteria rating, idea A, weighted rating">
-					<figcaption>Figure 8 Decision 7x10 matrix with row and column headers and text input cells</figcaption>
+					<figcaption>Figure 10 Decision 7x10 matrix with row and column headers and text input cells</figcaption>
 				</figure>
 				
 				<p>The same basic proximity guidance applies, as in the radio button matrix – since the first column text is adjacent to the second column input, it should be considered its visible label; the top row may also be considered to supply labels for the second row's cells. The correct names for the second column/row cells will be sufficient to allow a speech-input user to reposition to the first editable cell in each row of the matrix by voice command.</p>
