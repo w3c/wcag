@@ -88,8 +88,7 @@
 				</figure>
 				
 				<p>In Figure 2, there is a long text string that combines a group label and instruction, "What do you value in our service (check all that apply)?" Each of the checkboxes also has its own one- or two-word label. In regard to 2.5.3, the labels for the components should be restricted to "Courtesy", "Promptness", "Store Hours" and "Knowledge".</p>
-				<p>Attempting to include the preceding text as part of the accessible name can potentially make it more difficult to isolate a control by spoken commands for speech-input users. Such a construction will also negatively increase verbosity for screen reader users (with the combined text strings read out for each of the inputs before the input's state). The simplest solution is to restrict the accessible name to the text immediately beside the checkboxes.</p>
-				<p>[Need to add code example]</p>
+				<p>Attempting to include the preceding text as part of the accessible name can potentially make it more difficult to isolate a control by spoken commands for speech-input users. Such a construction will also negatively increase verbosity for screen reader users (with the combined text strings read out for each of the inputs before the input's state). The simplest solution is to restrict the accessible name to the text immediately beside the checkboxes, using similar techniques to those for the standard radio button group.</p>
 		</section>
 					<section class="example">
 				<h4>Stacked Labels</h4>
@@ -101,12 +100,23 @@
 				</figure>
 				
 				<p>In Figure 3, the inputs are stacked and left-aligned, with the labels immediately preceding each input, also left-aligned. There is additional white space between the label and the preceding input so that the label is closest to its associated text input. Stacked labels are relatively common in mobile designs, where horizontal space is constrained.</p>
-				<p>Figure 4 shows a variation on stacked labels, where hints and guidance are included between the label and the input. This design contradicts the 2.5.3 directive that labels should be interpretted as the text adjacent to the input. However, the label's size and boldness, relative to the smaller and lower-contrast guidance text, overcome the proximity factor. The associations are reinforced programmatically, where the hint text is given a role of <code>aria-describedby</code> and the label is properly associated with the input.</p>
+				<p>Figure 4 shows a variation on stacked labels, where hints and guidance are included between the label and the input. This design contradicts the 2.5.3 directive that labels should be interpretted as the text adjacent to the input. However, the label's size and boldness, relative to the smaller and lower-contrast guidance text, overcome the reduced proximity. The associations are reinforced programmatically, where the hint text is given a role of <code>aria-describedby</code> and the label is properly associated with the input.</p>
 								<figure>
 					<img src="img/new-password.png" alt="New Password. Passwords must be 10 or more characters, and contain at least one capital, numeric and non-alphanumeric.'">
 					<figcaption>Figure 4 New Password label positioned above input with a smaller-point text string about the password requirements positioned between the large label and the input.</figcaption>
 				</figure>
-				<p>Such implementations can create accessibility issues, especially when the hint between the label and input exceeds a single line, further separating the label from its input. However, Figure 4 illustrates that concepts of "adjacent text" and "close proximity" are guides for interpretation, but cannot always serve as hard rules.</p>
+				<p>Such implementations can create accessibility issues, especially when the hint between the label and input exceeds a single line, further separating the label from its input. Figure 4 illustrates that concepts of "adjacent text" and "close proximity" are guides for interpretation, but cannot always serve as hard rules.</p>
+				<code>
+				&lt;form&gt;<br />
+			&lt;label class="label" for="example-2"&gt;<br />
+				Password<br />
+			&lt;/label&gt;<br />
+			&lt;span id="example-2-hint" class="hint"&gt;<br />
+				Passwords must be 10 or more characters, and contain at least one capital, numeric and non-alphanumeric.<br />
+			&lt;/span&gt;<br />
+			&lt;input class="input" id="example-2" name="example-2" type="text" aria-describedby="example-2-hint"&gt;<br />
+		&lt;/form&gt;<br />
+	</code>
 				<p class="working-example"><a href="../../working-examples/label-in-name-general/example2.html" target="_blank">Working example of stacked labels</a></p>
 		</section>
 
@@ -174,7 +184,7 @@
 				<p class="working-example"><a href="../../working-examples/label-in-name-general/example4.html" target="_blank">Working example of range of inputs</a></p>
 		</section>
 							<section class="example">
-				<h4>Radio butons laid out in a matrix</h4>
+				<h4>Radio buttons laid out in a matrix</h4>
 				<p>A more complex construction involves inputs that are laid out in a grid, with the row and column headings serving as the only possible "labels". This is a common construction in a survey.</p>
 				<figure>
 					<img src="img/matrix-buttons.png" alt="How satisfied or dissatisfied are you with each of the following? The interaction with sales staff, Your experience at the register, The organziation of the store, The products offered in the store, The price of the product,The sizes available">
@@ -233,7 +243,7 @@
 
 </code>
 </p>
-				<p>[need to create working example]</p>
+				<p class="working-example"><a href="../../working-examples/label-in-name-general/example5.html" target="_blank">Working example of radio buttons in a matrix</a></p>
 		</section>
 					<section class="example">
 				<h4>Inputs laid out in a matrix</h4>
@@ -253,7 +263,6 @@
 					</ul>
 					</p>
 					<p>Such considerations will help to determine if there is an appropriate label for any given actionable cell in a grid.</p>
-				<p>[Need to add code example]</p>
 		</section>
 	</section>
 		<section id="tests">
