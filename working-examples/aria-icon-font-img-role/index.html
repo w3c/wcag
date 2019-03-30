@@ -2,14 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>Fitting Images Reflow</title>
+    <title>Semantically identifying a font icon with role="img" examples</title>
     <style>
 
     /* Icon Fonts Styling */
 
     body {
+      background-color: #fafafc;
       font-family: "Times New Roman", Times, serif;
-      background-color: #ffffff;
       margin: 2rem 2rem 4rem 2rem;
     }
 
@@ -17,9 +17,9 @@
       font-family: 'IconFontRoleImg';
       src:  url('fonts/icon-font-role-img.eot?i66rw8');
       src:  url('fonts/icon-font-role-img.eot?i66rw8#iefix') format('embedded-opentype'),
-        url('fonts/icon-font-role-img.ttf?i66rw8') format('truetype'),
-        url('fonts/icon-font-role-img.woff?i66rw8') format('woff'),
-        url('fonts/icon-font-role-img.svg?i66rw8#icon-font-role-img') format('svg');
+            url('fonts/icon-font-role-img.ttf?i66rw8') format('truetype'),
+            url('fonts/icon-font-role-img.woff?i66rw8') format('woff'),
+            url('fonts/icon-font-role-img.svg?i66rw8#icon-font-role-img') format('svg');
       font-weight: normal;
       font-style: normal;
     }
@@ -34,7 +34,6 @@
       font-variant: normal;
       text-transform: none;
       line-height: 1;
-
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
@@ -52,13 +51,18 @@
     .icon-stacked { position: relative; }
 
     .icon-stacked .icon-star-half {
-        position: absolute;
-        left: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
 
     /* EXAMPLE 3 */
 
-    a { text-decoration: none; }
+    a {
+      color: #005a9c;
+      display: inline-block;
+      text-decoration: none;
+    }
     a:hover, a:focus { color: #949494; }
 
     /* EXAMPLE 4 */
@@ -68,27 +72,28 @@
       position: relative;
     }
 
-    .icon-double-link.icon-double-link-instead-of:before    { content: "\e93e"; }
-    .icon-double-link.icon-double-link-instead-of:after     { content: "\e993"; }
+    .icon-double-link.icon-double-link-instead-of:before  { content: "\e93e"; }
+    .icon-double-link.icon-double-link-instead-of:after   { content: "\e993"; }
 
-    .icon-double-link .icon-email:before      { content: "\e93e"; left: 0; }
-    .icon-double-link .icon-chevron:before    { content: "\e993"; right: 0; }
+    .icon-double-link .icon-email:before    { content: "\e93e"; }
+    .icon-double-link .icon-chevron:before  { content: "\e993"; }
+
+    .icon-double-link .icon-chevron  { float: right; margin-left: 1.5rem; }
+
+    /* Replaces font faces but excludes all elements with attribute role="img" */
+    .font-family-toggle *:not([role="img"]) { font-family: Verdana, sans-serif !important; }
 
     /* Content Styling */
 
-    html {
-      box-sizing: border-box;
-    }
+    html { box-sizing: border-box; }
 
     *,
     *::before,
-    *::after {
-      box-sizing: inherit;
-    }
+    *::after { box-sizing: inherit; }
 
     a:hover { text-decoration: none; }
 
-    h1, h2 { color: #005a6a; }
+    h1, h2 { color: #003366; }
     h1 { font-size: 2rem; }
     h2 { font-size: 1.5rem; }
     h3 { font-size: 1.2rem; }
@@ -99,20 +104,23 @@
       text-align: center;
       vertical-align: middle;
       background-color: #fafafc;
+      font-family: 'IconFontRoleImg', "Times New Roman", Times, serif !important;
       font-size: 1.1rem;
       font-weight: bold;
-      border: 1px solid #d5d5d5;
+      border: 1px solid #3b3b3b;
       border-radius: 0.25rem;
       padding: 0.5rem 1rem;
     }
 
     button:focus,
-    button:hover {
-      background-color: #dcdcdc;
-    }
+    button:hover { background-color: #dcdcdc; }
 
-    /* Replaces font faces but excludes all elements with attribute role="img" */
-    .font-family-toggle *:not([role="img"]) { font-family: Verdana, sans-serif !important; }
+    section {
+      background-color: #ffffff;
+      border: 1px solid #dddddd;
+      margin-bottom: 2rem;
+      padding: 1rem;
+    }
 
     </style>
 
@@ -120,75 +128,91 @@
 
   <body id="font-family-toggle">
 
-    <h1>Examples semantically identifying a font icon with role="img"</h1>
+    <h1>Semantically identifying a font icon with role="img" examples</h1>
 
-    <h2>Example 1: Star Icon Font used as an indicator (not interactive)</h2>
+    <section>
 
-    <button onclick="fontFamilyToggle()">Toggle font family</button>
+      <h2>Example 1: Star Icon Font used as an indicator (not interactive)</h2>
 
-    <h3>Instead of...</h3>
+      <h3>Instead of...</h3>
+      <p>
+         <span class="icon icon-star-bg yellow"></span>
+      </p>
 
-    <p>
-       <span class="icon icon-star-bg yellow"></span>
-    </p>
+      <h3>Do...</h3>
+      <p>
+         <span class="icon icon-star-bg yellow" role="img" aria-label="Favorite"></span>
+      </p>
 
-    <h3>Do...</h3>
+      <button onclick="fontFamilyToggle()">Toggle font family</button>
 
-    <p>
-       <span class="icon icon-star-bg yellow" role="img" aria-label="Favorite"></span>
-    </p>
+    </section>
 
-    <h2>Example 2: Two colored / stacked star Icon Font used as an indicator</h2>
+    <section>
 
-    <button onclick="fontFamilyToggle()">Toggle font family</button>
+      <h2>Example 2: Two colored / stacked star Icon Font used as an indicator</h2>
 
-    <h3>Instead of...</h3>
+      <h3>Instead of...</h3>
+      <span class="icon-stacked">
+         <span class="icon icon-star-bg grey"></span>
+         <span class="icon icon-star-half yellow"></span>
+      </span>
 
-    <span class="icon-stacked">
-       <span class="icon icon-star-bg grey"></span>
-       <span class="icon icon-star-half yellow"></span>
-    </span>
+      <h3>Do...</h3>
+      <span class="icon-stacked" role="img" aria-label="Favorite star half filled">
+         <span class="icon icon-star-bg grey" role="img" aria-hidden="true"></span>
+         <span class="icon icon-star-half yellow" role="img" aria-hidden="true"></span>
+      </span>
 
-    <h3>Do...</h3>
+      <button onclick="fontFamilyToggle()">Toggle font family</button>
 
-    <span class="icon-stacked" role="img" aria-label="Favorite star half filled">
-       <span class="icon icon-star-bg grey" role="img" aria-hidden="true"></span>
-       <span class="icon icon-star-half yellow" role="img" aria-hidden="true"></span>
-    </span>
+    </section>
 
-    <h2>Example 3: Email Icon Font in a link WITHOUT visible text</h2>
+    <section>
 
-    <button onclick="fontFamilyToggle()">Toggle font family</button>
+      <h2>Example 3: Email Icon Font in a link WITHOUT visible text</h2>
 
-    <h3>Instead of...</h3>
+      <h3>Instead of...</h3>
+      <p>
+        <a href="email.html">
+           <span class="icon icon-email"></span>
+        </a>
+      </p>
 
-    <a href="email.html">
-       <span class="icon icon-email"></span>
-    </a>
+      <h3>Do...</h3>
+      <p>
+        <a href="email.html">
+          <span class="icon icon-email" role="img" aria-label="Email"></span>
+        </a>
+      </p>
 
-    <h3>Do...</h3>
+      <button onclick="fontFamilyToggle()">Toggle font family</button>
 
-    <a href="email.html">
-       <span class="icon icon-email" role="img" aria-label="Email"></span>
-    </a>
+    </section>
 
-    <h2>Example 4: Multiple Icon Fonts as part of another sematic element WITH visible text</h2>
+    <section>
 
-    <button onclick="fontFamilyToggle()">Toggle font family</button>
+      <h2>Example 4: Multiple Icon Fonts as part of another sematic element WITH visible text</h2>
 
-    <h3>Instead of...</h3>
+      <h3>Instead of...</h3>
+      <p>
+        <a href="email.html" class="icon-double-link icon-double-link-instead-of">
+          Email
+        </a>
+      </p>
 
-    <a href="email.html" class="icon-double-link icon-double-link-instead-of">
-       Email
-    </a>
+      <h3>Do...</h3>
+      <p>
+        <a href="email.html" class="icon-double-link">
+         <span class="icon icon-email" role="img" aria-hidden="true"></span>
+         <span class="icon icon-chevron" role="img" aria-hidden="true"></span>
+         Email
+        </a>
+      </p>
 
-    <h3>Do...</h3>
+      <button onclick="fontFamilyToggle()">Toggle font family</button>
 
-    <a href="email.html" class="icon-double-link">
-       <span class="icon icon-email" role="img" aria-hidden="true"></span>
-       Email
-       <span class="icon icon-chevron" role="img" aria-hidden="true"></span>
-    </a>
+    </section>
 
     <script>
     function fontFamilyToggle() {
