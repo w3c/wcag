@@ -1,44 +1,51 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 	<head>
-		<title>Activation events are not triggered when touch is removed from a control</title>
+		<title>Using native controls to ensure  functionality is triggered on the up-event.</title>
 		<link rel="stylesheet" type="text/css" href="../../css/editors.css"/>
 	</head>
 	<body>
-		<h1>Activation events are not triggered when touch is removed from a control</h1>
+		<h1>Using native controls to ensure  functionality is triggered on the up-event.</h1>
 		<section id="meta">
 			<h2>Metadata</h2>
 			<p class="instructions">Provide information below to help editors associate the technique properly. Contents of the meta section are not output by the processor.</p>
-			<p id="sc"><!-- SC to which this applies --></p>
-			<p id="type"><!-- sufficient, advisory, or failure --></p>
+			<p id="sc">2.5.2 Pointer Cancellation<!-- SC to which this applies --></p>
+			<p id="type">Sufficient<!-- sufficient, advisory, or failure --></p>
 		</section>
 		<section id="applicability">
 			<h2>When to Use</h2>
-			<p class="instructions">This technique applies to nearly all technologies.</p>
+			<p >This technique applies to nearly all technologies.</p>
 		</section>
 		<section id="description">
 			<h2>Description</h2>
-			<p >The objective of this technique is to ensure that users who attempt to interact with a control do not trigger the action of the event accidentally. This can be accomplished most directly by relying on the “pointer up” event. This allows users interacting with touch screens to utilize the screen as support to stabilize the activation target. Another approach would be to activate on the “pointer down” event, but if the “pointer up” event occurs outside of the control, to immediately undo the action.</p>
-      <p>The easiest way to meet this success criteria is simply to use the default behavior of controls. The up-event is the default behaviour for almost all controls and any programming or markup language.  An Editable Text box could have the cursor enter the editable area on the “pointer down” event, because the action is trivially reversible, any text is easy to delete. However, a Submit button would need to either provide a confirmation dialogue or have its event occur on the “pointer up” event. A key on a keyboard application could respond on the “pointer down” event because such behavior would be considered essential for that control.
+			<p >The objective of this technique is to ensure that users who attempt to interact with a control do not trigger the action of the event accidentally. This can be accomplished most directly by relying on the “pointer up” event.  </p>
+      <p>The easiest way to meet this success criteria is simply to use the default behavior of controls. The up-event is the default behaviour for almost all controls and any programming or markup language.  </p>
+     <p>In native languages where a control is fired on the down event it is usually for good reason and is easily recoverable. For instance an html input element could have the cursor enter the editable area on the “pointer down” event, because the action is trivially reversible, and as such meets the requirements of the Pointer Cancellataion SC. </p>
+      
+
 		</section>
 		<section id="examples">
 			<h2>Examples</h2>
 			
 			<section class="example">
 				<h3>Using an generic onclick event in JavaScript</h3>
-				<p></p>
+				<p>In JavaScript use native onclick event</p>
 				
 			</section>
       <section class="example">
 				<h3>Using an generic button or link in HTML</h3>
-				<p></p>
+				<p>In HTML use a native <button> or <a href ....>.</p>
+				
+			</section>
+           <section class="example">
+				<h3>Using an generic button in iOS or Android</h3>
+				<p>In iOS or Android use a native button.</p>
 				
 			</section>
 		</section>
 		<section id="tests">
 			<h2>Tests</h2>
-			<p class="instructions">Tests must have a test procedure and expected results. Populate the following sections as appropriate. If a technique has multiple alternative testing approaches, add a new section with class="test" for each one, and put the test-procedure and test-results sections inside that.</p>
-			<section class="test-procedure">
+				<section class="test-procedure">
 				<h3>Procedure</h3>
 				<ol>
 					<li>Find all clickable controls with actions that are irreversible. If this is the case:</li>
