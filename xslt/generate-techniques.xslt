@@ -21,7 +21,7 @@
 		<xsl:param name="id"/>
 		<xsl:param name="section"/>
 		<xsl:choose>
-			<xsl:when test="$id = 'applicability'"><xsl:value-of select="$section and $section/html:p[not(@class = 'instructions')]"/></xsl:when>
+			<xsl:when test="$id = 'applicability'"><xsl:value-of select="$section and ($section/html:p[not(@class = 'instructions')] or $section/html:ol or $section/html:ul)"/></xsl:when>
 			<xsl:when test="$id = 'description'"><xsl:value-of select="$section and $section/html:p[not(@class = 'instructions')]"/></xsl:when>
 			<xsl:when test="$id = 'examples'"><xsl:value-of select="$section and $section/html:section[@class = 'example'] or $section/html:ul or $section/html:ol"/></xsl:when>
 			<xsl:when test="$id = 'resources'"><xsl:value-of select="$section and ($section/html:p[not(@class = 'instructions')] or $section//html:li[not(. = 'Resource')] or $section//html:a[@href])"/></xsl:when>
@@ -453,7 +453,7 @@
 		</xsl:element>
 	</xsl:template>
 	
-	<xsl:template match="html:a[not(@href)]">
+	<xsl:template match="html:a[not(@href)]" mode="#all">
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:variable name="dfn" select="lower-case(.)"/>
 		<a href="{$loc.guidelines}#{$meta/ancestor::guidelines/term[name = $dfn]/id}" target="terms"><xsl:value-of select="."/></a>
