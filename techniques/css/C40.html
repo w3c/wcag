@@ -14,12 +14,17 @@
 		</section>
 		<section id="applicability">
 			<h2>When to Use</h2>
-			<p>Components on a page are often many colors and shades. Historically focus indicators have been  one color, so they are highly visible when some components have focus and not well seen on other components. For instance, if a focus indicator is dark blue and a button is on a white background then it will be easily seen, but if the background is also blue it will not be easily seen. This technique overcomes that problem by introducing with one class, that provides a focus indicator that has two colours, one light and one dark, which can be used across a site.</p>
+			<p>If you need to use one consistent style of focus indicator across different compoents and background colors implemented in CSS.</p>
 		</section>
 		<section id="description">
 			<h2>Description</h2>
-			<p>The objective of this technique is to create a two color focus indicator that is always visible and does not require multiple classes to ensure constant sufficient contrast of the focus indicator regardless of the color of the component it is focused on.</p>	<p>Although it is possible to create individual CSS classes to address the different buttons across a site, this can be time consuming and easy to miss some types of interactive content. However, if the focus indicator is two colors, a light color and a dark color, then regardless of the color of component it is on, it will always have sufficient contrast. Currently, this can be done by combining the <code>text shadow</code>property with the <code>outline </code> property on the <code>focus</code> indicator.</p>
-     <p> Developers may apply this technique to  parts of the site where its hard to keep track of the focus indicator (such as when there are lots of different component colors), while providing  a different (one-color) focus indicator for components such as a navigation menus that are across a site, have specific design requirements, and are easy to test and maintain. </p>
+			<p>The objective of this technique is to create a two color focus indicator that is always visible and does not require multiple classes to ensure constant sufficient contrast of the focus indicator regardless of the color of the component it is focused on.</p>	
+
+			<p>The default focus indicators provided by browsers are typically one color, so they are highly visible when some components have focus and not well seen on other components. For instance, if a focus indicator is dark blue and a button is on a white background then it will be easily seen, but if the background is also blue it will not be easily seen.</p>
+
+			<p>Although it is possible to create individual CSS classes to address the different buttons across a site, this can be time consuming and easy to miss some types of interactive content. However, if the focus indicator is two colors, a light color and a dark color, then regardless of the color of component it is on, it will always have sufficient contrast. Currently, this can be done by combining the <code>text shadow</code>property with the <code>outline </code> property on the <code>focus</code> indicator.</p>
+
+     		<p> Developers may apply this technique to parts of the site where its hard to keep track of the focus indicator (such as when there are lots of different component colors), while providing  a different (one-color) focus indicator for components such as a navigation menus that are across a site, have specific design requirements, and are easy to test and maintain. </p>
 		
 		</section>
 		<section id="examples">
@@ -27,36 +32,37 @@
 			<section class="example">
 				<h3>Combining a dark outline and light box shadow</h3>
 				<p>Description</p>
-				<code>
-        *:focus {
-                      box-shadow: 0 0 0px 1px white !important;
-                      outline: dotted !important;
-                       }
-         *:focus:not(:focus-visible) { outline: none }
-          a:hover { outline: none !important;}
-          a:active { outline: none !important;}</code>
-				<p class="working-example"><a href="../../working-examples/css-two-focus-colors/">Working example of combining a dark outline and light text shadow</a></p>
+				<pre><code>*:focus {
+	box-shadow: 0 0 0px 1px white !important;
+	outline: dotted !important;
+}
+*:focus:not(:focus-visible) { 
+	outline: none 
+}
+a:hover { 
+	outline: none !important;
+}
+a:active { 
+	outline: none !important;
+}</code></pre>
+			<p class="working-example"><a href="../../working-examples/css-two-focus-colors/">Working example of combining a dark outline and light text shadow</a></p>
         
 			</section>
       
-      <section class="example">
-				<h3>Combining a dark outline and light box shadow using a two colored shadow</h3>
-        <p class="note"> <code>focus-visible</code> is currently only supported in Firefox. Check <a href="https://caniuse.com/#search=focus-visible">"Can I Use"</a> before using.</p>
-				<p>Description</p>
-				<code>
-      /* CSS for use in tools like https://add0n.com/stylus.html to create an obvious focus indicator. */
-
-*:-moz-focusring { /* change to :focus-visible for chrome */
+			<section class="example">
+			<h3>Combining a dark outline and light box shadow using a two colored shadow</h3>
+			<p class="note"> <code>focus-visible</code> is currently only supported in Firefox. Check <a href="https://caniuse.com/#search=focus-visible">"Can I Use"</a> before using.</p>
+			<p>Description</p>
+			<pre><code>*:focus { 
     outline: 2px transparent dashed !important;
     box-shadow: 0 0 0 2px #F9F9D1, 0 0 0 4px #396196, 0 0 4px 8px #F9F9D1 !important;
     transition: all 0.2s ease-in;
     z-index: 1000;
     overflow: visible;
-}
-     </code>
-				<p class="working-example"><a href="../../working-examples/css-two-focus-colors-2/">Working example of combining a dark outline and light text shadow</a></p>
+}</code></pre>
+			<p class="working-example"><a href="../../working-examples/css-two-focus-colors-2/">Working example of combining a dark outline and light text shadow</a></p>
         
-			</section>
+		</section>
       
       	<section class="example">
 				<h3>Using a single CSS property</h3>
@@ -71,34 +77,31 @@
 			
 			<section class="test-procedure">
 				<h3>Procedure</h3>
+				<p>For each focusable user interface element: </p>
 				<ol>
-				
-            <li>Place focus on each focusable user interface element on the page using the keyboard </li>
-     			<li>Check that there is a highly visible focus indicator.</li>
-          <li>Check that the two colors in the focus indicator are adjacent to each other and have a contrast ratio that is 3:1 or greater with each other.</li>
-        
+					<li>Check that the two colors in the focus indicator are adjacent and have a contrast ratio that is 3:1 or greater with each other.</li>
 				</ol>
-        <p class="note">If it can be determined that the two-colour focus indicator CSS code is at the bottom of the CSS cascade and overrides other classes, then the focus doesn't need to be tested on every focusable element on the page.</p>
 			</section>
 			<section class="test-results">
 				<h3>Expected Results</h3>
 				<ul>
 					<li>#2 and #3 are true.</li>
 				</ul>
+				<p class="note">If it can be determined that the two-colour focus indicator CSS takes precidence then the test can be applied programattically rather than by manually focusing on each interface component.</p>
 			</section>
 		</section>
 		<section id="related">
 			<h2>Related Techniques</h2>
-			<p class="instructions">Provide links to other techniques that users should consider. This section is optional.</p>
 			<ul>
-				<li>ID</li>
+				<li><a href="../general/G149">G149</a></li>
+				<li><a href="../general/G195">G195</a></li>
 			</ul>
 		</section>
 		<section id="resources">
 			<h2>Resources</h2>
-			<p class="instructions">Provide links to external resources that are relevant to users of the technique. This section is optional.</p>
 			<ul>
-				<li>Link</li>
+				<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:focus">The :focus pseudo-class on the Mozilla Developer Network</a></li>
+				<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible">The :focus-visible pseudo-class on the Mozilla Developer Network</a>></li>
 			</ul>
 		</section>
 	</body>
