@@ -4,7 +4,7 @@ function titleToPathFrag (title) {
 
 function linkUnderstanding() {
 	var understandingBaseURI;
-	if (respecConfig.specStatus == "ED") understandingBaseURI = "../understanding/";
+	if (respecConfig.specStatus == "ED") understandingBaseURI = "../../understanding/";
 	else understandingBaseURI = "https://www.w3.org/WAI/WCAG21/Understanding/";
 	document.querySelectorAll('.sc').forEach(function(node){
 		var heading = node.firstElementChild.textContent;
