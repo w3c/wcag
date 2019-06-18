@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta charset="UTF-8" />
+      <title>G212: Using native controls to ensure  functionality is triggered on the up-event.</title>
+      <link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="G211">Previous Technique: G211</a></li>
+            <li><a href="../html/H2">Next Technique: H2</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Using native controls to ensure  functionality is triggered on the up-event.</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>This technique applies to nearly all technologies.</p>
+            <p>This technique is not referenced from any Understanding document.</p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to ensure that users who attempt to interact with
+               a control do not trigger the action of the event accidentally. This can be accomplished
+               most directly by relying on the pointer's up-event (for example, the onclick or mouseup
+               event).  
+            </p>
+            <p>The easiest way to meet this success criteria is simply to use the default behavior
+               of controls and not override that behaviour with an explicit down-event trigger. The
+               up-event is the default behaviour for almost all controls and any programming or markup
+               language.  
+            </p>
+            <p>In native languages where a control is fired on the down event it is usually for good
+               reason and is easily recoverable. For instance, an HTML input element could have the
+               cursor enter the editable area on the “pointer down” event, because the action is
+               trivially reversible, and as such meets the requirements of the Pointer Cancellation
+               SC. This is because if the user realizes they made a mistake after pressing down the
+               control, they can simply move their pointer away from the hit area while still holding
+               down the pointer, then release their pointer and the event is not triggered. 
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-using-an-native-onclick-event-in-javascript">
+               <h3>Example 1: Using an native onclick event in JavaScript</h3>
+               <p>In JavaScript native onclick events are triggered on the up-event by default.</p>
+            </section>
+            <section class="example" id="example-2-using-a-native-button-or-link-in-html">
+               <h3>Example 2: Using a native button or link in HTML</h3>
+               <p>In HTML native <code>&lt;button&gt;</code> or <code>&lt;a href ....&gt;</code> onclick events are triggered on the up-event by default.
+               </p>
+               <div class="note">
+                  <div role="heading" class="note-title marker" aria-level="4">Note</div>
+                  <p> The <code>&lt;button&gt;</code> element doesn't do anything on its own (unless its part of a <code>&lt;form&gt;</code>, and does NOT have <code>&lt;type="button"&gt;</code>, in which case it submits the form). Authors should rely on input-agnostic click
+                     handlers.
+                  </p>
+               </div>
+            </section>
+            <section class="example" id="example-3-using-a-native-button-in-ios-or-android">
+               <h3>Example 3: Using a native button in iOS or Android</h3>
+               <p>In native buttons in iOS and Android onclick events are triggered on the up-event
+                  by default.
+               </p>
+               <div class="note">
+                  <div role="heading" class="note-title marker" aria-level="4">Note</div>
+                  <p>The WCAG standard itself applies to <a href="https://www.w3.org/TR/WCAG21/#dfn-web-page-s">web pages at a URL</a>, and therefore this example is provided as helpful supplementary advice for those
+                     looking to implement the <a href="https://www.w3.org/WAI/standards-guidelines/wcag/non-web-ict/">WCAG2ICT</a> for native applications.
+                  </p>
+               </div>
+            </section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               				
+               <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/click_event">Mozilla web docs for the click event</a></li>
+               			
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="test-procedure">
+               <h3>Procedure</h3>
+               <p>For all clickable controls:</p>
+               <ol>
+                  					
+                  <li>Activate the down-event then move the pointer outside the target before triggering
+                     the up-event, and then release the pointer to trigger the up-event.
+                  </li> 
+                  					
+                  <li>Check that the action was not triggered when the pointer is released outside of the
+                     hit area for the target.
+                  </li>
+                  					
+                  <li>If the action is triggered, check that the action is reversible.</li>	
+                  				
+               </ol>
+            </section>
+            <section class="test-results">
+               <h3>Expected Results</h3>
+               <ul>
+                  					
+                  <li>Check #2 or #3 is true. </li>
+                  				
+               </ul>
+            </section>
+         </section>
+      </main>
+   </body>
+</html>
