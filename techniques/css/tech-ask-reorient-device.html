@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
-    <title>Using CSS media queries for showing message asking to reorient device</title>
+    <title>Using CSS media queries showing a message asking to reorient device</title>
     <link rel="stylesheet" type="text/css" href="https://rawgit.com/w3c/wcag21/master/css/sources.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/editors.css"/>
   </head>
   <body>
-    <h1>Using CSS media queries for showing message asking to reorient device</h1>
+    <h1>Using CSS media queries showing a message asking to reorient device</h1>
     <section id="meta">
       <h2>Metadata</h2>
       <p id="id"></p>
@@ -19,46 +19,61 @@
     </section>
     <section id="description">
       <h2>Description</h2>
-      <p>The objective of this technique is to be able to present images without introducing a horizontal scroll bar at a width equivalent to 320 CSS pixels, or a vertical scroll bar at a height equivalent to 256 CSS pixels for content intended to scroll horizontally. This is done by using CSS <code>max-width</code> and <code>height</code> property techniques that adapt to the available space and keep the original dimensions of the image.</p>      
-      <p>Responsive layouts can add or remove colomns or layout blocks, and each part of the layout can be wider or smaller at different points. This technique ensures images do not break out of their layout area, including in one-column layouts where it would cause scrolling.</p>
-      <p>The basic principles of fitting images are to:</p>
-      
-      <ol>
-        <li>Define the max-width property for images, and;</li>
-        <li>Define the height property for images, so they enlarge or shrink in the available space and respond to zoom levels.</li>
-      </ol>
-      
-      <p>All images require design finesse by making sure the original size fits the biggest size of the available spaces to achieve good-looking results at a wide range of viewport sizes and zoom levels.</p>
+
+      <p>The objective of this Failure is to describe the situation where users are unable to rotate their device because it is mounted in a fixed orientation (e.g., on the arm of a power wheelchair).</p>
+
+      <p>If web content is designed for <code>portrait</code> only and when <code>landscape</code> is detected, a message appears asking to reorient the device, these users will be unable to rotate and operate the content.
+
+      <p>There are various methods for devices to determine if the content is in landscape or portrait orientation. One of these methods is by looking at the width-to-height aspect ratio of the viewport. In other words: if the width is smaller or larger than the height. The CSS <code>orientation</code> media feature is <code>portrait</code> when the value of the <code>height</code> media feature is greater than or equal to the value of the <code>width</code> media feature. Otherwise <code>orientation</code> is <code>landscape</code>.</p>
       
     </section>
     <section id="examples">
       <h2>Examples</h2>
       <section class="example">
-        <h3>Example 1: Fitting images in HTML and CSS</h3>
-        <p>The following simple example uses HTML and CSS to create a fitting image. The layout regions adjust their size as the viewport is adjusted. The images subsequently adjust their size to fit within the layout region containers.</p>
-        <p>The zoom level can be increased to 400% without requiring scrolling in more than one direction. This particular example uses a percent size for the <code>max-with</code> and auto size for the <code>height</code> of the image to remain the original dimensions.</p>
+        <h3>Block a orientation, "door slam", by using HTML and CSS</h3>
+
+        <p>The following example uses HTML and CSS to show a message asking to reorient the device if in <code>landscape</code>.</p>
+
+        <p>The message will disappear if the orientation is changed to <code>portrait</code>.
+
+        When the <code>portrait</code> property matches the viewport space defined via media queries, the message will disappear or vice versa. This particular example uses the CSS <code>landscape</code>, <code>portrait</code> media query properties.</p>
 
 <pre>
 <code>
 
 &lt;style&gt;
 
-/* Fitting Images Styling */
+/* Orientation "door slam" Styling */
 
-.img-responsive {
-  max-width: 100%;
+@media all and (orientation: landscape) {
+  .rotate { display: block; }
+  .content { display: none; }
 }
 
-&lt;/style&gt;
+@media all and (orientation: portrait) {
+  .rotate { display: none; }
+  .content { display: block; }
+}
 
-&lt;div class="panel"&gt;
-  &lt;img class="img-responsive" src="..." alt=""&gt;
+.rotate {
+  text-align: center;
+  font-size: 2rem;
+  margin-top: 4rem;
+}
+
+/* Orientation "door slam" HTML */
+
+&lt;div class="rotate"&gt;
+  Please rotate your device!
+&lt;/div&gt;
+
+&lt;div class="content"&gt;
   ...
 &lt;/div&gt;
 </code>
 </pre>
         
-        <p>Working example: <a href="https://rawgit.com/w3c/wcag/example-fitting-images-viewport/working-examples/css-fitting-images/index.html">Using Fitting Images for Reflow</a></p>
+        <p>Working example: <a href="https://raw.githack.com/w3c/wcag/example-doorslam/working-examples/css-reorient/index.html">Show message asking to reorient device</a></p>
         
       </section>
     </section>
@@ -67,16 +82,13 @@
       <section class="test-procedure">
         <h3>Procedure</h3>
         <ol>
-          <li>Display the web page in a user agent capable of 400% zoom and set the viewport dimensions (in CSS pixels) to 1280 wide and 1024 high.</li>
-          <li>Zoom in by 400%.</li>
-          <li>For content read horizontally, check that all images fit in their available space without horizontal scrolling.</li>
-          <li>For content read vertically, check that all images fit in their available space without vertical scrolling.</li>
+          <li>Display the web page in the portrait and landscape orientation.</li>
+          <li>Check if a message appears asking to reorient the device.</li>
         </ol>
-        <p>NB: If the browser is not capable of zooming to 400%, you can reduce the width of the browser proportionally. For example, at 300% zoom the viewport should be sized to 960px wide.</p>
       </section>
       <section class="test-results">
         <h3>Expected Results</h3>
-        <p>Check that #3 and #4 are true.</p>
+        <p>Check that #2 is false</p>
 </section>
     </section>
     <section id="related">
