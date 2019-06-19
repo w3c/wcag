@@ -122,6 +122,9 @@
 					<li><a href="#advisory">Advisory Techniques</a></li>
 					<li><a href="#success-criteria">Success Criteria</a></li>
 				</xsl:if>
+				<xsl:if test="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]">
+					<li><a href="#key-terms">Key Terms</a></li>
+				</xsl:if>
 			</ul>
 		</nav>
 	</xsl:template>
@@ -155,7 +158,7 @@
 	
 	<xsl:template match="html:p" mode="sc-info">
 		<xsl:param name="sc-info"/>
-		<p><xsl:apply-templates select="$sc-info"/><xsl:apply-templates mode="sc-info"/></p>
+		<p><xsl:apply-templates select="@*"/><xsl:apply-templates select="$sc-info"/><xsl:apply-templates mode="sc-info"/></p>
 	</xsl:template>
 	
 	<xsl:template match="html:a[starts-with(@href, '#')]" mode="sc-info">
@@ -166,8 +169,13 @@
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:variable name="termrefs" select="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]"/>
 		<xsl:if test="$termrefs">
-			<xsl:variable name="termids" as="node()*">
+			<xsl:variable name="termrefs-canonical">
 				<xsl:for-each select="$termrefs">
+					<xsl:copy-of select="$meta/ancestor::guidelines/term[name = lower-case(normalize-space(current()))]/name[1]"/>
+				</xsl:for-each>
+			</xsl:variable>
+			<xsl:variable name="termids" as="node()*">
+				<xsl:for-each select="distinct-values($termrefs-canonical/name)">
 					<xsl:copy-of select="$meta/ancestor::guidelines/term[name = current()]"/>
 				</xsl:for-each>
 			</xsl:variable>
@@ -196,7 +204,7 @@
 				<xsl:when test="version = 'WCAG21'">21/</xsl:when>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:result-document href="{$output.dir}/{file/@href}.html" encoding="utf-8" exclude-result-prefixes="#all" indent="yes" method="xhtml" omit-xml-declaration="yes">
+		<xsl:result-document href="{$output.dir}/{file/@href}.html" encoding="utf-8" exclude-result-prefixes="#all" include-content-type="no" indent="yes" method="xhtml" omit-xml-declaration="yes">
 			<xsl:apply-templates select="document(resolve-uri(concat(file/@href, '.html'), concat($base.dir, $subpath)))">
 				<xsl:with-param name="meta" select="." tunnel="yes"/>
 			</xsl:apply-templates>
@@ -360,7 +368,7 @@
 		</xsl:element>
 	</xsl:template>
 	
-	<xsl:template match="html:a[not(@href)]">
+	<xsl:template match="html:a[not(@href)]" mode="#all">
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:variable name="dfn" select="lower-case(.)"/>
 		<a href="{$loc.guidelines}#{$meta/ancestor::guidelines/term[name = $dfn]/id}" target="terms"><xsl:value-of select="."/></a>
