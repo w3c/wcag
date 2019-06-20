@@ -62,6 +62,19 @@
 		</xslt>
 	</target>
 	
+	<target name="guidelines" depends="init">
+		<mkdir dir="output/guidelines/22"/>
+		<copy file="guidelines/guidelines.css" todir="output/guidelines/22"/>
+		<copy file="guidelines/relative-luminance.xml" todir="output/guidelines/22"/>
+		<exec executable="curl">
+			<arg value="&quot;https://labs.w3.org/spec-generator/?type=respec&amp;url=https://raw.githack.com/w3c/wcag/master/guidelines/index.html&quot;"/>
+			<arg value="-o output/guidelines/22/index.html"/>
+			<arg value="-f"/>
+			<arg value="--retry"/>
+			<arg value="3"/>
+		</exec>
+	</target>
+	
 	<!-- Techniques -->
 	<target name="techniques-list" description="Create XML list of all the technique files">
 		<property name="output.file" value="${inputdir.techniques}/techniques.xml"/>
@@ -219,6 +232,7 @@
 	<!-- Publish -->
 	<target name="deploy" depends="init, understanding-toc, techniques-toc" description="Generate content ready to deploy to gh-pages">
 		<property name="editors" value="true"/>
+		<antcall target="guidelines"/>
 		<antcall target="techniques"/>
 		<antcall target="understanding"/>
 		<copy todir="output/working-examples/">
