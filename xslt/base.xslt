@@ -3,7 +3,8 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:wcag="https://www.w3.org/WAI/GL/"
-	exclude-result-prefixes="xs"
+	xmlns="http://www.w3.org/1999/xhtml"
+	exclude-result-prefixes="#all"
 	version="2.0">
 	
 	<xsl:param name="loc.guidelines">/guidelines/</xsl:param>
@@ -43,11 +44,15 @@
 	<xsl:function name="wcag:is-technique-link" as="xs:boolean">
 		<xsl:param name="link"/>
 		<xsl:choose>
+			<!--
 			<xsl:when test="$link/@class and index-of(('aria', 'client-side-script', 'css', 'failure', 'failures', 'flash', 'general', 'html', 'pdf', 'server-side-script', 'silverlight', 'smil', 'text', 'technqiues'), $link/@class)"><xsl:value-of select="true()"/></xsl:when>
 			<xsl:when test="starts-with($link/@href, 'https://www.w3.org/WAI/WCAG21/Techniques/')"><xsl:value-of select="true()"/></xsl:when>
 			<xsl:when test="starts-with($link/@href, 'https://w3c.github.io/techniques/')"><xsl:value-of select="true()"/></xsl:when>
 			<xsl:when test="starts-with($link/@href, 'https://rawgit.com/w3c/wcag/') and contains($link/@href, '/techniques/')"><xsl:value-of select="true()"/></xsl:when>
 			<xsl:when test="starts-with($link/@href, '../') and contains($link/@href, '/techniques/')"><xsl:value-of select="true()"/></xsl:when>
+			-->
+			<xsl:when test="(starts-with($link/@href, 'https://www.w3.org/WAI/WCAG21/Techniques/') or starts-with($link/@href, 'https://w3c.github.io/techniques/') or starts-with($link/@href, 'https://rawgit.com/w3c/wcag/') or starts-with($link/@href, '../')) and matches($link/@href, '[A-Z]+\d+(.html)?$')"><xsl:value-of select="true()"/></xsl:when>
+			<xsl:when test="matches($link/@href, '^([a-z\-]+/)?[A-Z]+\d+(.html)?$')"><xsl:value-of select="true()"/></xsl:when>
 			<xsl:otherwise><xsl:value-of select="false()"/></xsl:otherwise>
 		</xsl:choose>
 	</xsl:function>
@@ -99,6 +104,26 @@
 	
 	<xsl:template match="html:*[@class = 'generate-date']">
 		<xsl:value-of select="format-date(current-date(), '[D] [MNn] [Y]')"/>
+	</xsl:template>
+	
+	<xsl:template match="html:link[@href][contains(@href, 'css/editors.css')]"/>
+	
+	<xsl:template match="html:figure">
+		<xsl:if test="not(@id)">
+			<xsl:message terminate="yes">ID is required on figure: src=<xsl:value-of select="html:img/@src"/> in <xsl:value-of select="base-uri()"/></xsl:message>
+		</xsl:if>
+		<xsl:copy>
+			<xsl:apply-templates select="node()|@*"/>
+		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="html:figcaption">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:text>Figure </xsl:text>
+			<xsl:value-of select="count(parent::html:figure/preceding::html:figure) + 1"/>
+			<xsl:apply-templates/>
+		</xsl:copy>
 	</xsl:template>
 	
 </xsl:stylesheet>
