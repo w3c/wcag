@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta charset="UTF-8" />
+      <title>SCR39: Making content on focus or hover hoverable, dismissible, and persistent</title>
+      <link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="SCR38">Previous Technique: SCR38</a></li>
+            <li><a href="../css/C6">Next Technique: C6</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Making content on focus or hover hoverable, dismissible, and persistent</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>The Technique is applicable to any technology that supports the display of additional
+               content on pointer hover.
+               
+            </p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/content-on-hover-or-focus">Success Criterion 1.4.13: Content on Hover or Focus</a> (Sufficient)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>Additional content that is displayed when a user moves the pointer over a trigger
+               or moves the keyboard focus to the trigger (for example, a pop-up) must remain visible
+               to allow users time to read and interact with the content and must allow the user
+               to move the pointer over the additional content.
+            </p>
+            <p>Low vision users who magnify their screens often see only a small part of the screen
+               at a time (their viewport).
+               This means that the additional content may not be fully visible in the current viewport
+               and users may need to move
+               their mouse over the additional content to read it. Web authors should therefore ensue
+               that additional content stays visible
+               when the pointer moves away from the trigger to the (mostly adjacent) additional content.
+               additional content should also be
+               dismissible without moving the focus, so that users can read content covered by the
+               additional content.
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-example-1-content-preview-for-links">
+               <h3>Example 1: Example 1: Content preview for links</h3>
+               <p>When hovering over or focusing on a link, a content preview for the link appears just
+                  above or below that link.
+                  			Users can move the pointer over the additional content (pop-up) so that they can
+                  fully read the additional content. Pressing the Esc
+                  			key dismisses (closes) the additional content.
+               </p>
+               <section id="html-of-example-1">
+                  			
+                  <h4>HTML of example 1</h4>
+                  			<pre><code>&lt;p&gt;This is the &lt;a class="a-and-tooltip" id="parent" href="index.html"&gt;trigger
+&lt;span id="popup" role="tooltip"&gt;And this additional text 
+gives additional context on the trigger term&lt;/span&gt;&lt;/a&gt;.
+Text and popup are &lt;strong&gt;in one link (a)&lt;/strong&gt; element.&lt;/p&gt;</code></pre>
+                  <hr />
+                  		
+               </section>
+               <section id="css-of-example-1">
+                  			
+                  <h4>CSS of example 1</h4>
+                  			<pre><code>[role="tooltip"] {
+    display: none;
+    padding: 0.5em;
+    background:white;
+    color: black;
+    border:solid black 2px;
+    width:10em;
+}
+
+.a-and-tooltip {
+  position: relative;
+}
+
+[role="tooltip"] {
+    position: absolute;
+    left:0;
+    top:1em;
+}</code></pre>
+                  		<hr />
+                  		
+               </section>
+               <section id="javascript-of-example-1">
+                  			
+                  <h4>JavaScript of example 1</h4>
+                  			<pre><code>// trigger and popup inside the same link
+
+var parent = document.getElementById('parent');
+
+parent.onmouseover = function() {
+    document.getElementById('popup').style.display = 'block';
+}
+
+parent.onmouseout = function() {
+    document.getElementById('popup').style.display = 'none';
+}
+
+parent.onfocus = function() {
+    document.getElementById('popup').style.display = 'block';
+}
+
+parent.onblur = function() {
+    document.getElementById('popup').style.display = 'none';
+}
+
+// hide when ESC is pressed
+
+document.addEventListener('keydown', (e) =&gt; {
+  if ((e.keyCode || e.which) === 27)
+       document.getElementById('popup').style.display = 'none';
+});</code></pre>
+                  		</section>
+               <p class="working-example"><a href="../../working-examples/script-hoverable/">Working example of content on hover
+                     or focus</a></p>
+            </section>
+         </section>
+      </main>
+   </body>
+</html>
