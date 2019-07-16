@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>Using CSS Flexbox to reflow content</title>
+    <link rel="stylesheet" type="text/css" href="https://rawgit.com/w3c/wcag21/master/css/sources.css"/>
+  </head>
+  <body>
+    <h1>Using CSS Flexbox to reflow content</h1>
+    <section id="meta">
+      <h2>Metadata</h2>
+      <p id="id"></p>
+      <p id="technology">css</p>
+      <p id="type">sufficient</p>
+    </section>
+    <section id="applicability">
+
+    </section>
+    <section id="description">
+      <h2>Description</h2>
+      <p>The objective of this technique is to be able to present content without introducing a horizontal scroll bar at a width equivalent to 320 CSS pixels, or a vertical scroll bar at a height equivalent to 256 CSS pixels for text intended to scroll horizontally. This is done by using layout techniques that adapt to the available viewport space.</p>
+      <p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout">Flexbox layouts</a> define layout regions that reflow as needed to display the region on the screen. Although the exact layout therefore varies, the relationship of elements and the reading order remains the same when done right. This is an effective way to create designs that present well on different devices and for users with different zoom preferences.</p>
+      <p>The basic principles of flexbox layouts are to:</p>
+      <ol>
+        <li>Define the size of layout regions using flexbox properties and media queries for specific viewport sizes, so they enlarge, shrink or wrap in the available space and respond to zoom levels;</li>       
+         <li>Position the layout regions in the flexbox container as a row of adjacent flexbox items, which may wrap to new rows as needed in much the same way as words in a paragraph wrap.</li>
+      </ol>
+
+      <p class="note">Flexbox has the possibility to cause a keyboard navigation disconnect by using the order and reverse properties. The <a href="https://www.w3.org/TR/css-flexbox-1/#order-accessibility">CSS Flexible Box Layout module warns</a> against resequencing content logic as they cause incorrect source ordering and are non-conforming.</p>
+    </section>
+    <section id="examples">
+      <h2>Examples</h2>
+      <section class="example">
+        <h3>Example 1: Medium complex flexbox layout in HTML and CSS</h3>
+        <p>The following medium complex example uses HTML and CSS to create a flexbox layout. The layout regions adjust their size as the viewport is adjusted. When the total viewport width matches the width defined via media queries, columns wrap to be positioned below, rather than beside each other or vice versa.</p>
+        <p>The zoom level can be increased to 400% without requiring scrolling in more than one direction. This particular example uses percent sizes for the flex items by using the "flex-basis" property and are laid out in source order.</p>
+        
+<pre><code>
+  &lt;!DOCTYPE html&gt;
+  &lt;html lang="en"&gt;
+    &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Using CSS Flexbox for Reflow&lt;/title&gt;
+    &lt;style&gt;
+
+    /* Reflow Styling */
+
+    .row {
+      width: 100%;
+      display: flex;
+      flex-flow: row wrap;
+    }
+
+    .row-nested {
+      width: calc(100% + 2rem);
+      margin: 0 -1rem 1rem -1rem;
+    }
+
+    .col {
+      padding: 1rem;
+      flex: 0 1 100%;
+    }
+
+    @media all and (min-width: 576px) {
+      .col-panel {
+        flex: 0 1 50%;
+        padding-bottom: 0.25rem;
+      }
+    }
+
+    @media all and (min-width: 992px) { 
+      main[role="main"] {
+        flex: 0 1 66.333333%;
+      }
+      aside[role="complementary"] {
+        flex: 0 1 33.333333%;
+        margin-top: 0;
+      }
+    }
+
+    &lt;/style&gt;
+
+    &lt;/head&gt;
+
+    &lt;body class="row"&gt;
+
+      &lt;header role="banner" class="col"&gt;
+        ...
+      &lt;/header&gt;
+
+      &lt;main role="main" class="col"&gt;
+        ...
+        ...     
+        &lt;div class="row row-nested"&gt;
+          &lt;div class="col col-panel"&gt;
+            ...
+          &lt;/div&gt;
+          &lt;div class="col col-panel"&gt;
+            ...
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+
+      &lt;aside role="complementary" class="col"&gt;
+        ...
+      &lt;/aside&gt;
+
+      &lt;footer role="contentinfo" class="col"&gt;
+        ...
+      &lt;/footer&gt;
+
+    &lt;/body&gt;
+  &lt;/html&gt;</code></pre>
+        
+        <p class="working-example">Working example: <a href="../../working-examples/css-flexbox/">Using CSS Flexbox for Reflow</a></p>
+      </section>
+    </section>
+    <section id="tests">
+      <h2>Tests</h2>
+      <section class="test-procedure">
+        <h3>Procedure</h3>
+        <ol>
+          <li>Display the web page in a user agent capable of 400% zoom and set the viewport dimensions (in CSS pixels) to 1280 wide and 1024 high.</li>
+          <li>Zoom in by 400%.</li>
+          <li>For content read horizontally, check that all content and functionality is available without horizontal scrolling.</li>
+          <li>For content read vertically, check that all content and functionality is available without vertical scrolling.</li>
+        </ol>
+      <p class="note">If the browser is not capable of zooming to 400%, you can reduce the width of the browser proportionally. For example, at 300% zoom the viewport should be sized to 960px wide.</p>
+      </section>
+      <section class="test-results">
+        <h3>Expected Results</h3>
+        <p>#3 and #4 are true.</p>
+      </section>
+    </section>
+    <section id="related">
+      <h2>Related Techniques</h2>
+      <ul>
+        <li><a href="https://w3c.github.io/wcag/techniques/css/C32">Grid reflow technique</a></li>
+      </ul>
+    </section>
+    <section id="resources">
+      <h2>Related resources</h2>
+      <ul>
+        <li><a href="https://www.w3.org/TR/css-flexbox-1/">CSS Flexible Box Layout Module Level 1</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout"><abbr title="Mozilla Development Network">MDN</abbr> Flexible Box Layout</a></li>
+        <li><a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/">CSS Tricks Guide to Flexbox</a></li>
+      </ul>
+    </section>
+  </body>
+</html>

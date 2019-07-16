@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Using aria-alertdialog to Identify Errors</title>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script>
+$(document).ready(function(e) {
+	$('#trigger-alertdialog').click(function() {
+		$('main').attr('aria-hidden','true');
+		var lastFocus = document.activeElement;
+		var modalOverlay = $('<div>').attr({id:"modalOverlay", tabindex:"0"});
+		$(modalOverlay).appendTo('body');		
+		var dialog = $('<div>').attr({role:"alertdialog", "aria-labelledby":"alertHeading", "aria-describedby":"alertText", tabindex:"0"});
+		$(dialog).html('<div id="firstElement" tabindex="0"></div><h1 id="alertHeading">Error</h1><div id="alertText">Employee\'s Birth Date is after their hire date. Please verify the birth date and hire date.</div><button id="firstButton">Save and Continue</button><button id="lastButton">Return to page and correct error</button><div id="lastElement" tabindex="0"></div>').appendTo('body');
+		$('#firstButton').focus();
+
+$('#lastElement').focusin(function(e) {
+	   $('#firstButton').focus();
+});
+$('#firstElement').focusin(function(e) {
+	   $('#lastButton').focus();
+});
+
+$('[role=alertdialog] button').click(function(e) {
+    	$('main').attr('aria-hidden','false');		
+		$(modalOverlay).remove();
+		$(dialog).remove();
+        lastFocus.focus();
+});
+		return false;
+	});
+	
+});
+</script>
+<style type="text/css">
+#modalOverlay {
+	width:100%;
+	height:100%;
+	z-index:2; 
+	background-color:#000;
+	opacity:0.5;
+	position:fixed;
+	top:0;
+	left:0;
+	margin:0;
+	padding:0;
+}
+[role=alertdialog] {
+	width:50%;
+	margin-left:auto;
+	margin-right:auto;
+	padding: 5px;
+	border: thin #000 solid;
+	background-color:#fff;
+	z-index:3;
+	position:fixed;
+	top:25%;
+	left:25%;
+}
+</style>
+</head>
+
+<body>
+<main>
+<h1>Using aria-alertdialog to Identify Errors</h1>
+<p>This example shows how role=&quot;alertdialog&quot; can be used to notify someone they have entered invalid information.</p>
+<button id="trigger-alertdialog">Trigger Alertdialog</button>
+</main>
+</body>
+</html>

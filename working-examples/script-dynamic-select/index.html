@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/xhtml; charset=utf-8" />
+<title>Dynamic Select Statements</title>
+<script type="text/javascript">
+//<![CDATA[
+// array of possible countries in the same order as they appear in the country selection list
+var countryLists = new Array(4)
+countryLists["empty"] = ["Select a Country"];
+countryLists["North America"] = ["Canada", "United States", "Mexico"];
+countryLists["South America"] = ["Brazil", "Argentina", "Chile", "Ecuador"];
+countryLists["Asia"] = ["Russia", "China", "Japan"];
+countryLists["Europe"]= ["Britain", "France", "Spain", "Germany"];
+/* CountryChange() is called from the onchange event of a select element.
+ * param selectObj - the select object which fired the on change event.
+ */
+function countryChange(selectObj) {
+	// get the index of the selected option
+	var idx = selectObj.selectedIndex;
+	// get the value of the selected option
+	var which = selectObj.options[idx].value;
+	// use the selected option value to retrieve the list of items from the coutnryLists array
+	cList = countryLists[which];
+	// get the country select element via its known id
+	var cSelect = document.getElementById("country");
+	// remove the current options from the country select
+	var len=cSelect.options.length;
+	while (cSelect.options.length > 0) {
+		cSelect.remove(0);
+	}
+	var newOption;
+	// create new options
+	for (var i=0; i<cList.length; i++) {
+		newOption = document.createElement("option");
+		newOption.value = cList[i];  // assumes option string and value are the same
+		newOption.text=cList[i];
+		// add the new option
+		try {
+			cSelect.add(newOption);  // this will fail in DOM browsers but is needed for IE
+		}
+		catch (e) {
+			cSelect.appendChild(newOption);
+
+		}
+	}
+}
+//]]>
+</script>
+</head>
+<body>
+<h1>Dynamic Select Statements</h1>
+<label for="continent">Select Continent</label>
+<select id="continent" onchange="countryChange(this);">
+<option value="empty">Select a Continent</option>
+<option value="North America">North America</option>
+<option value="South America">South America</option>
+<option value="Asia">Asia</option>
+<option value="Europe">Europe</option>
+</select>
+<br />
+<label for="country">Select a country</label>
+<select id="country">
+<option value="0">Select a country</option>
+</select>
+</body>
+</html>
