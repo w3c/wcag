@@ -108,4 +108,22 @@
 	
 	<xsl:template match="html:link[@href][contains(@href, 'css/editors.css')]"/>
 	
+	<xsl:template match="html:figure">
+		<xsl:if test="not(@id)">
+			<xsl:message terminate="yes">ID is required on figure: src=<xsl:value-of select="html:img/@src"/> in <xsl:value-of select="base-uri()"/></xsl:message>
+		</xsl:if>
+		<xsl:copy>
+			<xsl:apply-templates select="node()|@*"/>
+		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="html:figcaption">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:text>Figure </xsl:text>
+			<xsl:value-of select="count(parent::html:figure/preceding::html:figure) + 1"/>
+			<xsl:apply-templates/>
+		</xsl:copy>
+	</xsl:template>
+	
 </xsl:stylesheet>
