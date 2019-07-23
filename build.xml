@@ -44,6 +44,7 @@
 		<delete file="${inputdir.techniques}/technique-associations.xml" failonerror="false"/>
 		<delete file="output.html" failonerror="false"/>
 		<delete dir="output" failonerror="false"/>
+		<delete dir="input" failonerror="false"/>
 	</target>
 	
 	<target name="flatten" depends="init" description="Build a copy of guidelines with all data-include files incorporated">
@@ -181,8 +182,8 @@
 	</target>
 	
 	<!-- Understanding -->
-	<target name="understanding" depends="guidelines-xml, techniques-list, understanding-index" description="Generate formatted Understanding docs">
-		<makeurl file="${basedir}/understanding/" property="base.understanding"/>
+	<target name="understanding" depends="guidelines-xml, techniques-list, understanding-index, understanding-flatten" description="Generate formatted Understanding docs">
+		<makeurl file="${basedir}/input/understanding/" property="input.understanding"/>
 		<mkdir dir="${basedir}/output/understanding/"/>
 		<local name="output.dir"/>
 		<makeurl file="${basedir}/output/understanding/" property="output.dir"/>
@@ -190,7 +191,7 @@
 		<xslt in="${inputdir.guidelines}/wcag.xml" out="output.html" style="xslt/generate-understanding.xslt" force="true">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
-			<param name="base.dir" expression="${base.understanding}"/>
+			<param name="base.dir" expression="${input.understanding}"/>
 			<param name="output.dir" expression="${output.dir}"/>
 			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG21/" if="publication"/>
 			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG21/Understanding/" if="publication"/>
@@ -227,6 +228,20 @@
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
 		</xslt>
+	</target>
+	
+	<target name="understanding-flatten" depends="guidelines-xml" description="Generate temp files for Understanding with includes included">
+		<makeurl file="${basedir}/understanding/" property="base.understanding"/>
+		<mkdir dir="${basedir}/input/understanding/"/>
+		<local name="output.dir"/>
+		<makeurl file="${basedir}/input/understanding/" property="output.dir"/>
+		<xslt in="${inputdir.guidelines}/wcag.xml" out="output.html" style="xslt/flatten-understanding.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+			<param name="base.dir" expression="${base.understanding}"/>
+			<param name="output.dir" expression="${output.dir}"/>
+		</xslt>
+		
 	</target>
 	
 	<!-- Publish -->
