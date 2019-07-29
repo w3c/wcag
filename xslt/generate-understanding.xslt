@@ -9,7 +9,7 @@
 	
 	<xsl:include href="base.xslt"/>
 	
-	<xsl:param name="base.dir">understanding/</xsl:param>
+	<xsl:param name="base.dir">input/understanding/</xsl:param>
 	<xsl:param name="output.dir">output/</xsl:param>
 	
 	<xsl:template name="name">
@@ -111,16 +111,32 @@
 		<nav class="navtoc">
 			<p>On this page:</p>
 			<ul id="navbar">
-				<li><a href="#intent">Intent</a></li>
 				<xsl:if test="name($meta) = 'success-criterion'">
+					<li><a href="#intent">Intent</a></li>
 					<li><a href="#benefits">Benefits</a></li>
 					<li><a href="#examples">Examples</a></li>
 					<li><a href="#resources">Related Resources</a></li>
 					<li><a href="#techniques">Techniques</a></li>
 				</xsl:if>
 				<xsl:if test="name($meta) = 'guideline'">
+					<li><a href="#intent">Intent</a></li>
 					<li><a href="#advisory">Advisory Techniques</a></li>
 					<li><a href="#success-criteria">Success Criteria</a></li>
+				</xsl:if>
+				<xsl:if test="name($meta) = 'understanding'">
+					<xsl:for-each select="//html:body/html:section">
+						<li>
+							<a>
+								<xsl:attribute name="href">
+									<xsl:choose>
+										<xsl:when test="@id">#<xsl:value-of select="@id"/></xsl:when>
+										<xsl:otherwise>#<xsl:value-of select="wcag:generate-id(wcag:find-heading(.))"/></xsl:otherwise>
+									</xsl:choose>
+								</xsl:attribute>
+								<xsl:value-of select="wcag:find-heading(.)"/>
+							</a>
+						</li>
+					</xsl:for-each>
 				</xsl:if>
 				<xsl:if test="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]">
 					<li><a href="#key-terms">Key Terms</a></li>
@@ -204,8 +220,10 @@
 				<xsl:when test="version = 'WCAG21'">21/</xsl:when>
 			</xsl:choose>
 		</xsl:variable>
+		<xsl:variable name="input.uri" select="resolve-uri(concat(file/@href, '.html'), concat($base.dir, $subpath))"/>
+		<xsl:variable name="input.doc" select="document($input.uri)"/>
 		<xsl:result-document href="{$output.dir}/{file/@href}.html" encoding="utf-8" exclude-result-prefixes="#all" include-content-type="no" indent="yes" method="xhtml" omit-xml-declaration="yes">
-			<xsl:apply-templates select="document(resolve-uri(concat(file/@href, '.html'), concat($base.dir, $subpath)))">
+			<xsl:apply-templates select="$input.doc">
 				<xsl:with-param name="meta" select="." tunnel="yes"/>
 			</xsl:apply-templates>
 		</xsl:result-document>
@@ -258,6 +276,7 @@
 					<xsl:when test="name($meta) = 'understanding'">
 						<main>
 							<xsl:apply-templates select="descendant::html:body/node()[not(wcag:isheading(.))]"/>
+							<xsl:call-template name="key-terms"/>
 						</main>
 					</xsl:when>
 				</xsl:choose>
