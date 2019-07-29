@@ -126,4 +126,6 @@
 		</xsl:copy>
 	</xsl:template>
 	
+	<xsl:template match="html:p[@class = 'change']"/>
+	
 </xsl:stylesheet>
