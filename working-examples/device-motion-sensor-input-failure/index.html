@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+
+.slidecontainer {
+  width:100%;
+}
+</style>
+
+<title>WCAG Example of Motion Sensor</title> 
+</head>
+<body>
+
+<pre class="output"></pre>
+
+  <h1>Slider Motion Sensor Failure Example</h1>
+
+ <p>Open this slider in a mobile device such as a smart phone or tablet. Tilt the phone to the right and left to adjust the slider value. The only way to adjust the value is using motion of the device.</p>
+  
+<div class="slidecontainer">
+
+<input type="range" min="1" max="100" value="50" class="slider" id="motionSlider">
+<p aria-live="polite">Slider Value: <span id="demo"></span></p>
+</div>
+<script>
+
+//slider behavior
+var slider = document.getElementById("motionSlider");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value;
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
+
+
+	function increaseFunction() {slider.value++; output.innerHTML = slider.value;}
+	function decreaseFunction() {slider.value--; output.innerHTML = slider.value;}
+
+//slider motion detection
+function handleOrientation(event) {
+
+var z = document.getElementById("disable");
+if (z.checked == false) {var x = event.gamma;}
+else {x = 0;}
+
+if (x > 20) {slider.value++; output.innerHTML = slider.value;} 
+else if (x < -20) {slider.value--; output.innerHTML = slider.value;} }
+
+
+window.addEventListener('deviceorientation', handleOrientation); 
+
+
+</script>
+</body>
+</html>
