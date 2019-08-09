@@ -20,7 +20,10 @@
 			<h2>Description</h2>
 			<p class="instructions">The objective of this technique is to ensure that speech input users can operate web content reliably while not adversely affecting other users of assistive technology.</p>
 			<p>When speech input users interact with a web page, they usually speak a command followed by the reference to some visible label (such as text beside an input field or inside a button or link). For example, they may say "click search" to activate a button labelled Search. When speech recognition software processes speech input and looks for matches, it uses the <a href="https://www.w3.org/TR/accname/"> accessible name</a> of controls. Where there is a mismatch between the text in the label and the text in the accessible name, it can cause issues for the user. The simplest way to enable speech input users and meet 2.5.3 Label in Name is to ensure that the accessible name matches the visible text label.</p>
-
+			<h3>Determining the appropriate label</h3>
+			<p>Sometimes more than one text string will be positioned in the vicinity of a control that could be considered a candidate for its label. For example, a set of inputs that each have their own labels may also be preceded by a heading, an instruction or a group label (such as an HTML legend/fieldset or an ARIA group or radiogroup). Note that the term "group label" means something different than "label", both programmatically and in regard to 2.5.3 Label in Name.</p>
+			<p>The <a href="https://www.w3.org/WAI/WCAG21/Understanding/label-in-name">Understanding 2.5.3 Label in Name document</a> recommends that only the text string adjacent to or in close proximity to an input should be treated as the label when assessing a control's label for the purposes of meeting 2.5.3 (see the section "Identifying label text for components"). There are both practical and technical reasons for restricting the designation of an input's label in this way. The technical reasons are discussed in the Understanding document's section called Accessible Name and Description Computation specification.</p>
+			
 		</section>
 		<section id="examples">
 			<h2>Examples</h2>
@@ -31,8 +34,10 @@
 			<h3>Anchor text provides both the link's label and its accessible name</h3>
 			<p id="linksample">Using conventional HTML, the text between the <code>anchor</code> element's tags provides both the link's visible text and the accessible name "Code of conduct":</p>		
 			<code>&lt;p&gt;Go to our &lt;a href="url-to-page-about-code.html"&gt;Code of conduct&lt;/a&gt;&lt;/p&gt;</code>
+				<section>
 			<h4>Non-working sample of anchor</h4>
 			<p>Go to our <a href="#linksample">Code of conduct</a></p>
+				</section>
 			</section>
 				<section class="example">
 		<h3>Text in <code>label</code> element provides name for input via <code>for</code> attribute</h3>
@@ -41,30 +46,30 @@
 			&lt;input type="checkbox" id="notification" name="notify" value="delays"&gt;<br />
     		&lt;label for="notification"&gt;Notify me of delays&lt;/label&gt;
     	</code>
+					<section>
     	<h4>Working sample of input</h4>
-    	<input type="checkbox" id="notification" name="notify" value="delays">
+    	<input type="checkbox" id="notification" name="notify" value="delays" />
 <label for="notification">Notify me of delays</label>
+					</section>
 	</section>	
 		<section class="example">			
 		<h3>The button text provides the accessible name</h3>
 		<p>The text inside a <code>button</code> element becomes both its visible label and its accessible name:</p>	
 		<code>&lt;button&gt;Send&lt;/button&gt;</code><br />
+			<section>
 		<h4>Non-working sample of button</h4>
 		<button>Send</button>
+			</section>
 	</section>	
 			
-			<h3>Determining the appropriate label</h3>
-			<p>Sometimes more than one text string will be positioned in the vicinity of a control that could be considered a candidate for its label. For example, a set of inputs that each have their own labels may also be preceded by a heading, an instruction or a group label (such as an HTML legend/fieldset or an ARIA group or radiogroup). Note that the term "group label" means something different than "label", both programmatically and in regard to 2.5.3 Label in Name.</p>
-			<p>The <a href="https://www.w3.org/WAI/WCAG21/Understanding/label-in-name">Understanding 2.5.3 Label in Name document</a> recommends that only the text string adjacent to or in close proximity to an input should be treated as the label when assessing a control's label for the purposes of meeting 2.5.3 (see the section "Identifying label text for components"). There are both practical and technical reasons for restricting the designation of an input's label in this way. The technical reasons are discussed in the Understanding document's section called Accessible Name and Description Computation specification.</p>
-			<p>Here are some examples which follow the 'adjacent text' guidance, along with rationales.</p>
 			<section class="example">
 				<h4>Simple Radio Button Group</h4>
 				<p>Radio buttons typically appear in a group, where each button is labelled and the group of buttons is preceded by information which explains or categorizes the group.</p>
-				<figure>
-					<img src="img/call-me-radio-button-group.png" alt="Call me when balance exceeds $10,000, Yes No">
+				<figure id="figure-call-me-radio-button-group">
+					<img src="img/call-me-radio-button-group.png" alt="Call me when balance exceeds $10,000, Yes No" />
 					<figcaption>Figure 1 "Call me when balance exceeds $10,000 radio group, with Yes and No choices</figcaption>
 				</figure>
-				<p>The label for each component should be restricted to "Yes" and "No". To meet <a href="https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships"> 1.3.1 Information and Relationships</a> and <a href="https://www.w3.org/WAI/WCAG21/Understanding/labels-or-instructions.html"> 3.3.2 Labels or Instructions</a>, the "Call me&hellip;" text can be coded to convey the relationship to ATs, in this example by using a <code>fieldset</code> and <code>legend</code>.</p>
+				<p>The label for each component should be restricted to "Yes" and "No". To meet <a href="https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships"> 1.3.1 Information and Relationships</a> and <a href="https://www.w3.org/WAI/WCAG21/Understanding/labels-or-instructions.html"> 3.3.2 Labels or Instructions</a>, the "Call me…" text can be coded to convey the relationship to ATs, in this example by using a <code>fieldset</code> and <code>legend</code>.</p>
 				<p>If the label is not restricted to the string adjacent to the radio button, multiple interpretations of what constitutes the label can result in less uniform functionality. If "Yes" alone is not the label for the first radio button, is it "Call me when balance exceeds $10,000"? Or is it a combination of text strings, in which case is the order "Call me when balance exceeds $10,000 Yes" or "Yes, Call me when balance exceeds $10,000"? Decisions to combine text strings can have negative effects on screen reader users since the order of concatenation can affect meaning. In this example, "No, call me when balance exceeds $10,000" could be very confusing to a screen reader user.</p>
 				<code>
 					&lt;fieldset&gt;<br />
@@ -80,8 +85,8 @@
 			<section class="example">
 				<h4>Checkbox Groupings</h4>
 				<p>For checkbox groupings, implementations that attempt to incorporate more than just the immediate checkbox label into the accessible name can also be problematic if not isolated to the adjacent text string.</p>
-				<figure>
-					<img src="img/value-checkbox.png" alt="What do you value in our service? (Check all that apply) Courtesy, Promptness, Store Hours, Knowledge">
+				<figure id="figure-value-checkbox">
+					<img src="img/value-checkbox.png" alt="What do you value in our service? (Check all that apply) Courtesy, Promptness, Store Hours, Knowledge" />
 					<figcaption>Figure 2 What do you value in our service? checkbox group, with 4 choices.</figcaption>
 				</figure>
 				
@@ -92,15 +97,15 @@
 				<h4>Stacked Labels</h4>
 				<p>Although labels for comboboxes, dropdown lists, text inputs, and other widgets are typically oriented immediately to the left of the component, there is an alternative established convention where labels are stacked above the inputs, aligned with their left edge.
 				</p>
-				<figure>
-					<img src="img/stacked-label.png" alt="two inputs labelled Email and Password">
+				<figure id="figure-stacked-label">
+					<img src="img/stacked-label.png" alt="two inputs labelled Email and Password" />
 					<figcaption>Figure 3 Two inputs with the labels positioned above and to the left.</figcaption>
 				</figure>
 				
 				<p>In Figure 3, the inputs are stacked and left-aligned, with the labels immediately preceding each input, also left-aligned. There is additional white space between the label and the preceding input so that the label is closest to its associated text input. Stacked labels are relatively common in mobile designs, where horizontal space is constrained.</p>
 				<p>Figure 4 shows a variation on stacked labels, where hints and guidance are included between the label and the input. This design does not provide an adjacent label. However, the "New Password" label is still considered to be in close enough proximity, especially given its size and boldness relative to the smaller and lower-contrast guidance text. The associations are reinforced programmatically, where the hint text is given a role of <code>aria-describedby</code> and the label is properly associated with the input.</p>
-								<figure>
-					<img src="img/new-password.png" alt="New Password. Passwords must be 10 or more characters, and contain at least one capital, numeric and non-alphanumeric.'">
+								<figure id="figure-new-password">
+					<img src="img/new-password.png" alt="New Password. Passwords must be 10 or more characters, and contain at least one capital, numeric and non-alphanumeric.'" />
 					<figcaption>Figure 4 New Password label positioned above input with a smaller-point text string about the password requirements positioned between the large label and the input.</figcaption>
 				</figure>
 				<p>The hint text in such implementations should be kept to a single line where possible, since accessibility issues can arise where a more lengthy hint separates the label from its input. Figure 4 illustrates that the concept of "adjacent text" is a guide for label interpretation, but cannot always serve as a hard rule.</p>
@@ -122,8 +127,8 @@
 					<section class="example">
 				<h4>Range of inputs with few labels</h4>
 				<p>A less common disparity between labels and inputs can occur when a group of radio buttons is set up to elicit a choice across a range. The labels may only be located at each end of the range or may be interspersed at various points in the range.</p>
-				<figure>
-					<img src="img/rate-response.png" alt="Rate your response, Hated it, Loved it">
+				<figure id="figure-rate-response">
+					<img src="img/rate-response.png" alt="Rate your response, Hated it, Loved it" />
 					<figcaption>Figure 6 Line of 5 radio buttons with Hated it and Loved it labels at each end</figcaption>
 				</figure>
 				
@@ -150,11 +155,11 @@
 			<h2>Tests</h2>
 			<section class="test-procedure">
 				<h3>Procedure</h3>
-				<p><ol>
+				<ol>
 					<li>For input controls, examine each input that has adjacent text which serves as its label</li>
 					<li>For each input, check that the entire string of text (disregarding letter case and punctuation) matches the accessible name for the input, according to the accessible name computation</li>
 			<li>For buttons, links, menus and other non-input controls, examine each control that contains text which serves as its label</li>
-						<li>For each non-input control, check that the entire string of text (disregarding letter case and punctuation) matches the accessible name for the input</li></ol></p>
+						<li>For each non-input control, check that the entire string of text (disregarding letter case and punctuation) matches the accessible name for the input</li></ol>
 			</section>
 			<section class="test-results">
 				<h3>Expected Results</h3>
