@@ -6,10 +6,10 @@
    </section><section id="description"><h2>Description</h2>
       <p>The objective of this technique is to illustrate how in certain cases,
     				the Silverlight automation peer system can provide an accessibility
-    				framework Name based on any simple text strings that
+    				framework <code class="prop">Name</code> based on any simple text strings that
     				are also presented in the visible user interface as control content. </p>
       <p>The applicability of this technique to SC 1.3.1 is that once promoted,
-    				the Name becomes the primary information item that
+    				the <code class="prop">Name</code> becomes the primary information item that
     				describes the user interface element to accessibiity frameworks and
     				assistive technologies, and the information is thus immune to any further
     				applications of the Silverlight style system that might change the
@@ -19,28 +19,28 @@
     				peer promotion behavior provides the Name component of Name, Role,
     				Value. This is related to the description of the term <em>label</em> in
     				SC4.1.2. </p>
-      <p>A default behavior for generating Name for accessibility
+      <p>A default behavior for generating <code class="prop">Name</code> for accessibility
     				frameworks is possible for certain peers of content controls. The content
     				controls that might support a default automation peer behavior include: </p>
       <ul>
          <li> 
-               TextBlock 
+               <code class="obj">TextBlock</code> 
             </li>
          <li> 
-               ButtonBase derived classes that do not change
-    				the GetNameCore implementation. This includes the Button class.
-    				In order for the default promotion to work, the Content of
-    				the button must be set as a plain string or must contain only a TextBlock;
-    				any compositing such as wrapping in a Border or
+               <code class="obj">ButtonBase</code> derived classes that do not change
+    				the GetNameCore implementation. This includes the <code class="obj">Button</code> class.
+    				In order for the default promotion to work, the <code class="prop">Content</code> of
+    				the button must be set as a plain string or must contain only a <code class="obj">TextBlock</code>;
+    				any compositing such as wrapping in a <code class="obj">Border</code> or
     				other container will disable the default promotion. </li>
-         <li> Any other ContentControl derived class where
-    					the Content property contains either TextBlock or
-    					a text-content-only ButtonBase implementation as
+         <li> Any other <code class="obj">ContentControl</code> derived class where
+    					the <code class="prop">Content</code> property contains either <code class="obj">TextBlock</code> or
+    					a text-content-only <code class="obj">ButtonBase</code> implementation as
     					sole content. </li>
       </ul>
-      <p>In these cases the string that sets either Content (for ContentControl and ButtonBase)
-    				or Text (for TextBlock) is promoted
-    				as the AutomationProperties.Name for the control in
+      <p>In these cases the string that sets either <code class="prop">Content</code> (for <code class="obj">ContentControl</code> and <code class="obj">ButtonBase</code>)
+    				or <code class="prop">Text</code> (for <code class="obj">TextBlock</code>) is promoted
+    				as the <code class="prop">AutomationProperties.Name</code> for the control in
     				UI Automation, without any further attribution. The properties in the
     				UI Automation tree are reported to accessibility frameworks (UI Automation,
     				and MSAA through the bridge). The accessibility frameworks reports
@@ -56,7 +56,7 @@
       <p>For cases where there is control compositing in a control rather than
     				simple text, the automation peer typically cannot provide a default
     				simple string, and it may be the application author's responsibility
-    				to set AutomationProperties.Name explicitly as an
+    				to set <code class="prop">AutomationProperties.Name</code> explicitly as an
     				attribute in XAML, or as a property in runtime code. For details, see <a href="#SL30"></a>. </p>
    	<section id="SL20_test-based">
          <h4> Test-based methodology </h4>
@@ -95,10 +95,10 @@
     						torpedoes!"   is being peer-forwarded. This is verified by the
     						Properties view on the right side: the Name property value is "Fire
     						Photon Torpedoes", even though no programmatic Name property
-    						or AutomationProperties.Name has been applied to
+    						or <code class="prop">AutomationProperties.Name</code> has been applied to
     						that button that would otherwise have supplied an acccessibility
     						framework "Name". </p>
-            <figure>
+            <figure id="figure-uia-tree">
                <img src="img/uiatree_simplepeerforwarding.png" />
                   
                   <figcaption>UIAVerify tree view</figcaption>

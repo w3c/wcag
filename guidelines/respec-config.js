@@ -15,12 +15,12 @@ var respecConfig = {
 	diffTool:             "http://www.aptest.com/standards/htmldiff/htmldiff.pl",
 	
 	// the specifications short name, as in https://www.w3.org/TR/short-name/
-	shortName:            "WCAG21",
+	shortName:            "WCAG22",
 	
 	
 	// if you wish the publication date to be other than today, set this
 	//publishDate:  "2014-12-11",
-	copyrightStart:  "2017",
+	copyrightStart:  "2019",
 	license: "document",
 	
 	// if there is a previously published draft, uncomment this and set its YYYY-MM-DD date
@@ -31,7 +31,7 @@ var respecConfig = {
 	//previousDiffURI: "https://www.w3.org/TR/2014/REC-wai-aria-20140320/",
 	
 	// if there a publicly available Editors Draft, this is the link
-	edDraftURI: "https://w3c.github.io/wcag/21/guidelines/",
+	edDraftURI: "https://w3c.github.io/wcag/22/guidelines/",
 	
 	// if this is a LCWD, uncomment and set the end of its review period
 	// lcEnd: "2012-02-21",
@@ -46,14 +46,6 @@ var respecConfig = {
 			company: "Adobe",
 			companyURI: "http://www.adobe.com/",
 			w3cid: 39770
-		},
-		{
-			name: "Joshue O Connor",
-			url: "http://interaccess.ie/",
-			mailto: "josh@interaccess.ie",
-			company: "Invited Expert, InterAccess",
-			companyURI: "http://interaccess.ie/",
-			w3cid: 41218
 		},
 		{
 			name: "Alastair Campbell",
@@ -102,6 +94,11 @@ var respecConfig = {
 			name: "Jason White",
 			company: "University of Melbourne",
 			w3cid: 74028
+		},
+		{
+			name: "Joshue O Connor",
+			company: "Invited Expert, InterAccess",
+			w3cid: 41218
 		}
 	],
 	

@@ -12,43 +12,43 @@
     				text alternative for a nontext object, for example for an image that
     				contains a level of detail that is difficult to capture in a standard
     				visible-in-UI image caption. </p>
-      <p>Silverlight supports a UI Automation property named HelpText,
+      <p>Silverlight supports a UI Automation property named <code class="prop">HelpText</code>,
     				to connote its possible usage to provide imperative instructions for
-    				interactive elements. HelpText is not always forwarded
+    				interactive elements. <code class="prop">HelpText</code> is not always forwarded
     				to users by existing assistive technologies, which is an issue discussed
     				in the technique <a href="#SL19"></a>.
     				Rather than relying on a particular assistive technology's support
-    				for enabling users to access the UIA HelpText, application
+    				for enabling users to access the UIA <code class="prop">HelpText</code>, application
     				authors can introduce user interface elements into their design that
-    				databind directly to the HelpText property, but where
+    				databind directly to the <code class="prop">HelpText</code> property, but where
     				the interface element is not necessarily displayed by default. An interface
     				update might be designed to occur if the application user specifically
     				activates a "Get Help" action that is presented in the initial
     				user interface. </p>
       <p>This technique emphasises a "HelpText" model as a factoring
-    				practice. Silverlight application authors can use the HelpText as
+    				practice. Silverlight application authors can use the <code class="prop">HelpText</code> as
     				a data source that centralizes such information, because it already
     				exists and has that intended purpose in accessibility frameworks. For
-    				example, the HelpText could be shown in a tooltip,
+    				example, the <code class="prop">HelpText</code> could be shown in a tooltip,
     				a popup, a separate user interface element that is deliberately rendered
     				in close proximity, etc. For accessibility support, a recommended display
-    				option for HelpText is to add or dynamically alter
+    				option for <code class="prop">HelpText</code> is to add or dynamically alter
     				a Silverlight text element in the primary user interface. Silverlight
     				supports an adaptive layout metaphor. Adding text to the runtime elements
     				in the application generally causes an interface redraw, which in turn
     				informs assistive technologies (through UIA properties and events)
     				that content might have changed. </p>
-      <p>To set the UIA HelpText in Silverlight, you set the
-    				attached property AutomationProperties.HelpText. AutomationProperties.HelpText can
+      <p>To set the UIA <code class="prop">HelpText</code> in Silverlight, you set the
+    				attached property <code class="prop">AutomationProperties.HelpText</code>. <code class="prop">AutomationProperties.HelpText</code> can
     				be set in code, but is typically set in XAML that defines a Silverlight
     				UI. </p>
    	<section id="SL8_helptext_tooltip">
          <h4>HelpText and Tooltip</h4>
-         <p>The same information that is used for AutomationProperties.HelpText long
+         <p>The same information that is used for <code class="prop">AutomationProperties.HelpText</code> long
     					text alternatives could also be useful to sighted users. In this case,
     					the same text could be displayed in a Silverlight <a href="https://msdn.microsoft.com/en-us/library/system.windows.controls.tooltip%28VS.95%29.aspx">ToolTip</a> control.
-    					The reason that application authors should use both AutomationProperties.HelpText AND Tooltip in
-    					conjunction is because the Tooltip information is
+    					The reason that application authors should use both <code class="prop">AutomationProperties.HelpText</code> AND <code class="obj">Tooltip</code> in
+    					conjunction is because the <code class="obj">Tooltip</code> information is
     					not introduced into the runtime accessibility framework information
     					set by UI Automation, because that information set does not anticipate
     					the mouse action triggers that cause tooltips to display. In Silverlight
@@ -63,12 +63,12 @@
          <h3>Displaying a long text alternative for an Image with
     					XAML</h3>
          
-            <p>Application authors can specify the AutomationProperties.HelpText attribute
-    						on the Image element. The value provided for the attribute
+            <p>Application authors can specify the <code class="prop">AutomationProperties.HelpText</code> attribute
+    						on the <code class="obj">Image</code> element. The value provided for the attribute
     						should be a meaningful long text alternative for the image content.
-    						The value of AutomationProperties.HelpText should
-    						augment rather than duplicate any AutomationProperties.Name or
-    						an associated Label or LabeledBy caption.
+    						The value of <code class="prop">AutomationProperties.HelpText</code> should
+    						augment rather than duplicate any <code class="prop">AutomationProperties.Name</code> or
+    						an associated <code class="obj">Label</code> or <code class="prop">LabeledBy</code> caption.
     						One or both of these is also typically specified to provide the basic
     						(short-text) accessibility support for an image. </p>
             <pre xml:space="preserve">&lt;StackPanel x:Name="imgContainer"&gt;
@@ -84,7 +84,7 @@ door, and one file cabinet against the same wall as the door.”/&gt;
 &lt;/StackPanel&gt;
 </pre>
             <p>The following event handler removes the Help button and replaces
-    						it in UI with a TextBox that displays the long text
+    						it in UI with a <code class="obj">TextBox</code> that displays the long text
     						alternative. </p>
             <pre xml:space="preserve">       private void HelpButton_Click(object sender, RoutedEventArgs e)
        {
@@ -103,8 +103,8 @@ door, and one file cabinet against the same wall as the door.”/&gt;
     				long text instructions</h3>
          
             <p>This example provides instructions for two form fields. The same text
-    						is also displayed for mouse users as a Tooltip and
-    						the AutomationProperties.HelpText string is used as
+    						is also displayed for mouse users as a <code class="obj">Tooltip</code> and
+    						the <code class="prop">AutomationProperties.HelpText</code> string is used as
     						a common source for both display options. In this example, the form
     						submission does not perform client-side validation (although server-side
     						validation following a data round trip might still exist, or validation
@@ -183,24 +183,24 @@ door, and one file cabinet against the same wall as the door.”/&gt;
        </pre>
             <p>Note the call to Focus() - this puts the screen reader focus on
     						the first form element so that the added text can be read. The very
-    						same text source as used for the Tooltip is added
-    						programmatically to the existing Label controls. </p>
+    						same text source as used for the <code class="obj">Tooltip</code> is added
+    						programmatically to the existing <code class="obj">Label</code> controls. </p>
             <p>After the Get Help button is clicked, the visual appearance of the
     						application is modified: </p>
-            <figure>
+            <figure id="figure-silverlight-help-button">
                <img src="img/BeforeTooltipForm.png" />
-                  
+               
                   <figcaption>Before activating Get Help</figcaption>
-                
-            </figure>
-            <figure>
-               <img src="img/AfterTooltipForm.png" />
                   
-                  <figcaption>After activating Get Help</figcaption>
+            </figure>
+            <figure id="figure-silverlight-help-button-active">
+               <img src="img/AfterTooltipForm.png" />
                 
+                  <figcaption>After activating Get Help</figcaption>
+               
             </figure>
             <p class="working-example">This example is shown in operation in the <a href="../../working-examples/silverlight-help-text-and-tool-tip/">working example of HelpText and Tooltip</a>.</p>
-         
+                  
       </section>
    </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
@@ -223,9 +223,9 @@ door, and one file cabinet against the same wall as the door.”/&gt;
       <section class="results"><h3>Expected Results</h3>
          <p>#2 and #3 are true. If testing with a screen reader, #4 is true. </p>
       </section>
-   </section><section id="related"><h2>Related Techniques</h2>
-      
-   </section><section id="resources"><h2>Resources</h2>
+   </section><section id="related"><h2>Related Techniques</h2><ul>
+      <li><a href="../silverlight/SL19">SL19</a></li>
+   </ul></section><section id="resources"><h2>Resources</h2>
       
          <ul>
             <li>

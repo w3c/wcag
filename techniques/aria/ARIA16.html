@@ -1,27 +1,27 @@
 <!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using aria-labelledby to provide a name for user interface controls</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using aria-labelledby to provide a name for user interface controls</h1><section class="meta"><p class="id">ID: ARIA16</p><p class="technology">Technology: aria</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <p>Technologies that support <a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</a>. </p>
    </section><section id="description"><h2>Description</h2>
-      <p>The purpose of this technique is to provide names for user interface controls that can be read by assistive technology.  WAI-ARIA provides a way to associate text with a section, drawing, form element, picture, and so on, using the aria-labelledby property. This techniques uses the aria-labelledby attribute to associate a user interface control, such as a form field, with text on the page that labels it.
+      <p>The purpose of this technique is to provide names for user interface controls that can be read by assistive technology.  WAI-ARIA provides a way to associate text with a section, drawing, form element, picture, and so on, using the <code class="att">aria-labelledby</code> property. This techniques uses the <code class="att">aria-labelledby</code> attribute to associate a user interface control, such as a form field, with text on the page that labels it.
 </p>
-      <p>Like aria-describedby, aria-labelledby can accept multiple ids to point to other elements of the page using a space separated list. This capability makes aria-labelledby especially useful in situations where sighted users use information from the surrounding context to identify a control. <a href="ARIA9">Using aria-labelledby to concatenate a label from several text nodes</a> contains more examples of situations where names are created from several other text elements on the page.
+      <p>Like <code class="att">aria-describedby</code>, <code class="att">aria-labelledby</code> can accept multiple ids to point to other elements of the page using a space separated list. This capability makes <code class="att">aria-labelledby</code> especially useful in situations where sighted users use information from the surrounding context to identify a control. <a href="ARIA9">Using aria-labelledby to concatenate a label from several text nodes</a> contains more examples of situations where names are created from several other text elements on the page.
 </p>
       <p>While the function of aria-labelledby appears similar to the native HTML label element, there are some differences:
 </p>
       <ul>
          <li> 
-               aria-labelledby can reference more than one text element; label can only reference one.</li>
+               <code class="att">aria-labelledby</code> can reference more than one text element; <code class="el">label</code> can only reference one.</li>
          <li> 
-               aria-labelledby can be used for a variety of elements while the label element can only be used on form elements.</li>
-         <li> Clicking on a label focuses the associated form field. This does not occur with aria-labelledby. If this behaviour is required then use label or implement this functionality using scripting.
+               <code class="att">aria-labelledby</code> can be used for a variety of elements while the <code class="el">label</code> element can only be used on form elements.</li>
+         <li> Clicking on a <code class="el">label</code> focuses the associated form field. This does not occur with <code class="att">aria-labelledby</code>. If this behaviour is required then use <code class="el">label</code> or implement this functionality using scripting.
 </li>
       </ul>
-      <p>Note that as of December 2013, label has better support than aria-labelledby, especially in older browsers and assistive technologies.
+      <p>Note that as of December 2013, <code class="el">label</code> has better support than <code class="att">aria-labelledby</code>, especially in older browsers and assistive technologies.
 </p>
    </section><section id="examples"><h2>Examples</h2>
       <section class="example">
          <h3>Labelling a simple text field</h3>
          
-            <p>The following is an example of aria-labelledby used on a simple text field to provide a label in a situation where there is no text available for a dedicated label but there is other text on the page that can be used to accurately label the control.</p>
+            <p>The following is an example of <code class="att">aria-labelledby</code> used on a simple text field to provide a label in a situation where there is no text available for a dedicated label but there is other text on the page that can be used to accurately label the control.</p>
             <pre xml:space="preserve">&lt;input name="searchtxt" type="text" aria-labelledby="searchbtn"&gt;
 &lt;input name="searchbtn" id="searchbtn" type="submit" value="Search"&gt;</pre>
          
@@ -29,7 +29,7 @@
       <section class="example">
          <h3>Labelling a slider</h3>
          
-            <p>Below is an example of aria-labelledby used to provide a label for a slider control. In this case the label text is selected from within a longer adjacent text string. Please note that this example is simplified to show only the labeling relationship; authors implementing custom controls also need to ensure that controls meet other success criteria.</p>
+            <p>Below is an example of <code class="att">aria-labelledby</code> used to provide a label for a slider control. In this case the label text is selected from within a longer adjacent text string. Please note that this example is simplified to show only the labeling relationship; authors implementing custom controls also need to ensure that controls meet other success criteria.</p>
             <pre xml:space="preserve">&lt;p&gt;Please select the &lt;span id="mysldr-lbl"&gt;number of days for your trip&lt;/span&gt;&lt;/p&gt;
 &lt;div id="mysldr" role="slider" aria-labelledby="mysldr-lbl"&gt;&lt;/div&gt;</pre>
          
@@ -37,7 +37,7 @@
       <section class="example">
          <h3>A label from multiple sources</h3>
          
-            <p>The following example of aria-labelledby with multiple references uses the label element. For additional detail on concatenating multiple sources of information into a label with aria-labelledby, please view the technique <a href="ARIA9">Using ARIA labelledby to concatenate a label from several text nodes</a>.
+            <p>The following example of <code class="att">aria-labelledby</code> with multiple references uses the <code class="el">label</code> element. For additional detail on concatenating multiple sources of information into a label with <code class="att">aria-labelledby</code>, please view the technique <a href="ARIA9">Using ARIA labelledby to concatenate a label from several text nodes</a>.
 </p>
             <pre xml:space="preserve">&lt;label id="l1" for="f3"&gt;Notify me&lt;/label&gt;
 &lt;select name="amt" id="f3" aria-labelledby="l1 f3 l2"&gt;
@@ -45,16 +45,16 @@
   &lt;option value="2"&gt;2&lt;/option&gt;
 &lt;/select&gt;
 &lt;span id="l2" tabindex="-1"&gt;days in advance&lt;/span&gt;</pre>
-            <p>Note: The use of the label element is included for a number of reasons. If the user clicks on the text of the label element, the corresponding form field will receive focus, which makes the clicking target larger for people with dexterity problems. Also the label element will always be exposed via the accessibility API. A span could have been used (but if so, it should receive a tabindex="-1" so that it will be exposed via the accessibility API in all versions of Internet Explorer). However, a span would lose the advantage of the larger clickable region.
+            <p>Note: The use of the <code class="el">label</code> element is included for a number of reasons. If the user clicks on the text of the <code class="el">label</code> element, the corresponding form field will receive focus, which makes the clicking target larger for people with dexterity problems. Also the <code class="el">label</code> element will always be exposed via the accessibility API. A <code class="el">span</code> could have been used (but if so, it should receive a tabindex="-1" so that it will be exposed via the accessibility API in all versions of Internet Explorer). However, a <code class="el">span</code> would lose the advantage of the larger clickable region.
 </p>
          
       </section>
    </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
-         <p>For each user interface control element where an aria-labelledby attribute is present:
+         <p>For each user interface control element where an <code class="att">aria-labelledby</code> attribute is present:
 </p>
          <ol>
-            <li>Check that the value of the aria-labelledby attribute is the id of an element or a space separated list of ids on the web page. 
+            <li>Check that the value of the <code class="att">aria-labelledby</code> attribute is the <code class="att">id</code> of an element or a space separated list of <code class="att">id</code>s on the web page. 
 </li>
             <li>Check that the text of the referenced element or elements accurately labels the user interface control.
 </li>
@@ -65,15 +65,15 @@
             <li>#1 and #2 are true.</li>
          </ul>
       </section>
-   </section><section id="related"><h2>Related Techniques</h2>
-      
-      
-      
-      
-      
-      
-      
-   </section><section id="resources"><h2>Resources</h2>
+   </section><section id="related"><h2>Related Techniques</h2><ul>
+      <li><a href="../aria/ARIA10">ARIA10</a></li>
+      <li><a href="../aria/ARIA6">ARIA6</a></li>
+      <li><a href="../aria/ARIA9">ARIA9</a></li>
+      <li><a href="../aria/ARIA7">ARIA7</a></li>
+      <li><a href="../aria/ARIA13">ARIA13</a></li>
+      <li><a href="../general/G92">G92</a></li>
+      <li><a href="../html/H45">H45</a></li>
+   </ul></section><section id="resources"><h2>Resources</h2>
       
          <ul>
             <li> 

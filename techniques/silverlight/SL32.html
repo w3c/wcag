@@ -50,7 +50,7 @@
    	</section>
    	<section id="SL32_textbox">
          <h4> TextBox </h4>
-         <p>A TextBox within the Silverlight content area is
+         <p>A <code class="obj">TextBox</code> within the Silverlight content area is
     					reported to UI Automation as an Edit role (through MSAA, as Editable
     					Text). </p>
          <p>Edit controls are expected to implement the <a href="https://msdn.microsoft.com/en-us/library/system.windows.automation.provider.ivalueprovider%28VS.95%29.aspx">Value
@@ -62,22 +62,22 @@
     					to the input field. In order to maintain proper reading order, the
     					label should typically appear immediately before the input field. This
     					general model should also be used for Silverlight user interface design.
-    					For more information on labeling for TextBox controls,
+    					For more information on labeling for <code class="obj">TextBox</code> controls,
     					see <a href="#SL26"></a>. </p>
    	</section>
    	<section id="SL32_richtextbox">
          <h4> RichTextBox </h4>
-         <p>A RichTextBox within the Silverlight content area
+         <p>A <code class="obj">RichTextBox</code> within the Silverlight content area
     					is reported to UI Automation and MSAA as a Document role. </p>
-         <p>A RichTextBox can either be set to be a read-only
+         <p>A <code class="obj">RichTextBox</code> can either be set to be a read-only
     					control, or left as a read-write control. In the latter case, users
     					can insert a text cursor and make changes to the text. It is more common
-    					in Silverlight programming to set the RichTextBox to
-    					be read-only; in this scenario the reason for using RichTextBox is
-    					because TextBlock did not offer the range of text
-    					formatting options that are possible from a RichTextBox. </p>
+    					in Silverlight programming to set the <code class="obj">RichTextBox</code> to
+    					be read-only; in this scenario the reason for using <code class="obj">RichTextBox</code> is
+    					because <code class="obj">TextBlock</code> did not offer the range of text
+    					formatting options that are possible from a <code class="obj">RichTextBox</code>. </p>
          <p>In UIA, a document is generally expected to support the <a href="https://msdn.microsoft.com/en-us/library/system.windows.automation.provider.itextprovider%28VS.95%29.aspx">Text
-    					pattern</a> for UI Automation. However, to read the text from a RichTextBox,
+    					pattern</a> for UI Automation. However, to read the text from a <code class="obj">RichTextBox</code>,
     					the assistive technology does not necessarily have to implement code
     					that handles the entirety of the information that the Text pattern
     					reports. </p>
@@ -87,7 +87,7 @@
          <p>The Text pattern provides APIs to iterate over the internal structure
     					of a document and return text ranges. Each such text range can be queried
     					for specific properties, and can return its plain text string value
-    					to UI Automation. Ranges can also be programmatically adjusted by the TextPattern/TextRange APIs.
+    					to UI Automation. Ranges can also be programmatically adjusted by the <code class="obj">TextPattern</code>/<code class="obj">TextRange</code> APIs.
     					The following is a snippet of a Silverlight-specific UI Automation
     					tree utility to give a general idea of the APIs involved. Note that
     					these are not specifically Silverlight APIs; they are .NET Framework
@@ -127,43 +127,43 @@ private void GetAllSilverlight()
    	<section id="SL32_textblock">
          <h4> TextBlock </h4>
          <p>
-            TextBlock is reported as a Text role in UI Automation. TextBlock has
+            <code class="obj">TextBlock</code> is reported as a Text role in UI Automation. <code class="obj">TextBlock</code> has
     					several important characteristics: </p>
          <ul>
-            <li> A TextBlock is always read-only; only the application
+            <li> A <code class="obj">TextBlock</code> is always read-only; only the application
     					author can declare the text, users cannot change it. </li>
-            <li> A TextBlock is not considered to be a true control
-    						in the Silverlight object model (it is not a class derived from Control).
+            <li> A <code class="obj">TextBlock</code> is not considered to be a true control
+    						in the Silverlight object model (it is not a class derived from <code class="obj">Control</code>).
     						The practical implications of this to accessibility scenarios is
-    						that a TextBlock is not in the default tab sequence,
+    						that a <code class="obj">TextBlock</code> is not in the default tab sequence,
     						cannot be manually added to any tab sequence, and cannot be keyboard-focused
     						either programatically or by the user. </li>
             <li> 
-                  TextBlock has a deliberately limited range of
+                  <code class="obj">TextBlock</code> has a deliberately limited range of
     							block / span formatting options. If the application author desires
     							a wider range of formatting options, for example supporting a "Paragraph" metaphor
-    							for blocks of text, a read-only RichTextBox should
+    							for blocks of text, a read-only <code class="obj">RichTextBox</code> should
     							be used instead. </li>
          </ul>
          <p>If the user relies solely on navigating a Silverlight application
-    					using the TAB sequence, such navigation will skip over any TextBlock in
+    					using the TAB sequence, such navigation will skip over any <code class="obj">TextBlock</code> in
     					the interface. This could have implications for how users who use screen
     					readers can interact with the Silverlight content. Screen readers typically
     					read text only from the currently focused element in cases where the
     					user is moving through the TAB sequence or changing focus within the
-    					application, and thus cannot read the text from a TextBlock in
+    					application, and thus cannot read the text from a <code class="obj">TextBlock</code> in
     					such a mode. However, most screen readers also have modes for reading
     					text that is not necessarily focusable. These are generally the same
     					modes that screen readers use for a conventional non-interactive HTML
     					document text. For example, some screen readers support a mode that
-    					reads text by line, or by word. These modes can read text from a TextBlock. </p>
+    					reads text by line, or by word. These modes can read text from a <code class="obj">TextBlock</code>. </p>
    	</section>
    </section><section id="examples"><h2>Examples</h2>
       <section class="example">
          <h3>Structure from a container that has non-semantic role
     					in UI Automation, and TextBlock for text</h3>
          
-            <p>If viewed as a UI Automation tree, the StackPanel and Grid do
+            <p>If viewed as a UI Automation tree, the <code class="obj">StackPanel</code> and <code class="obj">Grid</code> do
     						not exist explicitly in the tree view, because they do not serve a
     						semantic role (only a presentation role). Rather, the tree consists
     						of the items that report some kind of semantic control type. The semantic
@@ -172,10 +172,10 @@ private void GetAllSilverlight()
     						upwards in the tree, and despite the containers themselves being abstracted
     						out of the tree. This defines the reading order. This example is a
     						large block of text with intentionally simple formatting, where the
-    						only formatting is to represent paragraphs as separate TextBlock elements
-    						to support an adaptive layout, but no Run blocks within. </p>
+    						only formatting is to represent paragraphs as separate <code class="obj">TextBlock</code> elements
+    						to support an adaptive layout, but no <code class="obj">Run</code> blocks within. </p>
             <p>When viewed with assistive technologies that represent the contents,
-    						each TextBlock is a control type of Text. Screen readers
+    						each <code class="obj">TextBlock</code> is a control type of Text. Screen readers
     						can use document reading modes such as virtual cursor modes to read
     						the content from each element and each element's content, following
     						the same reading order as is declared in the XAML. For example, in
@@ -249,9 +249,9 @@ How  then is this? Are the green fields gone? What do they here?
             <li> Use a verification tool that is capable of showing the full automation
     						tree. (For example, use UIAVerify or Silverlight Spy; see Resources
     						links.) </li>
-            <li> Verify that TextBox elements in the Silverlight
-    							user interface have the Edit role, that RichTextBox elements
-    							have the Document role, and TextBlock has Text role
+            <li> Verify that <code class="obj">TextBox</code> elements in the Silverlight
+    							user interface have the Edit role, that <code class="obj">RichTextBox</code> elements
+    							have the Document role, and <code class="obj">TextBlock</code> has Text role
     							in UI Automation. </li>
             <li> Verify that the text content can be programmatically determined
     								by techniques that are appropriate for that role. </li>
@@ -260,11 +260,11 @@ How  then is this? Are the green fields gone? What do they here?
       <section class="results"><h3>Expected Results</h3>
          <p>#3 and #4 are true. </p>
       </section>
-   </section><section id="related"><h2>Related Techniques</h2>
-      
-      
-      
-   </section><section id="resources"><h2>Resources</h2>
+   </section><section id="related"><h2>Related Techniques</h2><ul>
+      <li><a href="../general/G115">G115</a></li>
+      <li><a href="../general/G135">G135</a></li>
+      <li><a href="../general/G10">G10</a></li>
+   </ul></section><section id="resources"><h2>Resources</h2>
       
          <ul>
             <li>
