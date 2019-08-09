@@ -17,19 +17,6 @@
 	<xsl:variable name="associations.doc" select="document($associations.file)"/>
 	<xsl:variable name="guidelines.meta.doc" select="document($guidelines.meta.file)"/>
 	
-	<xsl:function name="wcag:section-meaningfully-exists" as="xs:boolean">
-		<xsl:param name="id"/>
-		<xsl:param name="section"/>
-		<xsl:choose>
-			<xsl:when test="$id = 'applicability'"><xsl:value-of select="$section and $section/html:p[not(@class = 'instructions')]"/></xsl:when>
-			<xsl:when test="$id = 'description'"><xsl:value-of select="$section and $section/html:p[not(@class = 'instructions')]"/></xsl:when>
-			<xsl:when test="$id = 'examples'"><xsl:value-of select="$section and $section/html:section[@class = 'example'] or $section/html:ul or $section/html:ol"/></xsl:when>
-			<xsl:when test="$id = 'resources'"><xsl:value-of select="$section and ($section/html:p[not(@class = 'instructions')] or $section//html:li[not(. = 'Resource')] or $section//html:a[@href])"/></xsl:when>
-			<xsl:when test="$id = 'related'"><xsl:value-of select="$section and $section//html:li//html:a[@href]"/></xsl:when>
-			<xsl:when test="$id = 'tests'"><xsl:value-of select="$section and $section//html:section[@class = 'test-procedure' or @class = 'procedure']//html:li and $section//html:section[@class = 'test-results' or @class = 'results']"/></xsl:when>
-		</xsl:choose>
-	</xsl:function>
-	
 	<xsl:template name="navigation">
 		<xsl:param name="meta" tunnel="yes"/>
 		<nav>
@@ -151,7 +138,7 @@
 	
 	<xsl:template match="technique">
 		<xsl:variable name="technology" select="parent::technology/@name"/>
-		<xsl:result-document href="{$output.dir}/{$technology}/{@id}.html" encoding="utf-8" exclude-result-prefixes="#all" indent="yes" method="xhtml" omit-xml-declaration="yes">
+		<xsl:result-document href="{$output.dir}/{$technology}/{@id}.html" encoding="utf-8" exclude-result-prefixes="#all" include-content-type="no" indent="yes" method="xhtml" omit-xml-declaration="yes">
 			<xsl:apply-templates select="document(resolve-uri(concat($technology, '/', @id, '.html'), $techniques.dir))">
 				<xsl:with-param name="meta" select="." tunnel="yes"/>
 			</xsl:apply-templates>
@@ -453,7 +440,7 @@
 		</xsl:element>
 	</xsl:template>
 	
-	<xsl:template match="html:a[not(@href)]">
+	<xsl:template match="html:a[not(@href)]" mode="#all">
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:variable name="dfn" select="lower-case(.)"/>
 		<a href="{$loc.guidelines}#{$meta/ancestor::guidelines/term[name = $dfn]/id}" target="terms"><xsl:value-of select="."/></a>

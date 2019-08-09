@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+   <head>
+      <title>Semantically identifying a font icon with role="img"</title>
+      <link rel="stylesheet" type="text/css" href="https://rawgit.com/w3c/wcag21/master/css/sources.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/editors.css" />
+   </head>
+   <body>
+
+      <h1>Semantically identifying a font icon with <code>role=&quot;img&quot;</code></h1>
+
+      <section id="meta">
+         <h2>Metadata</h2>
+         <p id="id"></p>
+         <p id="technology">aria</p>
+         <p id="type">advisory</p>
+      </section>
+
+      <section id="applicability">
+         <h2>When to Use</h2>
+         <p class="instructions">This technique is applicable to Markup languages that support ARIA.</p>
+      </section>
+
+      <section id="description">
+
+         <h2>Description</h2>
+         <p>The objective of this technique is to show how to semantically identify an element that uses a font file for icons. When a user  overrides font-family these icons typically disappear unless there is a means to identify them. The point is to provide a technique to differentiate icon fonts from general font (text) usage.</p>
+
+         <p>Some low vision users need user stylesheets, scripts, or extensions to override the fonts on a page to perceive text content. However, they need to be able to perceive icon fonts that are meaningful, such as a star signifying a favorite, or an email icon in a link.</p>
+
+         <p>The key is for the author to semantically markup icon fonts with <code>role=&quot;img&quot;</code>. Then the user's font replacement selector can hook into that semantic and exclude <code>role=&quot;img&quot;</code>. This results in those icon fonts being shown.</p>
+
+         <h3>Basic principle of the technique</h3>
+
+         <h4>1. Author adds a font-face to the CSS</h4>
+         <p>The first step is used for adding a font face with icons via the CSS file.</p>
+         <pre>
+            <code>
+/* specify font-family name for icons */
+@font-face { font-family: 'IconFontRoleImg';/ }
+
+/* default class for fonts-face with icons */
+.icon,
+[class^="icon-"],
+[class*=" icon-"] { font-family: 'IconFontRoleImg' !important; }
+
+/* specific class for icon */
+.icon-star-bg:before { content: "\e982"; }
+            </code>
+         </pre>
+
+         <h4>2. Author adds the font classes to the HTML</h4>
+         <p>The second step adds classes, the role="img" attribute for semantics and an accessible name.</p>
+         <pre>
+            <code>            
+&lt;!-- Icon via class names, role="img" and a text alternative --&gt;
+&lt;p&gt;
+   &lt;span class=&quot;icon icon-star-bg&quot; role=&quot;img&quot; aria-label=&quot;Favorite&quot;&gt;&lt;/span&gt;
+&lt;/p&gt;
+            </code>
+         </pre>
+
+         <h4>3. User CSS file replaces the font-family except the icon file</h4>
+         <p>The third step uses the ":not selector" in combination with the "[attribute] selector" to only replace font faces for regular text.</p>
+         <pre>
+            <code>
+/* Replaces font faces but excludes all elements with attribute role=""img&quot; */
+*:not([role="img"]) { font-family: Verdana, sans-serif !important; }
+         </code>
+      </pre>
+
+      </section>
+
+      <section id="examples">
+         <h2>Examples</h2>
+
+         <section class="example">
+
+            <h3>Star Icon Font used as an indicator (not interactive)</h3>
+            <p>In this example a star icon is used to indicate a favorite. It is not interactive and does not disappear if the user overrides the font family via CSS.</p>
+
+			<section>
+            <h4>Author CSS</h4>
+            <pre>
+               <code>
+/* default class for fonts-face with icons */
+.icon { font-family: 'IconFontRoleImg' !important; }
+
+/* specific class for icon */
+.icon-star-bg:before { content: &quot;\e982&quot;; }
+               </code>
+            </pre>
+			</section>
+         	<section>
+            <h4>HTML</h4>
+			<section>
+            <h5><strong>- Instead of... -</strong></h5>
+            <pre>
+               <code>
+&lt;p&gt;
+   &lt;span class=&quot;icon icon-star-bg&quot;&gt;&lt;/span&gt;
+&lt;/p&gt;
+               </code>
+            </pre>
+			</section>
+         	<section>
+            <h5><strong>- Do... -</strong></h5>
+            <pre>
+               <code>
+&lt;p&gt;
+   &lt;span class=&quot;icon icon-star-bg&quot; role=&quot;img&quot; aria-label=&quot;Favorite&quot;&gt;&lt;/span&gt;
+&lt;/p&gt;
+               </code>
+            </pre>
+         	</section>
+         	</section>
+         	<section>
+            <h4>User CSS</h4>
+            <pre>
+               <code>
+*:not([role=&quot;img&quot;]) { font-family: Verdana, sans-serif !important; }
+               </code>
+            </pre>
+         	</section>
+         	<section>
+            <h4>Working example:</h4>
+            <p>
+               <a href="../../working-examples/aria-icon-font-img-role/#example1">Star Icon Font used as an indicator (not interactive)</a>
+            </p>
+         	</section>
+         </section>
+
+         <section class="example">
+
+            <h3>Two colored / stacked star Icon Font used as an indicator</h3>
+            <p>In this example a two colored star icon is created by stacking two fonts with different colors on top of each other. This way it's possible to mimic only half the star is filled. It is not interactive and does not disappear if the user overrides the font family via CSS.</p>
+			<section>
+            <h4>Author CSS</h4>
+            <pre>
+               <code>
+/* default class for fonts-face with icons */
+.icon { font-family: 'IconFontRoleImg' !important; }
+
+/* specific classes for icons */
+.icon-star-bg:before    {content: &quot;\e982&quot;; }
+.icon-star-half:before  {content: &quot;\e983&quot;; }
+               </code>
+            </pre>
+			</section>
+         	<section>
+            <h4>HTML</h4>
+			<section>
+            <h5><strong>- Instead of... -</strong></h5>
+            <pre>
+               <code>
+&lt;span class="icon-stacked"&gt;
+   &lt;span class="icon icon-star-bg grey"&gt;&lt;/span&gt;
+   &lt;span class="icon icon-star-half yellow"&gt;&lt;/span&gt;
+&lt;/span&gt;
+               </code>
+            </pre>
+			</section>
+         	<section>
+            <h5><strong>- Do... -</strong></h5>
+            <pre>
+               <code>
+&lt;span class="icon-stacked" role="img" aria-label="Favorite star half filled"&gt;
+   &lt;span class="icon icon-star-bg grey" role="img" aria-hidden="true"&gt;&lt;/span&gt;
+   &lt;span class="icon icon-star-half yellow" role="img" aria-hidden="true"&gt;&lt;/span&gt;
+&lt;/span&gt;
+               </code>
+            </pre>
+         	</section>
+         	</section>
+         	<section>
+            <h4>User CSS</h4>
+            <pre>
+               <code>
+*:not([role=&quot;img&quot;]) { font-family: Verdana, sans-serif !important; }
+               </code>
+            </pre>
+         	</section>
+         	<section>
+            <h4>Working example:</h4>
+            <p>
+               <a href="../../working-examples/aria-icon-font-img-role/#example2">Two colored / stacked star Icon Font used as an indicator</a>
+            </p>
+         	</section>
+         </section>
+
+         <section class="example">
+
+            <h3>Email Icon Font in a link WITHOUT visible text</h3>
+            <p>In this example an email icon is in a link with no visible text. It does not disappear if a user overrides font family. The icon font is identified by assistive technology as a "link image" and the name "Email" (keyboard or mouse).</p>
+			<section>
+            <h4>Author CSS</h4>
+            <pre>
+               <code>
+/* default class for fonts-face with icons */
+.icon { font-family: 'IconFontRoleImg' !important; }
+
+/* specific class for icon */
+.icon-email:before { content: &quot;\e93e&quot;; }
+               </code>
+            </pre>
+			</section>
+         	<section>
+            <h4>HTML</h4>
+			<section>
+            <h5><strong>- Instead of... -</strong></h5>
+            <pre>
+               <code>
+&lt;a href=&quot;email.html&quot;&gt;
+   &lt;span class=&quot;icon icon-email&quot;&gt;&lt;/span&gt;
+&lt;/a&gt;
+               </code>
+            </pre>
+			</section>
+         	<section>
+            <h5><strong>- Do... -</strong></h5>
+            <pre>
+               <code>
+&lt;a href=&quot;email.html&quot;&gt;
+   &lt;span class=&quot;icon icon-email&quot; role=&quot;img&quot; aria-label=&quot;Email&quot;&gt;&lt;/span&gt;
+&lt;/a&gt;
+               </code>
+            </pre>
+         	</section>
+         	</section>
+         	<section>
+            <h4>User CSS</h4>
+            <pre>
+               <code>
+*:not([role=&quot;img&quot;]) { font-family: Verdana, sans-serif !important; }
+               </code>
+            </pre>
+         	</section>
+         	<section>
+            <h4>Working example:</h4>
+            <p>
+               <a href="../../working-examples/aria-icon-font-img-role/#example3">Email Icon Font in a link WITHOUT visible text</a>
+            </p>
+         	</section>
+         </section>
+
+         <section class="example">
+
+            <h3>Multiple Icon Fonts as part of another sematic element WITH visible text</h3>
+
+            <p>This example already has a visible text label in the link to be used as an accessible name, the mail and chevron font icons must stay visible when the font family is changed. This can be done by ensuring the icons are contained in their own element and the attribute <code>aria-hidden=&quot;true&quot;</code> is used so the font icons will be ignored by assistive technologies.</p>
+			<section>
+            <h4>Author CSS</h4>
+            <pre>
+               <code>
+/* default class for fonts-face with icons */
+.icon { font-family: 'IconFontRoleImg' !important; }
+
+/* specific class for icon */
+- See style declarations in HTML examples -
+
+               </code>
+            </pre>
+			</section>
+         	<section>
+            <h4>HTML</h4>
+			<section>
+            <h5><strong>- Instead of... -</strong></h5>
+            <pre>
+               <code>
+&lt;style&gt;
+.icon-double-link:before   { content: &quot;\e93e&quot;; }
+.icon-double-link:after    { content: &quot;\e993&quot;; }
+&lt;/style&gt;
+
+&lt;a href=&quot;email.html&quot; class=&quot;icon-double-link&quot;&gt;
+   Email
+&lt;/a&gt;
+               </code>
+            </pre>
+			</section>
+         	<section>
+            <h5><strong>- Do... -</strong></h5>
+            <pre>
+               <code>
+&lt;style&gt;
+.icon-email:before   { content: &quot;\e93e&quot;; }
+.icon-chevron:before {  content: &quot;\e993&quot;;  }
+
+.icon-double-link .icon-chevron  { float: right; margin-left: 1.5rem; }
+&lt;/style&gt;
+
+&lt;a href=&quot;email.html&quot; class=&quot;icon-double-link&quot;&gt;
+   &lt;span class=&quot;icon icon-email&quot; role=&quot;img&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+   &lt;span class=&quot;icon icon-chevron&quot; role=&quot;img&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+   Email
+&lt;/a&gt;
+               </code>
+            </pre>
+         	</section>
+         	</section>
+         	<section>
+            <h4>User CSS</h4>
+            <pre>
+               <code>
+*:not([role=&quot;img&quot;]) { font-family: Verdana, sans-serif !important; }
+               </code>
+            </pre>
+         	</section>
+         	<section>
+            <h4>Working example:</h4>
+            <p>
+               <a href="../../working-examples/aria-icon-font-img-role/#example4">Multiple Icon Fonts as part of another sematic element WITH visible text</a>
+            </p>
+         	</section>
+         </section>
+
+      </section>
+
+      <section id="tests">
+         <h2>Tests</h2>
+         <section class="test-procedure">
+            <h3>Procedure</h3>
+            <p>For each font icon check that:</p>
+            <ol>
+               <li>The element providing the font icon has <code>role="img"</code>.</li>
+            </ol>
+         </section>
+         <section class="test-results">
+            <h3>Expected Results</h3>
+            <ul>
+               <li>#1 is true.</li>
+            </ul>
+         </section>
+      </section>
+   </body>
+</html>

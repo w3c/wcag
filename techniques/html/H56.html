@@ -1,20 +1,20 @@
 <!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using the dir attribute on an inline element to resolve problems
-          with nested directional runs</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using the dir attribute on an inline element to resolve problems
+          with nested directional runs</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using the <code class="att">dir</code> attribute on an inline element to resolve problems
           with nested directional runs</h1><section class="meta"><p class="id">ID: H56</p><p class="technology">Technology: html</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <p>HTML and XHTML</p>
    </section><section id="description"><h2>Description</h2>
-      <p>The objective of this technique is to identify changes in the text direction of text that includes nested directional runs by providing the dir attribute on
-            inline elements. A nested directional run is a run of text that includes mixed directional text, for example, a paragraph in English containing a quoted Hebrew sentence which in turn includes an English phrase. Use of the dir attribute on an enclosing span or other inline element may be necessary because the <a href="https://www.w3.org/International/articles/inline-bidi-markup/">Unicode bidirectional algorithm</a> can produce undesirable results when mixed
+      <p>The objective of this technique is to identify changes in the text direction of text that includes nested directional runs by providing the <code class="att">dir</code> attribute on
+            inline elements. A nested directional run is a run of text that includes mixed directional text, for example, a paragraph in English containing a quoted Hebrew sentence which in turn includes an English phrase. Use of the <code class="att">dir</code> attribute on an enclosing <code class="el">span</code> or other inline element may be necessary because the <a href="https://www.w3.org/International/articles/inline-bidi-markup/">Unicode bidirectional algorithm</a> can produce undesirable results when mixed
             directional text contains spaces or punctuation. The concepts used in this technique are described in <a href="https://www.w3.org/International/articles/inline-bidi-markup/">What you need to know about the bidi algorithm and inline markup</a>. </p>
    </section><section id="examples"><h2>Examples</h2>
       <section class="example">
          
             <p>This example defines the text direction of a nested, mixed-direction phrase, in Hebrew and English, to be right-to-left. Because the whole quote is in Hebrew, and therefore runs right to left, the text "W3C" and the comma should appear to the left of (i.e., after) the Hebrew text, like this:</p>
-            <p>The title is "פעילות הבינאום, W3C" in Hebrew.</p>
+            <p>The title is "<span lang="he">פעילות הבינאום, W3C</span>" in Hebrew.</p>
             <p>Visually-ordered ASCII version (RTL text in uppercase, LTR in lower):</p>
             <p>the title is "w3c ,YTIVITCA NOITAZILANOITANRETNI" in hebrew.</p>
             <p>The Unicode bidirection algorithm alone is insufficient to achieve the right result, and leaves the text 'W3C' on the right side of the quote:</p>
-            <p>The title is "פעילות הבינאום, W3C" in Hebrew.</p>
+            <p>The title is "<span lang="he">פעילות הבינאום</span>, W3C" in Hebrew.</p>
             <p>Visually-ordered ASCII version:</p>
             <p>the title is "YTIVITCA NOITAZILANOITANRETNI, w3c" in hebrew.</p>
             <p>The following markup will produce the expected result:</p>
@@ -28,10 +28,10 @@ dir="rtl"&gt;פעילות הבינאום, W3C&lt;/span&gt;" in Hebrew.&lt;/p&gt;
          <ol>
             <li>Examine the text direction of text in the document</li>
             <li>If the text direction is right-to-left, check that for the ancestor element that
-                  has a dir attribute, the attribute has the value "rtl"</li>
+                  has a <code class="att">dir</code> attribute, the attribute has the value "rtl"</li>
             <li>If the text direction is left-to-right, check that there is no ancestor element
-                  with a dir attribute, or that for the ancestor element that has a
-                    dir attribute, the attribute has the value "ltr"</li>
+                  with a <code class="att">dir</code> attribute, or that for the ancestor element that has a
+                    <code class="att">dir</code> attribute, the attribute has the value "ltr"</li>
          </ol>
       </section>
       <section class="results"><h3>Expected Results</h3>
@@ -39,9 +39,9 @@ dir="rtl"&gt;פעילות הבינאום, W3C&lt;/span&gt;" in Hebrew.&lt;/p&gt;
             <li>Checks #2 and #3 are true for all text.</li>
          </ul>
       </section>
-   </section><section id="related"><h2>Related Techniques</h2>
-      
-   </section><section id="resources"><h2>Resources</h2>
+   </section><section id="related"><h2>Related Techniques</h2><ul>
+      <li><a href="../html/H34">H34</a></li>
+   </ul></section><section id="resources"><h2>Resources</h2>
       
          <ul>
             <li>
