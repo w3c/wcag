@@ -22,14 +22,15 @@
     
 		<section id="description">
 			<h2>Description</h2>
-			<p>The objective of this technique is first to describe how adding a status message to the content without making it programmatically determinable through role or properties is a failure of 4.1.3, then to explain the steps necessary to detect and confirm the failure.</p>
-			<p>There are two criteria that determine if changed content on a page represents a status message:
+			<p>The objective of this technique is to describe a failure where status messages are used in content but are not communicated to the user due to a lack of appropriate roles or properties.</p>
+		
+			<p>The initial step in confirming a failure of Status Messages is to check that new dynamic content meets the definition of a status message. There are two criteria that determine if changed content on a page represents a status message:
 				<ol>
 					<li>the new content does not take focus (does not change context);</li>
 					<li>the new content provides information to the user on the outcome of an action, the state of an application, the progress of a process, or the existence of errors.</li>
 				</ol>
-				The first step in this failure technique is confirming that new content on the page meets the above criteria of a status message. Where updated content does not conform to the <a href="https://www.w3.org/TR/WCAG21/#dfn-status-messages">definition of status message</a>, a failure of 4.1.3 has not taken place.</p>
-				<p>Initial flagging of potential failures of Status Message may be carried out by examining code for the existence of dynamic content. Where such content meets the definition of a status message, its container can then be examined for an appropriate WAI-ARIA role or property which allows it to be programmatically determinable as a status message. Currently there are a small number of techniques available to indicate status messages to assistive technologies. They are:
+			 Where updated content does not conform to the <a href="https://www.w3.org/TR/WCAG21/#dfn-status-messages">definition of status message</a>, a failure of 4.1.3 has not taken place.</p>
+				<p>The second step in this failure technique involves examining code.  Where dynamic content meets the definition of a status message, its container can be examined for a pre-existing and appropriate WAI-ARIA role or property which allows it to be programmatically determinable as a status message. Currently there are only a small number of techniques available to indicate status messages to assistive technologies. They are:
 					<ul>
 						<li><code>role="status"</code></li>
 						<li><code>role="alert"</code></li>
@@ -37,8 +38,8 @@
 						<li><code>role="log"</code></li>
 						<li><code>role="progressbar"</code></li>
 						</ul>
-				</p>
-				<p>Since additional techniques may exist to alert an assistive technology, the final step of this failure technique is confirming the lack of surfacing of the message by an assistive technology that would normally pass on this information, such as a screen reader. Where a status message exists but lacks appropriate roles or properties and so is not determinable by assistive technology, it is confirmation that a failure has taken place.</p>
+				The absence of all of these techniques predicts a likely failure for the status message be announced to the user.</p>
+				<p>Since additional techniques may exist to alert an assistive technology, the final step of this failure technique is confirming whether an assistive technology (such as a screen reader) detects the dynamic content and exposes the information to users. Where a status message exists but is not surfaced by assistive technology, it is confirmation that a failure has taken place.</p>
 
 
 		</section>    
@@ -46,7 +47,7 @@
 			<h2>Examples</h2>
 <section class="example">
 				<h3>Including a search results message without a status role</h3>
-				<p>When a user carries out an invalid search by pressing a Search button, the page content is updated with the results of the search, displayed in a section below the Search button. The change to content conveys the status message "0 results returned". This text is not given an appropriate role for a status message, and so a screen reader will not announce "Zero results returned" unless the user repositions to that text. Since the status message is not presented to the user without receiving focus, it fails 4.1.3.</p>
+				<p>When a user carries out a search by pressing a Search button, the page content is updated with the results of the search, displayed in a section below the Search button. Since the search has no results, the change to content conveys the status message "0 results returned". This text is not given an appropriate role for a status message, and so a screen reader will not announce "Zero results returned" unless the user repositions to that text. Since the status message is not automatically presented to the user (i.e., instead, it must be manually discovered by the individual), it fails 4.1.3.</p>
 
 				<p class="working-example"><a href="../../working-examples/failure-status-message/">Working example: search results message without appropriate role</a></p>
 			</section>
@@ -62,16 +63,16 @@
 				<h3>Procedure</h3>
 				<p>For content that is dynamically added to the page:</p>
 				<ol>
-					<li>Confirm the element containing the updated content does not take focus</li>
-					<li>Confirm that the new content provides information to the user on one of the following:</li>
+					<li>Check that the element containing the updated content does not take focus</li>
+					<li>Chect that the new content provides information to the user on one of the following:</li>
 						<ul>
 							<li>the success or result of an action</li>
 							<li>the waiting state of an application</li>
 							<li>the progress of a process</li>
 							<li>the existence of errors</li>
 						</ul>
-					<li>Confirm that the element containing the new content does not have an aria role of <code>status</code>, <code>alert</code>, <code>log</code>, or <code>progressbar</code>, or an <code>aria-live</code> attribute</li>
-					<li>Confirm the status message is not read by assistive technology</li>
+					<li>Check that the element containing the new content does not have an aria role of <code>status</code>, <code>alert</code>, <code>log</code>, or <code>progressbar</code>, or an <code>aria-live</code> attribute</li>
+					<li>Check that the status message is not surfaced (i.e., announced) by assistive technology</li>
 				</ol>
 			</section>
 			<section class="test-results">
