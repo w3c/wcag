@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta charset="UTF-8" />
+      <title>413 Failure: Failure of Success Criterion 4.1.3 due to providing status messages that cannot be
+         programmatically determined through role or properties
+      </title>
+      <link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="F102">Previous Technique: F102</a></li>
+            <li><a href="../flash/FLASH1">Next Technique: FLASH1</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Failure of Success Criterion 4.1.3 due to providing status messages that cannot be
+         programmatically determined through role or properties
+      </h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>Technologies that support <a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</a>.
+            </p>
+            <p>This technique is not referenced from any Understanding document.</p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to describe a failure where status messages are
+               used in content but are not communicated to the user due to a lack of appropriate
+               roles or properties.
+            </p>
+            <p>The initial step in confirming a failure of Status Messages is to check that new dynamic
+               content meets the definition of a status message. There are two criteria that determine
+               if changed content on a page represents a status message:
+               				
+               <ol>
+                  					
+                  <li>the new content does not take focus (does not change context);</li>
+                  					
+                  <li>the new content provides information to the user on the outcome of an action, the
+                     state of an application, the progress of a process, or the existence of errors.
+                  </li>
+                  				
+               </ol>
+               			 Where updated content does not conform to the <a href="https://www.w3.org/TR/WCAG21/#dfn-status-messages">definition of status message</a>, a failure of 4.1.3 has not taken place.
+            </p>
+            <p>The second step in this failure technique involves examining code.  Where dynamic
+               content meets the definition of a status message, its container can be examined for
+               an appropriate WAI-ARIA role or property which allows it to be programmatically determinable
+               as a status message. Currently there are only a small number of techniques available
+               to indicate status messages to assistive technologies. They are:
+               					
+               <ul>
+                  						
+                  <li><code>role="status"</code></li>
+                  						
+                  <li><code>role="alert"</code></li>
+                  						
+                  <li>the use of an <code>aria-live</code> attribute on an element, set to either "polite" or "assertive"
+                  </li>
+                  						
+                  <li><code>role="log"</code></li>
+                  						
+                  <li><code>role="progressbar"</code></li>
+                  						
+               </ul>
+               				The absence of all of these techniques predicts a failure for the status message
+               be announced to the user. Additionally, if the role or property is not set <em>before</em> the dynamic content is added, this also predicts a failure.
+            </p>
+            <p>Since additional techniques may exist to alert an assistive technology, the final
+               step of this failure technique is confirming whether an assistive technology (such
+               as a screen reader) detects the dynamic content and exposes the information to users.
+               Where a status message exists but is not surfaced by assistive technology, it is confirmation
+               that a failure has taken place.
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-including-a-search-results-message-without-a-status-role">
+               <h3>Example 1: Including a search results message without a status role</h3>
+               <p>When a user carries out a search by pressing a Search button, the page content is
+                  updated with the results of the search, displayed in a section below the Search button.
+                  Since the search has no results, the change to content conveys the status message
+                  "0 results returned". This text is not given an appropriate role for a status message,
+                  and so a screen reader will not announce "Zero results returned" unless the user repositions
+                  to that text. Since the status message is not automatically presented to the user
+                  (i.e., instead, it must be manually discovered by the individual), it fails 4.1.3.
+               </p>
+               <p class="working-example"><a href="../../working-examples/failure-status-message/">Working example: search results message without appropriate role</a></p>
+            </section>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="test-procedure">
+               <h3>Procedure</h3>
+               <p>For content that is dynamically added to the page:</p>
+               <ol>
+                  					
+                  <li>Check that the element containing the updated content does not take focus</li>
+                  					
+                  <li>Check that the new content provides information to the user on one of the following:</li>
+                  						
+                  <ul>
+                     							
+                     <li>the success or result of an action</li>
+                     							
+                     <li>the waiting state of an application</li>
+                     							
+                     <li>the progress of a process</li>
+                     							
+                     <li>the existence of errors</li>
+                     						
+                  </ul>
+                  					
+                  <li>Check that the element containing the new content does not have a pre-existing aria
+                     role of <code>status</code>, <code>alert</code>, <code>log</code>, or <code>progressbar</code>, or an <code>aria-live</code> attribute
+                  </li>
+                  					
+                  <li>Check that the status message is not surfaced (i.e., announced) by assistive technology</li>
+                  				
+               </ol>
+            </section>
+            <section class="test-results">
+               <h3>Expected Results</h3>
+               <ul>
+                  					
+                  <li>If #1 through #4 are all true, then content fails the Success Criterion.</li>
+                  				
+               </ul>
+            </section>
+         </section>
+      </main>
+   </body>
+</html>
