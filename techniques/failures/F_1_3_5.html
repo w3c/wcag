@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <title>Failure of Success Criterion 1.3.5 due to incorrect scoping of the specific data-inputs</title>
+
+      <link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="https://www.w3.org/WAI/WCAG21/Techniques/techniques.css" />
+      <link rel="stylesheet" type="text/css" href="https://www.w3.org/WAI/WCAG21/Techniques/slicenav.css" />
+
+</head>
+<body>
+
+
+<h1>Failure of Success Criterion 1.3.5 due to incorrect scoping of the specific
+data-inputs</h1>
+
+  <section id="meta">
+    <h2>Metadata</h2>
+    <p>Success Criterion 1.3.5</p>
+    <p>Failure</p>
+  </section>
+
+  <section id="applicability">
+    <h2>Applicability</h2>
+    <p>This technique applies to <b>form inputs</b> created in markup languages that support any attribute that allows the programmatic association of the defined token values found in Section 7 of the WCAG 2.1 Specification or future versions of that specification.</p>
+  </section>
+  <section id="description">
+    <h2>Description</h2>
+    <p>The purpose of this technique is to
+identify and test a failure condition where form inputs are not properly scoped
+to the actual user of the form.</p>
+
+    <p>At the date of creation of Success Criteria 1.3.5, there is only one known technique to apply the appropriate token value to a form input: the @autocomplete attribute. It is anticipated that in the near future other techniques will emerge
+that will afford a similar ability, potentially minus the specific functionality originally envisioned for the attribute.</p>
+
+    <p>Success Criteria 1.3.5 expands on the original functionality of @autocomplete and that attribute’s fixed list of token values, because while the fixed list of tokens are key to the auto-filling function, the programmatic association of specified token values (metadata) to their related inputs also allows for other machine processing, such as expressing the input label in different modalities.</p>
+
+    <p>Importantly however is the additional requirement that the token values are associated exclusively to inputs that are <b>scoped directly to the end user</b>, as opposed to any or all form inputs found on a form.</p>
+
+    <p>The @autocomplete attribute was first published in the HTML 5.0 specification, which states:</p>
+
+      <blockquote>User agents sometimes have features for helping users fill forms in, for example prefilling the user's address based on earlier user input. The autocomplete content attribute can be used to hint to the user agent how to, or indeed whether to, provide such a feature.</blockquote>
+
+    <p>However for the @autocomplete function to be able to pre-fill specifically tagged inputs with the correct user-data, that user-data must first be stored on the user’s local machine (<i>"...based on earlier user input..."</i>). This is why @autocomplete still cannot pre-fill forms accessed via public terminals or via user-agents that have not previously stored the corresponding values.</p>
+
+    <p>Additionally, while some user-agents or helper-applications may store more than one user profile, it is presumed that if only one user-profile exists, the stored data will be directly associated to the actual or primary user: i.e. on Robert Smith’s device(s) the data stored (name, address, email, phone, etc.) will be that of Robert, and not of Susan Jones or even of Robert’s son Steven.</p>
+
+    <p>Given this presumption, Success Criteria 1.3.5 is specifically scoped only to inputs directly related to the primary user, and not to other users, as applying the token terms to inputs not related to the primary user could potentially result in forms being auto-filled with bad data-values.</p>
+  </section>
+  
+  <section id="examples">
+    <h2>Examples</h2>
+
+      <h3>Example 1: An online form used in a classroom, to be filled out by
+the classroom teacher (i.e., the teacher is the primary user of the form).</h3>
+
+
+<section class="example" id="example-1">
+        <h4>Correct example:</h4>
+<div style="width:40%; float:left;">
+<form>
+  <h2>Teacher:</h2>
+   <ul style="list-style-type:none;">
+    <li><label for="name1">Name: <input type="text" autocomplete="name" type="text" name="field1a" id="name1"></label><br> 
+    <label for="birthday1">Birthday: <input type="text" autocomplete="bday" type="text" name="field1b" id="birthday1"></label></li>
+   </ul>
+
+  <h2>Students</h2>
+   <ul style="list-style-type:none;">
+    <li><label for="name2">Name: <input type="text" name="field2a" id="name2"></label><br> 
+    <label for="birthday2">Birthday: <input  type="text" name="field2b" id="birthday2"></label></li>
+    <li><label for="name3">Name: <input type="text" name="field3a" id="name3"></label><br> 
+    <label for="birthday3">Birthday: <input  type="text" name="field3b" id="birthday3"></label></li>
+    <li><label for="name4">Name: <input type="text" name="field4a" id="name4"></label><br> 
+    <label for="birthday4">Birthday: <input  type="text" name="field4b" id="birthday4"></label></li>
+    <li><label for="name5">Name: <input type="text" name="field5a" id="name5"></label><br> 
+    <label for="birthday5">Birthday: <input  type="text" name="field5b" id="birthday5"></label></li>
+    <li><label for="name6">Name: <input type="text" name="field6a" id="name6"></label><br> 
+    <label for="birthday6">Birthday: <input  type="text" name="field6b" id="birthday6"></label></li>
+   </ul>
+
+</form>
+</div>
+
+ <pre xml:space="preserve">
+    &lt;h2&gt;Teacher:&lt;/h2&gt;
+   &lt;ul&gt;
+    &lt;li&gt;&lt;label for="name1"&gt;Name: &lt;/label&gt;
+    &lt;input type="text" 
+           <span style="background:yellow; font-weight:bold;">autocomplete="name"</span>  
+           name="field1a"
+           id="name1"&gt; 
+    &lt;label for="birthday1"&gt;Birthday: &lt;/label&gt;
+    &lt;input type="text" 
+           <span style="background:yellow; font-weight:bold;">autocomplete="bday"</span> 
+           name="field1b"
+           id="birthday1&gt;&lt;/li&gt;
+   &lt;/ul&gt;
+
+  &lt;h2&gt;Students&lt;/h2&gt;
+   &lt;ul&gt;
+    &lt;li&gt;&lt;label for="name2"&gt;Name: &lt;/label&gt;
+    &lt;input type="text" 
+           name="field2a" 
+           id="name2"&gt; 
+    &lt;label for="birthday2"&gt;Birthday: &lt;/label&gt;
+    &lt;input type="text" 
+           name="field2b"  
+           id="birthday2&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;label for="name3"&gt;Name: &lt;/label&gt;
+    &lt;input type="text" 
+           name="field3a" 
+           id="name3"&gt; 
+    &lt;label for="birthday3"&gt;Birthday: &lt;/label&gt;
+    &lt;input type="text" 
+           name="field3b"  
+           id="birthday3&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;label for="name4"&gt;Name: &lt;/label&gt;
+    &lt;input type="text" 
+           name="field4a" 
+           id="name4"&gt; 
+    &lt;label for="birthday4"&gt;Birthday: &lt;/label&gt;
+    &lt;input type="text" 
+           name="field4b"  
+           id="birthday4&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;label for="name5"&gt;Name: &lt;/label&gt;
+    &lt;input type="text" 
+           name="field5a" 
+           id="name5"&gt; 
+    &lt;label for="birthday5"&gt;Birthday: &lt;/label&gt;
+    &lt;input type="text" 
+           name="field5b"  
+           id="birthday5&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;label for="name6"&gt;Name: &lt;/label&gt;
+    &lt;input type="text" 
+           name="field6a" 
+           id="name6"&gt; 
+    &lt;label for="birthday6"&gt;Birthday: &lt;/label&gt;
+    &lt;input type="text" 
+           name="field6b"  
+           id="birthday6&gt;&lt;/li&gt;
+   &lt;/ul&gt;
+ </pre>
+
+</section>
+
+
+<section class="example" id="example-2">
+        <h4>Incorrect example</h4>
+<div style="width:40%; float:left;">
+<form>
+  <h2>Teacher:</h2>
+   <ul style="list-style-type:none;">
+    <li><label for="name1">Name: <input type="text" autocomplete="name" type="text" name="field1a" id="name1"></label> <br>
+    <label for="birthday1">Birthday: <input type="text" autocomplete="bday" type="text" name="field1b" id="birthday1"></label></li>
+   </ul>
+
+  <h2>Students</h2>
+   <ul style="list-style-type:none;">
+    <li><label for="name2">Name: <input type="text" name="field2a" id="name2"></label><br> 
+    <label for="birthday2">Birthday: <input  type="text" name="field2b" id="birthday2"></label></li>
+    <li><label for="name3">Name: <input type="text" name="field3a" id="name3"></label><br> 
+    <label for="birthday3">Birthday: <input  type="text" name="field3b" id="birthday3"></label></li>
+    <li><label for="name4">Name: <input type="text" name="field4a" id="name4"></label><br> 
+    <label for="birthday4">Birthday: <input  type="text" name="field4b" id="birthday4"></label></li>
+    <li><label for="name5">Name: <input type="text" name="field5a" id="name5"></label><br> 
+    <label for="birthday5">Birthday: <input  type="text" name="field5b" id="birthday5"></label></li>
+    <li><label for="name6">Name: <input type="text" name="field6a" id="name6"></label><br> 
+    <label for="birthday6">Birthday: <input  type="text" name="field6b" id="birthday6"></label></li>
+   </ul>
+
+</form>
+</div>
+
+ <pre xml:space="preserve">
+    &lt;h2&gt;Teacher:&lt;/h2&gt;
+   &lt;ul&gt;
+    &lt;li&gt;&lt;label for="name1"&gt;Name: &lt;/label&gt;
+    &lt;input type="text" 
+           <span style="background:yellow; font-weight:bold;">autocomplete="name"</span>  
+           name="field1a"
+           id="name1"&gt; 
+    &lt;label for="birthday1"&gt;Birthday: &lt;/label&gt;
+    &lt;input type="text" 
+           <span style="background:yellow; font-weight:bold;">autocomplete="bday"</span> 
+           name="field1b"
+           id="birthday1&gt;&lt;/li&gt;
+   &lt;/ul&gt;
+
+  &lt;h2&gt;Students&lt;/h2&gt;
+   &lt;ul&gt;
+    &lt;li&gt;&lt;label for="name2"&gt;Name: &lt;/label&gt;
+    &lt;input type="text" 
+           <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="name"</span>  &lt!-- Incorrect usage --&gt; 
+           name="field2a" 
+           id="name2"&gt; 
+    &lt;label for="birthday2"&gt;Birthday: &lt;/label&gt;
+    &lt;input type="text" 
+           <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="bday"</span> &lt!-- Incorrect usage --&gt;
+           name="field2b"  
+           id="birthday2&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;label for="name3"&gt;Name: &lt;/label&gt;
+    &lt;input type="text"  
+           <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="name"</span> &lt!-- Incorrect usage --&gt;  
+           name="field3a" 
+           id="name3"&gt; 
+    &lt;label for="birthday3"&gt;Birthday: &lt;/label&gt;
+    &lt;input type="text" 
+           <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="bday"</span> &lt!-- Incorrect usage --&gt;
+           name="field3b"  
+           id="birthday3&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;label for="name4"&gt;Name: &lt;/label&gt;
+    &lt;input type="text"  
+           <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="name"</span> &lt!-- Incorrect usage --&gt;  
+           name="field4a" 
+           id="name4"&gt; 
+    &lt;label for="birthday4"&gt;Birthday: &lt;/label&gt;
+    &lt;input type="text" 
+           <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="bday"</span> &lt!-- Incorrect usage --&gt;
+           name="field4b"  
+           id="birthday4&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;label for="name5"&gt;Name: &lt;/label&gt;
+    &lt;input type="text" 
+           <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="name"</span> &lt!-- Incorrect usage --&gt;
+           name="field5a"    
+           id="name5"&gt; 
+    &lt;label for="birthday5"&gt;Birthday: &lt;/label&gt;
+    &lt;input type="text" 
+           <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="bday"</span> &lt!-- Incorrect usage --&gt;
+           name="field5b"  
+           id="birthday5&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;label for="name6"&gt;Name: &lt;/label&gt;
+    &lt;input type="text" 
+           <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="name"</span> &lt!-- Incorrect usage --&gt;
+           name="field6a"    
+           id="name6"&gt; 
+    &lt;label for="birthday6"&gt;Birthday: &lt;/label&gt;
+    &lt;input type="text" 
+           <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="bday"</span> &lt!-- Incorrect usage --&gt;
+           name="field6b"  
+           id="birthday6&gt;&lt;/li&gt;
+   &lt;/ul&gt;
+ </pre>
+
+</section>
+
+      <h3>Example 2: An online form used to book family travel arrangements.</h3>
+
+
+<section class="example" id="example-3">
+        <h4>Correct example:</h4>
+<div style="width:45%; float:left; height:1200px;">
+<form>
+  <h2>Family Traveller's Details</h2>
+   <h3>Traveller One</h3>
+<section>
+<label for="familyName1">Family Name: </label> 
+<input type="text" name="familyName1" id="familyName1" autocomplete="family-name" value="Leduc"><br>
+
+<label for="givenName1">Given Name: </label> 
+<input type="text" name="givenName1" id="givenName1" autocomplete="given-name" value="Simon"><br>
+
+<label for="homeCity1">Home City: </label> 
+<input type="text" name="homeCity1" id="homeCity1" autocomplete="address-level2" value="Paris"><br>
+
+<label for="destinatationCity1">Destination City: </label> 
+<input type="text" name="destinatationCity1" id="destinatationCity1" value="New York"><br>
+
+<label for="telephone1">Telephone Number: </label> 
+<input type="text" name="telephone1" id="telephone1" autocomplete="tel" value="1 234 567 890"><br>
+</section>
+
+   <h3>Traveller Two</h3>
+<section>
+<label for="familyName2">Family Name: </label> 
+<input type="text" name="familyName2" id="familyName2" value="Leduc-Francois"><br>
+
+<label for="givenName2">Given Name: </label> 
+<input type="text" name="givenName2" id="givenName2" value="Diane"><br>
+
+<label for="homeCity2">Home City: </label> 
+<input type="text" name="homeCity2" id="homeCity2"><br>
+
+<label for="destinatationCity2">Destination City: </label> 
+<input type="text" name="destinatationCity2" id="destinatationCity2"><br>
+
+<label for="telephone2">Telephone Number: </label> 
+<input type="text" name="telephone2" id="telephone2"><br>
+</section>
+
+   <h3>Traveller Three</h3>
+<section>
+<label for="familyName3">Family Name: </label> 
+<input type="text" name="familyName3" id="familyName3"><br>
+
+<label for="givenName3">Given Name: </label> 
+<input type="text" name="givenName3" id="givenName3"><br>
+
+<label for="homeCity3">Home City: </label> 
+<input type="text" name="homeCity3" id="homeCity3"><br>
+
+<label for="destinatationCity3">Destination City: </label> 
+<input type="text" name="destinatationCity3" id="destinatationCity3"><br>
+
+<label for="telephone3">Telephone Number: </label> 
+<input type="text" name="telephone3" id="telephone3"><br>
+</section>
+
+
+   <h3>Traveller Four</h3>
+<section>
+<label for="familyName4">Family Name: </label> 
+<input type="text" name="familyName4" id="familyName4"><br>
+
+<label for="givenName4">Given Name: </label> 
+<input type="text" name="givenName4" id="givenName2"><br>
+
+<label for="homeCity4">Home City: </label> 
+<input type="text" name="homeCity4" id="homeCity4"><br>
+
+<label for="destinatationCity4">Destination City: </label> 
+<input type="text" name="destinatationCity4" id="destinatationCity4"><br>
+
+<label for="telephone4">Telephone Number: </label> 
+<input type="text" name="telephone4" id="telephone4"><br>
+</section>
+
+</form>
+</div>
+
+
+ <pre xml:space="preserve">
+&lt;h2&gt;Traveller's Details&lt;/h2&gt;
+   &lt;h3&gt;Traveller One&lt;/h3&gt;
+&lt;section&gt;
+&lt;label for="familyName1"&gt;Family Name: &lt;/label&gt; 
+&lt;input type="text" name="familyName1" 
+       id="familyName1" <span style="background:yellow; font-weight:bold;">autocomplete="family-name"&gt;</span>
+
+&lt;label for="givenName1"&gt;Given Name: &lt;/label&gt; 
+&lt;input type="text" name="givenName1" 
+       id="givenName1" <span style="background:yellow; font-weight:bold;">autocomplete="given-name"&gt;</span>
+
+&lt;label for="homeCity1"&gt;Home City: &lt;/label&gt; 
+&lt;input type="text" name="homeCity1" 
+       id="homeCity1" <span style="background:yellow; font-weight:bold;">autocomplete="address-level2"&gt;</span>
+
+&lt;label for="destinatationCity1"&gt;Destination City: &lt;/label&gt; 
+&lt;input type="text" name="destinatationCity1" 
+       id="destinatationCity1"&gt; 
+       <span style="background:yellow; font-weight:bold;">&lt;!-- There is no token value for this field --&gt;</span>
+
+&lt;label for="telephone1"&gt;Telephone Number: &lt;/label&gt; 
+&lt;input type="text" name="telephone1" 
+       id="telephone1" <span style="background:yellow; font-weight:bold;">autocomplete="tel"&gt;</span>
+&lt;/section&gt;
+
+   &lt;h3&gt;Traveller Two&lt;/h3&gt;
+&lt;section&gt;
+&lt;label for="familyName2"&gt;Family Name: &lt;/label&gt; 
+&lt;input type="text" name="familyName2" 
+       id="familyName2"&gt;
+
+&lt;label for="givenName2"&gt;Given Name: &lt;/label&gt; 
+&lt;input type="text" name="givenName2" 
+       id="givenName2"&gt;
+
+&lt;label for="homeCity2"&gt;Home City: &lt;/label&gt; 
+&lt;input type="text" name="homeCity2" 
+       id="homeCity2"&gt;
+
+&lt;label for="destinatationCity2"&gt;Destination City: &lt;/label&gt; 
+&lt;input type="text" name="destinatationCity2" 
+       id="destinatationCity2"&gt;
+
+&lt;label for="telephone2"&gt;Telephone Number: &lt;/label&gt; 
+&lt;input type="text" name="telephone2" 
+       id="telephone2"&gt;
+&lt;/section&gt;
+
+   &lt;h3&gt;Traveller Three&lt;/h3&gt;
+&lt;section&gt;
+&lt;label for="familyName3"&gt;Family Name: &lt;/label&gt; 
+&lt;input type="text" name="familyName3" 
+       id="familyName3"&gt;
+
+&lt;label for="givenName3"&gt;Given Name: &lt;/label&gt; 
+&lt;input type="text" name="givenName3" 
+       id="givenName3"&gt;
+
+&lt;label for="homeCity3"&gt;Home City: &lt;/label&gt; 
+&lt;input type="text" name="homeCity3" 
+       id="homeCity3"&gt;
+
+&lt;label for="destinatationCity3"&gt;Destination City: &lt;/label&gt; 
+&lt;input type="text" name="destinatationCity3" 
+       id="destinatationCity3"&gt;
+
+&lt;label for="telephone3"&gt;Telephone Number: &lt;/label&gt; 
+&lt;input type="text" name="telephone3" 
+       id="telephone3"&gt;
+&lt;/section&gt;
+
+
+   &lt;h3&gt;Traveller Four&lt;/h3&gt;
+&lt;section&gt;
+&lt;label for="familyName4"&gt;Family Name: &lt;/label&gt; 
+&lt;input type="text" name="familyName4" 
+       id="familyName4"&gt;
+
+&lt;label for="givenName4"&gt;Given Name: &lt;/label&gt; 
+&lt;input type="text" name="givenName4" 
+       id="givenName2"&gt;
+
+&lt;label for="homeCity4"&gt;Home City: &lt;/label&gt; 
+&lt;input type="text" name="homeCity4" 
+       id="homeCity4"&gt;
+
+&lt;label for="destinatationCity4"&gt;Destination City: &lt;/label&gt; 
+&lt;input type="text" name="destinatationCity4" 
+       id="destinatationCity4"&gt;
+
+&lt;label for="telephone4"&gt;Telephone Number: &lt;/label&gt; 
+&lt;input type="text" name="telephone4" 
+       id="telephone4"&gt;
+&lt;/section&gt;
+ </pre>
+</section>
+
+
+<section class="example" id="example-4">
+        <h4>Incorrect example:</h4>
+<div style="width:45%; float:left; height:1200px;">
+<form>
+  <h2>Family Traveller's Details</h2>
+   <h3>Traveller One</h3>
+<section>
+<label for="familyName1">Family Name: </label> 
+<input type="text" name="familyName1" id="familyName1" autocomplete="family-name" value="Leduc"><br>
+
+<label for="givenName1">Given Name: </label> 
+<input type="text" name="givenName1" id="givenName1" autocomplete="given-name" value="Simon"><br>
+
+<label for="homeCity1">Home City: </label> 
+<input type="text" name="homeCity1" id="homeCity1" autocomplete="address-level2" value="Paris"><br>
+
+<label for="destinatationCity1">Destination City: </label> 
+<input type="text" name="destinatationCity1" id="destinatationCity1" value="New York"><br>
+
+<label for="telephone1">Telephone Number: </label> 
+<input type="text" name="telephone1" id="telephone1" autocomplete="tel" value="1 234 567 890"><br>
+</section>
+
+   <h3>Traveller Two</h3>
+<section>
+<label for="familyName2">Family Name: </label> 
+<input type="text" name="familyName2" id="familyName2" value="Leduc-Francois"><br>
+
+<label for="givenName2">Given Name: </label> 
+<input type="text" name="givenName2" id="givenName2" value="Diane"><br>
+
+<label for="homeCity2">Home City: </label> 
+<input type="text" name="homeCity2" id="homeCity2"><br>
+
+<label for="destinatationCity2">Destination City: </label> 
+<input type="text" name="destinatationCity2" id="destinatationCity2"><br>
+
+<label for="telephone2">Telephone Number: </label> 
+<input type="text" name="telephone2" id="telephone2"><br>
+</section>
+
+   <h3>Traveller Three</h3>
+<section>
+<label for="familyName3">Family Name: </label> 
+<input type="text" name="familyName3" id="familyName3"><br>
+
+<label for="givenName3">Given Name: </label> 
+<input type="text" name="givenName3" id="givenName3"><br>
+
+<label for="homeCity3">Home City: </label> 
+<input type="text" name="homeCity3" id="homeCity3"><br>
+
+<label for="destinatationCity3">Destination City: </label> 
+<input type="text" name="destinatationCity3" id="destinatationCity3"><br>
+
+<label for="telephone3">Telephone Number: </label> 
+<input type="text" name="telephone3" id="telephone3"><br>
+</section>
+
+
+   <h3>Traveller Four</h3>
+<section>
+<label for="familyName4">Family Name: </label> 
+<input type="text" name="familyName4" id="familyName4"><br>
+
+<label for="givenName4">Given Name: </label> 
+<input type="text" name="givenName4" id="givenName2"><br>
+
+<label for="homeCity4">Home City: </label> 
+<input type="text" name="homeCity4" id="homeCity4"><br>
+
+<label for="destinatationCity4">Destination City: </label> 
+<input type="text" name="destinatationCity4" id="destinatationCity4"><br>
+
+<label for="telephone4">Telephone Number: </label> 
+<input type="text" name="telephone4" id="telephone4"><br>
+</section>
+
+</form>
+</div>
+
+
+ <pre xml:space="preserve">
+&lt;h2&gt;Traveller's Details&lt;/h2&gt;
+   &lt;h3&gt;Traveller One&lt;/h3&gt;
+&lt;section&gt;
+&lt;label for="familyName1"&gt;Family Name: &lt;/label&gt; 
+&lt;input type="text" name="familyName1" 
+       id="familyName1" <span style="background:yellow; font-weight:bold;">autocomplete="family-name"&gt;</span>
+
+&lt;label for="givenName1"&gt;Given Name: &lt;/label&gt; 
+&lt;input type="text" name="givenName1" 
+       id="givenName1" <span style="background:yellow; font-weight:bold;">autocomplete="given-name"&gt;</span>
+
+&lt;label for="homeCity1"&gt;Home City: &lt;/label&gt; 
+&lt;input type="text" name="homeCity1" 
+       id="homeCity1" <span style="background:yellow; font-weight:bold;">autocomplete="address-level2"&gt;</span>
+
+&lt;label for="destinatationCity1"&gt;Destination City: &lt;/label&gt; 
+&lt;input type="text" name="destinatationCity1" 
+       id="destinatationCity1"&gt; 
+       <span style="background:yellow; font-weight:bold;">&lt;!-- There is no token value for this field --&gt;</span>
+
+&lt;label for="telephone1"&gt;Telephone Number: &lt;/label&gt; 
+&lt;input type="text" name="telephone1" 
+       id="telephone1" <span style="background:yellow; font-weight:bold;">autocomplete="tel"&gt;</span>
+&lt;/section&gt;
+
+   &lt;h3&gt;Traveller Two&lt;/h3&gt;
+&lt;section&gt;
+&lt;label for="familyName2"&gt;Family Name: &lt;/label&gt; 
+&lt;input type="text" name="familyName2" 
+       id="familyName2" 
+       <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="family-name"&gt;</span>  &lt!-- Incorrect usage --&gt;
+
+&lt;label for="givenName2"&gt;Given Name: &lt;/label&gt; 
+&lt;input type="text" name="givenName2" 
+       id="givenName2" 
+       <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="given-name"&gt;</span>  &lt!-- Incorrect usage --&gt;
+
+&lt;label for="homeCity2"&gt;Home City: &lt;/label&gt; 
+&lt;input type="text" name="homeCity2" 
+       id="homeCity2" 
+       <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="address-level2"&gt;</span> &lt!-- Incorrect usage --&gt;
+
+&lt;label for="destinatationCity2"&gt;Destination City: &lt;/label&gt; 
+&lt;input type="text" name="destinatationCity2" 
+       id="destinatationCity2"&gt;
+
+&lt;label for="telephone2"&gt;Telephone Number: &lt;/label&gt; 
+&lt;input type="text" name="telephone2" 
+       id="telephone2" 
+       <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="tel"&gt;</span> &lt!-- Incorrect usage --&gt;
+&lt;/section&gt;
+
+   &lt;h3&gt;Traveller Three&lt;/h3&gt;
+&lt;section&gt;
+&lt;label for="familyName3"&gt;Family Name: &lt;/label&gt; 
+&lt;input type="text" name="familyName3" 
+       id="familyName3" 
+       <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="family-name"&gt;</span> &lt!-- Incorrect usage --&gt;
+
+&lt;label for="givenName3"&gt;Given Name: &lt;/label&gt; 
+&lt;input type="text" name="givenName3" 
+       id="givenName3" 
+       <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="given-name"&gt;</span> &lt!-- Incorrect usage --&gt;
+
+&lt;label for="homeCity3"&gt;Home City: &lt;/label&gt; 
+&lt;input type="text" name="homeCity3" 
+       id="homeCity3" 
+       <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="address-level2"&gt;</span> &lt!-- Incorrect usage --&gt;
+
+&lt;label for="destinatationCity3"&gt;Destination City: &lt;/label&gt; 
+&lt;input type="text" name="destinatationCity3" 
+       id="destinatationCity3"&gt;
+
+&lt;label for="telephone3"&gt;Telephone Number: &lt;/label&gt; 
+&lt;input type="text" name="telephone3" 
+       id="telephone3" 
+       <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="tel"&gt;</span> &lt!-- Incorrect usage --&gt;
+&lt;/section&gt;
+
+
+   &lt;h3&gt;Traveller Four&lt;/h3&gt;
+&lt;section&gt;
+&lt;label for="familyName4"&gt;Family Name: &lt;/label&gt; 
+&lt;input type="text" name="familyName4" 
+       id="familyName4" 
+       <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="family-name"&gt;</span> &lt!-- Incorrect usage --&gt;
+
+&lt;label for="givenName4"&gt;Given Name: &lt;/label&gt; 
+&lt;input type="text" name="givenName4" 
+       id="givenName2" 
+       <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="given-name"&gt;</span> &lt!-- Incorrect usage --&gt;
+
+&lt;label for="homeCity4"&gt;Home City: &lt;/label&gt; 
+&lt;input type="text" name="homeCity4" 
+       id="homeCity4" 
+       <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="address-level2"&gt;</span> &lt!-- Incorrect usage --&gt;
+
+&lt;label for="destinatationCity4"&gt;Destination City: &lt;/label&gt; 
+&lt;input type="text" name="destinatationCity4" 
+       id="destinatationCity4"&gt;
+
+&lt;label for="telephone4"&gt;Telephone Number: &lt;/label&gt; 
+&lt;input type="text" name="telephone4" 
+       id="telephone4" <span style="background:#c00000; color:white; font-weight:bold;">autocomplete="tel"&gt;</span> &lt!-- Incorrect usage --&gt;
+&lt;/section&gt;
+ </pre>
+</section>
+
+  </section>
+  <section id="tests">
+    <h2>Tests</h2>
+    <section class="test-procedure">
+      <h3>Procedure</h3>
+
+<ol>
+<li>For each form on a page, identify
+and confirm which inputs are directly related to the primary user, as opposed
+to inputs intended for other users. (Note which is which.)</li>
+
+<li>Using a DOM inspection technique, inspect each
+form input in the form. 
+  <ol type=a><li>For inputs related to the primary user, manually
+verify that an attribute with the proper token value is present on each input </li>
+
+<li>For inputs NOT related to the primary user, manually
+verify that none of the specified token values are associated to any of the
+input(s)</li></ol></li>
+</ol>
+    </section>
+    </section>
+    <section class="test-results">
+      <h3>Expected Results</h3>
+
+<ul>
+ <li>If <b>procedure #2a is False</b>, then the content failure condition applies, and the content fails the Success Criterion.</li>
+ <li>If <b>procedure #2b is False</b>, then the content failure condition applies, and the content fails the Success Criterion.</li>
+ <li>If none of the inputs in the form are <b>directly related to the primary user </b>but token values are still present, then the content failure condition applies, and the content fails the Success Criterion.</li>
+</ul>
+    </section>
+    <section id="related">
+  <h2>Related Techniques</h2>
+    <ul>
+      <li><a href="https://www.w3.org/WAI/WCAG21/Techniques/html/H98">H98: Using HTML 5.2 autocomplete attributes</a></li>
+    </ul>
+  </section>
+  <section id="resources">
+    <h2>Resources</h2>
+<ul>
+ <li>WCAG 2.1 - Input Purposes for User Interface Components:<br>
+     <a href="https://www.w3.org/TR/WCAG21/#input-purposes">https://www.w3.org/TR/WCAG21/#input-purposes</a></li>
+ <li>The HTML5 @autocomplete attribute: <br>
+     <a href="https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofilling-form-controls:-the-autocomplete-attribute">https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofilling-form-controls:-the-autocomplete-attribute</a>
+</li>
+</ul>
+    </section>
+</body>
+
+</html>
