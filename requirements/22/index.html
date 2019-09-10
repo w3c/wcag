@@ -1,0 +1,597 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="generator" content="ReSpec 24.32.2"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Requirements for Web Content Accessibility Guidelines 2.2</title>
+  
+  <style id="respec-mainstyle">/*****************************************************************
+ * ReSpec 3 CSS
+ * Robin Berjon - http://berjon.com/
+ *****************************************************************/
+
+@keyframes pop {
+  0% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1.25, 1.25);
+    opacity: 0.75;
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+/* Override code highlighter background */
+.hljs {
+  background: transparent !important;
+}
+
+/* --- INLINES --- */
+h1 abbr,
+h2 abbr,
+h3 abbr,
+h4 abbr,
+h5 abbr,
+h6 abbr,
+a abbr {
+  border: none;
+}
+
+dfn {
+  font-weight: bold;
+}
+
+a.internalDFN {
+  color: inherit;
+  border-bottom: 1px solid #99c;
+  text-decoration: none;
+}
+
+a.externalDFN {
+  color: inherit;
+  border-bottom: 1px dotted #ccc;
+  text-decoration: none;
+}
+
+a.bibref {
+  text-decoration: none;
+}
+
+.respec-offending-element:target {
+  animation: pop 0.25s ease-in-out 0s 1;
+}
+
+.respec-offending-element,
+a[href].respec-offending-element {
+  text-decoration: red wavy underline;
+}
+@supports not (text-decoration: red wavy underline) {
+  .respec-offending-element:not(pre) {
+    display: inline-block;
+  }
+  .respec-offending-element {
+    /* Red squiggly line */
+    background: url(data:image/gif;base64,R0lGODdhBAADAPEAANv///8AAP///wAAACwAAAAABAADAEACBZQjmIAFADs=)
+      bottom repeat-x;
+  }
+}
+
+#references :target {
+  background: #eaf3ff;
+  animation: pop 0.4s ease-in-out 0s 1;
+}
+
+cite .bibref {
+  font-style: normal;
+}
+
+code {
+  color: #c83500;
+}
+
+th code {
+  color: inherit;
+}
+
+a[href].orcid {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+a[href].orcid > svg {
+    margin-bottom: -2px;
+}
+
+/* --- TOC --- */
+
+.toc a,
+.tof a {
+  text-decoration: none;
+}
+
+a .secno,
+a .figno {
+  color: #000;
+}
+
+ul.tof,
+ol.tof {
+  list-style: none outside none;
+}
+
+.caption {
+  margin-top: 0.5em;
+  font-style: italic;
+}
+
+/* --- TABLE --- */
+
+table.simple {
+  border-spacing: 0;
+  border-collapse: collapse;
+  border-bottom: 3px solid #005a9c;
+}
+
+.simple th {
+  background: #005a9c;
+  color: #fff;
+  padding: 3px 5px;
+  text-align: left;
+}
+
+.simple th[scope="row"] {
+  background: inherit;
+  color: inherit;
+  border-top: 1px solid #ddd;
+}
+
+.simple td {
+  padding: 3px 10px;
+  border-top: 1px solid #ddd;
+}
+
+.simple tr:nth-child(even) {
+  background: #f0f6ff;
+}
+
+/* --- DL --- */
+
+.section dd > p:first-child {
+  margin-top: 0;
+}
+
+.section dd > p:last-child {
+  margin-bottom: 0;
+}
+
+.section dd {
+  margin-bottom: 1em;
+}
+
+.section dl.attrs dd,
+.section dl.eldef dd {
+  margin-bottom: 0;
+}
+
+#issue-summary > ul,
+.respec-dfn-list {
+  column-count: 2;
+}
+
+#issue-summary li,
+.respec-dfn-list li {
+  list-style: none;
+}
+
+details.respec-tests-details {
+  margin-left: 1em;
+  display: inline-block;
+  vertical-align: top;
+}
+
+details.respec-tests-details > * {
+  padding-right: 2em;
+}
+
+details.respec-tests-details[open] {
+  z-index: 999999;
+  position: absolute;
+  border: thin solid #cad3e2;
+  border-radius: 0.3em;
+  background-color: white;
+  padding-bottom: 0.5em;
+}
+
+details.respec-tests-details[open] > summary {
+  border-bottom: thin solid #cad3e2;
+  padding-left: 1em;
+  margin-bottom: 1em;
+  line-height: 2em;
+}
+
+details.respec-tests-details > ul {
+  width: 100%;
+  margin-top: -0.3em;
+}
+
+details.respec-tests-details > li {
+  padding-left: 1em;
+}
+
+a[href].self-link:hover {
+  opacity: 1;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  position: relative;
+}
+
+aside.example .marker > a.self-link {
+  color: inherit;
+}
+
+h2 > a.self-link,
+h3 > a.self-link,
+h4 > a.self-link,
+h5 > a.self-link,
+h6 > a.self-link {
+  border: none;
+  color: inherit;
+  font-size: 83%;
+  height: 2em;
+  left: -1.6em;
+  opacity: 0.5;
+  position: absolute;
+  text-align: center;
+  text-decoration: none;
+  top: 0;
+  transition: opacity 0.2s;
+  width: 2em;
+}
+
+h2 > a.self-link::before,
+h3 > a.self-link::before,
+h4 > a.self-link::before,
+h5 > a.self-link::before,
+h6 > a.self-link::before {
+  content: "§";
+  display: block;
+}
+
+@media (max-width: 767px) {
+  dd {
+    margin-left: 0;
+  }
+
+  /* Don't position self-link in headings off-screen */
+  h2 > a.self-link,
+  h3 > a.self-link,
+  h4 > a.self-link,
+  h5 > a.self-link,
+  h6 > a.self-link {
+    left: auto;
+    top: auto;
+  }
+}
+
+@media print {
+  .removeOnSave {
+    display: none;
+  }
+}
+</style>
+  
+  
+  
+  
+<link rel="canonical" href="https://www.w3.org/TR/wcag-22-requirements/"><style>var {
+  position: relative;
+  cursor: pointer;
+}
+
+var[data-type]::before,
+var[data-type]::after {
+  position: absolute;
+  left: 50%;
+  top: -6px;
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+
+/* the triangle or arrow or caret or whatever */
+var[data-type]::before {
+  content: "";
+  transform: translateX(-50%);
+  border-width: 4px 6px 0 6px;
+  border-style: solid;
+  border-color: transparent;
+  border-top-color: #000;
+}
+
+/* actual text */
+var[data-type]::after {
+  content: attr(data-type);
+  transform: translateX(-50%) translateY(-100%);
+  background: #000;
+  text-align: center;
+  /* additional styling */
+  font-family: "Dank Mono", "Fira Code", monospace;
+  font-style: normal;
+  padding: 6px;
+  border-radius: 3px;
+  color: #daca88;
+  text-indent: 0;
+  font-weight: normal;
+}
+
+var[data-type]:hover::after,
+var[data-type]:hover::before {
+  opacity: 1;
+}
+</style><script id="initialUserConfig" type="application/json">{
+  "trace": true,
+  "doRDFa": "1.1",
+  "includePermalinks": true,
+  "permalinkEdge": true,
+  "permalinkHide": false,
+  "specStatus": "ED",
+  "diffTool": "http://www.aptest.com/standards/htmldiff/htmldiff.pl",
+  "shortName": "wcag-22-requirements",
+  "copyrightStart": "2019",
+  "license": "document",
+  "edDraftURI": "https://w3c.github.io/wcag/requirements/",
+  "editors": [
+    {
+      "name": "Alastair Campbell",
+      "url": "https://www.nomensa.com/",
+      "mailto": "acampbell@nomensa.com",
+      "company": "Nomensa",
+      "companyURI": "https://www.nomensa.com/",
+      "w3cid": 44689
+    },
+    {
+      "name": "Michael Cooper",
+      "mailto": "cooper@w3.org",
+      "company": "W3C",
+      "companyURI": "https://www.w3.org",
+      "w3cid": 34017
+    },
+    {
+      "name": "Andrew Kirkpatrick",
+      "mailto": "akirkpat@adobe.com",
+      "company": "Adobe",
+      "companyURI": "http://www.adobe.com",
+      "w3cid": 39770
+    }
+  ],
+  "wg": "Web Content Accessibility Guidelines Working Group",
+  "wgURI": "https://www.w3.org/WAI/GL/",
+  "wgPublicList": "public-comments-wcag20",
+  "wgPatentURI": "https://www.w3.org/2004/01/pp-impl/35422/status",
+  "maxTocLevel": 4,
+  "publishISODate": "2019-09-06T00:00:00.000Z",
+  "generatedSubtitle": "Editor's Draft 06 September 2019"
+}</script><meta name="description" content="This document outlines the requirements that the Web Content Accessibility Guidelines Working Group (WCAG WG) has
+      set for the development of Web Content Accessibility Guidelines (WCAG) 2.2. These requirements build on the
+      existing requirements for WCAG 2.0, and are designed to work in harmony with the WCAG 2.0 and WCAG 2.1 standards."><link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED"></head>
+
+<body class="h-entry informative"><div class="head">
+      <a class="logo" href="https://www.w3.org/"><img alt="W3C" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72" height="48"></a> <h1 id="title" class="title p-name">Requirements for Web Content Accessibility Guidelines 2.2</h1>
+      
+      <h2>
+        W3C Editor's Draft
+        <time class="dt-published" datetime="2019-09-06">06 September 2019</time>
+      </h2>
+      <dl>
+        <dt>This version:</dt><dd>
+                <a class="u-url" href="https://w3c.github.io/wcag/requirements/">https://w3c.github.io/wcag/requirements/</a>
+              </dd><dt>Latest published version:</dt><dd>
+                <a href="https://www.w3.org/TR/wcag-22-requirements/">https://www.w3.org/TR/wcag-22-requirements/</a>
+              </dd>
+        <dt>Latest editor's draft:</dt><dd><a href="https://w3c.github.io/wcag/requirements/">https://w3c.github.io/wcag/requirements/</a></dd>
+        
+        
+        
+        
+        
+        
+        <dt>Editors:</dt>
+        <dd class="p-author h-card vcard" data-editor-id="44689"><a class="ed_mailto u-email email p-name" href="mailto:acampbell@nomensa.com">Alastair Campbell</a>
+            (Nomensa)
+          </dd><dd class="p-author h-card vcard" data-editor-id="34017"><a class="ed_mailto u-email email p-name" href="mailto:cooper@w3.org">Michael Cooper</a>
+            (W3C)
+          </dd><dd class="p-author h-card vcard" data-editor-id="39770"><a class="ed_mailto u-email email p-name" href="mailto:akirkpat@adobe.com">Andrew Kirkpatrick</a>
+            (Adobe)
+          </dd>
+        
+        
+        
+      </dl>
+      
+      
+      
+      <p class="copyright">
+      <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a>
+      ©
+      2019
+      
+      <a href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="https://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>,
+      <a href="https://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="https://www.keio.ac.jp/">Keio</a>,
+      <a href="https://ev.buaa.edu.cn/">Beihang</a>). 
+      W3C <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>,
+      <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a rel="license" href="https://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules
+      apply.
+    </p>
+      <hr title="Separator for header">
+    </div>
+  <section id="abstract" class="introductory"><h2>Abstract</h2>
+    <p>This document outlines the requirements that the Web Content Accessibility Guidelines Working Group (WCAG WG) has
+      set for the development of Web Content Accessibility Guidelines (WCAG) 2.2. These requirements build on the
+      existing requirements for WCAG 2.0, and are designed to work in harmony with the WCAG 2.0 and WCAG 2.1 standards.
+    </p>
+  </section>
+  <section id="sotd" class="introductory"><h2>Status of This Document</h2><p><em>This section describes the status of this document at the time of its publication. Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at https://www.w3.org/TR/.</em></p>
+  <p>
+      This document was published by the <a href="https://www.w3.org/WAI/GL/">Web Content Accessibility Guidelines Working Group</a> as an
+      Editor's Draft.
+      
+    </p><p>
+      
+      Comments regarding this document are welcome.
+            Please send them to
+            <a href="mailto:public-comments-wcag20@w3.org">public-comments-wcag20@w3.org</a>
+            (<a href="https://lists.w3.org/Archives/Public/public-comments-wcag20/">archives</a>).
+          
+    </p><p>
+      Publication as an Editor's Draft does not imply endorsement by the
+      <abbr title="World Wide Web Consortium">W3C</abbr> Membership. This is a draft document and may be updated, replaced or
+      obsoleted by other documents at any time. It is inappropriate to cite this
+      document as other than work in progress.
+    </p><p>
+      
+        This document was produced by a group
+        operating under the
+        <a href="https://www.w3.org/Consortium/Patent-Policy/"><abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>.
+       
+      
+                  <abbr title="World Wide Web Consortium">W3C</abbr> maintains a
+                  <a rel="disclosure" href="https://www.w3.org/2004/01/pp-impl/35422/status">public list of any patent disclosures</a>
+            made in connection with the deliverables of
+            the group; that page also includes
+            instructions for disclosing a patent. An individual who has actual
+            knowledge of a patent which the individual believes contains
+            <a href="https://www.w3.org/Consortium/Patent-Policy/#def-essential">Essential Claim(s)</a>
+            must disclose the information in accordance with
+            <a href="https://www.w3.org/Consortium/Patent-Policy/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>.
+          
+      
+    </p><p>
+                  This document is governed by the
+                  <a id="w3c_process_revision" href="https://www.w3.org/2019/Process-20190301/">1 March 2019 <abbr title="World Wide Web Consortium">W3C</abbr> Process Document</a>.
+                </p></section><nav id="toc"><h2 class="introductory" id="table-of-contents">Table of Contents</h2><ol class="toc"><li class="tocline"><a class="tocxref" href="#introduction"><bdi class="secno">1. </bdi>Introduction</a></li><li class="tocline"><a class="tocxref" href="#wcag-2-2-success-criteria-continue-support-for-additional-use-cases-from-wcag-2-1"><bdi class="secno">2. </bdi>WCAG 2.2 success criteria continue support for additional use-cases from WCAG 2.1</a></li><li class="tocline"><a class="tocxref" href="#utilize-the-wcag-2-0-conformance-model"><bdi class="secno">3. </bdi>Utilize the WCAG 2.0 conformance model.</a></li><li class="tocline"><a class="tocxref" href="#utilize-the-wcag-2-0-a-aa-aaa-model"><bdi class="secno">4. </bdi>Utilize the WCAG 2.0 A/AA/AAA model.</a></li><li class="tocline"><a class="tocxref" href="#example"><bdi class="secno">5. </bdi>Example </a></li><li class="tocline"><a class="tocxref" href="#changelog"><bdi class="secno">A. </bdi>Change Log</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#substantive-changes-since-the-last-public-working-draft"><bdi class="secno">A.1 </bdi>Substantive changes since the <span class="formerLink">last public working draft</span></a></li><li class="tocline"><a class="tocxref" href="#other-substantive-changes-since-the-first-public-working-draft"><bdi class="secno">A.2 </bdi>Other substantive changes since the <span class="formerLink">First Public Working Draft</span></a></li></ol></li><li class="tocline"><a class="tocxref" href="#references"><bdi class="secno">B. </bdi>References</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#informative-references"><bdi class="secno">B.1 </bdi>Informative references</a></li></ol></li></ol></nav>
+  <section id="introduction">
+    <h2 id="x1-introduction"><bdi class="secno">1. </bdi>Introduction<a class="self-link" aria-label="§" href="#introduction"></a></h2>
+    <p><a href="https://www.w3.org/TR/WCAG20/">Web Content Accessibility Guidelines 2.0 (WCAG 2.0)</a> [<cite><a class="bibref" href="#bib-wcag20" title="Web Content Accessibility Guidelines (WCAG) 2.0" data-link-type="biblio">WCAG20</a></cite>]
+      explains how to make Web content accessible to people with disabilities. Since the release of WCAG 2.0 in December
+      2008 and the release of WCAG 2.1 in June 2018, these standards have been widely adopted and implemented. As a
+      result of feedback from implementers, ongoing changes in technologies, and responding to the need for regular
+      updates in accessibility content standards, the Accessibility Guidelines Working Group (AGWG) is pursuing the
+      development of WCAG 2.2.</p>
+    <p>The underlying goal of WCAG 2.2 requirements are the same as for WCAG 2.0 and WCAG 2.1 – to promote accessibility
+      of Web content. WCAG 2.2 must satisfy additional requirements addressed in this document including:</p>
+    <ul>
+      <li>Web pages which conform to WCAG 2.2 conform to WCAG 2.1 (which conforms to WCAG 2.0).</li>
+      <li>WCAG 2.2 success criteria continue support additional use-cases.</li>
+      <li>WCAG 2.2 success criteria are in harmony and address the needs of users in multiple domains where possible.
+      </li>
+      <li>Utilize the WCAG 2.0 conformance model.</li>
+      <li>Utilize the WCAG 2.0 A/AA/AAA model.</li>
+    </ul>
+    <p>The <a href="https://www.w3.org/TR/wcag2-req/">Requirements for WCAG 2.0</a> [<cite><a class="bibref" href="#bib-wcag2-req" title="Requirements for WCAG 2.0" data-link-type="biblio">wcag2-req</a></cite>] provides details used
+      during the development of WCAG 2.0, including key goals related to technology independence, clearly defined
+      conformance requirements, and more which are still relevant and important. As with WCAG 2.0, work on each
+      specifications in the same line (WCAG 2.x) will provide techniques and supporting documentation to assist in
+      implementation efforts, and any criteria modified or introduced by a WCAG 2.x release will need to be verifiable
+      by implementers.</p>
+    <p>WCAG 2.x specifications are expected to offer modifications to existing success criteria as well as
+      offer additional guidelines and success criteria but WCAG 2.x requirements may not weaken what is required
+      generally of web content to be considered conformant to either. The result of this is that when a page conforms to
+      WCAG 2.x it will also conform to to the previous versions.</p>
+
+    <p>In any WCAG 2.x specification - an existing success criteria may change in priority from a lower level to a
+      higher level, but not the other way around. Criteria can be changed or removed so long as accessibility issues caught by the original success criteria remain issues in the updated guidelines.</p>
+    <p>For example:</p>
+    <ul>
+      <li>A Level A Success Criteria cannot move to Level AA.</li>
+      <li>Existing success criteria may be modified or removed in a WCAG 2.x release, but the resulting change must
+        retain functional backwards compatibility with previous versions. That is, accessibility requirements in WCAG 2.0 will
+        still be covered by WCAG 2.x.</li>
+      <li>An existing success criterion could be removed if accessibility support makes it redundant.</li>
+      <li>An existing success criterion could be removed if the accessibility requirement is covered by other (new or
+        old) success criteria.</li>
+      <li>New WCAG 2.x success criteria should not conflict with each other, allowing authors to address additional
+        requirements for more than one user group.</li>
+    </ul>
+    <p>Group members working on different success criteria should maintain good communication about work in progress
+      with the main Working Group and across Task Forces to minimize conflicts/duplication of work wherever possible.
+    </p>
+  </section>
+  <section id="wcag-2-2-success-criteria-continue-support-for-additional-use-cases-from-wcag-2-1">
+    <h2 id="x2-wcag-2-2-success-criteria-continue-support-for-additional-use-cases-from-wcag-2-1"><bdi class="secno">2. </bdi>WCAG 2.2 success criteria continue support for additional use-cases from WCAG 2.1<a class="self-link" aria-label="§" href="#wcag-2-2-success-criteria-continue-support-for-additional-use-cases-from-wcag-2-1"></a></h2>
+    <p>WCAG 2.2 will build on WCAG 2.1 and provide additional criteria to address the accessibility of content for
+      use-cases that were a focus of WCAG 2.1. Improvements in support for users of small or touch-screen devices, as
+      well as for low-vision users and users with cognitive, language, and learning impairments.</p>
+  </section>
+  <section id="utilize-the-wcag-2-0-conformance-model">
+    <h2 id="x3-utilize-the-wcag-2-0-conformance-model"><bdi class="secno">3. </bdi>Utilize the WCAG 2.0 conformance model.<a class="self-link" aria-label="§" href="#utilize-the-wcag-2-0-conformance-model"></a></h2>
+    <p>The WCAG 2.0 Requirements document provides details about conformance that needs to be met for WCAG 2.x releases.
+      However WCAG 2.x releases need to provide conformance details that indicate the conformance relationship between
+      them, and existing WCAG 2.0 conformance. WCAG 2.2 must specify that conformance claims indicate that a page
+      conforms to WCAG 2.1 as a base. Future WCAG 2.x specifications must conform to its immediate previous ancestor
+      specification as a base. </p>
+  </section>
+  <section id="utilize-the-wcag-2-0-a-aa-aaa-model">
+    <h2 id="x4-utilize-the-wcag-2-0-a-aa-aaa-model"><bdi class="secno">4. </bdi>Utilize the WCAG 2.0 A/AA/AAA model.<a class="self-link" aria-label="§" href="#utilize-the-wcag-2-0-a-aa-aaa-model"></a></h2>
+    <p>WCAG 2.2 will utilize the WCAG 2.0 A/AA/AAA structure. Additional or changed success criteria will specify at
+      what Level those criteria are provided. When a page conforms to WCAG 2.2 at a specific level, that page must
+      conform to WCAG 2.0 and WCAG 2.1 at the same level or higher.</p>
+    <p>It is important to note that changes in WCAG 2.2 to the level for any existing WCAG 2.x success criteria need to
+      be made with awareness of the implementability and testability requirements for the new level. For WCAG 2.x
+      releases to ensure backwards compatibility level changes must be clear for the immediate previous ancestor
+      specification as a base.</p>
+    <p>For example, a success criteria may currently be at Level AAA as a result of very limited testability, and moving
+      that success criteria to Level AA in WCAG 2.2 or a WCAG 2.x would require greater testability. In order to
+      successfully make this transition there must be evidence that testability is more robust. </p>
+  </section>
+  <section id="example">
+    <h2 id="x5-example"><bdi class="secno">5. </bdi>Example <a class="self-link" aria-label="§" href="#example"></a></h2>
+    <p>Some new success criteria and guidelines in WCAG 2.2 are created that effectively make some changes (strengthen)
+      previous WCAG 2.0 conformance requirements, and a page that conformed to WCAG 2.0 is tested against WCAG 2.2:</p>
+    <ul>
+      <li>One new WCAG 2.2 success criteria modifies (strengthens) an existing AA success criteria (e.g. 1.4.3 Color
+        Contrast [minimum]) and in effect, moves it to level A.</li>
+      <li>Adds a new guideline and two other new success criteria - 5.1 at level A and 5.2 at level AA.</li>
+    </ul>
+    <p>A web page that previously conforms to WCAG 2.0 AA is reviewed against the new WCAG 2.2 specification. In the
+      review, it is determined that the page still meets 1.4.3, which is now a level A criteria, and the page also meets
+      5.1 (level A), but it does not meet the new 5.2 (level AA).</p>
+    <p>As a result, the page could claim to conform to the new WCAG 2.2 success criterion for 1.4.3 Color Contrast
+      [minimum] at level A, and the new 5.1 success criterion (level A), but not the new 5.2 (level AA).</p>
+    <p><strong>NOTE:</strong>The author may choose to change their claim or not, as it will be possible to conform to
+      WCAG 2.2 success criteria without making an explicit conformance claim.</p>
+    <p>Note that most of these terms are further discussed in the <a href="https://www.w3.org/TR/wcag2-req/">Requirements for WCAG 2.0</a> [<cite><a class="bibref" href="#bib-wcag2-req" title="Requirements for WCAG 2.0" data-link-type="biblio">wcag2-req</a></cite>]
+    </p>
+
+  </section>
+  <section class="appendix" id="changelog">
+    <h2 id="a-change-log"><bdi class="secno">A. </bdi>Change Log<a class="self-link" aria-label="§" href="#changelog"></a></h2>
+    <section id="substantive-changes-since-the-last-public-working-draft">
+      <h3 id="a-1-substantive-changes-since-the-last-public-working-draft"><bdi class="secno">A.1 </bdi>Substantive changes since the <a href="@@">last public working draft</a><a class="self-link" aria-label="§" href="#substantive-changes-since-the-last-public-working-draft"></a></h3>
+      <ul>
+        
+      </ul>
+    </section>
+    <section id="other-substantive-changes-since-the-first-public-working-draft">
+      <h3 id="a-2-other-substantive-changes-since-the-first-public-working-draft"><bdi class="secno">A.2 </bdi>Other substantive changes since the <a href="@@">First Public Working Draft</a><a class="self-link" aria-label="§" href="#other-substantive-changes-since-the-first-public-working-draft"></a></h3>
+      <ul>
+        
+      </ul>
+    </section>
+  </section>
+  
+
+
+
+<section id="references" class="appendix">
+      <h2 id="b-references"><bdi class="secno">B. </bdi>References<a class="self-link" aria-label="§" href="#references"></a></h2>
+      
+    <section id="informative-references">
+        <h3 id="b-1-informative-references"><bdi class="secno">B.1 </bdi>Informative references<a class="self-link" aria-label="§" href="#informative-references"></a></h3>
+      <dl class="bibliography">
+        <dt id="bib-wcag2-req">[wcag2-req]</dt><dd><a href="https://www.w3.org/TR/wcag2-req/"><cite>Requirements for WCAG 2.0</cite></a>. Gregg Vanderheiden; John Slatin; Wendy Chisholm.  W3C. 25 April 2006. W3C Note. URL: <a href="https://www.w3.org/TR/wcag2-req/">https://www.w3.org/TR/wcag2-req/</a></dd><dt id="bib-wcag20">[WCAG20]</dt><dd><a href="https://www.w3.org/TR/WCAG20/"><cite>Web Content Accessibility Guidelines (WCAG) 2.0</cite></a>. Ben Caldwell; Michael Cooper; Loretta Guarino Reid; Gregg Vanderheiden et al.  W3C. 11 December 2008. W3C Recommendation. URL: <a href="https://www.w3.org/TR/WCAG20/">https://www.w3.org/TR/WCAG20/</a></dd>
+      </dl></section></section><p role="navigation" id="back-to-top"><a href="#title"><abbr title="Back to Top">↑</abbr></a></p><script src="https://www.w3.org/scripts/TR/2016/fixup.js"></script></body></html>
