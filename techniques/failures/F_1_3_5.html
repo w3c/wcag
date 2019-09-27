@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
-      <title>Failure of Success Criterion 1.3.5 due to use missing or incorrect autocomplete attributes</title>
+      <title>Failure of Success Criterion 1.3.5 due to incorrect autocomplete attribute values</title>
 
       <link rel="stylesheet" type="text/css" href="../../css/editors.css"/>
 
@@ -9,7 +9,7 @@
 <body>
 
 
-    <h1>Failure of Success Criterion 1.3.5 due to use missing or incorrect autocomplete attributes</h1>
+    <h1>Failure of Success Criterion 1.3.5 due to incorrect autocomplete attribute values</h1>
 
     <section id="meta">
         <h2>Metadata</h2>
@@ -20,47 +20,24 @@
 
     <section id="applicability">
         <h2>Applicability</h2>
-        <p>This technique applies to <em>form inputs</em> created in markup languages that support any attribute that allows the programmatic association of the defined token values found in Section 7 of the WCAG 2.1 Specification.</p>
+        <p>This technique applies to <em>form inputs</em> created in HTML which collect information about the user of the form.</p>
         </section>
         <section id="description">
         <h2>Description</h2>
-        <p>The purpose of this technique is to identify a failure condition where form inputs do not have the correct autocomplete attributes for inputs that request information from the user of the form.</p>
-
-        <p>When <a href="../../understanding/21/identify-input-purpose.html">Success Criteria 1.3.5</a> was created there was only one known technique to apply the appropriate token value to a form input: the <a href="https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofilling-form-controls:-the-autocomplete-attribute"><code>autocomplete</code> attribute</a>. It is anticipated that in the near future other techniques will emerge that will afford a similar ability, potentially more specifically designed for the purpose.</p>
+        <p>The purpose of this technique is to identify a failure condition where form inputs do not have the correct autocomplete attribute values for inputs that request information from the user of the form.</p>
 
         <p>Success Criteria 1.3.5 uses the <code>autocomplete</code> attribute’s fixed list of token values because the programmatic association of specified token values (metadata) allows for other machine processing, such as expressing the input label in different modalities.</p>
 
-        <p>An important additional requirement is that the token values are associated exclusively to inputs that are <strong>scoped directly to the end user</strong>.</p>
+        <p>An important part of this Success Criterion is that the token values are associated with inputs that are <strong>scoped directly to the end user</strong>.</p>
 
-        <p>The <code>autocomplete</code> attribute was first published in the HTML 5.0 specification, which states:</p>
-
-        <blockquote>User agents sometimes have features for helping users fill forms in, for example pre-filling the user's address based on earlier user input. The autocomplete content attribute can be used to hint to the user agent how to, or indeed whether to, provide such a feature.</blockquote>
-
-        <p>For the <code>autocomplete</code> function to pre-fill inputs with the correct user-data, that user-data must first be stored on the user’s local machine (<q>...based on earlier user input...</q>). This is why <code>autocomplete</code> cannot pre-fill forms accessed via public terminals or other user-agents that have not previously stored the corresponding values.</p>
-
-        <p>While some user-agents or helper-applications may store more than one user profile, it is assumed that if only one user-profile exists, the stored data will be directly associated to the actual or primary user. For example, on Robert Smith's device(s) the data stored (name, address, email, phone, etc.) will be that of Robert, and not of Susan Jones or even of Robert’s son Steven.</p>
+        <p>For the <code>autocomplete</code> function to pre-fill inputs with the correct user-data, that user-data must first be stored for the user (<q>...based on earlier user input...</q>). This is why <code>autocomplete</code> cannot pre-fill forms accessed via public terminals or other user-agents that have not previously stored the corresponding values. In addition to the user's data being stored from a previous use, the input that uses the autocomplete attribute must use the correct token value, or else the user agent will be presenting information which is likely to confuse the user.</p>
 
     </section>
     
     <section id="examples">
         <h2>Examples</h2>
 
-
         <section class="example" id="example-1">
-            <h3>Missing attribute</h3>
-            <p>An online form used to collect the user's name and birthday which does not include the autocomplete attributes at all.</p>
-
-<pre>
-&lt;h2&gt;Your details:&lt;/h2&gt;
-&lt;label for="name1"&gt;Name:&lt;/label&gt;
-&lt;input type="text" name="field1a" id="name1"&gt; 
-&lt;label for="birthday1"&gt;Birthday:&lt;/label&gt;
-&lt;input type="text" name="field1b" id="birthday1&gt;</pre>
-
-        </section>
-
-
-        <section class="example" id="example-2">
             <h3>Incorrect attribute</h3>
             <p>An online form used to collect the user's name and birthday which uses an incorrect autocomplete attributes.  The correct attribute values are <code>name</code> and <code>bday</code> for this example.</p>
         
@@ -72,18 +49,6 @@
 &lt;input type="text" name="field1b" <span style="background:yellow; font-weight:bold;">autocomplete="birthday"</span> id="birthday1&gt;</pre>
         
         </section>
-
-        <section class="example" id="example-3">
-                <h3>Autocomplete off</h3>
-                <p>An online form used to collect the user's name and birthday which uses an autocomplete value of &quot;off&quot;.</p>
-
-<pre>&lt;h2&gt;Your details:&lt;/h2&gt;
-&lt;label for="name1"&gt;Name:&lt;/label&gt;
-&lt;input type="text" name="field1a" <span style="background:yellow; font-weight:bold;">autocomplete="off"</span> id="name1"&gt; 
-&lt;label for="birthday1"&gt;Birthday:&lt;/label&gt;
-&lt;input type="text" name="field1b" <span style="background:yellow; font-weight:bold;">autocomplete="off"</span> id="birthday1&gt;</pre>
-            
-            </section>
         
     </section>
 
@@ -94,10 +59,9 @@
         <section class="test-procedure">
             <h3>Procedure</h3>
 
-            <p>For each form field:</p>
+            <p>For each form field which collects information about the user of the form:</p>
             <ol>
-                <li>Check that the form field collects information related to the user who is filling in the form.</li>
-                <li>Check that the form field does not has a valid and well-formed autocomplete attribute and value pair that matches the purpose of the input.</li>
+              <li>Check that the form field has a autocomplete attribute and value pair that does not match the purpose of the input.</li>
             </ol>
 
         </section>
@@ -105,7 +69,7 @@
             <h3>Expected Results</h3>
 
             <ul>
-                <li>If checks #1 and #2 are true, then the failure condition applies, and the content fails the Success Criterion.</li>
+                <li>If check #1 is true, then the failure condition applies, and the content fails the Success Criterion.</li>
             </ul>
         </section>
     </section>
