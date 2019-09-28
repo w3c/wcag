@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<title>Using native controls to ensure functionality is triggered on the up-event.</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css"/>
+	</head>
+	<body>
+		<h1>Using native controls to ensure  functionality is triggered on the up-event.</h1>
+		<section id="meta">
+			<h2>Metadata</h2>
+			<p class="instructions">Provide information below to help editors associate the technique properly. Contents of the meta section are not output by the processor.</p>
+			<p id="sc">2.5.2 Pointer Cancellation<!-- SC to which this applies --></p>
+			<p id="type">Sufficient<!-- sufficient, advisory, or failure --></p>
+		</section>
+		<section id="applicability">
+			<h2>When to Use</h2>
+			<p >This technique applies to nearly all technologies.</p>
+		</section>
+		<section id="description">
+			<h2>Description</h2>
+			<p >The objective of this technique is to ensure that users who attempt to interact with a control do not trigger the action of the event accidentally. This can be accomplished most directly by relying on the pointer's up-event (for example, the onclick or mouseup event).  </p>
+      		<p>The easiest way to meet this success criteria is simply to use the default behavior of controls and not override that behaviour with an explicit down-event trigger. The up-event is the default behaviour for almost all controls and any programming or markup language.  </p>
+     		<p>In native languages where a control is fired on the down event it is usually for good reason and is easily recoverable. For instance, an HTML input element could have the cursor enter the editable area on the “pointer down” event, because the action is trivially reversible, and as such meets the requirements of the Pointer Cancellation SC. This is because if the user realizes they made a mistake after pressing down the control, they can simply move their pointer away from the hit area while still holding down the pointer, then release their pointer and the event is not triggered. </p>
+		</section>
+
+		<section id="examples">
+			<h2>Examples</h2>
+			<section class="example">
+				<h3>Using an native onclick event in JavaScript</h3>
+				<p>In JavaScript native onclick events are triggered on the up-event by default.</p>
+			</section>
+      		<section class="example">
+				<h3>Using a native button or link in HTML</h3>
+				<p>In HTML native <code>&lt;button&gt;</code> or <code>&lt;a href ....&gt;</code> onclick events are triggered on the up-event by default.</p>
+				<p class="note"> The <code>&lt;button&gt;</code> element doesn't do anything on its own (unless its part of a <code>&lt;form&gt;</code>, and does NOT have <code>&lt;type="button"&gt;</code>, in which case it submits the form). Authors should rely on input-agnostic click handlers.</p>
+				
+			</section>
+			<section class="example">
+				<h3>Using a native button in iOS or Android</h3>
+				<p>In native buttons in iOS and Android onclick events are triggered on the up-event by default.</p>
+				<p class="note">The WCAG standard itself applies to <a href="https://www.w3.org/TR/WCAG21/#dfn-web-page-s">web pages at a URL</a>, and therefore this example is provided as helpful supplementary advice for those looking to implement the <a href="https://www.w3.org/WAI/standards-guidelines/wcag/non-web-ict/">WCAG2ICT</a> for native applications.</p>
+			</section>
+		</section>
+
+		<section id="tests">
+			<h2>Tests</h2>
+				<section class="test-procedure">
+				<h3>Procedure</h3>
+				<p>For all clickable controls:</p>
+				<ol>
+					<li>Activate the down-event then move the pointer outside the target before triggering the up-event, and then release the pointer to trigger the up-event.</li> 
+					<li>Check that the action was not triggered when the pointer is released outside of the hit area for the target.</li>
+					<li>If the action is triggered, check that the action is reversible.</li>	
+				</ol>
+			</section>
+			<section class="test-results">
+				<h3>Expected Results</h3>
+				<ul>
+					<li>Check #2 or #3 is true. </li>
+				</ul>
+			</section>
+		</section>
+		<section id="resources">
+			<h2>Resources</h2>
+      		<ul>
+				<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/click_event">Mozilla web docs for the click event</a></li>
+			</ul>
+		</section>
+	</body>
+</html>

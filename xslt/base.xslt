@@ -57,6 +57,20 @@
 		</xsl:choose>
 	</xsl:function>
 	
+	<xsl:function name="wcag:section-meaningfully-exists" as="xs:boolean">
+		<xsl:param name="id"/>
+		<xsl:param name="section"/>
+		<xsl:choose>
+			<xsl:when test="$id = 'applicability'"><xsl:value-of select="$section and ($section/html:p[not(@class = 'instructions')] or $section/html:ol or $section/html:ul)"/></xsl:when>
+			<xsl:when test="$id = 'description'"><xsl:value-of select="$section and $section/html:p[not(@class = 'instructions')]"/></xsl:when>
+			<xsl:when test="$id = 'examples'"><xsl:value-of select="$section and ($section/html:p[not(@class = 'instructions')] or $section/html:ol or $section/html:ul or $section/html:section[@class = 'example'])"/></xsl:when>
+			<xsl:when test="$id = 'resources'"><xsl:value-of select="$section and ($section/html:p[not(@class = 'instructions')] or $section//html:li[not(. = 'Resource')] or $section//html:a[@href])"/></xsl:when>
+			<xsl:when test="$id = 'related'"><xsl:value-of select="$section and $section//html:li//html:a[@href]"/></xsl:when>
+			<xsl:when test="$id = 'tests'"><xsl:value-of select="$section and $section//html:section[@class = 'test-procedure' or @class = 'procedure']//html:li and $section//html:section[@class = 'test-results' or @class = 'results']"/></xsl:when>
+			<xsl:when test="$id = 'sufficient' or $id = 'advisory' or $id = 'gladvisory' or $id = 'failure'"><xsl:value-of select="$section and ($section/html:*[not(@class = 'instructions')]//html:li)"/></xsl:when>
+		</xsl:choose>
+	</xsl:function>
+	
 	<xsl:template match="html:a[wcag:is-technique-link(.)]">
 		<xsl:variable name="technique-id" select="replace(@href, '^.*/([\w\d]*)(\.html)?$', '$1')"/>
 		<xsl:choose>
@@ -107,5 +121,25 @@
 	</xsl:template>
 	
 	<xsl:template match="html:link[@href][contains(@href, 'css/editors.css')]"/>
+	
+	<xsl:template match="html:figure">
+		<xsl:if test="not(@id)">
+			<xsl:message terminate="yes">ID is required on figure: src=<xsl:value-of select="html:img/@src"/> in <xsl:value-of select="base-uri()"/></xsl:message>
+		</xsl:if>
+		<xsl:copy>
+			<xsl:apply-templates select="node()|@*"/>
+		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="html:figcaption">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:text>Figure </xsl:text>
+			<xsl:value-of select="count(parent::html:figure/preceding::html:figure) + 1"/>
+			<xsl:apply-templates/>
+		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="html:p[@class = 'change']"/>
 	
 </xsl:stylesheet>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+
+.slidecontainer {
+  width:100%;
+}
+</style>
+
+<title>WCAG Example of Motion Sensor</title> 
+</head>
+<body>
+
+<pre class="output"></pre>
+
+  <h1>Slider Motion Sensor Example </h1>
+
+ <p>Open this slider on a device with a motion sensor, such as a smart phone or tablet. Tilt the device to the right and left to adjust the slider value. The decrease and increase buttons also adjust the value.  The check box disables the motion sensing adjustment.</p>
+ <p>Note: This example may not work across all browsers.</p>
+  
+<div class="slidecontainer">
+<button type="button" name="decrease" onclick="decreaseFunction()">Decrease Value</button>
+<input type="range" min="1" max="100" value="50" class="slider" id="motionSlider">
+<button type="button" name="increase" onclick="increaseFunction()">Increase Value</button>
+<p aria-live="polite">Slider Value: <span id="demo"></span></p>
+</div>
+<p><input type="checkbox" id="disable"><label for="disable">Disable Motion Actuation</label> 
+
+<script>
+
+//slider behavior
+var slider = document.getElementById("motionSlider");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value;
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
+
+	function increaseFunction() {slider.value++; output.innerHTML = slider.value;}
+	function decreaseFunction() {slider.value--; output.innerHTML = slider.value;}
+
+//slider motion detection
+function handleOrientation(event) {
+
+var z = document.getElementById("disable");
+if (z.checked == false) {var x = event.gamma;}
+else {x = 0;}
+
+if (x > 20) {slider.value++; output.innerHTML = slider.value;} 
+else if (x < -20) {slider.value--; output.innerHTML = slider.value;} }
+
+
+window.addEventListener('deviceorientation', handleOrientation); 
+
+</script>
+</body>
+</html>
