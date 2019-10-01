@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta charset="UTF-8" />
+      <title>F107: Failure of Success Criterion 1.3.5 due to incorrect autocomplete attribute values</title>
+      <link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="F106">Previous Technique: F106</a></li>
+            <li><a href="../flash/FLASH1">Next Technique: FLASH1</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#related">Related Techniques</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Failure of Success Criterion 1.3.5 due to incorrect autocomplete attribute values</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>This technique applies to <em>form inputs</em> created in HTML which collect information about the user of the form.
+            </p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/identify-input-purpose">Success Criterion 1.3.5: Identify Input Purpose</a> (Failure)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The purpose of this technique is to identify a failure condition where form inputs
+               do not have the correct autocomplete attribute values for inputs that request information
+               about the user of the form.
+            </p>
+            <p>Success Criteria 1.3.5 uses a fixed list of tokens in <a href="https://www.w3.org/TR/WCAG21/#input-purposes">Input Purposes for User Interface Components</a> (based on the HTML 5.2 <code>autocomplete</code> attribute’s fixed list of token values) because the programmatic association of specified
+               token values (metadata) allows for other machine processing, such as expressing the
+               input label in different modalities.
+            </p>
+            <p>Another important part of this Success Criterion is that the token values are associated
+               with inputs that are <strong>scoped directly to the primary end user</strong>.
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-incorrect-attribute">
+               <h3>Example 1: Incorrect attribute</h3>
+               <p>An online form used to collect the user's name and birthday which uses incorrect autocomplete
+                  attributes.  The correct attribute value for the first control is <code>name</code> and for the second control the made-up attribute value <code>birthday</code> was used instead of <code>bday</code> for this example.
+               </p><pre>
+&lt;h2&gt;Your details:&lt;/h2&gt;
+&lt;label for="name1"&gt;Name:&lt;/label&gt;
+&lt;input type="text" name="field1a" <span style="background:yellow; font-weight:bold;">autocomplete="email"</span> id="name1"&gt; 
+&lt;label for="birthday1"&gt;Birthday:&lt;/label&gt;
+&lt;input type="text" name="field1b" <span style="background:yellow; font-weight:bold;">autocomplete="birthday"</span> id="birthday1&gt;</pre></section>
+         </section>
+         <section id="resources">
+            <h2>Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               
+               <li>WCAG 2.1 - Input Purposes for User Interface Components: 
+                  <a href="https://www.w3.org/TR/WCAG21/#input-purposes">https://www.w3.org/TR/WCAG21/#input-purposes</a></li>
+               
+               <li>The HTML5 <code>autocomplete</code> attribute:
+                  <a href="https://www.w3.org/TR/html52/sec-forms.html#sec-autofill">https://www.w3.org/TR/html52/sec-forms.html#sec-autofill</a>
+                  
+               </li>
+               
+            </ul>
+         </section>
+         <section id="related">
+            <h2>Related Techniques</h2>
+            <ul>
+               
+               <li><a href="https://w3c.github.io/wcag/techniques/html/H98">H98: Using HTML 5.2 autocomplete attributes</a></li>
+               
+            </ul>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="test-procedure">
+               <h3>Procedure</h3>
+               <p>For each form field which collects information about the user of the form:</p>
+               <ol>
+                  
+                  <li>Check that the form field has an autocomplete attribute and value pair that does not
+                     match the purpose of the input.
+                  </li>
+                  
+                  <li>Check that the input purpose is not communicated programmatically through any other
+                     method.
+                  </li>
+                  
+               </ol>
+            </section>
+            <section class="test-results">
+               <h3>Expected Results</h3>
+               <ul>
+                  
+                  <li>If checks #1-2 are true, then the failure condition applies, and the content fails
+                     the Success Criterion.
+                  </li>
+                  
+               </ul>
+            </section>
+         </section>
+      </main>
+   </body>
+</html>
