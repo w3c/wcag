@@ -22,6 +22,7 @@ var respecConfig = {
 	//publishDate:  "2014-12-11",
 	copyrightStart:  "2019",
 	license: "w3c-software-doc",
+	noRecTrack: true,
 	
 	// if there is a previously published draft, uncomment this and set its YYYY-MM-DD date
 	// and its maturity status
