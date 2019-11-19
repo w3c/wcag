@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
 
-    	<title>Challenges with Conformance for Large, Complex, and / or Dynamic Websites &amp; Apps</title>
+    	<title>Challenges with Accessibility Guidelines Conformance and Testing</title>
     	<script src="https://www.w3.org/Tools/respec/respec-w3c-common" class="remove"></script>
     	<script src="../biblio.js" class="remove"></script>
     	<script src="../script/wcag.js" class="remove"></script>
@@ -12,14 +12,15 @@
     </head>
     <body>
         <section id="abstract">
-			<p>This early draft document explores situations for which the WCAG 2.x conformance model is challenging to apply to large, complex, and/or dynamic websites, web applications, and mobile applications. These challenges broadly fall into four main areas:</p>
-          <ol>
-            <li>numerous WCAG Guidelines and Success Criteria expect human involvement to verify conformance, which is challenging to scale to large sites and to dynamic sites;</li>
-            <li>large and dynamic sites have portions that are always under construction, which is challenging to address with the WCAG 2.x conformance model which makes no allowance for that</li>
-            <li>third parties frequently add and change content on large and dynamic sites, and related non-conformities in such content make WCAG 2.x conformance significantly challenging; and</li>
-            <li>applying the WCAG 2.x conformance model to non-web information and communications technologies (ICT).</li>
-          </ol>
-			<p>It is expected that a more thorough understanding of these challenges can lead to either a new conformance model, or an alternative model that is more appropriate for large, complex, and/or dynamic websites.  Ideally, such a model would also be able to distinguish between websites that are substantially accessible for most visitors with disabilities most of the time, and websites that are largely unusable by a significant portion of visitors with a disability.</p>
+			<p>This early draft document explores situations for which the WCAG 2.x conformance model, and success criteria testability, are challenging to apply to a broad range of websites and web applications. The purpose of the document is to help understand these challenges more holistically, so that we can build better solutions in the future. For this initial draft, the challenges covered broadly fall into four main areas:</p>
+			<ol>
+				<li>Numerous WCAG Guidelines and Success Criteria need human involvement (with current state of technology) to test and verify conformance, which is especially challenging to scale to large sites and to dynamic sites;</li>
+				<li>Large and dynamic sites have portions that are always under construction, which is challenging to address with the WCAG 2.x conformance model which makes no allowance for that;</li>
+				<li>Third parties frequently add and change content on large and dynamic sites, and related non-conformities in such content make WCAG 2.x conformance significantly challenging; and</li>
+				<li>Applying the WCAG 2.x conformance model is challenging to do for non-web information and communications technologies (ICT)  which it was never designed for but which it is nonetheless sometimes applied.</li>
+			</ol>
+			<p>While these four main areas apply to websites and web applications broadly, this early version of the document focuses particularly on situations involving large, complex, and dynamic websites.</p>
+			<p>One of the reasons for publication of this document as a First Public Working Draft is to seek additional contributions describing any additional challenges, or further illustration of challenges in the existing identified areas below, ahead of work developing solutions. It is expected that a more thorough understanding of these challenges can lead to either a new conformance model, or an alternative model that is more appropriate for large, complex, and/or dynamic websites.  Ideally, such a model would also be able to distinguish between websites that are substantially accessible for most visitors with disabilities most of the time, and websites that are largely unusable by a significant portion of visitors with a disability.</p>
 		</section>
         <section id="sotd">
             <p>To comment, <a href="https://github.com/w3c/wcag/issues/new">file an issue in the <abbr title="World Wide Web Consortium">W3C</abbr> WCAG GitHub repository</a>. Although the proposed Success Criteria in this document reference issues tracking discussion, the Working Group requests that public comments be filed as new issues, one issue per discrete comment. It is free to create a GitHub account to file issues. If filing issues in GitHub is not feasible, send email to <a href="mailto:public-agwg-comments@w3.org?subject=WCAG%202.2%20public%20comment">public-agwg-comments@w3.org</a> (<a href="https://lists.w3.org/Archives/Public/public-agwg-comments/">comment archive</a>). </p>
@@ -30,29 +31,39 @@
 			<p>For the purposes of this document, we use the term “WCAG 2.x conformance model” to refer to the normative text in the <a href="https://www.w3.org/TR/WCAG20/#conformance">Conformance section</a> of WCAG 2.0 and WCAG 2.1.  We also note that this model was expressly defined for individual full web pages of a website, or for a series of web pages when they represent a process.  We further note that a conformance claim is specifically defined as something that covers “one page, a series of pages, or multiple related Web pages.” These terms, “a series of” and “multiple” are commonly understood in English to mean a fairly small number of items – more than one (e.g. “several”), but not many thousands or millions.</p>
 			<p class="note">Language like “A Series of Unfortunate Events” “she published a series of books”, or “I subscribed to the concert series”; and language like “there were multiple births” or “there are multiple owners” all are broadly understood as not numbering in many thousands or millions.</p>
 			<p>Large websites are often highly complex, with substantial dynamic content, including content updates, new content, and user interface changes that happen almost continuously, perhaps at the rate of hundreds or even thousands of page updates per second. This is especially the case where third parties are actively populating and changing site content. Fundamentally, these large sites are never finished. Some portion is always changing. In such situations, we should anticipate that portions of a web site will be incomplete or evolving for various reasons at any moment.  Thus, the likelihood that every last page (out of what might be millions or billions of pages) can satisfy each and every one of the WCAG success criteria 100% of the time is so low as to be impossible to expect. </p>
-			<p>In this, these websites are not unlike the large urban environment of our cities. In any large and dynamic city, some number of buildings and/or parts of the urban infrastructure will be under construction or out of service at any given hour of any day – the city is never “finished being built”.  And during the construction, that building or infrastructure is likely not fully accessible. By the time construction ends, some other building will be going up, some other part of the urban infrastructure will be getting remodeled.</p>
-			<p>While well managed urban infrastructure seeks to minimize the instances when this occurs and provide temporary workarounds for such circumstances, it may be impossible to do so in all cases (and we aren’t aware of any urban environment that has consistently and completely eliminated these issues). </p>
 			<p>The goal of this work is not the avoidance of such situations, because they are as unavoidable on the web as in the physical world. The goal is the eventual establishment of reasonable consensus on expectations that maximize accessibility, and limit service downtime, in the on-line environment. We believe that a better understanding of the situations in which WCAG 2.x conformance applies poorly if at all, can lead to more effective models for large, complex, and dynamic websites. </p>
         </section>
 		<section>
-			<h2>Challenge #1: Specific WCAG Guidelines &amp; Success Criteria Expecting Human Involvement</h2>
-			<p>A challenge common to many of the Guidelines and Success Criteria is the inability or cost for automatic testing to validate the quality of any alternative content or media.  The HTML markup designed for supporting accessibility can be automatically validated. What is challenging to be verified automatically is whether the criteria have been helpfully used, or whether the content they present to the user is appropriate. In other words, too many existing accessibility success criteria expect informed human evaluation.  For large and/or dynamic sites, perhaps numbering in the hundreds of thousands of pages or more, and for sites being updated hundreds or thousands of times per second or more, it is impossible for humans to validate every page and every update. </p>
+			<h2>Challenge #1: Specific WCAG Guidelines &amp; Success Criteria needing Human Involvement</h2>
+			<p>A challenge common to many of the WCAG Guidelines and Success Criteria is the inability for automatic testing to fully validate conformance to WCAG 2.x and the
+			   subsequent time, cost, and expertise needed to perform the necessary manual test to cover the full range of the requirements.  The HTML markup designed for supporting accessibility can be automatically validated. What is challenging to be verified automatically is whether the criteria have been helpfully used, or whether the content they present to the user is appropriate. In other words, too many existing accessibility success criteria expect informed human evaluation.  For large and/or dynamic web sites, perhaps numbering in the hundreds of thousands of pages or more, and for sites being updated hundreds or thousands of times per second or more, it is impossible for humans to validate every page and every update. The same can be said of
+			   very large web-based applications that are developed in an agile manner with updates delivered in rapid succession, often on an hourly basis.</p>
 			<p>We can think of this as the distinction between quantitative and qualitative analysis. We know how to automatically test for and count the occurrences of relevant markup. However, we do not yet know how to automatically verify the quality of what that markup conveys to the user. In the case of adjudging appropriate quality, informed human review is still required.</p>
-			<p>This (growing) section describes challenges with applying the WCAG 2.x conformance model to specific Guidelines and Success Criteria, primarily based on required human involvement in evaluation of conformance to them.</p>
+			<p>This (growing) section describes challenges with applying the WCAG 2.x conformance model to specific Guidelines and Success Criteria, primarily based on required human involvement in evaluation of conformance to them. In this draft, the list is not  exhaustive, but we intend it to cover all known challenges with at least all A and AA Success Criteria, by the time this Note is completed.</p>
 		<section>
-			<h3><a href="https://www.w3.org/TR/WCAG21/#text-alternatives">Text Alternatives to Non-Text Content (Guideline 1.1)</a></h3>
-			<p>Text alternatives on images are an early, and still widely used, accessibility enhancement to HTML. Yet text alternatives remain one of the more intractable success criteria to assess with automated accessibility checking. While testing for the presence of alternative text is straight forward, and collection of specific errors (such as labeling a graphic "spacer.gif") can be identified by automated testing, human judgment remains necessary to evaluate whether or not any particular text alternative for a graphic is correct.  Image recognition techniques are not mature enough to fully discern the underlying meaning of an image and the intent of the author in its inclusion.</p>
+			<h3><a href="https://www.w3.org/TR/WCAG21/#text-alternatives">Text Alternatives (Guideline 1.1) for Non-Text Content (Success Criterion 1.1)</a></h3>
+			<p>Text alternatives for images are an early, and still widely used, accessibility enhancement to HTML. Yet text alternatives remain one of the more intractable success criteria to assess with automated accessibility checking. While testing for the presence of alternative text is straightforward, and a collection of specific errors (such as labeling a graphic "spacer.gif") can be identified by automated testing, human judgment remains necessary to evaluate whether or not any particular text alternative for a graphic is correct and conveys the true meaning of the image.  Image recognition techniques are not mature enough to fully discern the underlying meaning of an image and the intent of the author in its inclusion. As a simple example, an image or icon of a paper clip would likely
+			   be identified by image recognition simply as a "paper clip." However, when a paper clip appears in content often its meaning is to show there is an attachment. In this specific example, the alternative text should be "attachment," not "paper clip."</p>
 		</section>
 		<section>
 			<h3><a href="https://www.w3.org/TR/WCAG21/#time-based-media">Time-Based Media (Guideline 1.2)</a></h3>
 			<p>Practices for creating alternatives to spoken dialog, and to describe visual content, were established in motion picture and TV content well before the world wide web came into existence. These practices formed the basis of the <a href="http://www.w3.org/TR/media-accessibility-reqs/">Media Accessibility User Requirements (MAUR)</a> for time-based streaming media on the web in HTML5, which now supports both captioning and descriptions of video.</p>
-			<p>Yet, just as with text alternatives, automated techniques and testing aren’t sufficient for creating and validating accessible alternatives to time-based media.  For example, Automatic Speech Recognition (ASR) often fails when the speech portion of the audio is low quality or isn’t clear. Work on automatically generated descriptions of video are in their infancy, and like image recognition techniques, don’t provide usable alternatives to video.</p>
-			<p>Similarly, while there is well articulated guidance on how to create text transcripts or captions for audio-only media (such as radio programs and audio books), automated techniques and testing again aren’t sufficient for creating and validating these accessible alternatives.  Knowing what is important in an audio program to describe to someone who cannot hear is beyond the state of the art.</p>
+			<p>Yet, just as with text alternatives, automated techniques and testing aren’t sufficient for creating and validating accessible alternatives to time-based media.  For example, Automatic Speech Recognition (ASR) often fails when the speech portion of the audio is low quality, isn’t clear, or has background noise or
+			sound-effects.  In addition, current automated transcript creation
+			   software doesn't perform speaker identification, meaningful sound identification, or correct punctuation that all are necessary for accurate captioning. Work on automatically generated descriptions of video are in their infancy, and like image recognition techniques, don’t provide usable alternatives to video.</p>
+			<p>Similarly, while there is well articulated guidance on how to create text transcripts or captions for audio-only media (such as radio programs and audio books), automated techniques and testing again aren’t sufficient for creating and validating these accessible alternatives.  Knowing what is important in an audio program to describe to someone who cannot hear is beyond the state of the art. There are several success criteria under this Guideline that all share these challenges of manual testing being required to ensure alternatives accurately reflect the content in the media.  These include:</p>
+			<ul>
+				<li>Audio-only and video-only (Prerecorded) (Success Criterion 1.2.1)</li>
+				<li>Captions (Prerecorded) (Success Criterion 1.2.2)</li>
+			<li>Audio description or media alternative (Prerecorded) (Success Criterion 1.2.3)</li>
+				<li>Captions (Live) (Success Criterion 1.2.4)</li>
+			<li>Audio description (Prerecorded) (Success Criterion 1.2.5)</li>
+			</ul>
 		</section>
 		<section>
 			<h3><a href="https://www.w3.org/TR/WCAG21/#info-and-relationships">Info and Relationships (Success Criterion 1.3.1)</a></h3>
-			<p>Whether in print or online, presentation of content is often structured in a manner intended to aid comprehension. Sighted users perceive structure and relationships through various visual cues. Beyond simple sentences and paragraphs, the sighted user may see headings with nested subheadings. There may be sidebars and inset boxes of related content. Tables may be used to show data relationships. Comprehending how content is organized is a critical component of understanding the content.</p>
-			<p>As with media above, automated testing can determine the presence of structural markup, and can flag certain visual presentations as likely needing that structural markup. But such automated techniques remain unable to decipher if that markup usefully organizes the page content in a way that the user relying on assistive technology can examine the page systematically and readily understand its content.</p>
+			<p>Whether in print or online, the presentation of content is often structured in a manner intended to aid comprehension. Sighted users perceive structure and relationships through various visual cues. Beyond simple sentences and paragraphs, the sighted user may see headings with nested subheadings. There may be sidebars and inset boxes of related content. Tables may be used to show data relationships. Comprehending how content is organized is a critical component of understanding the content.</p>
+			<p>As with media above, automated testing can determine the presence of structural markup, and can flag certain visual presentations as likely needing that structural markup. But such automated techniques remain unable to decipher if that markup usefully organizes the page content in a way that a user relying on assistive technology can examine the page systematically and readily understand its content.</p>
 		</section>
 		<section>
 			<h3><a href="https://www.w3.org/TR/WCAG21/#meaningful-sequence">Meaningful Sequence (Success Criterion 1.3.2)</a></h3>
@@ -64,15 +75,63 @@
 		</section>
 		<section>
 			<h3><a href="https://www.w3.org/TR/WCAG21/#orientation">Orientation (Success Criterion 1.3.4)</a></h3>
-			<p>Evaluation of conformance to this criterion is tied to whether it is “<a href="https://www.w3.org/TR/WCAG21/#dfn-essential">essential</a>” for the content to be locked to one specific orientation (e.g. portrait or landscape views of an interface rendered to a cell phone).  This requires human judgement, making this criterion not readily automatable.</p>
+			<p>While an automated test can determine that the orientation is locked, full evaluation of conformance to this criterion is tied to whether it is “<a href="https://www.w3.org/TR/WCAG21/#dfn-essential">essential</a>” for the content to be locked to one specific orientation (e.g. portrait or landscape views of an interface rendered to a cell phone).  This requires human judgement to ensure that, any time the orientation is locked, the
+			   orientation is essential to that content, to determine
+			   conformance.  This makes this criterion not fully automatable.</p>
+		</section>
+		<section>
+			<h3><a href="https://www.w3.org/TR/WCAG21/#identify-input-purpose">Identify Input Purpose (Success Criterion 1.3.5)</a></h3>
+			<p>An automated test can easily determine that input fields use HTML markup to indicate the input purpose, it requires manual verification to determine that the correct markup was used that matches the intent for
+			   the field. For example, for a name input field, there are 10 variations of HTML name purpose attributes with different meaning and using the incorrect markup would be confusing to the user.</p>
 		</section>
 		<section>
 			<h3><a href="https://www.w3.org/TR/WCAG21/#use-of-color">Use of Color (Success Criterion 1.4.1)</a></h3>
-			<p>This poses the same challenges as Sensory Characteristics (<a href="https://www.w3.org/TR/WCAG21/#sensory-characteristics">Success Criterion 1.3.3</a>).  To discern whether a page fails this criterion programmatically requires understanding the full meaning of the rest of the content on the page and whether any meaning conveyed by color is somehow also conveyed in another fashion (e.g. whether the meaning of the colors in a bar chart is conveyed in the body of associated text or with a striping/stippling pattern as well on the bars, or perhaps in yet some other fashion).</p>
+			<p>This poses the same challenges as Sensory Characteristics (<a href="https://www.w3.org/TR/WCAG21/#sensory-characteristics">Success Criterion 1.3.3</a>).  To discern whether a page fails this criterion programmatically requires understanding the full meaning of the related content on the page and whether any meaning conveyed by color is somehow also conveyed in another fashion (e.g. whether the meaning of the colors in a bar chart is conveyed in the body of associated text or with a striping/stippling pattern as well on the bars, or perhaps some other fashion).</p>
+		</section>
+		<section>
+			<h3><a href="https://www.w3.org/TR/WCAG21/#audio-control">Audio Control[36] (Success Criterion 1.4.2)</a></h3>
+			<p>An automated test tool would be able to identify media/audio content in a website, identify whether auto-play is turned on in the code, and also determine the duration.  However, an automated checking tool
+			cannot tell whether there is a mechanism to pause or stop the audio or adjust the volume of the audio independent of the overall system volume level. This would have to be manually checked.</p>
+		</section>
+		<section>
+			<h3><a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">Contrast (Minimum) (Success Criterion 1.4.3)</a></h3>
+			<p>Automated tools can check the color of text against the background in most cases. However, when background images are used, automated tests aren't typically able to check for minimum contrast of text against
+      the image&mdash;especially if the image is a photograph or drawing where the text is placed over the image. This would take human intervention to sample the text and its background to determine if the contrast meets the
+      minimum requirement.</p>
+		</section>
+		<section>
+			<h3><a href="https://www.w3.org/TR/WCAG21/#resize-text">Resize Text (Success Criterion 1.4.4)</a></h3>
+			<p>It takes human intervention to discern visually if content is overlapped or missing due to a change in text size.</p>
 		</section>
 		<section>
 			<h3><a href="https://www.w3.org/TR/WCAG21/#images-of-text">Images of Text (Success Criterion 1.4.5)</a></h3>
-			<p>This poses the same challenge as Orientation (<a href="https://www.w3.org/TR/WCAG21/#orientation">Success Criterion 1.3.4</a>) - it is tied to whether it is “<a href="https://www.w3.org/TR/WCAG21/#dfn-essential">essential</a>” for text to be part of an image.  This requires human judgement, making this criterion not readily automatable.</p>
+			<p>This poses the same challenge as Orientation (<a href="https://www.w3.org/TR/WCAG21/#orientation">Success Criterion 1.3.4</a>) - it is tied to whether it is “<a href="https://www.w3.org/TR/WCAG21/#dfn-essential">essential</a>” for text to be part of an image.  This requires human judgement, making this criterion not readily automatable. In addition, methods of employing OCR on images will not accurately discern text of different fonts that overlap each other or be able to recognize unusual characters or text that is of poor
+			   contrast with the background of the image.</p>
+		</section>
+		<section>
+		<h3><a href="https://www.w3.org/TR/WCAG21/#reflow">Reflow[43] (Success Criterion 1.4.10)</a></h3>
+		<p>Human intervention is needed to ensure there is not both horizontal and vertical scrolling (only one dimension of scrolling) as well as make the determination for when two-dimensional scrolling is needed for
+		content that requires two-dimensional layout for usage or meaning.</p>
+		</section>
+		<section>
+			<h3><a href="https://www.w3.org/TR/WCAG21/#non-text-contrast">Non-text Contrast (Success Criterion 1.4.11)</a></h3>
+			<p>This success criterion needs several levels of checks that are either difficult or impossible to automate. This is especially true when there are exceptions in criteria such as this one which would require
+			human intervention to examine the intent and potentially employ the exception to comply with the requirement. The automated checks would have to include:</p>
+			<ul>
+				<li>A way to determine what are the UI components, easy for standard HTML elements, but more difficult for non-standard custom scripted components.</li>
+   <li>Whether the default user agent visual treatments for identifying the UI components and states are being used (so that the exception can be utilized)</li>
+   <li>Where default treatments are not employed, a way to identify changes in state and then compare the two states for sufficient contrast. Typically this would require human intervention to test the differences in the portions of graphics used to show the different states or provides the meaning (e.g. checked, unchecked, radio button selected, radio button unselected, toggle button selected vs. unselected and so on).</li>
+   <li>For graphical objects, a way to identify what part of the graphics are required to understand the content. Once identified, checks to determine if the presentation of the graphics is ■~@~\essential■~@~] to utilize the exception - a part that certainly would require human intervention.</li>
+			</ul>
+		</section>
+		<section>
+			<h3><a href="https://www.w3.org/TR/WCAG21/#text-spacing">Text Spacing[45] (Success Criterion 1.4.12)</a></h3>
+			<p>This success criterion involves using a tool or method to modify the text spacing and then checking to ensure no content is truncated or overlapping. This is purely a manual process.</p>
+		</section>
+		<section>
+			<h3><a href="https://www.w3.org/TR/WCAG21/#keyboard">Keyboard Operable[47] (Success Criterion 2.1.1)</a></h3>
+			<p>To ensure keyboard operability of all functionality, it requires a very manual process of navigating through the content to ensure all interactive elements are in the tab order and can be fully operated using
+			the keyboard.</p>
 		</section>
 		</section>
     	<section>
@@ -82,6 +141,8 @@
 		<section>
 				<h2>Challenge #3: 3rd party content</h2>
 				<p>Very large, highly dynamic web sites generally aggregate content provided by multiple entities. Many of these are third parties with the ability to add content directly to the website – including potentially every website visitor. While the website can provide guidance on how to post content so that it meets WCAG Guidelines and Success Criteria, it is ultimately up to those third parties to understand and correctly implement that guidance.  And as noted above, even with automated checking prior to accepting the post, too many Guidelines and Success Criteria expect human validation involvement.</p>
+				<p>Copyright and other things that restrict the ability to modify or impose requirements on third party data can also make full page conformance impossible to assure. For instance: articles that allow reposting
+				   but without modification due to copyright restrictions.</p>
 		</section>
 		<section>
 				<h2>Challenge #4: Non-Web Information and Communications Technologies </h2>
