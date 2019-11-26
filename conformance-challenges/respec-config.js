@@ -96,7 +96,7 @@ var respecConfig = {
 		company: "Google, Inc.",
 		companyURI: "https://www.google.com/",
 		w3cid: 90646
-	},	}, {
+	},	{
 		name: "Mary Jo Mueller",
 		mailto: "maryjom@us.ibm.com",
 		company: "IBM",
