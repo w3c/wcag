@@ -67,10 +67,53 @@ var respecConfig = {
 	// This is optional, uncomment if you have authors as well as editors.
 	// only "name" is required. Same format as editors.
 	
-	//authors:  [
+	authors:  [
 	//    { name: "Your Name", url: "http://example.org/",
 	//      company: "Your Company", companyURI: "http://example.com/" },
-	//],
+	{
+			name: "Janina Sajka",
+			company: "Amazon",
+			companyURL: "https://www.amazon.com/",
+			mailto: "sajkaj@amazon.com",
+			w3cid: 108617
+		},
+		{
+			name: "Peter Korn",
+			company: "Amazon",
+			companyURL: "https://www.amazon.com/",
+			mailto: "pkorn@amazon.com",
+			w3cid: 37425
+		},
+ {
+		name: "Jeanne Spellman",
+		mailto: "jspellman@spellmanconsulting.com",
+		company: "TetraLogical",
+		companyURI: "https://tetralogical.com/",
+		w3cid: 42417
+	}, {
+		name: "Shawn Lauriat",
+		mailto: "lauriat@google.com",
+		company: "Google, Inc.",
+		companyURI: "https://www.google.com/",
+		w3cid: 90646
+	},	}, {
+		name: "Mary Jo Mueller",
+		mailto: "maryjom@us.ibm.com",
+		company: "IBM",
+		companyURI: "https://ibm.com/",
+		w3cid: 46880
+	},
+ {
+		name: "Charles Hall",
+		mailto: "charles.hall@mrm-mccann.com",
+		w3cid: 57439
+	},
+ {
+		name: "Detlev Fischer",
+		mailto: "detlev.fischer@testkreis.de",
+		w3cid: 48042
+	},
+	],
 	
 	/*
 	alternateFormats: [
