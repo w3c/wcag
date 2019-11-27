@@ -48,13 +48,6 @@ var respecConfig = {
 			w3cid: 108617
 		},
 		{
-			name: "Peter Korn",
-			company: "Amazon",
-			companyURL: "https://www.amazon.com/",
-			mailto: "pkorn@amazon.com",
-			w3cid: 37425
-		},
-		{
 			name: "Michael Cooper",
 			url: 'https://www.w3.org/People/cooper/',
 			company: "W3C",
@@ -83,6 +76,13 @@ var respecConfig = {
 			companyURL: "https://www.amazon.com/",
 			mailto: "pkorn@amazon.com",
 			w3cid: 37425
+		},
+	{
+			name: "Joe Cronin",
+			company: "Amazon",
+			companyURL: "https://www.amazon.com/",
+			mailto: "joecron@amazon.com",
+			w3cid: 117679
 		},
  {
 		name: "Jeanne Spellman",
