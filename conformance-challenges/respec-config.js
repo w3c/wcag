@@ -103,6 +103,13 @@ var respecConfig = {
 		companyURI: "https://ibm.com/",
 		w3cid: 46880
 	},
+	{
+		name: "Andrew Kirkpatrick",
+		mailto: "akirkpat@adobe.com",
+		company: "Adobe",
+		companyURI: "https://adobe.com/",
+		w3cid: 39770
+	},
  {
 		name: "Charles Hall",
 		mailto: "charles.hall@mrm-mccann.com",
