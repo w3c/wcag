@@ -48,13 +48,6 @@ var respecConfig = {
 			w3cid: 108617
 		},
 		{
-			name: "Peter Korn",
-			company: "Amazon",
-			companyURL: "https://www.amazon.com/",
-			mailto: "pkorn@amazon.com",
-			w3cid: 37425
-		},
-		{
 			name: "Michael Cooper",
 			url: 'https://www.w3.org/People/cooper/',
 			company: "W3C",
@@ -67,10 +60,67 @@ var respecConfig = {
 	// This is optional, uncomment if you have authors as well as editors.
 	// only "name" is required. Same format as editors.
 	
-	//authors:  [
+	authors:  [
 	//    { name: "Your Name", url: "http://example.org/",
 	//      company: "Your Company", companyURI: "http://example.com/" },
-	//],
+	{
+			name: "Janina Sajka",
+			company: "Amazon",
+			companyURL: "https://www.amazon.com/",
+			mailto: "sajkaj@amazon.com",
+			w3cid: 108617
+		},
+		{
+			name: "Peter Korn",
+			company: "Amazon",
+			companyURL: "https://www.amazon.com/",
+			mailto: "pkorn@amazon.com",
+			w3cid: 37425
+		},
+	{
+			name: "Joe Cronin",
+			company: "Amazon",
+			companyURL: "https://www.amazon.com/",
+			mailto: "joecron@amazon.com",
+			w3cid: 117679
+		},
+ {
+		name: "Jeanne Spellman",
+		mailto: "jspellman@spellmanconsulting.com",
+		company: "TetraLogical",
+		companyURI: "https://tetralogical.com/",
+		w3cid: 42417
+	}, {
+		name: "Shawn Lauriat",
+		mailto: "lauriat@google.com",
+		company: "Google, Inc.",
+		companyURI: "https://www.google.com/",
+		w3cid: 90646
+	},	{
+		name: "Mary Jo Mueller",
+		mailto: "maryjom@us.ibm.com",
+		company: "IBM",
+		companyURI: "https://ibm.com/",
+		w3cid: 46880
+	},
+	{
+		name: "Andrew Kirkpatrick",
+		mailto: "akirkpat@adobe.com",
+		company: "Adobe",
+		companyURI: "https://adobe.com/",
+		w3cid: 39770
+	},
+ {
+		name: "Charles Hall",
+		mailto: "charles.hall@mrm-mccann.com",
+		w3cid: 57439
+	},
+ {
+		name: "Detlev Fischer",
+		mailto: "detlev.fischer@testkreis.de",
+		w3cid: 48042
+	},
+	],
 	
 	/*
 	alternateFormats: [
