@@ -40,6 +40,7 @@
 		<delete file="${inputdir.guidelines}/index-flat.html" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/wcag.xml" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/wcag.json" failonerror="false"/>
+		<delete file="${inputdir.guidelines}/versions.xml" failonerror="false"/>
 		<delete file="${inputdir.techniques}/techniques.xml" failonerror="false"/>
 		<delete file="${inputdir.techniques}/technique-associations.xml" failonerror="false"/>
 		<delete file="output.html" failonerror="false"/>
@@ -62,6 +63,35 @@
 		</xslt>
 	</target>
 	
+	<target name="guidelines-versions" description="Create XML list of which WCAG version introduces which guidelines">
+		<local name="output.file"/>
+		<property name="output.file" value="${inputdir.guidelines}/versions.xml"/>
+		<echo file="${output.file}"><![CDATA[<versions>
+]]></echo>
+		<for param="current.dir">
+			<path><dirset dir="guidelines/sc" includes="*"/></path>
+			<sequential>
+				<local name="version"/>
+				<basename file="@{current.dir}" property="version"/>
+				<echo file="${output.file}" append="yes"><![CDATA[	<version name="${version}">
+]]></echo>
+				<for param="current.file">
+					<path><fileset dir="@{current.dir}" includes="*"/></path>
+					<sequential>
+						<local name="id"/>
+						<basename file="@{current.file}" property="id" suffix="html"/>
+						<echo file="${output.file}" append="yes"><![CDATA[		<id id="${id}"/>
+]]></echo>
+					</sequential>
+				</for>
+				<echo file="${output.file}" append="yes"><![CDATA[	</version>
+]]></echo>
+			</sequential>
+		</for>
+		<echo file="${output.file}" append="yes"><![CDATA[</versions>
+]]></echo>
+	</target>
+	
 	<target name="guidelines" depends="init">
 		<mkdir dir="output/guidelines/22"/>
 		<copy file="guidelines/guidelines.css" todir="output/guidelines/22"/>
@@ -77,6 +107,7 @@
 	
 	<!-- Techniques -->
 	<target name="techniques-list" description="Create XML list of all the technique files">
+		<local name="output.file"/>
 		<property name="output.file" value="${inputdir.techniques}/techniques.xml"/>
 		<echo file="${output.file}"><![CDATA[<techniques>
 ]]></echo>
