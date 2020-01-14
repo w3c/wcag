@@ -198,12 +198,7 @@
 	</xsl:template>
 	
 	<xsl:template match="understanding | guideline | success-criterion">
-		<xsl:variable name="subpath">
-			<xsl:choose>
-				<xsl:when test="version = 'WCAG20'">20/</xsl:when>
-				<xsl:when test="version = 'WCAG21'">21/</xsl:when>
-			</xsl:choose>
-		</xsl:variable>
+		<xsl:variable name="subpath" select="concat('WCAG', $versions.doc//id[@id = current()/@id]/parent::version/@name)"/>
 		<xsl:result-document href="{$output.dir}/{file/@href}.html" encoding="utf-8" exclude-result-prefixes="#all" include-content-type="no" indent="yes" method="xhtml" omit-xml-declaration="yes">
 			<xsl:apply-templates select="document(resolve-uri(concat(file/@href, '.html'), concat($base.dir, $subpath)))">
 				<xsl:with-param name="meta" select="." tunnel="yes"/>
