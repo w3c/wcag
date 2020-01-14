@@ -214,8 +214,6 @@
 	</xsl:template>
 	
 	<xsl:template match="understanding | guideline | success-criterion">
-		<xsl:variable name="input.uri" select="resolve-uri(concat(file/@href, '.html'), concat($base.dir, $subpath))"/>
-		<xsl:variable name="input.doc" select="document($input.uri)"/>
 		<xsl:result-document href="{$output.dir}/{file/@href}.html" encoding="utf-8" exclude-result-prefixes="#all" include-content-type="no" indent="yes" method="xhtml" omit-xml-declaration="yes">
 			<xsl:apply-templates select="document(resolve-uri(concat(file/@href, '.html'), concat($base.dir, $versions.doc//id[@id = current()/@id]/parent::version/@name, '/')))">
 				<xsl:with-param name="meta" select="." tunnel="yes"/>
