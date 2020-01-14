@@ -14,6 +14,9 @@
 	<xsl:param name="techniques.file">../techniques/techniques.xml</xsl:param>
 	<xsl:variable name="techniques.doc" select="document($techniques.file)"/>
 	
+	<xsl:param name="versions.file">../guidelines/versions.xml</xsl:param>
+	<xsl:variable name="versions.doc" select="document($versions.file)"/>
+	
 	<xsl:function name="wcag:isheading" as="xs:boolean">
 		<xsl:param name="el"/>
 		<xsl:choose>
