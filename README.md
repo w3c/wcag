@@ -5,6 +5,12 @@ Please do not submit any new pull requests against this branch - please look in 
 
 This repository is used to develop content for WCAG 2, as well as associated understanding documents and techniques.
 
+## Editorial style guide
+
+@@To complete
+
+* Avoid use of RFC2119 terms such as "must", "shall", or "may" in non-normative content, to avoid confusion with normative role.
+
 ## File Structure
 
 WCAG 2.0 was maintained in a different file structure than subsequent versions of WCAG. Source files for WCAG 2.0 are in the wcag20 folder and exists primarily for archival purposes. Do not edit content in that folder.
