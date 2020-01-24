@@ -289,6 +289,19 @@
 		</exec>
 	</target>
 	
+	<!-- Conformance Challenges -->
+	<target name="conformance-challenges" depends="init">
+		<mkdir dir="output/conformance-challenges"/>
+		<exec executable="curl">
+			<arg value="&quot;https://labs.w3.org/spec-generator/?type=respec&amp;url=https://raw.githack.com/w3c/wcag/master/conformance-challenges/index.html&quot;"/>
+			<arg value="-o"/>
+			<arg value="output/conformance-challenges/index.html"/>
+			<arg value="-f"/>
+			<arg value="--retry"/>
+			<arg value="3"/>
+		</exec>
+	</target>
+	
 	<!-- Publish -->
 	<target name="deploy" depends="init, understanding-toc, techniques-toc" description="Generate content ready to deploy to gh-pages">
 		<property name="editors" value="true"/>
