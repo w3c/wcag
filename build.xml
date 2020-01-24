@@ -261,12 +261,26 @@
 		</xslt>
 	</target>
 	
+	<!-- Requirements -->
+	<target name="requirements" depends="init">
+		<mkdir dir="output/requirements/22"/>
+		<exec executable="curl">
+			<arg value="&quot;https://labs.w3.org/spec-generator/?type=respec&amp;url=https://raw.githack.com/w3c/wcag/master/requirements/22/index.html&quot;"/>
+			<arg value="-o"/>
+			<arg value="output/requirements/22/index.html"/>
+			<arg value="-f"/>
+			<arg value="--retry"/>
+			<arg value="3"/>
+		</exec>
+	</target>
+	
 	<!-- Publish -->
 	<target name="deploy" depends="init, understanding-toc, techniques-toc" description="Generate content ready to deploy to gh-pages">
 		<property name="editors" value="true"/>
 		<antcall target="guidelines"/>
 		<antcall target="techniques"/>
 		<antcall target="understanding"/>
+		<antcall target="requirements"/>
 		<copy todir="output/working-examples/">
 			<fileset dir="working-examples/"/>
 		</copy>
