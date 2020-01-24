@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!-- Demo created by Patrick H. Lauke -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Custom control slider built on top of a native slider</title>
+    <link rel="stylesheet" href="example.css">
+    <script src="pep.js"></script>
+    <script src="example.js" defer></script>
+  </head>
+  <body>
+  <h1>Custom control slider built on top of a native slider (Accessible faked slider)</h1>
+  <p>This slider uses an actual <code>&lt;input type="range"&gt;</code> behind the scenes. This is what keyboard and touch + assistive technology users interact with. Mouse/stylus/touch users interact with the fake sliders.</p>
+    <p>Both the fake slider and the input are kept in sync via JavaScript. This is in preference over the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#slider">ARIA 1.1 Slider pattern</a>, since that pattern has known issues in touch + AT scenario (where AT will announce control behaviors that simply can't be done via JavaScript at the moment, such as "use volume keys to adjust" or "swipe up or down with one finger to adjust the value", which do however work with real range inputs). See also the larger discussion on <a href="https://github.com/w3c/aria-practices/issues/8">touch/mobile support for certain ARIA patterns</a>.</p>
+    <p>Overall you should style the native <code>&lt;input type="range"&gt;</code>, but if you have to use a custom approach then use a real (but hidden) range input approach.</p>
+
+<div id="sliderwrapper">
+<button class="custom-slider-decrement" aria-label="Decrement">&lt;</button>
+<div class="custom-slider" touch-action="pan-y">
+  <input type="range" min="0" max="10" step="1" value="0" aria-label="Slider">
+  <div class="custom-slider-track">
+    <div class="custom-slider-button">
+    </div>
+  </div>
+</div>
+<button class="custom-slider-increment" aria-label="Increment">&gt;</button>
+  </div>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>Failure of Success Criterion 1.3.4 due to showing a message asking to reorient device</title>
+    <link rel="stylesheet" type="text/css" href="https://rawgit.com/w3c/wcag21/master/css/sources.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/editors.css"/>
+  </head>
+  <body>
+    <h1>Failure of Success Criterion 1.3.4 due to showing a message asking to reorient device</h1>
+    <section id="meta">
+      <h2>Metadata</h2>
+      <p id="id"></p>
+      <p id="technology">css</p>
+      <p id="type">sufficient</p>
+    </section>
+    <section id="applicability">
+      <h2>When to Use</h2>
+      <p>This technique is applicable to Cascading Style Sheet / HTML technologies.</p>
+    </section>
+    <section id="description">
+      <h2>Description</h2>
+
+      <p>This describes the failure condition that results when an author, having detected a device orientation that is considered undesirable, displays a message telling the user to reorient the device -- instead of the author reorienting all the content.</p>
+
+      <p>Detecting and responding to a user's device orientation is not itself a problem. The author decision to only offer one orientation of content is what fails the requirements of Success Criterion (SC) 1.3.4 Orientation. It is inadequate to display only a message in the detected orientation, telling users to rotate their devices (when not essential to the underlying activity). The entirety of the author-controlled content needs to be re-oriented in order to meet the SC.</p>
+
+      <p>There are various methods for devices to determine if the content is in landscape or portrait orientation. One of these methods involves looking at the width-to-height aspect ratio of the viewport. In other words, checking if the width is smaller or larger than the height. The CSS <code>orientation</code> media feature is <code>portrait</code> when the value of the <code>height</code> media feature is greater than or equal to the value of the <code>width</code> media feature. Otherwise, <code>orientation</code> is <code>landscape</code>.</p>
+      
+    </section>
+    <section id="examples">
+      <h2>Examples</h2>
+      <section class="example">
+        <h3>Block an orientation ("door slam") by using HTML and CSS</h3>
+
+        <p>The following example uses HTML and CSS to show a message asking to reorient the device if in <code>landscape</code>.</p>
+
+        <p>The message will disappear if the orientation is changed to <code>portrait</code>.
+
+        When the <code>portrait</code> property matches the viewport space defined via media queries, the message will disappear or vice versa. This particular example uses the CSS <code>landscape</code>, <code>portrait</code> media query properties.</p>
+
+<pre>
+<code>
+
+&lt;style&gt;
+
+/* Orientation "door slam" Styling */
+
+@media all and (orientation: landscape) {
+  .rotate { display: block; }
+  .content { display: none; }
+}
+
+@media all and (orientation: portrait) {
+  .rotate { display: none; }
+  .content { display: block; }
+}
+
+.rotate {
+  text-align: center;
+  font-size: 2rem;
+  margin-top: 4rem;
+}
+
+/* Orientation "door slam" HTML */
+
+&lt;div class="rotate"&gt;
+  Please rotate your device!
+&lt;/div&gt;
+
+&lt;div class="content"&gt;
+  ...
+&lt;/div&gt;
+</code>
+</pre>
+        
+        <p>Working example: <a href="../../working-examples/css-reorient/">Show message asking to reorient device</a></p>
+        
+      </section>
+    </section>
+    <section id="tests">
+      <h2>Tests</h2>      
+      <section class="test-procedure">
+        <h3>Procedure</h3>
+        <ol>
+          <li>Open the content in landscape view. Check if a message appears asking to reorient the device.</li>
+<li>Open the content in portrait view. Check if a message appears asking to reorient the device.</li>
+<li>Check if portrait or landscape view is essential for the viewing and operation of the content.</li>
+        </ol>
+      </section>
+      <section class="test-results">
+        <h3>Expected Results</h3>
+        <p>If check #1 or #2 is true, and check #3 is false, then this failure condition applies and content fails the Success Criterion.</p>
+</section>
+    </section>
+    <section id="related">
+      <h2>Related Techniques</h2>
+      <ul>
+        <li>ID</li>
+      </ul>
+    </section>
+  </body>
+</html>

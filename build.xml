@@ -45,6 +45,7 @@
 		<delete file="${inputdir.techniques}/technique-associations.xml" failonerror="false"/>
 		<delete file="output.html" failonerror="false"/>
 		<delete dir="output" failonerror="false"/>
+		<delete dir="input" failonerror="false"/>
 	</target>
 	
 	<target name="flatten" depends="init" description="Build a copy of guidelines with all data-include files incorporated">
@@ -259,6 +260,20 @@
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
 		</xslt>
+	</target>
+	
+	<target name="understanding-flatten" depends="guidelines-xml" description="Generate temp files for Understanding with includes included">
+		<makeurl file="${basedir}/understanding/" property="base.understanding"/>
+		<mkdir dir="${basedir}/input/understanding/"/>
+		<local name="output.dir"/>
+		<makeurl file="${basedir}/input/understanding/" property="output.dir"/>
+		<xslt in="${inputdir.guidelines}/wcag.xml" out="output.html" style="xslt/flatten-understanding.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+			<param name="base.dir" expression="${base.understanding}"/>
+			<param name="output.dir" expression="${output.dir}"/>
+		</xslt>
+		
 	</target>
 	
 	<!-- Requirements -->

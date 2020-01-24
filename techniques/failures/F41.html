@@ -35,18 +35,20 @@
       </section>
    </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
-         <ol>
-            <li> Find meta elements in the document. </li>
-            <li>For each meta element, check if it contains
-               the http-equiv attribute with value "refresh" (case-insensitive) and
-               the content attribute with a number (representing seconds) equals to or greater than 0 and without "; url=" (case-insensitive). </li>
-            <li>check to see if there is a mechanism to turn off the refresh. </li>
-         </ol>
+        <p>For a page that uses <code>meta http-equiv="refresh"</code>:</p> 
+        <ol>
+          <li>Check that the numerical value for seconds until refresh in the <att>content</att> attribute is present.</li>
+          <li>Check that the numerical value for seconds until refresh in the <att>content</att> attribute is less than one or greater than 72,000.</li>
+          <li>Check if the page qualifies for Real-time or Essential Exceptions in <a href="https://www.w3.org/TR/WCAG21/#timing-adjustable">Success Criterion 2.2.1 Timing Adjustable</a>.</li>
+          <li>Check if the user is provided an opportunity to turn off, extend, or adjust the timing of the page refresh.</li>
+            <li>Check if the page does not refresh after the duration specified in the <att>content</att> attribute.</li>
+        </ol>
       </section>
       <section class="results"><h3>Expected Results</h3>
          <ul>
-            <li>If step 2 is true and step 3 is false then this failure condition applies and content
-                                    fails these Success Criteria. </li>
+            <li>If checks #1-5 are false then this failure condition applies and content fails Success Criteria 2.2.1.</li>
+            <li>If checks #1, #2, #4, and #5 are false, this failure condition applies and the content fails Success Criterion 2.2.4.</li>
+            <li>If checks #1 and #4 are false then this failure condition applies and content fails Success Criterion 3.2.5.</li>
          </ul>
       </section>
    </section><section id="related"><h2>Related Techniques</h2></section></body></html>

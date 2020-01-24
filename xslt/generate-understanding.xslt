@@ -9,7 +9,7 @@
 	
 	<xsl:include href="base.xslt"/>
 	
-	<xsl:param name="base.dir">understanding/</xsl:param>
+	<xsl:param name="base.dir">input/understanding/</xsl:param>
 	<xsl:param name="output.dir">output/</xsl:param>
 	
 	<xsl:template name="name">
@@ -111,16 +111,32 @@
 		<nav class="navtoc">
 			<p>On this page:</p>
 			<ul id="navbar">
-				<li><a href="#intent">Intent</a></li>
 				<xsl:if test="name($meta) = 'success-criterion'">
+					<li><a href="#intent">Intent</a></li>
 					<li><a href="#benefits">Benefits</a></li>
-					<li><a href="#examples">Examples</a></li>
-					<li><a href="#resources">Related Resources</a></li>
+					<xsl:if test="wcag:section-meaningfully-exists('examples', //html:section[@id = 'examples'])"><li><a href="#examples">Examples</a></li></xsl:if>
+					<xsl:if test="wcag:section-meaningfully-exists('resources', //html:section[@id = 'resources'])"><li><a href="#resources">Related Resources</a></li></xsl:if>
 					<li><a href="#techniques">Techniques</a></li>
 				</xsl:if>
 				<xsl:if test="name($meta) = 'guideline'">
-					<li><a href="#advisory">Advisory Techniques</a></li>
+					<li><a href="#intent">Intent</a></li>
+					<xsl:if test="wcag:section-meaningfully-exists('gladvisory', //html:section[@id = 'gladvisory'])"><li><a href="#advisory">Advisory Techniques</a></li></xsl:if>
 					<li><a href="#success-criteria">Success Criteria</a></li>
+				</xsl:if>
+				<xsl:if test="name($meta) = 'understanding'">
+					<xsl:for-each select="//html:body/html:section">
+						<li>
+							<a>
+								<xsl:attribute name="href">
+									<xsl:choose>
+										<xsl:when test="@id">#<xsl:value-of select="@id"/></xsl:when>
+										<xsl:otherwise>#<xsl:value-of select="wcag:generate-id(wcag:find-heading(.))"/></xsl:otherwise>
+									</xsl:choose>
+								</xsl:attribute>
+								<xsl:value-of select="wcag:find-heading(.)"/>
+							</a>
+						</li>
+					</xsl:for-each>
 				</xsl:if>
 				<xsl:if test="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]">
 					<li><a href="#key-terms">Key Terms</a></li>
@@ -252,6 +268,7 @@
 					<xsl:when test="name($meta) = 'understanding'">
 						<main>
 							<xsl:apply-templates select="descendant::html:body/node()[not(wcag:isheading(.))]"/>
+							<xsl:call-template name="key-terms"/>
 						</main>
 					</xsl:when>
 				</xsl:choose>
@@ -281,20 +298,24 @@
 	</xsl:template>
 	
 	<xsl:template match="html:section[@id = 'examples']">
+		<xsl:if test="wcag:section-meaningfully-exists('examples', .)">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
 			<h2>Examples</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
+		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="html:section[@id = 'resources']">
+		<xsl:if test="wcag:section-meaningfully-exists('resources', .)">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
 			<h2>Related Resources</h2>
 			<p>Resources are for information purposes only, no endorsement implied.</p>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
+		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="html:section[@id = 'techniques']">
@@ -307,39 +328,47 @@
 	</xsl:template>
 	
 	<xsl:template match="html:section[@id = 'sufficient']">
+		<xsl:if test="wcag:section-meaningfully-exists('sufficient', .)">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
 			<h3>Sufficient Techniques</h3>
 			<xsl:if test="html:section[@class = 'situation']"><p>Select the situation below that matches your content. Each situation includes techniques or combinations of techniques that are known and documented to be sufficient for that situation. </p></xsl:if>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
+		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="html:section[@id = 'advisory']">
+		<xsl:if test="wcag:section-meaningfully-exists('advisory', .)">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
 			<h3>Advisory Techniques</h3>
 			<p>Although not required for conformance, the following additional techniques should be considered in order to make content more accessible. Not all techniques can be used or would be effective in all situations.</p>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
+		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="html:section[@id = 'advisory']" mode="gladvisory">
+		<xsl:if test="wcag:section-meaningfully-exists('gladvisory', .)">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
 			<h2>Advisory Techniques</h2>
 			<p>Specific techniques for meeting each Success Criterion for this guideline are listed in the understanding sections for each Success Criterion (listed below). If there are techniques, however, for addressing this guideline that do not fall under any of the success criteria, they are listed here. These techniques are not required or sufficient for meeting any success criteria, but can make certain types of Web content more accessible to more people.</p>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
+		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="html:section[@id = 'failure']">
+		<xsl:if test="wcag:section-meaningfully-exists('failure', .)">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
 			<h3>Failures</h3>
 			<p>The following are common mistakes that are considered failures of this Success Criterion by the WCAG Working Group.</p>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
+		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="html:section">
@@ -365,7 +394,7 @@
 	<xsl:template match="html:a[not(@href)]" mode="#all">
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:variable name="dfn" select="lower-case(.)"/>
-		<a href="{$loc.guidelines}#{$meta/ancestor::guidelines/term[name = $dfn]/id}" target="terms"><xsl:value-of select="."/></a>
+		<a href="#{$meta/ancestor::guidelines/term[name = $dfn]/id}"><xsl:value-of select="."/></a>
 	</xsl:template>
 	
 	<xsl:template match="html:*[@class = 'instructions']"/>
