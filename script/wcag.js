@@ -17,9 +17,10 @@ function linkUnderstanding() {
 }
 
 function addTextSemantics() {
-	// remove the change marker
+	// put brackets around the change marker
 	document.querySelectorAll('p.change').forEach(function(node){
-		node.parentNode.removeChild(node);
+		var change = node.textContent;
+		node.textContent = "[" + change + "]";
 	})
 	// put level before and parentheses around the conformance level marker
 	document.querySelectorAll('p.conformance-level').forEach(function(node){
