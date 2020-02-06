@@ -27,17 +27,17 @@ function addTextSemantics() {
 		node.textContent = "(Level " + level + ")";
 	})
 	// put principle in principle headings
-	document.querySelectorAll('section.sc h2 span.secno').forEach(function(node){
+	document.querySelectorAll('section.sc h2 bdi.secno').forEach(function(node){
 		var num = node.textContent;
 		node.textContent = "Principle " + num;
 	})
 	// put guideline in GL headings
-	document.querySelectorAll('section.guideline h3 span.secno').forEach(function(node){
+	document.querySelectorAll('section.guideline h3 bdi.secno').forEach(function(node){
 		var num = node.textContent;
 		node.textContent = "Guideline " + num;
 	})
 	// put success criterion in SC headings
-	document.querySelectorAll('section.sc h4 span.secno').forEach(function(node){
+	document.querySelectorAll('section.sc h4 bdi.secno').forEach(function(node){
 		var num = node.textContent;
 		node.textContent = "Success Criterion " + num;
 	})
