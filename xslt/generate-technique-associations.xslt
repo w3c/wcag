@@ -19,15 +19,10 @@
 	</xsl:template>
 	
 	<xsl:template match="guideline | success-criterion">
-		<xsl:variable name="subpath">
-			<xsl:choose>
-				<xsl:when test="version = 'WCAG20'">20/</xsl:when>
-				<xsl:when test="version = 'WCAG21'">21/</xsl:when>
-			</xsl:choose>
-		</xsl:variable>
 		<xsl:copy>
 			<xsl:attribute name="id" select="@id"/>
-			<xsl:apply-templates select="document(resolve-uri(concat(file/@href, '.html'), concat($understanding.dir, $subpath)))">
+			<xsl:message select="resolve-uri(concat(file/@href, '.html'), concat($understanding.dir, max($versions.doc//id[@id = current()/@id]/parent::version/@name), '/'))"/>
+			<xsl:apply-templates select="document(resolve-uri(concat(file/@href, '.html'), concat($understanding.dir, max($versions.doc//id[@id = current()/@id]/parent::version/@name), '/')))">
 				<xsl:with-param name="meta" select="." tunnel="yes"/>
 			</xsl:apply-templates>
 			<xsl:apply-templates select="guideline | success-criterion"/>
