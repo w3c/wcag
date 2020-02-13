@@ -1,4 +1,4 @@
-var biblio = {
+respecConfig.localBiblio = {
 	
       	"CAPTCHA": {
       		"href": "http://www.captcha.net/",
