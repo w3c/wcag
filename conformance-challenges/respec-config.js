@@ -149,8 +149,6 @@ var respecConfig = {
 	wgPatentURI:  "https://www.w3.org/2004/01/pp-impl/35422/status",
 	maxTocLevel: 4,
 	
-	localBiblio: biblio,
-	
 	postProcess: [addTextSemantics, swapInDefinitions]
 	
 };
