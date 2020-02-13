@@ -40,6 +40,7 @@
 		<delete file="${inputdir.guidelines}/index-flat.html" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/wcag.xml" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/wcag.json" failonerror="false"/>
+		<delete file="${inputdir.guidelines}/versions.xml" failonerror="false"/>
 		<delete file="${inputdir.techniques}/techniques.xml" failonerror="false"/>
 		<delete file="${inputdir.techniques}/technique-associations.xml" failonerror="false"/>
 		<delete file="output.html" failonerror="false"/>
@@ -63,13 +64,43 @@
 		</xslt>
 	</target>
 	
+	<target name="guidelines-versions" description="Create XML list of which WCAG version introduces which guidelines">
+		<local name="output.file"/>
+		<property name="output.file" value="${inputdir.guidelines}/versions.xml"/>
+		<echo file="${output.file}"><![CDATA[<versions>
+]]></echo>
+		<for param="current.dir">
+			<path><dirset dir="understanding" includes="*"/></path>
+			<sequential>
+				<local name="version"/>
+				<basename file="@{current.dir}" property="version"/>
+				<echo file="${output.file}" append="yes"><![CDATA[	<version name="${version}">
+]]></echo>
+				<for param="current.file">
+					<path><fileset dir="@{current.dir}" includes="*"/></path>
+					<sequential>
+						<local name="id"/>
+						<basename file="@{current.file}" property="id" suffix="html"/>
+						<echo file="${output.file}" append="yes"><![CDATA[		<id id="${id}"/>
+]]></echo>
+					</sequential>
+				</for>
+				<echo file="${output.file}" append="yes"><![CDATA[	</version>
+]]></echo>
+			</sequential>
+		</for>
+		<echo file="${output.file}" append="yes"><![CDATA[</versions>
+]]></echo>
+	</target>
+	
 	<target name="guidelines" depends="init">
 		<mkdir dir="output/guidelines/22"/>
 		<copy file="guidelines/guidelines.css" todir="output/guidelines/22"/>
 		<copy file="guidelines/relative-luminance.xml" todir="output/guidelines/22"/>
 		<exec executable="curl">
 			<arg value="&quot;https://labs.w3.org/spec-generator/?type=respec&amp;url=https://raw.githack.com/w3c/wcag/master/guidelines/index.html&quot;"/>
-			<arg value="-o output/guidelines/22/index.html"/>
+			<arg value="-o"/>
+			<arg value="output/guidelines/22/index.html"/>
 			<arg value="-f"/>
 			<arg value="--retry"/>
 			<arg value="3"/>
@@ -78,6 +109,7 @@
 	
 	<!-- Techniques -->
 	<target name="techniques-list" description="Create XML list of all the technique files">
+		<local name="output.file"/>
 		<property name="output.file" value="${inputdir.techniques}/techniques.xml"/>
 		<echo file="${output.file}"><![CDATA[<techniques>
 ]]></echo>
@@ -120,7 +152,7 @@
 ]]></echo>
 	</target>
 	
-	<target name="techniques-association" depends="flatten, guidelines-xml" description="Build an XML structure of all techniques">
+	<target name="techniques-association" depends="flatten, guidelines-xml, guidelines-versions" description="Build an XML structure of all techniques">
 		<makeurl file="${basedir}/techniques" property="techniques.dir"/>
 		<makeurl file="${basedir}/understanding" property="understanding.dir"/>
 		<xslt in="${inputdir.guidelines}/wcag.xml" out="${inputdir.techniques}/technique-associations.xml" style="xslt/generate-technique-associations.xslt">
@@ -182,8 +214,8 @@
 	</target>
 	
 	<!-- Understanding -->
-	<target name="understanding" depends="guidelines-xml, techniques-list, understanding-index, understanding-flatten" description="Generate formatted Understanding docs">
-		<makeurl file="${basedir}/input/understanding/" property="input.understanding"/>
+	<target name="understanding" depends="guidelines-xml, guidelines-versions, techniques-list, understanding-index" description="Generate formatted Understanding docs">
+		<makeurl file="${basedir}/understanding/" property="base.understanding"/>
 		<mkdir dir="${basedir}/output/understanding/"/>
 		<local name="output.dir"/>
 		<makeurl file="${basedir}/output/understanding/" property="output.dir"/>
@@ -191,7 +223,7 @@
 		<xslt in="${inputdir.guidelines}/wcag.xml" out="output.html" style="xslt/generate-understanding.xslt" force="true">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
-			<param name="base.dir" expression="${input.understanding}"/>
+			<param name="base.dir" expression="${base.understanding}"/>
 			<param name="output.dir" expression="${output.dir}"/>
 			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG21/" if="publication"/>
 			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG21/Understanding/" if="publication"/>
@@ -202,8 +234,10 @@
 		</xslt>
 		<copy file="understanding/understanding.css" todir="output/understanding/"/>
 		<copy file="css/slicenav.css" todir="output/understanding/"/>
-		<copy todir="output/understanding/img/">
-			<fileset dir="understanding/21/img"/>
+		<copy todir="output/understanding/img/" flatten="true">
+			<fileset dir="understanding">
+				<patternset includes="*/img/*"/>
+			</fileset>
 		</copy>
 	</target>
 	
@@ -244,12 +278,40 @@
 		
 	</target>
 	
+	<!-- Requirements -->
+	<target name="requirements" depends="init">
+		<mkdir dir="output/requirements/22"/>
+		<exec executable="curl">
+			<arg value="&quot;https://labs.w3.org/spec-generator/?type=respec&amp;url=https://raw.githack.com/w3c/wcag/master/requirements/22/index.html&quot;"/>
+			<arg value="-o"/>
+			<arg value="output/requirements/22/index.html"/>
+			<arg value="-f"/>
+			<arg value="--retry"/>
+			<arg value="3"/>
+		</exec>
+	</target>
+	
+	<!-- Conformance Challenges -->
+	<target name="conformance-challenges" depends="init">
+		<mkdir dir="output/conformance-challenges"/>
+		<exec executable="curl">
+			<arg value="&quot;https://labs.w3.org/spec-generator/?type=respec&amp;url=https://raw.githack.com/w3c/wcag/master/conformance-challenges/index.html&quot;"/>
+			<arg value="-o"/>
+			<arg value="output/conformance-challenges/index.html"/>
+			<arg value="-f"/>
+			<arg value="--retry"/>
+			<arg value="3"/>
+		</exec>
+	</target>
+	
 	<!-- Publish -->
 	<target name="deploy" depends="init, understanding-toc, techniques-toc" description="Generate content ready to deploy to gh-pages">
 		<property name="editors" value="true"/>
 		<antcall target="guidelines"/>
 		<antcall target="techniques"/>
 		<antcall target="understanding"/>
+		<antcall target="requirements"/>
+		<antcall target="conformance-challenges"/>
 		<copy todir="output/working-examples/">
 			<fileset dir="working-examples/"/>
 		</copy>
