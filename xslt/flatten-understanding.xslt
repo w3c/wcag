@@ -7,6 +7,7 @@
 	exclude-result-prefixes="#all"
 	version="2.0">
 	
+	<xsl:import href="base.xslt"/>
 	<xsl:import href="flatten-document.xslt"/>
 	
 	<xsl:param name="base.dir">understanding/</xsl:param>
@@ -17,12 +18,7 @@
 	</xsl:template>
 
 	<xsl:template match="understanding | guideline | success-criterion">
-		<xsl:variable name="subpath">
-			<xsl:choose>
-				<xsl:when test="version = 'WCAG20'">20/</xsl:when>
-				<xsl:when test="version = 'WCAG21'">21/</xsl:when>
-			</xsl:choose>
-		</xsl:variable>
+		<xsl:variable name="subpath" select="concat(max($versions.doc//id[@id = current()/@id]/parent::version/@name), '/')"/>
 		<xsl:variable name="input.uri" select="resolve-uri(concat(file/@href, '.html'), concat($base.dir, $subpath))"/>
 		<xsl:variable name="input.doc" select="document($input.uri)"/>
 		<xsl:result-document href="{resolve-uri(concat(file/@href, '.html'), concat($output.dir, $subpath))}" encoding="utf-8" exclude-result-prefixes="#all" include-content-type="no" indent="yes" method="xhtml" omit-xml-declaration="yes">
