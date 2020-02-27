@@ -8,7 +8,7 @@ var respecConfig = {
 	permalinkHide:     false,
 	tocIntroductory: true,
 	// specification status (e.g., WD, LC, NOTE, etc.). If in doubt use ED.
-	specStatus:           "ED",
+	specStatus:           "unofficial",
 	//crEnd:                "2012-04-30",
 	//perEnd:               "2013-07-23",
 	//publishDate:          "2013-08-22",
@@ -148,8 +148,6 @@ var respecConfig = {
 	// Team Contact.
 	wgPatentURI:  "https://www.w3.org/2004/01/pp-impl/35422/status",
 	maxTocLevel: 4,
-	
-	localBiblio: biblio,
 	
 	postProcess: [addTextSemantics, swapInDefinitions]
 	

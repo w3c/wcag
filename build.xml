@@ -152,7 +152,7 @@
 ]]></echo>
 	</target>
 	
-	<target name="techniques-association" depends="flatten, guidelines-xml" description="Build an XML structure of all techniques">
+	<target name="techniques-association" depends="flatten, guidelines-xml, guidelines-versions" description="Build an XML structure of all techniques">
 		<makeurl file="${basedir}/techniques" property="techniques.dir"/>
 		<makeurl file="${basedir}/understanding" property="understanding.dir"/>
 		<xslt in="${inputdir.guidelines}/wcag.xml" out="${inputdir.techniques}/technique-associations.xml" style="xslt/generate-technique-associations.xslt">
@@ -234,8 +234,10 @@
 		</xslt>
 		<copy file="understanding/understanding.css" todir="output/understanding/"/>
 		<copy file="css/slicenav.css" todir="output/understanding/"/>
-		<copy todir="output/understanding/img/">
-			<fileset dir="understanding/21/img"/>
+		<copy todir="output/understanding/img/" flatten="true">
+			<fileset dir="understanding">
+				<patternset includes="*/img/*"/>
+			</fileset>
 		</copy>
 	</target>
 	

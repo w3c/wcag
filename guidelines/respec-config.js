@@ -20,7 +20,7 @@ var respecConfig = {
 	
 	// if you wish the publication date to be other than today, set this
 	//publishDate:  "2014-12-11",
-	copyrightStart:  "2019",
+	copyrightStart:  "2020",
 	license: "document",
 	
 	// if there is a previously published draft, uncomment this and set its YYYY-MM-DD date
@@ -31,7 +31,7 @@ var respecConfig = {
 	//previousDiffURI: "https://www.w3.org/TR/2014/REC-wai-aria-20140320/",
 	
 	// if there a publicly available Editors Draft, this is the link
-	edDraftURI: "https://w3c.github.io/wcag/22/guidelines/",
+	edDraftURI: "https://w3c.github.io/wcag/guidelines/22/",
 	
 	// if this is a LCWD, uncomment and set the end of its review period
 	// lcEnd: "2012-02-21",
@@ -137,8 +137,6 @@ var respecConfig = {
 	// Team Contact.
 	wgPatentURI:  "https://www.w3.org/2004/01/pp-impl/35422/status",
 	maxTocLevel: 4,
-	
-	localBiblio: biblio,
 	
 	postProcess: [addTextSemantics, swapInDefinitions]
 	
