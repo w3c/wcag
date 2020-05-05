@@ -253,6 +253,7 @@
 							<xsl:apply-templates select="$meta/content/html:*[position() &gt; 1]" mode="sc-info"/>
 						</blockquote>
 						<main>
+							<xsl:apply-templates select="//html:section[@id = 'status']"/>
 							<xsl:apply-templates select="//html:section[@id = 'intent']"/>
 							<xsl:apply-templates select="//html:section[@id = 'benefits']"/>
 							<xsl:apply-templates select="//html:section[@id = 'examples']"/>
