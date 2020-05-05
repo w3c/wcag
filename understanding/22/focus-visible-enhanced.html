@@ -39,7 +39,12 @@
 
         <p>For sighted people with mobility impairments who use a keyboard-like device (e.g. a switch, voice input), knowing the current point of focus is very important. Visible focus must also meet the needs of low-vision users, who may also be keyboard-only users.</p>
             
-        <p>A keyboard focus indicator can take different forms, this success criterion sets a requirement to make it is clearly distinguishable.</p>
+        <p>A keyboard focus indicator can take different forms, this success criterion sets a requirement to make it clearly distinguishable. For example, using a thick outline around the control that contrasts with the background would pass this criterion.</p>
+
+        <figure id="focus-indicator-strong">
+            <img src="img/focus-indicator-strong.png" alt="Three links on a white background with the middle one encompassed in a thick black border." width="250" />
+            <figcaption>A strong indicator around a link.</figcaption>
+        </figure>
             
         <section id="keyboard-focus">
             <h3>Keyboard focus</h3>
@@ -54,39 +59,27 @@
 
             <p>The bigger the visible change the easier it is for someone to see, authors are encouraged to make the change as large as possible. For example, a thick outline around the element.</p>
 
-            <figure id="focus-indicator-strong">
-                <img src="img/focus-indicator-strong.png" alt="Three links on a white background with the middle one encompassed in a thick black border." width="250" />
-                <figcaption>A strong indicator around a link.</figcaption>
-            </figure>
-
-            <p>To determine the minimum size for conformance purposes you would need to measure the size of the element.</p>
+            <p>The minimum size of the focus indicator is 1 CSS pixel around the border of the element. The indicator does not have to be a border, but the size of the area must be at least that size.</p>
 
             <p class="note">A <a>CSS pixel</a> is what developers use in CSS declarations like “width: 200px”, it is device-independent and not to be confused with device pixels which vary depending on the physical pixel density. <br />
                 The rest of this document notates CSS pixels as "px".
             </p>
 
-            <p>To establish if a focus indicator has a size equivalent to at least a 2px line along the longest side: If a link is 90px wide by 30px tall, the indicator would need to be have a minimum area of 180px square. (I.e. 2px wide along the longest side is 2 x 90px.)</p>
+            <p>For example, if a control is a rectangle of 90px wide and 30px tall, the size of the outer border is 90 + 90 + 30 + 30 = 240.</p>
 
-            <p>The following 3 examples use a 90px wide by 30px tall button, therefore the surface area requirement is 180px. The middle button is focused in each example.</p>
+            <p>The following 3 examples use a 90px wide by 30px tall button, therefore the surface area requirement is 240px. The middle button is focused in each example.</p>
 
             <figure id="focus-indicator-innerline">
                 <img src="img/focus-indicator-innerline.png" alt="Three dark blue buttons on a white background. The middle button has a yellow inner border." width="284" />
-                <figcaption>The inner outline is slightly smaller than the outer edge of the component, but using a 2px thick indicator means it is well over the minimum requirement of 180px squared.</figcaption>
+                <figcaption>@@@ Update. The inner outline is slightly smaller than the outer edge of the component, but using a 2px thick indicator means it is well over the minimum requirement of 180px squared.</figcaption>
             </figure>
 
             <figure id="focus-indicator-underline">
                 <img src="img/focus-indicator-underline.png" alt="Three dark blue buttons on a white background. The middle button has a thick yellow line under the text." width="284" />
-                <figcaption>The thick (3px) yellow underline is almost as long as the longest edge therefore meets the requirment.</figcaption>
-            </figure>
-
-            <figure id="focus-indicator-icon">
-                <img src="img/focus-indicator-icon.png" alt="Three dark blue buttons on a white background. The middle button has a yellow square to the left of the text." width="284" />
-                <figcaption>The 14px by 14px yellow square is 196px therefore meets the requirment.</figcaption>
+                <figcaption>@@@ Update.The thick (3px) yellow underline is almost as long as the longest edge therefore meets the requirment.</figcaption>
             </figure>
 
             <p>If controls change size across different variations of a page (e.g. in a responsive design), it helps to use a proportionally sized indicator such as an outline or background change. In that way you can be sure of meeting the size requirement.</p>
-
-            <p>If controls change size and you use a fixed size indicator (such as an icon of a fixed size) you would need to calculate the largest size a control could be in order to provide an indicator that meets the size requirement across variations.</p>
 
             <p>Typical focus indicators:</p>
             <ul>
@@ -99,16 +92,13 @@
 
             <section id="unsual-shapes">
                 <h4>Unusual shapes and gradients</h4>
-
             
-                <p>If you have an unusal shape, some mathematics may be required if the focus indicator is on the edge of the size requirement. For example, if the focusable control is a circle with a diameter of 100px, the bounding box of that component would be a square of 100px on each side. If the focus indicator is also circular, then the area needs to 100px * 2 = 200px.</p>
+                <p>If you have an unusual shape, some mathematics may be required if the focus indicator is on the edge of the size requirement. For example, if the focusable control is a circle with a diameter of 100px, the circumference would be 314 pixels. A 1px (or greater) outline would meet the size criteria.</p>
 
                 <figure id="focus-indicator-circle">
                     <img src="img/focus-indicator-circle.png" alt="Two orange circlular buttons with an icon in the middle. The right hand circle has a dark outline around the whole cicle to indicate focus" width="150" />
                     <figcaption>A circular button in the default state, and then with a focus indicator.</figcaption>
                 </figure>
-
-                <p>The circumference of a 100px diameter circle would be 314px (diameter * π), therefore a 1px outline around the cicle will be 314px of surface area, meeting the requirement for a 200px surface area.</p>
 
                 <p>If a focus indicator is an irregular shape, such as a drop-shadow under a star icon, it helps if the contrasting area is obviously quite large.</p>
 
@@ -119,14 +109,14 @@
 
                 <p>What is the contrasting area of the drop shadow? The quick method is:</p>
                 <ul>
-                    <li>Look at the size of the component, and imagine a box around it, how long is the longest edge?</li>
+                    <li>Look at the size of the component, how long is it around the edges?</li>
                     <li>Look at the (contrasting) area of the focus indicator.</li>
-                    <li>Mentally compare the focus indicator to the length of the longest edge * 2px.</li>
+                    <li>Mentally compare the focus indicator to the border of the component.</li>
                 </ul>
 
                 <p>If it is too close to call, you could extract the contrasting area of the focus indicator and evaluate the surface area.</p>
 
-                <p>If a focus indicator has a gradient, the principle is to measure the contrast of the changed area, and ignore the change that does not me 3:1.</p>
+                <p>If a focus indicator has a gradient, the principle is to measure the contrast of the changed area, and ignore the change that does not meet 3:1.</p>
                 <figure id="focus-indicator-box-shadow">
                     <img src="img/focus-indicator-box-shadow.png" alt="Three buttons, the middle with a heavy drop-shadow indicating focus." />
                     <figcaption>When a gradient is used on a focus indictor, the measure of surface area should only include the area that has changed enough to meet the 3:1 contrast ratio.</figcaption>
