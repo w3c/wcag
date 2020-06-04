@@ -19,14 +19,14 @@ var respecConfig = {
 	
 	
 	// if you wish the publication date to be other than today, set this
-	//publishDate:  "2014-12-11",
+	//publishDate:  "2020-06-04",
 	copyrightStart:  "2020",
 	license: "w3c-software-doc",
 	noRecTrack: true,
 	
 	// if there is a previously published draft, uncomment this and set its YYYY-MM-DD date
 	// and its maturity status
-	//previousPublishDate:  "2014-06-12",
+	//previousPublishDate:  "2020-06-04",
 	//previousMaturity:  "WD",
 	//prevRecURI: "https://www.w3.org/TR/2018/REC-WCAG21-20180605/",
 	//previousDiffURI: "https://www.w3.org/TR/2014/REC-wai-aria-20140320/",
