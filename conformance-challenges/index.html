@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
     <head>
         <meta charset="UTF-8" />
-        <title>Challenges with Accessibility Guidelines Conformance and Testing</title>
+        <title>Challenges with Accessibility Guidelines Conformance and Testing, and Approaches for Mitigating Them</title>
         <script src="https://www.w3.org/Tools/respec/respec-w3c-common" class="remove"></script>
     	<script src="../script/wcag.js" class="remove"></script>
     	<script src="respec-config.js" class="remove"></script>
@@ -11,55 +11,176 @@
     </head>
     <body>
         <section id="abstract">
-            <p>This document explores situations for which the WCAG 2.x conformance model, and success criteria testability, are challenging to apply to a broad range of websites and web applications. The challenges covered broadly fall into four main areas:</p>
+		
+		<!--
+		<div class ="ednote"> 
+			<p>Publication as a Working Draft does not necessarily represent a consensus of the Working Group and does not imply endorsement by the W3C Membership. This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite this document as other than work in progress.</p>
+			<p>	The intent of this Working Draft by the Accessibility Guidelines Working Group is to explore how to improve the testability and page-based conformance 
+			verification of the WCAG accessibility guidelines in order to incorporate improvements into a future version of the guidelines.
+			This draft is published to obtain public review of the issues identified and solutions proposed. </p>
+		</div>
+		-->
+		
+		<p>This document explores how the page-based conformance verification of the WCAG 2.0 and 2.1 accessibility guidelines are challenging to apply to certain websites and web applications.
+            This document also explores ideas on how future versions of guidelines might address these challenges. 
+			This document focuses primarily on challenges to large, highly complex, dynamic sites.  
+			Other efforts in WAI are looking at different aspects of conformance for different types of sites.</p>
+         
+		<p>The challenges covered broadly fall into four main areas:</p>
             <ol>
-		    <li>Numerous WCAG Guidelines and Success Criteria need human involvement to test and verify conformance, which is especially challenging to scale for <a>large websites</a> and for <a>dynamic websites</a>;</li>
-			    <li>Large and dynamic sites may have too many changing permutations to validate effectively;</li>
+		    <li>Numerous provisions need human involvement to test and verify conformance, which is especially challenging to scale for <a>large websites</a> and for <a>dynamic websites</a>;</li>
+			    <li>Large and dynamic sites with their changing permutations may be difficult to validate;</li>
 			<li>Third parties frequently add and change content on large and dynamic sites;</li>
-                <li>Applying the WCAG 2.x conformance model can be challenging to do for non-Web Information and Communications Technologies (ICT).</li>
+                <li>Applying a web-based, and page-based conformance model can be challenging to do for non-web Information and Communications Technologies (ICT).</li>
             </ol>
-	    <p>The purpose of this document is to help understand these challenges more holistically, so that we can build better solutions in WCAG 3.0 (now in early development) where the <a href="https://www.w3.org/2019/12/ag-charter.html#scope">W3C Working Group Charter</a> expressly calls for a new conformance model.</p>
+	    <p>The purpose of this document is to help understand those challenges more holistically, and explore approaches to mitigating those challenges so that we can address the
+	    challenges more fully in future accessibility guidelines such as WCAG 3.0 (now in early development) where the <a href="https://www.w3.org/2019/12/ag-charter.html#scope">W3C Working Group Charter</a> expressly anticipates a new conformance model.</p>
         </section>
         <section id="sotd">
-            <p>To comment, <a href="https://github.com/w3c/wcag/issues/new">file an issue in the <abbr title="World Wide Web Consortium">W3C</abbr> WCAG GitHub repository</a>. Please associate your issue with the "Challenges with Conformance" WCAG label. Although the proposed Success Criteria in this document reference issues tracking discussion, the Working Group requests that public comments be filed as new issues, one issue per discrete comment. It is free to create a GitHub account to file issues. If filing issues in GitHub is not feasible, send email to <a href="mailto:public-agwg-comments@w3.org?subject=WCAG%202.2%20public%20comment">public-agwg-comments@w3.org</a> (<a href="https://lists.w3.org/Archives/Public/public-agwg-comments/">comment archive</a>).</p>
+        	<p>To comment, <a href="https://github.com/w3c/wcag/issues/new">file an issue in the <abbr title="World Wide Web Consortium">W3C</abbr> WCAG GitHub repository</a>. Please indicate your issue is for this document by using the word <q>Challenges:</q> as the first word of your issue's title. Although the proposed Success Criteria in this document reference issues tracking discussion, the Working Group requests that public comments be filed as new issues, one issue per discrete comment. It is free to create a GitHub account to file issues. If filing issues in GitHub is not feasible, send email to <a href="mailto:public-agwg-comments@w3.org?subject=Challenges%20public%20comment">public-agwg-comments@w3.org</a> (<a href="https://lists.w3.org/Archives/Public/public-agwg-comments/">comment archive</a>).</p>
         </section>
         <section class="introductory" id="intro">
             <h2>Introduction</h2>
 	    <section class="introductory">
 		    <h3>Problem Statement</h3>
 
-            <p>The Web Content Accessibility Guidelines list a <a href="https://www.w3.org/TR/WCAG20/#conformance">set of normative requirements "in order for a web page to conform to" WCAG 2.x</a>, including setting forth that conformance "is for full Web page(s) only, and cannot be achieved if part of a Web page is excluded", along with a Note that states "If a page cannot conform (for example, a conformance test page or an example page), it cannot be included in the scope of conformance or in a conformance claim). The conformance requirements also set forth what is allowed in any optional "Conformance Claims", starting with text that states: "Conformance is defined only for  <a href="https://www.w3.org/TR/WCAG20/#webpagedef">Web pages</a>. However, a conformance claim may be made to cover one page, a series of pages, or multiple related Web pages".</p>
-
-            <p>For the purposes of this document, we use the term "WCAG 2.x conformance model" to refer to the normative text in the <a href="https://www.w3.org/TR/WCAG20/#conformance">Conformance section</a> of WCAG 2.0 and WCAG 2.1.  We also note that this model was expressly defined for individual full web pages of a website, or for a series of web pages when they represent a process, and not for an entire website.</p>
-            <p>Large websites are often highly complex, with substantial dynamic content, including content updates, new content, and user interface changes that happen almost continuously, perhaps at the rate of hundreds or even thousands of page updates per second. This is especially the case where third parties are actively populating and changing site content, such as website users contributing content. Fundamentally, these large sites are never finished. Some portion is always changing. In such situations, we should anticipate that portions of a web site will be incomplete or evolving for various reasons at any moment.  Thus, the likelihood that every last page (out of what might be millions or billions of pages) can satisfy each and every one of the WCAG success criteria 100% of the time is extremely low. </p>
-	    <p>The WCAG 2.x conformance model contains a mitigation related partial conformance for 3rd party content (see <a href="Challenge-3.1">Sec. 3.1: Treatment of 3rd party content and Statements of Partial Conformance</a> below).  Further in recognition of these challenges, in July 2014, the Accessibility Working Group released the <a href="http://www.w3.org/tr/wcag-em/">Website Accessibility Conformance Evaluation Methodology (WCAG-EM) 1.0</a> to provide "guidance on evaluating how well websites conform to the Web Content Accessibility Guidelines". This W3C document "describes a procedure to evaluate websites and includes considerations to guide evaluators and to promote good practice", which can help organizations to make a conformance claim, while acknowledging that there may be errors on pages not in the sample set or that were not picked up by automated evaluation tools on pages that were not in the human evaluation sample. While a useful methodology for providing confidence in either a prior claim of 100% conformance across a website or as part of an internal process to help an organization assess their progress toward 100% conformance, in and of itself it doesn't address the challenges in making every last aspect of every page conform 100% to every success criterion. Finally, the <a href="http://www.w3.org/tr/atag/">Authoring Tool Accessibility Guidelines 2.0 (ATAG)</a> "provides guidelines for designing web content authoring tools that are both more accessible to authors with disabilities" as well as "is designed to enable, support, and promote the production of more accessible web content by all authors".  Leveraging authoring tools can significantly help with a number of the challenges with accessibility guidelines conformance and testing, and in future versions of this document we hope to describe those in more detail. Nonetheless, neither WCAG-EM nor ATAG are able to fully address the many challenges described in this document.
-	    </p> 
-       <p>Separately, the phrase "substantially conforms to WCAG" is coming into use as one way of conveying the status of a website that is broadly accessible, but not 100% perfect, given the challenges noted above. Unfortunately, that phrase has no W3C definition, nor does it actually address the accessibility challenges with testing and conformance themselves – it is simply a convention for communication (and an imprecise one at that).</p>
-
+<p>Assessing the accessibility of a website is of critical importance.
+Website authors want to have website accessibility assessments so they can
+understand the places where visitors with disabilities may be unable to use
+that site so that they can address them as much as possible.  External
+parties who have an interest in the accessibility of a website likewise want
+to have website assessments so they can understand whether the site meets
+their accessibility fitness criteria.  To aid in this assessment, the
+<a href="https://www.w3.org/WAI/GL/"> Accessibility Guidelines Working Group
+(AGWG)</a> of the <a href="http://www.w3.org">World Wide Web Consortium
+(W3C)</a> developed the <a href="https://www.w3.org/TR/WCAG21/">Web Content
+Accessibility Guidelines (WCAG</a>), containing
+both a rich set of success criteria to meet the needs of people with
+disabilities, as well as conformance requirements for same.  Assessing
+conformance of a website to all of the success criteria is how accessibility
+assessments have been done to date, either through assessing every individual
+page, or through a page sampling approach.
+</p>
 <p>While the challenges discussed in this document apply to websites and web applications broadly, this early version of the document focuses particularly on situations involving large, dynamic, and <a>complex websites</a>.
-Notwithstanding guidance that one can make a statement of <a href="Challenge-3.1">partial conformance for third party provided content</a> &mdash; notwithstanding the best practices, testing, and evaluation guidance provided by the <a href="http://www.w3.org/tr/wcag-em/">Website Accessibility Conformance Evaluation Methodology (WCAG-EM)</a>, the WCAG 2.x conformance model requires 100% conformance and supports formal conformance claims only at the page level. Despite popular belief to the contrary, it provides no model for more broadly scoped conformance claims.
+There are valid reasons WCAG 2 and related resources have the conformance
+model they do; failures to conform to the current model are likely to present a barrier for people with disabilities. 
+The issues raised in this document do not mean sites should
+not strive to conform to WCAG 2. It is also vital to consider aspects beyond the conformance model that lead to accessibility issues found during late stage testing, such as the lack of accessibility prioritization, training, and integration throughout the design, development, and maintenance processes. A new version of accessibility guidelines, W3C Accessibility Guidelines 3.0 (WCAG 3.0), rethinks all aspects of the accessibility guidance and is expressly chartered to develop a new conformance model that will help to address these challenges. 
+	    </p>
+		    <p>
+Large websites are often highly complex, with substantial dynamic content,
+including content updates, new content, and user interface changes that happen
+almost continuously, perhaps at the rate of hundreds or even thousands of page
+updates per second. This is especially the case where third parties are
+actively populating and changing site content, such as website users
+contributing content. Ensuring that every one of these page updates fully
+satisfies all success criteria (as appropriate), especially where expert human
+review is required for some criteria presents a problem for scaling conformance assessments.
+Further, where pages are generated programmatically, finding every bug
+related to that generation may prove challenging, especially when they only
+arise from uncommon content scenarios or combinations (and updates to those
+algorithms and code happen multiple times per week). It is incumbent on websites - especially for large, complex, dynamic websites - to do everything they can to conform. However, to date, no large, complex software has been bug free.  Similarly, authors of large, dynamic, and complex sites have struggled to claim conformance with no accessibility defects on any page.
+		    </p>
+
+		    <p>Assessing conformance of such large, highly complex, dynamic sites to the <a href="https://www.w3.org/TR/WCAG20/">Web Content Accessibility Guidelines (WCAG) 2.0</a> [[wcag20]] or <a href="https://www.w3.org/TR/WCAG21/">2.1</a> [[wcag21]] has proved difficult. The <a href="https://www.w3.org/TR/WCAG20/#conformance">Web Content Accessibility Guidelines 2.0 include a set of normative requirements</a> <q>in order for a web page to conform to WCAG 2.0,</q> including that conformance <q>is for full Web page(s) only, and cannot be achieved if part of a Web page is excluded,</q> along with a Note that states <q>If a page cannot conform (for example, a conformance test page or an example page), it cannot be included in the scope of conformance or in a conformance claim.</q> The conformance requirements also state what is allowed in any optional <q>Conformance Claims,</q> starting with: <q>Conformance is defined only for  <a href="https://www.w3.org/TR/WCAG20/#webpagedef">Web pages</a>. However, a conformance claim may be made to cover one page, a series of pages, or multiple related Web pages.</q>  For the purposes of this document, we use the term <q>WCAG 2.x conformance model</q> to refer to the normative text in the <a href="https://www.w3.org/TR/WCAG20/#conformance">Conformance section</a> of WCAG 2.0 and WCAG 2.1.
+		    </p>
+
+<p>This WCAG 2.x conformance model contains a mitigation related to partial conformance for 3rd party content (see <a href="#Challenge-3.1">Sec. 3.1: Treatment of 3rd party content and Statements of Partial Conformance</a> below). Further in recognition of these challenges, the W3C Note <a href="http://www.w3.org/tr/wcag-em/">Website Accessibility Conformance Evaluation Methodology (WCAG-EM) 1.0</a> [[wcag-em]] was published in 2014 to provide <q>guidance on evaluating how well websites conform to the Web Content Accessibility Guidelines.</q> This W3C document <q>describes a procedure to evaluate websites and includes considerations to guide evaluators and to promote good practice,</q> which can help organizations to make a conformance claim, while acknowledging that there may be errors on pages not in the sample set or that were not picked up by automated evaluation tools on pages that were not in the human evaluation sample. While WCAG-EM provides a practical method for claiming conformance for a website, it doesn't fully address the challenges in making every part of every page in a large, dynamic website conform to every success criterion.
+</p>
+
+<p>
+Also, the <a href="http://www.w3.org/tr/atag/">Authoring Tool Accessibility Guidelines 2.0 (ATAG)</a> [[atag20]] <q>provides guidelines for designing web content authoring tools that are both more accessible to authors with disabilities</q> as well as <q>is designed to enable, support, and promote the production of more accessible web content by all authors.</q> Leveraging ATAG-conformant authoring tools can significantly help with preventing accessibility issues from occurring on a website. A number of the challenges with conformance could be addressed with authoring tools, and in future versions of this document we hope to describe those in more detail. 
+</p>
+
+<p>
+Further, the <a
+	href="https://www.w3.org/WAI/RD/2011/metrics/note/ED-metrics">Research
+	Report on Web Accessibility Metrics</a>
+[[accessibility-metrics-report]] from the <a
+	href="https://www.w3.org/WAI/RD/">Research and Development Working
+	Group (RDWG)</a>  explores the main qualities that website
+accessibility need to consider to communicate accessibility in a simple form
+such as a number.  One particularly interesting thing this research report
+explored are qualities such as the severity of an accessibility barrier and the
+time it takes for a site visitor to conduct a task, as alternative
+measures that could complement conformance-based metrics.  Unfortunately, this research report
+	was last updated in May 2014, and has not progressed to being a
+	published W3C Note.  The Research and Development Working Group was not renewed by W3C Membership in 2015, though a Research Questions Task Force, under the Accessible Platform Architecture (APA) Working Group, is able to look at similar types of issues.
+</p>
+
+<p>Finally, the <a
+href="http://www.w3.org/WAI/GL/task-forces/conformance-testing/">Accessibility
+Conformance Testing Task Force</a> and <a
+href="https://www.w3.org/community/act-r/">ACT Rules Community Group (ACT-R)</a>
+are working to standardize accessibility conformance testing methodologies.
+They are doing it through defining a W3C specification, published as a W3C Recommendation in
+2019, <a
+href="https://www.w3.org/TR/act-rules-format/">Accessibility Conformance Testing
+(ACT) Rules Format 1.0,</a> [[act-rules-format-1.0]] as well as considering ways to output metrics around
+what the tests find. This could contribute to an alternative to the conformance model, which requires a site to have no defects on any page to claim conformance.  Whenever possible, they are turning
+WCAG success criteria into automated test rules to enable accessibility
+testing on a large scale.  When effective automated tests are not
+possible, they are writing semi-automated or manual accessibility tests that
+are both informative and valuable.  It does not, however, speak to scaling
+tests that require human involvement, or the challenges of third-party
+content, or solve the problem of programmatically generated web pages.  While 
+they are all substantial contributions to the field of web accessibility,
+WCAG-EM, ATAG, and ACT task forces actively address different types of challenges,
+and do not fully address the challenges described in this document.
+	    </p> 
+	    <p>Separately, the phrase <q>substantially conforms to WCAG</q> is a way of conveying that a website is broadly accessible, but that not every page conforms to every requirement. Unfortunately, that phrase has no W3C definition today
+		and there is no definition or mechanism that sets a level for a site to meet that would qualify as substantial conformance.
 	    </p>
 	</section> 
+
+	    <section class="introductory" id="Approaches">
+		    <h3>Approaches for Mitigating Challenges with Accessibility Guidelines Conformance and Testing</h3>
+
+<p>In addition to describing in detail the challenges of
+assessing conformance, this document also explores some approaches to
+mitigating those challenges.  Each of the main challenges sections below
+describes one or more significant mitigation approaches.
+</p>
+
+<p>While some approaches may be more applicable to a particular website design than others; 
+and not all approaches may be appropriate or practical for a particular website, it is likely that many websites can 
+utilize at least some of these approaches. These approaches are proposed as ways through which these conformance challenges 
+might be able to be mitigated, while maximizing the likelihood that all website visitors will be able to use the site effectively. 
+Though the challenges described in this document illustrate that it is difficult for large, complex, and/or dynamic websites to ensure a site has no defects, 
+mitigation strategies may be able to create a website that people with disabilities can use even though some conformance issues exist.
+</p>
+
+	    </section>
+
 	    <section class="introductory" id="goal">
 	    <h3>Goals</h3>
 
-	    <p>This document is intended to catalog and characterize the challenges with accessibility guidelines conformance, and conformance verification that have arisen both through the multi-year research process preceding work on the next major revision of W3C accessibility guidelines to be known as the W3C Accessibility Guidelines (WCAG 3.0) which have been in development under the name "Silver", as well as through active <a href="https://www.w3.org/WAI/GL/task-forces/silver/wiki/Main_Page#Silver_Conformance">discussion of conformance taking place in the Silver Task force</a> subgroup of the W3C <a href="https://www.w3.org/WAI/GL/">Accessibility Guidelines Working Group (AGWG)</a>.</p>
-      <p>We believe that a better understanding of the situations in which the WCAG 2.x conformance model may be difficult or impossible to apply, and the places where accessibility conformance verification scales poorly if at all, can lead to more effective conformance models and testing approaches in the future.</p>     
+	    <p>This document has two key goals:</p>
+	    <ol>
+	    	<li>To develop, catalog, and characterize the challenges with accessibility guidelines conformance, and conformance verification that have arisen both through the multi-year research process preceding work on the next major revision of W3C accessibility guidelines to be known as the W3C Accessibility Guidelines (WCAG 3.0) which have been in development under the name <q>Silver,</q> as well as through active <a href="https://www.w3.org/WAI/GL/task-forces/silver/wiki/Main_Page#Silver_Conformance_.28Active.29">discussion of conformance taking place in the Silver Task force</a> subgroup of the W3C <a href="https://www.w3.org/WAI/GL/">Accessibility Guidelines Working Group (AGWG)</a>.</li>
+		    <li>To develop, catalog, and characterize mitigation approaches to these challenges, so that websites can be as accessible as possible, and are better able assess how well their sites are accessible to visitors with disabilities.</li>
+	    </ol>
+
+      <p>A better understanding of the situations in which the
+      WCAG 2.x conformance model may be difficult to apply could lead to more effective conformance models
+      and testing approaches in the future.</p>     
   
-      <p>It is important to recognize that success criteria in WCAG 2.x are quite distinct from the conformance model. These criteria describe approaches to content accessibility that are thoughtfully designed to enable people with a broad range of disabilities to effectively consume and interact with web content. Challenges with the conformance model and testing verification doesn't mean the criteria aren't valid. For example, while requiring human judgment to validate a page limits testing to sampling of templates, flows, and top tasks, etc. (see <a href="#Challenge-1">Challenge #1 below</a>), absent that human judgement it may not be possible to deliver a fully accessible web page. Similarly, while it may not be possible to ensure that all third party content is fully accessible (see <a href="#Challenge-3">Challenge #3 below</a>), absent review of that content by a human sufficiently versed in accessibility it may again not be possible to ensure that content is fully accessible. Human judgement is a core part of much of WCAG 2.x for good reasons, and the challenges that arise from it important to successfully grapple with.
+      <p>It is important to recognize that success criteria in WCAG 2.x are quite distinct from the conformance model. These criteria describe approaches to content accessibility that are thoughtfully designed to enable people with a broad range of disabilities to effectively consume and interact with web content. Challenges with the conformance model do not in any way invalidate the criteria. For example, while requiring human judgment to validate a page limits testing to sampling of templates, flows, and top tasks, etc. (see <a href="#Challenge-1">Challenge #1 below</a>), without that human judgement it may not be possible to deliver a page that makes sense to someone with a disability. Similarly, while it may not be possible to know that all third party content is fully accessible (see <a href="#Challenge-3">Challenge #3 below</a>), without review of that content by someone sufficiently versed in accessibility it may not be possible to be sure that pages containing third party content fully conform to WCAG 2.x. Human judgement is a core part of much of WCAG 2.x for good reasons, and the challenges that arise from it are important to successfully grapple with.</p>
 	    </section>
       <section class="introductory">
             <h3>Additional Background</h3>
+       <p>One of the reasons for publishing this draft document is to seek additional contributions from the wider web community:</p>
+        <ul>
+            <li>Any additional challenges, or further illustration of challenges in the existing identified areas below;</li>
+            <li>Contributions to the mitigation approaches, and questions or concerns about the mitigation approaches;</li>
+        </ul>
+       <p>We seek to gain a thorough understanding of the challenges faced by large, complex, and dynamic websites who are attempting to provide accessible services to their web site users. It is expected that a more thorough understanding of these challenges can lead to either a new conformance model, or an alternative model that is more appropriate for large, complex, and/or dynamic websites (in WCAG 3.0).</p>
 
-            <p>One of the reasons for publication of this document as a First Public Working Draft is to seek additional contributions describing any additional challenges, or further illustration of challenges in the existing identified areas below, ahead of work developing solutions. It is expected that a more thorough understanding of these challenges can lead to either a new conformance model, or an alternative model that is more appropriate for large, complex, and/or dynamic websites.  Ideally, such a model would also be able to distinguish between websites that are substantially accessible for most visitors with disabilities most of the time, and websites that are largely unusable by a significant portion of visitors with a disability.</p>
-	    <p>Not present in this initial release of the document is a discussion of techniques to address or otherwise minimize the magnitude of the challenges cited.  This is by design, as the purpose of this early stage of the document is to fully enumerate
-	    challenges, ahead of and in service toward enumerating existing techniques and developing new techniques that can help address those challenges.</p>
-            <p>This document also includes previously published research from the Silver Task Force and Community Group that was specifically related to Challenges with Accessibility Guidelines Conformance and Testing. There is some
+        <p>This document also includes previously published research from the Silver Task Force and Community Group that was related to Challenges with Accessibility Guidelines Conformance and Testing. There is some
 	    overlap between the challenges captured in this published research, and the challenges enumerated in the first 4 sections of this document. The research findings will be folded into the other sections as appropriate in
 	    future versions of this document.</p>
-	    <p>We are publishing this document now, as a First Public Working Draft, to seek public comment and assistance in further cataloging and characterizing these challenges, so that this work can become input into the next major
-	    revision of <abbr title="World Wide Web Consortium">W3C</abbr> accessibility
-	    guidelines  (now chartered by <abbr title="World Wide Web Consortium">W3C</abbr> for eventual release as WCAG 3.0 and currently in early development under the name  "Silver").</p>
+	    <p>Present in this current draft of this document is an initial discussion of approaches to mitigate the impact of the challenges cited. Previous drafts emphasized collecting a comprehensive inventory of challenges, we believe our collection is now sufficiently mature to begin enumerating and considering the various mitigating approaches that have been suggested by various stakeholders. We are publishing this document now to seek wide review to further catalogue and characterize the challenges and mitigation approaches, so that this work can become input into the next major revision of W3C accessibility guidelines (now <a href="https://www.w3.org/2019/12/ag-charter.html">chartered by W3C for eventual release as WCAG 3.0</a>).
+	    </p>
 	    </section>
 	</section>
 
@@ -68,37 +189,63 @@ Notwithstanding guidance that one can make a statement of <a href="Challenge-3.1
 			<p>The following terms are used in this document:</p>
 			<dl>
 				<dt><dfn>large websites</dfn></dt>
-				<dd>Websites with hundreds of thousands of pages or more.</dd>
+				<dd>Websites with thousands of pages, let alone hundreds of thousands or more.</dd>
 				<dt><dfn>dynamic websites</dfn></dt>
-				<dd>Websites that are being updated with new content hundreds of times a second or more.</dd>
+				<dd>Websites that are constantly being updated with new content, possibly hundreds of times an hour, or even thousands of times per second.</dd>
 				<dt><dfn>complex websites</dfn></dt>
-				<dd>Web apps that are similar in scope to complex desktop applications (e.g. a full-fledged spreadsheet or word processor web application).  Or websites with a large portion of pages that are generated upon demand, pulling from dozens or more different content sources.</dd>
+				<dd>Web apps that are similar in scope to complex desktop applications (e.g. a full-fledged spreadsheet or word processor web application). Or websites with a large portion of pages that are generated upon demand, pulling from dozens or more different content sources.</dd>
 	</dl>
       </section>
 	<section id="Challenge-1">
             <h2>Challenge #1: Scaling Conformance Verification</h2>
-            <p>A challenge common to many of the WCAG Guidelines and Success Criteria is the inability for automatic testing to fully validate conformance to WCAG 2.x and the subsequent time, cost, and expertise needed to perform the necessary manual test to cover the full range of the requirements.  
-HTML markup can be automatically validated to confirm that it is used according to specification, but a human is required to verify whether the HTML elements used correctly reflect the meaning of the content. For example, text on a web page marked as contained in a paragraph element may not trigger any failure in an automated test, nor would an image with alternative text  equal to "red, white, and blue bird", but a human will identify that the text needs to be enclosed in a heading element to reflect the actual use on the page, and also that the proper alternative text for the image is "American Airlines logo". Many existing accessibility success criteria expect informed human evaluation to ensure that the end users benefit from conformance.
+            <p>A challenge common to many success criteria is the inability for automatic testing to fully validate conformance and the subsequent time, cost, and expertise needed to perform the necessary manual test to cover the full range of the requirements. 
+	    HTML markup can be automatically validated to confirm that it is used according to specification, but a human is required to verify whether the HTML elements used correctly reflect the meaning of the content. For example, text on a web page marked as contained in a paragraph element may not trigger any failure in an automated test, nor would an image with alternative text  equal to <q>red, white, and blue bird,</q> but a human will identify that the text needs to be enclosed in a heading element to reflect the actual use on the page, and also that the proper alternative text for the image is <q>American Airlines logo.</q> Many existing accessibility success criteria require an informed human evaluation to ensure that the human end-users benefit from conformance.
 	    The same can be said of very large web-based applications that are developed in an agile manner with updates delivered in rapid succession, often on an hourly basis.</p>
             <p>We can think of this as the distinction between quantitative and qualitative analysis. We know how to automatically test for and count the occurrences of relevant markup. However, we do not yet know how to automatically verify the quality of what that markup conveys to the user. In the case of adjudging appropriate quality, informed human review is still required.</p>
+<p class="mitigation">There are a number of approaches for mitigating scaling
+challenges.  For example, if pages can be built using a small number of page
+templates that are fully vetted for conformance to criteria relating to
+structure, heading use, and layout, then pages generated with those templates
+are much more likely to have well defined headings and structure.  Further, if pages are 
+limited to rendering images that come from a fully vetted library of images that have well 
+defined ALT text, and these images are always used in similar contexts (i.e., a store inventory)
+ then issues with poor ALT text can be minimized if not entirely eliminated.  Another approach that can be used in
+some situations is to encode website content in a higher-level abstraction
+from HTML (e.g. a wiki-based website, when content authors can specify that a
+particular piece of text is to be emphasized strongly [which would be rendered
+within a <code><strong></strong></code> block], but they cannot specify that a
+particular piece of text is to be made boldface [so that <code><b></b></code> is never part of the website]).  While none of these approaches can mitigate every challenge in conformance and testing with every success criterion, they are powerful approaches where applicable to help minimize accessibility issues in websites.
+</p>
 	    <p><a href="#Appendix-A">Appendix A</a> describes challenges with applying the WCAG 2.x conformance model to specific Guidelines and Success Criteria, primarily based on required human involvement in evaluation of conformance to them. In this draft, the list is not exhaustive, but we intend it to cover all known challenges with all A and AA Success Criteria, by the time this Note is completed.</p>
         </section>
 	<section id="Challenge-2">
             <h2>Challenge #2: Large, complex, and dynamic websites may have too many changing permutations to validate effectively</h2>
-            <p>Large websites often have complex content publishing pipelines, which may render content dynamically depending upon a large number of variables (such as what is known about the logged in user and her content preferences, the geographical location that the user is visiting the site from, and the capabilities of the web rendering agent being used).  It may not be possible to validate every possible publishing permutation with a page-level test, each of which can have an impact on whether that particular rendering of the content at that particular moment conforms under the WCAG 2.x conformance model.</p>
+            <p>Large websites often have complex content publishing pipelines, which may render content dynamically depending upon a large number of variables (such as what is known about the logged in user and her content preferences, the geographical location that the user is visiting the site from, and the capabilities of the web rendering agent being used). It is difficult, and may not be feasible, to validate every possible publishing permutation with a page-level test, each of which can have an impact on whether that particular rendering of the content at that particular moment conforms.</p>
+<p class="mitigation">Approaches used in quality assurance and quality engineering of software code
+can be used with software that generates dynamic web content.  One of these is
+Unit Testing (or Component Testing), where each individual step in the content
+publishing pipeline is tested independent of the other, with a broad range of
+possible valid and invalid content.  Another is Integration Testing, where the
+individual Units or Components of the software are combined in pairs, to
+validate their interoperability across a wide range of possible interactions.
+These approaches and others for quality assurance of complex software systems
+are effective tools for minimizing the number of bugs in the system, though
+there is no guarantee of finding all potential bugs, or assuring a software
+system is bug-free. 
+</p>
         </section>
 	<section id="Challenge-3">
             <h2>Challenge #3: 3rd party content</h2>
-            <p>Very large, highly dynamic web sites generally aggregate content provided by multiple entities. Many of these are third parties with the ability to add content directly to the website – including potentially every website visitor. While the website can provide guidance on how to post content so that it meets WCAG Guidelines and Success Criteria, it is ultimately up to those third parties to understand and correctly implement that guidance.  And as noted above, even with automated checking prior to accepting the post, many Guidelines and Success Criteria expect human validation involvement.</p>
-            <p>Copyright and similar constraints that restrict the ability to modify or impose requirements on third party data can also make full page conformance impossible to assure. For instance: articles that allow reposting but without modification due to copyright restrictions.</p>
+            <p>Very large, highly dynamic web sites generally aggregate content provided by multiple entities. Many of these are third parties with the ability to add content directly to the website — including potentially every website visitor. The relationship to the 3rd party can be that of a user, a customer, or a professional provider of content such as an advertiser. While the website can provide guidance on how to post content so that it meets accessibility guidance, it is ultimately up to those third parties to understand and correctly implement that guidance. Constraints on page templates and editing facilities can greatly help minimize accessibility issues but, even with automated checks prior to accepting the post, some Success Criteria require human assessment.</p>
+            <p>Copyright, commercial agreements, and similar constraints that restrict the ability to modify or impose requirements on third party content can also make full conformance claims infeasible.</p>
 	    <section id="Challenge-3.1">
 <h3>Treatment of 3rd party content and Statements of Partial Conformance</h3>
 <p>WCAG 2.x speaks to 3rd party content and conformance, in the context of a 
-<a href="https://www.w3.org/TR/WCAG21/#conformance-partia">Statement of
-Partial Conformance</a>. It provides two options for such content&mdash;that
-pages with 3rd party content may:
+<a href="https://www.w3.org/TR/WCAG21/#conformance-partial">Statement of
+Partial Conformance</a>. [[wcag21]] It provides two options for such content — that
+pages with 3rd party content may:</p>
 <ol>
-<li>Make a determination of conformance "based on best knowledge," for example
+	<li>Make a determination of conformance <q>based on best knowledge,</q> for example
 by monitoring and repairing non-conforming content within 2 business days;
 or</li>
 <li>Make a statement of partial conformance if the page could conform if the
@@ -107,27 +254,72 @@ or</li>
 <p>The provision of monitoring and required repair within a 2 business day
 window doesn't address the underlying challenge of pages with (3rd party)
 content that may be updating tens or hundreds of times within that 2 day
-window.  For <a>large websites</a> with
+window. For <a>large websites</a> with
 hundreds of thousands of pages or more with a significant amount of 3rd
 party content, the necessity for human involvement in the evaluation of 3rd
 party content doesn't scale.</p>
-<p>A statement of partial conformance doesn't address the underlying challenge of improving the usability of 3rd party content.   While it might allow a web page/website visitor to be forewarned in advance that they should 
+<p>A statement of partial conformance doesn't address the underlying challenge of improving the usability of 3rd party content.  While it might allow a web page/website visitor to be forewarned in advance that they should 
 anticipate encountering inaccessible content, it does little to practically enable large sites to address such concerns.</p>
+
+<p class="mitigation">There are several approaches to the challenge of 3rd
+party content accessibility.  Where that content is provided as part of a
+commercial contract, the terms of the contract may include requirements around
+accessibility.  Where the content comes from potentially any website visitor or
+user, those visitors can be constrained in the types of contributions they can
+make (e.g. prevented from using non-semantic text attributes like boldface), or
+prompted to add accessibility metadata (e.g. so that images are uploaded along
+with ALT text), or reminded about good accessibility practices (e.g. told not
+to refer to sensory characteristics in their text).  Such approaches may add
+substantial friction, especially to individual website visitors and users, to
+the point that they may be disinclined to make contributions.  Further, they
+aren't a guarantee of perfection in those contributions (Is the ALT text
+thoughtfully authored, or just filler text to make the upload happen? Did the
+text truly avoid reference to sensory characteristics?).  Nonetheless, these
+are some approaches to consider to help minimize the amount of 3rd party
+content that poses accessibility challenges, which may also offer a great
+opportunity to help educate users and provide a teachable moment that would
+help make accessibility practices more ubiquitous.
+</p>
 </section>
         </section>
         <section id="Challenge-4">
-            <h2>Challenge #4: Non-Web Information and Communications Technologies </h2>
-            <p>The core principles, and many of the guidelines, contained in WCAG 2.x, are broadly applicable outside of the web context.  For example, no matter the technology, information presented to humans needs to be perceivable by them in order for them to access and use it.  At the same time, some of the specific guidelines and especially some of the individual success criteria of WCAG 2.x are written specifically for web content and web technologies, and may be difficult to apply to non-web information and communications technologies (as set forth in the Working Group Note <a href="https://www.w3.org/TR/wcag2ict/">Applying WCAG to Non-Web Information and Communication Technologies (WCAG2ICT)</a>). Furthermore, the state of programmatic test tools for assessing whether non-web information and communications technologies meet various WCAG 2.x success criteria varies widely with the type of non-web document, the operating system and user interface toolkits used to create the non-web software.  In no case that we are aware of do such tools explicitly map the accessibility issued found to specific WCAG 2.x success criteria.  Therefore, it is potentially the case that for some documents or software, it will not be possible to use any programmatic accessibility evaluation tools for any success criterion – conformance to each and every success criterion will need human expertise and judgment.</p>
-	    <p><a href="#Appendix-B">Appendix B</a> contains "Detailed Challenges with Conformance Verification and Testing for non-Web ICT". It covers the 12 success criteria out of the 38 A and AA criteria in WCAG 2.0 which could be applied to non-Web ICT only after replacing specific terms or phrases, as well as a growing list of success criteria introduced in WCAG 2.1 that also pose specific challenges for conformation verification and testing in the non-Web ICT context.</p>
+            <h2>Challenge #4: Non-Web Information and Communications Technologies </h2>
+            <p>The core principles, and many of the guidelines, contained in WCAG 2.x, are broadly applicable outside of the web context. For example, no matter the technology, information presented to humans needs to be perceivable by them in order for them to access and use it. At the same time, some of the specific guidelines and especially some of the individual success criteria of WCAG 2.x are  specifically scoped to web content and web technologies, and may be difficult to apply to non-web information and communications technologies (as set forth in the W3C Note <a href="https://www.w3.org/TR/wcag2ict/">Guidance on Applying WCAG to non-web Information and Communication Technologies (WCAG2ICT)</a>). [[wcag2ict]] Furthermore, the state of programmatic test tools for assessing whether non-web information and communications technologies meet various WCAG 2.x success criteria varies widely with the type of non-web document, the operating system, and the user interface toolkits used to create the non-web software. Therefore, it is potentially the case that for some documents or software, it will not be possible to use any programmatic accessibility evaluation tools for some success criterion — conformance to each and every success criterion will need human expertise and judgment.</p>
+
+<p class="mitigation">There are various approaches to the challenges of accessibility guidelines
+conformance and testing of non-web information and communications
+technologies, depending upon the nature of non-web document technology or
+non-web software in question.  For example, there is a rich set of techniques
+describing how to meet WCAG success criteria for Adobe PDF documents, and
+Adobe includes a PDF accessibility assessment tool that also helps authors
+mitigate accessibility failings found by the tool as part of Adobe Acrobat.
+Both Microsoft Word and OpenOffice include accessibility test and validation
+tools, and both are capable of saving exporting their content into accessible
+PDF documents.  Operating systems like MacOS, iOS, Windows, Android, and Fire
+OS all have rich accessibility frameworks which can be used to make accessible
+software applications, which are accessible through the use of built-in
+assistive technologies like screen readers and screen magnifiers, as well as
+3rd party assistive technologies in some cases.  Further, there are a variety
+of accessibility test tools and support systems to help software developers
+make accessible software applications for these operating systems.  While none
+of these tools and frameworks can find all accessibility issues or otherwise
+guarantee a document or application will be free of all accessibility defects
+– whether those are tied to a specific WCAG success criterion or not – they
+are nonetheless important tools that can lead to highly accessible documents
+and software.
+</p>
+	    <p class="mitigation"><a href="#Appendix-B">Appendix B</a> contains <q>Detailed Challenges with Conformance Verification and Testing for non-web ICT.</q> It covers 12 success criteria out of the 38 A and AA criteria in WCAG 2.0 which can be applied to non-web ICT after replacing specific terms or phrases. In
+	    future versions of the document we plan to address success criteria introduced in WCAG 2.1 that may pose specific challenges for conformance verification and testing in the non-web ICT context.</p>
         </section>
         <section>
             <h2>Challenges of Conformance as identified from Silver Research</h2>
-            <p>Now known as W3C Accessibility Guidelines (WCAG 3.0), this iteration of W3C accessibility guidance was conceived and designed to be research-based. Working over many years, the Silver Task Force of the Accessibility Guidelines Working Group (AGWG) and the Silver Community Group collaborated with researchers on questions that the Silver Groups identified. This research was used to develop 11 problem statements that needed to be solved for Silver.   The detailed problem statements include the specific problem, the result of the problem, the situation and priority, and the opportunity presented by the problem.  The problem statements were organized into three main areas:  Usability, Conformance, and Maintenance. The section following is taken from the <a href="https://www.w3.org/community/silver/draft-final-report-of-silver/#h.n2wcg0gauz5x">Conformance sections of the Silver Design Sprint Final Report</a> and the <a href="https://www.w3.org/WAI/GL/task-forces/silver/wiki/Problem_Statements#Conformance_Model">Silver Problem Statements</a>. Details of the research questions and the individual reports are in <a href="https://www.w3.org/WAI/GL/task-forces/silver/wiki/Silver_Research_Archive">Research Archive of Silver wiki</a>.</p>
+            <p>Now known as W3C Accessibility Guidelines (WCAG 3.0), this iteration of W3C accessibility guidance was conceived and designed to be research-based. Working over many years, the Silver Task Force of the Accessibility Guidelines Working Group (AGWG) and the Silver Community Group collaborated with researchers on questions that the Silver Groups identified. This research was used to develop 11 problem statements that needed to be solved for Silver.  The detailed problem statements include the specific problem, the result of the problem, the situation and priority, and the opportunity presented by the problem. The problem statements were organized into three main areas:  Usability, Conformance, and Maintenance. The section following is taken from the <a href="https://www.w3.org/community/silver/draft-final-report-of-silver/#h.n2wcg0gauz5x">Conformance sections of the Silver Design Sprint Final Report</a> and the <a href="https://www.w3.org/WAI/GL/task-forces/silver/wiki/Problem_Statements#Conformance_Model">Silver Problem Statements</a>. Details of the research questions and the individual reports are in <a href="https://www.w3.org/WAI/GL/task-forces/silver/wiki/Silver_Research_Archive">Research Archive of Silver wiki</a>.</p>
+            <p>The following items are shown as they were originally presented by the Silver task force, in future versions of this document they will be integrated into the challenges.</p>
             <section>
                 <h3>Silver Research Problem Statements</h3>
-                <p>Originally published as the <a href="https://www.w3.org/community/silver/draft-final-report-of-silver/#h.n2wcg0gauz5x">Silver Design Sprint Final Report</a> (2018).  These problem statements were presented to the Silver Design Sprint participants.</p>
+                <p>Originally published as the <a href="https://www.w3.org/community/silver/draft-final-report-of-silver/#h.n2wcg0gauz5x">Silver Design Sprint Final Report</a> (2018). These problem statements were presented to the Silver Design Sprint participants.</p>
                 <ul>
-                    <li>Constraints on "What is Strictly Testable" provides an obstacle to including guidance that meets the needs of people with disabilities but is not conducive to a pass/fail test.</li>
+			<li>Constraints on <q>What is Strictly Testable</q> provides an obstacle to including guidance that meets the needs of people with disabilities but is not conducive to a pass/fail test.</li>
                     <li>Human Testable (related to Ambiguity) also relates to differences in knowledge and priorities of different testers achieve different results.</li>
                     <li>Accessibility Supported is a conformance requirement of WCAG 2  that is poorly understood and incompletely implemented.</li>
                     <li>Evolving Technology of the rapidly changing web must constantly be evaluated against the capabilities of assistive technology and evolving assistive technology must be evaluated against the backward compatibility of existing web sites.</li>
@@ -138,7 +330,7 @@ anticipate encountering inaccessible content, it does little to practically enab
                 <p>Originally published as <a href="https://www.w3.org/WAI/GL/task-forces/silver/wiki/Problem_Statements#Conformance_Model">Silver Problem Statements</a>, this was a detailed analysis of the research results behind the above list.</p>
                 <section>
                     <h4>Definition of Conformance</h4>
-                    <p>"Conformance to a standard means that you meet or satisfy the 'requirements' of the standard. In WCAG 2.0 the 'requirements' are the Success Criteria. To conform to WCAG 2.0, you need to satisfy the Success Criteria, that is, there is no content which violates the Success Criteria."</p>
+		    <blockquote cite="https://www.w3.org/WAI/GL/task-forces/silver/wiki/Problem_Statements#Conformance_Model"><p>Conformance to a standard means that you meet or satisfy the <q>requirements</q> of the standard. In WCAG 2.0 the <q>requirements</q> are the Success Criteria. To conform to WCAG 2.0, you need to satisfy the Success Criteria, that is, there is no content which violates the Success Criteria.</p>
                     <p><strong>WCAG 2.0 Conformance Requirements:</strong></p>
                     <ol>
                         <li>Conformance Level (A to AAA)</li>
@@ -146,7 +338,7 @@ anticipate encountering inaccessible content, it does little to practically enab
                         <li>Complete Process</li>
                         <li>Only "Accessibility-supported" ways of using technologies</li>
                         <li>Non-Interference: Technologies that are not accessibility supported can be used, as long as all the information is also available using technologies that are accessibility supported and as long as the non-accessibility-supported material does not interfere.</li>
-                    </ol>
+		    </ol></blockquote>
                 </section>
                 <section>
                     <h4>Themes from Research</h4>
@@ -160,7 +352,7 @@ anticipate encountering inaccessible content, it does little to practically enab
                             </ul>
                         </li>
                         <li>Specific success criteria for failure - 1.1.1 , 2.2., 4.1.2 (Keith et al., 2012)</li>
-                        <li>"Reliably Human Testable" , "not reliably testable" (Brajnick et al., 2012) average agreement was at the 70–75% mark, while the error rate was around 29%.
+			<li><q>Reliably Human Testable,</q> <q>not reliably testable</q> (Brajnick et al., 2012) average agreement was at the 70-75% mark, while the error rate was around 29%.
                             <ul>
                                 <li>Expertise appears to improve (by 19%) the ability to avoid false positives. Finally, pooling the results of two independent experienced evaluators would be the best option, capturing at most 76% of the true problems and producing only 24% of false positives. Any other independent combination of audits would achieve worse results.</li>
                                 <li>This means that an 80% target for agreement, when audits are conducted without communication between evaluators, is not attainable, even with experienced evaluators.</li>
@@ -168,21 +360,21 @@ anticipate encountering inaccessible content, it does little to practically enab
                         </li>
                         <li>Challenges and Recommendations (Alonso et al., 2010)                                                       
                             <ul>
-                                <li>"accessibility supported ways of using technologies"</li>
+				    <li><q>accessibility supported ways of using technologies</q></li>
                                 <li>Testability of Success Criteria</li>
                                 <li>Openness of Techniques and Failures</li>
                                 <li>Aggregation of Partial Results</li>
                             </ul>
                         </li>
-                        <li>Silver needs to expand the scope beyond web to include apps, documents, authoring, user agents, wearables, kiosks, IoT, VR, etc. and be inclusive of more disabilities. (UX Professionals Use of WCAG: Analysis)</li>
+			<li>Silver needs to expand the scope beyond web to include apps, documents, authoring, user agents, wearables, kiosks, IoT, VR, etc. and be inclusive of more disabilities. (<abbr title="user experience">UX</abbr> Professionals Use of WCAG: Analysis)</li>
                         <li>Accessibility Supported allows inadequate assistive technologies to be claimed for conformance, particularly in non-native English speaking countries. (Interviews on Conformance)</li>
                     </ul>
                 </section>
                 <section>
                     <h4>Constraints on What is Strictly Testable</h4>
-                    <p><strong>Specific problem</strong>: Certain success criteria are quite clear and measurable, like color contrast. Others, far less so. The entire principle of understandable is critical for people with cognitive disabilities, yet success criteria intended to support the principle are not easy to test for or clear on how to measure. As a simple example, there is no clear, recent or consistent definition – within any locale or language – on what "lower secondary education level" means in regard to web content. Language and text content is also not the only challenge among those with cognitive and learning disabilities. Compounding this, most of the existing criteria in support of understanding are designated as AAA, which relatively few organizations attempt to conform with.</p>
-                    <p><strong>Result of problem</strong>: The requirement for strict testability for WCAG success criteria presents a structural barrier to including the needs of people with disabilities whose needs are not strictly testable. Guidance that WCAG working group members would like to include cannot be included. The needs of people with disabilities – especially intellectual and cognitive disabilities – are not being met.</p>
-                    <p><strong>Situation and Priority</strong>: Of the 70 new success criteria proposed by the Cognitive Accessibility Task Force to support the needs of people with cognitive and intellectual disabilities, only four to six (depending on interpretation) were added to WCAG 2.1 and only one is in level AA. The remainder are in level AAA, which is rarely implemented. There is a failure of expectations and a failure to meet user needs.</p>
+		    <p><strong>Specific problem</strong>: Certain success criteria are quite clear and measurable, like color contrast. Others, far less so. The entire principle of understandable is critical for people with cognitive disabilities, yet success criteria intended to support the principle are not easy to test for or clear on how to measure. As a simple example, there is no clear, recent or consistent definition – within any locale or language – on what <q>lower secondary education level</q> means in regard to web content. Language and text content is also not the only challenge among those with cognitive and learning disabilities. Compounding this, most of the existing criteria in support of understanding are designated as AAA, which relatively few organizations attempt to conform with.</p>
+                    <p><strong>Result of problem</strong>: The requirement for valid and reliable testability for WCAG success criteria presents a structural barrier to including the needs of people with disabilities whose needs are not strictly testable. Guidance that WCAG working group members would like to include cannot be included. The needs of people with disabilities – especially intellectual and cognitive disabilities – are not being met.</p>
+                    <p><strong>Situation and Priority</strong>: Of the 70 new success criteria proposed by the Cognitive Accessibility Task Force to support the needs of people with cognitive and intellectual disabilities, only four to six (depending on interpretation) were added to WCAG 2.1 and only one is in level AA. The remainder are in level AAA, which is rarely implemented. This means user needs are not met.</p>
                     <p><strong>Opportunity</strong>: Multiple research projects and audience feedback have concluded that simpler language is desired and needed for audiences of the guidelines. Clear but flexible criteria with considerations for a wider spectrum of disabilities helps ensure more needs are met.</p>
                 </section>
                 <section>
@@ -190,14 +382,15 @@ anticipate encountering inaccessible content, it does little to practically enab
                     <p><strong>Specific problem</strong>: Regardless of proficiency, there is a significant gap in how any two human auditors will identify a success or fail of criteria. Various audiences have competing priorities when assessing the success criteria of any given digital property. Knowledge varies for accessibility standards and how people with disabilities use assistive technology tools. Ultimately, there is variance between: any two auditors; any two authors of test cases; and human bias. Some needs of people of disabilities are difficult to measure in a quantifiable way.</p>
                     <p><strong>Result of problem</strong>: Success criteria are measured by different standards and by people who often make subjective observations. Because there's so much room for human error, an individual may believe they've met a specific conformance model when, in reality, that’s not the case. The ultimate impact is on an end user with a disability who cannot complete a given task, because the success criteria wasn’t properly identified, tested and understood.</p>
                     <p><strong>Situation and Priority</strong>: There isn't a standardized approach to how the conformance model applies to success criteria at the organizational level and in specific test case scenarios.</p>
-                    <p><strong>Opportunity</strong>: There's an opportunity to make the success criteria more clear for human auditors and testers. Educating business leaders on how the varying levels of conformance apply to their organization may be useful as well. We can educate about the ways that people with disabilities use their assistive technology.</p>
+                    <p><strong>Opportunity</strong>: There's an opportunity to improve the success criteria such that human auditors and testers find the success criteria more understandable. Educating business leaders on how the varying levels of conformance apply to their organization may be useful as well. We can educate about the ways that people with disabilities use their assistive technology.</p>
                 </section>
                 <section>
                     <h4>Accessibility Supported</h4>
-                    <p><strong>Specific problem</strong>: "Accessibility supported" was never fully implemented in a way that was clear and useful to developers and testers. It also requires a harmonious relationship and persistent interoperability between content technologies and requesting technologies that must be continuously evaluated as either is updated. Further, the WG "defers the judgment of how much, how many, or which AT must support a technology to the community". It is poorly understood, even by experts.</p>
+		    <p><strong>Specific problem</strong>: <q>Accessibility supported</q> was implemented in a way that did not facilitate consistent adoption by developers and testers. It also requires a harmonious relationship and persistent interoperability between content technologies and requesting technologies that must be continuously evaluated as either is updated. Further, the WG <q>defers the judgment of how much, how many, or which AT must support a technology to the community.</q> It is poorly understood, even by experts.</p>
                     <p><strong>Result of problem</strong>: Among the results are: difficulty understanding what qualifies as a content technology or an assistive technology; difficulty quantifying assistive technologies or features of user agents; claiming conformance with inadequate assistive technology; and difficulty claiming conformance.</p>
                     <p><strong>Situation and Priority</strong>: Any claim or assertion that a web page conforms to the guidelines may require an explicit statement defining which assistive technology and user agent(s) the contained technologies rely upon, and presumably inclusive of specific versions and or release dates of each. One could infer then that a conformance claim is dependent upon a software compatibility claim naming browsers and assistive technology and their respective versions. This would create a burden to author and govern such claims. Additionally, no one can predict and anticipate new technologies and their rates of adoption by people with disabilities.</p>
-                    <p><strong>Opportunity</strong>: As the technologies in this equation evolve, the interoperability may be affected by any number of factors outside of the control of the author and publisher of a web page. Either "accessibility supported" should be removed from conformance requirements, or it should clearly, concisely and explicitly define and quantify the technologies or classes of technologies, AND set any resulting update or expiry criteria for governance.</p>
+		    <p><strong>Opportunity</strong>: As the technologies in this equation evolve, the interoperability may be affected by any number of factors outside of the control of the author and publisher of a web page. Either <q>accessibility supported</q> should not be a
+		    component of conformance requirements, or it should clearly, concisely, and explicitly define and quantify the technologies or classes of technologies, AND set any resulting update or expiry criteria for governance.</p>
                 </section>
                 <section>
                     <h4>Evolving Technology</h4>
@@ -210,25 +403,34 @@ anticipate encountering inaccessible content, it does little to practically enab
         </section>
 	<section class="appendix" id="Appendix-A">
 		<h2>Detailed Challenges with Scaling Conformance Verification for the Success Criteria in WCAG 2.1 A and AA</h2>
-            <p>This appendix describes challenges with applying the WCAG 2.x conformance model to specific Guidelines and Success Criteria, primarily based on required human involvement in evaluation of conformance to them. In this draft, the list is not exhaustive, but we intend it to cover all known challenges with all A and AA Success Criteria, by the time this Note is completed.</p>
+<p>This appendix describes challenges with applying the WCAG 2.x conformance
+model to specific Guidelines and Success Criteria, primarily based on required
+human involvement in evaluation of conformance to them. In this draft, the
+list is not exhaustive, but we intend it to cover all known challenges with
+all A and AA Success Criteria, by the time this Note is completed. The purpose
+of this is not to critique WCAG 2 nor to imply that sites and policies should
+not do their best, and strive to conform to it, but rather to indicate known
+areas for which it may not be possible to conform, and which a new conformance
+model would hopefully address.
+	    </p>
 	    <p>We have seen the market respond to the increased demand for accessibility professionals in part due to the amount of required human involvement in the valuation of conformance, with many international efforts such as the <a href="https://www.accessibilityassociation.org/">International Association of Accessibility Professionals (IAAP)</a> which train and/or certify accessibility professionals. While this is resulting in downward pressure on costs of testing and remediation with more accessibility professionals becoming available to meet the need, it doesn't in and of itself eliminate the challenges noted below. Furthermore, for the near term, it appears the demand will be greater than the supply of this type of specialized expertise.</p>
-	    <p>Also, the <a href="http://www.w3.org/tr/wcag-em/">Website Accessibility Conformance Evaluation Methodology (WCAG-EM) 1.0</a> lays out a strategy to combine human testing and automated testing. In the model, automation is used for a large number of pages (or all pages) and sampling is used for human testing. The WCAG-EM suggests that the human evaluation sample might include templates pages, component libraries, key flows (such as choosing a product and purchasing it, or signing up for a newsletter, etc.), and random pages. Although these strategies are a useful methodology for providing confidence in either a prior claim of 100% conformance across a website or as part of an internal process to help an organization assess their progress toward 100% conformance, in and of itself it doesn't address the challenges in making every last aspect of every page conform 100% to every success criterion.</p>
+		<p>Also, the <a href="http://www.w3.org/tr/wcag-em/">Website Accessibility Conformance Evaluation Methodology (WCAG-EM) 1.0</a> [[wcag-em]] lays out a strategy to combine human testing and automated testing. In the model, automation is used for a large number of pages (or all pages) and sampling is used for human testing. The WCAG-EM suggests that the human evaluation sample might include templates pages, component libraries, key flows (such as choosing a product and purchasing it, or signing up for a newsletter, etc.), and random pages. While WCAG-EM provides a practical method for claiming conformance for a website, it doesn't fully address the challenges in making every part of every page in a large, dynamic website conform to every success criterion.</p>
             <section class="appendix">
 <h3>Text Alternatives for Non-Text Content</h3>
 <p class="sc-link">
-                    <a href="https://www.w3.org/TR/WCAG21/#text-alternatives">Success Criterion 1.1</a>
+                    <a href="https://www.w3.org/TR/WCAG21/#text-alternatives">Guideline 1.1</a>
 </p>
-                <p>Text alternatives for images are an early, and still widely used, accessibility enhancement to HTML. Yet text alternatives remain one of the more intractable success criteria to assess with automated accessibility checking. While testing for the presence of alternative text is straightforward, and a collection of specific errors (such as labeling a graphic "spacer.gif") can be identified by automated testing, human judgment remains necessary to evaluate whether or not any particular text alternative for a graphic is correct and conveys the true meaning of the image.  Image recognition techniques are not mature enough to fully discern the underlying meaning of an image and the intent of the author in its inclusion. As a simple example, an image or icon of a paper clip would likely be identified by image recognition simply as a "paper clip." However, when a paper clip appears in content often its meaning is to show there is an attachment. In this specific example, the alternative text should be "attachment," not "paper clip." Similarly, the image of a globe (or any graphical object representing planet Earth) can be used for a multiplicity of reasons, and the appropriate alternative text should indicate the reason for that use and not descriptive wording such as "globe" or "planet Earth." One not uncommon use of a globe today expands to allow users to select their preferred language, but there may be many other reasonable uses of such an icon.</p>
+<p>Text alternatives for images are an early, and still widely used, accessibility enhancement to HTML. Yet text alternatives remain one of the more intractable accessibility guidelines to assess with automated accessibility checking. While testing for the presence of alternative text is straightforward, and a collection of specific errors (such as labeling a graphic <q>spacer.gif</q>) can be identified by automated testing, human judgment remains necessary to evaluate whether or not any particular text alternative for a graphic is correct and conveys the true meaning of the image. Image recognition techniques are not mature enough to fully discern the underlying meaning of an image and the intent of the author in its inclusion. As a simple example, an image or icon of a paper clip would likely be identified by image recognition simply as a <q>paper clip.</q> However, when a paper clip appears in content often its meaning is to show there is an attachment. In this specific example, the alternative text should be <q>attachment,</q> not <q>paper clip.</q> Similarly, the image of a globe (or any graphical object representing planet Earth) can be used for a multiplicity of reasons, and the appropriate alternative text should indicate the reason for that use and not descriptive wording such as <q>globe</q> or <q>Planet Earth.</q> One not uncommon use of a globe today expands to allow users to select their preferred language, but there may be many other reasonable uses of such an icon.</p>
             </section>
             <section class="appendix">
 <h3>Time-Based Media</h3>
 <p class="sc-link">
-			<a href="https://www.w3.org/TR/WCAG21/#time-based-media">Success Criterion 1.2</a>
+			<a href="https://www.w3.org/TR/WCAG21/#time-based-media">Guideline 1.2</a>
 </p>
 
-                <p>Practices for creating alternatives to spoken dialog, and to describe visual content, were established in motion picture and TV content well before the world wide web came into existence. These practices formed the basis of the <a href="http://www.w3.org/TR/media-accessibility-reqs/">Media Accessibility User Requirements (MAUR)</a> for time-based streaming media on the web in HTML5, which now supports both captioning and descriptions of video.</p>
-                <p>Yet, just as with text alternatives, automated techniques and testing aren't sufficient for creating and validating accessible alternatives to time-based media.  For example, Automatic Speech Recognition (ASR) often fails when the speech portion of the audio is low quality, isn’t clear, or has background noise or sound-effects.  In addition, current automated transcript creation software doesn't perform speaker identification, meaningful sound identification, or correct punctuation that all are necessary for accurate captioning. Work on automatically generated descriptions of video are in their infancy, and like image recognition techniques, don’t provide usable alternatives to video.</p>
-                <p>Similarly, while there is well articulated guidance on how to create text transcripts or captions for audio-only media (such as radio programs and audio books), automated techniques and testing again aren't sufficient for creating and validating these accessible alternatives.  Knowing what is important in an audio program to describe to someone who cannot hear is beyond the state of the art. There are several success criteria under this Guideline that all share these challenges of manual testing being required to ensure alternatives accurately reflect the content in the media.  These include:</p>
+                <p>Practices for creating alternatives to spoken dialog, and to describe visual content, were established in motion picture and TV content well before the world wide web came into existence. These practices formed the basis of the <a href="http://www.w3.org/TR/media-accessibility-reqs/">Media Accessibility User Requirements (MAUR)</a> [[media-accessibility-reqs]] for time-based streaming media on the web in HTML5, which now supports both captioning and descriptions of video.</p>
+                <p>Yet, just as with text alternatives, automated techniques and testing aren't sufficient for creating and validating accessible alternatives to time-based media. For example, Automatic Speech Recognition (ASR) often fails when the speech portion of the audio is low quality, isn’t clear, or has background noise or sound-effects. In addition, current automated transcript creation software doesn't perform speaker identification, meaningful sound identification, or correct punctuation that all are necessary for accurate captioning. Work on automatically generated descriptions of video are in their infancy, and like image recognition techniques, don’t provide usable alternatives to video.</p>
+                <p>Similarly, while there is well articulated guidance on how to create text transcripts or captions for audio-only media (such as radio programs and audio books), automated techniques and testing again aren't sufficient for creating and validating these accessible alternatives. Knowing what is important in an audio program to describe to someone who cannot hear is beyond the state of the art. There are several success criteria under this Guideline that all share these challenges of manual testing being required to ensure alternatives accurately reflect the content in the media. These include:</p>
 
 <ul>
 <li><a href="https://www.w3.org/TR/WCAG21/#audio-only-and-video-only-prerecorded">Audio-only and video-only (Prerecorded)</a> (Success Criterion 1.2.1)</li>
@@ -264,7 +466,7 @@ anticipate encountering inaccessible content, it does little to practically enab
 			<a href="https://www.w3.org/TR/WCAG21/#sensory-characteristics">Success Criterion 1.3.3</a>
 </p>
 
-                <p>Ensuring that no instructions rely on references to sensory characteristics presents similar challenges to ensuring that color isn't the sole indicator of meaning (<a href="https://www.w3.org/TR/WCAG21/#use-of-color">Success Criterion 1.4.1</a>) – it is testing for a negative, and requires a deep understanding of meaning conveyed by the text to discern a failure programmatically.  For example, while instructions such as "select the red button" reference a sensory characteristic, "select the red button which is also the first button on the screen" may provide sufficient non-sensory context to not cause a problem (and multi-modal, multi-sensory guidance is often better for users with cognitive impairments or non-typical learning styles).</p>
+<p>Ensuring that no instructions rely on references to sensory characteristics presents similar challenges to ensuring that color isn't the sole indicator of meaning (<a href="https://www.w3.org/TR/WCAG21/#use-of-color">Success Criterion 1.4.1</a>) – it is testing for a negative, and requires a deep understanding of meaning conveyed by the text to discern a failure programmatically. For example, while instructions such as <q>select the red button</q> reference a sensory characteristic, <q>select the red button which is also the first button on the screen</q> may provide sufficient non-sensory context to not cause a problem (and multi-modal, multi-sensory guidance is often better for users with cognitive impairments or non-typical learning styles).</p>
             </section>
             <section class="appendix">
                 <h3>Orientation
@@ -273,7 +475,7 @@ anticipate encountering inaccessible content, it does little to practically enab
 			<a href="https://www.w3.org/TR/WCAG21/#orientation">Success Criterion 1.3.4</a>
 </p>
 
-                <p>While an automated test can determine that the orientation is locked, full evaluation of conformance to this criterion is tied to whether it is "<a href="https://www.w3.org/TR/WCAG21/#dfn-essential">essential</a>" for the content to be locked to one specific orientation (e.g. portrait or landscape views of an interface rendered to a cell phone).  This requires human judgment to ensure that, any time the orientation is locked, the orientation is essential to that content to determine conformance. As of yet, this requires human judgement and is not fully automatable.</p>
+<p>While an automated test can determine that the orientation is locked, full evaluation of conformance to this criterion is tied to whether it is <q><a href="https://www.w3.org/TR/WCAG21/#dfn-essential">essential</a></q> for the content to be locked to one specific orientation (e.g. portrait or landscape views of an interface rendered to a cell phone). This requires human judgment to ensure that, any time the orientation is locked, the orientation is essential to that content to determine conformance. As of yet, this requires human judgement and is not fully automatable.</p>
             </section>
             <section class="appendix">
 <h3>Identify Input Purpose
@@ -290,7 +492,7 @@ anticipate encountering inaccessible content, it does little to practically enab
 			<a href="https://www.w3.org/TR/WCAG21/#use-of-color">Success Criterion 1.4.1</a>
 </p>
 
-                <p>This poses the same challenges as Sensory Characteristics (<a href="https://www.w3.org/TR/WCAG21/#sensory-characteristics">Success Criterion 1.3.3</a>).  To discern whether a page fails this criterion programmatically requires understanding the full meaning of the related content on the page and whether any meaning conveyed by color is somehow also conveyed in another fashion (e.g. whether the meaning of the colors in a bar chart is conveyed in the body of associated text or with a striping/stippling pattern as well on the bars, or perhaps some other fashion).</p>
+                <p>This poses the same challenges as Sensory Characteristics (<a href="https://www.w3.org/TR/WCAG21/#sensory-characteristics">Success Criterion 1.3.3</a>). To discern whether a page fails this criterion programmatically requires understanding the full meaning of the related content on the page and whether any meaning conveyed by color is somehow also conveyed in another fashion (e.g. whether the meaning of the colors in a bar chart is conveyed in the body of associated text or with a striping/stippling pattern as well on the bars, or perhaps some other fashion).</p>
             </section>
             <section class="appendix">
                 <h3>Audio Control
@@ -326,7 +528,7 @@ anticipate encountering inaccessible content, it does little to practically enab
 <a href="https://www.w3.org/TR/WCAG21/#images-of-text">Success Criterion 1.4.5</a>
 </p>
 
-                <p>This poses the same challenge as Orientation (<a href="https://www.w3.org/TR/WCAG21/#orientation">Success Criterion 1.3.4</a>) - it is tied to whether it is "<a href="https://www.w3.org/TR/WCAG21/#dfn-essential">essential</a>" for text to be part of an image.  This requires human judgment, making this criterion not readily automatable. Additionally, methods of employing OCR on images will not accurately discern text of different fonts that overlap each other, or be able to recognize unusual characters or text with poor contrast with the background of the image.</p>
+<p>This poses the same challenge as Orientation (<a href="https://www.w3.org/TR/WCAG21/#orientation">Success Criterion 1.3.4</a>) - it is tied to whether it is <q><a href="https://www.w3.org/TR/WCAG21/#dfn-essential">essential</a></q> for text to be part of an image. This requires human judgment, making this criterion not readily automatable. Additionally, methods of employing OCR on images will not accurately discern text of different fonts that overlap each other, or be able to recognize unusual characters or text with poor contrast with the background of the image.</p>
             </section>
             <section class="appendix">
 <h3>Reflow
@@ -349,7 +551,7 @@ anticipate encountering inaccessible content, it does little to practically enab
                     <li>A way to identify UI components, which is easy for standard HTML elements, but more difficult for non-standard custom scripted components.</li>
                     <li>Whether the default user agent visual treatments for identifying UI components and states are being used (so that the exception can be utilized)</li>
                     <li>Where default treatments are not employed, a way to identify changes in state and then compare the two states for sufficient contrast. This requires human evaluation to test for differences in the portions of graphics used to show the different states or provide meaning (e.g. checked, unchecked, radio button selected, radio button unselected, toggle button selected vs. unselected and so on).</li>
-                    <li>For graphical objects, a way to identify what part of the graphics are required to understand the content. Once identified, checks to determine whether the presentation of the graphics is "essential"
+		    <li>For graphical objects, a way to identify what part of the graphics are required to understand the content. Once identified, checks to determine whether the presentation of the graphics is <q>essential</q>
 			    to utilize the exception which requires human intervention.</li>
                 </ul>
             </section>
@@ -566,33 +768,36 @@ anticipate encountering inaccessible content, it does little to practically enab
 <a href="https://www.w3.org/TR/WCAG21/#name-role-value">Success Criterion 4.1.2</a>
 </p>
 
-                <p>Incorrect use of ARIA constructs can be detected automatically but constructs that appear correct may still not work, and widgets that have no ARIA (but need it to be understood) can go undetected. Human post-check of automatic checks is still necessary.</p>
+<p>Incorrect use of <abbr title="Accessible Rich Internet Applications">ARIA</abbr> constructs can be detected automatically but constructs that appear correct may still not work, and widgets that have no ARIA (but need it to be understood) can go undetected. Human post-check of automatic checks is still necessary.</p>
             </section>
 	</section>
 
 	<section class="appendix" id="Appendix-B">
-		<h2>Detailed Challenges with Conformance Verification and Testing for non-Web ICT</h2>
+		<h2>Detailed Challenges with Conformance Verification and Testing for Non-Web ICT</h2>
 
 <p>As noted in <a href="#Challenge-4">Challenge #4 Non-Web Information and
 Communications Technologies above</a>,  18 success criteria out of the 38 A and AA criteria in WCAG 2.0 could be
-applied to non-Web ICT only after replacing specific terms or phrases.  4 of
-those 12 (2.4.1, 2.4.5, 3.2.3, and 3.2.4) related to either "a set of web
-pages" or "multiple web pages", which is more difficult to characterize for
-non-Web ICT.  Another 4 are the "non-interference set" (1.4.2, 2.1.2, 2.2.2,
+applied to non-web ICT only after replacing specific terms or phrases. 4 of
+those 12 (2.4.1, 2.4.5, 3.2.3, and 3.2.4) related to either <q>a set of web
+	pages</q> or <q>multiple web pages,</q> which is more difficult to characterize for
+non-web ICT. Another 4 are the <q>non-interference set</q> (1.4.2, 2.1.2, 2.2.2,
 and 2.3.1) which need further special consideration as they would apply to an
-entire software application.  The remaining 10 were more straightforward to
-apply to non-Web ICT, but still required some text changes.</p> 
+entire software application. The remaining 10 were more straightforward to
+apply to non-web ICT, but still required some text changes.</p> 
 
-<p>Since publication of WCAG2ICT, WCAG 2.1 was published, introducing a number of additional success criteria, at the A and AA levels.  Some of these also pose specific challenges for conformation verification and testing in the non-Web ICT context.  The 18 noted in WCAG2ICT, along with the success criteria new to WCAG 2.1 which pose specific challenges in the non-Web ICT context, are discussed below, in four sections.
+<p>Since publication of <abbr title="Guidance on Applying WCAG to Non-web Information and Communication Technologies">WCAG2ICT</abbr>, [[wcag2ict]] WCAG 2.1 was published introducing a number of additional success criteria at the A and AA levels. Some of these may also pose specific challenges for conformation verification and testing in the non-web ICT context. A future version of this document will address those
+new success criteria in the non-Web ICT Context.
 </p>
 
-<p>Finally, 14 of the 38 A and AA criteria in WCAG 2.0 relate to an accessibility supported interface, which may not be possible for software running in a "closed" environment (e.g. an airplane ticket kiosk).
+<p>
+The 18 success criteria noted in WCAG2ICT are discussed below in four sections,
+the last of which address the 14 of the 38 A and AA criteria in WCAG 2.0 which relate to an accessibility supported interface, which may not be possible for software running in a <q>closed</q> environment (e.g. an airplane ticket kiosk).
 </p>
 
 <section class="appendix" id="Appendix-B.1">
-<h3>"Set of Web Pages" Success Criteria</h3>
+	<h3><q>Set of Web Pages</q> Success Criteria</h3>
 
-<p>These four success criteria, include either the term "set of pages" or "multiple pages", which in the non-Web ICT context becomes either a Set of Documents or a Set of Software Programs. In either case (document or software), whether the criterion applies is dependent upon whether such a set exists, which may require human judgment.  Where that set is determined to exist, it may be difficult to employ programmatic testing techniques to verify compliance with the specific criterion.
+	<p>These four success criteria, include either the term <q>set of pages</q> or <q>multiple pages,</q> which in the non-web ICT context becomes either a Set of Documents or a Set of Software Programs. In either case (document or software), whether the criterion applies is dependent upon whether such a set exists, which may require human judgment. Where that set is determined to exist, it may be difficult to employ programmatic testing techniques to verify compliance with the specific criterion.
 </p>
 
             <section class="appendix">
@@ -602,10 +807,10 @@ apply to non-Web ICT, but still required some text changes.</p>
 <a href="https://www.w3.org/TR/WCAG21/#bypass-blocks">Success Criterion 2.4.1</a>
 </p>
 
-<p>To ensure this criterion is met for non-Web documents, once the set of documents is defined, every document in the set must be searched for blocks of content that are repeated across all of those documents, and a mechanism to skip those repeated blocks.  Since the blocks aren't necessarily completely identical (e.g. a repeated listing of all other documents in a set might not include the document containing that list), a tool to do this may not be straightforward, and in any case, no such tool is known to exist today to do this with non-Web documents.
+<p>To ensure this criterion is met for non-web documents, once the set of documents is defined, every document in the set must be searched for blocks of content that are repeated across all of those documents, and a mechanism to skip those repeated blocks. Since the blocks aren't necessarily completely identical (e.g. a repeated listing of all other documents in a set might not include the document containing that list), a tool to do this may not be straightforward, and in any case, no such tool is known to exist today to do this with non-web documents.
 </p>
 
-<p>Similarly, to ensure this criterion is met for non-Web software, once the set of software is defined, every software application in the set must be searched for blocks of content that are repeated across all of those applications, and a mechanism to skip those repeated blocks.  Since the blocks aren't necessarily completely identical (e.g. a repeated listing of all other software in a set might not include the software application containing that list), a tool to do this may not be straightforward, and in any case, no such tool is known to exist today to do this with non-Web software.
+<p>Similarly, to ensure this criterion is met for non-web software, once the set of software is defined, every software application in the set must be searched for blocks of content that are repeated across all of those applications, and a mechanism to skip those repeated blocks. Since the blocks aren't necessarily completely identical (e.g. a repeated listing of all other software in a set might not include the software application containing that list), a tool to do this may not be straightforward, and in any case, no such tool is known to exist today to do this with non-web software.
 </p>
 </section>
 
@@ -616,10 +821,10 @@ apply to non-Web ICT, but still required some text changes.</p>
 <a href="https://www.w3.org/TR/WCAG21/#multiple-ways">Success Criterion 2.4.5</a>
 </p>
 
-<p>To ensure this criterion is met for non-Web documents, once the set of documents is defined, every document in the set must provide multiple mechanisms for locating every other document in the set.  As noted by WCAG2ICT, if the documents are on a file system, "it may be possible to browse through the files or programs that make up a set, or search within members of the set for the names of other members. A file directory would be the equivalent of a site map for documents in a set, and a search function in a file system would be equivalent to a web search function for web pages."  However, if this is not the case, then the set of documents must expose at least 2 ways of locating every other document in the set.  Determining if this is the case is not possible today with any testing tool we are aware of, and so would require human inspection.
+<p>To ensure this criterion is met for non-web documents, once the set of documents is defined, every document in the set must provide multiple mechanisms for locating every other document in the set. As noted by WCAG2ICT, if the documents are on a file system, <q>it may be possible to browse through the files or programs that make up a set, or search within members of the set for the names of other members. A file directory would be the equivalent of a site map for documents in a set, and a search function in a file system would be equivalent to a web search function for web pages.</q>  However, if this is not the case, then the set of documents must expose at least 2 ways of locating every other document in the set. Determining if this is the case is not possible today with any testing tool we are aware of, and so would require human inspection.
 </p>
 
-<p>Similarly, to ensure this criterion is met for non-Web software, once the set of software is defined, every software application in the set must provide multiple mechanisms for locating every other application in the set.  As noted by WCAG2ICT, if the software applications are on a file system, "it may be possible to browse through the files or programs that make up a set, or search within members of the set for the names of other members. A file directory would be the equivalent of a site map for documents in a set, and a search function in a file system would be equivalent to a web search function for web pages."  However, if this is not the case, then the set of software applications must expose at least 2 ways of locating every other application in the set.  Determining if this is the case is not possible today with any testing tool we are aware of, and so would require human inspection.
+<p>Similarly, to ensure this criterion is met for non-web software, once the set of software is defined, every software application in the set must provide multiple mechanisms for locating every other application in the set. As noted by WCAG2ICT, if the software applications are on a file system, <q>it may be possible to browse through the files or programs that make up a set, or search within members of the set for the names of other members. A file directory would be the equivalent of a site map for documents in a set, and a search function in a file system would be equivalent to a web search function for web pages.</q>  However, if this is not the case, then the set of software applications must expose at least 2 ways of locating every other application in the set. Determining if this is the case is not possible today with any testing tool we are aware of, and so would require human inspection.
 </p>
 </section>
             <section class="appendix">
@@ -629,10 +834,10 @@ apply to non-Web ICT, but still required some text changes.</p>
 <a href="https://www.w3.org/TR/WCAG21/#consistent-navigation">Success Criterion 3.2.3</a>
 </p>
 
-<p>To ensure this criterion is met for non-Web documents, once the set of documents is defined, every document in the set must be searched for the navigation mechanisms it contains (e.g. a table of contents, an index).  Every document in that set must then be inspected to verify it contains the same navigation mechanisms as every other document, in the same relative order. Determining if this is the case is not possible today with any testing tool we are aware of, and so would require human inspection.
+<p>To ensure this criterion is met for non-web documents, once the set of documents is defined, every document in the set must be searched for the navigation mechanisms it contains (e.g. a table of contents, an index). Every document in that set must then be inspected to verify it contains the same navigation mechanisms as every other document, in the same relative order. Determining if this is the case is not possible today with any testing tool we are aware of, and so would require human inspection.
 </p>
 
-<p>Similarly, to ensure this criterion is met for non-Web software, once the set of software is defined, every software application in the set must be searched for the navigation mechanisms it contains (e.g. the way keyboard commands are implemented should be the same for every application).  Every application in that set must then be inspected to verify it contains the same navigation mechanisms as every other software application. Determining if this is the case is not possible today with any testing tool we are aware of, and so would require human inspection.
+<p>Similarly, to ensure this criterion is met for non-web software, once the set of software is defined, every software application in the set must be searched for the navigation mechanisms it contains (e.g. the way keyboard commands are implemented should be the same for every application). Every application in that set must then be inspected to verify it contains the same navigation mechanisms as every other software application. Determining if this is the case is not possible today with any testing tool we are aware of, and so would require human inspection.
 </p>
 </section>
 
@@ -643,26 +848,26 @@ apply to non-Web ICT, but still required some text changes.</p>
 <a href="https://www.w3.org/TR/WCAG21/#consistent-identification">Success Criterion 3.2.4</a>
 </p>
 
-<p>To ensure this criterion is met for non-Web documents, once the set of documents is defined, every document in the set must be searched for all of the functional components (e.g. tables, figures, graphs, indices), noting how those components are identified.  Every document in that set must then be inspected to verify that where they contain the same components as every other document in the set, they are identified in a consistent fashion. Determining if this is the case is not possible today with any testing tool we are aware of, and so would require human inspection.
+<p>To ensure this criterion is met for non-web documents, once the set of documents is defined, every document in the set must be searched for all of the functional components (e.g. tables, figures, graphs, indices), noting how those components are identified. Every document in that set must then be inspected to verify that where they contain the same components as every other document in the set, they are identified in a consistent fashion. Determining if this is the case is not possible today with any testing tool we are aware of, and so would require human inspection.
 </p>
 
-<p>Similarly, to ensure this criterion is met for non-Web software, once the set of software is defined, every software application in the set must be searched for all of the functional components (e.g. menus, dialog boxes, other user interface elements and patterns), noting how those components are identified.  Every application in that set must then be inspected to verify that where they contain the same components as every other software application in the set, they are identified in a consistent fashion. Determining if this is the case is not possible today with any testing tool we are aware of, and so would require human inspection.
+<p>Similarly, to ensure this criterion is met for non-web software, once the set of software is defined, every software application in the set must be searched for all of the functional components (e.g. menus, dialog boxes, other user interface elements and patterns), noting how those components are identified. Every application in that set must then be inspected to verify that where they contain the same components as every other software application in the set, they are identified in a consistent fashion. Determining if this is the case is not possible today with any testing tool we are aware of, and so would require human inspection.
 </p>
 
 </section>
 </section>
 
 <section class="appendix" id="Appendix-B.2">
-<h3>"Non-Interference" Success Criteria</h3>
-<p>The "non-interference" success criteria are things that apply to "all areas
-of the page".  As explained in WCAG2ICT in the section <a href="http://www.w3.org/TR/wcag2ict/#wcag2ict_comments_cc">Comments on
-	Conformance</a>, "it wasn't possible to unambiguously carve up software into
+	<h3><q>Non-Interference</q> Success Criteria</h3>
+	<p>The <q>non-interference</q> success criteria are things that apply to <q>all areas
+		of the page.</q> As explained in WCAG2ICT in the section <a href="http://www.w3.org/TR/wcag2ict/#wcag2ict_comments_cc">Comments on
+		Conformance</a>, <q>it wasn't possible to unambiguously carve up software into
 discrete pieces, and so the unit of evaluation for non-web software is the
 whole software program. As with any software testing this can be a very large
 unit of evaluation, and methods similar to standard software testing might be
-used."  Standard software testing employs both programmatic testing and manual
+used.</q>  Standard software testing employs both programmatic testing and manual
 testing – automating what can be automated, and using human inspection
-otherwise.  In the cases below, some level of human inspection or involvement
+otherwise. In the cases below, some level of human inspection or involvement
 would normally be part of the software testing strategy to verify compliance
 with these four criteria.</p>
 
@@ -673,20 +878,20 @@ with these four criteria.</p>
 <a href="https://www.w3.org/TR/WCAG21/#audio-control">Success Criterion 1.4.2</a>
 </p>
 
-<p>Where non-Web documents contain audio, especially audio that automatically
+<p>Where non-web documents contain audio, especially audio that automatically
 plays in certain circumstances (e.g. a slide in a slide deck starts playing a
 video when that slide is shown), – this criterion is typically met through the
 user agent or software application or operating system the user is using to
 interact with the document (rather than through an affordance in the static
-document itself).  Because of this, compliance with this success criterion may
+document itself). Because of this, compliance with this success criterion may
 be software application or operating system dependent, and therefore difficult
 to assess compliance for outside of a specific, named application or operating
 system. </p>
 
-<p>Where non-Web software contains audio, especially audio that automatically
+<p>Where non-web software contains audio, especially audio that automatically
 plays in certain circumstances (e.g. making a ringing sound to indicate an
 incoming call) ... </p>
-<p><strong>EDITOR'S NOTE:</strong> Section content yet to be written.</p>
+<p><strong>EDITOR'S NOTE</strong><br /> Section content yet to be written.</p>
 
 </section>
 
@@ -697,10 +902,10 @@ incoming call) ... </p>
 <a href="https://www.w3.org/TR/WCAG21/#no-keyboard-trap">Success Criterion 2.1.2</a>
 </p>
 
-<p>Non-Web documents rarely if ever include code for responding to keyboard focus. This criterion is typically met through the user agent or software application the user is using to interact with the document (rather than through an affordance in the static document itself). Because of this, compliance with this success criterion may be software application or operating system dependent, and therefore difficult to assess compliance for outside of a specific, named application or operating system. Even then, programmatic testing for this may not be possible.
+<p>Non-web documents rarely if ever include code for responding to keyboard focus. This criterion is typically met through the user agent or software application the user is using to interact with the document (rather than through an affordance in the static document itself). Because of this, compliance with this success criterion may be software application or operating system dependent, and therefore difficult to assess compliance for outside of a specific, named application or operating system. Even then, programmatic testing for this may not be possible.
 </p>
 
-<p>Where non-Web software contains a user interface that can be interacted with from a keyboard, it may be possible to test for this programmatically, though we are not aware of any such test today.  Where interaction with the user interface is supported from a keyboard interface provided by an assistive technology (e.g. a Bluetooth keyboard driving a screen reader for a tablet or phone UI), programmatic testing may be especially challenging.
+<p>Where non-web software contains a user interface that can be interacted with from a keyboard, it may be possible to test for this programmatically, though we are not aware of any such test today. Where interaction with the user interface is supported from a keyboard interface provided by an assistive technology (e.g. a Bluetooth keyboard driving a screen reader for a tablet or phone UI), programmatic testing may be especially challenging.
 </p>
 </section>
 
@@ -711,14 +916,14 @@ incoming call) ... </p>
 <a href="https://www.w3.org/TR/WCAG21/#pause-stop-hide">Success Criterion 2.2.2</a>
 </p>
 
-<p>As with audio, where non-Web documents contain animation &mdash; especially animation that automatically plays in certain circumstances (e.g. a slide in a slide deck starts an animation when that slide is shown) &mdash; this criterion is typically met through the user agent or software application the user is using to interact with the document (rather than through an affordance in the static document itself).  Because of this, compliance with this success criterion may be software application dependent, and therefore difficult to assess compliance for outside of a specific, named application. Even then, programmatic testing for this may not be possible.
+<p>As with audio, where non-web documents contain animation — especially animation that automatically plays in certain circumstances (e.g. a slide in a slide deck starts an animation when that slide is shown) — this criterion is typically met through the user agent or software application the user is using to interact with the document (rather than through an affordance in the static document itself). Because of this, compliance with this success criterion may be software application dependent, and therefore difficult to assess compliance for outside of a specific, named application. Even then, programmatic testing for this may not be possible.
 </p>
 
-<p>Where non-Web software contains animation &mdash; especially audio that
+<p>Where non-web software contains animation — especially audio that
 automatically plays in certain circumstances (e.g. showing a trailer for a
-movie when the user selects a movie title) &mdash; this criterion is typically
+movie when the user selects a movie title) — this criterion is typically
 met through some setting in the application to suppress such animations, or
-perhaps in the operating system.  Because it can be difficult to tell when the
+perhaps in the operating system. Because it can be difficult to tell when the
 animation is not desired by the user and when it is (did the user ask to play a
 trailer?), this may not be possible to discern programmatically.
 </p>
@@ -734,7 +939,7 @@ href="https://www.w3.org/TR/WCAG21/#three-flashes-or-below-threshold">Success Cr
 
 <p>While this success criterion may be difficult to programmatically test for
 in all situations (especially for software applications), there is nothing in
-this criterion that is otherwise challenging to apply in the non-Web ICT
+this criterion that is otherwise challenging to apply in the non-web ICT
 context.</p>
 </section>
 </section>
@@ -748,7 +953,7 @@ needing additional text changes</h3>
 <a href="https://www.w3.org/TR/WCAG21/#reflow">Success Criterion 1.4.10</a>
 </p>
 
-<p><strong>EDITOR'S NOTE:</strong> Section content yet to be written.</p>
+<p><strong>EDITOR'S NOTE</strong><br />Section content yet to be written.</p>
 </section>
 
             <section class="appendix">
@@ -758,7 +963,7 @@ needing additional text changes</h3>
 <a href="https://www.w3.org/TR/WCAG21/#timing-adjustable">Success Criterion 2.2.1</a>
 </p>
 
-<p><strong>EDITOR'S NOTE:</strong> Section content yet to be written.</p>
+<p><strong>EDITOR'S NOTE</strong><br />Section content yet to be written.</p>
 	    </section>
 
             <section class="appendix">
@@ -768,7 +973,7 @@ needing additional text changes</h3>
 <a href="https://www.w3.org/TR/WCAG21/#pointer-gestures">Success Criterion 2.5.1</a>
 </p>
 
-<p><strong>EDITOR'S NOTE:</strong> Section content yet to be written.</p>
+<p><strong>EDITOR'S NOTE</strong><br />Section content yet to be written.</p>
 </section>
 
             <section class="appendix">
@@ -778,7 +983,7 @@ needing additional text changes</h3>
 <a href="https://www.w3.org/TR/WCAG21/#pointer-cancellation">Success Criterion 2.5.2</a>
 </p>
 
-<p><strong>EDITOR'S NOTE:</strong> Section content yet to be written.</p>
+<p><strong>EDITOR'S NOTE</strong><br />Section content yet to be written.</p>
 </section>
 
             <section class="appendix">
@@ -788,7 +993,7 @@ needing additional text changes</h3>
 <a href="https://www.w3.org/TR/WCAG21/#language-of-page">Success Criterion 3.1.1</a>
 </p>
 
-<p><strong>EDITOR'S NOTE:</strong> Section content yet to be written.</p>
+<p><strong>EDITOR'S NOTE</strong><br />Section content yet to be written.</p>
 </section>
 
             <section class="appendix">
@@ -797,8 +1002,9 @@ needing additional text changes</h3>
 <p class="sc-link">
 <a href="https://www.w3.org/TR/WCAG21/#language-of-parts">Success Criterion 3.1.2</a>
 </p>
-<p>The purpose of this success criterion is to enable assistive technologies like screen readers to determine the language used for different passages of text on a web page.  While some software environments like Java and GNOME/GTK+ support
-this both for text substrings within a block of text as well as for individual user interface elements, others do not.  Therefore, it may not be possible for some software to meet this success criterion.  Separately, programmatic testing
+
+<p>The purpose of this success criterion is to enable assistive technologies like screen readers to determine the language used for different passages of text on a web page. While some software environments like Java and GNOME/GTK+ support
+this both for text substrings within a block of text as well as for individual user interface elements, others do not. Therefore, it may not be possible for some software to meet this success criterion. Separately, programmatic testing
 for this may not be possible, as expert human judgment is needed to determine what the correct language is for some text passages.
 </p>
 
@@ -811,7 +1017,7 @@ for this may not be possible, as expert human judgment is needed to determine wh
 <a href="https://www.w3.org/TR/WCAG21/#error-prevention-legal-financial-data">Success Criterion 3.3.4</a>
 </p>
 
-<p><strong>EDITOR'S NOTE:</strong> Section content yet to be written.</p>
+<p><strong>EDITOR'S NOTE</strong><br />Section content yet to be written.</p>
 </section>
 
             <section class="appendix">
@@ -821,7 +1027,7 @@ for this may not be possible, as expert human judgment is needed to determine wh
 <a href="https://www.w3.org/TR/WCAG21/#parsing">Success Criterion 4.1.1</a>
 </p>
 
-<p><strong>EDITOR'S NOTE:</strong> Section content yet to be written.</p>
+<p><strong>EDITOR'S NOTE</strong><br /> Section content yet to be written.</p>
 </section>
 
             <section class="appendix">
@@ -831,7 +1037,7 @@ for this may not be possible, as expert human judgment is needed to determine wh
 <a href="https://www.w3.org/TR/WCAG21/#name-role-value">Success Criterion 4.1.2</a>
 </p>
 
-<p><strong>EDITOR'S NOTE:</strong> Section content yet to be written.</p>
+<p><strong>EDITOR'S NOTE</strong><br />Section content yet to be written.</p>
 </section>
 </section>
 
@@ -843,15 +1049,16 @@ for this may not be possible, as expert human judgment is needed to determine wh
 <p class="sc-link">
 <a href="https://www.w3.org/TR/WCAG21/#text-spacing">Success Criterion 1.4.12</a>
 </p>
-<p><strong>EDITOR'S NOTE:</strong> Section content yet to be written.</p>
+
+<p><strong>EDITOR'S NOTE</strong><br />Section content yet to be written.</p>
 </section>
 </section>
 
 <section class="appendix" id="Appendix-B.5">
 	<h3>Success Criteria Needing Special Treatment in Non-Accessibility Supported Environments</h3>
-	<p>15 of the 38 A and AA criteria in WCAG 2.0 relate to an accessibility supported interface &mdash; they are designed with interoperability with assistive technologies in mind.  Such interaction may not be possible for many types of software (e.g.
-	software running in a "closed" environment like an airplane ticket kiosk).  Thus, in those environments, the only way to address the needs articulated in these criteria may be for the software to be "self-voicing" for blind users who can
-	hear, and otherwise "self-accessible" to the needs of people with other disabilities which are commonly supported via assistive technologies.  It may not be feasible to support all disability user needs (e.g. including a refreshable
+	<p>15 of the 38 A and AA criteria in WCAG 2.0 relate to an accessibility supported interface — they are designed with interoperability with assistive technologies in mind. Such interaction may not be possible for many types of software (e.g.
+	software running in a <q>closed</q> environment like an airplane ticket kiosk). Thus, in those environments, the only way to address the needs articulated in these criteria may be for the software to be <q>self-voicing</q> for blind users who can
+	hear, and otherwise <q>self-accessible</q> to the needs of people with other disabilities which are commonly supported via assistive technologies. It may not be feasible to support all disability user needs (e.g. including a refreshable
 	braille display in the device to support deaf-blind users, and then maintaining those braille displays to ensure their mechanisms don't get damaged).
 	</p>
 
@@ -879,12 +1086,26 @@ for this may not be possible, as expert human judgment is needed to determine wh
         	<section>
         		<h3>Participants of the AG WG who contributed to the development of this document:</h3>
         		<ul>
+        			<li>Charles Adams (Oracle)</li>
+<li>Alastair Campbell (Nomensa)</li>
+<li>Michael Cooper (W3C)</li>
+<li>Joe Cronin (Amazon)</li>
+<li>Detlev Fischer (Invited Expert) </li>
+<li>Charles Hall (Invited Expert)</li>
+<li>   Andrew Kirkpatrick (Adobe)</li>
         			<li>Peter Korn (Amazon)</li>
+<li>Shawn Lauriat (Google)</li>
+<li>   Mary Jo Mueller (IBM)</li>
         			<li>Janina Sajka (Amazon)</li>
-        			<li><em>TBD additional participants</em></li>
+<li>Jeanne Spellman (TetraLogical)</li>
+<li>Jason White (ETS)</li>
         		</ul>
         	</section>
-        	<div data-include="../acknowledgements/funders.html" data-include-replace="true"></div>
+        	<!--<div data-include="../acknowledgements/funders.html" data-include-replace="true"></div>-->
+        	<section>
+        		<h2>Enabling funders</h2>
+        		<p>This publication has been funded in part with U.S. Federal funds from the Health and Human Services, National Institute on Disability, Independent Living, and Rehabilitation Research (NIDILRR) under contract number HHSP23301500054C. The content of this publication does not necessarily reflect the views or policies of the U.S. Department of Health and Human Services, nor does mention of trade names, commercial products, or organizations imply endorsement by the U.S. Government.</p>
+        	</section>
         </section>
     </body>
 </html>
