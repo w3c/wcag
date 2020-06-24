@@ -129,6 +129,10 @@
 		<xsl:value-of select="format-date(current-date(), '[D] [MNn] [Y]')"/>
 	</xsl:template>
 	
+	<xsl:template match="html:*[@class = 'generate-year']">
+		<xsl:value-of select="format-date(current-date(), '[Y]')"/>
+	</xsl:template>
+	
 	<xsl:template match="html:link[@href][contains(@href, 'css/editors.css')]"/>
 	
 	<xsl:template match="html:figure">
