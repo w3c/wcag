@@ -38,6 +38,8 @@
 	
 	<target name="clean" description="Clean up any temp files">
 		<delete file="${inputdir.guidelines}/index-flat.html" failonerror="false"/>
+		<delete file="${inputdir.techniques}/index-flat.html" failonerror="false"/>
+		<delete file="${inputdir.understanding}/index-flat.html" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/wcag.xml" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/wcag.json" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/versions.xml" failonerror="false"/>
@@ -200,7 +202,12 @@
 	<target name="techniques-index" depends="techniques-toc" description="Flatten the techniques index file">
 		<makeurl file="${basedir}/techniques/" property="base.techniques"/>
 		<mkdir dir="${basedir}/output/techniques/"/>
-		<xslt in="${inputdir.techniques}/index.html" out="${basedir}/output/techniques/index.html" style="xslt/flatten-document.xslt" force="true">
+		<xslt in="${inputdir.techniques}/index.html" out="${inputdir.techniques}/index-flat.html" style="xslt/flatten-document.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+			<param name="base.dir" expression="${base.techniques}"/>
+		</xslt>
+		<xslt in="${inputdir.techniques}/index-flat.html" out="${basedir}/output/techniques/index.html" style="xslt/base.xslt" force="true">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.techniques}"/>
@@ -251,7 +258,12 @@
 	<target name="understanding-index" depends="understanding-toc" description="Flatten the understanding index file">
 		<makeurl file="${basedir}/understanding/" property="base.understanding"/>
 		<mkdir dir="${basedir}/output/understanding/"/>
-		<xslt in="${inputdir.understanding}/index.html" out="${basedir}/output/understanding/index.html" style="xslt/flatten-document.xslt" force="true">
+		<xslt in="${inputdir.understanding}/index.html" out="${basedir}/understanding/index-flat.html" style="xslt/flatten-document.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+			<param name="base.dir" expression="${base.understanding}"/>
+		</xslt>
+		<xslt in="${inputdir.understanding}/index-flat.html" out="${basedir}/output/understanding/index.html" style="xslt/base.xslt" force="true">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.understanding}"/>
