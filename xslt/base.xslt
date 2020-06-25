@@ -74,6 +74,12 @@
 		</xsl:choose>
 	</xsl:function>
 	
+	<xsl:template match="node()|@*" priority="-1">
+		<xsl:copy>
+			<xsl:apply-templates select="node()|@*"/>
+		</xsl:copy>
+	</xsl:template>
+	
 	<xsl:template match="html:a[wcag:is-technique-link(.)]">
 		<xsl:variable name="technique-id" select="replace(@href, '^.*/([\w\d]*)(\.html)?$', '$1')"/>
 		<xsl:choose>
@@ -121,6 +127,10 @@
 	
 	<xsl:template match="html:*[@class = 'generate-date']">
 		<xsl:value-of select="format-date(current-date(), '[D] [MNn] [Y]')"/>
+	</xsl:template>
+	
+	<xsl:template match="html:*[@class = 'generate-year']">
+		<xsl:value-of select="format-date(current-date(), '[Y]')"/>
 	</xsl:template>
 	
 	<xsl:template match="html:link[@href][contains(@href, 'css/editors.css')]"/>
