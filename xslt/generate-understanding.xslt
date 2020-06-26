@@ -61,7 +61,7 @@
 							<li><a href="{$meta/preceding-sibling::success-criterion[1]/file/@href}">Previous <abbr title="Success Criterion">SC</abbr>: <xsl:value-of select="$meta/preceding-sibling::success-criterion[1]/name"/></a></li>
 						</xsl:when>
 						<xsl:when test="$meta/parent::guideline/preceding-sibling::guideline">
-							<li><a href="{$meta/parent::guideline/preceding-sibling::guideline[1]/success-criterion[1]/file/@href}">Previous <abbr title="Success Criterion">SC</abbr>: <xsl:value-of select="$meta/ancestor::principle/preceding-sibling::principle[1]/guideline[1]/success-criterion[1]/name"/></a></li>
+							<li><a href="{$meta/parent::guideline/preceding-sibling::guideline[1]/success-criterion[last()]/file/@href}">Previous <abbr title="Success Criterion">SC</abbr>: <xsl:value-of select="$meta/parent::guideline/preceding-sibling::guideline[1]/success-criterion[last()]/name"/></a></li>
 						</xsl:when>
 						<xsl:when test="$meta/ancestor::principle/preceding-sibling::principle">
 							<li><a href="{$meta/ancestor::principle/preceding-sibling::principle[1]/guideline[last()]/success-criterion[last()]/file/@href}">Previous <abbr title="Success Criterion">SC</abbr>: <xsl:value-of select="$meta/ancestor::principle/preceding-sibling::principle[1]/guideline[last()]/success-criterion[last()]/name"/></a></li>
