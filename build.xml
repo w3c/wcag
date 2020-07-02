@@ -10,6 +10,8 @@
 	<!-- The following properties need to be set appropriately before doing a build - they should all be overridden by the above property file, but are kept here to serve as defaults -->
 	<property name="outputdir" location="." description="Directory within which the output folders are created, normally &quot;../YYYY&quot; unless doing TR in which case it is &quot;../../../TR/&lt;YYYY&gt;&quot;"/>
 	<property name="uri.prefix" value="file:///" description="Prefix if any that must be prepended to URIs to make it resolve on the platform"/>
+	<property name="guidelines.version" value="22" description="Which version of WCAG is being built"/>
+	<property name="w3ccvs.location" location="../../../w3ccvs"/>
 	
 	<property name="xslt.factory" value="net.sf.saxon.TransformerFactoryImpl" description="Class name of the XSLT transformer factory, which sets which XSLT engine to use; must be an XSLT 2.0 processor"/>
 	<property name="classpath.saxon" value="lib/saxon9he.jar" description="Path to Saxon jar in order to run XSLT 2.0"/>
@@ -96,13 +98,13 @@
 	</target>
 	
 	<target name="guidelines" depends="init">
-		<mkdir dir="output/guidelines/22"/>
-		<copy file="guidelines/guidelines.css" todir="output/guidelines/22"/>
-		<copy file="guidelines/relative-luminance.xml" todir="output/guidelines/22"/>
+		<mkdir dir="output/guidelines/${guidelines.version}"/>
+		<copy file="guidelines/guidelines.css" todir="output/guidelines/${guidelines.version}"/>
+		<copy file="guidelines/relative-luminance.xml" todir="output/guidelines/${guidelines.version}"/>
 		<exec executable="curl">
 			<arg value="&quot;https://labs.w3.org/spec-generator/?type=respec&amp;url=https://raw.githack.com/w3c/wcag/master/guidelines/index.html&quot;"/>
 			<arg value="-o"/>
-			<arg value="output/guidelines/22/index.html"/>
+			<arg value="output/guidelines/${guidelines.version}/index.html"/>
 			<arg value="-f"/>
 			<arg value="--retry"/>
 			<arg value="3"/>
@@ -178,9 +180,9 @@
 			<param name="techniques.dir" expression="${base.techniques}"/>
 			<param name="associations.file" expression="${associations.file}"/>
 			<param name="output.dir" expression="${output.dir}"/>
-			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG21/" if="publication"/>
-			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG21/Understanding/" if="publication"/>
-			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG21/Techniques/" if="publication"/>
+			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG${guidelines.version}/" if="publication"/>
+			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Understanding/" if="publication"/>
+			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Techniques/" if="publication"/>
 			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
@@ -211,9 +213,9 @@
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.techniques}"/>
-			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG21/" if="publication"/>
-			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG21/Understanding/" if="publication"/>
-			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG21/Techniques/" if="publication"/>
+			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG${guidelines.version}/" if="publication"/>
+			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Understanding/" if="publication"/>
+			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Techniques/" if="publication"/>
 			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
@@ -232,9 +234,9 @@
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.understanding}"/>
 			<param name="output.dir" expression="${output.dir}"/>
-			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG21/" if="publication"/>
-			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG21/Understanding/" if="publication"/>
-			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG21/Techniques/" if="publication"/>
+			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG${guidelines.version}/" if="publication"/>
+			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Understanding/" if="publication"/>
+			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Techniques/" if="publication"/>
 			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
@@ -267,9 +269,9 @@
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.understanding}"/>
-			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG21/" if="publication"/>
-			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG21/Understanding/" if="publication"/>
-			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG21/Techniques/" if="publication"/>
+			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG${guidelines.version}/" if="publication"/>
+			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Understanding/" if="publication"/>
+			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Techniques/" if="publication"/>
 			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
@@ -278,11 +280,11 @@
 	
 	<!-- Requirements -->
 	<target name="requirements" depends="init">
-		<mkdir dir="output/requirements/22"/>
+		<mkdir dir="output/requirements/${guidelines.version}"/>
 		<exec executable="curl">
-			<arg value="&quot;https://labs.w3.org/spec-generator/?type=respec&amp;url=https://raw.githack.com/w3c/wcag/master/requirements/22/index.html&quot;"/>
+			<arg value="&quot;https://labs.w3.org/spec-generator/?type=respec&amp;url=https://raw.githack.com/w3c/wcag/master/requirements/${guidelines.version}/index.html&quot;"/>
 			<arg value="-o"/>
-			<arg value="output/requirements/22/index.html"/>
+			<arg value="output/requirements/${guidelines.version}/index.html"/>
 			<arg value="-f"/>
 			<arg value="--retry"/>
 			<arg value="3"/>
@@ -319,18 +321,18 @@
 		<property name="publication" value="true"/>
 		<antcall target="techniques"/>
 		<antcall target="understanding"/>
-		<copy todir="../../../smartcvs/WWW/WAI/WCAG21/">
+		<copy todir="${w3ccvs.location}/WWW/WAI/WCAG${guidelines.version}/">
 			<fileset dir="output/"/>
 			<globmapper from="*index.html" to="*Overview.html"/>
 		</copy>
-		<copy todir="../../../smartcvs/WWW/WAI/WCAG21/">
+		<copy todir="${w3ccvs.location}/WWW/WAI/WCAG${guidelines.version}/">
 			<fileset dir="output" excludes="index.html **/index.html"/>
 		</copy>
-		<copy todir="../../../smartcvs/WWW/WAI/WCAG21/working-examples/">
+		<copy todir="${w3ccvs.location}/WWW/WAI/WCAG${guidelines.version}/working-examples/">
 			<fileset dir="working-examples/"/>
 			<globmapper from="*index.html" to="*Overview.html"/>
 		</copy>
-		<copy todir="../../../smartcvs/WWW/WAI/WCAG21/working-examples/">
+		<copy todir="${w3ccvs.location}/WWW/WAI/WCAG${guidelines.version}/working-examples/">
 			<fileset dir="working-examples/" excludes="index.html **/index.html"/>
 		</copy>
 	</target>
