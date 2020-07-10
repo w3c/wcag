@@ -99,6 +99,7 @@
 	
 	<target name="guidelines" depends="init">
 		<mkdir dir="output/guidelines/${guidelines.version}"/>
+		<copy file="css/base.css" todir="output/guidelines/${guidelines.version}"/>
 		<copy file="guidelines/guidelines.css" todir="output/guidelines/${guidelines.version}"/>
 		<copy file="guidelines/relative-luminance.xml" todir="output/guidelines/${guidelines.version}"/>
 		<exec executable="curl">
@@ -177,6 +178,7 @@
 		<xslt in="${inputdir.techniques}/techniques.xml" out="output.html" style="xslt/generate-techniques.xslt" force="true">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
+			<param name="guidelines.version" expression="${guidelines.version}"/>
 			<param name="techniques.dir" expression="${base.techniques}"/>
 			<param name="associations.file" expression="${associations.file}"/>
 			<param name="output.dir" expression="${output.dir}"/>
@@ -187,6 +189,7 @@
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
 		</xslt>
+		<copy file="css/base.css" todir="output/techniques/"/>
 		<copy file="techniques/techniques.css" todir="output/techniques/"/>
 		<copy file="css/slicenav.css" todir="output/techniques/"/>
 		<copy todir="output/techniques/">
@@ -213,6 +216,7 @@
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.techniques}"/>
+			<param name="guidelines.version" expression="${guidelines.version}"/>
 			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG${guidelines.version}/" if="publication"/>
 			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Understanding/" if="publication"/>
 			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Techniques/" if="publication"/>
@@ -234,6 +238,7 @@
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.understanding}"/>
 			<param name="output.dir" expression="${output.dir}"/>
+			<param name="guidelines.version" expression="${guidelines.version}"/>
 			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG${guidelines.version}/" if="publication"/>
 			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Understanding/" if="publication"/>
 			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Techniques/" if="publication"/>
@@ -241,6 +246,7 @@
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
 		</xslt>
+		<copy file="css/base.css" todir="output/understanding/"/>
 		<copy file="understanding/understanding.css" todir="output/understanding/"/>
 		<copy file="css/slicenav.css" todir="output/understanding/"/>
 		<copy todir="output/understanding/img/" flatten="true">
@@ -269,6 +275,7 @@
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.understanding}"/>
+			<param name="guidelines.version" expression="${guidelines.version}"/>
 			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG${guidelines.version}/" if="publication"/>
 			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Understanding/" if="publication"/>
 			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Techniques/" if="publication"/>

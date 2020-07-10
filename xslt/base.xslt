@@ -7,6 +7,8 @@
 	exclude-result-prefixes="#all"
 	version="2.0">
 	
+	<xsl:param name="guidelines.version"/>
+	
 	<xsl:param name="loc.guidelines">/guidelines/</xsl:param>
 	<xsl:param name="loc.understanding">/understanding/</xsl:param>
 	<xsl:param name="loc.techniques">/techniques/</xsl:param>
@@ -161,6 +163,28 @@
 			<xsl:otherwise>
 				<xsl:copy><xsl:apply-templates select="@*[not(name() = 'data-include')]"/><xsl:value-of select="unparsed-text(resolve-uri(@data-include, document-uri(ancestor::document-node())))" disable-output-escaping="yes"/></xsl:copy>
 			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template match="html:*[starts-with(@class, 'wcag')]">
+		<xsl:if test="not($guidelines.version)">
+			<xsl:message terminate="yes">Guidelines version not provided</xsl:message>
+		</xsl:if>
+		<xsl:variable name="version" select="substring-after(@class, 'wcag')"/>
+		<xsl:choose>
+			<xsl:when test="$version &lt; $guidelines.version">
+				<xsl:copy>
+					<xsl:apply-templates select="node()|@*"/>
+				</xsl:copy>
+			</xsl:when>
+			<xsl:when test="$version = $guidelines.version">
+				<xsl:copy>
+					<xsl:apply-templates select="@*"/>
+					<xsl:text> </xsl:text><span class="new-version">New in WCAG <xsl:value-of select="$guidelines.version"/>: </span>
+					<xsl:apply-templates/>
+				</xsl:copy>
+			</xsl:when>
+			<xsl:when test="$version &gt; $guidelines.version"><!-- don't output --></xsl:when>
 		</xsl:choose>
 	</xsl:template>
 	
