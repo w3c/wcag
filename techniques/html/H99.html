@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta charset="UTF-8" />
+      <title>H99: Providing a Page List</title>
+      <link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="H98">Previous Technique: H98</a></li>
+            <li><a href="../pdf/PDF1">Next Technique: PDF1</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Providing a Page List</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>Content structured in <a href="https://www.w3.org/TR/html/">HyperText Markup Language (HTML)</a>.
+            </p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/fixed-reference-points">Success Criterion 2.4.12: Fixed Reference Points</a> (Sufficient)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to ensure that a page list navigation aid is provided
+               and that it includes a list of all the available locations in the digital publication.
+            </p>
+            <p>The page list provides a way to locate static page break locations (i.e., where each
+               new page begins) within a digital publication. These locations typically come from
+               a print equivalent of the edition and allow synchronization in, for example, mixed
+               print-digital environments such as schools and universities.
+            </p>
+            <p>The source of pagination is not limited to print but could match up to any statically
+               paginated alternative, such as a PDF or even a fixed-layout EPUB (i.e., where the
+               content does not reflow to fit the available screen size).
+            </p>
+            <p>The order of the page break locations in a digital publication is not sequential in
+               all cases, and not all page breaks may be represented. Publishers often rearrange
+               and remove content from the paginated source content when creating a digital version.
+            </p>
+            <p>Page lists are a central feature of many digital publishing formats. EPUB 3 defines
+               the page list in its navigation document,<a href="#footnote1">[1]</a> while EPUB 2 and DAISY 3 use the pageList element in the NCX.<a href="#footnote2">[2]</a> 
+            </p>
+            <p>The DPUB-ARIA module also includes a doc-pagelist role for identifying the navigation
+               element containing the page list.<a href="#footnote3">[3]</a></p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <section class="example" id="example-1-example-1-–-page-list-in-html-publications">
+               <h3>Example 1: Example 1 – Page list in HTML publications</h3>
+               <p>To add a page list to a web-based document, the role "doc-pagelist" is added to the
+                  element (typically a nav element) that encloses the list and its title.
+               </p><pre><code>&lt;nav role="doc-pagelist" aria-labelledby="pglist"&gt;
+ &lt;h2 id="pglist"&gt;Page List&lt;/h2&gt;
+ &lt;ol&gt;
+   &lt;li&gt;&lt;a href="intro.xhtml#pg1"&gt;1&lt;/a&gt;&lt;/li&gt;
+   &lt;li&gt;&lt;a href="intro.xhtml#pg2"&gt;2&lt;/a&gt;&lt;/li&gt;
+   …
+ &lt;/ol&gt;
+&lt;/nav&gt;
+</code></pre><p>The destinations of the page list links are usually explicit page break markers like
+                  the following:
+               </p><pre><code>&lt;span id="pg1" role="doc-pagebreak" aria-label="page 1"&gt;</code></pre><p>EPUB 3 uses the epub:type attribute to identify the page list in the navigation document.
+                  The attribute is used on a nav element with the value "page-list" (note the different
+                  hyphenation). The ARIA role attribute has no effect unless the navigation document
+                  can be directly accessed by users (i.e., the document is in the EPUB spine). Like
+                  the previous HTML example, the contents of the nav element is a list of links to the
+                  page break locations.
+               </p><pre><code>&lt;nav epub:type="page-list" role="doc-pagelist" aria-labelledby="pglist"&gt;
+   &lt;h2 id="pglist"&gt;Page List&lt;/h2&gt;
+   &lt;ol&gt;
+      &lt;li&gt;&lt;a href="chapter01.xhtml#page001"&gt;1&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="chapter01.xhtml#page002"&gt;2&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="chapter01.xhtml#page003"&gt;3&lt;/a&gt;&lt;/li&gt;
+      …
+   &lt;/ol&gt;
+   &lt;/nav&gt;</code></pre><p>The EPUB 2 and DAISY 3 formats both use an XML grammar called the NCX for expressing
+                  navigation aids. The page list is defined within the ncx element using the pageList
+                  tag. Each pageTarget within this element identifies a page break, providing both a
+                  label and a destination.
+               </p><pre><code>&lt;ncx xmlns="http://www.daisy.org/z3986/2005/ncx/"
+     version="2005-1"
+     xml:lang="en-US"&gt;
+   …
+   &lt;pageList&gt;
+      &lt;pageTarget id="p1" type="normal" value="1"&gt;
+         &lt;navLabel&gt;&lt;text&gt;1&lt;/text&gt;&lt;/navLabel&gt;
+         &lt;content src="content.html#p001"/&gt;
+      &lt;/pageTarget&gt;
+      &lt;pageTarget id="p2" type="normal" value="2"&gt;
+         &lt;navLabel&gt;&lt;text&gt;2&lt;/text&gt;&lt;/navLabel&gt;
+         &lt;content src="content.html#p002"/&gt;
+      &lt;/pageTarget&gt;
+   &lt;/pageList&gt;
+&lt;/ncx&gt;</code></pre></section>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="procedure" id="procedure">
+               			
+               <h3>Procedure</h3>
+               				
+               <ol>
+                  				
+                  <li>Check that a page list, or a link to a page list exists in the publication.</li>
+                  				
+                  <li>Check that all the static page break locations in the publication are represented
+                     in the page list.
+                  </li>
+                  				
+                  <li>Check that the entries in the page list link to the correct location in the publication.</li>
+                  				
+               </ol>
+               			
+            </section>
+            <section class="results" id="expected-results">
+               			
+               <h3>Expected Results</h3>
+               				
+               <ul>
+                  				
+                  <li>#1, #2 and #3 are true.</li>
+                  				
+               </ul>
+               		
+            </section>
+         </section>
+      </main>
+   </body>
+</html>
