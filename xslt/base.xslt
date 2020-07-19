@@ -74,6 +74,12 @@
 		</xsl:choose>
 	</xsl:function>
 	
+	<xsl:template match="node()|@*" priority="-1">
+		<xsl:copy>
+			<xsl:apply-templates select="node()|@*"/>
+		</xsl:copy>
+	</xsl:template>
+	
 	<xsl:template match="html:a[wcag:is-technique-link(.)]">
 		<xsl:variable name="technique-id" select="replace(@href, '^.*/([\w\d]*)(\.html)?$', '$1')"/>
 		<xsl:choose>
@@ -123,6 +129,10 @@
 		<xsl:value-of select="format-date(current-date(), '[D] [MNn] [Y]')"/>
 	</xsl:template>
 	
+	<xsl:template match="html:*[@class = 'generate-year']">
+		<xsl:value-of select="format-date(current-date(), '[Y]')"/>
+	</xsl:template>
+	
 	<xsl:template match="html:link[@href][contains(@href, 'css/editors.css')]"/>
 	
 	<xsl:template match="html:figure">
@@ -144,5 +154,14 @@
 	</xsl:template>
 	
 	<xsl:template match="html:p[@class = 'change']"/>
+	
+	<xsl:template match="element()[@data-include]">
+		<xsl:choose>
+			<xsl:when test="@data-include-replace = 'true'"><xsl:value-of select="unparsed-text(resolve-uri(@data-include, document-uri(ancestor::document-node())))" disable-output-escaping="yes"/></xsl:when>
+			<xsl:otherwise>
+				<xsl:copy><xsl:apply-templates select="@*[not(name() = 'data-include')]"/><xsl:value-of select="unparsed-text(resolve-uri(@data-include, document-uri(ancestor::document-node())))" disable-output-escaping="yes"/></xsl:copy>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 	
 </xsl:stylesheet>
