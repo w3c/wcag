@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta charset="UTF-8" />
+      <title>C42: Using min-height and min-width to ensure sufficient target spacing</title>
+      <link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="../techniques.css" />
+      <link rel="stylesheet" type="text/css" href="../slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="https://w3c.github.io/wcag/techniques/#techniques" title="Table of Contents">Contents</a></li>
+            <li><a href="https://w3c.github.io/wcag/techniques/#introduction" title="Introduction to Techniques">Intro</a></li>
+            <li><a href="C41">Previous Technique: C41</a></li>
+            <li><a href="../failures/F1">Next Technique: F1</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#important-information">Important Information about Techniques</a></li>
+            <li><a href="#applicability">Applicability</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#tests">Tests</a></li>
+         </ul>
+      </nav>
+      <h1>Using min-height and min-width to ensure sufficient target spacing</h1>
+      <section id="important-information">
+         <h2>Important Information about Techniques</h2>
+         <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
+            they relate to the normative WCAG 2.1 success criteria. The Applicability section
+            explains the scope of the technique, and the presence of techniques for a specific
+            technology does not imply that the technology can be used in all situations to create
+            content that meets WCAG 2.1.
+         </p>
+      </section>
+      <main>
+         <section id="applicability">
+            <h2>Applicability</h2>
+            <p>All technologies that support CSS and pointer input.</p>
+            <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/pointer-target-spacing">Success Criterion 2.5.8: Pointer Target Spacing</a> (Sufficient)</span>.
+            </p>
+         </section>
+         <section id="description">
+            <h2>Description</h2>
+            <p>The objective of this technique is to ensure that links in navigation or pagination
+               menus will be spaced so that they fall within an area that measures at least 44 x
+               44 CSS pixels if the target area itself is smaller than that. The aim is to provide
+               an adequate target clearance so the offset to adjacent targets is sufficient to prevent
+               accidental pointer activation of adjacent targets.
+            </p>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <p>The following examples can be seen as rendered versions in the <a href="../../working-examples/css-pointer-spacing/">working examples</a>.
+            </p>
+            <section class="example" id="example-1-using-a-display-value-of-inline-block-and-min-height-/-width">
+               <h3>Example 1: Using a display value of inline-block and min-height / width</h3>
+               <p>The first example shows a situation where the targets (in this case, the linked numbers
+                  in th pagination menu) are smaller than 44 x 44 CSS pixels. However, the list items
+                  that contain them have a minimum height and width of 44 px set, so that sufficient
+                  target spacing is assured.
+               </p>
+               <figure id="pointer-spacing-block">
+                  					<img src="img/pointer-spacing-1.png" alt="A horizontal pagination component immediately above the search results." />
+                  					
+                  <figcaption>Figure 1Example of using CSS to ensure enough spacing around targets</figcaption>
+                  				
+               </figure>
+               <p>Given the following HTML:</p><pre><code>&lt;nav class="pag" aria-label="pagination menu"&gt;
+	&lt;ol class="pagination-1"&gt;
+		&lt;li&gt;&lt;span&gt;previous&lt;/span&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;strong&gt;1&lt;/strong&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="#"&gt;2&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="#"&gt;3&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="#"&gt;4&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="#"&gt;5&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="#"&gt;next&lt;/a&gt;&lt;/li&gt;
+	&lt;/ol&gt;
+&lt;/nav&gt;</code></pre><p>The following CSS would ensure the minimum spacing is applied:</p><pre><code>ol.pagination-1 li {
+	display: inline-block; 
+	min-width: 44px;
+	min-height: 44px;
+}</code></pre></section>
+            <section class="example" id="example-2-using-a-display-value-of-flex-and-min-height-/-width">
+               <h3>Example 2: Using a display value of flex and min-height / width</h3>
+               <p>The second example uses min-width and min-height on the targets (the linked numbers
+                  in the pagination menu) and not on the parent container, thereby meeting this target
+                  spacing Success Criterion and incidentally also the AAA Success Criterion 2.5.5 Target
+                  Size.
+               </p>
+               <figure id="pointer-spacing-flex">
+                  					<img src="img/pointer-spacing-1.png" alt="A horizontal pagination component immediately above the search results. It looks identical to the previous example. " />
+                  					
+                  <figcaption>Figure 2Example of using CSS to ensure enough spacing within targets</figcaption>
+                  				
+               </figure>
+               <p>Given the following HTML:</p><pre><code>&lt;nav class="pag" aria-label="pagination menu"&gt;
+	&lt;ol class="pagination-2"&gt;
+		&lt;li&gt;&lt;span&gt;previous&lt;/span&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;strong&gt;1&lt;/strong&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="#"&gt;2&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="#"&gt;3&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="#"&gt;4&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="#"&gt;5&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="#"&gt;next&lt;/a&gt;&lt;/li&gt;
+	&lt;/ol&gt;
+  &lt;/nav&gt;</code></pre><p>The following CSS ensures the minimum size is applied:</p><pre><code>ol.pagination-2 a,
+ol.pagination-2 strong,
+ol.pagination-2 span {
+	display: block;
+	line-height:44px;
+	min-height:44px;
+	min-width: 44px;
+}</code></pre></section>
+         </section>
+         <section id="tests">
+            <h2>Tests</h2>
+            <section class="test-procedure">
+               <h3>Procedure</h3>
+               <p>For each target that cannot be enlarged by a mechanism, is not inline, and is not
+                  covered by the essential exception:
+               </p>
+               <ul>
+                  					
+                  <li>Check that the target has enough spacing so that the space around it measures at least
+                     44px width and 44px height.
+                  </li>
+                  				
+               </ul>
+            </section>
+            <section class="test-results">
+               <h3>Expected Results</h3>
+               <ul>
+                  					
+                  <li>Check #1 is true</li>
+                  				
+               </ul>
+            </section>
+         </section>
+      </main>
+   </body>
+</html>
