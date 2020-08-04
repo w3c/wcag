@@ -6,7 +6,7 @@
    <link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
 </head>
 <body>
-   <h1>Understanding Focus Visible (Enhanced)</h1>
+   <h1>Understanding Focus Appearance (Minimum)</h1>
    
     <section id="status" class="advisement">
         <h2>Status</h2>
@@ -16,30 +16,41 @@
 
    <section class="remove">
    
-        <h2>Focus Visible (Enhanced) Success Criteria text</h2>
+        <h2>Focus Appearance (Minimum) Success Criteria text</h2>
         <blockquote>
-        <p class="conformance-level">AA</p>
+            <p class="conformance-level">AA</p>
         
-        <p>When a <a>User Interface Component</a> receives keyboard <a>focus</a>, all of the following are true:</p>
-        <ul>
-            <li><strong>Minimum area:</strong> The <a>focus indication area</a> is greater than or equal to the longest side of the bounding rectangle of the focused control, times 2 <a>CSS pixels</a>.</li>
-            <li><strong>Focus contrast:</strong> Color changes used to indicate focus have at least a 3:1 contrast ratio with the colors changed from the unfocused control.</li>
-            <li><strong>Contrast or thickness:</strong> The focus indication area has a 3:1 contrast ratio against all adjacent colors for the minimum area or greater, or has a thickness of at least 2 CSS Pixels.</li>
-        </ul>
-        <p class="note">A focus indicator that is larger than the minimum area may have parts that do not meet the 3:1 contrast ratio, as long as an area equal to the minimum does meet the contrast ratio.</p>
+            <p>For the keyboard focus indicator of each User Interface Component, all of the following are true:</p>
+            <ul>
+                <li><strong>Minimum area:</strong> The <a>focus indication area</a> is greater than or equal to a 1 <a>CSS pixel</a> border of the focused control, or has a thickness of at least 8 CSS pixels along the shortest side of the element.</li>
+                <li><strong>Change of contrast:</strong> The color change for the focus indication area has a contrast ratio of at least 3:1 with the colors of the unfocused state.</li>
+                <li><strong>Adjacent contrast:</strong> The focus indication area has a contrast ratio of at least 3:1 against all adjacent colors for the minimum area or greater, or has a thickness of at least 2 CSS pixels.</li>
+                <li><strong>Unobscured:</strong> The item with focus is not entirely hidden by author-created content</li>
+            </ul>
+            <p class="note">A keyboard focus indicator which has a pattern or gradient may have parts that do not meet the 3:1 contrast ratio for the change of contrast, as long as an area equal to the minimum does meet the contrast ratio.</p>
+            <p class="note">If the control has a visible boundary smaller than the hit area, the size measure is taken from the visible boundary.</p>
+            <dt class="new"><dfn>Focus indication area</dfn></dt>
+            <dd class="new">
+	            <p>the pixels that change between the focused and unfocused states of a <a>User Interface Component</a></p>   				
+            </dd>
         </blockquote>
      </section>
    
     <section id="intent">
         
-        <h2>Intent of Focus Visible (Enhanced)</h2>
+        <h2>Intent of Focus Appearance (Minimum)</h2>
 
 
-        <p>The purpose of this success criterion is to ensure a keyboard focus indicator is clearly visible. This criterion is closely related to <a href="../20/focus-visible.html">SC 2.4.7 focus visible</a> and defines a minimum level of visibility.</p>
+        <p>The purpose of this success criterion is to ensure a keyboard focus indicator is clearly visible and discernible. This criterion is closely related to <a href="../20/focus-visible.html">SC 2.4.7 focus visible</a> and defines a minimum level of visibility.</p>
 
         <p>For sighted people with mobility impairments who use a keyboard-like device (e.g. a switch, voice input), knowing the current point of focus is very important. Visible focus must also meet the needs of low-vision users, who may also be keyboard-only users.</p>
             
-        <p>A keyboard focus indicator can take different forms, this success criterion sets a requirement to make it is clearly distinguishable.</p>
+        <p>A keyboard focus indicator can take different forms, this success criterion sets a requirement to make it clearly distinguishable. For example, using a thick outline around the control that contrasts with the background would pass this criterion.</p>
+
+        <figure id="focus-indicator-strong">
+            <img src="img/focus-indicator-strong.png" alt="Three links on a white background with the middle one encompassed in a thick black border." width="250" />
+            <figcaption>A strong indicator around a link.</figcaption>
+        </figure>
             
         <section id="keyboard-focus">
             <h3>Keyboard focus</h3>
@@ -50,43 +61,31 @@
             <p>Some elements can take focus (such as the target of a skip link), however, it is only when the element is operable by keyboard controls that this criterion applies.</p>
         </section>
         <section id="size-of-indicator">
-            <h3>Size of the indicator</h3>
+            <h3>Minimum area</h3>
 
-            <p>The bigger the visible change the easier it is for someone to see, authors are encouraged to make the change as large as possible. For example, a thick outline around the element.</p>
+            <p>The bigger the visible change, the easier it is for someone to see. Authors are encouraged to make the change as significant as possible, for example, by designing a thick border around the element, or significantly changing the background color.</p>
 
-            <figure id="focus-indicator-strong">
-                <img src="img/focus-indicator-strong.png" alt="Three links on a white background with the middle one encompassed in a thick black border." width="250" />
-                <figcaption>A strong indicator around a link.</figcaption>
-            </figure>
+            <p class="note">A border is the perimeter of the control, and defines its shape. A border is not a reference to the CSS property of the same name.</p>
 
-            <p>To determine the minimum size for conformance purposes you would need to measure the size of the element.</p>
+            <p>The minimum size of the focus indicator must be at least the area taken by a 1 CSS pixel border around the element. The indicator does not have to be a border, but the size of the area must be at least that size. For example, if a control is a rectangle of 90px wide and 30px tall, the size of the outer border is 90 + 90 + 30 + 30 = 240 CSS pixels.</p>
 
             <p class="note">A <a>CSS pixel</a> is what developers use in CSS declarations like “width: 200px”, it is device-independent and not to be confused with device pixels which vary depending on the physical pixel density. <br />
                 The rest of this document notates CSS pixels as "px".
             </p>
 
-            <p>To establish if a focus indicator has a size equivalent to at least a 2px line along the longest side: If a link is 90px wide by 30px tall, the indicator would need to be have a minimum area of 180px square. (I.e. 2px wide along the longest side is 2 x 90px.)</p>
-
-            <p>The following 3 examples use a 90px wide by 30px tall button, therefore the surface area requirement is 180px. The middle button is focused in each example.</p>
+            <p>The following 3 examples use a 90px wide by 30px tall button, therefore the surface area requirement is 240px. The middle button is focused in each example.</p>
 
             <figure id="focus-indicator-innerline">
                 <img src="img/focus-indicator-innerline.png" alt="Three dark blue buttons on a white background. The middle button has a yellow inner border." width="284" />
-                <figcaption>The inner outline is slightly smaller than the outer edge of the component, but using a 2px thick indicator means it is well over the minimum requirement of 180px squared.</figcaption>
+                <figcaption>@@@ Update. The inner outline is slightly smaller than the outer edge of the component, but using a 2px thick indicator means it is well over the minimum requirement of 180px squared.</figcaption>
             </figure>
 
             <figure id="focus-indicator-underline">
                 <img src="img/focus-indicator-underline.png" alt="Three dark blue buttons on a white background. The middle button has a thick yellow line under the text." width="284" />
-                <figcaption>The thick (3px) yellow underline is almost as long as the longest edge therefore meets the requirment.</figcaption>
-            </figure>
-
-            <figure id="focus-indicator-icon">
-                <img src="img/focus-indicator-icon.png" alt="Three dark blue buttons on a white background. The middle button has a yellow square to the left of the text." width="284" />
-                <figcaption>The 14px by 14px yellow square is 196px therefore meets the requirment.</figcaption>
+                <figcaption>@@@ Update.The thick (3px) yellow underline is almost as long as the longest edge therefore meets the requirement.</figcaption>
             </figure>
 
             <p>If controls change size across different variations of a page (e.g. in a responsive design), it helps to use a proportionally sized indicator such as an outline or background change. In that way you can be sure of meeting the size requirement.</p>
-
-            <p>If controls change size and you use a fixed size indicator (such as an icon of a fixed size) you would need to calculate the largest size a control could be in order to provide an indicator that meets the size requirement across variations.</p>
 
             <p>Typical focus indicators:</p>
             <ul>
@@ -97,18 +96,15 @@
 
             <p>If you need to use complex mathematics to work out if a focus indicator is large enough, it is probably a sign that you should use a larger and proportional indicator that will provide a more visible indicator.</p>
 
-            <section id="unsual-shapes">
+            <section id="unusual-shapes">
                 <h4>Unusual shapes and gradients</h4>
-
             
-                <p>If you have an unusal shape, some mathematics may be required if the focus indicator is on the edge of the size requirement. For example, if the focusable control is a circle with a diameter of 100px, the bounding box of that component would be a square of 100px on each side. If the focus indicator is also circular, then the area needs to 100px * 2 = 200px.</p>
+                <p>If you have an unusual shape, some mathematics may be required if the focus indicator is on the edge of the size requirement. For example, if the focusable control is a circle with a diameter of 100px, the circumference would be 314 pixels. A 1px (or greater) outline would meet the size criteria.</p>
 
                 <figure id="focus-indicator-circle">
-                    <img src="img/focus-indicator-circle.png" alt="Two orange circlular buttons with an icon in the middle. The right hand circle has a dark outline around the whole cicle to indicate focus" width="150" />
+                    <img src="img/focus-indicator-circle.png" alt="Two orange circular buttons with an icon in the middle. The right hand circle has a dark outline around the whole circle to indicate focus" width="150" />
                     <figcaption>A circular button in the default state, and then with a focus indicator.</figcaption>
                 </figure>
-
-                <p>The circumference of a 100px diameter circle would be 314px (diameter * π), therefore a 1px outline around the cicle will be 314px of surface area, meeting the requirement for a 200px surface area.</p>
 
                 <p>If a focus indicator is an irregular shape, such as a drop-shadow under a star icon, it helps if the contrasting area is obviously quite large.</p>
 
@@ -119,14 +115,14 @@
 
                 <p>What is the contrasting area of the drop shadow? The quick method is:</p>
                 <ul>
-                    <li>Look at the size of the component, and imagine a box around it, how long is the longest edge?</li>
+                    <li>Look at the size of the component, how long is it around the edges?</li>
                     <li>Look at the (contrasting) area of the focus indicator.</li>
-                    <li>Mentally compare the focus indicator to the length of the longest edge * 2px.</li>
+                    <li>Mentally compare the focus indicator to the border of the component.</li>
                 </ul>
 
                 <p>If it is too close to call, you could extract the contrasting area of the focus indicator and evaluate the surface area.</p>
 
-                <p>If a focus indicator has a gradient, the principle is to measure the contrast of the changed area, and ignore the change that does not me 3:1.</p>
+                <p>If a focus indicator has a gradient, the principle is to measure the contrast of the changed area, and ignore the change that does not meet 3:1.</p>
                 <figure id="focus-indicator-box-shadow">
                     <img src="img/focus-indicator-box-shadow.png" alt="Three buttons, the middle with a heavy drop-shadow indicating focus." />
                     <figcaption>When a gradient is used on a focus indictor, the measure of surface area should only include the area that has changed enough to meet the 3:1 contrast ratio.</figcaption>
@@ -140,8 +136,32 @@
 
             </section>
         </section>
+        <section id="change-of-color">
+            <h3>Change of contrast</h3>
+
+            <p>The greater the change of contrast between states the easier it is for users to see it. Authors are encouraged to make the change of color contrast as great as possible.</p>
+
+            <p>When a component changes to include a focus indicator, that change can always be measured as a change of color contrast. For example, if a yellow outline is added to a button on a blue background, the change of color is from blue to yellow.</p>
+                    
+            <p class="note">Color contrast measurements in WCAG are based on luminance (brightness) regardless of the hue.</p>
+            <figure id="focus-indicator-innerline-2">
+                <img src="img/focus-indicator-innerline.png" alt="Three dark blue buttons on a white background. The middle button has a yellow inner border." width="284" />
+                <figcaption>Adding a yellow outline to a link is a change of color from blue to yellow. That change has a contrast ratio of 12:1.</figcaption>
+            </figure>        
+
+                    
+            <p>Text and non-text contrast measures use adjacent colors, this success criterion measures the <em>change</em> in color between non-focused and focused states.</p>
+
+            <figure id="focus-indicator-non-contrast">
+                <img src="img/focus-indicator-non-contrast.png" alt="Three buttons with light background and dark border on a white background. The middle button has a light grey outline." width="250" />
+                <figcaption>The second link has a light-grey (#ccc) focus outline which <strong>fails</strong> this success criterion because the change from white-background to light-grey outline does not meet 3:1.</figcaption>
+            </figure>
+
+            <p>It is possible to use visual patterns such as strips switching places to disguise a change of focus indicator. This is not considered a visible indicator.</p>
+
+        </section>
         <section id="Contrast-thickness">
-            <h3>Contrast or thickness</h3>
+            <h3>Adjacent contrast</h3>
 
             <p>Where a control is a solid color, and you add a border or outline of a very similar color, it is difficult to perceive the change to the control.</p>
 
@@ -163,26 +183,10 @@
             </figure>
 
         </section>
-        <section id="change-of-color">
-            <h3>Change of color</h3>
-
-            <p>The greater the change of contrast between states the easier it is for users to see it. Authors are encouraged to make the change of color contrast as great as possible.</p>
-
-            <p>When a component changes to include a focus indicator, that change can always be measured as a change of color contrast. For example, if a yellow outline is added to a button on a blue background, the change of color is from blue to yellow.</p>
-                    
-            <p class="note">Color contrast measurements in WCAG are based on luminance (brightness) regardless of the hue.</p>
-            <figure id="focus-indicator-innerline-2">
-                <img src="img/focus-indicator-innerline.png" alt="Three dark blue buttons on a white background. The middle button has a yellow inner border." width="284" />
-                <figcaption>Adding a yellow outline to a link is a change of color from blue to yellow. That change has a contrast ratio of 12:1.</figcaption>
-            </figure>        
-
-                    
-            <p>Text and non-text contrast measures use adjacent colors, this success criterion measures the <em>change</em> in color between non-focused and focused states.</p>
-
-            <figure id="focus-indicator-non-contrast">
-                <img src="img/focus-indicator-non-contrast.png" alt="Three buttons with light background and dark border on a white backround. The middle button has a light grey outline." width="250" />
-                <figcaption>The second link has a light-grey (#ccc) focus outline which <strong>fails</strong> this success criterion because the change from white-background to light-grey outline does not meet 3:1.</figcaption>
-            </figure>
+        <section id="unobscured">
+            <h3>Unobscured</h3>
+            <p>Where other content can overlap with a focused item, the focused element should not be hidden. Typical content which can overlap focused items are sticky footers, sticky headers, or non-modal dialogues. As a user tabs through the page, these layers of content can obscure the focused item, including the focus indicator.</p>
+            <p class="note">The criterion specifies the "focused item" in the unobscured bullet rather than the "focus indicator". The requirements for the indicator are set in the previous bullets, the unobscured bullet applies to the item as a whole.</p>
 
         </section>
         <section id="relation-non-text-color-contrast">
@@ -208,7 +212,7 @@
                 <figcaption>A default checkbox and a focused checkbox. </figcaption>
             </figure>
 
-            <p>The contrast of the default checkbox passes 1.4.11 because the dark border and white background have a contrast ratio greater than 3:1. The 2px dark blue focus outline passes Focus Visible (Enhanced) because the change of contrast is greater than 3:1 with the white background. The component as a whole maintains contrast with the white background so continues to pass 1.4.11.</p>
+            <p>The contrast of the default checkbox passes 1.4.11 because the dark border and white background have a contrast ratio greater than 3:1. The 2px dark blue focus outline passes Focus Appearance (Minimum) because the change of contrast is greater than 3:1 with the white background. The component as a whole maintains contrast with the white background so continues to pass 1.4.11.</p>
 
         </section>
 
@@ -238,11 +242,11 @@
 
    
    <section id="techniques">
-      <h2>Techniques for Focus Visible</h2>
+      <h2>Techniques for Focus Appearance (Minimum)</h2>
       
       
       <section id="sufficient">
-         <h3>Sufficient Techniques for Focus Visible (Enhanced)</h3>
+         <h3>Sufficient Techniques</h3>
          
          
          <ol>
@@ -260,25 +264,13 @@
       </section>
       
       <section id="advisory">
-         <h3>Additional Techniques (Advisory) for Focus Visible</h3>
+         <h3>Additional Techniques (Advisory)</h3>
          
       </section>
       
       <section id="failure">
-         <h3>Failures for Focus Visible</h3>
+         <h3>Failures</h3>
 
-         <ul>
-            <li>								         
-                <a href="https://www.w3.org/WAI/WCAG21/Techniques/failures/F78" class="failure">Failure due to styling element outlines and borders in a way that overrides or renders
-                    non-visible the default visual focus indicator
-                </a>						       
-            </li>
-            <li>								         
-               <a href="https://www.w3.org/WAI/WCAG21/Techniques/failures/F55" class="failure">Failure of Success Criterion 2.1.1, 2.4.7, and 3.2.1 due to using script to remove
-                  focus when focus is received
-               </a>						       
-            </li>
-         </ul>
       </section>
       
    </section>
