@@ -161,6 +161,7 @@
 				<meta charset="UTF-8" />
 				<xsl:apply-templates select="//html:title"/>
 				<link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/base" />
+				<link rel="stylesheet" type="text/css" href="base.css" />
 				<link rel="stylesheet" type="text/css" href="../techniques.css" />
 				<link rel="stylesheet" type="text/css" href="../slicenav.css" />
 			</head>

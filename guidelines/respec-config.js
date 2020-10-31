@@ -20,18 +20,18 @@ var respecConfig = {
 	
 	// if you wish the publication date to be other than today, set this
 	//publishDate:  "2014-12-11",
-	copyrightStart:  "2019",
+	copyrightStart:  "2020",
 	license: "document",
 	
 	// if there is a previously published draft, uncomment this and set its YYYY-MM-DD date
 	// and its maturity status
 	//previousPublishDate:  "2014-06-12",
 	//previousMaturity:  "WD",
-	prevRecURI: "https://www.w3.org/TR/2018/REC-WCAG21-20180605/",
+	prevRecURI: "https://www.w3.org/TR/WCAG/",
 	//previousDiffURI: "https://www.w3.org/TR/2014/REC-wai-aria-20140320/",
 	
 	// if there a publicly available Editors Draft, this is the link
-	edDraftURI: "https://w3c.github.io/wcag/22/guidelines/",
+	edDraftURI: "https://w3c.github.io/wcag/guidelines/22/",
 	
 	// if this is a LCWD, uncomment and set the end of its review period
 	// lcEnd: "2012-02-21",
@@ -40,12 +40,12 @@ var respecConfig = {
 	// only "name" is required
 	editors: [
 		{
-			name: "Andrew Kirkpatrick",
-			url: "http://www.adobe.com/",
-			mailto: "akirkpat@adobe.com",
-			company: "Adobe",
-			companyURI: "http://www.adobe.com/",
-			w3cid: 39770
+			name: "Chuck Adams",
+			url: "https://www.oracle.com/",
+			mailto: "charles.adams@oracle.com",
+			company: "Oracle",
+			companyURI: "https://www.oracle.com/",
+			w3cid: 104852
 		},
 		{
 			name: "Alastair Campbell",
@@ -56,14 +56,29 @@ var respecConfig = {
 			w3cid: 44689
 		},
 		{
+			name: "Rachael Montgomery",
+			mailto: "rachael@accessiblecommunity.org",
+			company: "Invited Expert",
+			w3cid: 90310
+		},
+		{
 			name: "Michael Cooper",
 			url: 'https://www.w3.org',
 			mailto: "cooper@w3.org",
 			company: "W3C",
 			companyURI: "https://www.w3.org",
 			w3cid: 34017
+		},
+		{
+			name: "Andrew Kirkpatrick",
+			url: "http://www.adobe.com/",
+			mailto: "akirkpat@adobe.com",
+			company: "Adobe",
+			companyURI: "http://www.adobe.com/",
+			w3cid: 39770
 		}
 	],
+	/* 
 	formerEditors: [
 		{
 			name: "Ben Caldwell",
@@ -101,6 +116,7 @@ var respecConfig = {
 			w3cid: 41218
 		}
 	],
+	*/
 	
 	// authors, add as many as you like.
 	// This is optional, uncomment if you have authors as well as editors.
@@ -137,8 +153,6 @@ var respecConfig = {
 	// Team Contact.
 	wgPatentURI:  "https://www.w3.org/2004/01/pp-impl/35422/status",
 	maxTocLevel: 4,
-	
-	localBiblio: biblio,
 	
 	postProcess: [addTextSemantics, swapInDefinitions]
 	
