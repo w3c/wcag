@@ -176,3 +176,16 @@ To create a working example:
 * Refer to resources shared among multiple examples using relative links, e.g., `../css/example.css`. Place other resources in the same directory as the main example, e.g., `working-examples/alt-attribute/css/alt.css`.
 * Reference working examples from techniques using the rawgit URI to the example in its development branch, e.g., `https://rawgit.com/w3c/wcag/master/working-examples/alt-attribute/`. Editors will update links when examples are approved.
 * When the example is complete and functional, submit a pull request into the master branch.
+
+## Translations
+
+WCAG 2.1 is ready for translation. WCAG 2.2 is still under development so should not be translated yet. To translate WCAG 2.1, ensure you are set up to use [GitHub](https://github.com/), then:
+
+* [Fork](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo) the w3c/wcag repository.
+* Change to the [branch](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/about-branches) "WCAG-2.1".
+* Create a new branch from this branch.
+* Translate all user-oriented content in the "guidelines" folder, including the sub-folders. User-oriented content includes text in elements, and attributes such as "title" and "alt" that provide content to users. **Leave other markup as is.**
+* Load the index.html document in a modern browser and allow the script to compile the content and format it.
+* Activate the "Respec" link in the top right corner, and choose "Export...", then the "HTML" option.
+* Edit the resulting file to translate text that was inserted by the script.
+* Edit the file to meet the requirements of the [W3C Authorized Translations](https://www.w3.org/2005/02/TranslationPolicy) process. 
