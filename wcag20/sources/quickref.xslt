@@ -192,7 +192,7 @@ script type="text/javascript" src="annotate.js" xmlns="http://www.w3.org/1999/xh
       <xsl:if test="$show.techniques != '0'">
         <!-- Sufficient Techniques -->
                <xsl:processing-instruction name="php"><![CDATA[ if($bSufficient) { ]]></xsl:processing-instruction>   
-        <div class="sufficient" xmlns="http://www.w3.org/1999/xhtml" >
+        <div class="sufficient" xmlns="http://www.w3.org/1999/xhtml">
         <xsl:apply-templates select="$guide-src//spec/body/div1/div2[@id=$anchor2]/div3[@role='techniques']/div4[@role='sufficient']"/>
         </div>
         <xsl:processing-instruction name="php"><![CDATA[ } ]]></xsl:processing-instruction> 
@@ -652,7 +652,7 @@ script type="text/javascript" src="annotate.js" xmlns="http://www.w3.org/1999/xh
     </xsl:for-each>
   </xsl:template>
   <xsl:template match="p[@role='i'] | p[@role='v']">
-    <p  >
+    <p>
       <xsl:if test="@id">
         <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
       </xsl:if>

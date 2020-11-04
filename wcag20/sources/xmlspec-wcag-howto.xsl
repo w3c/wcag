@@ -81,10 +81,10 @@
           </xsl:call-template>
 			Advisory Techniques for Guideline <xsl:value-of select="../../head"/> (not success criteria specific)</h3>
         <div   class="textbody">
-          <p  >Specific techniques for meeting each Success Criterion for this guideline are listed in the understanding sections for each Success Criterion (listed below). If there are techniques, however, for addressing this guideline that do not fall under any of the success criteria, they are listed here. These techniques are not required or sufficient for meeting any success criteria, but can make certain types of Web content more accessible to more people.</p>
+          <p>Specific techniques for meeting each Success Criterion for this guideline are listed in the understanding sections for each Success Criterion (listed below). If there are techniques, however, for addressing this guideline that do not fall under any of the success criteria, they are listed here. These techniques are not required or sufficient for meeting any success criteria, but can make certain types of Web content more accessible to more people.</p>
           <xsl:choose>
             <xsl:when test="count(../ulist) = 0">
-              <ul  >
+              <ul>
                 <li>All advisory techniques for this guideline relate to specific success criteria.</li>
               </ul>
             </xsl:when>
@@ -156,14 +156,14 @@
     </xsl:choose>
     <xsl:choose>
       <xsl:when test="../@role='resources'">
-        <p  >Resources are for information purposes only, no endorsement implied.</p>
+        <p>Resources are for information purposes only, no endorsement implied.</p>
       	<xsl:if test="not(../p or ../olist or ../ulist or ../div4)">
-          <p  >(none currently documented)</p>
+          <p>(none currently documented)</p>
         </xsl:if>
       </xsl:when>
     	<xsl:when test="../@role='examples'">
     		<xsl:if test="not(../p or ../olist or ../ulist or ../div4)">
-    			<p  >(none currently documented)</p>
+    			<p>(none currently documented)</p>
     		</xsl:if>
     	</xsl:when>
     </xsl:choose>
@@ -217,19 +217,19 @@
     </h4>
     <xsl:choose>
       <xsl:when test="../@role='failures'">
-        <p >The following are common mistakes that are considered failures of Success Criterion <xsl:call-template name="sc-number"><xsl:with-param name="id" select="../../../@id"/></xsl:call-template> by the <acronym title="Web Content Accessibility Guidelines">WCAG</acronym> Working Group.</p>
+        <p>The following are common mistakes that are considered failures of Success Criterion <xsl:call-template name="sc-number"><xsl:with-param name="id" select="../../../@id"/></xsl:call-template> by the <acronym title="Web Content Accessibility Guidelines">WCAG</acronym> Working Group.</p>
       	<xsl:if test="not(../p or ../olist or ../ulist or ../div5)">
-          <p  >(No failures currently documented)</p>
+          <p>(No failures currently documented)</p>
         </xsl:if>
       </xsl:when>
       <xsl:when test="../@role='tech-optional'">
-        <p >Although not required for conformance, the following additional techniques should be considered in order to make content more accessible. Not all techniques can be used or would be effective in all situations.</p>
+        <p>Although not required for conformance, the following additional techniques should be considered in order to make content more accessible. Not all techniques can be used or would be effective in all situations.</p>
       	<xsl:if test="not(../p or ../olist or ../ulist or ../div5)">
-          <p  >(none currently documented)</p>
+          <p>(none currently documented)</p>
         </xsl:if>
       </xsl:when>
       <xsl:when test="../div5[@role='situation']">
-        <p class="instructions"  >
+        <p class="instructions">
           <strong>Instructions:</strong> Select the situation below that matches your content. Each situation includes numbered techniques (or combinations of techniques) that the Working Group deems to be sufficient for that situation.
 </p>
       </xsl:when>
@@ -301,7 +301,7 @@
   </xsl:template>
   <!-- mode: toc rewrote this section so that TOC would result in actual lists-->
   <xsl:template mode="toc" match="div1">
-    <li  >
+    <li>
               <xsl:attribute name="class"><xsl:value-of select="@id"></xsl:value-of></xsl:attribute>
       <a>
         <xsl:attribute name="href"><xsl:call-template name="href.target"><xsl:with-param name="target" select="."/></xsl:call-template></xsl:attribute>
@@ -442,7 +442,7 @@
     <hr class="divider"  />
   </xsl:template>
     <xsl:template match="div1|div2|div3|div4|div5" mode="specref">
-    <em  ><a>
+    <em><a>
       <xsl:attribute name="href"><xsl:choose>
       	<!-- MC: This is a special case kludge to get link to cc4 and cc5 from glossary to work. Really we need to handle specref from included content, but I'm low on time. -->
       	<xsl:when test="@id = 'cc4' or @id = 'cc5'"><xsl:value-of select="concat($glthisversion, '#', @id)"/></xsl:when><xsl:otherwise><xsl:call-template name="href.target"/></xsl:otherwise></xsl:choose></xsl:attribute>
@@ -467,12 +467,12 @@
 		</dt>
 	</xsl:template>
 		<xsl:template match="def" mode="noid">
-		<dd  >
+		<dd>
 			<xsl:apply-templates/>
 		</dd>
 	</xsl:template>
   <xsl:template match="div5">
-    <div  >
+    <div>
       <xsl:apply-templates/>
     </div>
   </xsl:template>
@@ -481,8 +481,8 @@
   	<!-- termdef: sentence or phrase defining a term - BBC: modified here to remove duplicate ids -->
 	<xsl:template match="termdef">
 		<xsl:text></xsl:text>
-		<a   name="{@id}" title="{@term}">	</a>
-		 <strong  ><xsl:value-of select="@term"></xsl:value-of>:</strong>
+		<a name="{@id}" title="{@term}">	</a>
+		 <strong><xsl:value-of select="@term"></xsl:value-of>:</strong>
 		<xsl:text> </xsl:text>
 		<xsl:apply-templates/>
 		<xsl:text> </xsl:text>

@@ -692,7 +692,7 @@
           </xsl:when>
         	<xsl:when test="../@role='examples'">
         		<xsl:if test="not(../p or ../olist or ../ulist or ../div4)">
-        			<p  >(none currently documented)</p>
+        			<p>(none currently documented)</p>
         		</xsl:if>
         	</xsl:when>
         </xsl:choose>

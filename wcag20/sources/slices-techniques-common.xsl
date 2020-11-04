@@ -77,7 +77,7 @@
     </xsl:otherwise></xsl:choose>
   </xsl:template>
   <!-- create Technology Collection Pages -->
-  <xsl:template match="body/div1" >
+  <xsl:template match="body/div1">
   	<xsl:variable name="filename">
   		<xsl:apply-templates select="." mode="slice-techniques-filename"/>
   	</xsl:variable>
@@ -385,11 +385,11 @@
   <xsl:template name="navigation.top">
     <xsl:param name="prev" select="''"/>
     <xsl:param name="next" select="''"/>
-    <a name="top" >
+    <a name="top">
       <xsl:text> </xsl:text>
     </a>
     <xsl:comment> TOP NAVIGATION BAR </xsl:comment>
-    <ul id="navigation" >
+    <ul id="navigation">
       <li>
         <strong><a href="Overview.html#contents" title="Table of Contents">Contents</a></strong>
       </li>
@@ -413,7 +413,7 @@
       </xsl:choose>
       <xsl:choose>
         <xsl:when test="$next">
-          <li >
+          <li>
             <a>
               <xsl:attribute name="title"><xsl:call-template name="href.nav"><xsl:with-param name="target" select="$next"/></xsl:call-template></xsl:attribute>
               <xsl:attribute name="href"><xsl:call-template name="href.target"><xsl:with-param name="target" select="$next"/><!--<xsl:with-param name="just.filename" select="1"/>--></xsl:call-template></xsl:attribute>
@@ -431,7 +431,7 @@
 		<hr />
 		<strong >Quick Table of Contents</strong>
 		<hr />
-		<ul class="toc" >
+		<ul class="toc">
 			<xsl:apply-templates mode="toc" select=".">
 				<xsl:with-param name="just.filename" select="'0'"/>
 			</xsl:apply-templates>
@@ -442,7 +442,7 @@
     <xsl:param name="prev" select="''"/>
     <xsl:param name="next" select="''"/>
     <xsl:comment> BOTTOM NAVIGATION BAR </xsl:comment>
-    <ul id="navigationbottom" >
+    <ul id="navigationbottom">
       <li>
         <strong><a href="#top">Top</a></strong>
       </li>
