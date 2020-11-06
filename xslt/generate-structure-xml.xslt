@@ -33,6 +33,10 @@
 				<name>Understanding Techniques for WCAG Success Criteria</name>
 				<file href="understanding-techniques"/>
 			</understanding>
+			<understanding>
+				<name>Understanding ACT Rules</name>
+				<file href="understanding-act-rules"/>
+			</understanding>
 			<xsl:apply-templates select="//html:section[@class='principle']"/>
 			<understanding>
 				<name>Understanding Conformance</name>
