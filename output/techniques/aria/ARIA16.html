@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta charset="UTF-8" />
+      <title>ARIA16: Using aria-labelledby to provide a name for user interface controls</title>
+      <link rel="stylesheet" href="https://w3.org/WAI/assets/css/style.css?1573220675560713000" />
+      <link rel="stylesheet" type="text/css" href="../base.css" />
+   </head>
+   <body>
+      <header id="site-header" class="default-grid with-gap">
+         <div class="tool-header"><span class="tool-header-name"><a href="../">WCAG 2.1: Techniques</a></span><div class="tool-header-logo"><a href="http://w3.org/"><img alt="W3C" src="https://w3.org/WAI/atag/report-tool/images/w3c.svg" width="92" height="44" /></a><a href="http://w3.org/WAI/"><img alt="Web Accessibility Initiative" src="https://w3.org//WAI/atag/report-tool/images/wai.svg" /></a></div>
+         </div>
+      </header>
+      <main>
+         <div class="default-grid leftcol">
+            <nav class="nav" aria-label="Meta navigation">
+               <ul>
+                  <li class="nav__item"><a href="/techniques/#introduction">About Techniques</a></li>
+                  <li class="nav__item"><a href="/techniques/#techniques">All Techniques</a></li>
+                  <li class="nav__item"><a href="alt-index.html">All WCAG 2 Guidance 
+                        									
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24" width="24">
+                           <path fill-rule="evenodd" clip-rule="evenodd" d="M14 5C13.4477 5 13 4.55228 13 4C13 3.44772 13.4477 3 14 3H20C20.2652 3 20.5196 3.10536 20.7071 3.29289C20.8946 3.48043 21 3.73478 21 4L21 10C21 10.5523 20.5523 11 20 11C19.4477 11 19 10.5523 19 10L19 6.41422L9.70711 15.7071C9.31658 16.0976 8.68342 16.0976 8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929L17.5858 5H14ZM3 7C3 5.89543 3.89543 5 5 5H10C10.5523 5 11 5.44772 11 6C11 6.55228 10.5523 7 10 7H5V19H17V14C17 13.4477 17.4477 13 18 13C18.5523 13 19 13.4477 19 14V19C19 20.1046 18.1046 21 17 21H5C3.89543 21 3 20.1046 3 19V7Z" fill="#282828"></path>
+                        </svg></a><div id="explain-supporting-documents" hidden="">
+                        <p>WCAG comes with a number of supporting documents, including Techniques and Understanding
+                           documents.
+                        </p>
+                        <p>See also: <a href="https://www.w3.org/WAI/standards-guidelines/wcag/#whatis2">What is in the WCAG 2 Documents</a></p>
+                     </div>
+                  </li>
+               </ul>
+            </nav>
+            <section class="main-content">
+               <h1>Using aria-labelledby to provide a name for user interface controls</h1>
+               <aside class="box">
+                  <header class="box-h  box-h-icon">
+                     					[icon] Sufficient
+                     				
+                  </header>
+                  <div class="box-i">
+                     <section id="applicability">
+                        <p>This technique relates to:</p>
+                        <ul>
+                           <li>Sufficient to meet <a href="/understanding/info-and-relationships">Success Criterion 1.3.1: Info and Relationships</a></li>
+                           <li>Sufficient to meet <a href="/understanding/name-role-value">Success Criterion 4.1.2: Name, Role, Value</a></li>
+                           <li>Sufficient to meet  as a way to meet an unwritten technique<a href="/understanding/name-role-value">Success Criterion 4.1.2: Name, Role, Value</a></li>
+                           <li>Sufficient to meet  as a way to meet <a href="../general/G10">G10: Creating components using a technology that supports the accessibility notification
+                                 of changes</a><a href="/understanding/name-role-value">Success Criterion 4.1.2: Name, Role, Value</a></li>
+                        </ul>
+                     </section>
+                  </div>
+               </aside>
+               <section id="description">
+                  <h2>Description</h2>
+                  <p>The purpose of this technique is to provide names for user interface controls that
+                     can be read by assistive technology.  WAI-ARIA provides a way to associate text with
+                     a section, drawing, form element, picture, and so on, using the <code class="att">aria-labelledby</code> property. This techniques uses the <code class="att">aria-labelledby</code> attribute to associate a user interface control, such as a form field, with text
+                     on the page that labels it.
+                     
+                  </p>
+                  <p>Like <code class="att">aria-describedby</code>, <code class="att">aria-labelledby</code> can accept multiple ids to point to other elements of the page using a space separated
+                     list. This capability makes <code class="att">aria-labelledby</code> especially useful in situations where sighted users use information from the surrounding
+                     context to identify a control. <a href="/techniques/aria/ARIA9">ARIA9: Using aria-labelledby to concatenate a label from several text nodes</a> contains more examples of situations where names are created from several other text
+                     elements on the page.
+                     
+                  </p>
+                  <p>While the function of aria-labelledby appears similar to the native HTML label element,
+                     there are some differences:
+                     
+                  </p>
+                  <ul>
+                     
+                     <li> 
+                        <code class="att">aria-labelledby</code> can reference more than one text element; <code class="el">label</code> can only reference one.
+                     </li>
+                     
+                     <li> 
+                        <code class="att">aria-labelledby</code> can be used for a variety of elements while the <code class="el">label</code> element can only be used on form elements.
+                     </li>
+                     
+                     <li> Clicking on a <code class="el">label</code> focuses the associated form field. This does not occur with <code class="att">aria-labelledby</code>. If this behaviour is required then use <code class="el">label</code> or implement this functionality using scripting.
+                        
+                     </li>
+                     
+                  </ul>
+                  <p>Note that as of December 2013, <code class="el">label</code> has better support than <code class="att">aria-labelledby</code>, especially in older browsers and assistive technologies.
+                     
+                  </p>
+               </section>
+               <section id="examples">
+                  <h2>Examples</h2>
+                  <section class="example" id="example-1-labelling-a-simple-text-field">
+                     <h3>Example 1: Labelling a simple text field</h3>
+                     <p>The following is an example of <code class="att">aria-labelledby</code> used on a simple text field to provide a label in a situation where there is no text
+                        available for a dedicated label but there is other text on the page that can be used
+                        to accurately label the control.
+                     </p><pre xml:space="preserve">&lt;input name="searchtxt" type="text" aria-labelledby="searchbtn"&gt;
+&lt;input name="searchbtn" id="searchbtn" type="submit" value="Search"&gt;</pre></section>
+                  <section class="example" id="example-2-labelling-a-slider">
+                     <h3>Example 2: Labelling a slider</h3>
+                     <p>Below is an example of <code class="att">aria-labelledby</code> used to provide a label for a slider control. In this case the label text is selected
+                        from within a longer adjacent text string. Please note that this example is simplified
+                        to show only the labeling relationship; authors implementing custom controls also
+                        need to ensure that controls meet other success criteria.
+                     </p><pre xml:space="preserve">&lt;p&gt;Please select the &lt;span id="mysldr-lbl"&gt;number of days for your trip&lt;/span&gt;&lt;/p&gt;
+&lt;div id="mysldr" role="slider" aria-labelledby="mysldr-lbl"&gt;&lt;/div&gt;</pre></section>
+                  <section class="example" id="example-3-a-label-from-multiple-sources">
+                     <h3>Example 3: A label from multiple sources</h3>
+                     <p>The following example of <code class="att">aria-labelledby</code> with multiple references uses the <code class="el">label</code> element. For additional detail on concatenating multiple sources of information into
+                        a label with <code class="att">aria-labelledby</code>, please view the technique <a href="/techniques/aria/ARIA9">ARIA9: Using aria-labelledby to concatenate a label from several text nodes</a>.
+                        
+                     </p><pre xml:space="preserve">&lt;label id="l1" for="f3"&gt;Notify me&lt;/label&gt;
+&lt;select name="amt" id="f3" aria-labelledby="l1 f3 l2"&gt;
+  &lt;option value="1"&gt;1&lt;/option&gt;
+  &lt;option value="2"&gt;2&lt;/option&gt;
+&lt;/select&gt;
+&lt;span id="l2" tabindex="-1"&gt;days in advance&lt;/span&gt;</pre><p>Note: The use of the <code class="el">label</code> element is included for a number of reasons. If the user clicks on the text of the
+                        <code class="el">label</code> element, the corresponding form field will receive focus, which makes the clicking
+                        target larger for people with dexterity problems. Also the <code class="el">label</code> element will always be exposed via the accessibility API. A <code class="el">span</code> could have been used (but if so, it should receive a tabindex="-1" so that it will
+                        be exposed via the accessibility API in all versions of Internet Explorer). However,
+                        a <code class="el">span</code> would lose the advantage of the larger clickable region.
+                        
+                     </p>
+                  </section>
+               </section>
+               <section id="resources">
+                  <h2>Resources</h2>
+                  <p>Resources are for information purposes only, no endorsement implied.</p>
+                  <ul>
+                     
+                     <li> 
+                        <a href="https://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</a>
+                        
+                     </li>
+                     
+                     <li> 
+                        <a href="https://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description
+                           Calculation</a>
+                        
+                     </li>
+                     
+                  </ul>
+               </section>
+               <section id="tests">
+                  <h2>Tests</h2>
+                  <section class="procedure" id="procedure">
+                     <h3>Procedure</h3>
+                     
+                     <p>For each user interface control element where an <code class="att">aria-labelledby</code> attribute is present:
+                        
+                     </p>
+                     
+                     <ol>
+                        
+                        <li>Check that the value of the <code class="att">aria-labelledby</code> attribute is the <code class="att">id</code> of an element or a space separated list of <code class="att">id</code>s on the web page. 
+                           
+                        </li>
+                        
+                        <li>Check that the text of the referenced element or elements accurately labels the user
+                           interface control.
+                           
+                        </li>
+                        
+                     </ol>
+                     
+                  </section>
+                  <section class="results" id="expected-results">
+                     <h3>Expected Results</h3>
+                     
+                     <ul>
+                        
+                        <li>#1 and #2 are true.</li>
+                        
+                     </ul>
+                     
+                  </section>
+               </section>
+            </section>
+            <aside class="your-report your-report--expanded sidebar" tabindex="-1">
+               <h2 style="margin-top: 0">About this page</h2>
+               <p><em>Techniques</em> are examples of ways to meet a WCAG success criterion.
+               </p>
+               <dl>
+                  <dt>Type of technique 
+                     				<button style="display: inline" type="button" data-tooltip-content="#explain-types-of-techniques"><span class="visuallyhidden">Explain types of techniques</span><span aria-hidden="true" class="more-info__icon">
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 450" style="width: 1em">
+                              <path fill="currentColor" d="M256 344v-40c0-4.5-3.5-8-8-8h-24v-128c0-4.5-3.5-8-8-8h-80c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h24v80h-24c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h112c4.5 0 8-3.5 8-8zM224 120v-40c0-4.5-3.5-8-8-8h-48c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h48c4.5 0 8-3.5 8-8zM384 224c0 106-86 192-192 192s-192-86-192-192 86-192 192-192 192 86 192 192z"></path>
+                           </svg></span></button><div id="explain-types-of-techniques" hidden="true">
+                        <p>There are different types of techniques:</p>
+                        <ul>
+                           <li>Sufficient - reliable ways to meet a WCAG Criterion</li>
+                           <li>Advisory - suggested ways to improve accessibility</li>
+                           <li>Failure - things that cause accessibility barriers and fail specific success criteria</li>
+                        </ul>
+                        <p>Note: all techniques are “informative”, that is, you do not have to use them.</p>
+                     </div>
+                  </dt>
+                  <dd>Sufficient</dd>
+                  <dt>Sufficient to meet</dt>
+                  <dd><a href="https://www.w3.org/WAI/WCAG21/quickref/?versions=2.1#info-and-relationships">1.3.1 Info and relationships</a></dd>
+                  <dt>Related test rules 
+                     
+                     
+                     <button style="display: inline" type="button" data-tooltip-content="#explain-test-rules"><span class="visuallyhidden">Explain test rules</span><span aria-hidden="true" class="more-info__icon">
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 450" style="width: 1em">
+                              <path fill="currentColor" d="M256 344v-40c0-4.5-3.5-8-8-8h-24v-128c0-4.5-3.5-8-8-8h-80c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h24v80h-24c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h112c4.5 0 8-3.5 8-8zM224 120v-40c0-4.5-3.5-8-8-8h-48c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h48c4.5 0 8-3.5 8-8zM384 224c0 106-86 192-192 192s-192-86-192-192 86-192 192-192 192 86 192 192z"></path>
+                           </svg></span></button><div id="explain-test-rules" hidden="true">WCAG Success Criteria interpreted as test rules, created by the ACT Task Force.</div>
+                  </dt>
+                  <dd><a href="2020-07-15-prototype-act.html">HTML page has title</a></dd>
+                  <dt>Related Techniques</dt>
+                  <dd>
+                     <ul>
+                        
+                        <li><a href="/techniques/aria/ARIA10">ARIA10: Using aria-labelledby to provide a text alternative for non-text content</a></li>
+                        
+                        <li><a href="/techniques/aria/ARIA6">ARIA6: Using aria-label to provide labels for objects</a></li>
+                        
+                        <li><a href="/techniques/aria/ARIA9">ARIA9: Using aria-labelledby to concatenate a label from several text nodes</a></li>
+                        
+                        <li><a href="/techniques/aria/ARIA7">ARIA7: Using aria-labelledby for link purpose</a></li>
+                        
+                        <li><a href="/techniques/aria/ARIA13">ARIA13: Using aria-labelledby to name regions and landmarks</a></li>
+                        
+                        <li><a href="/techniques/general/G92">G92: Providing long description for non-text content that serves the same purpose and presents
+                              the same information</a></li>
+                        
+                        <li><a href="/techniques/html/H45">H45: Using longdesc</a></li>
+                        
+                     </ul>
+                  </dd>
+               </dl>
+               <h3>Other sources</h3>
+               <p style="margin-top: -.5em; margin-bottom: 1.5em;"><em><small>No endorsement implied.</small></em></p>
+               <ul>
+                  <li>HTML 4.01 <a href="https://www.w3.org/TR/html4/struct/lists.html#h-10.2">Unordered lists (UL), ordered lists (OL), and list items (LI)</a></li>
+                  <li>HTML 4.01 <a href="https://www.w3.org/TR/html4/struct/lists.html#h-10.3">Definition lists: the DL, DT, and DD elements</a></li>
+               </ul>
+            </aside>
+         </div>
+      </main>
+   </body>
+</html>

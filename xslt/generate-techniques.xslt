@@ -18,28 +18,29 @@
 	<xsl:variable name="guidelines.meta.doc" select="document($guidelines.meta.file)"/>
 	
 	<xsl:template name="navigation">
+
 		<xsl:param name="meta" tunnel="yes"/>
-		<nav>
-		<ul id="navigation">
-			<li><a href="{$loc.techniques}#techniques" title="Table of Contents">Contents</a></li>
-			<li><a href="{$loc.techniques}#introduction" title="Introduction to Techniques">Intro</a></li>
-			<xsl:choose>
-				<xsl:when test="$meta/preceding-sibling::technique">
-					<li><a href="{$meta/preceding-sibling::technique[1]/@id}">Previous Technique: <xsl:value-of select="$meta/preceding-sibling::technique[1]/@id"/></a></li>
-				</xsl:when>
-				<xsl:when test="$meta/parent::technology/preceding-sibling::technology">
-					<li><a href="../{$meta/parent::technology/preceding-sibling::technology[1]/@name}/{$meta/parent::technology/preceding-sibling::technology[1]/technique[last()]/@id}">Previous Technique: <xsl:value-of select="$meta/parent::technology/preceding-sibling::technology[1]/technique[last()]/@id"/></a></li>
-				</xsl:when>
-			</xsl:choose>
-			<xsl:choose>
-				<xsl:when test="$meta/following-sibling::technique">
-					<li><a href="{$meta/following-sibling::technique[1]/@id}">Next Technique: <xsl:value-of select="$meta/following-sibling::technique[1]/@id"/></a></li>
-				</xsl:when>
-				<xsl:when test="$meta/parent::technology/following-sibling::technology">
-					<li><a href="../{$meta/parent::technology/following-sibling::technology[1]/@name}/{$meta/parent::technology/following-sibling::technology[1]/technique[1]/@id}">Next Technique: <xsl:value-of select="$meta/parent::technology/following-sibling::technology[1]/technique[1]/@id"/></a></li>
-				</xsl:when>
-			</xsl:choose>
-		</ul>
+
+		<nav class="nav" aria-label="Meta navigation">
+				<ul>
+						<li class="nav__item">
+							<a href="{$loc.techniques}#introduction">About Techniques</a>
+						</li>
+						<li class="nav__item">
+								<a href="{$loc.techniques}#techniques">All Techniques</a>
+						</li>
+						<li class="nav__item">
+								<a href="alt-index.html">All WCAG 2 Guidance 
+									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24" width="24">
+										<path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" d="M14 5C13.4477 5 13 4.55228 13 4C13 3.44772 13.4477 3 14 3H20C20.2652 3 20.5196 3.10536 20.7071 3.29289C20.8946 3.48043 21 3.73478 21 4L21 10C21 10.5523 20.5523 11 20 11C19.4477 11 19 10.5523 19 10L19 6.41422L9.70711 15.7071C9.31658 16.0976 8.68342 16.0976 8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929L17.5858 5H14ZM3 7C3 5.89543 3.89543 5 5 5H10C10.5523 5 11 5.44772 11 6C11 6.55228 10.5523 7 10 7H5V19H17V14C17 13.4477 17.4477 13 18 13C18.5523 13 19 13.4477 19 14V19C19 20.1046 18.1046 21 17 21H5C3.89543 21 3 20.1046 3 19V7Z" fill="#282828"></path>
+									</svg>
+								</a>
+								<div id="explain-supporting-documents" hidden="">
+										<p>WCAG comes with a number of supporting documents, including Techniques and Understanding documents.</p>
+										<p>See also: <a href="https://www.w3.org/WAI/standards-guidelines/wcag/#whatis2">What is in the WCAG 2 Documents</a></p>
+								</div>
+						</li>
+				</ul>
 		</nav>
 	</xsl:template>
 	
@@ -53,7 +54,6 @@
 				<li><a href="#description">Description</a></li>
 				<xsl:if test="wcag:section-meaningfully-exists('examples', //html:section[@id = 'examples'])"><li><a href="#examples">Examples</a></li></xsl:if>
 				<xsl:if test="wcag:section-meaningfully-exists('resources', //html:section[@id = 'resources'])"><li><a href="#resources">Related Resources</a></li></xsl:if>
-				<xsl:if test="wcag:section-meaningfully-exists('related', //html:section[@id = 'related'])"><li><a href="#related">Related Techniques</a></li></xsl:if>
 				<li><a href="#tests">Tests</a></li>
 			</ul>
 		</nav>
@@ -86,12 +86,12 @@
 	<xsl:template name="technique-sufficiency">
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:choose>
-			<xsl:when test="ancestor::sufficient">Sufficient</xsl:when>
+			<xsl:when test="ancestor::sufficient">Sufficient to meet </xsl:when>
 			<xsl:when test="ancestor::advisory">Advisory</xsl:when>
 			<xsl:when test="ancestor::failure">Failure</xsl:when>
 		</xsl:choose>
 		<xsl:if test="parent::and">
-			<xsl:text>, together with </xsl:text>
+			<xsl:text>, if combined with </xsl:text>
 			<xsl:for-each select="parent::and/technique[not(@id = current()/@id)]">
 				<xsl:call-template name="technique-link">
 					<xsl:with-param name="technique" select="$meta/ancestor::techniques//technique[@id = current()/@id]"/>
@@ -100,7 +100,7 @@
 			</xsl:for-each>
 		</xsl:if>
 		<xsl:if test="using">
-			<xsl:text> using a more specific technique</xsl:text>
+			<xsl:text> using a more specific technique </xsl:text>
 		</xsl:if>
 		<xsl:if test="ancestor::using">
 			<xsl:text> as a way to meet </xsl:text>
@@ -160,29 +160,54 @@
 			<head>
 				<meta charset="UTF-8" />
 				<xsl:apply-templates select="//html:title"/>
-				<link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/base" />
-				<link rel="stylesheet" type="text/css" href="base.css" />
-				<link rel="stylesheet" type="text/css" href="../techniques.css" />
-				<link rel="stylesheet" type="text/css" href="../slicenav.css" />
+		    <link rel="stylesheet" href="https://w3.org/WAI/assets/css/style.css?1573220675560713000" />
+				<link rel="stylesheet" type="text/css" href="../base.css" />
 			</head>
 			<body>
-				<xsl:call-template name="navigation"/>
-				<xsl:call-template name="navtoc"/>
-				<xsl:apply-templates select="//html:h1"/>
-				<section id="important-information">
-					<h2>Important Information about Techniques</h2>
-					<p>See <a href="{$loc.understanding}understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how they relate to the normative WCAG 2.1 success criteria. The Applicability section explains the scope of the technique, and the presence of techniques for a specific technology does not imply that the technology can be used in all situations to create content that meets WCAG 2.1.</p>
-				</section>
+				<xsl:call-template name="header" />
 				<main>
-					<xsl:call-template name="applicability"/>
-					<xsl:call-template name="description"/>
-					<xsl:call-template name="examples"/>
-					<xsl:call-template name="resources"/>
-					<xsl:call-template name="related"/>
-					<xsl:call-template name="tests"/>
+					<div class="default-grid leftcol">
+						<xsl:call-template name="navigation" />
+						<section class="main-content">
+							<xsl:apply-templates select="//html:h1"/>
+							<xsl:call-template name="most-important-meta" />
+							<xsl:call-template name="description"/>
+							<xsl:call-template name="examples"/>
+							<xsl:call-template name="resources"/>
+							<xsl:call-template name="tests"/>
+						</section>
+						<xsl:call-template name="sidebar" />
+					</div>
 				</main>
 			</body>
 		</html>
+	</xsl:template>
+
+	<xsl:template name="most-important-meta">
+		<aside class="box">
+				<header class="box-h  box-h-icon">
+					[icon] Sufficient
+				</header>
+				<div class="box-i">
+						<xsl:call-template name="applicability"/>
+				</div>
+		</aside>
+	</xsl:template>
+
+	<xsl:template name="header">
+    <header id="site-header" class="default-grid with-gap">
+        <div class="tool-header">
+            <span class="tool-header-name"><a href="../">WCAG 2.1: Techniques</a></span>
+            <div class="tool-header-logo">
+                <a href="http://w3.org/">
+                    <img alt="W3C" src="https://w3.org/WAI/atag/report-tool/images/w3c.svg" width="92" height="44" />
+                </a>
+                <a href="http://w3.org/WAI/">
+                    <img alt="Web Accessibility Initiative" src="https://w3.org//WAI/atag/report-tool/images/wai.svg" />
+                </a>
+            </div>
+        </div>
+    </header>
 	</xsl:template>
 	
 	<xsl:template match="html:title">
@@ -196,82 +221,64 @@
 	
 	<xsl:template match="html:section[@id = 'meta']"/>
 	
+	<xsl:template name="sidebar">
+  	<aside class="your-report your-report--expanded sidebar" tabindex="-1">
+			<h2 style="margin-top: 0">About this page</h2>
+			<p><em>Techniques</em> are examples of ways to meet a WCAG success criterion.</p>
+			<dl>
+				<dt>Type of technique 
+					<button style="display: inline" type="button" data-tooltip-content="#explain-types-of-techniques">
+						<span class="visuallyhidden">Explain types of techniques</span>
+						<span aria-hidden="true" class="more-info__icon">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 450" style="width: 1em">
+							<path fill="currentColor" d="M256 344v-40c0-4.5-3.5-8-8-8h-24v-128c0-4.5-3.5-8-8-8h-80c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h24v80h-24c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h112c4.5 0 8-3.5 8-8zM224 120v-40c0-4.5-3.5-8-8-8h-48c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h48c4.5 0 8-3.5 8-8zM384 224c0 106-86 192-192 192s-192-86-192-192 86-192 192-192 192 86 192 192z"></path>
+						</svg>
+						</span>	
+					</button>
+					<div id="explain-types-of-techniques" hidden="true">
+						<p>There are different types of techniques:</p>
+						<ul>
+							<li>Sufficient - reliable ways to meet a WCAG Criterion</li>
+							<li>Advisory - suggested ways to improve accessibility</li>
+							<li>Failure - things that cause accessibility barriers and fail specific success criteria</li>
+						</ul>
+						<p>Note: all techniques are “informative”, that is, you do not have to use them.</p>
+					</div>
+        </dt>
+                    <dd>Sufficient</dd>
+                    <dt>Sufficient to meet</dt>
+                    <dd><a href="https://www.w3.org/WAI/WCAG21/quickref/?versions=2.1#info-and-relationships">1.3.1 Info and relationships</a></dd>
+										<xsl:call-template name="related"/>
+                </dl>
+                <h3>Other sources</h3>
+                <p style="margin-top: -.5em; margin-bottom: 1.5em;"><em><small>No endorsement implied.</small></em></p>
+                <ul>
+
+                    <li>HTML 4.01 <a href="https://www.w3.org/TR/html4/struct/lists.html#h-10.2">Unordered lists (UL), ordered lists (OL), and list items (LI)</a>
+
+                    </li>
+
+                    <li>HTML 4.01 <a href="https://www.w3.org/TR/html4/struct/lists.html#h-10.3">Definition lists: the DL, DT, and DD elements</a>
+
+                    </li>
+
+                </ul>
+            </aside>
+
+	</xsl:template>
+
 	<xsl:template name="applicability">
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:variable name="technology" select="$meta/parent::technology/@name"/>
 		<xsl:variable name="applicability" select="//html:section[@id = 'applicability']"/>
 		<section id="applicability">
-			<h2>Applicability</h2>
-			
-			<!-- Copy applicability if provided, otherwise put in a stock one for technology -->
-			<xsl:choose>
-				<xsl:when test="wcag:section-meaningfully-exists('applicability', $applicability)">
-					<xsl:apply-templates select="$applicability/html:*[not(wcag:isheading(.))]"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:choose>
-						<xsl:when test="$technology = 'aria'">
-							<p>Content using <a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</a>.</p>
-						</xsl:when>
-						<xsl:when test="$technology = 'client-side-script'">
-							<p>Content using client-side script (JavaScript, ECMAScript).</p>
-						</xsl:when>
-						<xsl:when test="$technology = 'css'">
-							<p>Content using technologies that support <a href="https://www.w3.org/TR/CSS/">Cascading Style Sheets (CSS)</a>.</p>
-						</xsl:when>
-						<xsl:when test="$technology = 'failures'">
-							<xsl:message>No failures applicability statement in <xsl:value-of select="$meta/@id"/></xsl:message>
-						</xsl:when>
-						<xsl:when test="$technology = 'flash'">
-							<p>Content implemented in Adobe Flash.</p>
-						</xsl:when>
-						<xsl:when test="$technology = 'general'">
-							<p>Content implemented in any technology.</p>
-						</xsl:when>
-						<xsl:when test="$technology = 'html'">
-							<p>Content structured in <a href="https://www.w3.org/TR/html/">HyperText Markup Language (HTML)</a>.</p>
-						</xsl:when>
-						<xsl:when test="$technology = 'pdf'">
-							<p>Content implemented in Adobe Tagged PDF.</p>
-						</xsl:when>
-						<xsl:when test="$technology = 'server-side-script'">
-							<p>Content modified by the server before being sent to the user.</p>
-						</xsl:when>
-						<xsl:when test="$technology = 'silverlight'">
-							<p>Content implemented in Microsoft Silverlight.</p>
-						</xsl:when>
-						<xsl:when test="$technology = 'smil'">
-							<p>Content implemented in <a href="https://www.w3.org/TR/SMIL/">Synchronized Multimedia Integration Language (SMIL)</a>.</p>
-						</xsl:when>
-						<xsl:when test="$technology = 'text'">
-							<p>Content implemented in plain text, including Markdown and similar formats, without use of a structure technology.</p>
-						</xsl:when>
-					</xsl:choose>
-				</xsl:otherwise>
-			</xsl:choose>
-			
-			<!-- Put in deprecation warning for out-dated technologies -->
-			<xsl:choose>
-				<xsl:when test="$technology = 'flash'">
-					<div class="note">
-						<div role="heading" class="note-title marker" aria-level="3">Note</div>
-						<p>Adobe has plans to stop updating and distributing the Flash Player at the end of 2020, and encourages authors interested in creating accessible web content to use HTML.</p>
-					</div>
-				</xsl:when>
-				<xsl:when test="$technology = 'silverlight'">
-					<div class="note">
-						<div role="heading" class="note-title marker" aria-level="3">Note</div>
-						<p>Microsoft has stopped updating and distributing Silverlight, and authors are encouraged to use HTML for accessible web content.</p>
-					</div>
-				</xsl:when>
-			</xsl:choose>
-			
 			<!-- Add links to the Understanding pages that reference this technique -->
 			<!-- This has gotten really hairy, would like to find a more elegant way to sort the associations -->
 			<xsl:variable name="associations" select="$associations.doc//technique[@id = $meta/@id]"/>
 			<xsl:variable name="association-links">
 				<xsl:for-each select="$associations">
 					<span>
+						<xsl:call-template name="technique-sufficiency"/>
 						<xsl:call-template name="understanding-link">
 							<xsl:with-param name="understanding-id">
 								<xsl:choose>
@@ -280,9 +287,6 @@
 								</xsl:choose>
 							</xsl:with-param>
 						</xsl:call-template>
-						<xsl:text> (</xsl:text>
-						<xsl:call-template name="technique-sufficiency"/>
-						<xsl:text>)</xsl:text>
 					</span>
 				</xsl:for-each>
 			</xsl:variable>
@@ -356,10 +360,8 @@
 		<xsl:variable name="related" select="//html:section[@id = 'related']"/>
 		<!-- put in related techniques section if present and not template -->
 		<xsl:if test="wcag:section-meaningfully-exists('related', $related)">
-			<section id="related">
-				<h2>Related Techniques</h2>
-				<xsl:apply-templates select="$related/html:*[not(wcag:isheading(.))]"/>
-			</section>
+			<dt>Related Techniques</dt>
+			<dd><xsl:apply-templates select="$related/html:*[not(wcag:isheading(.))]"/></dd>
 		</xsl:if>
 	</xsl:template>
 	

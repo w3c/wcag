@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta charset="UTF-8" />
+      <title>ARIA7: Using aria-labelledby for link purpose</title>
+      <link rel="stylesheet" href="https://w3.org/WAI/assets/css/style.css?1573220675560713000" />
+      <link rel="stylesheet" type="text/css" href="../base.css" />
+   </head>
+   <body>
+      <header id="site-header" class="default-grid with-gap">
+         <div class="tool-header"><span class="tool-header-name"><a href="../">WCAG 2.1: Techniques</a></span><div class="tool-header-logo"><a href="http://w3.org/"><img alt="W3C" src="https://w3.org/WAI/atag/report-tool/images/w3c.svg" width="92" height="44" /></a><a href="http://w3.org/WAI/"><img alt="Web Accessibility Initiative" src="https://w3.org//WAI/atag/report-tool/images/wai.svg" /></a></div>
+         </div>
+      </header>
+      <main>
+         <div class="default-grid leftcol">
+            <nav class="nav" aria-label="Meta navigation">
+               <ul>
+                  <li class="nav__item"><a href="/techniques/#introduction">About Techniques</a></li>
+                  <li class="nav__item"><a href="/techniques/#techniques">All Techniques</a></li>
+                  <li class="nav__item"><a href="alt-index.html">All WCAG 2 Guidance 
+                        									
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24" width="24">
+                           <path fill-rule="evenodd" clip-rule="evenodd" d="M14 5C13.4477 5 13 4.55228 13 4C13 3.44772 13.4477 3 14 3H20C20.2652 3 20.5196 3.10536 20.7071 3.29289C20.8946 3.48043 21 3.73478 21 4L21 10C21 10.5523 20.5523 11 20 11C19.4477 11 19 10.5523 19 10L19 6.41422L9.70711 15.7071C9.31658 16.0976 8.68342 16.0976 8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929L17.5858 5H14ZM3 7C3 5.89543 3.89543 5 5 5H10C10.5523 5 11 5.44772 11 6C11 6.55228 10.5523 7 10 7H5V19H17V14C17 13.4477 17.4477 13 18 13C18.5523 13 19 13.4477 19 14V19C19 20.1046 18.1046 21 17 21H5C3.89543 21 3 20.1046 3 19V7Z" fill="#282828"></path>
+                        </svg></a><div id="explain-supporting-documents" hidden="">
+                        <p>WCAG comes with a number of supporting documents, including Techniques and Understanding
+                           documents.
+                        </p>
+                        <p>See also: <a href="https://www.w3.org/WAI/standards-guidelines/wcag/#whatis2">What is in the WCAG 2 Documents</a></p>
+                     </div>
+                  </li>
+               </ul>
+            </nav>
+            <section class="main-content">
+               <h1>Using aria-labelledby for link purpose</h1>
+               <aside class="box">
+                  <header class="box-h  box-h-icon">
+                     					[icon] Sufficient
+                     				
+                  </header>
+                  <div class="box-i">
+                     <section id="applicability">
+                        <p>This technique relates to <span>Sufficient to meet  as a way to meet an unwritten technique<a href="/understanding/link-purpose-in-context">Success Criterion 2.4.4: Link Purpose (In Context)</a></span>.
+                        </p>
+                     </section>
+                  </div>
+               </aside>
+               <section id="description">
+                  <h2>Description</h2>
+                  <p>With the <code class="att">aria-labelledby</code> attribute, authors can use a visible text element on the page as a label for a focusable
+                     element (a form control or a link). For example, a "read more..." link could be associated
+                     with the text of the heading of the preceding section to make the purpose of the link
+                     unambiguous (see example 1).
+                  </p>
+                  <p>When associating text to a focusable element with the help of <code class="att">aria-labelledby</code>, the target text element is given an ID which is referenced in the value of the <code class="att">aria-labelledby</code> attribute of the focusable element.
+                  </p>
+                  <p>It is also possible to use several text elements on the page as a label for a focusable
+                     element. Each of the text elements used must be given a unique ID which is referenced
+                     as a string of IDs (IDREF) in the value of the <code class="att">aria-labelledby</code> attribute. The label text should then be concatenated following the order of IDs
+                     in the value of the <code class="att">aria-labelledby</code> attribute.
+                  </p>
+                  <p>When applied on links, <code class="att">aria-labelledby</code> can be used to identify the purpose of a link that may be readily apparent for sighted
+                     users, but less obvious for screen reader users.
+                  </p>
+                  <p>The specified behavior of <code class="att">aria-labelledby</code> is that the associated label text is announced instead of the link text (not in addition
+                     to the link text). When the link text itself should be included in the label text,
+                     the ID of the link should be referenced as well in the string of IDs forming the value
+                     of the <code class="att">aria-labelledby</code> attribute.
+                  </p>
+                  <p>For more information on the naming hierarchy please consult the <a href="https://www.w3.org/TR/accname/">Accessible Name and Description Computation</a> and the <a href="https://www.w3.org/TR/html-aapi/#a-element">accessible name and description calculation for links</a> in the HTML to Platform Accessibility APIs Implementation Guide.
+                  </p>
+               </section>
+               <section id="examples">
+                  <h2>Examples</h2>
+                  <section class="example" id="example-1-providing-additional-information-for-links">
+                     <h3>Example 1: Providing additional information for links</h3>
+                     <p>This example will mean that the link text as shown on screen is then used as the start
+                        of the accessible name for the link. Popular screen readers like JAWS and NVDA will
+                        announce this as:
+                        "Read more ...Storms hit east coast" and will display that same text in the links
+                        list which is very useful for screen reader users who may browse by links.
+                     </p><pre xml:space="preserve">&lt;h2 id="headline"&gt;Storms hit east coast&lt;/h2&gt;
+
+&lt;p&gt;Torrential rain and gale force winds have struck the east coast, causing flooding in many coastal towns.
+&lt;a id="p123" href="news.html" aria-labelledby="p123 headline"&gt;Read more...&lt;/a&gt;&lt;/p&gt;</pre></section>
+                  <section class="example" id="example-2-concatenating-link-text-from-multiple-sources">
+                     <h3>Example 2: Concatenating link text from multiple sources</h3>
+                     <p>There may be cases where an author will placed a tag around a section of code that
+                        will be referenced.
+                     </p>
+                     <p>Note: The use of tabindex="-1" on the <code class="el">span</code> element is not meant to support focusing by scripts - here, it merely serves to ensure
+                        that some browsers (IE9, IE10) will include the <code class="el">span</code> element in the accessibility tree, thus making it available for reference by <code class="att">aria-labelledby</code>. For more details see <a href="https://msdn.microsoft.com/en-us/library/ie/gg701963%28v=vs.85%29.aspx#Accessible_HTML_Elements">Accessible HTML Elements</a>.
+                     </p><pre xml:space="preserve">&lt;p&gt;Download &lt;span id="report-title" tabindex="-1"&gt;2012 Sales Report&lt;/span&gt;:
+&lt;a aria-labelledby="report-title pdf" href="#" id="pdf"&gt;PDF&lt;/a&gt; |
+&lt;a aria-labelledby="report-title doc" href="#" id="doc"&gt;Word&lt;/a&gt; |
+&lt;a aria-labelledby="report-title ppt" href="#" id="ppt"&gt;Powerpoint&lt;/a&gt;&lt;/p&gt;</pre></section>
+               </section>
+               <section id="resources">
+                  <h2>Resources</h2>
+                  <p>Resources are for information purposes only, no endorsement implied.</p>
+                  <ul>
+                     
+                     <li>
+                        <a href="https://www.w3.org/TR/accname/">Accessible Name and Description Computation</a> 
+                        
+                     </li>
+                     
+                  </ul>
+               </section>
+               <section id="tests">
+                  <h2>Tests</h2>
+                  <section class="procedure" id="procedure">
+                     <h3>Procedure</h3>
+                     
+                     <p>For each link that has an <code class="att">aria-labelledby</code> attribute:
+                     </p>
+                     
+                     <ol>
+                        
+                        <li>Check that each ID in the value of the <code class="att">aria-labelledby</code> attribute matches an ID of a text element used as part of the link purpose.
+                        </li>
+                        
+                        <li>Check that the combined value of the text referenced by the one or more ID's in the
+                           <code class="att">aria-labelledby</code> attribute properly describes the purpose of the link element.
+                        </li>
+                        
+                     </ol>
+                     
+                  </section>
+                  <section class="results" id="expected-results">
+                     <h3>Expected Results</h3>
+                     
+                     <ul>
+                        
+                        <li>Checks #1 and #2 are true.</li>
+                        
+                     </ul>
+                     
+                  </section>
+               </section>
+            </section>
+            <aside class="your-report your-report--expanded sidebar" tabindex="-1">
+               <h2 style="margin-top: 0">About this page</h2>
+               <p><em>Techniques</em> are examples of ways to meet a WCAG success criterion.
+               </p>
+               <dl>
+                  <dt>Type of technique 
+                     				<button style="display: inline" type="button" data-tooltip-content="#explain-types-of-techniques"><span class="visuallyhidden">Explain types of techniques</span><span aria-hidden="true" class="more-info__icon">
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 450" style="width: 1em">
+                              <path fill="currentColor" d="M256 344v-40c0-4.5-3.5-8-8-8h-24v-128c0-4.5-3.5-8-8-8h-80c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h24v80h-24c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h112c4.5 0 8-3.5 8-8zM224 120v-40c0-4.5-3.5-8-8-8h-48c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h48c4.5 0 8-3.5 8-8zM384 224c0 106-86 192-192 192s-192-86-192-192 86-192 192-192 192 86 192 192z"></path>
+                           </svg></span></button><div id="explain-types-of-techniques" hidden="true">
+                        <p>There are different types of techniques:</p>
+                        <ul>
+                           <li>Sufficient - reliable ways to meet a WCAG Criterion</li>
+                           <li>Advisory - suggested ways to improve accessibility</li>
+                           <li>Failure - things that cause accessibility barriers and fail specific success criteria</li>
+                        </ul>
+                        <p>Note: all techniques are “informative”, that is, you do not have to use them.</p>
+                     </div>
+                  </dt>
+                  <dd>Sufficient</dd>
+                  <dt>Sufficient to meet</dt>
+                  <dd><a href="https://www.w3.org/WAI/WCAG21/quickref/?versions=2.1#info-and-relationships">1.3.1 Info and relationships</a></dd>
+                  <dt>Related test rules 
+                     
+                     
+                     <button style="display: inline" type="button" data-tooltip-content="#explain-test-rules"><span class="visuallyhidden">Explain test rules</span><span aria-hidden="true" class="more-info__icon">
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 450" style="width: 1em">
+                              <path fill="currentColor" d="M256 344v-40c0-4.5-3.5-8-8-8h-24v-128c0-4.5-3.5-8-8-8h-80c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h24v80h-24c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h112c4.5 0 8-3.5 8-8zM224 120v-40c0-4.5-3.5-8-8-8h-48c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h48c4.5 0 8-3.5 8-8zM384 224c0 106-86 192-192 192s-192-86-192-192 86-192 192-192 192 86 192 192z"></path>
+                           </svg></span></button><div id="explain-test-rules" hidden="true">WCAG Success Criteria interpreted as test rules, created by the ACT Task Force.</div>
+                  </dt>
+                  <dd><a href="2020-07-15-prototype-act.html">HTML page has title</a></dd>
+               </dl>
+               <h3>Other sources</h3>
+               <p style="margin-top: -.5em; margin-bottom: 1.5em;"><em><small>No endorsement implied.</small></em></p>
+               <ul>
+                  <li>HTML 4.01 <a href="https://www.w3.org/TR/html4/struct/lists.html#h-10.2">Unordered lists (UL), ordered lists (OL), and list items (LI)</a></li>
+                  <li>HTML 4.01 <a href="https://www.w3.org/TR/html4/struct/lists.html#h-10.3">Definition lists: the DL, DT, and DD elements</a></li>
+               </ul>
+            </aside>
+         </div>
+      </main>
+   </body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta charset="UTF-8" />
+      <title>F103: Failure of Success Criterion 4.1.3 due to providing status messages that cannot be
+         programmatically determined through role or properties
+      </title>
+      <link rel="stylesheet" href="https://w3.org/WAI/assets/css/style.css?1573220675560713000" />
+      <link rel="stylesheet" type="text/css" href="../base.css" />
+   </head>
+   <body>
+      <header id="site-header" class="default-grid with-gap">
+         <div class="tool-header"><span class="tool-header-name"><a href="../">WCAG 2.1: Techniques</a></span><div class="tool-header-logo"><a href="http://w3.org/"><img alt="W3C" src="https://w3.org/WAI/atag/report-tool/images/w3c.svg" width="92" height="44" /></a><a href="http://w3.org/WAI/"><img alt="Web Accessibility Initiative" src="https://w3.org//WAI/atag/report-tool/images/wai.svg" /></a></div>
+         </div>
+      </header>
+      <main>
+         <div class="default-grid leftcol">
+            <nav class="nav" aria-label="Meta navigation">
+               <ul>
+                  <li class="nav__item"><a href="/techniques/#introduction">About Techniques</a></li>
+                  <li class="nav__item"><a href="/techniques/#techniques">All Techniques</a></li>
+                  <li class="nav__item"><a href="alt-index.html">All WCAG 2 Guidance 
+                        									
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24" width="24">
+                           <path fill-rule="evenodd" clip-rule="evenodd" d="M14 5C13.4477 5 13 4.55228 13 4C13 3.44772 13.4477 3 14 3H20C20.2652 3 20.5196 3.10536 20.7071 3.29289C20.8946 3.48043 21 3.73478 21 4L21 10C21 10.5523 20.5523 11 20 11C19.4477 11 19 10.5523 19 10L19 6.41422L9.70711 15.7071C9.31658 16.0976 8.68342 16.0976 8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929L17.5858 5H14ZM3 7C3 5.89543 3.89543 5 5 5H10C10.5523 5 11 5.44772 11 6C11 6.55228 10.5523 7 10 7H5V19H17V14C17 13.4477 17.4477 13 18 13C18.5523 13 19 13.4477 19 14V19C19 20.1046 18.1046 21 17 21H5C3.89543 21 3 20.1046 3 19V7Z" fill="#282828"></path>
+                        </svg></a><div id="explain-supporting-documents" hidden="">
+                        <p>WCAG comes with a number of supporting documents, including Techniques and Understanding
+                           documents.
+                        </p>
+                        <p>See also: <a href="https://www.w3.org/WAI/standards-guidelines/wcag/#whatis2">What is in the WCAG 2 Documents</a></p>
+                     </div>
+                  </li>
+               </ul>
+            </nav>
+            <section class="main-content">
+               <h1>Failure of Success Criterion 4.1.3 due to providing status messages that cannot be
+                  programmatically determined through role or properties
+               </h1>
+               <aside class="box">
+                  <header class="box-h  box-h-icon">
+                     					[icon] Sufficient
+                     				
+                  </header>
+                  <div class="box-i">
+                     <section id="applicability">
+                        <p>This technique relates to <span>Failure<a href="/understanding/status-messages">Success Criterion 4.1.3: Status Messages</a></span>.
+                        </p>
+                     </section>
+                  </div>
+               </aside>
+               <section id="description">
+                  <h2>Description</h2>
+                  <p>The objective of this technique is to describe a failure where status messages are
+                     used in content but are not communicated to the user due to a lack of appropriate
+                     roles or properties.
+                  </p>
+                  <p>The initial step in confirming a failure of Status Messages is to check that new dynamic
+                     content meets the definition of a status message. There are two criteria that determine
+                     if changed content on a page represents a status message:
+                     				
+                     <ol>
+                        					
+                        <li>the new content does not take focus (does not change context);</li>
+                        					
+                        <li>the new content provides information to the user on the outcome of an action, the
+                           state of an application, the progress of a process, or the existence of errors.
+                        </li>
+                        				
+                     </ol>
+                     			 Where updated content does not conform to the <a href="https://www.w3.org/TR/WCAG21/#dfn-status-messages">definition of status message</a>, a failure of 4.1.3 has not taken place.
+                  </p>
+                  <p>The second step in this failure technique involves examining code.  Where dynamic
+                     content meets the definition of a status message, its container can be examined for
+                     an appropriate WAI-ARIA role or property which allows it to be programmatically determinable
+                     as a status message. Currently there are only a small number of techniques available
+                     to indicate status messages to assistive technologies. They are:
+                     					
+                     <ul>
+                        						
+                        <li><code>role="status"</code></li>
+                        						
+                        <li><code>role="alert"</code></li>
+                        						
+                        <li>the use of an <code>aria-live</code> attribute on an element, set to either "polite" or "assertive"
+                        </li>
+                        						
+                        <li><code>role="log"</code></li>
+                        						
+                        <li><code>role="progressbar"</code></li>
+                        						
+                     </ul>
+                     				The absence of all of these techniques predicts a failure for the status message
+                     be announced to the user. Additionally, if the role or property is not set <em>before</em> the dynamic content is added, this also predicts a failure.
+                  </p>
+                  <p>Since additional techniques may exist to alert an assistive technology, the final
+                     step of this failure technique is confirming whether an assistive technology (such
+                     as a screen reader) detects the dynamic content and exposes the information to users.
+                     Where a status message exists but is not surfaced by assistive technology, it is confirmation
+                     that a failure has taken place.
+                  </p>
+               </section>
+               <section id="examples">
+                  <h2>Examples</h2>
+                  <section class="example" id="example-1-including-a-search-results-message-without-a-status-role">
+                     <h3>Example 1: Including a search results message without a status role</h3>
+                     <p>When a user carries out a search by pressing a Search button, the page content is
+                        updated with the results of the search, displayed in a section below the Search button.
+                        Since the search has no results, the change to content conveys the status message
+                        "0 results returned". This text is not given an appropriate role for a status message,
+                        and so a screen reader will not announce "Zero results returned" unless the user repositions
+                        to that text. Since the status message is not automatically presented to the user
+                        (i.e., instead, it must be manually discovered by the individual), it fails 4.1.3.
+                     </p>
+                     <p class="working-example"><a href="../../working-examples/failure-status-message/">Working example: search results message without appropriate role</a></p>
+                  </section>
+               </section>
+               <section id="tests">
+                  <h2>Tests</h2>
+                  <section class="test-procedure">
+                     <h3>Procedure</h3>
+                     <p>For content that is dynamically added to the page:</p>
+                     <ol>
+                        					
+                        <li>Check that the element containing the updated content does not take focus</li>
+                        					
+                        <li>Check that the new content provides information to the user on one of the following:</li>
+                        						
+                        <ul>
+                           							
+                           <li>the success or result of an action</li>
+                           							
+                           <li>the waiting state of an application</li>
+                           							
+                           <li>the progress of a process</li>
+                           							
+                           <li>the existence of errors</li>
+                           						
+                        </ul>
+                        					
+                        <li>Check that the element containing the new content does not have a pre-existing aria
+                           role of <code>status</code>, <code>alert</code>, <code>log</code>, or <code>progressbar</code>, or an <code>aria-live</code> attribute
+                        </li>
+                        					
+                        <li>Check that the status message is not surfaced (i.e., announced) by assistive technology</li>
+                        				
+                     </ol>
+                  </section>
+                  <section class="test-results">
+                     <h3>Expected Results</h3>
+                     <ul>
+                        					
+                        <li>If #1 through #4 are all true, then content fails the Success Criterion.</li>
+                        				
+                     </ul>
+                  </section>
+               </section>
+            </section>
+            <aside class="your-report your-report--expanded sidebar" tabindex="-1">
+               <h2 style="margin-top: 0">About this page</h2>
+               <p><em>Techniques</em> are examples of ways to meet a WCAG success criterion.
+               </p>
+               <dl>
+                  <dt>Type of technique 
+                     				<button style="display: inline" type="button" data-tooltip-content="#explain-types-of-techniques"><span class="visuallyhidden">Explain types of techniques</span><span aria-hidden="true" class="more-info__icon">
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 450" style="width: 1em">
+                              <path fill="currentColor" d="M256 344v-40c0-4.5-3.5-8-8-8h-24v-128c0-4.5-3.5-8-8-8h-80c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h24v80h-24c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h112c4.5 0 8-3.5 8-8zM224 120v-40c0-4.5-3.5-8-8-8h-48c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h48c4.5 0 8-3.5 8-8zM384 224c0 106-86 192-192 192s-192-86-192-192 86-192 192-192 192 86 192 192z"></path>
+                           </svg></span></button><div id="explain-types-of-techniques" hidden="true">
+                        <p>There are different types of techniques:</p>
+                        <ul>
+                           <li>Sufficient - reliable ways to meet a WCAG Criterion</li>
+                           <li>Advisory - suggested ways to improve accessibility</li>
+                           <li>Failure - things that cause accessibility barriers and fail specific success criteria</li>
+                        </ul>
+                        <p>Note: all techniques are “informative”, that is, you do not have to use them.</p>
+                     </div>
+                  </dt>
+                  <dd>Sufficient</dd>
+                  <dt>Sufficient to meet</dt>
+                  <dd><a href="https://www.w3.org/WAI/WCAG21/quickref/?versions=2.1#info-and-relationships">1.3.1 Info and relationships</a></dd>
+                  <dt>Related test rules 
+                     
+                     
+                     <button style="display: inline" type="button" data-tooltip-content="#explain-test-rules"><span class="visuallyhidden">Explain test rules</span><span aria-hidden="true" class="more-info__icon">
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 450" style="width: 1em">
+                              <path fill="currentColor" d="M256 344v-40c0-4.5-3.5-8-8-8h-24v-128c0-4.5-3.5-8-8-8h-80c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h24v80h-24c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h112c4.5 0 8-3.5 8-8zM224 120v-40c0-4.5-3.5-8-8-8h-48c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h48c4.5 0 8-3.5 8-8zM384 224c0 106-86 192-192 192s-192-86-192-192 86-192 192-192 192 86 192 192z"></path>
+                           </svg></span></button><div id="explain-test-rules" hidden="true">WCAG Success Criteria interpreted as test rules, created by the ACT Task Force.</div>
+                  </dt>
+                  <dd><a href="2020-07-15-prototype-act.html">HTML page has title</a></dd>
+               </dl>
+               <h3>Other sources</h3>
+               <p style="margin-top: -.5em; margin-bottom: 1.5em;"><em><small>No endorsement implied.</small></em></p>
+               <ul>
+                  <li>HTML 4.01 <a href="https://www.w3.org/TR/html4/struct/lists.html#h-10.2">Unordered lists (UL), ordered lists (OL), and list items (LI)</a></li>
+                  <li>HTML 4.01 <a href="https://www.w3.org/TR/html4/struct/lists.html#h-10.3">Definition lists: the DL, DT, and DD elements</a></li>
+               </ul>
+            </aside>
+         </div>
+      </main>
+   </body>
+</html>

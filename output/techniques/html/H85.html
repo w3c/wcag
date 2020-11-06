@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta charset="UTF-8" />
+      <title>H85: Using OPTGROUP to group OPTION elements inside a SELECT</title>
+      <link rel="stylesheet" href="https://w3.org/WAI/assets/css/style.css?1573220675560713000" />
+      <link rel="stylesheet" type="text/css" href="../base.css" />
+   </head>
+   <body>
+      <header id="site-header" class="default-grid with-gap">
+         <div class="tool-header"><span class="tool-header-name"><a href="../">WCAG 2.1: Techniques</a></span><div class="tool-header-logo"><a href="http://w3.org/"><img alt="W3C" src="https://w3.org/WAI/atag/report-tool/images/w3c.svg" width="92" height="44" /></a><a href="http://w3.org/WAI/"><img alt="Web Accessibility Initiative" src="https://w3.org//WAI/atag/report-tool/images/wai.svg" /></a></div>
+         </div>
+      </header>
+      <main>
+         <div class="default-grid leftcol">
+            <nav class="nav" aria-label="Meta navigation">
+               <ul>
+                  <li class="nav__item"><a href="/techniques/#introduction">About Techniques</a></li>
+                  <li class="nav__item"><a href="/techniques/#techniques">All Techniques</a></li>
+                  <li class="nav__item"><a href="alt-index.html">All WCAG 2 Guidance 
+                        									
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24" width="24">
+                           <path fill-rule="evenodd" clip-rule="evenodd" d="M14 5C13.4477 5 13 4.55228 13 4C13 3.44772 13.4477 3 14 3H20C20.2652 3 20.5196 3.10536 20.7071 3.29289C20.8946 3.48043 21 3.73478 21 4L21 10C21 10.5523 20.5523 11 20 11C19.4477 11 19 10.5523 19 10L19 6.41422L9.70711 15.7071C9.31658 16.0976 8.68342 16.0976 8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929L17.5858 5H14ZM3 7C3 5.89543 3.89543 5 5 5H10C10.5523 5 11 5.44772 11 6C11 6.55228 10.5523 7 10 7H5V19H17V14C17 13.4477 17.4477 13 18 13C18.5523 13 19 13.4477 19 14V19C19 20.1046 18.1046 21 17 21H5C3.89543 21 3 20.1046 3 19V7Z" fill="#282828"></path>
+                        </svg></a><div id="explain-supporting-documents" hidden="">
+                        <p>WCAG comes with a number of supporting documents, including Techniques and Understanding
+                           documents.
+                        </p>
+                        <p>See also: <a href="https://www.w3.org/WAI/standards-guidelines/wcag/#whatis2">What is in the WCAG 2 Documents</a></p>
+                     </div>
+                  </li>
+               </ul>
+            </nav>
+            <section class="main-content">
+               <h1>Using OPTGROUP to group OPTION elements inside a SELECT</h1>
+               <aside class="box">
+                  <header class="box-h  box-h-icon">
+                     					[icon] Sufficient
+                     				
+                  </header>
+                  <div class="box-i">
+                     <section id="applicability">
+                        <p>This technique relates to <span>Sufficient to meet  as a way to meet an unwritten technique<a href="/understanding/info-and-relationships">Success Criterion 1.3.1: Info and Relationships</a></span>.
+                        </p>
+                     </section>
+                  </div>
+               </aside>
+               <section id="description">
+                  <h2>Description</h2>
+                  <p>The objective of this technique is to group items in a selection list. A selection
+                     list is a set of allowed values for a form control such as a multi-select list or
+                     a combo box. Often, selection lists have groups of related options. Those groups should
+                     be semantically identified, rather than simply delimiting the groups with "dummy"
+                     list entries. This allows user agents to collapse the options by group to support
+                     quicker skimming of the options, and to indicate in what group an option of interest
+                     is located. It also helps to visually break up long lists so that users can more easily
+                     locate the option(s) they are interested in.
+                  </p>
+                  <p>In HTML, the <code class="el">select</code> element is used to create both multi-select lists and combo boxes. The various allowed
+                     options are each indicated with <code class="el">option</code> elements. To group options together, use the <code class="el">optgroup</code> element, with the related <code class="el">option</code> elements inside that element. Label the group with the "label" attribute so users
+                     will know what to expect inside the group.
+                  </p>
+                  <p>The <code class="el">optgroup</code> element should be directly inside the <code class="el">select</code> element, and the <code class="el">option</code>  elements directly inside the <code class="el">optgroup</code>. It is possible for a <code class="el">select</code> element to contain both single <code class="el">option</code> elements and <code class="el">optgroup</code> groups, though authors should consider if this is in fact the desired intent when
+                     using this. It is not possible to nest the <code class="el">optgroup</code> element, so only one level of grouping can be done within a <code class="el">select</code>.
+                  </p>
+                  <p>If grouping information is essential to understanding the list, authors may define
+                     <code class="el">option</code> labels that can be understood even when the screen reader does not present the grouping
+                     information provided by <code class="el">optgroup</code>.
+                  </p>
+               </section>
+               <section id="examples">
+                  <h2>Examples</h2>
+                  <section class="example" id="example-1">
+                     <h3>Example 1</h3>
+                     <p>The following combo box collects data about favorite foods. Grouping by type allows
+                        users to select their preference more quickly.
+                     </p><pre xml:space="preserve">
+&lt;form action="http://example.com/prog/someprog" method="post"&gt;
+    &lt;label for="food"&gt;What is your favorite food?&lt;/label&gt;
+    &lt;select id="food" name="food"&gt;
+      &lt;optgroup label="Fruits"&gt;
+        &lt;option value="1"&gt;Apples&lt;/option&gt;
+        &lt;option value="3"&gt;Bananas&lt;/option&gt;
+        &lt;option value="4"&gt;Peaches&lt;/option&gt;
+        &lt;option value="5"&gt;...&lt;/option&gt;
+      &lt;/optgroup&gt;
+      &lt;optgroup label="Vegetables"&gt;
+        &lt;option value="2"&gt;Carrots&lt;/option&gt;
+        &lt;option value="6"&gt;Cucumbers&lt;/option&gt;
+       &lt;option value="7"&gt;...&lt;/option&gt;
+     &lt;/optgroup&gt;
+     &lt;optgroup label="Baked Goods"&gt;
+       &lt;option value="8"&gt;Apple Pie&lt;/option&gt;
+       &lt;option value="9"&gt;Chocolate Cake&lt;/option&gt;
+       &lt;option value="10"&gt;...&lt;/option&gt;
+     &lt;/optgroup&gt;
+   &lt;/select&gt;
+&lt;/form&gt;              </pre></section>
+                  <section class="example" id="example-2">
+                     <h3>Example 2</h3>
+                     <p>The following example shows how a multi-select box can make use of the <code class="el">optrgroup</code> element.
+                     </p><pre xml:space="preserve">
+&lt;form action="http://example.com/prog/someprog" method="post"&gt;
+    &lt;label for="related_techniques"&gt;&lt;strong&gt;Related Techniques:&lt;/strong&gt;&lt;/label&gt;
+    &lt;select name="related_techniques" id="related_techniques" multiple="multiple" size="10"&gt;
+  &lt;optgroup label="General Techniques"&gt;
+    &lt;option value="G1"&gt;G1: Adding a link at the top of each page ... &lt;/option&gt;
+    &lt;option value="G4"&gt;G4: Allowing the content to be paused and restarted ... &lt;/option&gt;
+    &lt;option value="G5"&gt;G5: Allowing users to complete an activity without any time... &lt;/option&gt;
+    &lt;option value="G8"&gt;G8: Creating an extended audio description for the ... &lt;/option&gt;
+    &lt;option value="G9"&gt;G9: Creating captions for live synchronized media... &lt;/option&gt;
+    &lt;option value="G10"&gt;G10: Creating components using a technology that ... &lt;/option&gt;
+  &lt;/optgroup&gt;
+  &lt;optgroup label="HTML Techniques"&gt;
+    &lt;option value="H2"&gt;H2: Combining adjacent image and text links for the same ... &lt;/option&gt;
+    &lt;option value="H4"&gt;H4: Creating a logical tab order through links, form ... &lt;/option&gt;
+    &lt;option value="H24"&gt;H24: Providing text alternatives for the area ... &lt;/option&gt;
+  &lt;/optgroup&gt;
+  &lt;optgroup label="CSS Techniques"&gt;
+    &lt;option value="C6"&gt;C6: Positioning content based on structural markup... &lt;/option&gt;
+    &lt;option value="C7"&gt;C7: Using CSS to hide a portion of the link text... &lt;/option&gt;
+  &lt;/optgroup&gt;
+  &lt;optgroup label="SMIL Techniques"&gt;
+    &lt;option value="SM1"&gt;SM1: Adding extended audio description in SMIL 1.0... &lt;/option&gt;
+    &lt;option value="SM2"&gt;SM2: Adding extended audio description in SMIL 2.0... &lt;/option&gt;
+    &lt;option value="SM6"&gt;SM6: Providing audio description in SMIL 1.0... &lt;/option&gt;
+  &lt;/optgroup&gt;
+  &lt;optgroup label="ARIA Techniques"&gt;
+    &lt;option value="ARIA1"&gt;ARIA1: Using WAI-ARIA describedby... &lt;/option&gt;
+    &lt;option value="ARIA2"&gt;ARIA2: Identifying required fields with the "required"... &lt;/option&gt;
+    &lt;option value="ARIA3"&gt;ARIA3: Identifying valid range information with "valuemin" ... &lt;/option&gt;
+  &lt;/optgroup&gt;
+  &lt;optgroup label="Common Failures"&gt;
+    &lt;option value="F1"&gt;F1: Failure of SC 1.3.2 due to changing the meaning of content by... &lt;/option&gt;
+    &lt;option value="F2"&gt;F2: Failure of SC 1.3.1 due to using changes in text presentation... &lt;/option&gt;
+    &lt;option value="F3"&gt;F3: Failure of SC 1.1.1 due to using CSS to include images  ... &lt;/option&gt;
+    &lt;option value="F4"&gt;F4: Failure of SC 2.2.2 due to using text-decoration:blink ...&lt;/option&gt;
+  &lt;/optgroup&gt;
+&lt;/select&gt;
+&lt;/form&gt;              </pre></section>
+               </section>
+               <section id="resources">
+                  <h2>Resources</h2>
+                  <p>Resources are for information purposes only, no endorsement implied.</p>
+                  <ul>
+                     
+                     <li>
+                        									         <a href="https://www.w3.org/TR/html401/interact/forms.html#edef-SELECT">HTML SELECT element</a>
+                        								       
+                     </li>
+                     
+                     <li>
+                        									         <a href="https://www.w3.org/TR/html401/interact/forms.html#edef-OPTGROUP">HTML OPTGROUP element</a>
+                        								       
+                     </li>
+                     
+                     <li>
+                        									         <a href="http://webaim.org/techniques/forms/">Creating Accessible Forms</a>
+                        								       
+                     </li>
+                     
+                     <li>
+                        									         <a href="http://usability.com.au/2008/09/accessible-forms-using-wcag-2-0/">Accessible Forms using WCAG 2.0</a>
+                        								       
+                     </li>
+                     
+                  </ul>
+               </section>
+               <section id="tests">
+                  <h2>Tests</h2>
+                  <section class="procedure" id="procedure">
+                     <h3>Procedure</h3>
+                     
+                     <ol>
+                        
+                        <li>Check the set of options within a selection list to see if there are groups of related
+                           options.
+                        </li>
+                        
+                        <li>If there are groups of related options, they should be grouped with <code class="el">optgroup</code>. 
+                        </li>
+                        
+                     </ol>
+                     
+                  </section>
+                  <section class="results" id="expected-results">
+                     <h3>Expected Results</h3>
+                     
+                     <ul>
+                        
+                        <li>Check #2 is true.</li>
+                        
+                     </ul>
+                     
+                  </section>
+               </section>
+            </section>
+            <aside class="your-report your-report--expanded sidebar" tabindex="-1">
+               <h2 style="margin-top: 0">About this page</h2>
+               <p><em>Techniques</em> are examples of ways to meet a WCAG success criterion.
+               </p>
+               <dl>
+                  <dt>Type of technique 
+                     				<button style="display: inline" type="button" data-tooltip-content="#explain-types-of-techniques"><span class="visuallyhidden">Explain types of techniques</span><span aria-hidden="true" class="more-info__icon">
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 450" style="width: 1em">
+                              <path fill="currentColor" d="M256 344v-40c0-4.5-3.5-8-8-8h-24v-128c0-4.5-3.5-8-8-8h-80c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h24v80h-24c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h112c4.5 0 8-3.5 8-8zM224 120v-40c0-4.5-3.5-8-8-8h-48c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h48c4.5 0 8-3.5 8-8zM384 224c0 106-86 192-192 192s-192-86-192-192 86-192 192-192 192 86 192 192z"></path>
+                           </svg></span></button><div id="explain-types-of-techniques" hidden="true">
+                        <p>There are different types of techniques:</p>
+                        <ul>
+                           <li>Sufficient - reliable ways to meet a WCAG Criterion</li>
+                           <li>Advisory - suggested ways to improve accessibility</li>
+                           <li>Failure - things that cause accessibility barriers and fail specific success criteria</li>
+                        </ul>
+                        <p>Note: all techniques are “informative”, that is, you do not have to use them.</p>
+                     </div>
+                  </dt>
+                  <dd>Sufficient</dd>
+                  <dt>Sufficient to meet</dt>
+                  <dd><a href="https://www.w3.org/WAI/WCAG21/quickref/?versions=2.1#info-and-relationships">1.3.1 Info and relationships</a></dd>
+                  <dt>Related test rules 
+                     
+                     
+                     <button style="display: inline" type="button" data-tooltip-content="#explain-test-rules"><span class="visuallyhidden">Explain test rules</span><span aria-hidden="true" class="more-info__icon">
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 450" style="width: 1em">
+                              <path fill="currentColor" d="M256 344v-40c0-4.5-3.5-8-8-8h-24v-128c0-4.5-3.5-8-8-8h-80c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h24v80h-24c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h112c4.5 0 8-3.5 8-8zM224 120v-40c0-4.5-3.5-8-8-8h-48c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h48c4.5 0 8-3.5 8-8zM384 224c0 106-86 192-192 192s-192-86-192-192 86-192 192-192 192 86 192 192z"></path>
+                           </svg></span></button><div id="explain-test-rules" hidden="true">WCAG Success Criteria interpreted as test rules, created by the ACT Task Force.</div>
+                  </dt>
+                  <dd><a href="2020-07-15-prototype-act.html">HTML page has title</a></dd>
+               </dl>
+               <h3>Other sources</h3>
+               <p style="margin-top: -.5em; margin-bottom: 1.5em;"><em><small>No endorsement implied.</small></em></p>
+               <ul>
+                  <li>HTML 4.01 <a href="https://www.w3.org/TR/html4/struct/lists.html#h-10.2">Unordered lists (UL), ordered lists (OL), and list items (LI)</a></li>
+                  <li>HTML 4.01 <a href="https://www.w3.org/TR/html4/struct/lists.html#h-10.3">Definition lists: the DL, DT, and DD elements</a></li>
+               </ul>
+            </aside>
+         </div>
+      </main>
+   </body>
+</html>

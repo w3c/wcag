@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta charset="UTF-8" />
+      <title>ARIA9: Using aria-labelledby to concatenate a label from several text nodes</title>
+      <link rel="stylesheet" href="https://w3.org/WAI/assets/css/style.css?1573220675560713000" />
+      <link rel="stylesheet" type="text/css" href="../base.css" />
+   </head>
+   <body>
+      <header id="site-header" class="default-grid with-gap">
+         <div class="tool-header"><span class="tool-header-name"><a href="../">WCAG 2.1: Techniques</a></span><div class="tool-header-logo"><a href="http://w3.org/"><img alt="W3C" src="https://w3.org/WAI/atag/report-tool/images/w3c.svg" width="92" height="44" /></a><a href="http://w3.org/WAI/"><img alt="Web Accessibility Initiative" src="https://w3.org//WAI/atag/report-tool/images/wai.svg" /></a></div>
+         </div>
+      </header>
+      <main>
+         <div class="default-grid leftcol">
+            <nav class="nav" aria-label="Meta navigation">
+               <ul>
+                  <li class="nav__item"><a href="/techniques/#introduction">About Techniques</a></li>
+                  <li class="nav__item"><a href="/techniques/#techniques">All Techniques</a></li>
+                  <li class="nav__item"><a href="alt-index.html">All WCAG 2 Guidance 
+                        									
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24" width="24">
+                           <path fill-rule="evenodd" clip-rule="evenodd" d="M14 5C13.4477 5 13 4.55228 13 4C13 3.44772 13.4477 3 14 3H20C20.2652 3 20.5196 3.10536 20.7071 3.29289C20.8946 3.48043 21 3.73478 21 4L21 10C21 10.5523 20.5523 11 20 11C19.4477 11 19 10.5523 19 10L19 6.41422L9.70711 15.7071C9.31658 16.0976 8.68342 16.0976 8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929L17.5858 5H14ZM3 7C3 5.89543 3.89543 5 5 5H10C10.5523 5 11 5.44772 11 6C11 6.55228 10.5523 7 10 7H5V19H17V14C17 13.4477 17.4477 13 18 13C18.5523 13 19 13.4477 19 14V19C19 20.1046 18.1046 21 17 21H5C3.89543 21 3 20.1046 3 19V7Z" fill="#282828"></path>
+                        </svg></a><div id="explain-supporting-documents" hidden="">
+                        <p>WCAG comes with a number of supporting documents, including Techniques and Understanding
+                           documents.
+                        </p>
+                        <p>See also: <a href="https://www.w3.org/WAI/standards-guidelines/wcag/#whatis2">What is in the WCAG 2 Documents</a></p>
+                     </div>
+                  </li>
+               </ul>
+            </nav>
+            <section class="main-content">
+               <h1>Using aria-labelledby to concatenate a label from several text nodes</h1>
+               <aside class="box">
+                  <header class="box-h  box-h-icon">
+                     					[icon] Sufficient
+                     				
+                  </header>
+                  <div class="box-i">
+                     <section id="applicability">
+                        <p>This technique relates to:</p>
+                        <ul>
+                           <li>Sufficient to meet <a href="/understanding/non-text-content">Success Criterion 1.1.1: Non-text Content</a></li>
+                           <li>Sufficient to meet  as a way to meet <a href="../general/G131">G131: Providing descriptive labels</a><a href="/understanding/labels-or-instructions">Success Criterion 3.3.2: Labels or Instructions</a></li>
+                        </ul>
+                     </section>
+                  </div>
+               </aside>
+               <section id="description">
+                  <h2>Description</h2>
+                  <p>The <code class="prop">aria-labelledby</code> property can be used to label all visual objects. Applied to inputs, the <code class="prop">aria-labelledby</code> property can be used to label native inputs as well as non-native elements, such
+                     as custom text inputs constructed with div contenteditable="true".
+                  </p>
+                  <p>One particular use of <code class="prop">aria-labelledby</code> is for text inputs in situations where a meaningful label should consist of more
+                     than one label string.
+                  </p>
+                  <p>Authors assign unique <code class="att">id</code>s to the label strings to be concatenated as the label for the <code class="el">input</code> element. The value of the <code class="att">aria-labelledby</code> attribute is then a space-separated list of all <code class="att">id</code>s in the order in which the label strings referenced should be read by screen readers.
+                     Supporting user agents will concatenate the label strings referenced and read them
+                     as one continuous label of the input.
+                  </p>
+                  <p>The concatenation of label strings can be useful for different reasons. In example
+                     1, an input is nested within the context of a full sentence. The desired screen reader
+                     output is "Extend time-out to [ 20 ] minutes - edit with autocomplete, selected 20".
+                     Since the <code class="att">id</code> of the text input is included in the string of <code class="att">id</code>s referenced by aria-labelledby, the value of the input is included in the concatenated
+                     label at the right position.
+                  </p>
+                  <p>Another application of <code class="att">aria-labelledby</code> is when there is no space to provide a visible label next to the input, or when using
+                     native labels would create unnecessary redundancy. Here, the use <code class="att">aria-labelledby</code> makes it possible to associate visible elements on the page as label for such inputs.
+                     This is demonstrated in example 2 where table column and row headings are concatenated
+                     into labels for the text input elements inside the table.
+                  </p>
+                  <div class="note">
+                     <div role="heading" class="note-title marker" aria-level="3">Note</div>
+                     <div>
+                        
+                        <p>The <a href="https://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">ARIA accessible name and description calculation</a> specifies that the string specified in <code class="att">aria-labelledby</code> should replace rather than add to the content of the element that carries the property.
+                           So adding the <code class="att">aria-labelledby</code> property to a native label should replace the text content inside that label unless
+                           the label itself is referenced as part of the sequence of <code class="att">id</code>s in <code class="att">aria-labelledby</code>.
+                        </p>
+                        
+                     </div>
+                  </div>
+               </section>
+               <section id="examples">
+                  <h2>Examples</h2>
+                  <section class="example" id="example-1--a-time-out-input-field-with-concatenated-label">
+                     <h3>Example 1:  A time-out input field with concatenated label</h3>
+                     <p>A text input allows users to extend the default time before a time-out occurs.</p>
+                     <p>The string "Extend time-out to" is contained in a native <code class="el">label</code> element and is associated with the input with the input by id="timeout-duration"
+                        . This label is associated with this input using the for/id association only on user
+                        agents that don't support ARIA. On user agents that support ARIA, the for/id association
+                        is ignored and the label for the input is provided only by <code class="att">aria-labelledby</code>, per the <a href="https://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">accessible name and description calculation</a> in the HTML to Platform Accessibility APIs Implementation Guide.
+                     </p>
+                     <p>The <code class="att">aria-labelledby</code> attribute on the text input references three elements: (1) the <code class="el">span</code> containing the native label, (2) the text input containing the default text '20'
+                        (recall that this input is not labelled with the for/id associated label text), and
+                        (3) the string 'minutes' contained in a <code class="el">span</code>. These elements should be concatenated to provide the full label for the text input
+                     </p>
+                     <div class="note">
+                        <div role="heading" class="note-title marker" aria-level="4">Note</div>
+                        <div>
+                           
+                           <p>The use of tabindex="-1" on the <code class="el">span</code> element is not meant to support focusing by scripts - here, it merely serves to ensure
+                              that some browsers (IE9, IE10) will include the <code class="el">span</code> element in the accessibility tree, thus making it available for reference by <code class="att">aria-labelledby</code>. For more details see <a href="https://msdn.microsoft.com/en-us/library/ie/gg701963%28v=vs.85%29.aspx#Accessible_HTML_Elements">Accessible HTML Elements</a>
+                              
+                           </p>
+                           
+                        </div>
+                     </div><pre xml:space="preserve">&lt;form&gt;
+&lt;p&gt;&lt;span id="timeout-label" tabindex="-1"&gt;&lt;label for="timeout-duration"&gt;Extend time-out to&lt;/label&gt;&lt;/span&gt;
+&lt;input type="text" size="3" id="timeout-duration" value="20" 
+    aria-labelledby="timeout-label timeout-duration timeout-unit"&gt;
+&lt;span id="timeout-unit" tabindex="-1"&gt; minutes&lt;/span&gt;&lt;/p&gt;
+&lt;/form&gt;</pre><p class="working-example">Working example, <a href="../../working-examples/aria-labelledby-time-out-input-concatenated-label/">Time-out input field with concatenated label</a>, adapted from Easy ARIA tip #2: aria-labelledby and aria-describedby, an example
+                        put together by Marco Zehe.
+                     </p>
+                  </section>
+                  <section class="example" id="example-2-a-simple-data-table-with-text-inputs">
+                     <h3>Example 2: A simple data table with text inputs</h3>
+                     <p>A simple data table containing text inputs. The input labels are concatenated through
+                        <code class="att">aria-labelledby</code> referencing the respective column and row headers.
+                     </p><pre xml:space="preserve">&lt;table&gt;
+	&lt;tr&gt;
+		&lt;td&gt;&lt;/td&gt;
+		&lt;th id="tpayer"&gt;Taxpayer&lt;/th&gt;
+		&lt;th id="sp"&gt;Spouse&lt;/th&gt;
+	&lt;/tr&gt;
+
+	&lt;tr&gt;
+		&lt;th id="gross"&gt;W2 Gross&lt;/th&gt;
+		&lt;td&gt;&lt;input type="text" size="20" aria-labelledby="tpayer gross" /&gt;&lt;/td&gt;
+		&lt;td&gt;&lt;input type="text" size="20" aria-labelledby="sp gross" /&gt;&lt;/td&gt;
+	&lt;/tr&gt;
+	
+	&lt;tr&gt;
+		&lt;th id="div"&gt;Dividends&lt;/th&gt;
+		&lt;td&gt;&lt;input type="text" size="20" aria-labelledby="tpayer div" /&gt;&lt;/td&gt;
+		&lt;td&gt;&lt;input type="text" size="20" aria-labelledby="sp div" /&gt;&lt;/td&gt;
+	&lt;/tr&gt;
+&lt;/table&gt;</pre><p class="working-example">Working example, <a href="../../working-examples/aria-labelledby-table-text-inputs/">Using aria-labelledby for simple table with text inputs</a>, based on an example by Jim Thatcher.
+                     </p>
+                  </section>
+                  <section class="example" id="example-3-a-conference-workshop-booking-table">
+                     <h3>Example 3: A conference workshop booking table</h3>
+                     <p>A conference workshop booking table with two parallel tracks allows users to select
+                        the workshop they want to attend. When tabbing through the checkbox inputs in the
+                        table, the track (1 or 2), the title, and the speaker of the workshop followed by
+                        the adjacent checkbox label "Attend" are provided as concatenated label for the checkboxes
+                        via <code class="att">aria-labelledby</code>.
+                     </p>
+                     <p>Some browser / screen reader combinations (e.g. Mozilla Firefox and NVDA) will in
+                        addition speak the relevant table cell headers.
+                     </p><pre xml:space="preserve">&lt;h1&gt;Dinosaur Conference workshops timetable Thursday, 14.  &amp; Friday, 15. March 2013&lt;/h1&gt;
+&lt;table&gt;
+&lt;caption&gt;Dinosaur Conference workshop booking table&lt;/caption&gt;
+&lt;tbody&gt;&lt;tr&gt;
+	&lt;td rowspan="2"&gt;&lt;/td&gt;
+	&lt;th colspan="2" scope="colgroup"&gt;Thursday&lt;/th&gt;
+	&lt;th colspan="2" scope="colgroup"&gt;Friday&lt;/th&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+	&lt;th scope="col" id="am1"&gt;9 to 12 AM&lt;/th&gt;
+	&lt;th scope="col" id="pm1"&gt;2 to 5 PM&lt;/th&gt;
+	&lt;th scope="col" id="am2"&gt;9 to 12 AM&lt;/th&gt;
+	&lt;th scope="col" id="pm2"&gt;2 to 5 PM&lt;/th&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+	&lt;th id="track1" scope="row"&gt;track 1&lt;/th&gt;
+	&lt;td&gt;
+		&lt;h2 id="title-TM1"&gt;The Paleozoic era &lt;/h2&gt;
+		&lt;p&gt;2 places left&lt;/p&gt;
+		&lt;p&gt;&lt;input type="checkbox" id="TM1" aria-labelledby="title-TM1 track1 am1 TM1-att"&gt;
+                &lt;label id="TM1-att" for="TM1"&gt;Attend&lt;/label&gt;&lt;/p&gt;
+	&lt;/td&gt;
+	
+	&lt;td&gt;
+		&lt;h2 id="title-TA1"&gt;The Mesozoic era overview&lt;/h2&gt;
+		&lt;p&gt;2 places left&lt;/p&gt;
+		&lt;p&gt;&lt;input type="checkbox" id="TA1" aria-labelledby="title-TA1 track1 am2 TA1-att"&gt;
+                &lt;label id="TA1-att" for="TA1"&gt;Attend&lt;/label&gt;&lt;/p&gt;
+	&lt;/td&gt;
+	
+	&lt;td&gt;
+		&lt;h2 id="title-FM1"&gt;The Triassic period, rise of the dinosaurs&lt;/h2&gt;
+		&lt;p&gt;1 place left&lt;/p&gt;
+		&lt;p&gt;&lt;input type="checkbox" id="FM1" aria-labelledby="title-FM1 track1 pm1 FM1-att"&gt;
+                &lt;label id="FM1-att" for="FM1"&gt;Attend&lt;/label&gt;&lt;/p&gt;
+
+	&lt;/td&gt;
+	
+	&lt;td&gt;
+		&lt;h2 id="title-FA1"&gt;The Jurassic period&lt;/h2&gt;
+		&lt;p&gt;11 places left&lt;/p&gt;
+		&lt;p&gt;&lt;input type="checkbox" id="FA1" aria-labelledby="title-FA1 track1 pm2 FA1-att"&gt;
+                &lt;label id="FA1-att" for="FA1"&gt;Attend&lt;/label&gt;&lt;/p&gt;
+	&lt;/td&gt;
+&lt;/tr&gt;
+
+
+&lt;tr&gt;
+	&lt;th id="track2" scope="row"&gt;track 2&lt;/th&gt;
+	&lt;td&gt;
+		&lt;h2 id="title-TM2"&gt;The Cretaceous period&lt;/h2&gt;
+		&lt;p&gt;18 places left&lt;/p&gt;
+		&lt;p&gt;&lt;input type="checkbox" id="TM2" aria-labelledby="title-TM2 track2 am1 TM2-att"&gt;
+                &lt;label id="TM2-att" for="TM2"&gt;Attend&lt;/label&gt;&lt;/p&gt;
+	&lt;/td&gt;
+	
+	&lt;td&gt;
+		&lt;h2 id="title-TA2"&gt;The end of the dinosaurs&lt;/h2&gt;
+		&lt;p&gt;2 places left&lt;/p&gt;
+		&lt;p&gt;&lt;input type="checkbox" id="TA2" aria-labelledby="title-TA2 track2 am2 TA2-att"&gt;
+                &lt;label id="TA2-att" for="TA2"&gt;Attend&lt;/label&gt;&lt;/p&gt;
+	&lt;/td&gt;
+	
+	&lt;td&gt;
+		&lt;h2 id="title-FM2"&gt;First discoveries of dinosaurs&lt;/h2&gt;
+		&lt;p&gt;2 places left&lt;/p&gt;
+		&lt;p&gt;&lt;input type="checkbox" id="FM2" aria-labelledby="title-FM2 track2 pm1 FM2-att"&gt;
+                &lt;label id="FM2-att" for="FM2"&gt;Attend&lt;/label&gt;&lt;/p&gt;
+	&lt;/td&gt;
+	
+	&lt;td&gt;
+		&lt;h2 id="title-FA2"&gt;Emerging scholarship&lt;/h2&gt;
+		&lt;p&gt;19 places left&lt;/p&gt;
+		&lt;p&gt;&lt;input type="checkbox" id="FA2" aria-labelledby="title-FA2 track2 pm2 FA2-att"&gt;
+                &lt;label id="FA2-att" for="FA2"&gt;Attend&lt;/label&gt;&lt;/p&gt;
+	&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;</pre><p class="working-example">Working example: <a href="../../working-examples/aria-labelledby-workshop-booking-timetable/">Conference workshop booking timetable</a>.
+                     </p>
+                  </section>
+               </section>
+               <section id="resources">
+                  <h2>Resources</h2>
+                  <p>Resources are for information purposes only, no endorsement implied.</p>
+                  <ul>
+                     
+                     <li> 
+                        <a href="https://www.w3.org/TR/html-aapi/#accessible-name-and-description-calculation">HTML to Platform Accessibility APIs Implementation Guide: Accessible Name and Description
+                           Calculation</a> 
+                        
+                     </li>
+                     
+                     <li>
+                        <a href="https://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</a> 
+                        
+                     </li>
+                     
+                     <li>
+                        <a href="https://www.w3.org/TR/aria-in-html/">Using WAI-ARIA in HTML</a>: Section 2.7 aria-labelledby and aria-describedby
+                     </li>
+                     
+                  </ul>
+               </section>
+               <section id="tests">
+                  <h2>Tests</h2>
+                  <section class="procedure" id="procedure">
+                     <h3>Procedure</h3>
+                     
+                     <p>For inputs that use <code class="att">aria-labelledby</code>:
+                     </p>
+                     
+                     <ol>
+                        
+                        <li>Check that <code class="att">id</code>s referenced in <code class="att">aria-labelledby</code> are unique and match the <code class="att">id</code>s of the text nodes that together provide the label
+                        </li>
+                        
+                        <li>Check that the concatenated content of elements referenced by <code class="att">aria-labelledby</code> is descriptive for the purpose or function of the element labeled
+                        </li>
+                        
+                     </ol>
+                     
+                  </section>
+                  <section class="results" id="expected-results">
+                     <h3>Expected Results</h3>
+                     
+                     <ul>
+                        
+                        <li>
+                           
+                           <p>#1 and #2 are true.</p>
+                           
+                           <p>If this is a sufficient technique for a success criterion, failing this test procedure
+                              does not necessarily mean that the success criterion has not been satisfied in some
+                              other way, only that this technique has not been successfully implemented and can
+                              not be used to claim conformance.
+                           </p>
+                           
+                        </li>
+                        
+                     </ul>
+                     
+                  </section>
+               </section>
+            </section>
+            <aside class="your-report your-report--expanded sidebar" tabindex="-1">
+               <h2 style="margin-top: 0">About this page</h2>
+               <p><em>Techniques</em> are examples of ways to meet a WCAG success criterion.
+               </p>
+               <dl>
+                  <dt>Type of technique 
+                     				<button style="display: inline" type="button" data-tooltip-content="#explain-types-of-techniques"><span class="visuallyhidden">Explain types of techniques</span><span aria-hidden="true" class="more-info__icon">
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 450" style="width: 1em">
+                              <path fill="currentColor" d="M256 344v-40c0-4.5-3.5-8-8-8h-24v-128c0-4.5-3.5-8-8-8h-80c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h24v80h-24c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h112c4.5 0 8-3.5 8-8zM224 120v-40c0-4.5-3.5-8-8-8h-48c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h48c4.5 0 8-3.5 8-8zM384 224c0 106-86 192-192 192s-192-86-192-192 86-192 192-192 192 86 192 192z"></path>
+                           </svg></span></button><div id="explain-types-of-techniques" hidden="true">
+                        <p>There are different types of techniques:</p>
+                        <ul>
+                           <li>Sufficient - reliable ways to meet a WCAG Criterion</li>
+                           <li>Advisory - suggested ways to improve accessibility</li>
+                           <li>Failure - things that cause accessibility barriers and fail specific success criteria</li>
+                        </ul>
+                        <p>Note: all techniques are “informative”, that is, you do not have to use them.</p>
+                     </div>
+                  </dt>
+                  <dd>Sufficient</dd>
+                  <dt>Sufficient to meet</dt>
+                  <dd><a href="https://www.w3.org/WAI/WCAG21/quickref/?versions=2.1#info-and-relationships">1.3.1 Info and relationships</a></dd>
+                  <dt>Related test rules 
+                     
+                     
+                     <button style="display: inline" type="button" data-tooltip-content="#explain-test-rules"><span class="visuallyhidden">Explain test rules</span><span aria-hidden="true" class="more-info__icon">
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 450" style="width: 1em">
+                              <path fill="currentColor" d="M256 344v-40c0-4.5-3.5-8-8-8h-24v-128c0-4.5-3.5-8-8-8h-80c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h24v80h-24c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h112c4.5 0 8-3.5 8-8zM224 120v-40c0-4.5-3.5-8-8-8h-48c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h48c4.5 0 8-3.5 8-8zM384 224c0 106-86 192-192 192s-192-86-192-192 86-192 192-192 192 86 192 192z"></path>
+                           </svg></span></button><div id="explain-test-rules" hidden="true">WCAG Success Criteria interpreted as test rules, created by the ACT Task Force.</div>
+                  </dt>
+                  <dd><a href="2020-07-15-prototype-act.html">HTML page has title</a></dd>
+                  <dt>Related Techniques</dt>
+                  <dd>
+                     <ul>
+                        
+                        <li><a href="/techniques/aria/ARIA6">ARIA6: Using aria-label to provide labels for objects</a></li>
+                        
+                        <li><a href="/techniques/aria/ARIA16">ARIA16: Using aria-labelledby to provide a name for user interface controls</a></li>
+                        
+                     </ul>
+                  </dd>
+               </dl>
+               <h3>Other sources</h3>
+               <p style="margin-top: -.5em; margin-bottom: 1.5em;"><em><small>No endorsement implied.</small></em></p>
+               <ul>
+                  <li>HTML 4.01 <a href="https://www.w3.org/TR/html4/struct/lists.html#h-10.2">Unordered lists (UL), ordered lists (OL), and list items (LI)</a></li>
+                  <li>HTML 4.01 <a href="https://www.w3.org/TR/html4/struct/lists.html#h-10.3">Definition lists: the DL, DT, and DD elements</a></li>
+               </ul>
+            </aside>
+         </div>
+      </main>
+   </body>
+</html>

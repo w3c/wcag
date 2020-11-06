@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta charset="UTF-8" />
+      <title>PDF12: Providing name, role, value information for form fields in PDF documents</title>
+      <link rel="stylesheet" href="https://w3.org/WAI/assets/css/style.css?1573220675560713000" />
+      <link rel="stylesheet" type="text/css" href="../base.css" />
+   </head>
+   <body>
+      <header id="site-header" class="default-grid with-gap">
+         <div class="tool-header"><span class="tool-header-name"><a href="../">WCAG 2.1: Techniques</a></span><div class="tool-header-logo"><a href="http://w3.org/"><img alt="W3C" src="https://w3.org/WAI/atag/report-tool/images/w3c.svg" width="92" height="44" /></a><a href="http://w3.org/WAI/"><img alt="Web Accessibility Initiative" src="https://w3.org//WAI/atag/report-tool/images/wai.svg" /></a></div>
+         </div>
+      </header>
+      <main>
+         <div class="default-grid leftcol">
+            <nav class="nav" aria-label="Meta navigation">
+               <ul>
+                  <li class="nav__item"><a href="/techniques/#introduction">About Techniques</a></li>
+                  <li class="nav__item"><a href="/techniques/#techniques">All Techniques</a></li>
+                  <li class="nav__item"><a href="alt-index.html">All WCAG 2 Guidance 
+                        									
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24" width="24">
+                           <path fill-rule="evenodd" clip-rule="evenodd" d="M14 5C13.4477 5 13 4.55228 13 4C13 3.44772 13.4477 3 14 3H20C20.2652 3 20.5196 3.10536 20.7071 3.29289C20.8946 3.48043 21 3.73478 21 4L21 10C21 10.5523 20.5523 11 20 11C19.4477 11 19 10.5523 19 10L19 6.41422L9.70711 15.7071C9.31658 16.0976 8.68342 16.0976 8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929L17.5858 5H14ZM3 7C3 5.89543 3.89543 5 5 5H10C10.5523 5 11 5.44772 11 6C11 6.55228 10.5523 7 10 7H5V19H17V14C17 13.4477 17.4477 13 18 13C18.5523 13 19 13.4477 19 14V19C19 20.1046 18.1046 21 17 21H5C3.89543 21 3 20.1046 3 19V7Z" fill="#282828"></path>
+                        </svg></a><div id="explain-supporting-documents" hidden="">
+                        <p>WCAG comes with a number of supporting documents, including Techniques and Understanding
+                           documents.
+                        </p>
+                        <p>See also: <a href="https://www.w3.org/WAI/standards-guidelines/wcag/#whatis2">What is in the WCAG 2 Documents</a></p>
+                     </div>
+                  </li>
+               </ul>
+            </nav>
+            <section class="main-content">
+               <h1>Providing name, role, value information for form fields in PDF documents</h1>
+               <aside class="box">
+                  <header class="box-h  box-h-icon">
+                     					[icon] Sufficient
+                     				
+                  </header>
+                  <div class="box-i">
+                     <section id="applicability">
+                        <p>This technique relates to:</p>
+                        <ul>
+                           <li>Sufficient to meet  as a way to meet an unwritten technique<a href="/understanding/info-and-relationships">Success Criterion 1.3.1: Info and Relationships</a></li>
+                           <li>Sufficient to meet  as a way to meet <a href="../general/G135">G135: Using the accessibility API features of a technology to expose names and notification
+                                 of changes</a><a href="/understanding/name-role-value">Success Criterion 4.1.2: Name, Role, Value</a></li>
+                        </ul>
+                     </section>
+                  </div>
+               </aside>
+               <section id="description">
+                  <h2>Description</h2>
+                  <p>The objective of this technique is to ensure that assistive technologies
+                     				can gather information about and interact with form controls in PDF
+                     				content. 
+                  </p>
+                  <p>The types of PDF form controls are: text input field, check box, radio
+                     				button, combo box, list box, and button. 
+                  </p>
+                  <p>Providing name, role, state, and value information for all form components
+                     				enables compatibility with assistive technology, such as screen readers,
+                     				screen magnifiers, and speech recognition software used by people with
+                     				disabilities. 
+                  </p>
+                  <p>The PDF specification defines how name, role, and value are set for
+                     				form controls in Section 12.7.4 (Field Types) of <a href="http://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF
+                        					1.7 (ISO 32000-1)</a>, as shown in the following table. The Comments column explains how Adobe Acrobat
+                     Pro displays the corresponding information. 
+                  </p>
+                  <table id="PDF12_spec">
+                     		
+                     <tbody>
+                        			
+                        <tr>
+                           				
+                           <th scope="col">Interactive Form Dictionary Entries</th>
+                           				
+                           <th scope="col">Used to Define</th>
+                           				
+                           <th scope="col">Comments</th>
+                           			
+                        </tr>
+                        			
+                        <tr>
+                           				
+                           <th scope="row">FT</th>
+                           				
+                           <td>Role</td>
+                           				
+                           <td>Controls that share field type also use field flags to set
+                              				the appropriate role. In Adobe Acrobat the role for form controls
+                              					is set automatically.
+                           </td>
+                           			
+                        </tr>
+                        			
+                        <tr>
+                           				
+                           <th scope="row">TU</th>
+                           				
+                           <td>Name</td>
+                           				
+                           <td>In Adobe Acrobat the TU entry value is provided via the Tooltip
+                              					field in the form control's Properties dialog. This should
+                              					not be confused with the T entry which is defined as the Name
+                              					in Acrobat's form control properties dialog - the name field
+                              					in the Properties dialog is not used to provide the name for
+                              					a control when read by assistive technologies.
+                           </td>
+                           			
+                        </tr>
+                        			
+                        <tr>
+                           				
+                           <th scope="row">CA</th>
+                           				
+                           <td>Name (Pushbuttons only)</td>
+                           				
+                           <td>In Adobe Acrobat the CA entry value is provided via the label
+                              					field in the form control's Properties dialog.
+                           </td>
+                           			
+                        </tr>
+                        			
+                        <tr>
+                           				
+                           <th scope="row">V</th>
+                           				
+                           <td>Value</td>
+                           				
+                           <td>The Value entry is set by the user interacting with the control,
+                              					where a value is needed.
+                           </td>
+                           			
+                        </tr>
+                        			
+                        <tr>
+                           				
+                           <th scope="row">DV</th>
+                           				
+                           <td>Default Value</td>
+                           				
+                           <td>In Adobe Acrobat the DV entry value can be set in the form
+                              					control's Properties dialog.
+                           </td>
+                           			
+                        </tr>
+                        		
+                     </tbody>
+                     	
+                  </table>
+                  <p>The following table describes how the role, name, value, and state
+                     				are defined for PDF form controls created using Adobe Acrobat Pro.
+                     				Adobe LiveCycle Designer provides the same controls as well as several
+                     				additional ones: see Example 2 below. 
+                  </p>
+                  <table id="PDF12_acrobat">
+                     		
+                     <tbody>
+                        			
+                        <tr>
+                           				
+                           <th>PDF form element </th>
+                           				
+                           <th>Role (FT entry)</th>
+                           				
+                           <th> Name (TU entry)</th>
+                           				
+                           <th>Value (V entry)</th>
+                           				
+                           <th>Configurable States</th>
+                           			
+                        </tr>
+                        			
+                        <tr>
+                           				
+                           <td>Text field</td>
+                           				
+                           <td>Text 
+                              					<code>/Tx</code>
+                              				
+                           </td>
+                           				
+                           <td>Tooltip</td>
+                           				
+                           <td>Default value (DV entry in field dictionary) can be set in
+                              					the Properties dialog. Value is entered by user.
+                           </td>
+                           				
+                           <td>Read Only, Required, Multiline, Password</td>
+                           			
+                        </tr>
+                        			
+                        <tr>
+                           				
+                           <td>Check box</td>
+                           				
+                           <td>Check box 
+                              					<code>/Btn</code>
+                              				
+                           </td>
+                           				
+                           <td>Tooltip</td>
+                           				
+                           <td>V entry is set to 'Yes' or 'No' depending on Checked state.</td>
+                           				
+                           <td>Read Only, Required, Checked</td>
+                           			
+                        </tr>
+                        			
+                        <tr>
+                           				
+                           <td>Radio button</td>
+                           				
+                           <td>Radio button
+                              					<code>/Btn</code> (Field Flag set to 'Radio')
+                           </td>
+                           				
+                           <td>Tooltip</td>
+                           				
+                           <td>V entry is set to 'Yes' or 'No' depending on Checked state.</td>
+                           				
+                           <td>Read Only, Required, Checked</td>
+                           			
+                        </tr>
+                        			
+                        <tr>
+                           				
+                           <td>Combo box</td>
+                           				
+                           <td>Combo box
+                              					<code>/Ch</code> (Field Flag set to 'Combo') 
+                           </td>
+                           				
+                           <td>Tooltip</td>
+                           				
+                           <td>Default value (/DV) can be set in the Properties dialog.
+                              					Value is determined by user selection.
+                           </td>
+                           				
+                           <td>Read Only, Required</td>
+                           			
+                        </tr>
+                        			
+                        <tr>
+                           				
+                           <td>List box</td>
+                           				
+                           <td>Drop-down list
+                              					<code>/Ch</code> 
+                              				
+                           </td>
+                           				
+                           <td>Tooltip</td>
+                           				
+                           <td>Default value (/DV) can be set in the Properties dialog.
+                              					Value is determined by user selection.
+                           </td>
+                           				
+                           <td>Read Only, Required</td>
+                           			
+                        </tr>
+                        			
+                        <tr>
+                           				
+                           <td>Button</td>
+                           				
+                           <td>Push button
+                              					<code>/Btn</code> (Field Flag set to 'Pushbutton')
+                           </td>
+                           				
+                           <td>Label (CA entry instead of TU entry)</td>
+                           				
+                           <td>Push buttons do not have or require a value.</td>
+                           				
+                           <td>Read Only, Required</td>
+                           			
+                        </tr>
+                        			
+                        <tr>
+                           				
+                           <td>Signature field</td>
+                           				
+                           <td>Text
+                              					<code>/Sig</code>
+                              				
+                           </td>
+                           				
+                           <td>Tooltip</td>
+                           				
+                           <td>Default value (DV entry in field dictionary) can be set in
+                              					the Properties dialog. Value is entered by user.
+                           </td>
+                           				
+                           <td>Read Only, Required</td>
+                           			
+                        </tr>
+                        		
+                     </tbody>
+                     	
+                  </table>
+               </section>
+               <section id="examples">
+                  <h2>Examples</h2>
+                  <section class="example" id="example-1-specifying-name-role-value-and/or-state-for-a-form-field&#xA;----&#x9;&#x9;&#x9;&#x9;&#x9;using-adobe-acrobat-9-pro">
+                     <h3>Example 1: Specifying name, role, value and/or state for a form field
+                        					using Adobe Acrobat 9 Pro
+                     </h3>
+                     <p>This example is shown with Adobe Acrobat Pro. There are other software tools that
+                        perform similar functions. See the list of other software tools in <a href="#pdf_notes_acc-sup_files_applications"></a>.
+                     </p>
+                     <p>This example uses a check box for illustration; the procedure is the
+                        						same for other form controls. In Form Editing mode: 
+                     </p>
+                     <ol>
+                        
+                        <li> Access the context menu for the form field you are creating or
+                           						modifying. 
+                        </li>
+                        
+                        <li> Select the Properties... dialog for the form field. </li>
+                        
+                        <li> Specify the name by adding a value to the tool tip field. This
+                           							will used by the accessibility API as the Name for the control and
+                           							should usually be set to match the text used as a visual label for
+                           							the control. 
+                        </li>
+                        
+                        <li> Select the Options tab. </li>
+                        
+                        <li> Specify the default value and the default state, if appropriate. </li>
+                        
+                     </ol>
+                     <p>The image below shows the Check Box Properties dialog, open in the
+                        						General tab. (The Name field in the dialog is not needed for accessibility.)
+                        
+                     </p>
+                     <figure id="figure-general-tab">
+                        <img src="img/nrv1.jpg" />
+                        
+                        
+                        <figcaption>Figure 1General tab on the Check Box Properties dialog, showing name and tool tip fields for
+                           a check box
+                        </figcaption>
+                        
+                        
+                     </figure>
+                     <p>The image below shows the Check Box Properties dialog, open in the
+                        						Options tab. 
+                     </p>
+                     <figure id="figure-check-box-props">
+                        <img src="img/nrv2.jpg" />
+                        
+                        
+                        <figcaption>Figure 2Options tab on the Check Box Properties dialog, showing value and state fields for
+                           a check box.
+                        </figcaption>
+                        
+                        
+                     </figure>
+                     <p class="working-example">This example is shown in operation in the <a href="../../working-examples/pdf-form-labels/form.pdf">working example of specifying name, role, value using Acrobat Pro</a>.
+                     </p>
+                  </section>
+                  <section class="example" id="example-2-specifying-name-value-and-state-for-a-form-field-using&#xA;----&#x9;&#x9;&#x9;&#x9;adobe-livecycle-designer-es-8.2.1">
+                     <h3>Example 2: Specifying name, value, and state for a form field using
+                        				Adobe LiveCycle Designer ES 8.2.1
+                     </h3>
+                     <p>This example is shown with Adobe LiveCycle Designer. There are other software tools
+                        that perform similar functions. See the list of other software tools in <a href="#pdf_notes_acc-sup_files_applications"></a>.
+                     </p>
+                     <p>In Adobe LiveCycle Designer, you use the Object Library to create
+                        						form objects and the Object Palette to specify name, role, state or
+                        						value for the object. 
+                     </p>
+                     <p>The following image shows the Object Palette. </p>
+                     <figure id="figure-object-palette">
+                        <img src="img/lc-objlib.jpg" />
+                        
+                        
+                        <figcaption>Figure 3LiveCycle Designer Object Library showing the form objects available for form creation.</figcaption>
+                        
+                        
+                     </figure>
+                     <p>The following three images show the tabs in the Object palette. In
+                        						the first the Field tab is open for specifying the type (or role) of
+                        						the field. 
+                     </p>
+                     <figure id="figure-LCD-object-palette">
+                        <img src="img/lc-objpal-t.jpg" />
+                        
+                        
+                        <figcaption>Figure 4LiveCycle Designer Object palette, Field tab.</figcaption>
+                        
+                        
+                     </figure>
+                     <p>The next image shows the Value tab, with options that can be applied
+                        						to the field. 
+                     </p>
+                     <figure id="figure-LCD-value-tab">
+                        <img src="img/lc-objpal-v.jpg" />
+                        
+                        
+                        <figcaption>Figure 5LiveCycle Designer Object palette, Value tab options.</figcaption>
+                        
+                        
+                     </figure>
+                     <p>The third images shows the Binding tab, specifying the name of the
+                        						field. 
+                     </p>
+                     <figure id="figure-binding-tab">
+                        <img src="img/lc-objpal-b.jpg" />
+                        
+                        
+                        <figcaption>Figure 6LiveCycle Designer Object palette, Binding tab.</figcaption>
+                        
+                        
+                     </figure>
+                     <p class="working-example">This example is shown in operation in the <a href="../../working-examples/pdf-form-labels/form-lc.pdf">working example of specifying name, role, value using LiveCycle Designer</a>.
+                     </p>
+                  </section>
+                  <section class="example" id="example-3-adding-a-checkbox-in-a-pdf-document-using-the-/btn-field&#xA;----&#x9;&#x9;&#x9;&#x9;type">
+                     <h3>Example 3: Adding a checkbox in a PDF document using the /Btn field
+                        				type
+                     </h3>
+                     <p>The following code fragment illustrates code that is typical for a
+                        						simple check box field such as shown in Examples 1 and 2. This is typically
+                        						accomplished by an authoring tool. 
+                     </p><pre xml:space="preserve">1 0 obj
+  &lt;&lt; /FT /Btn     % Role
+     /TU Retiree  % Name
+     /V /Yes      % Value
+     /AS /Yes
+     /AP &lt;&lt; /N &lt;&lt; /Yes 2 0 R /Off 3 0 R&gt;&gt;
+  &gt;&gt;
+endobj
+</pre></section>
+               </section>
+               <section id="resources">
+                  <h2>Resources</h2>
+                  <p>Resources are for information purposes only, no endorsement implied.</p>
+                  <ul>
+                     
+                     <li> Section 12.7.4 (Field Types) of <a href="http://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF
+                           					1.7 (ISO 32000-1)</a> 
+                        
+                     </li>
+                     
+                     <li> 
+                        <a href="http://partners.adobe.com/public/developer/xml/index_arch.html">Adobe
+                           						XML Forms Architecture (XFA)</a> 
+                        
+                     </li>
+                     
+                     <li>
+                        <a href="http://www.adobe.com/accessibility/products/acrobat.html">PDF and Accessibility</a>
+                        
+                     </li>
+                     
+                  </ul>
+               </section>
+               <section id="tests">
+                  <h2>Tests</h2>
+                  <section class="procedure" id="procedure">
+                     <h3>Procedure</h3>
+                     
+                     <ol>
+                        
+                        <li>
+                           
+                           <p> For the form control, verify that name, role, and value/state
+                              					are specified by one of the following:
+                           </p>
+                           
+                           <ul>
+                              
+                              <li> Use a screen reader to navigate to the form control and check
+                                 						that it can be activated or that its value can be changed. Verify
+                                 						that the name (tooltip) and role are announced. 
+                              </li>
+                              
+                              <li> Use a tool capable of showing the form field information to open the PDF document
+                                 and verify that the form control has the correct name, role, value, and state (if
+                                 appropriate) information.
+                              </li>
+                              
+                              <li> Use a tool that exposes the document through the accessibility
+                                 								API, and verify that the form control has the correct name, role,
+                                 								value, and state (if appropriate) information. 
+                              </li>
+                              
+                           </ul>
+                           
+                        </li>
+                        
+                     </ol>
+                     
+                  </section>
+                  <section class="results" id="expected-results">
+                     <h3>Expected Results</h3>
+                     
+                     <ul>
+                        
+                        <li>#1 is true. </li>
+                        
+                     </ul>
+                     
+                  </section>
+               </section>
+            </section>
+            <aside class="your-report your-report--expanded sidebar" tabindex="-1">
+               <h2 style="margin-top: 0">About this page</h2>
+               <p><em>Techniques</em> are examples of ways to meet a WCAG success criterion.
+               </p>
+               <dl>
+                  <dt>Type of technique 
+                     				<button style="display: inline" type="button" data-tooltip-content="#explain-types-of-techniques"><span class="visuallyhidden">Explain types of techniques</span><span aria-hidden="true" class="more-info__icon">
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 450" style="width: 1em">
+                              <path fill="currentColor" d="M256 344v-40c0-4.5-3.5-8-8-8h-24v-128c0-4.5-3.5-8-8-8h-80c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h24v80h-24c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h112c4.5 0 8-3.5 8-8zM224 120v-40c0-4.5-3.5-8-8-8h-48c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h48c4.5 0 8-3.5 8-8zM384 224c0 106-86 192-192 192s-192-86-192-192 86-192 192-192 192 86 192 192z"></path>
+                           </svg></span></button><div id="explain-types-of-techniques" hidden="true">
+                        <p>There are different types of techniques:</p>
+                        <ul>
+                           <li>Sufficient - reliable ways to meet a WCAG Criterion</li>
+                           <li>Advisory - suggested ways to improve accessibility</li>
+                           <li>Failure - things that cause accessibility barriers and fail specific success criteria</li>
+                        </ul>
+                        <p>Note: all techniques are “informative”, that is, you do not have to use them.</p>
+                     </div>
+                  </dt>
+                  <dd>Sufficient</dd>
+                  <dt>Sufficient to meet</dt>
+                  <dd><a href="https://www.w3.org/WAI/WCAG21/quickref/?versions=2.1#info-and-relationships">1.3.1 Info and relationships</a></dd>
+                  <dt>Related test rules 
+                     
+                     
+                     <button style="display: inline" type="button" data-tooltip-content="#explain-test-rules"><span class="visuallyhidden">Explain test rules</span><span aria-hidden="true" class="more-info__icon">
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 450" style="width: 1em">
+                              <path fill="currentColor" d="M256 344v-40c0-4.5-3.5-8-8-8h-24v-128c0-4.5-3.5-8-8-8h-80c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h24v80h-24c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h112c4.5 0 8-3.5 8-8zM224 120v-40c0-4.5-3.5-8-8-8h-48c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h48c4.5 0 8-3.5 8-8zM384 224c0 106-86 192-192 192s-192-86-192-192 86-192 192-192 192 86 192 192z"></path>
+                           </svg></span></button><div id="explain-test-rules" hidden="true">WCAG Success Criteria interpreted as test rules, created by the ACT Task Force.</div>
+                  </dt>
+                  <dd><a href="2020-07-15-prototype-act.html">HTML page has title</a></dd>
+                  <dt>Related Techniques</dt>
+                  <dd>
+                     <ul>
+                        
+                        <li><a href="/techniques/pdf/PDF23">PDF23: Providing interactive form controls in PDF documents</a></li>
+                        
+                        <li><a href="/techniques/pdf/PDF5">PDF5: Indicating required form controls in PDF forms</a></li>
+                        
+                        <li><a href="/techniques/pdf/PDF22">PDF22: Indicating when user input falls outside the required format or values in PDF forms</a></li>
+                        
+                     </ul>
+                  </dd>
+               </dl>
+               <h3>Other sources</h3>
+               <p style="margin-top: -.5em; margin-bottom: 1.5em;"><em><small>No endorsement implied.</small></em></p>
+               <ul>
+                  <li>HTML 4.01 <a href="https://www.w3.org/TR/html4/struct/lists.html#h-10.2">Unordered lists (UL), ordered lists (OL), and list items (LI)</a></li>
+                  <li>HTML 4.01 <a href="https://www.w3.org/TR/html4/struct/lists.html#h-10.3">Definition lists: the DL, DT, and DD elements</a></li>
+               </ul>
+            </aside>
+         </div>
+      </main>
+   </body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+   <head>
+      <meta charset="UTF-8" />
+      <title>C34: Using media queries to un-fixing sticky headers / footers</title>
+      <link rel="stylesheet" href="https://w3.org/WAI/assets/css/style.css?1573220675560713000" />
+      <link rel="stylesheet" type="text/css" href="../base.css" />
+   </head>
+   <body>
+      <header id="site-header" class="default-grid with-gap">
+         <div class="tool-header"><span class="tool-header-name"><a href="../">WCAG 2.1: Techniques</a></span><div class="tool-header-logo"><a href="http://w3.org/"><img alt="W3C" src="https://w3.org/WAI/atag/report-tool/images/w3c.svg" width="92" height="44" /></a><a href="http://w3.org/WAI/"><img alt="Web Accessibility Initiative" src="https://w3.org//WAI/atag/report-tool/images/wai.svg" /></a></div>
+         </div>
+      </header>
+      <main>
+         <div class="default-grid leftcol">
+            <nav class="nav" aria-label="Meta navigation">
+               <ul>
+                  <li class="nav__item"><a href="/techniques/#introduction">About Techniques</a></li>
+                  <li class="nav__item"><a href="/techniques/#techniques">All Techniques</a></li>
+                  <li class="nav__item"><a href="alt-index.html">All WCAG 2 Guidance 
+                        									
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24" width="24">
+                           <path fill-rule="evenodd" clip-rule="evenodd" d="M14 5C13.4477 5 13 4.55228 13 4C13 3.44772 13.4477 3 14 3H20C20.2652 3 20.5196 3.10536 20.7071 3.29289C20.8946 3.48043 21 3.73478 21 4L21 10C21 10.5523 20.5523 11 20 11C19.4477 11 19 10.5523 19 10L19 6.41422L9.70711 15.7071C9.31658 16.0976 8.68342 16.0976 8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929L17.5858 5H14ZM3 7C3 5.89543 3.89543 5 5 5H10C10.5523 5 11 5.44772 11 6C11 6.55228 10.5523 7 10 7H5V19H17V14C17 13.4477 17.4477 13 18 13C18.5523 13 19 13.4477 19 14V19C19 20.1046 18.1046 21 17 21H5C3.89543 21 3 20.1046 3 19V7Z" fill="#282828"></path>
+                        </svg></a><div id="explain-supporting-documents" hidden="">
+                        <p>WCAG comes with a number of supporting documents, including Techniques and Understanding
+                           documents.
+                        </p>
+                        <p>See also: <a href="https://www.w3.org/WAI/standards-guidelines/wcag/#whatis2">What is in the WCAG 2 Documents</a></p>
+                     </div>
+                  </li>
+               </ul>
+            </nav>
+            <section class="main-content">
+               <h1>Using media queries to un-fixing sticky headers / footers</h1>
+               <aside class="box">
+                  <header class="box-h  box-h-icon">
+                     					[icon] Sufficient
+                     				
+                  </header>
+                  <div class="box-i">
+                     <section id="applicability">
+                        <p>This technique relates to <span>Advisory<a href="/understanding/reflow">Success Criterion 1.4.10: Reflow</a></span>.
+                        </p>
+                     </section>
+                  </div>
+               </aside>
+               <section id="description">
+                  <h2>Description</h2>
+                  <p>The objective of this technique is to be able to present content with sticky headers
+                     and footers when there is enough space. This is done by using <code>min-height</code>, <code>max-height</code> and <code>min-width</code> media queries techniques that adapt to the available space of the viewport.
+                  </p>
+                  <p>Sticky regions always stay visible in the viewport while the other content will disappear
+                     underneath when scrolling. In terms of content visibility, this is often not a problem
+                     on the desktop and on mobile devices in portrait orientation. However, when using
+                     mobile devices in landscape orientation or when zooming in on the desktop, sticky
+                     regions may block a big portion of the screen: the height of the sticky region may
+                     leave only a small part of the screen for the display of page content.
+                  </p>
+                  <p>Disabling, or un-fixing sticky regions, is an effective way to allow for enough available
+                     space when users prefer different reading and zoom preferences or when using landscape
+                     mode.
+                  </p>
+                  <div class="note">
+                     <div role="heading" class="note-title marker" aria-level="3">Note</div>
+                     <p>Be aware that sticky regions can create disadvantages for keyboard users and should
+                        therefore be used judiciously. The problem for keyboard users tabbing through a page
+                        with a fixed header is that once the page has started to scroll, tabbing backwards
+                        to reach interactive elements higher up on the page will often mean that the focus
+                        becomes invisible once it moves behind the sticky header. Users must then scroll up
+                        to be able to see the focus, something they may not necessarily be aware of. In the
+                        same way the visible focus can disappear behind a sticky footer, so users would need
+                        to scroll down to be able to see their focus position, which is a major inconvenience.
+                     </p>
+                  </div>
+                  <p>The basic approach for un-fixing sticky headers / footers is to:</p>
+                  <ol>
+                     
+                     <li>Define the first sticky regions using media query <code>min-height</code> properties, so they get fixed or un-fixed depending on the available space;
+                     </li>
+                     
+                     
+                     <li>Define other sticky regions using media query <code>min-width</code> and <code>max-height</code> properties for specific viewport sizes, so they get fixed or un-fixed depending on
+                        the available space, e.g. for tablets depending on the portrait or landscape position
+                        of the device;
+                     </li>
+                     
+                  </ol>
+               </section>
+               <section id="examples">
+                  <h2>Examples</h2>
+                  <section class="example" id="example-1-un-fix-sticky-headers-/-footers-in-html-and-css">
+                     <h3>Example 1: Un-fix sticky headers / footers in HTML and CSS</h3>
+                     <p>The following example uses HTML and CSS to un-fix sticky headers / footers.
+                        
+                        The sticky regions get un-fixed as the height of the viewport is limited or the orientation
+                        is changed.
+                        
+                        When the <code>min-height</code> property matches the viewport space defined via media queries, regions which are
+                        not sticky get fixed or vice versa. This particular example uses the CSS <code>min-height</code>, <code>max-height</code> and <code>min-width</code> media query properties.
+                     </p><pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Using media queries to un-fix sticky headers / footers&lt;/title&gt;
+    &lt;style&gt;
+
+    /* Sticky Styling */
+
+    header { min-height: 130px; }
+
+    @media (min-height: 480px) {
+      header {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+      }
+    }
+
+    @media (min-device-width: 576px) and (max-device-width: 1024px) and (orientation: landscape) {
+      header {
+        position: static;
+      }
+    }
+
+    footer { min-height: 130px; }
+
+    @media (min-height: 480px) {
+      footer {
+        position: -webkit-sticky;
+        position: sticky;
+        bottom: 0;
+      }
+    }
+
+    @media (min-device-width: 576px) and (max-device-width: 1024px) and (orientation: landscape)  {
+      footer {
+        position: static;
+      }
+    }
+
+    &lt;/style&gt;
+
+  &lt;/head&gt;
+
+  &lt;body class="grid"&gt;
+
+    &lt;header role="banner" class="grid-item"&gt;
+      ...
+    &lt;/header&gt;
+
+    &lt;main role="main" class="grid-item"&gt;        
+      ...
+    &lt;/main&gt;
+
+    &lt;aside role="complementary" class="grid-item"&gt;
+      ...
+    &lt;/aside&gt;
+
+    &lt;footer role="contentinfo" class="grid-item"&gt;
+      ...
+    &lt;/footer&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p class="working-example">Working example: <a href="../../working-examples/css-sticky/">Using CSS Flexbox for Reflow</a></p>
+                  </section>
+               </section>
+               <section id="tests">
+                  <h2>Tests</h2>
+                  <section class="test-procedure">
+                     <h3>Procedure</h3>
+                     <div class="note">
+                        <div role="heading" class="note-title marker" aria-level="4">Note</div>
+                        <p>Depending on the environment to be tested the actual modes or sizes can differ.</p>
+                     </div>
+                     <ol>
+                        
+                        <li>Display content on a device / user agent in portrait mode.</li>
+                        
+                        <li>Change the orientation to landscape.</li>
+                        
+                        <li>Check whether the sticky header and footer will be un-fixed depending on the existing
+                           media query settings.
+                        </li>
+                        
+                        <li>Display content on a desktop / user agent at a starting viewport width of 1280x1024
+                           CSS pixels.
+                        </li>
+                        
+                        <li>Change the viewport size in width and height or use the zoom function of the browser.</li>
+                        
+                        <li>Check whether the sticky header and footer will be un-fixed at specific sizes depending
+                           on the existing media query settings.
+                        </li>
+                        
+                     </ol>
+                  </section>
+                  <section class="test-results">
+                     <h3>Expected Results</h3>
+                     <ul>
+                        
+                        <li>#3 and #6 are true.</li>
+                        
+                     </ul>
+                     <p>If this is a sufficient technique for a success criterion, failing this test procedure
+                        does not necessarily mean that the success criterion has not been satisfied in some
+                        other way, only that this technique has not been successfully implemented and can
+                        not be used to claim conformance.
+                     </p>
+                  </section>
+               </section>
+            </section>
+            <aside class="your-report your-report--expanded sidebar" tabindex="-1">
+               <h2 style="margin-top: 0">About this page</h2>
+               <p><em>Techniques</em> are examples of ways to meet a WCAG success criterion.
+               </p>
+               <dl>
+                  <dt>Type of technique 
+                     				<button style="display: inline" type="button" data-tooltip-content="#explain-types-of-techniques"><span class="visuallyhidden">Explain types of techniques</span><span aria-hidden="true" class="more-info__icon">
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 450" style="width: 1em">
+                              <path fill="currentColor" d="M256 344v-40c0-4.5-3.5-8-8-8h-24v-128c0-4.5-3.5-8-8-8h-80c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h24v80h-24c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h112c4.5 0 8-3.5 8-8zM224 120v-40c0-4.5-3.5-8-8-8h-48c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h48c4.5 0 8-3.5 8-8zM384 224c0 106-86 192-192 192s-192-86-192-192 86-192 192-192 192 86 192 192z"></path>
+                           </svg></span></button><div id="explain-types-of-techniques" hidden="true">
+                        <p>There are different types of techniques:</p>
+                        <ul>
+                           <li>Sufficient - reliable ways to meet a WCAG Criterion</li>
+                           <li>Advisory - suggested ways to improve accessibility</li>
+                           <li>Failure - things that cause accessibility barriers and fail specific success criteria</li>
+                        </ul>
+                        <p>Note: all techniques are “informative”, that is, you do not have to use them.</p>
+                     </div>
+                  </dt>
+                  <dd>Sufficient</dd>
+                  <dt>Sufficient to meet</dt>
+                  <dd><a href="https://www.w3.org/WAI/WCAG21/quickref/?versions=2.1#info-and-relationships">1.3.1 Info and relationships</a></dd>
+                  <dt>Related test rules 
+                     
+                     
+                     <button style="display: inline" type="button" data-tooltip-content="#explain-test-rules"><span class="visuallyhidden">Explain test rules</span><span aria-hidden="true" class="more-info__icon">
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 450" style="width: 1em">
+                              <path fill="currentColor" d="M256 344v-40c0-4.5-3.5-8-8-8h-24v-128c0-4.5-3.5-8-8-8h-80c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h24v80h-24c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h112c4.5 0 8-3.5 8-8zM224 120v-40c0-4.5-3.5-8-8-8h-48c-4.5 0-8 3.5-8 8v40c0 4.5 3.5 8 8 8h48c4.5 0 8-3.5 8-8zM384 224c0 106-86 192-192 192s-192-86-192-192 86-192 192-192 192 86 192 192z"></path>
+                           </svg></span></button><div id="explain-test-rules" hidden="true">WCAG Success Criteria interpreted as test rules, created by the ACT Task Force.</div>
+                  </dt>
+                  <dd><a href="2020-07-15-prototype-act.html">HTML page has title</a></dd>
+               </dl>
+               <h3>Other sources</h3>
+               <p style="margin-top: -.5em; margin-bottom: 1.5em;"><em><small>No endorsement implied.</small></em></p>
+               <ul>
+                  <li>HTML 4.01 <a href="https://www.w3.org/TR/html4/struct/lists.html#h-10.2">Unordered lists (UL), ordered lists (OL), and list items (LI)</a></li>
+                  <li>HTML 4.01 <a href="https://www.w3.org/TR/html4/struct/lists.html#h-10.3">Definition lists: the DL, DT, and DD elements</a></li>
+               </ul>
+            </aside>
+         </div>
+      </main>
+   </body>
+</html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <title>Understanding Success Criterion 2.5.3: Label in Name</title>
+      <link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/base" />
+      <link rel="stylesheet" type="text/css" href="base.css" />
+      <link rel="stylesheet" type="text/css" href="understanding.css" />
+      <link rel="stylesheet" type="text/css" href="slicenav.css" />
+   </head>
+   <body>
+      <nav>
+         <ul id="navigation">
+            <li><a href="." title="Table of Contents">Contents</a></li>
+            <li><a href="input-modalities"><abbr title="Guideline">GL</abbr>: Input Modalities</a></li>
+            <li><a href="pointer-cancellation">Previous <abbr title="Success Criterion">SC</abbr>: Pointer Cancellation</a></li>
+            <li><a href="motion-actuation">Next <abbr title="Success Criterion">SC</abbr>: Motion Actuation</a></li>
+         </ul>
+      </nav>
+      <nav class="navtoc">
+         <p>On this page:</p>
+         <ul id="navbar">
+            <li><a href="#intent">Intent</a></li>
+            <li><a href="#benefits">Benefits</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#resources">Related Resources</a></li>
+            <li><a href="#techniques">Techniques</a></li>
+            <li><a href="#key-terms">Key Terms</a></li>
+         </ul>
+      </nav>
+      <h1>Understanding Success Criterion 2.5.3: Label in Name</h1>
+      <blockquote class="scquote">
+         <p>Success Criterion <a href="/guidelines/#label-in-name" style="font-weight: bold;">2.5.3 Label in Name</a> (Level A): For <a href="#dfn-user-interface-component">user interface components</a> with <a href="#dfn-label">labels</a> that include <a href="#dfn-text">text</a> or <a href="#dfn-image-of-text">images of text</a>, the <a href="#dfn-name">name</a> contains the text that is presented visually.
+         </p>
+         <p class="note">A best practice is to have  the text of the label at the start of the name.</p>
+      </blockquote>
+      <main>
+         <section id="intent">
+            <h2>Intent</h2>
+            <p>The intent of this Success Criterion is to ensure that the words which visually label
+               a component are also the words associated with the component programmatically. This
+               helps ensure that people with disabilities can rely on visible labels as a means to
+               interact with the components.
+            </p>
+            <p>Most controls are accompanied by a visible text <strong>label</strong>. Those same controls have a programmatic <strong>name</strong>, also known as the <a href="https://www.w3.org/TR/accname-aam-1.1/">Accessible Name</a>. Users typically have a much better experience if the words and characters in the
+               visible label of a control match or are contained within the accessible name. When
+               these match, speech-input users (i.e., users of speech recognition applications) can
+               navigate by speaking the visible text labels of components, such as menus, links,
+               and buttons, that appear on the screen. Sighted users who use text-to-speech (e.g.,
+               screen readers) will also have a better experience if the text they hear matches the
+               text they see on the screen.
+            </p>
+            <p>Note that where a visible text label does not exist for a component, this Success
+               Criterion does not apply to that component.
+            </p>
+            <p>Where text labels exist and are properly linked to the user interface components through
+               established authoring practices, the label and name will normally match. When they
+               don't match, speech-input users who attempt to use the visible text label as a means
+               of navigation or selection (e.g., "move to Password") will be unsuccessful.  The speech-based
+               navigation fails because the visible label spoken by the users does not match (or
+               is not part of) the accessible name that is enabled as a speech-input command. In
+               addition, when the accessible name is different from the visible label, it may function
+               as a hidden command that can be accidentally activated by speech-input users.
+            </p>
+            <p>Mismatches between visible labels and programmatic names for controls are even more
+               of an issue for speech-input and text-to-speech users who also have cognitive challenges.
+               Mismatches create an extra cognitive load for speech-input users, who must remember
+               to say a speech command that is different from the visible label they see on a control.
+               It also creates extra cognitive load for a text-to-speech user to absorb and understand
+               speech output that does not match the visible label.
+            </p>
+            <p>In order for the label text and accessible name to be matched, it is first necessary
+               to determine which text on the screen should be considered a label for any given control.
+               There are often multiple text strings in a user interface that may be relevant to
+               a control. However, there are reasons why it is best to conservatively interpret the
+               label as being only the text in close proximity.
+            </p>
+            <p>Conventionally the label for user interface components is the adjacent text string.
+               The typical positioning for left to right languages is:
+            </p>
+            <ul>
+               <li>immediately to the left of comboboxes, dropdown lists, text inputs, and other widgets
+                  (or in the absence of left-side labels, immediately above and aligned with the left
+                  edge of each input)
+               </li>
+               
+               <li>immediately to the right of checkboxes and radio buttons</li>
+               
+               <li>inside buttons and tabs or immediately below icons serving as buttons</li>
+               
+            </ul>
+            <p>The rationale for some of these conventions is explained in <a href="https://www.w3.org/WAI/GL/2016/WD-WCAG20-TECHS-20160105/G162">G162: Positioning labels to maximize predictability of relationships</a>.
+               
+            </p>
+            <p>It is important to bias towards treating only the adjacent text as a label because
+               liberal interpretations of what constitutes a text label can jeopardize the value
+               of this Success Criterion (SC) by lessening predictability. Isolating the label to
+               the single string in close proximity to the component makes it easier for developers,
+               testers, and end users to identify the label targeted for evaluation in this SC. Predictable
+               interpretation of labeling allows users of speech recognition technologies to interact
+               with the element via its conventionally positioned label, and allows users of screen
+               reading technologies to enjoy consistency between the nearby visible label and the
+               announced name of the component.
+            </p>
+            <p>Note that placeholder text within an input field is not considered an appropriate
+               means of providing a label. The <a href="https://www.w3.org/TR/html52/sec-forms.html#the-placeholder-attribute">HTML5 specification</a> states <q>The placeholder attribute should not be used as an alternative to a &lt;label&gt;.</q> However, it is worth noting that "label" in that HTML5 statement is in code brackets
+               and links to the <code>label</code> element. For the purposes of this Label in Name Success Criterion, "label" is not
+               used in such a programmatic sense but is simply referring to a text string in close
+               visual proximity to a component. As such, in the absence of any other nearby text
+               string (as described in the preceding list), if an input contains placeholder text,
+               such text may be a candidate for Label in Name. This is supported both through the
+               accessible name calculation (discussed later) and from the practical sense that where
+               a visible label is not otherwise provided, it is likely that a speech-input user may
+               attempt to use the placeholder text value as a means of interacting with the input.
+            </p>
+            <section id="text-labels-&#34;express-something-in-human-language&#34;">
+               
+               <h3>Text labels "express something in human language"</h3>
+               				
+               <section id="symbolic-text-characters">
+                  
+                  <h4>Symbolic text characters</h4>
+                  
+                  <p>For the purposes of this SC, text should not be considered a visible label if it is
+                     used in a symbolic manner, rather than directly <q>expressing something in human language</q> as per the definition of <a href="#dfn-text">text</a> in WCAG. For example, <a href="https://www.w3.org/TR/WCAG21/#images-of-text">1.4.5 Images of Text</a> describes considerations for "symbolic text characters." In the images of text example
+                     "B", "I", and "ABC" appear on icons in a text editor, where they are meant to symbolize
+                     the functions for Bold, Italics, and Spelling, respectively. In such a case, the accessible
+                     name should be the function the button serves (e.g., "Spell check" or "Check spelling"),
+                     not the visible symbolic characters. A similar text editor is shown in the figure
+                     below.
+                  </p>
+                  
+                  <figure id="figure-RTE-github">
+                     	<img alt="Icons for transforming text, including heading, bold, italic, quote, code, and link, along with icons for ordered and unordered lists and other controls" src="img/rich-text-editor-detail.png" />
+                     	
+                     <figcaption>Figure 1A detail of the rich text editor in Github, showing a variety of unlabeled icons,
+                        including icons resembling text characters.
+                     </figcaption>
+                     
+                  </figure>
+                  
+                  <p>Likewise, where an author has used a greater-than symbol ("&gt;") to mimic the appearance
+                     of the right-facing arrow, the text does not convey something in human language. It
+                     is a symbol, in this scenario likely meant to mimic the icons used for a "Play" button
+                     or a "Next" arrow.
+                  </p>
+                  
+                  <h4>Punctuation and capitalization</h4>
+                  				
+               </section>
+               				
+               <section id="">
+                  
+                  <p>The use of punctuation and capitalization in labels <em>may</em> also be considered optional for the same reason. For example, the colon conventionally
+                     added at the end of input labels does not express something in human language, and
+                     capitals on the first letter of each word in a label do not normally alter the words'
+                     meaning. This is particularly relevant in the context of this SC, since it is primarily
+                     aimed at users of speech recognition; capitals and most punctuation are frequently
+                     ignored when a user speaks a label as a means of interacting with a control.
+                  </p>
+                  
+                  <p>While it is certainly not an error to include the colon and capitalization in the
+                     accessible name, a computed name of "First name" should not be considered a failure
+                     of "First Name:".<br />
+                     <label for="firstname">First Name: </label><input id="firstname" type="text" name="firstname" /><br />
+                     Likewise, "Next…" visibly shown on a button could have "Next" as the accessible name.
+                     When in doubt, where a meaningful visible label exists, match the string exactly for
+                     the accessible name.<br />
+                     <input type="submit" value="Next..." /></p>
+                  				
+               </section>
+               				
+               <section id="mathematical-expressions-and-formulae">
+                  
+                  
+                  <h4>Mathematical expressions and formulae</h4>
+                  
+                  <p>Mathematical expressions are an exception to the previous subsection about symbolic
+                     characters. Math symbols can be used as labels; for example "11×3=33" and "A&gt;B" convey
+                     meaning. The label should not be overwritten in the accessible name, and substitutions
+                     of words where a formula is used should be avoided since there are multiple ways to
+                     express the same equation. For example, making the name "eleven multiplied by three
+                     is equivalent to thirty-three" might mean a user who said "eleven times three equals
+                     thirty-three" may not match. It is best to leave the formulas as used in the label
+                     and count on the user's familiarity with their speech software to achieve a match.
+                     Further, converting a mathematical formula label into an accessible name that is a
+                     spelled-out equivalent may create issues for translation. The name should match the
+                     label's formula text. Note that a consideration for authors is to use the proper symbol
+                     in the formula. For instance 11x3 (with a lower or upper case letter X), 11*3 (with
+                     the asterisk symbol), and 11×3 (with the <code>&amp;</code>times<code>;</code> symbol) are all easy for sighted users to interpret as meaning the same formula,
+                     but may not all be matched to "11 times 3" by the speech recognition software. The
+                     proper operator symbol (in this case the times symbol) should be used.<br />
+                     
+                     <input type="radio" name="equation" id="answer1" value="A&gt;B" /><label for="answer1">A&gt;B</label>
+                     <input type="radio" name="equation" id="answer2" value="A=B" /><label for="answer2">A=B</label>
+                     <input type="radio" name="equation" id="answer3" value="A&lt;B" /><label for="answer3">A&lt;B</label></p>
+                  				
+               </section>
+               			
+            </section>
+            <section id="accessible-name-and-description-computation-specification">
+               
+               
+               <h3>Accessible Name and Description Computation specification</h3>
+               
+               <p>It is important to understand how the accessible name is derived. The <a href="https://www.w3.org/TR/accname-1.1/">Accessible Name and Description Computation 1.1</a> and the <a href="https://w3c.github.io/html-aam/#accessible-name-and-description-computation">HTML Accessibility API Mappings 1.0</a> describe how the accessible name is computed, including which attributes are considered
+                  in its calculation, and in what order of preference. If a component has multiple possible
+                  attribute values that could be used for its accessible name, only the most preferred
+                  of those values will be computed. None of the other, less preferred values will be
+                  part of the name. For the most part, existing established programmatic relationships
+                  between labels and controls are reinforced by the specification.
+               </p>
+               
+               <p>Other text displayed on the screen that is correctly coded to meet 1.3.1: Info and
+                  Relationships is <strong>not</strong> normally factored into the calculation for the accessible name of a UI component
+                  without author intervention (via ARIA labeling techniques). The most common of these
+                  are:
+               </p>
+               	
+               <ul>
+                  		
+                  <li>headings and instructions</li>
+                  
+                  <li>group labels for sets of components (i.e., used with <code>legend</code>/<code>fieldset</code> or with role of <code>group</code> or <code>radiogroup</code>)
+                  </li> 
+                  
+               </ul>
+               
+               <p>Such textual information may constitute part of the component's <em>description</em>. So from both a programmatic viewpoint, and from the conservative tactic of only
+                  considering a label to be "adjacent text," neither headings, instructions, nor group
+                  'labels' should normally be considered <strong>labels</strong> for the purpose of this Success Criterion.
+               </p>
+               
+               <p>It is important to note that the specification allows authors to override the name
+                  calculated through native semantics. Both <code>aria-label</code> and <code>aria-labelledby</code> take precedence in the name calculation, overriding the visible text as the accessible
+                  name even when the visible text label is programmatically associated with the control.
+                  For this reason, when a visible label already exists, <code>aria-label</code> should be avoided or used carefully, and <code>aria-labelledby</code> should be used as a supplement with care.
+               </p>
+               
+               <p>Finally, <code>aria-describedby</code> is not included in the Accessible Name computation (instead it is part of the Accessible
+                  Description computation). By convention, text associated with a control through <code>aria-describedby</code> is announced immediately after the accessible name by screen readers. Therefore,
+                  the context of headings, instructions, and group labels can be provided through the
+                  accessible description to assist users of screen readers without affecting the experience
+                  of those who navigate using speech recognition software.
+               </p>
+               			
+            </section>
+         </section>
+         <section id="benefits">
+            <h2>Benefits</h2>
+            <ul>
+               					
+               <li>Speech-input users can directly activate controls on a page with fewer surprising
+                  changes of focus.
+               </li>
+               					
+               <li>Text-to-speech users will have a better experience because the labels that they hear
+                  match the visible text labels that
+                  					they see on the screen.
+               </li>
+               				
+            </ul>
+         </section>
+         <section id="examples">
+            <h2>Examples</h2>
+            <ul>
+               				
+               <li><strong>Accessible name matches visible label:</strong> The accessible name and visible label of a control match.
+               </li>
+               				
+               <li><strong>Accessible name starts with visible label:</strong> The acessible name "Search for a value" begins with the text of the visible label,
+                  "Search".
+               </li>
+               			
+            </ul>
+         </section>
+         <section id="resources">
+            <h2>Related Resources</h2>
+            <p>Resources are for information purposes only, no endorsement implied.</p>
+            <ul>
+               				
+               <li><a href="https://www.w3.org/TR/accname-aam-1.1/">Accessible Name and Description Computation</a></li>
+               				
+               <li><a href="https://www.w3.org/TR/html-aam-1.0/#accessible-name-and-description-computation">Accessible Name and Description Computation in HTML Accessibility API Mappings 1.0</a></li>
+               			
+            </ul>
+         </section>
+         <section id="techniques">
+            <h2>Techniques</h2>
+            <p>Each numbered item in this section represents a technique or combination of techniques
+               that the WCAG Working Group deems sufficient for meeting this Success Criterion. However,
+               it is not necessary to use these particular techniques. For information on using other
+               techniques, see <a href="understanding-techniques">Understanding Techniques for WCAG Success Criteria</a>, particularly the "Other Techniques" section.
+            </p>
+            <section id="sufficient">
+               <h3>Sufficient Techniques</h3>
+               <ul>
+                  					
+                  <li><a href="/techniques/general/G208">G208: Including the text of the visible label as part of the accessible name</a></li>
+                  					
+                  <li><a href="/techniques/general/G211">G211: Matching the accessible name to the visible label</a></li>
+                  				
+               </ul>
+            </section>
+            <section id="advisory">
+               <h3>Advisory Techniques</h3>
+               <p>Although not required for conformance, the following additional techniques should
+                  be considered in order to make content more accessible. Not all techniques can be
+                  used or would be effective in all situations.
+               </p>
+               <p>Although not required for conformance, the following additional techniques should
+                  be considered in order to make content more accessible. Not all techniques can be
+                  used or would be effective in all situations.
+                  
+               </p>
+               <ul>
+                  					
+                  <li><a href="https://www.w3.org/WAI/GL/2016/WD-WCAG20-TECHS-20160105/G162">G162: Positioning labels to maximize predictability of relationships</a></li>
+                  					
+                  <li>@@ If an icon has no accompanying text, consider using its hover text as its accessible
+                     name
+                  </li>
+                  				
+               </ul>
+            </section>
+            <section id="failure">
+               <h3>Failures</h3>
+               <p>The following are common mistakes that are considered failures of this Success Criterion
+                  by the WCAG Working Group.
+               </p>
+               <ul>
+                  					
+                  <li><a href="/techniques/failures/F96">F96: Failure due to the accessible name not containing the visible label text</a></li>
+                  					
+                  <li>@@ Accessible name contains the visible label text, but the words of the visible label
+                     are not in the same order as they are in the visible label text
+                  </li>
+                  					
+                  <li>@@ Accessible name contains the visible label text, but one or more other words are
+                     interspersed in the label
+                  </li>
+                  				
+               </ul>
+            </section>
+         </section>
+         <section id="key-terms">
+            <h2>Key Terms</h2>
+            <dt id="dfn-image-of-text">image of text</dt>
+            <dd>
+               <definition xmlns="">
+                  
+                  
+                  <p xmlns="http://www.w3.org/1999/xhtml">text that has been rendered in a non-text form (e.g., an image) in order to achieve
+                     a particular visual effect
+                     
+                  </p>
+                  
+                  
+                  <div xmlns="http://www.w3.org/1999/xhtml" class="note">
+                     <div role="heading" class="note-title marker" aria-level="2">Note</div>
+                     <p>This does not include <a href="#dfn-text">text</a> that is part of a picture that contains significant other visual content.
+                        
+                     </p>
+                  </div>
+                  
+                  
+                  <p xmlns="http://www.w3.org/1999/xhtml" class="example">A person's name on a nametag in a photograph.</p>
+                  
+                  
+               </definition>
+            </dd>
+            <dt id="dfn-label">label</dt>
+            <dd>
+               <definition xmlns="">
+                  
+                  
+                  <p xmlns="http://www.w3.org/1999/xhtml">
+                     <a href="#dfn-text">text</a> or other component with a <a href="#dfn-text-alternative">text alternative</a> that is presented to a user to identify a component within Web <a href="#dfn-content">content</a>
+                     
+                  </p>
+                  
+                  
+                  <div xmlns="http://www.w3.org/1999/xhtml" class="note">
+                     <div role="heading" class="note-title marker" aria-level="2">Note</div>
+                     <p>A label is presented to all users whereas the <a href="#dfn-name">name</a> may be hidden and only exposed by assistive technology. In many (but not all) cases
+                        the name and the label are the same.
+                        
+                     </p>
+                  </div>
+                  
+                  
+                  <div xmlns="http://www.w3.org/1999/xhtml" class="note">
+                     <div role="heading" class="note-title marker" aria-level="2">Note</div>
+                     <p>The term label is not limited to the label element in HTML.</p>
+                  </div>
+                  
+                  
+               </definition>
+            </dd>
+            <dt id="dfn-name">name</dt>
+            <dd>
+               <definition xmlns="">
+                  
+                  
+                  <p xmlns="http://www.w3.org/1999/xhtml">text by which software can identify a component within Web content to the user</p>
+                  
+                  
+                  <div xmlns="http://www.w3.org/1999/xhtml" class="note">
+                     <div role="heading" class="note-title marker" aria-level="2">Note</div>
+                     <p>The name may be hidden and only exposed by assistive technology, whereas a <a href="#dfn-label">label</a> is presented to all users. In many (but not all) cases, the label and the name are
+                        the same.
+                        
+                     </p>
+                  </div>
+                  
+                  
+                  <div xmlns="http://www.w3.org/1999/xhtml" class="note">
+                     <div role="heading" class="note-title marker" aria-level="2">Note</div>
+                     <p>This is unrelated to the name attribute in HTML.</p>
+                  </div>
+                  
+                  
+               </definition>
+            </dd>
+            <dt id="dfn-text">text</dt>
+            <dd>
+               <definition xmlns="">
+                  
+                  
+                  <p xmlns="http://www.w3.org/1999/xhtml">sequence of characters that can be <a href="#dfn-programmatically-determined">programmatically determined</a>, where the sequence is expressing something in <a href="#dfn-human-language">human language</a>
+                     
+                  </p>
+                  
+                  
+               </definition>
+            </dd>
+            <dt id="dfn-user-interface-component">user interface component</dt>
+            <dd>
+               <definition xmlns="">
+                  
+                  
+                  <p xmlns="http://www.w3.org/1999/xhtml">a part of the content that is perceived by users as a single control for a distinct
+                     function
+                     
+                  </p>
+                  
+                  
+                  <div xmlns="http://www.w3.org/1999/xhtml" class="note">
+                     <div role="heading" class="note-title marker" aria-level="2">Note</div>
+                     <p>Multiple user interface components may be implemented as a single programmatic element.
+                        Components here is not tied to programming techniques, but rather to what the user
+                        perceives as separate controls.
+                        
+                     </p>
+                  </div>
+                  
+                  
+                  <div xmlns="http://www.w3.org/1999/xhtml" class="note">
+                     <div role="heading" class="note-title marker" aria-level="2">Note</div>
+                     <p>User interface components include form elements and links as well as components generated
+                        by scripts.
+                        
+                     </p>
+                  </div>
+                  
+                  
+                  <div xmlns="http://www.w3.org/1999/xhtml" class="note">
+                     <div role="heading" class="note-title marker" aria-level="2">Note</div>
+                     <p>What is meant by "component" or "user interface component" here is also sometimes
+                        called "user interface element".
+                        
+                     </p>
+                  </div>
+                  
+                  
+                  <p xmlns="http://www.w3.org/1999/xhtml" class="example">An applet has a "control" that can be used to move through content by line or page
+                     or random access. Since each of these would need to have a name and be settable independently,
+                     they would each be a "user interface component."
+                     
+                  </p>
+                  
+                  
+               </definition>
+            </dd>
+         </section>
+      </main>
+   </body>
+</html>

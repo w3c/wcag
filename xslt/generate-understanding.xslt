@@ -236,12 +236,11 @@
 			<head>
 				<meta charset="UTF-8" />
 				<title><xsl:apply-templates select="//html:h1"/></title>
-				<link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/base" />
-				<link rel="stylesheet" type="text/css" href="base.css" />
-				<link rel="stylesheet" type="text/css" href="understanding.css" />
-				<link rel="stylesheet" type="text/css" href="slicenav.css" />
+		    <link rel="stylesheet" href="https://w3.org/WAI/assets/css/style.css?1573220675560713000" />
+				<link rel="stylesheet" type="text/css" href="../base.css" />
 			</head>
 			<body>
+				<xsl:call-template name="header" />
 				<xsl:call-template name="navigation"/>
 				<xsl:call-template name="navtoc"/>
 				<h1><xsl:apply-templates select="//html:h1"/></h1>
@@ -276,6 +275,22 @@
 				</xsl:choose>
 			</body>
 		</html>
+	</xsl:template>
+
+	<xsl:template match="header">
+    <header id="site-header" class="default-grid with-gap">
+        <div class="tool-header">
+            <span class="tool-header-name"><a href="../">WCAG 2.1: Understanding documents</a></span>
+            <div class="tool-header-logo">
+                <a href="http://w3.org/">
+                    <img alt="W3C" src="https://w3.org/WAI/atag/report-tool/images/w3c.svg" width="92" height="44" />
+                </a>
+                <a href="http://w3.org/WAI/">
+                    <img alt="Web Accessibility Initiative" src="https://w3.org//WAI/atag/report-tool/images/wai.svg" />
+                </a>
+            </div>
+        </div>
+    </header>
 	</xsl:template>
 	
 	<xsl:template match="html:title | html:h1">
