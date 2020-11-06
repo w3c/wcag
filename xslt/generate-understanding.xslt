@@ -3,6 +3,7 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:wcag="https://www.w3.org/WAI/GL/"
+	xmlns:func="http://www.w3.org/2005/xpath-functions"
 	xmlns="http://www.w3.org/1999/xhtml"
 	exclude-result-prefixes="#all"
 	version="2.0">
@@ -117,6 +118,9 @@
 					<xsl:if test="wcag:section-meaningfully-exists('examples', //html:section[@id = 'examples'])"><li><a href="#examples">Examples</a></li></xsl:if>
 					<xsl:if test="wcag:section-meaningfully-exists('resources', //html:section[@id = 'resources'])"><li><a href="#resources">Related Resources</a></li></xsl:if>
 					<li><a href="#techniques">Techniques</a></li>
+					<xsl:if test="$act.doc//func:array[@key = 'successCriteria'][func:string = $meta/@id]">
+						<li><a href="#testing-rules">Testing Rules</a></li>
+					</xsl:if>
 				</xsl:if>
 				<xsl:if test="name($meta) = 'guideline'">
 					<li><a href="#intent">Intent</a></li>
@@ -204,12 +208,30 @@
 		</xsl:if>
 	</xsl:template>
 	
+	<xsl:template name="act">
+		<xsl:param name="meta" tunnel="yes"/>
+		
+		<xsl:if test="$act.doc//func:array[@key = 'successCriteria'][func:string = $meta/@id]">
+			<section id="testing-rules">
+				<h2>Testing Rules</h2>
+				<p>The following are testing rules for certain aspects of this Success Criterion. It is not necessary to use these particular rules to check for conformance with WCAG, but they are defined and approved test methods. For information on using Accessibility Conformance Testing (ACT) Rules, see <a href="understanding-act-rules.html">Understanding ACT Rules for WCAG Success Criteria</a>.</p>
+				<ul>
+					<xsl:for-each select="$act.doc//func:array[@key = 'successCriteria']/func:string[. = $meta/@id]">
+						<li><a href="{ancestor::func:map/func:string[@key = 'permalink']}"><xsl:value-of select="ancestor::func:map/func:string[@key = 'title']"/></a></li>
+					</xsl:for-each>
+				</ul>
+			</section>
+		</xsl:if>
+	</xsl:template>
+	
 	<xsl:template match="term" mode="key-terms">
 		<dt id="{id}"><xsl:value-of select="name[1]"/></dt>
 		<dd><xsl:apply-templates select="definition"/></dd>
 	</xsl:template>
 	
 	<xsl:template match="guidelines">
+		<!--<xsl:result-document href="wcag-act-rules.xml"><xsl:apply-templates select="$act.doc/*"/></xsl:result-document>-->
+		
 		<xsl:apply-templates select="//understanding | //guideline | //success-criterion"/>
 	</xsl:template>
 	
@@ -260,6 +282,7 @@
 							<xsl:apply-templates select="//html:section[@id = 'examples']"/>
 							<xsl:apply-templates select="//html:section[@id = 'resources']"/>
 							<xsl:apply-templates select="//html:section[@id = 'techniques']"/>
+							<xsl:call-template name="act"/>
 							<xsl:if test="name($meta) = 'guideline'">
 								<xsl:apply-templates select="//html:section[@id = 'advisory']" mode="gladvisory"/>
 								<xsl:call-template name="gl-sc"/>
