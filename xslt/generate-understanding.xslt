@@ -277,7 +277,7 @@
 		</html>
 	</xsl:template>
 
-	<xsl:template match="header">
+	<xsl:template name="header">
     <header id="site-header" class="default-grid with-gap">
         <div class="tool-header">
             <span class="tool-header-name"><a href="../">WCAG 2.1: Understanding documents</a></span>
