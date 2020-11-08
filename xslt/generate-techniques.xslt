@@ -36,7 +36,7 @@
 									</svg>
 								</a>
 								<div id="explain-supporting-documents" hidden="">
-										<p>WCAG comes with a number of supporting documents, including Techniques and Understanding documents.</p>
+										<p>WCAG comes with a number of supporting documents, like Techniques and Understanding documents.</p>
 										<p>See also: <a href="https://www.w3.org/WAI/standards-guidelines/wcag/#whatis2">What is in the WCAG 2 Documents</a></p>
 								</div>
 						</li>
