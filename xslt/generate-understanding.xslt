@@ -209,7 +209,7 @@
 		<xsl:variable name="canonical-name" select="$meta/ancestor::guidelines/term[name = lower-case(normalize-space(current()))]/name[1]"/>
 		<xsl:choose>
 			<xsl:when test="empty($canonical-name)">
-				<xsl:message>Unable to find term "<xsl:value-of select="."/>" in "<xsl:value-of select="$meta/name"/>"; key terms list will be incomplete.</xsl:message>
+				<xsl:message>Unable to find term "<xsl:value-of select="."/>" in "<xsl:value-of select="$meta/name"/> (<xsl:value-of select="$meta/name()"/>)"; key terms list will be incomplete.</xsl:message>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:sequence><xsl:copy-of select="$canonical-name"/></xsl:sequence>
