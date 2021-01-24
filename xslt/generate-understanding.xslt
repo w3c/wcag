@@ -183,15 +183,14 @@
 	
 	<xsl:template name="key-terms">
 		<xsl:param name="meta" tunnel="yes"/>
-		<xsl:variable name="termrefs" select="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]"/>
+		<xsl:variable name="termrefs">
+			<xsl:sequence>
+				<xsl:apply-templates select="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]" mode="find-key-terms"/>
+			</xsl:sequence>
+		</xsl:variable>
 		<xsl:if test="$termrefs">
-			<xsl:variable name="termrefs-canonical">
-				<xsl:for-each select="$termrefs">
-					<xsl:copy-of select="$meta/ancestor::guidelines/term[name = lower-case(normalize-space(current()))]/name[1]"/>
-				</xsl:for-each>
-			</xsl:variable>
 			<xsl:variable name="termids" as="node()*">
-				<xsl:for-each select="distinct-values($termrefs-canonical/name)">
+				<xsl:for-each select="distinct-values($termrefs/name)">
 					<xsl:copy-of select="$meta/ancestor::guidelines/term[name = current()]"/>
 				</xsl:for-each>
 			</xsl:variable>
@@ -202,6 +201,25 @@
 				</xsl:apply-templates>
 			</section>
 		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="html:a[not(@href)]" mode="find-key-terms" priority="1">
+		<xsl:param name="meta" tunnel="yes"/>
+		<xsl:param name="list-so-far"></xsl:param>
+		<xsl:variable name="canonical-name" select="$meta/ancestor::guidelines/term[name = lower-case(normalize-space(current()))]/name[1]"/>
+		<xsl:choose>
+			<xsl:when test="empty($canonical-name)">
+				<xsl:message>Unable to find term "<xsl:value-of select="."/>" in "<xsl:value-of select="$meta/name"/> (<xsl:value-of select="$meta/name()"/>)"; key terms list will be incomplete.</xsl:message>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:sequence><xsl:copy-of select="$canonical-name"/></xsl:sequence>
+				<xsl:if test="not(index-of($list-so-far, $canonical-name))">
+					<xsl:apply-templates select="$meta/ancestor::guidelines/term[name = $canonical-name]//html:a[not(@href)]" mode="find-key-terms">
+						<xsl:with-param name="list-so-far" select="($list-so-far, $canonical-name)"/>
+					</xsl:apply-templates>
+				</xsl:if>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<xsl:template match="term" mode="key-terms">
