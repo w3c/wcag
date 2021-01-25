@@ -8,7 +8,7 @@
 	
 	<body>
 		<?php include "../../_header.phi"; ?>
-		<h1>[DRAFT] Silver Task Force Decision Policy</h1>
+		<h1>Silver Task Force Decision Policy</h1>
 		<p>This document explains the decision process of the <a href="./">Silver Task Force of the AG Working Group</a>, and the <a href="https://www.w3.org/community/groups/silver/">Silver Community Group</a> when operating jointly with the Silver Task Force (collectively identified henceforth as the "Silver groups"). Decisions made according to this policy are to be recorded in the <a href="https://www.w3.org/WAI/GL/task-forces/silver/wiki/Decisions">Silver decisions wiki page</a>. The Silver groups follow the <a href="http://www.w3.org/Consortium/Process/#Consensus">W3C Process Document</a> regarding decisions. This document sets out procedures specific to the Silver groups to implement Process requirements and to facilitate later decisions by the Accessibility Guidelines Working Group. </p>
 		<section>
 			<h2>Goals</h2>
@@ -48,7 +48,7 @@
 			<h2>Ratification</h2>
 			<ul>
 				<li>2020-09-01: <a href="https://www.w3.org/2020/09/01-silver-minutes.html#resolution01">Approved by Silver Task Force and Community Group</a></li>
-				<li>YYYY-MM-DD: Approved by Accessibility Guidelines Working Group</li>
+				<li>2021-01-16: <a href="https://lists.w3.org/Archives/Public/w3c-wai-gl/2021JanMar/0033.html">Approved by Accessibility Guidelines Working Group</a></li>
 			</ul>
 		</section>
 		<section>
