@@ -54,7 +54,8 @@
 		<section>
 			<h2>History</h2>
 			<ul>
-				<li>Added information about participation in discussion and time frames for objections to proposed decisions.</li>
+				<li>2020-12-18: Added information about participation in discussion and time frames for objections to proposed decisions.</li>
+				<li>2021-01-26: Clarified time frame for objections on email CfC.</li>
 			</ul>
 		</section>
 		<?php include "../../_footer.phi"; ?>
