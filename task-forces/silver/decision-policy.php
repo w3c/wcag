@@ -53,7 +53,9 @@
 		</section>
 		<section>
 			<h2>History</h2>
-			<p>There have been no changes to this policy since its initial ratification.</p>
+			<ul>
+				<li>Added information about participation in discussion and time frames for objections to proposed decisions.</li>
+			</ul>
 		</section>
 		<?php include "../../_footer.phi"; ?>
 	</body>
