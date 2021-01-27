@@ -119,7 +119,7 @@
 					<xsl:if test="wcag:section-meaningfully-exists('resources', //html:section[@id = 'resources'])"><li><a href="#resources">Related Resources</a></li></xsl:if>
 					<li><a href="#techniques">Techniques</a></li>
 					<xsl:if test="$act.doc//func:array[@key = 'successCriteria'][func:string = $meta/@id]">
-						<li><a href="#testing-rules">Testing Rules</a></li>
+						<li><a href="#test-rules">Test Rules</a></li>
 					</xsl:if>
 				</xsl:if>
 				<xsl:if test="name($meta) = 'guideline'">
@@ -212,9 +212,9 @@
 		<xsl:param name="meta" tunnel="yes"/>
 		
 		<xsl:if test="$act.doc//func:array[@key = 'successCriteria'][func:string = $meta/@id]">
-			<section id="testing-rules">
-				<h2>Testing Rules</h2>
-				<p>The following are testing rules for certain aspects of this Success Criterion. It is not necessary to use these particular rules to check for conformance with WCAG, but they are defined and approved test methods. For information on using Accessibility Conformance Testing (ACT) Rules, see <a href="understanding-act-rules.html">Understanding ACT Rules for WCAG Success Criteria</a>.</p>
+			<section id="test-rules">
+				<h2>Test Rules</h2>
+				<p>The following are Test Rules for certain aspects of this Success Criterion. It is not necessary to use these particular Test Rules to check for conformance with WCAG, but they are defined and approved test methods. For information on using Test Rules, see <a href="understanding-act-rules.html">Understanding Test Rules for WCAG Success Criteria</a>.</p>
 				<ul>
 					<xsl:for-each select="$act.doc//func:array[@key = 'successCriteria']/func:string[. = $meta/@id]">
 						<li><a href="{ancestor::func:map/func:string[@key = 'permalink']}"><xsl:value-of select="ancestor::func:map/func:string[@key = 'title']"/></a></li>

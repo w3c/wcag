@@ -34,7 +34,7 @@
 				<file href="understanding-techniques"/>
 			</understanding>
 			<understanding>
-				<name>Understanding ACT Rules</name>
+				<name>Understanding Test Rules for WCAG Success Criteria</name>
 				<file href="understanding-act-rules"/>
 			</understanding>
 			<xsl:apply-templates select="//html:section[@class='principle']"/>
