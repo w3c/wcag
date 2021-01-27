@@ -107,7 +107,7 @@
 			<xsl:text> using a more specific technique</xsl:text>
 		</xsl:if>
 		<xsl:if test="ancestor::using">
-			<xsl:text> as a way to meet </xsl:text>
+			<xsl:text> when used with </xsl:text>
 			<xsl:call-template name="technique-link">
 				<xsl:with-param name="technique" select="$meta/ancestor::techniques//technique[@id = current()/ancestor::using[1]/parent::technique/@id]"/>
 			</xsl:call-template>
