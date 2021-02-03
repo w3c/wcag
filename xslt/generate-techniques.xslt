@@ -3,6 +3,7 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:wcag="https://www.w3.org/WAI/GL/"
+	xmlns:func="http://www.w3.org/2005/xpath-functions"
 	xmlns="http://www.w3.org/1999/xhtml"
 	exclude-result-prefixes="#all"
 	version="2.0">
@@ -55,6 +56,9 @@
 				<xsl:if test="wcag:section-meaningfully-exists('resources', //html:section[@id = 'resources'])"><li><a href="#resources">Related Resources</a></li></xsl:if>
 				<xsl:if test="wcag:section-meaningfully-exists('related', //html:section[@id = 'related'])"><li><a href="#related">Related Techniques</a></li></xsl:if>
 				<li><a href="#tests">Tests</a></li>
+				<xsl:if test="$act.doc//func:array[@key = 'wcagTechniques'][func:string = $meta/@id]">
+					<li><a href="#test-rules">Test Rules</a></li>
+				</xsl:if>
 			</ul>
 		</nav>
 	</xsl:template>
@@ -103,7 +107,7 @@
 			<xsl:text> using a more specific technique</xsl:text>
 		</xsl:if>
 		<xsl:if test="ancestor::using">
-			<xsl:text> as a way to meet </xsl:text>
+			<xsl:text> when used with </xsl:text>
 			<xsl:call-template name="technique-link">
 				<xsl:with-param name="technique" select="$meta/ancestor::techniques//technique[@id = current()/ancestor::using[1]/parent::technique/@id]"/>
 			</xsl:call-template>
@@ -180,6 +184,7 @@
 					<xsl:call-template name="resources"/>
 					<xsl:call-template name="related"/>
 					<xsl:call-template name="tests"/>
+					<xsl:call-template name="act"/>
 				</main>
 			</body>
 		</html>
@@ -377,6 +382,22 @@
 				<xsl:message>Missing or incomplete tests section in <xsl:value-of select="$meta/@id"/></xsl:message>
 			</xsl:otherwise>
 		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="act">
+		<xsl:param name="meta" tunnel="yes"/>
+		
+		<xsl:if test="$act.doc//func:array[@key = 'wcagTechniques'][func:string = $meta/@id]">
+			<section id="test-rules">
+				<h2>Test Rules</h2>
+				<p>The following are Test Rules related to this Technique. It is not necessary to use these particular Test Rules to check for conformance with WCAG, but they are defined and approved test methods. For information on using Test Rules, see <a href="{$loc.understanding}understanding/understanding-act-rules.html">Understanding Test Rules for WCAG Success Criteria</a>.</p>
+				<ul>
+					<xsl:for-each select="$act.doc//func:array[@key = 'wcagTechniques']/func:string[. = $meta/@id]">
+						<li><a href="{ancestor::func:map/func:string[@key = 'permalink']}"><xsl:value-of select="ancestor::func:map/func:string[@key = 'title']"/></a></li>
+					</xsl:for-each>
+				</ul>
+			</section>
+		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="html:section[@class='test']">
