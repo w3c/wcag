@@ -42,7 +42,7 @@
 				<ol>
 					<li>If no objections are received by the deadline, the draft decision becomes a formal decision of the Working Group. </li>
 					<li>If objections are received but the chairs believe the objections have already been considered as far as is possible and reasonable, and the reviewers providing the objections can “live with” the decision, the draft decision becomes a formal decision of the Working Group. </li>
-					<li>If the substance of objections was not raised during discussion leading to the CfC, and reasonably could have been, the chairs may discount the objection.</li>
+					<li>If the substance of objections was not raised during discussion leading to the CfC, and reasonably could have been, the chairs may weight the objection less.</li>
 					<li>If objections are received that the chairs believe present substantive new information that could not have been raised before or is extremely compelling, or if the chairs believe there is not a clear consensus in the Working Group, they will reopen the discussion, as detailed in <a href="http://www.w3.org/Consortium/Process/#WGChairReopen">section 3.3.4 of the Process Document (Reopening a Decision When Presented With New Information)</a>.</li>
 					<li>If working group member(s) continue to disagree and the chairs do not believe it presents substantive new information, or it does not meet the criteria established for adding new normative content, the chairs may decide the draft decision becomes a formal decision of the Working Group despite the objection. In this case the objection will be recorded alongside the decision in the AG Decisions page.</li>
 				</ol>
