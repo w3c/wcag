@@ -8,7 +8,7 @@
 		<?php include "_header.phi"; ?>
 		<h1>Accessibility Guidelines Working Group (AG WG) Project Plan</h1>
 		
-		<p>Content on this page has moved to the <a href="https://www.w3.org/WAI/GL/wiki/Timelines/">AG WG Timelines wiki page</a>.
+		<p>Content on this page has moved to the <a href="https://www.w3.org/WAI/GL/wiki/Timelines">AG WG Timelines wiki page</a>.
 		
 		<!--
 		
