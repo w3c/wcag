@@ -116,7 +116,7 @@ if ($sth->rowCount() > 0) {
    <section>
    <h3 id="facilitator">Facilitator and Contacts</h3>
    <ul>
-      <li> <strong>Task Force facilitator:</strong> <a href="https://www.w3.org/users/16320">Lisa Seeman</a>, <a href="https://www.w3.org/users/90310">Rachael Montgomery</a>.</li>
+      <li> <strong>Task Force facilitator:</strong> <a href="https://www.w3.org/users/16320">Lisa Seeman</a>.</li>
    	<li><strong>Staff Contacts: </strong><a href="https://www.w3.org/users/71103">Steve Lee</a>, <a href="https://www.w3.org/People/Roy/">Roy Ran</a>, <a href="http://www.w3.org/People/cooper/">Michael Cooper</a>.</li>
    </ul>
    </section>
