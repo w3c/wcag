@@ -91,8 +91,8 @@
 						<li><a href="{$meta/preceding-sibling::understanding[1]/file/@href}">Previous: <xsl:value-of select="$meta/preceding-sibling::understanding[1]/name"/></a></li>
 					</xsl:if>
 					<xsl:if test="name($meta/preceding-sibling::element()[1]) = 'principle'">
-						<li><a href="{$meta/preceding-sibling::principle[1]/guideline[last()]/success-criterion[last()]/file/@href}">Previous <abbr title="Guideline">GL</abbr>: <xsl:value-of select="$meta/preceding-sibling::principle[1]/guideline[last()]/name"/></a></li>
-						<li><a href="{$meta/preceding-sibling::principle[1]/guideline[last()]/file/@href}">Previous <abbr title="Success Criterion">SC</abbr>: <xsl:value-of select="$meta/preceding-sibling::principle[1]/guideline[last()]/success-criterion[last()]/name"/></a></li>
+						<li><a href="{$meta/preceding-sibling::principle[1]/guideline[last()]/file/@href}">Previous <abbr title="Guideline">GL</abbr>: <xsl:value-of select="$meta/preceding-sibling::principle[1]/guideline[last()]/name"/></a></li>
+						<li><a href="{$meta/preceding-sibling::principle[1]/guideline[last()]/success-criterion[last()]/file/@href}">Previous <abbr title="Success Criterion">SC</abbr>: <xsl:value-of select="$meta/preceding-sibling::principle[1]/guideline[last()]/success-criterion[last()]/name"/></a></li>
 					</xsl:if>
 					<xsl:if test="name($meta/following-sibling::element()[1]) = 'principle'">
 						<li><a href="{$meta/following-sibling::principle[1]/guideline[1]/file/@href}">First <abbr title="Guideline">GL</abbr>: <xsl:value-of select="$meta/following-sibling::principle[1]/guideline[1]/name"/></a></li>
