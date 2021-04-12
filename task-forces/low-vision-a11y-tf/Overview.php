@@ -43,7 +43,7 @@
 <div id="main">
   <div id="skipwrapper"> <a id="skip">-</a></div>
   <h1>Low Vision Accessibility Task Force (LVTF)</h1>
-  <p> The Low Vision Accessibility Task Force (LVTF) is a task force of the <a href="http://www.w3.org/WAI/GL/">Accessibility Guidelines Working Group (AG WG)</a>. The objective of the Task Force is to address web accessibility issues   specific to people with low vision.</p>
+  <p> The Low Vision Accessibility Task Force (LVTF) is a task force of the <a href="http://www.w3.org/WAI/GL/">Accessibility Guidelines Working Group (AG WG)</a>. The objective of the Task Force is to address web accessibility issues specific to people with low vision.</p>
   <div id="contents">
     <h2>Page Contents</h2>
     <ul>
@@ -61,7 +61,7 @@
   </div>
   <div>
     <h2 id="publications">Publications</h2>
-    <p><a href="https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/LVTF_Documents">LVTF Documents wiki page</a> lists LVTF publicaltions.</p>
+    <p><a href="https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/LVTF_Documents">LVTF Documents wiki page</a> lists LVTF publications.</p>
   </div>
   <div>
     <h2 id="m335intw">Task Force Meetings and Participation Channels</h2>
