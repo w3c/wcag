@@ -82,6 +82,7 @@
       <li>Identify gaps between user needs and existing requirements in <a href="https://www.w3.org/WAI/intro/wcag">WCAG</a>, <a href="https://www.w3.org/WAI/intro/uaag">UAAG</a>, <a href="https://www.w3.org/WAI/intro/atag">ATAG</a></li>
       <li>Document sufficient techniques, advisory techniques, and failures for WCAG 2 related to low vision</li>
       <li>Develop supplemental guidance to address low vision beyond WCAG 2</li>
+      <li>Contribute to WCAG 3 requirements and guidance related to low vision</li>
       <li>Potentially refine <a href="http://www.w3.org/TR/UAAG20-Reference/">user agent use cases</a> for low vision</li>
       <li>Develop support materials to explain the issues and implementation of the above resources effectively</li>
     </ul>
