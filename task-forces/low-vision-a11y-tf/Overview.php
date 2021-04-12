@@ -64,7 +64,7 @@
     <p><a href="https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/LVTF_Documents">LVTF Documents wiki page</a> lists LVTF publicaltions.</p>
   </div>
   <div>
-    <h2 id="m335intw">Task Force Meetings and  Participation Channels</h2>
+    <h2 id="m335intw">Task Force Meetings and Participation Channels</h2>
     <p>Task Force meets regularly by teleconference, and plans to hold  face-to-face meetings 1-2 times a year in the future.</p>
     <p>Updated information on LVTF meetings is on the <a href="https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/Main_Page#Meetings">LVTF main wiki page, under "Meetings"</a>.</p>
     <p><strong>IRC channel</strong>: <a href="irc://irc.w3.org/lvtf">#lvtf</a></p>
@@ -76,7 +76,7 @@
     </ul>
     <h2 id="about">About the Low Vision Accessibility Task Force</h2>
     <p>The Low Vision Accessibility Task Force (LVTF) was created as a task force of the <a href="http://www.w3.org/WAI/GL/">Accessibility Guidelines Working Group (AG WG)</a> and the <a href="http://www.w3.org/WAI/UA/">User Agent Accessibility Guidelines Working Group (UAWG)</a>. The UAWG has closed.</p>
-    <p>The objective of the Task Force is to address web accessibility issues   specific to people with low vision.  Task Force work  includes:</p>
+    <p>The objective of the Task Force is to address web accessibility issues specific to people with low vision. Task Force work includes:</p>
     <ul>
       <li>Document accessibility requirements/needs for people with low vision</li>
       <li>Identify gaps between user needs and existing requirements in <a href="https://www.w3.org/WAI/intro/wcag">WCAG</a>, <a href="https://www.w3.org/WAI/intro/uaag">UAAG</a>, <a href="https://www.w3.org/WAI/intro/atag">ATAG</a></li>
