@@ -24,22 +24,21 @@
 			<li> When the chairs believe that the group is ready to come to a decision they announce a Call for Consensus by email to the Working Group's mailing list. The Call must remain open for a minimum of two working days. 
 				<ol>
 					<li> The Call is open to responses from all group members. </li>
-					<li> The Call will be for a single topic, will clearly indicate that it is a Call for Consensus, and will contain pointers to the relevant discussion. This may include links to GitHub issues or pull requests, AG surveys, email threads, or meeting minutes.
-					<ul>
-						<li>why the individual objects to the proposed decision;</li>
-						<li>describes how the objection was raised and considered during discussion leading to the CfC, including how reactions to the potential objection were addressed;</li>
-						<li>what alternate decision would remove the objection <b>and</b> be likely to gain consensus in the WG.</li>
-					</ul>
-					</li>
+					<li> The Call will be for a single topic, will clearly indicate that it is a Call for Consensus, and will contain pointers to the relevant discussion. This may include links to GitHub issues or pull requests, AG surveys, email threads, or meeting minutes.</li>
 					<li> A resolution recorded in a WG teleconference may precede a Call for Consensus, but it may not replace the official Call for Consensus. </li>
 					<li> Issues that are regarded as editorial by the Chairs do not require a Working Group decision in order for the Chairs to address, and thus do not require a Call for Consensus. If there is disagreement by participants on whether something is editorial this can be brought to the attention of the chairs either privately or in the context of the wider group. </li>
 				</ol>
-			<li>
 			</li>
 			</li>Responding to the Call for Consensus
 				<ol>
 					<li>Individuals are invited, but not required, to support the decision by replying to the CfC email with “+1”, or to indicate a “can live with” status by replying with a “+0”.</li>
-					<li>Objections can be raised by replying to the CfC email with “-1”. In order to facilitate understanding and discussion, it is recommended to include a rationale which includes:</li>
+					<li>Objections can be raised by replying to the CfC email with “-1”. In order to facilitate understanding and discussion, it is recommended to include a rationale which includes:
+						<ul>
+							<li>why the individual objects to the proposed decision;</li>
+							<li>describes how the objection was raised and considered during discussion leading to the CfC, including how reactions to the potential objection were addressed;</li>
+							<li>what alternate decision would remove the objection <b>and</b> be likely to gain consensus in the WG.</li>
+						</ul>
+					</li>
 					<li>Objections are subject to examination by the WG and therefore must be filed on the public record.</li>
 				</ol>
 			<li>
