@@ -23,7 +23,7 @@
 
 		<section id="lvtf">
 		<h2>Low Vision Accessibility Task Force</h2>
-		<p>The <a href="/WAI/GL/low-vision-a11y-tf/">Low Vision Accessibility Task Force</a> will  identify issues and specify solutions to web accessibility issues specific to users with low vision via WCAG 2.0 techniques, understanding and guidance documents, and as needed to produce extensions to WCAG 2.0.</p>
+		<p>The <a href="low-vision-a11y-tf/">Low Vision Accessibility Task Force</a> will  identify issues and specify solutions to web accessibility issues specific to users with low vision via WCAG 2.0 techniques, understanding and guidance documents, and as needed to produce extensions to WCAG 2.0.</p>
 		</section>
 
 		<section id="mobile">
