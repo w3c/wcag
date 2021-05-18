@@ -143,6 +143,6 @@ var respecConfig = {
 
 	maxTocLevel: 4,
 	
-	postProcess: [addTextSemantics, swapInDefinitions]
+	postProcess: [addTextSemantics, swapInDefinitions, linkUnderstanding]
 	
 };
