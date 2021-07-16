@@ -5,8 +5,8 @@ set -exu
 # u: Treat unset variables as an error when substituting
 
 # NOTE: you probably need to add 'w3cbot' to the list of authorized users to push to your repository
-git config --global user.email w3cbot-gh@w3.org
-git config --global user.name w3cbot
+git config --global user.email 87540780+w3cgruntbot@users.noreply.github.com
+git config --global user.name w3cgruntbot
 git config --global user.password $GITHUB_TOKEN
 
 REPO_URL="https://w3cbot:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git"
