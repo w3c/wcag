@@ -154,6 +154,7 @@
 			<xsl:apply-templates select="@*"/>
 			<xsl:text>Figure </xsl:text>
 			<xsl:value-of select="count(parent::html:figure/preceding::html:figure) + 1"/>
+			<xsl:text> </xsl:text>
 			<xsl:apply-templates/>
 		</xsl:copy>
 	</xsl:template>

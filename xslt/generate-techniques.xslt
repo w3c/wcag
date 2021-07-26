@@ -57,7 +57,7 @@
 				<xsl:if test="wcag:section-meaningfully-exists('related', //html:section[@id = 'related'])"><li><a href="#related">Related Techniques</a></li></xsl:if>
 				<li><a href="#tests">Tests</a></li>
 				<xsl:if test="$act.doc//func:array[@key = 'wcagTechniques'][func:string = $meta/@id]">
-					<li><a href="#testing-rules">Testing Rules</a></li>
+					<li><a href="#test-rules">Test Rules</a></li>
 				</xsl:if>
 			</ul>
 		</nav>
@@ -107,7 +107,7 @@
 			<xsl:text> using a more specific technique</xsl:text>
 		</xsl:if>
 		<xsl:if test="ancestor::using">
-			<xsl:text> as a way to meet </xsl:text>
+			<xsl:text> when used with </xsl:text>
 			<xsl:call-template name="technique-link">
 				<xsl:with-param name="technique" select="$meta/ancestor::techniques//technique[@id = current()/ancestor::using[1]/parent::technique/@id]"/>
 			</xsl:call-template>
@@ -388,12 +388,12 @@
 		<xsl:param name="meta" tunnel="yes"/>
 		
 		<xsl:if test="$act.doc//func:array[@key = 'wcagTechniques'][func:string = $meta/@id]">
-			<section id="testing-rules">
-				<h2>Testing Rules</h2>
-				<p>The following are testing rules for certain aspects of this Technique. It is not necessary to use these particular rules to check for conformance with WCAG, but they are defined and approved test methods. For information on using Accessibility Conformance Testing (ACT) Rules, see <a href="{$loc.understanding}understanding/understanding-act-rules.html">Understanding ACT Rules for WCAG Success Criteria</a>.</p>
+			<section id="test-rules">
+				<h2>Test Rules</h2>
+				<p>The following are Test Rules related to this Technique. It is not necessary to use these particular Test Rules to check for conformance with WCAG, but they are defined and approved test methods. For information on using Test Rules, see <a href="{$loc.understanding}understanding/understanding-act-rules.html">Understanding Test Rules for WCAG Success Criteria</a>.</p>
 				<ul>
 					<xsl:for-each select="$act.doc//func:array[@key = 'wcagTechniques']/func:string[. = $meta/@id]">
-						<li><a href="{ancestor::func:map/func:string[@key = 'permalink']}"><xsl:value-of select="ancestor::func:map/func:string[@key = 'title']"/></a></li>
+						<li><a href="/WAI{ancestor::func:map/func:string[@key = 'permalink']}"><xsl:value-of select="ancestor::func:map/func:string[@key = 'title']"/></a></li>
 					</xsl:for-each>
 				</ul>
 			</section>
