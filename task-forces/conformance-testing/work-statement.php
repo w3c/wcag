@@ -10,7 +10,7 @@
 		<p>The <a href=".">Accessibility Conformance Testing Task Force (ACT TF)</a> is a task force of the <a href="https://www.w3.org/WAI/GL/">Accessibility Guidelines Working Group (AG WG)</a>. It assists this Working Group with the work identified below.</p>
 		<section id="status">
 			<h2>Status</h2>
-			<p>This Work Statement was <a href="https://lists.w3.org/Archives/Public/w3c-wai-gl/2020JanMar/0114.html">approved on 23 January 2020</a> and is now active. The prior <a href="work-statement-2017">2017 work statement</a> is available. The <a href=".">Task Force home page</a> contains information about the operation and resources of this group. </p>
+			<p>This Work Statement was approved on 23 January 2020 and is now active. The prior <a href="work-statement-2017">2017 work statement</a> is available. The <a href=".">Task Force home page</a> contains information about the operation and resources of this group. </p>
 		</section>
 		<section id="objective">
 			<h2>Objective</h2>
