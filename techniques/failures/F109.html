@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<title>Failure of Success Criterion 2.5.3 due to a control with visible label text but no accessible name</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css"/>
+	</head>
+	<body>
+		<h1>Failure due to a control with visible label text but no accessible name</h1>
+		<section id="meta">
+			<h2>Metadata</h2>
+			<p id="id"></p>
+			<p id="technology">general</p>
+			<p id="type">failure</p>
+		</section>
+
+		<section id="applicability">
+			<h2>When to Use</h2>
+			<p>All technologies that include interactive controls (such as links or form inputs).</p>
+		</section>
+
+		<section id="description">
+			<h2>Description</h2>
+			<p>The objective of this Failure is to describe situations where speech input users cannot reliably speak the name of a control because although it has a visible label, it lacks an accessible name.</p>
+			<p>When speech input users interact with a web page, they usually speak a command followed by the reference to some visible label (like the text in a button or a link, or the text labelling some input). If the control lacks an accessible name, speech users won't be able to activate the control using its visible label.</p>	
+		</section>
+		
+		<section id="examples">
+			<h2>Examples</h2>
+      
+      <section class="example">
+				<h3>A text input with a visible label, but without an accessible name</h3>
+				<p>The text input is preceded by a visible text label "Enter name", but the text is not marked up as a <code>&lt;label&gt;</code> for the input, and there is no alternative way (e.g. <code>aria-label</code>) to provide the input with an accessible name at all.</p>
+				<pre><code>
+					&lt;p&gt;Enter name&lt;/p&gt;
+					&lt;input type="text"&gt;
+        </code></pre>
+      </section>
+
+			<section class="example">
+				<h3>A text input with a visible label and aria-labelledby pointing to a non-existent id</h3>
+				<p>The text input is preceded by a visible text label "Enter name". The text's container has an <code>id</code> of <code>nameEntry</code>, but the input has an <code>aria-labelledby</code> referencing a non-existent <code>name-entry</code>. As a result, the input lacks an accessible name altogether.</p>
+				<pre><code>
+					&lt;p id="nameEntry"&gt;Enter name&lt;/p&gt;
+					&lt;input type="text" aria-labelledby="name-entry" &gt;
+        </code></pre>
+      </section>
+    </section>
+    
+		<section id="tests">
+			<h2>Tests</h2>
+			<section class="test-procedure">
+				<h3>Procedure</h3>
+				<p>For all controls with a visible label (e.g., link text, button text, programmatically linked label, images in links with text), check that:</p>
+				<ol>
+					<li>The control has an accessible name.</li>
+					<li>The accessible name is the same as the visible label.</li>
+          <li>The accessible name contains a match for the string of the visible label.</li>
+				</ol>
+			</section>
+			<section class="test-results">
+				<h3>Expected Results</h3>
+				<ul>
+					<li>If checks #1, #2, and #3 are false, the content fails the Success Criterion.</li>
+				</ul>
+			</section>
+		</section>
+		<section id="related">
+			<h2>Related Techniques</h2>
+			<ul>
+				<li><a href="../../techniques/general/F96">F96</a></li>
+        <li><a href="../../techniques/general/G131">G131</a></li>
+        <li><a href="../../techniques/aria/ARIA7">ARIA7</a></li>
+        <li><a href="../../techniques/aria/ARIA8">ARIA8</a></li>
+        <li><a href="../../techniques/aria/ARIA9">ARIA9</a></li>
+				<li><a href="../../techniques/aria/ARIA14">ARIA14</a></li>
+        <li><a href="../../techniques/aria/ARIA16">ARIA16</a></li>
+        <li><a href="../../techniques/client-side-script/SCR30">SCR30</a></li>
+			</ul>
+		</section>
+	</body>
+</html>
