@@ -187,12 +187,12 @@
 	
 	<xsl:template name="key-terms">
 		<xsl:param name="meta" tunnel="yes"/>
-		<xsl:variable name="termrefs">
-			<xsl:sequence>
-				<xsl:apply-templates select="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]" mode="find-key-terms"/>
-			</xsl:sequence>
-		</xsl:variable>
-		<xsl:if test="$termrefs">
+		<xsl:if test="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]">
+			<xsl:variable name="termrefs">
+				<xsl:sequence>
+					<xsl:apply-templates select="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]" mode="find-key-terms"/>
+				</xsl:sequence>
+			</xsl:variable>
 			<xsl:variable name="termids" as="node()*">
 				<xsl:for-each select="distinct-values($termrefs/name)">
 					<xsl:copy-of select="$meta/ancestor::guidelines/term[name = current()]"/>
@@ -216,7 +216,7 @@
 				<p>The following are Test Rules for certain aspects of this Success Criterion. It is not necessary to use these particular Test Rules to check for conformance with WCAG, but they are defined and approved test methods. For information on using Test Rules, see <a href="understanding-act-rules.html">Understanding Test Rules for WCAG Success Criteria</a>.</p>
 				<ul>
 					<xsl:for-each select="$act.doc//func:array[@key = 'successCriteria']/func:string[. = $meta/@id]">
-						<li><a href="{ancestor::func:map/func:string[@key = 'permalink']}"><xsl:value-of select="ancestor::func:map/func:string[@key = 'title']"/></a></li>
+						<li><a href="/WAI{ancestor::func:map/func:string[@key = 'permalink']}"><xsl:value-of select="ancestor::func:map/func:string[@key = 'title']"/></a></li>
 					</xsl:for-each>
 				</ul>
 			</section>
