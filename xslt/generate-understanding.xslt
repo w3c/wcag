@@ -260,12 +260,14 @@
 	<xsl:template name="gl-sc">
 		<xsl:param name="meta" tunnel="yes"/>
 		<section id="success-criteria">
-			<h2>Success Criteria for this Guideline</h2>
+			<details>
+			<summary><h2>Success Criteria for this Guideline</h2></summary>
 			<ul>
 				<xsl:for-each select="$meta/success-criterion">
 					<li><a href="{file/@href}"><xsl:value-of select="num"/><xsl:text> </xsl:text><xsl:value-of select="name"/></a></li>
 				</xsl:for-each>
 			</ul>
+			</details>
 		</section>
 	</xsl:template>
 	
@@ -317,13 +319,15 @@
 		
 		<xsl:if test="$act.doc//func:array[@key = 'successCriteria'][func:string = $meta/@id]">
 			<section id="test-rules">
-				<h2>Test Rules</h2>
+				<details>
+				<summary><h2>Test Rules</h2></summary>
 				<p>The following are Test Rules for certain aspects of this Success Criterion. It is not necessary to use these particular Test Rules to check for conformance with WCAG, but they are defined and approved test methods. For information on using Test Rules, see <a href="understanding-act-rules.html">Understanding Test Rules for WCAG Success Criteria</a>.</p>
 				<ul>
 					<xsl:for-each select="$act.doc//func:array[@key = 'successCriteria']/func:string[. = $meta/@id]">
 						<li><a href="/WAI{ancestor::func:map/func:string[@key = 'permalink']}"><xsl:value-of select="ancestor::func:map/func:string[@key = 'title']"/></a></li>
 					</xsl:for-each>
 				</ul>
+				</details>
 			</section>
 		</xsl:if>
 	</xsl:template>
@@ -462,16 +466,20 @@
 	<xsl:template match="html:section[@id = 'intent']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Intent</h2>
+			<details>
+			<summary><h2>Intent</h2></summary>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.) or @id = 'benefits')]"/>
+			</details>
 		</xsl:copy>
 	</xsl:template>
 	
 	<xsl:template match="html:section[@id = 'benefits']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Benefits</h2>
+			<details>
+			<summary><h2>Benefits</h2></summary>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
+			</details>
 		</xsl:copy>
 	</xsl:template>
 	
@@ -479,8 +487,10 @@
 		<xsl:if test="wcag:section-meaningfully-exists('examples', .)">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Examples</h2>
+			<details>
+			<summary><h2>Examples</h2></summary>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
+			</details>
 		</xsl:copy>
 		</xsl:if>
 	</xsl:template>
@@ -489,9 +499,11 @@
 		<xsl:if test="wcag:section-meaningfully-exists('resources', .)">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Related Resources</h2>
+			<details>
+			<summary><h2>Related Resources</h2></summary>
 			<p>Resources are for information purposes only, no endorsement implied.</p>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
+			</details>
 		</xsl:copy>
 		</xsl:if>
 	</xsl:template>
@@ -499,9 +511,11 @@
 	<xsl:template match="html:section[@id = 'techniques']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Techniques</h2>
+			<details>
+			<summary><h2>Techniques</h2></summary>
 			<p>Each numbered item in this section represents a technique or combination of techniques that the WCAG Working Group deems sufficient for meeting this Success Criterion. However, it is not necessary to use these particular techniques. For information on using other techniques, see <a href="understanding-techniques">Understanding Techniques for WCAG Success Criteria</a>, particularly the "Other Techniques" section.</p>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
+			</details>
 		</xsl:copy>
 	</xsl:template>
 	
@@ -531,9 +545,11 @@
 		<xsl:if test="wcag:section-meaningfully-exists('gladvisory', .)">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Advisory Techniques</h2>
+			<details>
+			<summary><h2>Advisory Techniques</h2></summary>
 			<p>Specific techniques for meeting each Success Criterion for this guideline are listed in the understanding sections for each Success Criterion (listed below). If there are techniques, however, for addressing this guideline that do not fall under any of the success criteria, they are listed here. These techniques are not required or sufficient for meeting any success criteria, but can make certain types of Web content more accessible to more people.</p>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
+			</details>
 		</xsl:copy>
 		</xsl:if>
 	</xsl:template>
