@@ -253,8 +253,8 @@
 						<xsl:call-template name="understanding-link">
 							<xsl:with-param name="understanding-id">
 								<xsl:choose>
-									<xsl:when test="ancestor::guideline"><xsl:value-of select="ancestor::guideline/@id"/></xsl:when>
 									<xsl:when test="ancestor::success-criterion"><xsl:value-of select="ancestor::success-criterion/@id"/></xsl:when>
+									<xsl:when test="ancestor::guideline"><xsl:value-of select="ancestor::guideline/@id"/></xsl:when>
 								</xsl:choose>
 							</xsl:with-param>
 						</xsl:call-template>
