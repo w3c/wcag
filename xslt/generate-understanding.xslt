@@ -384,7 +384,9 @@
 				<link rel="stylesheet" href="base.css" />
 			</head>
 			<body>
-				<xsl:call-template name="header" />
+				<xsl:call-template name="header">
+					<xsl:with-param name="documentset.name">Understanding</xsl:with-param>
+				</xsl:call-template>
 				<xsl:call-template name="navigation"/>
 					<div class="default-grid">
 						<main class="main-content">

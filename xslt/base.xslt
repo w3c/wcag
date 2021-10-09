@@ -17,8 +17,6 @@
 	<xsl:param name="techniques.file">../techniques/techniques.xml</xsl:param>
 	<xsl:variable name="techniques.doc" select="document($techniques.file)"/>
 
-	<xsl:param name="documentset.name">Techniques</xsl:param>
-
 	<xsl:param name="versions.file">../guidelines/versions.xml</xsl:param>
 	<xsl:variable name="versions.doc" select="document($versions.file)"/>
 	
@@ -196,6 +194,7 @@
 	</xsl:template>
 
 	<xsl:template name="header">
+		<xsl:param name="documentset.name" required="yes"/>
 		<header id="site-header" class="default-grid with-gap">
 				<div class="tool-header">
 						<span class="tool-header-name"><a href="../">WCAG <xsl:value-of select="$guidelines.version.decimal"/>: <xsl:value-of select="$documentset.name"/></a></span>
