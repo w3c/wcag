@@ -19,8 +19,8 @@
 			<aside class="box">
 					<header class="box-h ">Summary</header>
 					<div class="box-i">
-							<p><em>Techniques</em> are examples of ways to meet a WCAG criterion. Most Techniques relate to meeting specific WCAG success criteria, some offer general advice. <a href="2020-10-20.html">About Techniques</a> provides further
-									background, and <a href="alt-index.html">All WCAG 2 Guidance</a> provides an overview on related guidance.</p>
+							<p><em>Techniques</em> are examples of ways to meet a WCAG criterion. Most Techniques relate to meeting specific WCAG success criteria, some offer general advice. <a href="about">About Techniques</a> provides further
+								background, and <a href="/WAI/standards-guidelines/wcag/">All WCAG 2 Guidance</a> provides an overview on related guidance.</p>
 					</div>
 			</aside>
 			<xsl:apply-templates select="technology">

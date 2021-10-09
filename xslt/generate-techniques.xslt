@@ -233,7 +233,7 @@
 	<xsl:template name="sidebar">
   	<aside class="your-report your-report--expanded sidebar" aria-labelledby="about-this-page">
 			<h2 style="margin-top: 0" id="about-this-page">About this page</h2>
-			<p><em>Techniques</em> are examples of ways to meet a WCAG success criterion. They are <a href="javascript:alert('placeholder; link to About Techniques')">not required to meet WCAG</a>.</p>
+			<p><em>Techniques</em> are examples of ways to meet a WCAG success criterion. They are <a href="{$loc.techniques}/about">not required to meet WCAG</a>.</p>
 			<xsl:call-template name="resources"/>
 		</aside>
 	</xsl:template>
