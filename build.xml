@@ -206,7 +206,7 @@
 		</xslt>
 	</target>
 	
-	<target name="techniques-index" depends="techniques-toc" description="Flatten the techniques index file">
+	<target name="techniques-index" depends="techniques-toc" description="Process the techniques index file">
 		<makeurl file="${basedir}/techniques/" property="base.techniques"/>
 		<mkdir dir="${basedir}/output/techniques/"/>
 		<xslt in="${inputdir.techniques}/index.html" out="${inputdir.techniques}/index-flat.html" style="xslt/flatten-document.xslt" force="true">
@@ -214,7 +214,7 @@
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.techniques}"/>
 		</xslt>
-		<xslt in="${inputdir.techniques}/index-flat.html" out="${basedir}/output/techniques/index.html" style="xslt/base.xslt" force="true">
+		<xslt in="${inputdir.techniques}/index-flat.html" out="${basedir}/output/techniques/index.html" style="xslt/process-index.xslt" force="true">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.techniques}"/>
@@ -225,6 +225,7 @@
 			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
+			<param name="documentset.name" expression="Techniques"/>
 		</xslt>
 	</target>
 	
@@ -265,15 +266,15 @@
 		</xslt>
 	</target>
 	
-	<target name="understanding-index" depends="understanding-toc" description="Flatten the understanding index file">
+	<target name="understanding-index" depends="understanding-toc" description="Process the understanding index file">
 		<makeurl file="${basedir}/understanding/" property="base.understanding"/>
 		<mkdir dir="${basedir}/output/understanding/"/>
-		<xslt in="${inputdir.understanding}/index.html" out="${basedir}/understanding/index-flat.html" style="xslt/flatten-document.xslt" force="true">
+		<xslt in="${inputdir.understanding}/index.html" out="${inputdir.understanding}/index-flat.html" style="xslt/flatten-document.xslt" force="true">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.understanding}"/>
 		</xslt>
-		<xslt in="${inputdir.understanding}/index-flat.html" out="${basedir}/output/understanding/index.html" style="xslt/base.xslt" force="true">
+		<xslt in="${inputdir.understanding}/index-flat.html" out="${basedir}/output/understanding/index.html" style="xslt/process-index.xslt" force="true">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.understanding}"/>
@@ -284,6 +285,7 @@
 			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
+			<param name="documentset.name" expression="Understanding"/>
 		</xslt>
 	</target>
 	
