@@ -168,7 +168,7 @@
 		</xslt>
 	</target>
 	
-	<target name="techniques" depends="techniques-list, techniques-association, techniques-index">
+	<target name="techniques" depends="techniques-list, techniques-association, techniques-index, techniques-about">
 		<makeurl file="${basedir}/techniques/" property="base.techniques"/>
 		<makeurl file="${basedir}/techniques/technique-associations.xml" property="associations.file"/>
 		<mkdir dir="${basedir}/output/techniques/"/>
@@ -193,7 +193,6 @@
 		<copy file="css/a11y-light.css" tofile="output/techniques/a11y-light.css"/>
 		<copy file="script/highlight.min.js" todir="output/techniques/"/>
 		<copy file="techniques/techniques.css" todir="output/techniques/"/>
-		<copy file="techniques/about.html" tofile="output/techniques/about/index.html"/>
 		<copy todir="output/techniques/">
 			<fileset dir="techniques" includes="**/img/*"/>
 		</copy>
@@ -229,8 +228,32 @@
 		</xslt>
 	</target>
 	
+	<target name="techniques-about" description="Process the techniques about file">
+		<makeurl file="${basedir}/techniques/" property="base.techniques"/>
+		<mkdir dir="${basedir}/output/techniques/"/>
+		<xslt in="${inputdir.techniques}/about.html" out="${inputdir.techniques}/about-flat.html" style="xslt/flatten-document.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+			<param name="base.dir" expression="${base.techniques}"/>
+		</xslt>
+		<xslt in="${inputdir.techniques}/about-flat.html" out="${basedir}/output/techniques/about.html" style="xslt/process-index.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+			<param name="base.dir" expression="${base.techniques}"/>
+			<param name="guidelines.version" expression="${guidelines.version}"/>
+			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG${guidelines.version}/" if="publication"/>
+			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Understanding/" if="publication"/>
+			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Techniques/" if="publication"/>
+			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
+			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
+			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
+			<param name="documentset.name" expression="Techniques"/>
+		</xslt>
+		<copy file="css/base.css" todir="output/techniques/"/>
+	</target>
+	
 	<!-- Understanding -->
-	<target name="understanding" depends="guidelines-xml, guidelines-versions, techniques-list, understanding-index" description="Generate formatted Understanding docs">
+	<target name="understanding" depends="guidelines-xml, guidelines-versions, techniques-list, understanding-index, understanding-about" description="Generate formatted Understanding docs">
 		<makeurl file="${basedir}/understanding/" property="base.understanding"/>
 		<mkdir dir="${basedir}/output/understanding/"/>
 		<local name="output.dir"/>
@@ -249,9 +272,7 @@
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
 		</xslt>
-		<copy file="css/base.css" todir="output/understanding/"/>
 		<copy file="understanding/understanding.css" todir="output/understanding/"/>
-		<copy file="understanding/about.html" tofile="output/understanding/about/index.html"/>
 		<copy todir="output/understanding/img/" flatten="true">
 			<fileset dir="understanding">
 				<patternset includes="*/img/*"/>
@@ -287,6 +308,30 @@
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
 			<param name="documentset.name" expression="Understanding"/>
 		</xslt>
+	</target>
+	
+	<target name="understanding-about" description="Process the understanding about file">
+		<makeurl file="${basedir}/understanding/" property="base.understanding"/>
+		<mkdir dir="${basedir}/output/understanding/"/>
+		<xslt in="${inputdir.understanding}/about.html" out="${inputdir.understanding}/about-flat.html" style="xslt/flatten-document.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+			<param name="base.dir" expression="${base.understanding}"/>
+		</xslt>
+		<xslt in="${inputdir.understanding}/about-flat.html" out="${basedir}/output/understanding/about.html" style="xslt/process-index.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+			<param name="base.dir" expression="${base.understanding}"/>
+			<param name="guidelines.version" expression="${guidelines.version}"/>
+			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG${guidelines.version}/" if="publication"/>
+			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Understanding/" if="publication"/>
+			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Techniques/" if="publication"/>
+			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
+			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
+			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
+			<param name="documentset.name" expression="Understanding"/>
+		</xslt>
+		<copy file="css/base.css" todir="output/understanding/"/>
 	</target>
 	
 	<!-- Requirements -->

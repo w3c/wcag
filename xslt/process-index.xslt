@@ -15,12 +15,27 @@
 	<xsl:template match="/"><xsl:apply-templates/></xsl:template>
 	
 	<xsl:template match="html:body">
-		<xsl:call-template name="header">
-			<xsl:with-param name="documentset.name" select="$documentset.name"/>
-		</xsl:call-template>
-		<xsl:apply-templates/>
-		<xsl:call-template name="wai-site-footer"/>
-		<xsl:call-template name="site-footer"/>
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:call-template name="header">
+				<xsl:with-param name="documentset.name" select="$documentset.name"/>
+			</xsl:call-template>
+			<xsl:apply-templates/>
+			<xsl:call-template name="wai-site-footer"/>
+			<xsl:call-template name="site-footer"/>
+		</xsl:copy>
 	</xsl:template>
+	
+	<!--
+	<xsl:template match="html:section[@id = 'acknowledgements']/html:section">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<details>
+				<summary><h2><xsl:value-of select="wcag:find-heading(.)"/></h2></summary>
+				<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
+			</details>
+		</xsl:copy>
+	</xsl:template>
+	-->
 	
 </xsl:stylesheet>
