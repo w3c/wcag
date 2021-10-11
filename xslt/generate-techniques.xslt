@@ -193,6 +193,7 @@
 				</div>
 				<xsl:call-template name="wai-site-footer"/>
 				<xsl:call-template name="site-footer"/>
+		    <script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
 				<link rel="stylesheet" href="../a11y-light.css" />
 				<script src="../highlight.min.js" />
 				<script><xsl:text disable-output-escaping="yes">
