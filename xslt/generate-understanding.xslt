@@ -356,7 +356,7 @@
 		<xsl:variable name="lang" select="$meta/ancestor::guidelines/@lang"/>
 		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE html>
 ]]></xsl:text>
-		<html lang="{$lang}" xml:lang="{$lang}">
+		<html lang="{$lang}" xml:lang="{$lang}" dir="ltr">
 			<head>
 				<meta charset="UTF-8" />
 				<title><xsl:apply-templates select="//html:title"/></title>
