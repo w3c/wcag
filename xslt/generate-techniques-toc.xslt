@@ -33,18 +33,18 @@
 		<xsl:variable name="technology-id" select="wcag:generate-id(@name)"/>
 		<xsl:variable name="technology-title">
 			<xsl:choose>
-				<xsl:when test="@name = 'aria'"> ARIA Techniques</xsl:when>
-				<xsl:when test="@name = 'client-side-script'"> Client-Side Script Techniques</xsl:when>
-				<xsl:when test="@name = 'css'"> CSS Techniques</xsl:when>
-				<xsl:when test="@name = 'failures'"> Common Failures</xsl:when>
-				<xsl:when test="@name = 'flash'"> Flash Techniques</xsl:when>
-				<xsl:when test="@name = 'general'"> General Techniques</xsl:when>
-				<xsl:when test="@name = 'html'"> HTML Techniques</xsl:when>
-				<xsl:when test="@name = 'pdf'"> PDF Techniques</xsl:when>
-				<xsl:when test="@name = 'server-side-script'"> Server-Side Script Techniques</xsl:when>
-				<xsl:when test="@name = 'silverlight'"> Silverlight Techniques</xsl:when>
-				<xsl:when test="@name = 'smil'"> SMIL Techniques</xsl:when>
-				<xsl:when test="@name = 'text'"> Plain-Text Techniques</xsl:when>
+				<xsl:when test="@name = 'aria'">ARIA Techniques</xsl:when>
+				<xsl:when test="@name = 'client-side-script'">Client-Side Script Techniques</xsl:when>
+				<xsl:when test="@name = 'css'">CSS Techniques</xsl:when>
+				<xsl:when test="@name = 'failures'">Common Failures</xsl:when>
+				<xsl:when test="@name = 'flash'">Flash Techniques</xsl:when>
+				<xsl:when test="@name = 'general'">General Techniques</xsl:when>
+				<xsl:when test="@name = 'html'">HTML Techniques</xsl:when>
+				<xsl:when test="@name = 'pdf'">PDF Techniques</xsl:when>
+				<xsl:when test="@name = 'server-side-script'">Server-Side Script Techniques</xsl:when>
+				<xsl:when test="@name = 'silverlight'">Silverlight Techniques</xsl:when>
+				<xsl:when test="@name = 'smil'">SMIL Techniques</xsl:when>
+				<xsl:when test="@name = 'text'">Plain-Text Techniques</xsl:when>
 			</xsl:choose>
 		</xsl:variable>
 		<details>
