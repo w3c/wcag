@@ -24,30 +24,6 @@
 		<xsl:if test="$type != ''"><xsl:value-of select="$type"/><xsl:text> </xsl:text><xsl:value-of select="$meta/num"/><xsl:text>: </xsl:text></xsl:if><xsl:value-of select="$meta/name"/>
 	</xsl:template>
 	
-	<xsl:template name="navigation">
-		<xsl:param name="meta" tunnel="yes"/>
-		<div class="nav-container">
-			<div class="default-grid">
-				<nav class="nav" aria-label="Meta navigation">
-					<ul>
-							<li class="nav__item">
-									<a href=".">All Understanding documents</a>
-							</li>
-							<li class="nav__item">
-								<a href="/understanding/about">About Understanding documents</a>
-							</li>
-							<li class="nav__item">
-									<a href="/WAI/standards-guidelines/wcag/docs/">All WCAG 2 Guidance 
-										<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24" width="24">
-											<path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" d="M14 5C13.4477 5 13 4.55228 13 4C13 3.44772 13.4477 3 14 3H20C20.2652 3 20.5196 3.10536 20.7071 3.29289C20.8946 3.48043 21 3.73478 21 4L21 10C21 10.5523 20.5523 11 20 11C19.4477 11 19 10.5523 19 10L19 6.41422L9.70711 15.7071C9.31658 16.0976 8.68342 16.0976 8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929L17.5858 5H14ZM3 7C3 5.89543 3.89543 5 5 5H10C10.5523 5 11 5.44772 11 6C11 6.55228 10.5523 7 10 7H5V19H17V14C17 13.4477 17.4477 13 18 13C18.5523 13 19 13.4477 19 14V19C19 20.1046 18.1046 21 17 21H5C3.89543 21 3 20.1046 3 19V7Z" fill="#282828"></path>
-										</svg>
-									</a>
-							</li>
-					</ul>
-				</nav>
-			</div>
-		</div>
-	</xsl:template>
 	<xsl:template name="prevnext">
 		<xsl:param name="meta" tunnel="yes"/>
 		<nav class="pager" aria-label="Previous/Next Page">
@@ -391,42 +367,44 @@
 				<xsl:call-template name="header">
 					<xsl:with-param name="documentset.name">Understanding</xsl:with-param>
 				</xsl:call-template>
-				<xsl:call-template name="navigation"/>
-					<div class="default-grid">
-						<main class="main-content">
-							<h1><xsl:apply-templates select="//html:h1"/></h1>
-							<xsl:choose>
-								<xsl:when test="name($meta) = 'guideline' or name($meta) = 'success-criterion'">
-									<blockquote class="scquote">
-										<xsl:apply-templates select="$meta/content/html:p[1]" mode="sc-info">
-											<xsl:with-param name="sc-info"><xsl:call-template name="sc-info"/></xsl:with-param>
-										</xsl:apply-templates>
-										<xsl:apply-templates select="$meta/content/html:*[position() &gt; 1]" mode="sc-info"/>
-									</blockquote>
-									<xsl:apply-templates select="//html:section[@id = 'status']"/>
-									<xsl:apply-templates select="//html:section[@id = 'intent']"/>
-									<xsl:apply-templates select="//html:section[@id = 'benefits']"/>
-									<xsl:apply-templates select="//html:section[@id = 'examples']"/>
-									<xsl:apply-templates select="//html:section[@id = 'resources']"/>
-									<xsl:apply-templates select="//html:section[@id = 'techniques']"/>
-									<xsl:if test="name($meta) = 'guideline'">
-										<xsl:apply-templates select="//html:section[@id = 'advisory']" mode="gladvisory"/>
-										<xsl:call-template name="gl-sc"/>
-									</xsl:if>
-								</xsl:when>
-								<xsl:when test="name($meta) = 'understanding'">
-									<div>
-										<xsl:apply-templates select="descendant::html:body/node()[not(wcag:isheading(.))]"/>
-										<xsl:call-template name="key-terms"/>
-									</div>
-								</xsl:when>
-							</xsl:choose>
-							<xsl:call-template name="prevnext"/>
-							<xsl:call-template name="back-to-top"/>
-						</main>
-						<xsl:call-template name="sidebar"/>
-						<xsl:call-template name="help-improve"/>
-					</div>
+				<xsl:call-template name="navigation">
+					<xsl:with-param name="documentset.name">Understanding</xsl:with-param>
+				</xsl:call-template>
+				<div class="default-grid">
+					<main class="main-content">
+						<h1><xsl:apply-templates select="//html:h1"/></h1>
+						<xsl:choose>
+							<xsl:when test="name($meta) = 'guideline' or name($meta) = 'success-criterion'">
+								<blockquote class="scquote">
+									<xsl:apply-templates select="$meta/content/html:p[1]" mode="sc-info">
+										<xsl:with-param name="sc-info"><xsl:call-template name="sc-info"/></xsl:with-param>
+									</xsl:apply-templates>
+									<xsl:apply-templates select="$meta/content/html:*[position() &gt; 1]" mode="sc-info"/>
+								</blockquote>
+								<xsl:apply-templates select="//html:section[@id = 'status']"/>
+								<xsl:apply-templates select="//html:section[@id = 'intent']"/>
+								<xsl:apply-templates select="//html:section[@id = 'benefits']"/>
+								<xsl:apply-templates select="//html:section[@id = 'examples']"/>
+								<xsl:apply-templates select="//html:section[@id = 'resources']"/>
+								<xsl:apply-templates select="//html:section[@id = 'techniques']"/>
+								<xsl:if test="name($meta) = 'guideline'">
+									<xsl:apply-templates select="//html:section[@id = 'advisory']" mode="gladvisory"/>
+									<xsl:call-template name="gl-sc"/>
+								</xsl:if>
+							</xsl:when>
+							<xsl:when test="name($meta) = 'understanding'">
+								<div>
+									<xsl:apply-templates select="descendant::html:body/node()[not(wcag:isheading(.))]"/>
+									<xsl:call-template name="key-terms"/>
+								</div>
+							</xsl:when>
+						</xsl:choose>
+						<xsl:call-template name="prevnext"/>
+						<xsl:call-template name="back-to-top"/>
+					</main>
+					<xsl:call-template name="sidebar"/>
+					<xsl:call-template name="help-improve"/>
+				</div>
 				<xsl:call-template name="wai-site-footer"/>
 				<xsl:call-template name="site-footer"/>
 			</body>
