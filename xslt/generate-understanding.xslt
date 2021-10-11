@@ -439,8 +439,6 @@
 			<h2 style="margin-top: 0" id="about-this-page">About this page</h2>
 			<p><em>Understanding documents</em> explain intent, benefits, examples and key terms for WCAG success criteria.</p>
 			<dl>
-				<!-- @@@ this if statement does not work; we want to 
-				only print <dt>Level</dt> if there is a value in $meta/level -->
 				<xsl:if test="string-length($meta/level) > 0">
 				<dt>Level</dt>
 				<dd><xsl:value-of select="$meta/level"/></dd>
