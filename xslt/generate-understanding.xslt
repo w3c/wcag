@@ -34,7 +34,7 @@
 									<a href=".">All Understanding documents</a>
 							</li>
 							<li class="nav__item">
-								<a href="#">About Understanding documents</a>
+								<a href="/understanding/about">About Understanding documents</a>
 							</li>
 							<li class="nav__item">
 									<a href="/WAI/standards-guidelines/wcag/docs/">All WCAG 2 Guidance 
