@@ -275,7 +275,7 @@
 									</xsl:choose>
 								</li>
 							</xsl:when>
-							<xsl:when test="$documentset.name = 'Understanding'">
+							<xsl:when test="$documentset.name = 'Understanding documents'">
 							<li class="nav__item">
 								<xsl:choose>
 									<xsl:when test="$navigation.current = 'all'">

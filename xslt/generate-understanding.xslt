@@ -366,10 +366,10 @@
 			</head>
 			<body dir="ltr">
 				<xsl:call-template name="header">
-					<xsl:with-param name="documentset.name">Understanding</xsl:with-param>
+					<xsl:with-param name="documentset.name">Understanding documents</xsl:with-param>
 				</xsl:call-template>
 				<xsl:call-template name="navigation">
-					<xsl:with-param name="documentset.name">Understanding</xsl:with-param>
+					<xsl:with-param name="documentset.name">Understanding documents</xsl:with-param>
 				</xsl:call-template>
 				<div class="default-grid">
 					<main class="main-content">
