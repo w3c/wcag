@@ -8,6 +8,7 @@
 	version="3.0">
 	
 	<xsl:param name="guidelines.version"/>
+	<xsl:variable name="guidelines.version.decimal" select="replace($guidelines.version, '(\d)(\d)', '$1.$2')" />
 	
 	<xsl:param name="loc.guidelines">/guidelines/</xsl:param>
 	<xsl:param name="loc.understanding">/understanding/</xsl:param>
@@ -32,7 +33,7 @@
 	
 	<xsl:function name="wcag:generate-id">
 		<xsl:param name="title"/>
-		<xsl:value-of select="lower-case(replace(replace($title, ' ', '-'), '[,():]', ''))"/>
+		<xsl:value-of select="lower-case(replace(replace($title, '\s+', '-'), '[\s,\():]+', ''))"/>
 	</xsl:function>
 	
 	<xsl:function name="wcag:find-heading">

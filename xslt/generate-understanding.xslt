@@ -187,12 +187,12 @@
 	
 	<xsl:template name="key-terms">
 		<xsl:param name="meta" tunnel="yes"/>
-		<xsl:variable name="termrefs">
-			<xsl:sequence>
-				<xsl:apply-templates select="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]" mode="find-key-terms"/>
-			</xsl:sequence>
-		</xsl:variable>
-		<xsl:if test="$termrefs">
+		<xsl:if test="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]">
+			<xsl:variable name="termrefs">
+				<xsl:sequence>
+					<xsl:apply-templates select="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]" mode="find-key-terms"/>
+				</xsl:sequence>
+			</xsl:variable>
 			<xsl:variable name="termids" as="node()*">
 				<xsl:for-each select="distinct-values($termrefs/name)">
 					<xsl:copy-of select="$meta/ancestor::guidelines/term[name = current()]"/>

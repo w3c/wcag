@@ -41,7 +41,7 @@ var respecConfig = {
 	editors: [
 		{
 			name: "Chuck Adams",
-			url: "https://www.oracle.com/",
+			//url: "https://www.oracle.com/",
 			mailto: "charles.adams@oracle.com",
 			company: "Oracle",
 			companyURI: "https://www.oracle.com/",
@@ -49,7 +49,7 @@ var respecConfig = {
 		},
 		{
 			name: "Alastair Campbell",
-			url: "https://www.nomensa.com/",
+			//url: "https://www.nomensa.com/",
 			mailto: "acampbell@nomensa.com",
 			company: "Nomensa",
 			companyURI: "https://www.nomensa.com/",
@@ -63,15 +63,15 @@ var respecConfig = {
 		},
 		{
 			name: "Michael Cooper",
-			url: 'https://www.w3.org',
-			mailto: "cooper@w3.org",
+			url: 'https://www.w3.org/People/cooper',
+			//mailto: "cooper@w3.org",
 			company: "W3C",
 			companyURI: "https://www.w3.org",
 			w3cid: 34017
 		},
 		{
 			name: "Andrew Kirkpatrick",
-			url: "http://www.adobe.com/",
+			//url: "http://www.adobe.com/",
 			mailto: "akirkpat@adobe.com",
 			company: "Adobe",
 			companyURI: "http://www.adobe.com/",
@@ -143,6 +143,6 @@ var respecConfig = {
 
 	maxTocLevel: 4,
 	
-	postProcess: [addTextSemantics, swapInDefinitions]
+	postProcess: [addTextSemantics, swapInDefinitions, linkUnderstanding]
 	
 };
