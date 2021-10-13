@@ -195,7 +195,7 @@
 
 	<xsl:template name="header">
 		<xsl:param name="documentset.name" required="yes"/>
-		<header id="site-header" class="default-grid with-gap">
+		<header class="default-grid with-gap minimal-header-container">
 				<div class="minimal-header">
 						<span class="minimal-header-name"><a href="../">WCAG <xsl:value-of select="$guidelines.version.decimal"/>: <xsl:value-of select="$documentset.name"/></a></span>
 						<div class="minimal-header-logo">
