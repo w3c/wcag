@@ -291,7 +291,7 @@
 							<li class="nav__item">
 								<xsl:choose>
 									<xsl:when test="$navigation.current = 'about'">
-										<a href="/understanding/about" aria-current="page" class="current">About Understanding documents</a>
+										<a href="/understanding/about" aria-current="page" class="active">About Understanding documents</a>
 									</xsl:when>
 									<xsl:otherwise>
 										<a href="/understanding/about">About Understanding documents</a>
