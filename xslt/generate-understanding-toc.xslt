@@ -22,7 +22,7 @@
 				<h2>Understanding Guidelines and Success Criteria</h2>
 				<xsl:apply-templates select="principle | guideline | success-criterion"/>
 				<h2>Other Understanding documents</h2>
-				<ul class="toc-understanding">
+				<ul class="toc-wcag-docs">
 				<xsl:apply-templates select="understanding"/>
 				</ul>
 		</xsl:result-document>
@@ -47,13 +47,13 @@
 			</xsl:otherwise>				
 		</xsl:choose>
 		<xsl:if test="guideline">
-			<ol class="toc toc-understanding toc-understanding-guideline">
+			<ol class="toc toc-wcag-docs toc-understanding-guideline">
 				<xsl:apply-templates select="guideline"/>
 			</ol>
 		</xsl:if>
 		<xsl:if test="success-criterion">
 			<li>
-				<ol class="toc toc-understanding">
+				<ol class="toc toc-wcag-docs">
 					<xsl:apply-templates select="success-criterion"/>
 				</ol>
 			</li>

@@ -47,19 +47,15 @@
 				<xsl:when test="@name = 'text'">Plain-Text Techniques</xsl:when>
 			</xsl:choose>
 		</xsl:variable>
-		<details>
-			<summary>
-				<h2 id="{$technology-id}">
-					<xsl:value-of select="$technology-title"/>
-					<span class="permalink"><a href="#{$technology-id}" aria-label="Permalink for {$technology-title}" title="Permalink for {$technology-title}"><span>§</span></a></span>
-				</h2>
-			</summary>
-			<ul>
-				<xsl:apply-templates select="technique">
-					<xsl:sort select="wcag:number-in-id(@id)" data-type="number"/>
-				</xsl:apply-templates>
-			</ul>
-		</details>
+		<h2 id="{$technology-id}">
+			<xsl:value-of select="$technology-title"/>
+			<span class="permalink"><a href="#{$technology-id}" aria-label="Permalink for {$technology-title}" title="Permalink for {$technology-title}"><span>§</span></a></span>
+		</h2>
+		<ul class="toc-wcag-docs">
+		<xsl:apply-templates select="technique">
+			<xsl:sort select="wcag:number-in-id(@id)" data-type="number"/>
+		</xsl:apply-templates>
+		</ul>
 	</xsl:template>
 	
 	<xsl:template match="technique">
