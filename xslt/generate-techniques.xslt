@@ -160,6 +160,7 @@
 					<main class="main-content">
 						<xsl:apply-templates select="//html:h1"/>
 						<xsl:call-template name="most-important-meta" />
+						<div class="excol-all"></div>
 						<xsl:call-template name="description"/>
 						<xsl:call-template name="examples"/>
 						<xsl:call-template name="applicability"/>
@@ -171,7 +172,6 @@
 				</div>
 				<xsl:call-template name="wai-site-footer"/>
 				<xsl:call-template name="site-footer"/>
-		    <script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
 				<link rel="stylesheet" href="../a11y-light.css" />
 				<script src="../highlight.min.js" />
 				<script><xsl:text disable-output-escaping="yes">
@@ -179,8 +179,11 @@
 			  	document.querySelectorAll('pre').forEach((el) => {
     				hljs.highlightElement(el);
   				});
-				});</xsl:text>
+				});
+				var translationStrings = {}; /* fix WAI JS */
+				</xsl:text>
 				</script>
+		    <script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
 			</body>
 		</html>
 	</xsl:template>
@@ -343,7 +346,7 @@
 		<xsl:choose>
 			<xsl:when test="wcag:section-meaningfully-exists('description', $description)">
 				<section id="description">
-					<details>
+					<details open="open">
 						<summary><h2>Description</h2></summary>
 					<xsl:apply-templates select="$description/html:*[not(wcag:isheading(.))]"/>
 					</details>

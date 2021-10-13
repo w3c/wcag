@@ -382,6 +382,7 @@
 									</xsl:apply-templates>
 									<xsl:apply-templates select="$meta/content/html:*[position() &gt; 1]" mode="sc-info"/>
 								</blockquote>
+								<div class="excol-all"></div>
 								<xsl:apply-templates select="//html:section[@id = 'status']"/>
 								<xsl:apply-templates select="//html:section[@id = 'intent']"/>
 								<xsl:apply-templates select="//html:section[@id = 'benefits']"/>
@@ -408,6 +409,11 @@
 				</div>
 				<xsl:call-template name="wai-site-footer"/>
 				<xsl:call-template name="site-footer"/>
+				<script><xsl:text disable-output-escaping="yes">
+				var translationStrings = {}; /* fix WAI JS */
+				</xsl:text>
+				</script>
+		    <script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
 			</body>
 		</html>
 	</xsl:template>
