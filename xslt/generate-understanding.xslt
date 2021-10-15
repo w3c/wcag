@@ -24,82 +24,153 @@
 		<xsl:if test="$type != ''"><xsl:value-of select="$type"/><xsl:text> </xsl:text><xsl:value-of select="$meta/num"/><xsl:text>: </xsl:text></xsl:if><xsl:value-of select="$meta/name"/>
 	</xsl:template>
 	
-	<xsl:template name="navigation">
+	<xsl:template name="prevnext">
 		<xsl:param name="meta" tunnel="yes"/>
-		<nav>
+		<nav class="pager" aria-label="Previous/Next Page">
 		<ul id="navigation">
-			<li><a href="." title="Table of Contents">Contents</a></li>
 			<xsl:choose>
 				<xsl:when test="name($meta) = 'guideline'">
 					<xsl:choose>
 						<xsl:when test="$meta/preceding-sibling::guideline">
-							<li><a href="{$meta/preceding-sibling::guideline[1]/file/@href}">Previous <abbr title="Guideline">GL</abbr>: <xsl:value-of select="$meta/preceding-sibling::guideline[1]/name"/></a></li>
+							<li class="pager--item previous">
+								<a href="{$meta/preceding-sibling::guideline[1]/file/@href}">
+									<xsl:call-template name="prevnext-previous"/>
+									<span class="pager--item-text">
+										<span class="pager--item-text-direction">Previous:</span>
+										<span class="pager--item-text-target">Guideline: <xsl:value-of select="$meta/preceding-sibling::guideline[1]/name"/></span>
+									</span>
+								</a>
+							</li>
 						</xsl:when>
 						<xsl:when test="$meta/parent::principle/preceding-sibling::principle">
-							<li><a href="{$meta/parent::principle/preceding-sibling::principle[1]/guideline[last()]/file/@href}">Previous <abbr title="Guideline">GL</abbr>: <xsl:value-of select="$meta/parent::principle/preceding-sibling::principle[1]/guideline[last()]/name"/></a></li>
+							<li class="pager--item previous">
+								<a href="{$meta/parent::principle/preceding-sibling::principle[1]/guideline[last()]/file/@href}">
+									<xsl:call-template name="prevnext-previous"/>
+									<span class="pager--item-text">
+										<span class="pager--item-text-direction">Previous Guideline</span>: 
+										<span class="pager--item-text-target"><xsl:value-of select="$meta/parent::principle/preceding-sibling::principle[1]/guideline[last()]/name"/></span>
+									</span>
+								</a>
+							</li>
 						</xsl:when>
 						<xsl:when test="$meta/parent::principle/preceding-sibling::understanding">
-							<li><a href="{$meta/parent::principle/preceding-sibling::understanding[1]/file/@href}"><xsl:value-of select="$meta/parent::principle/preceding-sibling::understanding[1]/name"/></a></li>
+							<li class="pager--item previous">
+								<a href="{$meta/parent::principle/preceding-sibling::understanding[1]/file/@href}">
+									<xsl:call-template name="prevnext-previous"/>
+									<span class="pager--item-text">
+										<span class="pager--item-text-target"><xsl:value-of select="$meta/parent::principle/preceding-sibling::understanding[1]/name"/></span>
+									</span>
+								</a>
+							</li>
 						</xsl:when>
 					</xsl:choose>
-					<li><a href="{$meta/success-criterion[1]/file/@href}">First <abbr title="Success Criterion">SC</abbr>: <xsl:value-of select="$meta/success-criterion[1]/name"/></a></li>
 					<xsl:choose>
 						<xsl:when test="$meta/following-sibling::guideline">
-							<li><a href="{$meta/following-sibling::guideline[1]/file/@href}">Next <abbr title="Guideline">GL</abbr>: <xsl:value-of select="$meta/following-sibling::guideline[1]/name"/></a></li>
+							<li class="pager--item next">
+								<a href="{$meta/following-sibling::guideline[1]/file/@href}">
+									<xsl:call-template name="prevnext-next"/>
+									<span class="pager--item-text">
+									<span class="pager--item-text-direction">Next Guideline:</span> 
+									<span class="pager--item-text-target"><xsl:value-of select="$meta/following-sibling::guideline[1]/name"/></span>
+									</span>
+								</a>
+							</li>
 						</xsl:when>
 						<xsl:when test="$meta/parent::principle/following-sibling::principle">
-							<li><a href="{$meta/parent::principle/following-sibling::principle[1]/guideline[1]/file/@href}">Next <abbr title="Guideline">GL</abbr>: <xsl:value-of select="$meta/parent::principle/following-sibling::principle[1]/guideline[1]/name"/></a></li>
+							<li class="pager--item next">
+								<a href="{$meta/parent::principle/following-sibling::principle[1]/guideline[1]/file/@href}">
+									<xsl:call-template name="prevnext-next"/>
+									<span class="pager--item-text">
+										<span class="pager--item-text-direction">Next Guideline:</span> 
+										<span class="pager--item-text-target"><xsl:value-of select="$meta/parent::principle/following-sibling::principle[1]/guideline[1]/name"/></span>
+									</span>
+								</a>
+							</li>
 						</xsl:when>
 						<xsl:when test="$meta/parent::principle/following-sibling::understanding">
-							<li><a href="{$meta/parent::principle/following-sibling::understanding[1]/file/@href}"><xsl:value-of select="$meta/parent::principle/following-sibling::understanding[1]/name"/></a></li>
+							<li class="pager--item next">
+								<a href="{$meta/parent::principle/following-sibling::understanding[1]/file/@href}">
+									<xsl:call-template name="prevnext-next"/>
+									<span class="pager--item-text">
+										<span class="pager--item-text-target">
+											<xsl:value-of select="$meta/parent::principle/following-sibling::understanding[1]/name"/>
+										</span>
+									</span>
+								</a>
+							</li>
 						</xsl:when>
 					</xsl:choose>
 				</xsl:when>
 				<xsl:when test="name($meta) = 'success-criterion'">
-					<li><a href="{$meta/parent::guideline[1]/file/@href}"><abbr title="Guideline">GL</abbr>: <xsl:value-of select="$meta/parent::guideline[1]/name"/></a></li>
+					<li class="pager--item context"><a href="{$meta/parent::guideline[1]/file/@href}"><span class="pager--item-text"><span class="pager--item-text-direction"><abbr title="Guideline">Part of Guideline</abbr>:</span> <span class="pager--item-text-target"><xsl:value-of select="$meta/parent::guideline[1]/name"/></span></span></a></li>
 					<xsl:choose>
 						<xsl:when test="$meta/preceding-sibling::success-criterion">
-							<li><a href="{$meta/preceding-sibling::success-criterion[1]/file/@href}">Previous <abbr title="Success Criterion">SC</abbr>: <xsl:value-of select="$meta/preceding-sibling::success-criterion[1]/name"/></a></li>
+							<li class="pager--item previous">
+								<a href="{$meta/preceding-sibling::success-criterion[1]/file/@href}">
+									<xsl:call-template name="prevnext-previous"/>
+									<span class="pager--item-text">
+										<span class="pager--item-text-direction">Previous <abbr title="Success Criterion">SC</abbr>:</span> 
+										<span class="pager--item-text-target"><xsl:value-of select="$meta/preceding-sibling::success-criterion[1]/name"/></span>
+									</span>
+								</a>
+							</li>
 						</xsl:when>
 						<xsl:when test="$meta/parent::guideline/preceding-sibling::guideline">
-							<li><a href="{$meta/parent::guideline/preceding-sibling::guideline[1]/success-criterion[last()]/file/@href}">Previous <abbr title="Success Criterion">SC</abbr>: <xsl:value-of select="$meta/parent::guideline/preceding-sibling::guideline[1]/success-criterion[last()]/name"/></a></li>
+							<li class="pager--item previous">
+								<a href="{$meta/parent::guideline/preceding-sibling::guideline[1]/success-criterion[last()]/file/@href}">
+									<xsl:call-template name="prevnext-previous"/>
+									<span class="pager--item-text">
+										<span class="pager--item-text-direction">Previous <abbr title="Success Criterion">SC</abbr>:</span>
+										<span class="pager--item-text-target"><xsl:value-of select="$meta/parent::guideline/preceding-sibling::guideline[1]/success-criterion[last()]/name"/></span>
+									</span>
+								</a>
+							</li>
+							<li class="pager--item previous">
+								<a href="{$meta/parent::guideline/preceding-sibling::guideline[1]/success-criterion[last()]/file/@href}">
+									<xsl:call-template name="prevnext-previous"/>
+									<span class="pager--item-text">
+										<span class="pager--item-text-direction">Previous <abbr title="Success Criterion">SC</abbr>:</span>
+										<span class="pager--item-text-target"><xsl:value-of select="$meta/parent::guideline/preceding-sibling::guideline[1]/success-criterion[last()]/name"/></span>
+									</span>
+								</a>
+							</li>
 						</xsl:when>
 						<xsl:when test="$meta/ancestor::principle/preceding-sibling::principle">
-							<li><a href="{$meta/ancestor::principle/preceding-sibling::principle[1]/guideline[last()]/success-criterion[last()]/file/@href}">Previous <abbr title="Success Criterion">SC</abbr>: <xsl:value-of select="$meta/ancestor::principle/preceding-sibling::principle[1]/guideline[last()]/success-criterion[last()]/name"/></a></li>
+							<li class="pager--item previous"><a href="{$meta/ancestor::principle/preceding-sibling::principle[1]/guideline[last()]/success-criterion[last()]/file/@href}">	<xsl:call-template name="prevnext-previous"/><span class="pager--item-text"><span class="pager--item-text-direction">Previous <abbr title="Success Criterion">SC</abbr>:</span> <span class="pager--item-text-target"><xsl:value-of select="$meta/ancestor::principle/preceding-sibling::principle[1]/guideline[last()]/success-criterion[last()]/name"/></span></span></a></li>
 						</xsl:when>
 						<xsl:when test="$meta/ancestor::principle/preceding-sibling::understanding">
-							<li><a href="{$meta/ancestor::principle/preceding-sibling::understanding[1]/file/@href}">Previous: <xsl:value-of select="$meta/ancestor::principle/preceding-sibling::understanding[1]/name"/></a></li>
+							<li class="pager--item previous"><a href="{$meta/ancestor::principle/preceding-sibling::understanding[1]/file/@href}"><xsl:call-template name="prevnext-previous"/><span class="pager--item-text"><span class="pager--item-text-direction">Previous: </span><span class="pager--item-text-target"><xsl:value-of select="$meta/ancestor::principle/preceding-sibling::understanding[1]/name"/></span></span></a></li>
 						</xsl:when>
 					</xsl:choose>
 					<xsl:choose>
 						<xsl:when test="$meta/following-sibling::success-criterion">
-							<li><a href="{$meta/following-sibling::success-criterion[1]/file/@href}">Next <abbr title="Success Criterion">SC</abbr>: <xsl:value-of select="$meta/following-sibling::success-criterion[1]/name"/></a></li>
+							<li class="pager--item next"><a href="{$meta/following-sibling::success-criterion[1]/file/@href}"><xsl:call-template name="prevnext-next"/><span class="pager--item-text"><span class="pager--item-text-direction">Next <abbr title="Success Criterion">SC</abbr>:</span> <span class="pager--item-text-target"><xsl:value-of select="$meta/following-sibling::success-criterion[1]/name"/></span></span></a></li>
 						</xsl:when>
 						<xsl:when test="$meta/parent::guideline/following-sibling::guideline">
-							<li><a href="{$meta/parent::guideline/following-sibling::guideline[1]/success-criterion[1]/file/@href}">Next <abbr title="Success Criterion">SC</abbr>: <xsl:value-of select="$meta/parent::guideline/following-sibling::guideline[1]/success-criterion[1]/name"/></a></li>
+							<li class="pager--item next"><a href="{$meta/parent::guideline/following-sibling::guideline[1]/success-criterion[1]/file/@href}"><xsl:call-template name="prevnext-next"/><span class="pager--item-text"><span class="pager--item-text-direction">Next <abbr title="Success Criterion">SC</abbr>:</span> <span class="pager--item-text-target"><xsl:value-of select="$meta/parent::guideline/following-sibling::guideline[1]/success-criterion[1]/name"/></span></span></a></li>
 						</xsl:when>
 						<xsl:when test="$meta/ancestor::principle/following-sibling::principle">
-							<li><a href="{$meta/ancestor::principle/following-sibling::principle[1]/guideline[1]/success-criterion[1]/file/@href}">Next <abbr title="Success Criterion">SC</abbr>: <xsl:value-of select="$meta/ancestor::principle/following-sibling::principle[1]/guideline[1]/success-criterion[1]/name"/></a></li>
+							<li class="pager--item next"><a href="{$meta/ancestor::principle/following-sibling::principle[1]/guideline[1]/success-criterion[1]/file/@href}">					<xsl:call-template name="prevnext-next"/><span class="pager--item-text"><span class="pager--item-text-direction">Next <abbr title="Success Criterion">SC</abbr>: </span><span class="pager--item-text-target"><xsl:value-of select="$meta/ancestor::principle/following-sibling::principle[1]/guideline[1]/success-criterion[1]/name"/></span></span></a></li>
 						</xsl:when>
 						<xsl:when test="$meta/ancestor::principle/following-sibling::understanding">
-							<li><a href="{$meta/ancestor::principle/following-sibling::understanding[1]/file/@href}">Next: <xsl:value-of select="$meta/ancestor::principle/following-sibling::understanding[1]/name"/></a></li>
+							<li class="pager--item next"><a href="{$meta/ancestor::principle/following-sibling::understanding[1]/file/@href}"><xsl:call-template name="prevnext-next"/><span class="pager--item-text"><span class="pager--item-text-direction">Next: </span><span class="pager--item-text-target"><xsl:value-of select="$meta/ancestor::principle/following-sibling::understanding[1]/name"/></span></span></a></li>
 						</xsl:when>
 					</xsl:choose>
 				</xsl:when>
 				<xsl:when test="name($meta) = 'understanding'">
 					<xsl:if test="name($meta/preceding-sibling::element()[1]) = 'understanding'">
-						<li><a href="{$meta/preceding-sibling::understanding[1]/file/@href}">Previous: <xsl:value-of select="$meta/preceding-sibling::understanding[1]/name"/></a></li>
+						<li class="pager--item previous"><a href="{$meta/preceding-sibling::understanding[1]/file/@href}"><xsl:call-template name="prevnext-previous"/><span class="pager--item-text"><span class="pager--item-text-direction">Previous: </span><span class="pager--item-text-target"><xsl:value-of select="$meta/preceding-sibling::understanding[1]/name"/></span></span></a></li>
 					</xsl:if>
 					<xsl:if test="name($meta/preceding-sibling::element()[1]) = 'principle'">
-						<li><a href="{$meta/preceding-sibling::principle[1]/guideline[last()]/file/@href}">Previous <abbr title="Guideline">GL</abbr>: <xsl:value-of select="$meta/preceding-sibling::principle[1]/guideline[last()]/name"/></a></li>
-						<li><a href="{$meta/preceding-sibling::principle[1]/guideline[last()]/success-criterion[last()]/file/@href}">Previous <abbr title="Success Criterion">SC</abbr>: <xsl:value-of select="$meta/preceding-sibling::principle[1]/guideline[last()]/success-criterion[last()]/name"/></a></li>
+						<li class="pager--item previous"><a href="{$meta/preceding-sibling::principle[1]/guideline[last()]/file/@href}"><xsl:call-template name="prevnext-previous"/><span class="pager--item-text-direction"><span class="pager--item-text">Previous Guideline:</span> <span class="pager--item-text-target"><xsl:value-of select="$meta/preceding-sibling::principle[1]/guideline[last()]/name"/></span></span></a></li>
+						<li class="pager--item previous"><a href="{$meta/preceding-sibling::principle[1]/guideline[last()]/success-criterion[last()]/file/@href}"><xsl:call-template name="prevnext-previous"/><span class="pager--item-text"><span class="pager--item-text-direction">Previous <abbr title="Success Criterion">SC</abbr>:</span> <span class="pager--item-text-target"><xsl:value-of select="$meta/preceding-sibling::principle[1]/guideline[last()]/success-criterion[last()]/name"/></span></span></a></li>
 					</xsl:if>
-					<xsl:if test="name($meta/following-sibling::element()[1]) = 'principle'">
-						<li><a href="{$meta/following-sibling::principle[1]/guideline[1]/file/@href}">First <abbr title="Guideline">GL</abbr>: <xsl:value-of select="$meta/following-sibling::principle[1]/guideline[1]/name"/></a></li>
-						<li><a href="{$meta/following-sibling::principle[1]/guideline[1]/success-criterion[1]/file/@href}">First <abbr title="Success Criterion">SC</abbr>: <xsl:value-of select="$meta/following-sibling::principle[1]/guideline[1]/success-criterion[1]/name"/></a></li>
+					<xsl:if test="name($meta/following-sibling::element()[1]) = 'primaar nciple'">
+						<li class="pager--item previous"><a href="{$meta/following-sibling::principle[1]/guideline[1]/file/@href}"><xsl:call-template name="prevnext-previous"/><span class="pager--item-text"><span class="pager--item-text-direction">First Guideline: </span><span class="pager--item-text-target"><xsl:value-of select="$meta/following-sibling::principle[1]/guideline[1]/name"/></span></span></a></li>
+						<li class="pager--item next"><a href="{$meta/following-sibling::principle[1]/guideline[1]/success-criterion[1]/file/@href}"><xsl:call-template name="prevnext-previous"/><span class="pager--item-text"><span class="pager--item-text-direction">First <abbr title="Success Criterion">SC</abbr>: </span><span class="pager--item-text-target"><xsl:value-of select="$meta/following-sibling::principle[1]/guideline[1]/success-criterion[1]/name"/></span></span></a></li>
 					</xsl:if>
 					<xsl:if test="name($meta/following-sibling::element()[1]) = 'understanding'">
-						<li><a href="{$meta/following-sibling::understanding[1]/file/@href}">Next: <xsl:value-of select="$meta/following-sibling::understanding[1]/name"/></a></li>
+						<li class="pager--item next"><a href="{$meta/following-sibling::understanding[1]/file/@href}"><xsl:call-template name="prevnext-next"/><span class="pager--item-text"><span class="pager--item-text-direction">Next: </span><span class="pager--item-text-target"><xsl:value-of select="$meta/following-sibling::understanding[1]/name"/></span></span></a></li>
 					</xsl:if>
 				</xsl:when>
 			</xsl:choose>
@@ -149,15 +220,30 @@
 		</nav>
 	</xsl:template>
 	
+
+	<xsl:template name="prevnext-previous">
+		<svg focusable="false" aria-hidden="true" class="icon-arrow-left pager--item-icon" viewBox="0 0 25 28">
+			<path d="M24 14v2c0 1.062-0.703 2-1.828 2h-11l4.578 4.594c0.375 0.359 0.594 0.875 0.594 1.406s-0.219 1.047-0.594 1.406l-1.172 1.188c-0.359 0.359-0.875 0.578-1.406 0.578s-1.047-0.219-1.422-0.578l-10.172-10.187c-0.359-0.359-0.578-0.875-0.578-1.406s0.219-1.047 0.578-1.422l10.172-10.156c0.375-0.375 0.891-0.594 1.422-0.594s1.031 0.219 1.406 0.594l1.172 1.156c0.375 0.375 0.594 0.891 0.594 1.422s-0.219 1.047-0.594 1.422l-4.578 4.578h11c1.125 0 1.828 0.938 1.828 2z"/>
+		</svg>
+	</xsl:template>
+
+	<xsl:template name="prevnext-next">
+		<svg focusable="false" aria-hidden="true" class="icon-arrow-right pager--item-icon" viewBox="0 0 23 28">
+			<path d="M23 15c0 0.531-0.203 1.047-0.578 1.422l-10.172 10.172c-0.375 0.359-0.891 0.578-1.422 0.578s-1.031-0.219-1.406-0.578l-1.172-1.172c-0.375-0.375-0.594-0.891-0.594-1.422s0.219-1.047 0.594-1.422l4.578-4.578h-11c-1.125 0-1.828-0.938-1.828-2v-2c0-1.062 0.703-2 1.828-2h11l-4.578-4.594c-0.375-0.359-0.594-0.875-0.594-1.406s0.219-1.047 0.594-1.406l1.172-1.172c0.375-0.375 0.875-0.594 1.406-0.594s1.047 0.219 1.422 0.594l10.172 10.172c0.375 0.359 0.578 0.875 0.578 1.406z"/>		
+		</svg>
+	</xsl:template>
+
 	<xsl:template name="gl-sc">
 		<xsl:param name="meta" tunnel="yes"/>
 		<section id="success-criteria">
-			<h2>Success Criteria for this Guideline</h2>
+			<details>
+			<summary><h2>Success Criteria for this Guideline</h2></summary>
 			<ul>
 				<xsl:for-each select="$meta/success-criterion">
 					<li><a href="{file/@href}"><xsl:value-of select="num"/><xsl:text> </xsl:text><xsl:value-of select="name"/></a></li>
 				</xsl:for-each>
 			</ul>
+			</details>
 		</section>
 	</xsl:template>
 	
@@ -198,13 +284,47 @@
 					<xsl:copy-of select="$meta/ancestor::guidelines/term[name = current()]"/>
 				</xsl:for-each>
 			</xsl:variable>
-			<section id="key-terms">
-				<h2>Key Terms</h2>
 				<xsl:apply-templates select="$termids" mode="key-terms">
 					<xsl:sort select="id"/>
 				</xsl:apply-templates>
+		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template name="act">
+		<xsl:param name="meta" tunnel="yes"/>
+		
+		<xsl:if test="$act.doc//func:array[@key = 'successCriteria'][func:string = $meta/@id]">
+			<section id="test-rules">
+				<details>
+				<summary><h2>Test Rules</h2></summary>
+				<p>The following are Test Rules for certain aspects of this Success Criterion. It is not necessary to use these particular Test Rules to check for conformance with WCAG, but they are defined and approved test methods. For information on using Test Rules, see <a href="understanding-act-rules.html">Understanding Test Rules for WCAG Success Criteria</a>.</p>
+				<ul>
+					<xsl:for-each select="$act.doc//func:array[@key = 'successCriteria']/func:string[. = $meta/@id]">
+						<li><a href="/WAI{ancestor::func:map/func:string[@key = 'permalink']}"><xsl:value-of select="ancestor::func:map/func:string[@key = 'title']"/></a></li>
+					</xsl:for-each>
+				</ul>
+				</details>
 			</section>
 		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="html:a[not(@href)]" mode="find-key-terms" priority="1">
+		<xsl:param name="meta" tunnel="yes"/>
+		<xsl:param name="list-so-far"></xsl:param>
+		<xsl:variable name="canonical-name" select="$meta/ancestor::guidelines/term[name = lower-case(normalize-space(current()))]/name[1]"/>
+		<xsl:choose>
+			<xsl:when test="empty($canonical-name)">
+				<xsl:message>Unable to find term "<xsl:value-of select="."/>" in "<xsl:value-of select="$meta/name"/> (<xsl:value-of select="$meta/name()"/>)"; key terms list will be incomplete.</xsl:message>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:sequence><xsl:copy-of select="$canonical-name"/></xsl:sequence>
+				<xsl:if test="not(index-of($list-so-far, $canonical-name))">
+					<xsl:apply-templates select="$meta/ancestor::guidelines/term[name = $canonical-name]//html:a[not(@href)]" mode="find-key-terms">
+						<xsl:with-param name="list-so-far" select="($list-so-far, $canonical-name)"/>
+					</xsl:apply-templates>
+				</xsl:if>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<xsl:template name="act">
@@ -243,13 +363,12 @@
 	</xsl:template>
 	
 	<xsl:template match="term" mode="key-terms">
-		<dt id="{id}"><xsl:value-of select="name[1]"/></dt>
-		<dd><xsl:apply-templates select="definition"/></dd>
+		<dd id="{id}"><xsl:value-of select="name[1]"/></dd>
+		<!-- <dd><xsl:apply-templates select="definition"/></dd> -->
 	</xsl:template>
 	
 	<xsl:template match="guidelines">
 		<!--<xsl:result-document href="wcag-act-rules.xml"><xsl:apply-templates select="$act.doc/*"/></xsl:result-document>-->
-		
 		<xsl:apply-templates select="//understanding | //guideline | //success-criterion"/>
 	</xsl:template>
 	
@@ -275,15 +394,20 @@
 		<html lang="{$lang}" xml:lang="{$lang}">
 			<head>
 				<meta charset="UTF-8" />
-				<title><xsl:apply-templates select="//html:h1"/></title>
-				<link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/base" />
-				<link rel="stylesheet" type="text/css" href="base.css" />
-				<link rel="stylesheet" type="text/css" href="understanding.css" />
-				<link rel="stylesheet" type="text/css" href="slicenav.css" />
+				<meta name="viewport" content="width=device-width, initial-scale=1"/>
+				<title><xsl:apply-templates select="//html:title"/></title>
+		    <link rel="stylesheet" href="https://w3.org/WAI/assets/css/style.css" />
+				<link rel="stylesheet" href="base.css" />
 			</head>
-			<body>
-				<xsl:call-template name="navigation"/>
-				<xsl:call-template name="navtoc"/>
+			<body dir="ltr">
+				<xsl:call-template name="header">
+					<xsl:with-param name="documentset.name">Understanding documents</xsl:with-param>
+				</xsl:call-template>
+				<xsl:call-template name="navigation">
+					<xsl:with-param name="documentset.name">Understanding documents</xsl:with-param>
+				</xsl:call-template>
+				<div class="default-grid">
+					<main class="main-content">
 				<h1><xsl:apply-templates select="//html:h1"/></h1>
 				<xsl:choose>
 					<xsl:when test="name($meta) = 'guideline' or name($meta) = 'success-criterion'">
@@ -293,7 +417,7 @@
 							</xsl:apply-templates>
 							<xsl:apply-templates select="$meta/content/html:*[position() &gt; 1]" mode="sc-info"/>
 						</blockquote>
-						<main>
+								<div class="excol-all"></div>
 							<xsl:apply-templates select="//html:section[@id = 'status']"/>
 							<xsl:apply-templates select="//html:section[@id = 'intent']"/>
 							<xsl:apply-templates select="//html:section[@id = 'benefits']"/>
@@ -305,38 +429,76 @@
 								<xsl:apply-templates select="//html:section[@id = 'advisory']" mode="gladvisory"/>
 								<xsl:call-template name="gl-sc"/>
 							</xsl:if>
-							<xsl:call-template name="key-terms"/>
-						</main>
 					</xsl:when>
 					<xsl:when test="name($meta) = 'understanding'">
-						<main>
+								<div>
 							<xsl:apply-templates select="descendant::html:body/node()[not(wcag:isheading(.))]"/>
 							<xsl:call-template name="key-terms"/>
-						</main>
+								</div>
 					</xsl:when>
 				</xsl:choose>
+						<xsl:call-template name="prevnext"/>
+						<xsl:call-template name="back-to-top"/>
+					</main>
+					<xsl:call-template name="sidebar"/>
+					<xsl:call-template name="help-improve"/>
+				</div>
+				<xsl:call-template name="wai-site-footer"/>
+				<xsl:call-template name="site-footer"/>
+				<script><xsl:text disable-output-escaping="yes">
+				var translationStrings = {}; /* fix WAI JS */
+				</xsl:text>
+				</script>
+		    <script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
 			</body>
 		</html>
 	</xsl:template>
 	
-	<xsl:template match="html:title | html:h1">
+	<xsl:template name="sidebar">
+		<xsl:param name="meta" tunnel="yes"/>
+  	<aside class="your-report your-report--expanded sidebar" aria-labelledby="about-this-page">
+			<h2 style="margin-top: 0" id="about-this-page">About this page</h2>
+			<p><em>Understanding documents</em> explain intent, benefits, examples and key terms for WCAG success criteria.</p>
+			<dl>
+				<xsl:if test="string-length($meta/level) > 0">
+				<dt>Level</dt>
+				<dd><xsl:value-of select="$meta/level"/></dd>
+				</xsl:if>
+				<xsl:if test="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]">
+					<dt>Key terms</dt>
+					<xsl:call-template name="key-terms"/>
+				</xsl:if>
+			</dl>
+		</aside>
+	</xsl:template>
+
+	<xsl:template match="html:title">
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:if test="name($meta) != 'understanding'">Understanding </xsl:if><xsl:call-template name="name"/>
+	</xsl:template>
+	
+	<xsl:template match="html:h1">
+		<xsl:param name="meta" tunnel="yes"/>
+		<xsl:if test="name($meta) != 'understanding'"><span class="standalone-resource__type-of-guidance">Understanding:</span> </xsl:if><xsl:call-template name="name"/>
 	</xsl:template>
 	
 	<xsl:template match="html:section[@id = 'intent']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Intent</h2>
+			<details>
+			<summary><h2>Intent</h2></summary>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.) or @id = 'benefits')]"/>
+			</details>
 		</xsl:copy>
 	</xsl:template>
 	
 	<xsl:template match="html:section[@id = 'benefits']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Benefits</h2>
+			<details>
+			<summary><h2>Benefits</h2></summary>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
+			</details>
 		</xsl:copy>
 	</xsl:template>
 	
@@ -344,8 +506,10 @@
 		<xsl:if test="wcag:section-meaningfully-exists('examples', .)">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Examples</h2>
+			<details>
+			<summary><h2>Examples</h2></summary>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
+			</details>
 		</xsl:copy>
 		</xsl:if>
 	</xsl:template>
@@ -354,9 +518,11 @@
 		<xsl:if test="wcag:section-meaningfully-exists('resources', .)">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Related Resources</h2>
+			<details>
+			<summary><h2>Related Resources</h2></summary>
 			<p>Resources are for information purposes only, no endorsement implied.</p>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
+			</details>
 		</xsl:copy>
 		</xsl:if>
 	</xsl:template>
@@ -364,9 +530,11 @@
 	<xsl:template match="html:section[@id = 'techniques']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Techniques</h2>
+			<details>
+			<summary><h2>Techniques</h2></summary>
 			<p>Each numbered item in this section represents a technique or combination of techniques that the WCAG Working Group deems sufficient for meeting this Success Criterion. However, it is not necessary to use these particular techniques. For information on using other techniques, see <a href="understanding-techniques">Understanding Techniques for WCAG Success Criteria</a>, particularly the "Other Techniques" section.</p>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
+			</details>
 		</xsl:copy>
 	</xsl:template>
 	
@@ -396,9 +564,11 @@
 		<xsl:if test="wcag:section-meaningfully-exists('gladvisory', .)">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Advisory Techniques</h2>
+			<details>
+			<summary><h2>Advisory Techniques</h2></summary>
 			<p>Specific techniques for meeting each Success Criterion for this guideline are listed in the understanding sections for each Success Criterion (listed below). If there are techniques, however, for addressing this guideline that do not fall under any of the success criteria, they are listed here. These techniques are not required or sufficient for meeting any success criteria, but can make certain types of Web content more accessible to more people.</p>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
+			</details>
 		</xsl:copy>
 		</xsl:if>
 	</xsl:template>

@@ -10,17 +10,22 @@
 	
 	<xsl:output method="xhtml" indent="yes" omit-xml-declaration="yes" encoding="UTF-8"/>
 	
+	
 	<xsl:template match="techniques">
 		<xsl:result-document href="toc.html" method="xhtml">
-			<nav id="toc">
-				<h2 class="introductory" id="techniques-pages">
-					Techniques
-					<!-- <span class="permalink"><a href="#toc" aria-label="Permalink for Techniques" title="Permalink for Techniques"><span>§</span></a></span> -->
-				</h2>
-				<xsl:apply-templates select="technology">
-					<xsl:sort select="@name"/>
-				</xsl:apply-templates>
-			</nav>
+			<h1 class="introductory" id="techniques-pages">
+				All Techniques
+			</h1>
+			<aside class="box">
+					<header class="box-h ">Summary</header>
+					<div class="box-i">
+							<p><em>Techniques</em> are examples of ways to meet a WCAG criterion. Most Techniques relate to meeting specific WCAG success criteria, some offer general advice. <a href="about">About Techniques</a> provides further
+								background, and <a href="/WAI/standards-guidelines/wcag/">All WCAG 2 Guidance</a> provides an overview on related guidance.</p>
+					</div>
+			</aside>
+			<xsl:apply-templates select="technology">
+				<xsl:sort select="@name"/>
+			</xsl:apply-templates>
 		</xsl:result-document>
 	</xsl:template>
 	
@@ -42,14 +47,14 @@
 				<xsl:when test="@name = 'text'">Plain-Text Techniques</xsl:when>
 			</xsl:choose>
 		</xsl:variable>
-		<h3 id="{$technology-id}">
+		<h2 id="{$technology-id}">
 			<xsl:value-of select="$technology-title"/>
 			<span class="permalink"><a href="#{$technology-id}" aria-label="Permalink for {$technology-title}" title="Permalink for {$technology-title}"><span>§</span></a></span>
-		</h3>
-		<ul>
-			<xsl:apply-templates select="technique">
-				<xsl:sort select="wcag:number-in-id(@id)" data-type="number"/>
-			</xsl:apply-templates>
+		</h2>
+		<ul class="toc-wcag-docs">
+		<xsl:apply-templates select="technique">
+			<xsl:sort select="wcag:number-in-id(@id)" data-type="number"/>
+		</xsl:apply-templates>
 		</ul>
 	</xsl:template>
 	
