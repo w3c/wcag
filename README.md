@@ -34,7 +34,7 @@ Where <version> is "20", content came from WCAG 2.0. "21" is used for content in
 1. Open the guidelines/index.html file and remove comment marks around the lines that reference the success criterion and terms you have edited..
 1. Follow the [success criteria format](#user-content-success-criteria-format) below to create the SC content.
 1. Save the file and commit the change. NOTE: It is important to also add a suitable 'commit message'. In the comments, reference the issue number from which the proposal was developed starting with a hash, e.g., `#1`. 
-1. When the success criterion is ready for Working Group review, inform the chairs. Once the proposal has been accepted by the Working Group, the editors will merge the working branch into the master branch, which puts it in the editors' draft and eventual Technical Report publication.
+1. When the success criterion is ready for Working Group review, inform the chairs. Once the proposal has been accepted by the Working Group, the editors will merge the working branch into the main branch, which puts it in the editors' draft and eventual Technical Report publication.
 
 ### Success Criteria Format
 
@@ -149,7 +149,7 @@ This automates the following steps:
 Once a technique branch and file is set up, populate the content and request review:
 
 * Populate the template with appropriate content, using other techniques as examples for code formatting choices. Keep the existing structural sections from the template in place.
-* When the technique is ready for review, make a pull request into master.
+* When the technique is ready for review, make a pull request into main.
 * If you wish to reference the draft technique from an Understanding document, use the technique's rawgit URI.
 * After a technique is approved, the chairs will assign it an ID and update links to it in the Undestanding documents. 
 
@@ -174,5 +174,5 @@ To create a working example:
 * Create a directory for the example inside the working examples directory, using the semantic name for the example minus the prefix used in the branch name, e.g., `working-examples/alt-attribute/`.
 * If the primary example is HTML, name the file `index.html`. Otherwise, create a suitable file name.
 * Refer to resources shared among multiple examples using relative links, e.g., `../css/example.css`. Place other resources in the same directory as the main example, e.g., `working-examples/alt-attribute/css/alt.css`.
-* Reference working examples from techniques using the rawgit URI to the example in its development branch, e.g., `https://rawgit.com/w3c/wcag/master/working-examples/alt-attribute/`. Editors will update links when examples are approved.
-* When the example is complete and functional, submit a pull request into the master branch.
+* Reference working examples from techniques using the rawgit URI to the example in its development branch, e.g., `https://rawgit.com/w3c/wcag/main/working-examples/alt-attribute/`. Editors will update links when examples are approved.
+* When the example is complete and functional, submit a pull request into the main branch.
