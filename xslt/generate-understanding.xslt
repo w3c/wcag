@@ -309,6 +309,11 @@
 		</xsl:choose>
 	</xsl:template>
 	
+	<xsl:template match="term" mode="key-terms">
+		<dd id="{id}"><xsl:value-of select="name[1]"/></dd>
+		<!-- <dd><xsl:apply-templates select="definition"/></dd> -->
+	</xsl:template>
+	
 	<xsl:template name="act">
 		<xsl:param name="meta" tunnel="yes"/>
 		
@@ -323,30 +328,6 @@
 				</ul>
 			</section>
 		</xsl:if>
-	</xsl:template>
-	
-	<xsl:template match="html:a[not(@href)]" mode="find-key-terms" priority="1">
-		<xsl:param name="meta" tunnel="yes"/>
-		<xsl:param name="list-so-far"></xsl:param>
-		<xsl:variable name="canonical-name" select="$meta/ancestor::guidelines/term[name = lower-case(normalize-space(current()))]/name[1]"/>
-		<xsl:choose>
-			<xsl:when test="empty($canonical-name)">
-				<xsl:message>Unable to find term "<xsl:value-of select="."/>" in "<xsl:value-of select="$meta/name"/> (<xsl:value-of select="$meta/name()"/>)"; key terms list will be incomplete.</xsl:message>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:sequence><xsl:copy-of select="$canonical-name"/></xsl:sequence>
-				<xsl:if test="not(index-of($list-so-far, $canonical-name))">
-					<xsl:apply-templates select="$meta/ancestor::guidelines/term[name = $canonical-name]//html:a[not(@href)]" mode="find-key-terms">
-						<xsl:with-param name="list-so-far" select="($list-so-far, $canonical-name)"/>
-					</xsl:apply-templates>
-				</xsl:if>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-	
-	<xsl:template match="term" mode="key-terms">
-		<dd id="{id}"><xsl:value-of select="name[1]"/></dd>
-		<!-- <dd><xsl:apply-templates select="definition"/></dd> -->
 	</xsl:template>
 	
 	<xsl:template match="guidelines">
