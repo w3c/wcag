@@ -290,24 +290,6 @@
 		</xsl:if>
 	</xsl:template>
 	
-	<xsl:template name="act">
-		<xsl:param name="meta" tunnel="yes"/>
-		
-		<xsl:if test="$act.doc//func:array[@key = 'successCriteria'][func:string = $meta/@id]">
-			<section id="test-rules">
-				<details>
-				<summary><h2>Test Rules</h2></summary>
-				<p>The following are Test Rules for certain aspects of this Success Criterion. It is not necessary to use these particular Test Rules to check for conformance with WCAG, but they are defined and approved test methods. For information on using Test Rules, see <a href="understanding-act-rules.html">Understanding Test Rules for WCAG Success Criteria</a>.</p>
-				<ul>
-					<xsl:for-each select="$act.doc//func:array[@key = 'successCriteria']/func:string[. = $meta/@id]">
-						<li><a href="/WAI{ancestor::func:map/func:string[@key = 'permalink']}"><xsl:value-of select="ancestor::func:map/func:string[@key = 'title']"/></a></li>
-					</xsl:for-each>
-				</ul>
-				</details>
-			</section>
-		</xsl:if>
-	</xsl:template>
-	
 	<xsl:template match="html:a[not(@href)]" mode="find-key-terms" priority="1">
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:param name="list-so-far"></xsl:param>
