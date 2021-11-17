@@ -66,7 +66,7 @@ if ($sth->rowCount() > 0) {
 			<h2>Meetings and Communication</h2>
 			<p>The AG WG conducts its work using a variety of synchronous and asynchronous tools. The <a href="communication">communication</a> page provides details about:</p>
 			<ul>
-				<li>Teleconferences of the Working Group and its task forces (also see <!--<a href="minutes">meeting minutes</a>--><a href="minutes-history">meeting minutes</a>);</li>
+				<li>Teleconferences of the Working Group and its task forces (also see <a href="https://www.w3.org/WAI/GL/wiki/Upcoming_agendas">upcoming agendas</a><!--, <a href="minutes">meeting minutes</a>--><a href="minutes-history">meeting minutes</a>);</li>
 				<li>Face to face meetings (also see face to face <a href="wiki/Meetings">meeting pages</a>);</li>
 				<li>Email lists;</li>
 				<li><a href="https://github.com/w3c/wcag/">WCAG 2.0 source repository</a> and <a href="https://github.com/w3c/wcag21/">WCAG 2.1 source repository</a>;</li>
