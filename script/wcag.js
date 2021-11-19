@@ -22,7 +22,7 @@ function linkUnderstanding() {
 		var el = document.createElement("div");
 		el.setAttribute("class", "doclinks");
 		el.innerHTML = "<a href=\"" + understandingBaseURI + pathFrag + ".html\">Understanding " + heading + "</a> <span class=\"screenreader\">|</span> <br /><a href=\"https://www.w3.org/WAI/WCAG" + version + "/quickref/#" + pathFrag + "\">How to Meet " + heading + "</a>";
-		node.insertBefore(el, node.children[1]);
+		node.insertBefore(el, node.children[2]);
 	})
 }
 
