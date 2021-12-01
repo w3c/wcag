@@ -42,10 +42,9 @@ var respecConfig = {
 	editors: [
 		{
 			name: "Janina Sajka",
-			company: "Amazon",
-			companyURL: "https://www.amazon.com/",
-			mailto: "sajkaj@amazon.com",
-			w3cid: 108617
+			URL: "https://rednote.net/",
+			mailto: "janina@rednote.net",
+			w3cid: 33688
 		},
 		{
 			name: "Michael Cooper",
