@@ -85,7 +85,11 @@
 		
 		<section id="publications">
 			<h2>Publications</h2>
-			<p>When the Task Force develops publications, they will be listed here.</p>
+			<ul>
+				<li><a href="https://w3c.github.io/silver/explainer/">Explainer for W3C Accessibility Guidelines (WCAG) 3.0</a></li>
+				<li><a href="https://w3c.github.io/silver/requirements/">Requirements for WCAG 3.0</a></li>
+				<li><a href="https://w3c.github.io/silver/guidelines/">W3C Accessibility Guidelines (WCAG) 3.0</a></li>
+			</ul>
 
 		</section>
 		
