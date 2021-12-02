@@ -103,8 +103,10 @@
 				<h3>Facilitator and Contacts</h3>
 				<ul>
 					<li><strong>Facilitators:</strong> Shawn Lauriat, Jeanne Spellman</li>
+					<li><strong>Project Manager: Wilco Fiers</strong></li>
 					<li><strong>Staff Contact:</strong> <a href="http://www.w3.org/People/cooper/">Michael Cooper</a></li>
 				</ul>
+				<p>Contact the task force leadership and working group chairs by email to <a href="mailto:group-ag-plan@w3.org">group-ag-plan@w3.org</a></p>
 			</section>
 			<section id="work-statement">
 				<h3>Work Statement</h3>

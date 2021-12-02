@@ -83,6 +83,7 @@ if ($sth->rowCount() > 0) {
 			<h2>Administrative Information</h2>
 			<p> Work of the AG WG is in accordance with the <a href="http://www.w3.org/2015/Process-20150901/">W3C Process</a>. AG WG work is funded in part by the <a href="http://www.w3.org/WAI/Core2015/">WAI Core 2015 Project</a>. The work of this group does not necessarily reflect the views or policies of the funders.</p>
 			<p>The chairs of the AG WG, responsible for overall leadership and management, are Chuck Adams, Alastair Campbell, and Rachael Montgomery. The staff contact, responsible for <a href="http://www.w3.org/Consortium/Process/">W3C Process</a> and general support, is <a href="http://www.w3.org/People/cooper/">Michael Cooper</a>. Administrative inquiries may be sent to <a href="mailto:group-ag-chairs@w3.org">group-ag-chairs@w3.org</a>.</p>
+			<p>Work on WCAG 3 is additionally led by Shawn Lauriat and Jeanne Spellman, task force co-facilitators, and Wilco Fiers, WCAG 3 Project Manager. Inquiries about WCAG 3 should be sent to <a href="mailto:group-ag-plan@w3.org">group-ag-plan@w3.org</a> to reach these people as well as the chairs.</p>
 			<p>The AG WG maintains the following operational resources:</p>
 			<ul>
 				<li><a href="decision-policy">Decision policy</a>;</li>
