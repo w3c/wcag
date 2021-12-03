@@ -175,7 +175,7 @@
 				<xsl:apply-templates select="//html:h1"/>
 				<section id="important-information">
 					<h2>Important Information about Techniques</h2>
-					<p>See <a href="{$loc.understanding}understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how they relate to the normative WCAG 2.1 success criteria. The Applicability section explains the scope of the technique, and the presence of techniques for a specific technology does not imply that the technology can be used in all situations to create content that meets WCAG 2.1.</p>
+					<p>See <a href="{$loc.understanding}understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how they relate to the normative WCAG <xsl:value-of select="$guidelines.version.decimal"/> success criteria. The Applicability section explains the scope of the technique, and the presence of techniques for a specific technology does not imply that the technology can be used in all situations to create content that meets WCAG <xsl:value-of select="$guidelines.version.decimal"/>.</p>
 				</section>
 				<main>
 					<xsl:call-template name="applicability"/>

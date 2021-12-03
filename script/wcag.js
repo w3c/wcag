@@ -22,7 +22,7 @@ function linkUnderstanding() {
 		var el = document.createElement("div");
 		el.setAttribute("class", "doclinks");
 		el.innerHTML = "<a href=\"" + understandingBaseURI + pathFrag + ".html\">Understanding " + heading + "</a> <span class=\"screenreader\">|</span> <br /><a href=\"https://www.w3.org/WAI/WCAG" + version + "/quickref/#" + pathFrag + "\">How to Meet " + heading + "</a>";
-		node.insertBefore(el, node.children[1]);
+		node.insertBefore(el, node.children[2]);
 	})
 }
 
@@ -68,33 +68,9 @@ function swapInDefinitions() {
 	}
 }
 
-require(["core/pubsubhub"], function(respecEvents) {
-    "use strict";
-    respecEvents.sub('end', function(message) {
-    	if (message === 'core/link-to-dfn') {
-    		linkUnderstanding();
-    	}
-	})
-})
-
-// Change the authors credit to WCAG 2.0 editors credit
-require(["core/pubsubhub"], function(respecEvents) {
-    "use strict";
-    respecEvents.sub('end', function(message) {
-    	if (message === 'core/link-to-dfn') {
-    		document.querySelectorAll("div.head dt").forEach(function(node){
-    			if (node.textContent == "Former editors:") node.textContent = "WCAG 2.0 Editors (until December 2008):";
-    		});
-    	}
-	})
-})
-
-// Fix the scroll-to-fragID problem:
-require(["core/pubsubhub"], function (respecEvents) {
-    "use strict";
-    respecEvents.sub("end-all", function () {
-        if(window.location.hash) {
-            window.location = window.location.hash;
-        }
-    });
-});
+// scripts after Respec has run
+function postRespec() {
+	addTextSemantics();
+	swapInDefinitions();
+	linkUnderstanding();
+}
