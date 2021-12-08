@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
    <head>
       <meta charset="UTF-8" />
-      <title>H99: Provide page list navigation</title>
+      <title>H99: Provide a page-selection mechanism</title>
       <link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/base" />
       <link rel="stylesheet" type="text/css" href="base.css" />
       <link rel="stylesheet" type="text/css" href="../techniques.css" />
@@ -27,7 +27,7 @@
             <li><a href="#tests">Tests</a></li>
          </ul>
       </nav>
-      <h1>Provide page list navigation</h1>
+      <h1>Provide a page-selection mechanism</h1>
       <section id="important-information">
          <h2>Important Information about Techniques</h2>
          <p>See <a href="https://w3c.github.io/wcag/understanding/understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how
@@ -46,13 +46,13 @@
          </section>
          <section id="description">
             <h2>Description</h2>
-            <p>The objective of this technique is to ensure that a page list navigation aid is provided
-               and that it includes a list of all the available locations in the digital publication.
+            <p>The objective of this technique is to ensure that a page-selection mechanism is provided
+               that makes available programmatically all set page locations in the digital publication.
             </p>
-            <p>The page list provides a way to locate static page break locations (i.e., where each
-               new page begins) within a digital publication. These locations typically come from
-               a print equivalent of the edition and allow synchronization in, for example, mixed
-               print-digital environments such as schools and universities.
+            <p>The page-selection mechanism provides a way to locate static page break locations
+               (i.e., where each new page begins) within a digital publication. These locations typically
+               come from a print equivalent of the edition and allow synchronization in, for example,
+               a mix of print and digital publications in environments such as schools and universities.
             </p>
             <p>The source of pagination is not limited to print but could match up to any statically
                paginated alternative, such as a PDF or even a fixed-layout EPUB (i.e., where the
@@ -63,15 +63,14 @@
                and remove content from the paginated source content when creating a digital version.
             </p>
             <p>Page lists are a central feature of many digital publishing formats. EPUB 3 defines
-               the page list in its navigation document,<a href="#footnote1">[1]</a> while EPUB 2 and DAISY 3 use the pageList element in the NCX.<a href="#footnote2">[2]</a> 
-            </p>
-            <p>The DPUB-ARIA module also includes a doc-pagelist role for identifying the navigation
+               the page list in its navigation document,<a href="#footnote1">[1]</a> while EPUB 2 and DAISY 3 use the pageList element in the NCX.<a href="#footnote2">[2]</a> The DPUB-ARIA module also includes a doc-pagelist role for identifying the navigation
                element containing the page list.<a href="#footnote3">[3]</a></p>
+            <p>Other publications provide a means of page navigation through a 'go to' mechanism.</p>
          </section>
          <section id="examples">
             <h2>Examples</h2>
-            <section class="example" id="example-1-example-1-–-page-list-in-html-publications">
-               <h3>Example 1: Example 1 – Page list in HTML publications</h3>
+            <section class="example" id="example-1-page-list-in-html-publications">
+               <h3>Example 1: Page list in HTML publications</h3>
                <p>To add a page list to a web-based document, the role "doc-pagelist" is added to the
                   element (typically a nav element) that encloses the list and its title.
                </p><pre><code>&lt;nav role="doc-pagelist" aria-labelledby="pglist"&gt;
@@ -84,7 +83,10 @@
 &lt;/nav&gt;
 </code></pre><p>The destinations of the page list links are usually explicit page break markers like
                   the following:
-               </p><pre><code>&lt;span id="pg1" role="doc-pagebreak" aria-label="page 1"&gt;</code></pre><p>EPUB 3 uses the epub:type attribute to identify the page list in the navigation document.
+               </p><pre><code>&lt;span id="pg1" role="doc-pagebreak" aria-label="page 1"&gt;</code></pre></section>
+            <section class="example" id="example-2-page-list-in-epub-3-publications">
+               <h3>Example 2: Page list in EPUB 3 publications</h3>
+               <p>EPUB 3 uses the epub:type attribute to identify the page list in the navigation document.
                   The attribute is used on a nav element with the value "page-list" (note the different
                   hyphenation). The ARIA role attribute has no effect unless the navigation document
                   can be directly accessed by users (i.e., the document is in the EPUB spine). Like
@@ -98,7 +100,10 @@
       &lt;li&gt;&lt;a href="chapter01.xhtml#page003"&gt;3&lt;/a&gt;&lt;/li&gt;
       …
    &lt;/ol&gt;
-   &lt;/nav&gt;</code></pre><p>The EPUB 2 and DAISY 3 formats both use an XML grammar called the NCX for expressing
+   &lt;/nav&gt;</code></pre></section>
+            <section class="example" id="example-3-page-list-in-epub-2-and-daisy-publications">
+               <h3>Example 3: Page list in EPUB 2 and DAISY publications</h3>
+               <p>The EPUB 2 and DAISY 3 formats both use an XML grammar called the NCX for expressing
                   navigation aids. The page list is defined within the ncx element using the pageList
                   tag. Each pageTarget within this element identifies a page break, providing both a
                   label and a destination.
@@ -117,6 +122,12 @@
       &lt;/pageTarget&gt;
    &lt;/pageList&gt;
 &lt;/ncx&gt;</code></pre></section>
+            <section class="example" id="example-4-go-to-page-mechanism">
+               <h3>Example 4: Go to page mechanism</h3>
+               <p>A mechanism provides the ability to enter a page number as an input and reposition
+                  the user to the matching target page location.
+               </p>
+            </section>
          </section>
          <section id="tests">
             <h2>Tests</h2>
@@ -126,13 +137,15 @@
                				
                <ol>
                   				
-                  <li>Check that a page list, or a link to a page list exists in the publication.</li>
+                  <li>Check that a page-selection mechanism exists in the publication.</li>
                   				
                   <li>Check that all the static page break locations in the publication are represented
-                     in the page list.
+                     in the selection mechanism.
                   </li>
                   				
-                  <li>Check that the entries in the page list link to the correct location in the publication.</li>
+                  <li>Check that the entries in the page-selection mechanism link to the correct location
+                     in the publication.
+                  </li>
                   				
                </ol>
                			
