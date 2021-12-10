@@ -371,10 +371,7 @@
 								<aside class="box">
 									<header class="box-h  box-h-icon"> Success Criterion (SC)</header>
 									<div class="box-i">
-										<xsl:apply-templates select="$meta/content/html:p[1]" mode="sc-info">
-											<xsl:with-param name="sc-info"><xsl:call-template name="sc-info"/></xsl:with-param>
-										</xsl:apply-templates>
-										<xsl:apply-templates select="$meta/content/html:*[position() &gt; 1]" mode="sc-info"/>
+										<xsl:apply-templates select="$meta/content/html:*"/>
 									</div>
 								</aside>
 								<div class="excol-all"></div>
