@@ -365,7 +365,10 @@
 				</xsl:call-template>
 				<div class="default-grid">
 					<main class="main-content">
-						<h1><xsl:apply-templates select="//html:h1"/></h1>
+						<h1>
+							<xsl:apply-templates select="//html:h1"/>
+							<xsl:if test="name($meta) = 'success-criterion'"> (Level <xsl:value-of select="$meta/level"/>)</xsl:if>
+						</h1>
 						<xsl:choose>
 							<xsl:when test="name($meta) = 'guideline' or name($meta) = 'success-criterion'">
 								<aside class="box">
