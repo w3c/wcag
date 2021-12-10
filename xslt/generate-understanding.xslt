@@ -372,12 +372,15 @@
 						<h1><xsl:apply-templates select="//html:h1"/></h1>
 						<xsl:choose>
 							<xsl:when test="name($meta) = 'guideline' or name($meta) = 'success-criterion'">
-								<blockquote class="scquote">
-									<xsl:apply-templates select="$meta/content/html:p[1]" mode="sc-info">
-										<xsl:with-param name="sc-info"><xsl:call-template name="sc-info"/></xsl:with-param>
-									</xsl:apply-templates>
-									<xsl:apply-templates select="$meta/content/html:*[position() &gt; 1]" mode="sc-info"/>
-								</blockquote>
+								<aside class="box">
+									<header class="box-h  box-h-icon"> Success Criterion (SC)</header>
+									<div class="box-i">
+										<xsl:apply-templates select="$meta/content/html:p[1]" mode="sc-info">
+											<xsl:with-param name="sc-info"><xsl:call-template name="sc-info"/></xsl:with-param>
+										</xsl:apply-templates>
+										<xsl:apply-templates select="$meta/content/html:*[position() &gt; 1]" mode="sc-info"/>
+									</div>
+								</aside>
 								<div class="excol-all"></div>
 								<xsl:apply-templates select="//html:section[@id = 'status']"/>
 								<xsl:apply-templates select="//html:section[@id = 'intent']"/>
