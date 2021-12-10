@@ -26,8 +26,6 @@
 	
 	<xsl:template name="prevnext">
 		<xsl:param name="meta" tunnel="yes"/>
-		<nav class="pager" aria-label="Previous/Next Page">
-		<ul id="navigation">
 			<xsl:choose>
 				<xsl:when test="name($meta) = 'guideline'">
 					<xsl:choose>
@@ -174,14 +172,12 @@
 					</xsl:if>
 				</xsl:when>
 			</xsl:choose>
-		</ul>
-		</nav>
 	</xsl:template>
 	
 	<xsl:template name="navtoc">
 		<xsl:param name="meta" tunnel="yes"/>
 		<nav class="navtoc">
-			<p>On this page:</p>
+			<h3>This page contents</h3>
 			<ul id="navbar">
 				<xsl:if test="name($meta) = 'success-criterion'">
 					<li><a href="#intent">Intent</a></li>
@@ -400,7 +396,11 @@
 								</div>
 							</xsl:when>
 						</xsl:choose>
-						<xsl:call-template name="prevnext"/>
+						<nav class="pager" aria-label="Previous/Next Page">
+							<ul id="navigation">
+								<xsl:call-template name="prevnext"/>
+							</ul>
+						</nav>
 						<xsl:call-template name="back-to-top"/>
 					</main>
 					<xsl:call-template name="sidebar"/>
@@ -420,18 +420,10 @@
 	<xsl:template name="sidebar">
 		<xsl:param name="meta" tunnel="yes"/>
   	<aside class="your-report your-report--expanded sidebar" aria-labelledby="about-this-page">
-			<h2 style="margin-top: 0" id="about-this-page">About this page</h2>
-			<p><em>Understanding documents</em> explain intent, benefits, examples and key terms for WCAG success criteria.</p>
-			<dl>
-				<xsl:if test="string-length($meta/level) > 0">
-				<dt>Level</dt>
-				<dd><xsl:value-of select="$meta/level"/></dd>
-				</xsl:if>
-				<xsl:if test="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]">
-					<dt>Key terms</dt>
-					<xsl:call-template name="key-terms"/>
-				</xsl:if>
-			</dl>
+			<h2 style="margin-top: 0" id="about-this-page">Navigation</h2>
+  		<xsl:call-template name="prevnext"/>
+  		<xsl:call-template name="navtoc"/>
+  		<p><em>This Understanding document is not normative, which means it is <a href="about"> not required to meet WCAG</a>.</em></p>
 		</aside>
 	</xsl:template>
 
