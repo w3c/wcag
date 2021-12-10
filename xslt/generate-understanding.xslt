@@ -439,7 +439,7 @@
 	
 	<xsl:template match="html:h1">
 		<xsl:param name="meta" tunnel="yes"/>
-		<xsl:if test="name($meta) != 'understanding'"><span class="standalone-resource__type-of-guidance">Understanding:</span> </xsl:if><xsl:call-template name="name"/>
+		<xsl:if test="name($meta) != 'understanding'"><span class="standalone-resource__type-of-guidance">Understanding SC <xsl:value-of select="$meta/num"/>:</span> </xsl:if><xsl:value-of select="$meta/name"/>
 	</xsl:template>
 	
 	<xsl:template match="html:section[@id = 'intent']">
