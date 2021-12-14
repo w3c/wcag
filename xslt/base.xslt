@@ -347,7 +347,7 @@
 		<footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
     	<div class="inner" style="grid-column: 2 / 8">
       	<p><strong>Date:</strong> Updated <xsl:value-of select="format-date(current-date(), '[D] [MNn] [Y]')"/>. First published @@@</p> <p><strong>Developed by</strong><xsl:text> </xsl:text><a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a> (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff Contact: Michael Cooper).</p>
-				<p>The content was developed as part of the <a href="https://www.w3.org/WAI/about/projects/#us">WAI-Core projects</a> funded by U.S. Federal funds. The user interface was developed by Hidde de Vries with contributions from Shadi Abou-Zahra and Shawn Lawton Henry, as part of the <a href="https://www.w3.org/WAI/about/projects/wai-guide/">WAI-Guide</a> project, co-funded by the European Commission..</p>
+				<p>The content was developed as part of the <a href="https://www.w3.org/WAI/about/projects/#us">WAI-Core projects</a> funded by U.S. Federal funds. The user interface was developed with contributions Shadi Abou-Zahra and Shawn Lawton Henry, as part of the <a href="https://www.w3.org/WAI/about/projects/wai-guide/">WAI-Guide</a> project, co-funded by the European Commission.</p>
 			</div>
   	</footer>	
 	</xsl:template>
