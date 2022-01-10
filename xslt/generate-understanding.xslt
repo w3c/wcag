@@ -318,6 +318,7 @@
 		<xsl:variable name="meta1" select="($meta/ancestor-or-self::guideline, $meta/ancestor-or-self::understanding)"/>
 		
 		<ul>
+			<xsl:if test="$meta1/preceding-sibling::understanding or $meta1/preceding-sibling::guideline">
 					<li>
 						<xsl:choose>
 							<xsl:when test="$meta1/preceding-sibling::understanding or $meta1/preceding-sibling::guideline">
@@ -327,14 +328,14 @@
 					<!-- is second guideline -->
 					<xsl:when test="(count($meta/ancestor-or-self::guideline/preceding-sibling::guideline) = 1)">
 						<xsl:call-template name="meta-link">
-							<xsl:with-param name="meta" select="$meta/ancestor-or-self::guideline/preceding-sibling::guideline[1]"/>
+							<xsl:with-param name="meta-for-link" select="$meta/ancestor-or-self::guideline/preceding-sibling::guideline[1]"/>
 							<xsl:with-param name="prevnexttype">First</xsl:with-param>
 						</xsl:call-template>
 					</xsl:when>
 					<!-- is first understanding after guidelines -->
 					<xsl:when test="name($meta1) = 'understanding' and name($meta1/preceding-sibling::*[1]) = 'guideline'">
 						<xsl:call-template name="meta-link">
-							<xsl:with-param name="meta" select="$meta/ancestor-or-self::guideline/preceding-sibling::guideline[1]"/>
+							<xsl:with-param name="meta-for-link" select="$meta/ancestor-or-self::guideline/preceding-sibling::guideline[1]"/>
 							<xsl:with-param name="prevnexttype">Last</xsl:with-param>
 						</xsl:call-template>
 					</xsl:when>
@@ -344,21 +345,21 @@
 							<!-- any understanding page but first -->
 							<xsl:when test="$meta/self::understanding and count($meta/preceding-sibling::understanding) &gt; 0">
 								<xsl:call-template name="meta-link">
-									<xsl:with-param name="meta" select="$meta/preceding-sibling::understanding[1]"/>
+									<xsl:with-param name="meta-for-link" select="$meta/preceding-sibling::understanding[1]"/>
 									<xsl:with-param name="prevnexttype">Previous</xsl:with-param>
 								</xsl:call-template>
 							</xsl:when>
 							<!-- guidelines after the second -->
 							<xsl:when test="count($meta/ancestor-or-self::guideline/preceding-sibling::guideline) &gt; 1">
 								<xsl:call-template name="meta-link">
-									<xsl:with-param name="meta" select="$meta/ancestor-or-self::guideline/preceding-sibling::guideline[1]"/>
+									<xsl:with-param name="meta-for-link" select="$meta/ancestor-or-self::guideline/preceding-sibling::guideline[1]"/>
 									<xsl:with-param name="prevnexttype">Previous</xsl:with-param>
 								</xsl:call-template>
 							</xsl:when>
 							<!-- second guideline -->
 							<xsl:when test="$meta/ancestor-or-self::guideline and count($meta/ancestor-or-self::guideline/preceding-sibling::guideline) = 1">
 								<xsl:call-template name="meta-link">
-									<xsl:with-param name="meta" select="$meta/ancestor-or-self::principle/preceding-sibling::understanding[1]"/>
+									<xsl:with-param name="meta-for-link" select="$meta/ancestor-or-self::principle/preceding-sibling::understanding[1]"/>
 									<xsl:with-param name="prevnexttype">First</xsl:with-param>
 								</xsl:call-template>
 							</xsl:when>
@@ -371,45 +372,48 @@
 							</xsl:otherwise>
 						</xsl:choose>
 			</li>
+			</xsl:if>
 			<li>
 				<!-- Level 1 cur link -->
 				<xsl:call-template name="meta-link">
-					<xsl:with-param name="meta" select="$meta/ancestor-or-self::guideline | $meta/self::understanding"/>
+					<xsl:with-param name="meta-for-link" select="$meta/ancestor-or-self::guideline | $meta/self::understanding"/>
 					<xsl:with-param name="prevnexttype">This</xsl:with-param>
 				</xsl:call-template>
-				<xsl:if test="ancestor-or-self::guideline">
+				<xsl:if test="$meta1/self::guideline">
 					<!-- For guidelines, open level 2 -->
 					<ul>
+						<xsl:if test="$meta/preceding-sibling::success-criterion">
 					<li>
 						<!-- Level 2 first / prev -->
 						<xsl:choose>
 							<!-- Level 2 first link, if applicable -->
 							<xsl:when test="$meta/self::guideline">
 								<xsl:call-template name="meta-link">
-									<xsl:with-param name="meta" select="$meta/success-criterion[1]"/>
+									<xsl:with-param name="meta-for-link" select="$meta/success-criterion[1]"/>
 									<xsl:with-param name="prevnexttype">First</xsl:with-param>
 								</xsl:call-template>
 							</xsl:when>
 							<xsl:when test="count($meta/preceding-sibling::success-criterion) = 1">
 								<xsl:call-template name="meta-link">
-									<xsl:with-param name="meta" select="$meta/preceding-sibling::success-criterion[1]"/>
+									<xsl:with-param name="meta-for-link" select="$meta/preceding-sibling::success-criterion[1]"/>
 									<xsl:with-param name="prevnexttype">First</xsl:with-param>
 								</xsl:call-template>
 							</xsl:when>
 							<!-- Otherwise Level 2 prev link, if any -->
 							<xsl:when test="count($meta/preceding-sibling::success-criterion) &gt; 0">
 								<xsl:call-template name="meta-link">
-									<xsl:with-param name="meta" select="$meta/preceding-sibling::success-criterion[1]"/>
+									<xsl:with-param name="meta-for-link" select="$meta/preceding-sibling::success-criterion[1]"/>
 									<xsl:with-param name="prevnexttype">Previous</xsl:with-param>
 								</xsl:call-template>
 							</xsl:when>
 						</xsl:choose>
 					</li>
-						<xsl:if test="name($meta) = 'success-criterion'">
+						</xsl:if>
+						<xsl:if test="$meta/self::success-criterion">
 					<li>
 						<!-- Level 2 Cur link -->
 						<xsl:call-template name="meta-link">
-							<xsl:with-param name="meta" select="$meta"/>
+							<xsl:with-param name="meta-for-link" select="$meta"/>
 							<xsl:with-param name="prevnexttype">This</xsl:with-param>
 						</xsl:call-template>
 					</li>
@@ -421,14 +425,14 @@
 							<!-- Level 2 Last link, if applicable -->
 							<xsl:when test="count($meta/following-sibling::success-criterion) = 1">
 								<xsl:call-template name="meta-link">
-									<xsl:with-param name="meta" select="$meta/following-sibling::success-criterion[1]"/>
+									<xsl:with-param name="meta-for-link" select="$meta/following-sibling::success-criterion[1]"/>
 									<xsl:with-param name="prevnexttype">Last</xsl:with-param>
 								</xsl:call-template>
 							</xsl:when>
 							<!-- Otherwise Level 2 Next link, if any -->
 							<xsl:otherwise>
 								<xsl:call-template name="meta-link">
-									<xsl:with-param name="meta" select="$meta/following-sibling::success-criterion[1]"/>
+									<xsl:with-param name="meta-for-link" select="$meta/following-sibling::success-criterion[1]"/>
 									<xsl:with-param name="prevnexttype">Next</xsl:with-param>
 								</xsl:call-template>
 							</xsl:otherwise>
@@ -446,7 +450,7 @@
 					<!-- Level 1 Last link, if applicable -->
 					<xsl:when test="(count($meta1/following-sibling::guideline) = 1)">
 						<xsl:call-template name="meta-link">
-							<xsl:with-param name="meta" select="$meta1/following-sibling::guideline[1]"/>
+							<xsl:with-param name="meta-for-link" select="$meta1/following-sibling::guideline[1]"/>
 							<xsl:with-param name="prevnexttype">Last</xsl:with-param>
 						</xsl:call-template>
 					</xsl:when>
@@ -454,21 +458,21 @@
 					<xsl:when test="$meta1/following-sibling::guideline or $meta1/following-sibling::understanding">
 						<xsl:choose>
 							<!-- is last understanding before guidelines -->
-							<xsl:when test="name($meta1) = 'understanding' and name($meta1/following-sibling::*[1]) = 'guideline'">
+							<xsl:when test="$meta1/self::understanding and $meta1/following-sibling::*[1]/self::guideline">
 								<xsl:call-template name="meta-link">
-									<xsl:with-param name="meta" select="$meta/ancestor-or-self::guideline/preceding-sibling::guideline[1]"/>
+									<xsl:with-param name="meta-for-link" select="$meta/ancestor-or-self::guideline/preceding-sibling::guideline[1]"/>
 									<xsl:with-param name="prevnexttype">First</xsl:with-param>
 								</xsl:call-template>
 							</xsl:when>
-							<xsl:when test="name($meta1/following-sibling::*[1]) = guideline">
+							<xsl:when test="$meta1/following-sibling::*[1]/self::guideline">
 								<xsl:call-template name="meta-link">
-									<xsl:with-param name="meta" select="$meta1/following-sibling::guideline[1]"/>
+									<xsl:with-param name="meta-for-link" select="$meta1/following-sibling::guideline[1]"/>
 									<xsl:with-param name="prevnexttype">Next</xsl:with-param>
 								</xsl:call-template>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:call-template name="meta-link">
-									<xsl:with-param name="meta" select="$meta1/following-sibling::understanding[1]"/>
+									<xsl:with-param name="meta-for-link" select="$meta1/following-sibling::understanding[1]"/>
 									<xsl:with-param name="prevnexttype">Next</xsl:with-param>
 								</xsl:call-template>
 							</xsl:otherwise>
@@ -484,26 +488,29 @@
 	</xsl:template>
 
 	<xsl:template name="meta-link">
-		<xsl:param name="meta" required="yes"/>
+		<xsl:param name="meta-for-link" required="yes"/>
 		<xsl:param name="prevnexttype" select="()"/>
 		<xsl:variable name="prefix-text">
+			<xsl:value-of select="$prevnexttype"/>
+			<xsl:text> </xsl:text>
 			<xsl:choose>
-				<xsl:when test="name($meta) = 'guideline'">
+				<xsl:when test="$meta-for-link/self::guideline">
 					<xsl:text>Guideline: </xsl:text>
 				</xsl:when>
-				<xsl:when test="name($meta) = 'success-criterion'">
+				<xsl:when test="$meta-for-link/self::success-criterion">
 					<xsl:text>SC: </xsl:text>
 				</xsl:when>
-				<xsl:when test="name($meta) = 'understanding'"/>
+				<xsl:when test="$meta-for-link/self::understanding"/>
 			</xsl:choose>
 		</xsl:variable>
+		<xsl:value-of select="$prefix-text"/>
 		<xsl:choose>
 			<xsl:when test="$prevnexttype = 'This'">
-				<xsl:value-of select="$meta/name"/>
+				<xsl:value-of select="$meta-for-link/name"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<a href="{$meta/file}">
-					<xsl:value-of select="$meta/name"/>
+				<a href="{$meta-for-link/file/@href}">
+					<xsl:value-of select="$meta-for-link/name"/>
 				</a>
 			</xsl:otherwise>
 		</xsl:choose>
