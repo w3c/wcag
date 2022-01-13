@@ -388,7 +388,10 @@
 				</xsl:choose>
 			</li>
 </xsl:if>
-			<li class="pager--item context">
+			<li>
+				<xsl:if test="$which = 'bottom'">
+					<xsl:attribute name="class">pager--item context</xsl:attribute>
+				</xsl:if>
 				<!-- Level 1 cur link -->
 				<xsl:call-template name="meta-link">
 					<xsl:with-param name="meta-for-link" select="$meta/ancestor-or-self::guideline | $meta/self::understanding"/>
@@ -843,9 +846,7 @@
 						</xsl:choose>
 						<nav class="pager" aria-label="Previous/Next Page">
 							<ul id="navigation">
-								<xsl:call-template name="prevnext">
-									<xsl:with-param name="which">bottom</xsl:with-param>
-								</xsl:call-template>
+								<xsl:call-template name="prevnext.bak"/>
 							</ul>
 						</nav>
 						<xsl:call-template name="back-to-top"/>
