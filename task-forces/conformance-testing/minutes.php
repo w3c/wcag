@@ -48,9 +48,9 @@
 </div>
 <div id="main">
    <div id="skipwrapper"> <a id="skip">-</a></div>
-   <h1>Minutes of the Cognitive and Learning Disabilities Accessibility TF</h1>
+	<h1>Minutes of the Accessibility Conformance Testing (ACT) TF</h1>
 	<?php
-		$channel = "coga";
+		$channel = "wcag-act";
 		include "../../../../2022/01/minutes/default-view.phi";
 		?>
    <!-- end main -->

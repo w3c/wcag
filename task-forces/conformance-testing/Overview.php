@@ -65,12 +65,10 @@
 					</li>
 				</ul>
 			</section>
-			<!--
 			<section id="minutes">
 				<h3>Meeting Minutes</h3>
 				<p><a href="minutes">Minutes from previous meetings</a> are available.</p>
 			</section>
-			-->
 			<section id="email">
 				<h3>Mailing Lists</h3>
 				<p>The ACT TF uses the public-wcag-act@w3.org mailing list (<a href="http://lists.w3.org/Archives/Public/public-wcag-act/">mailing list archives</a>) for email discussion. Participants are automatically added to the mailing list when they become a participant of the Task Force.</p>

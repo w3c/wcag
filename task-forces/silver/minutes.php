@@ -48,10 +48,11 @@
 </div>
 <div id="main">
    <div id="skipwrapper"> <a id="skip">-</a></div>
-   <h1>Minutes of the Cognitive and Learning Disabilities Accessibility TF</h1>
+   <h1>Minutes of the Silver TF</h1>
+	<p>This page shows minutes of the Silver Task Force only. Minutes of subgroups may be found on the <a href="/WAI/GL/WCAG3/minutes/">complete index of AG WG minutes</a>.</p>
 	<?php
-		$channel = "coga";
-		include "../../../../2022/01/minutes/default-view.phi";
+		$channel = "silver";
+		include "../../../../../2022/01/minutes/default-view.phi";
 		?>
    <!-- end main -->
 </div>

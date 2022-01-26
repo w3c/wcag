@@ -66,12 +66,10 @@
 				?>
 			</ul>
 			</section>
-			<!--
 			<section id="minutes">
 				<h3>Meeting Minutes</h3>
 				<p><a href="minutes">Minutes from previous meetings</a> are available.</p>
 			</section>
-			-->
 			<section id="email">
 				<h3>Mailing Lists</h3>
 				<p>The Silver TF uses the public-silver@w3.org mailing list (<a href="http://lists.w3.org/Archives/Public/public-silver/">mailing list archives</a>) for email discussion; members of the public can post to this list to send input to the task force. The TF uses the public-silver-admin@w3.org mailing list <a href="http://lists.w3.org/Archives/Public/public-silver-admin/">mailing list archives</a> for adminstrative discussion that is specific to participants in the task force. Participants are automatically subscribed to these mailing lists when they become a participant of the Task Force.</p>

@@ -71,7 +71,7 @@ if ($sth->rowCount() > 0) {
          </section>
          <section>
             <h3 id="minutes">Meeting Minutes</h3>
-               <p><a href="https://www.w3.org/WAI/GL/task-forces/coga/wiki/Meeting_Minutes">Minutes from previous meetings</a> are available.</p>
+               <p><a href="minutes">Minutes from previous meetings</a> are available.</p>
          </section>
 
          <section id="email">

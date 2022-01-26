@@ -39,7 +39,11 @@
       <li><strong>Wiki</strong>: <a href="https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/Main_Page">https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/Main_Page</a></li>
       <li><strong>Surveys</strong>: <a href="https://www.w3.org/2002/09/wbs/81151/">https://www.w3.org/2002/09/wbs/81151/</a></li>
     </ul>
-    <h2 id="about">About the Low Vision Accessibility Task Force</h2>
+  	<section>
+  		<h3 id="minutes">Meeting Minutes</h3>
+  		<p><a href="minutes">Minutes from previous meetings</a> are available.</p>
+  	</section>
+  	<h2 id="about">About the Low Vision Accessibility Task Force</h2>
     <p>The Low Vision Accessibility Task Force (LVTF) was created as a task force of the <a href="http://www.w3.org/WAI/GL/">Accessibility Guidelines Working Group (AG WG)</a> and the <a href="http://www.w3.org/WAI/UA/">User Agent Accessibility Guidelines Working Group (UAWG)</a>. The UAWG has closed.</p>
     <p>The objective of the Task Force is to address web accessibility issues specific to people with low vision. Task Force work includes:</p>
     <ul>
