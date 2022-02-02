@@ -11,7 +11,8 @@
 <section id="contents">
    <div id="skipwrapper"> <a id="skip">-</a></div>
    <h1>Mobile Accessibility Task Force (Mobile A11Y TF)<br /> <span class="subhead">of the AG WG</span></h1>
-   
+	<p>Some information on this page is also shown on, and may be more current in, the <a href="https://www.w3.org/groups/tf/mobile-a11y-tf">automatically generated Mobile Accessibility Task Force page</a>.</p>
+	
       <h2>Page Contents</h2>
       <ul>
          <li><a href="#announcements">Announcements and Meetings</a></li>

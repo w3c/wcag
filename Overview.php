@@ -9,6 +9,8 @@
 		<h1>Accessibility Guidelines Working Group</h1>
 
 		<p>The mission of the Accessibility Guidelines Working Group is to develop specifications to support making implementations of web technologies accessible for people with disabilities, and to develop and maintain implementation support materials.</p>
+		
+		<p>Some information on this page is also shown on, and may be more current in, the <a href="https://www.w3.org/groups/wg/ag">automatically generated Accessibility Guidelines Working Group page</a>.</p>
 
 		<section id="announcements">
 			<h2>Announcements</h2>
@@ -35,21 +37,24 @@ if ($sth->rowCount() > 0) {
 
 		<section id="work">
 			<h2>Current Work</h2>
-			<p>The Working Group maintains a comprehensive list of <a href="deliverables">publications</a>, which include:</p>
-			<ul>
-				<li>WCAG 2.1,</li>
-				<li>Understanding WCAG 2.0,</li>
-				<li>WCAG 2.0 Techniques</li>
-				<li>Errata for WCAG 2.0, and</li>
-				<li>Accessibility Guidelines 3.0 ("Silver").</li>
-			</ul>
-			<p>The <a href="project">Project Plan</a> details intended timeline and milestones for this work. A <a href="https://www.w3.org/TR/tr-groups-all#tr_Web_Content_Accessibility_Guidelines_Working_Group">list of publications</a> on the W3C Technical Reports page includes completed deliverables that are no longer worked on by the Working Group.</p>
+			<p>The Working Group maintains a comprehensive list of <a href="deliverables">publications and current timelines</a>.</p>
+			<p>The <a href="https://www.w3.org/WAI/GL/wiki/Timelines">Project Plan</a> details intended timeline and milestones for this work. A <a href="https://www.w3.org/TR/tr-groups-all#tr_Web_Content_Accessibility_Guidelines_Working_Group">list of publications</a> on the W3C Technical Reports page includes completed deliverables that are no longer worked on by the Working Group.</p>
 
+
+			<section>
+				<h3>WCAG 3</h3>
+				<p>Work on W3C Accessibility Guidelines 3 takes place in many task forces and subgroups of the Working Group. Information about projects and timelines is available on the <a href="https://github.com/w3c/silver/wiki">WCAG 3 Project Plan</a>.</p>
+			</section>
+			
+			<section>
+				<h3>WCAG 2.2</h3>
+				<p>The Working Group is processing comments from wide review and preparing for Candidate Recommendation. Current work is shown in <a href="https://github.com/w3c/wcag/issues/">WCAG issues</a>.</p>
+			</section>
 		</section>
 
 		<section id="taskforces">
 			<h2>Task Forces</h2>
-			<p>The AG WG uses <a href="task-forces">task forces</a> to focus work on specific projects. Task Forces are described on the related page.</p>
+			<p>The AG WG uses <a href="task-forces">task forces</a> to focus work on specific projects in addition to the work above. Task Forces are described on the related page. Some task forces form sub-groups to further divide the work.</p>
 		</section>
 
 		<section id="contribute">
@@ -66,14 +71,13 @@ if ($sth->rowCount() > 0) {
 			<h2>Meetings and Communication</h2>
 			<p>The AG WG conducts its work using a variety of synchronous and asynchronous tools. The <a href="communication">communication</a> page provides details about:</p>
 			<ul>
-				<li>Teleconferences of the Working Group and its task forces (also see <a href="https://www.w3.org/WAI/GL/wiki/Upcoming_agendas">upcoming agendas</a><!--, <a href="minutes">meeting minutes</a>--><a href="minutes-history">meeting minutes</a>);</li>
+				<li>Teleconferences of the Working Group and its task forces (also see <a href="https://www.w3.org/WAI/GL/wiki/Upcoming_agendas">upcoming agendas</a>, <a href="minutes-history">meeting minutes</a>);</li>
 				<li>Face to face meetings (also see face to face <a href="wiki/Meetings">meeting pages</a>);</li>
 				<li>Email lists;</li>
 				<li><a href="https://github.com/w3c/wcag/">WCAG 2.0 source repository</a> and <a href="https://github.com/w3c/wcag21/">WCAG 2.1 source repository</a>;</li>
 				<li><a href="wiki/">Wiki</a>;</li>
 				<li><a href="/2002/09/wbs/35422/">Web-Based Surveys (WBS)</a>;</li>
-				<li><a href="track/">Issue Tracker</a>;</li>
-				<li><a href="https://github.com/w3c/wcag/issues">WCAG 2.0 source repository issue tracker</a> and <a href="https://github.com/w3c/wcag21/issues">WCAG 2.1 source repository issue tracker</a>.</li>
+				<li><a href="https://github.com/w3c/wcag/issues">WCAG 2 source repository issue tracker</a>.</li>
 			</ul>
 			<p>These tools are used by participants of the Working Group. For ways non-participants can contribute, see <!--<a href="contribute">how to contribute to the Working Group and file comments</a>--><a href="/WAI/WCAG20/comments/">How to contribute to the Working Group and file comments</a>.</p>
 

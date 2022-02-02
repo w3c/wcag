@@ -8,6 +8,7 @@
 		<?php include "../../_header.phi"; ?>
 		<h1>Silver Task Force<br />
 			<span class="subhead">of the <a href="https://www.w3.org/WAI/GL/">AG WG</a></span></h1>
+		<p>Some information on this page is also shown on, and may be more current in, the <a href="https://www.w3.org/groups/tf/silver">automatically generated Silver Task Force page</a>.</p>
 		<section id="contents">
 			<h2>Page Contents</h2>
 			<ul>

@@ -9,6 +9,7 @@
 		<h1>Accessibility Conformance Testing (ACT) Task Force<br />
 			<span class="subhead">of the <a href="https://www.w3.org/WAI/GL/">AG WG</a></span></h1>
 		<section id="contents">
+			<p>Some information on this page is also shown on, and may be more current in, the <a href="https://www.w3.org/groups/tf/wcag-act">automatically generated Accessibility Conformance Testing (ACT) Task Force page</a>.</p>
 			<h2>Page Contents</h2>
 			<ul>
 				<li><a href="#announcements">Announcements</a></li>
@@ -46,7 +47,7 @@
 			<h2>Meetings and Communication</h2>
 			<section id="weekly">
 				<h3>Weekly Teleconferences</h3>
-				<p>ACT TF meets weekly on <strong><a href="https://www.timeanddate.com/worldclock/fixedtime.html?msg=ACT+TF+Weekly+Teleconference&iso=20180405T13&p1=%3A&ah=1">Thursdays from 13:00 to 14:00 <abbr title="Coordinated Universal Time">UTC</abbr></a></strong>:</p>
+				<p>ACT TF meets weekly on <strong><a href="https://www.timeanddate.com/worldclock/fixedtime.html?msg=ACT+TF+Weekly+Teleconference&amp;iso=20180405T13&amp;p1=%3A&amp;ah=1">Thursdays from 13:00 to 14:00 <abbr title="Coordinated Universal Time">UTC</abbr></a></strong>:</p>
 				<ul>
 					<li>Meeting materials <ul>
 							<li><a href="https://www.w3.org/WAI/GL/task-forces/conformance-testing/wiki/Meeting_Minutes">Meeting minutes</a></li>
@@ -76,11 +77,11 @@
 			<section id="tools">
 				<h3>Tools and Information</h3>
 				<ul>
-					<li><a href="work-statement">ACT TF Work Statement</a>
+					<li><a href="work-statement">ACT TF Work Statement</a></li>
 					<li><a href="https://www.w3.org/WAI/GL/task-forces/conformance-testing/wiki/">Wiki main page</a>
 						<ul>
                             <li><a href="https://www.w3.org/WAI/GL/task-forces/conformance-testing/wiki/ACT_Overview_-_What_is_ACT">ACT Overview</a></li>
-							<li><a href="https://www.w3.org/WAI/GL/task-forces/conformance-testing/wiki/Meeting_Minutes">Meeting minutes</a></li>
+							<li><a href="https://www.w3.org/WAI/GL/task-forces/conformance-testing/wiki/Meeting_Minutes">Meeting minutes</a> (also see <a href="minutes">automatically collected minutes</a>)</li>
 							<li><a href="https://www.w3.org/2002/09/wbs/93339/availability/">Availability for ACT TF Teleconferences</a></li>
 						</ul>
 					</li>

@@ -11,6 +11,8 @@
 <section id="contents">
    <div id="skipwrapper"> <a id="skip">-</a></div>
    <h1>Cognitive and Learning Disabilities Accessibility Task Force (Coga TF)<br /> <span class="subhead">of the AG WG and APA WG</span></h1>
+	<p>Some information on this page is also shown on, and may be more current in, the <a href="https://www.w3.org/groups/tf/cognitive-a11y-tf">automatically generated Cognitive and Learning Disabilities Accessibility Task Force page</a>.</p>
+	
    
       <h2>Page Contents</h2>
       <ul>
@@ -55,7 +57,7 @@ if ($sth->rowCount() > 0) {
             <li><a href="track/">Tracker</a>;</li>
             <li>IRC discussion on the <a href="irc://irc.w3.org/coga">#coga</a> IRCchannel, used largely for minute-taking;</li>
             <li><a href="/2002/09/wbs/67703/">Web-Based Surveys (WBS)</a>;</li>
-            <li>Teleconferences of the task force<!-- (also see <a href="minutes">meeting minutes</a>);--></li>
+            <li>Teleconferences of the task force (also see <a href="minutes">meeting minutes</a>);</li>
             <li>Face to face meetings;</li>
          </ul>
          <p>These tools are used by participants of the Task Force. For ways non-participants can contribute, see how to <a href="../../participation">participate in the Working Group</a> and <a href="../../../WCAG20/comments/">file comments</a>.</p>

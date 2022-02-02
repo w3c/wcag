@@ -1,26 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<?php
-list($hour, $minute, $second, $month, $day, $year) = 
-                                  explode(':', date('h:i:s:m:d:Y'));
-?>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Minutes from AG (formerly WCAG) WG meetings</title>
-<meta name="GENERATOR" content="amaya 8.1b, see http://www.w3.org/Amaya/" />
-<link rel="stylesheet" type="text/css" href="/StyleSheets/public" />
-<link rel="stylesheet" type="text/css" href="/WAI/GL/2004/12/minute-history.css" />
-</head>
-<body>
-<p><a title="W3C Home" href="/"><img alt="W3C logo" border="0"
-src="/Icons/w3c_home" /></a> <a title="WAI Home" href="/WAI/"><img
-alt="Web Accessibility Initiative logo" border="0" src="/Icons/wai" /></a> <a
-href="/WAI/GL/">WCAG WG</a></p>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" dir="ltr">
+	<head>
+		<?php include "_head.phi"; ?>
+		<title>Minutes from AG (formerly WCAG) WG meetings</title>
+	</head>
+	<body>
+		<?php include "_header.phi"; ?>
 <h1>Minutes from AG (formerly WCAG) WG meetings</h1>
+		<p>This page shows minutes of the Accessibility Guidelines Working Group. Minutes for task forces are available from their respective pages. Minutes for all groups working on WCAG 3 are available from <a href="/WAI/GL/WCAG3/minutes/">WCAG 3 Minutes</a>.</p>
 	<?php
-	$channel = array("ag", "wai-wcag");
+	$channel_id = array("ag", "wai-wcag");
 	include "../../2022/01/minutes/default-view.phi";
 	?>
-</body>
+		<?php include "_footer.phi"; ?>
+	</body>
 </html>
