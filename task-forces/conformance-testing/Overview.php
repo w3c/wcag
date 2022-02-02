@@ -68,7 +68,7 @@
 			</section>
 			<section id="minutes">
 				<h3>Meeting Minutes</h3>
-				<p><a href="minutes">Minutes from previous meetings</a> are available.</p>
+				<p><a href="https://www.w3.org/WAI/GL/task-forces/conformance-testing/wiki/Meeting_Minutes">Minutes from previous meetings</a> are available.</p>
 			</section>
 			<section id="email">
 				<h3>Mailing Lists</h3>

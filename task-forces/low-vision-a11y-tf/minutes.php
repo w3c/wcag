@@ -9,7 +9,7 @@
 		<h1>Minutes from Low Vision Accessibility Task Force meetings</h1>
 		<p>This page shows minutes of the Silver Task Force. Minutes for all groups working on WCAG 3 are available from <a href="/WAI/GL/WCAG3/minutes/">WCAG 3 Minutes</a>.</p>
 		<?php
-	$channel_id = "silver";
+	$channel_id = "lvtf";
 	include "../../../../2022/01/minutes/default-view.phi";
 	?>
 		<?php include "../../_footer.phi"; ?>
