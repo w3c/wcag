@@ -80,7 +80,11 @@ if ($sth->rowCount() > 0) {
 				<li><a href="https://github.com/w3c/wcag/issues">WCAG 2 source repository issue tracker</a>.</li>
 			</ul>
 			<p>These tools are used by participants of the Working Group. For ways non-participants can contribute, see <!--<a href="contribute">how to contribute to the Working Group and file comments</a>--><a href="/WAI/WCAG20/comments/">How to contribute to the Working Group and file comments</a>.</p>
-
+			<section id="minutes">
+				<h3>Meeting Minutes</h3>
+				<p><a href="minutes">Minutes from previous meetings</a> are available.</p>
+			</section>
+			
 		</section>
 
 		<section id="administrative">
