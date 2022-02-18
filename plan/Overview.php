@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" dir="ltr">
-	<?php $title = "AG Plan"; ?>
 	<head>
+		<title>AG Plan</title>
 		<?php include "../_head.phi"; ?>
 	</head>
 	<body>
 		<?php include "../_header.phi"; ?>
-		<h1><?php print ($title); ?></h1>
+		<h1>AG Plan</h1>
 		<p>AG leadership use confidential planning channels:</p>
 		<ul>
 			<?php
