@@ -9,7 +9,7 @@
 		<h1>AG Task Forces</h1>
 
 		<p>The Accessibility Guidelines Working Group conducts some of its work via the following task forces. See each task force page for details about specific work and how to join.</p>
-		<p>Task force facilitators <a href="https://www.w3.org/2017/08/telecon-info_ag-facilitators">meet the first Wednesday of the month</a> for coordination. Task force coordination is maintained in the <a href="https://docs.google.com/document/d/1JF29AuO-Dv8MVR6cqnh4aGMgUztiM9ZnCPI0nn79uNk/edit?usp=sharing">AG Facilitators Google doc</a>.</p>
+		<p>Task force facilitators <a href="https://www.w3.org/2017/08/telecon-info_ag-facilitators">meet the first Wednesday of the month</a> for coordination (also see <a href="https://www.w3.org/WAI/GL/WCAG3/minutes/?channel_id=ag-facilitators">AG facilitators minutes</a>). Task force coordination is maintained in the <a href="https://www.w3.org/WAI/GL/wiki/AG_Facilitators">AG Facilitators wiki</a>.</p>
 
 		<section id="act">
 			<h2>Accessibility Conformance Testing (ACT) Task Force</h2>
