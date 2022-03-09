@@ -4,6 +4,10 @@ function titleToPathFrag (title) {
 	return title.toLowerCase().replace(/[\s,]+/g, "-").replace(/[\(\)]/g, "");
 }
 
+function findHeading(el) {
+	return el.querySelector('h1, h2, h3, h4, h5, h6');
+}
+
 function textNoDescendant(el) {
 	var textContent = "";
 	el.childNodes.forEach(function(node) {
@@ -17,7 +21,7 @@ function linkUnderstanding() {
 	if (respecConfig.specStatus == "ED") understandingBaseURI = "../../understanding/";
 	else understandingBaseURI = "https://www.w3.org/WAI/WCAG" + version + "/Understanding/";
 	document.querySelectorAll('.sc').forEach(function(node){
-		var heading = textNoDescendant(node.firstElementChild);
+		var heading = textNoDescendant(findHeading(node));
 		var pathFrag = titleToPathFrag(heading);
 		var el = document.createElement("div");
 		el.setAttribute("class", "doclinks");
