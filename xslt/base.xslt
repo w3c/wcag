@@ -286,16 +286,13 @@
 							</xsl:when>
 							<xsl:when test="$documentset = 'Understanding'">
 							<li class="nav__item">
-								<xsl:choose>
-									<xsl:when test="$navigation.current = 'all'">
-										<a href="."  class="active" aria-current="page">
-										All Understanding Documents</a>
-									</xsl:when>
-									<xsl:otherwise>
-										<a href=".">
-										All Understanding Documents</a>
-									</xsl:otherwise>								
-								</xsl:choose>
+								<a href=".">
+									<xsl:if test="$navigation.current = 'all'">
+										<xsl:attribute name="class">active</xsl:attribute>
+										<xsl:attribute name="aria-current">page</xsl:attribute>
+									</xsl:if>
+									All Understanding Docs
+								</a>
 							</li>
 								<!--
 							<li class="nav__item">
