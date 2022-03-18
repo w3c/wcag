@@ -271,6 +271,7 @@
 										</xsl:otherwise>								
 									</xsl:choose>
 								</li>
+								<!--
 								<li class="nav__item">
 									<xsl:choose>
 										<xsl:when test="$navigation.current = 'about'">
@@ -281,6 +282,7 @@
 										</xsl:otherwise>								
 									</xsl:choose>
 								</li>
+								-->
 							</xsl:when>
 							<xsl:when test="$documentset = 'Understanding'">
 							<li class="nav__item">
@@ -295,6 +297,7 @@
 									</xsl:otherwise>								
 								</xsl:choose>
 							</li>
+								<!--
 							<li class="nav__item">
 								<xsl:choose>
 									<xsl:when test="$navigation.current = 'about'">
@@ -305,8 +308,10 @@
 									</xsl:otherwise>
 								</xsl:choose>
 							</li>
+						-->
 							</xsl:when>
 						</xsl:choose>
+						<!--
 						<li class="nav__item">
 								<a href="/WAI/standards-guidelines/wcag/docs/">All WCAG 2 Guidance 
 									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24" width="24">
@@ -314,6 +319,7 @@
 									</svg>
 								</a>
 						</li>
+						-->
 					</ul>
 				</nav>
 			</div>
