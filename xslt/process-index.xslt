@@ -8,7 +8,7 @@
 	exclude-result-prefixes="#all"
 	version="2.0">
 	
-	<xsl:include href="base.xslt"/>
+	<xsl:import href="base.xslt"/>
 	
 	<xsl:param name="navigation.current" required="yes"/>
 	

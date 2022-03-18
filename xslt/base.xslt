@@ -325,7 +325,14 @@
 			</div>
 		</div>
 	</xsl:template>
-
+	
+	<xsl:template name="nav-level1-prev"><xsl:message>override nav-level1-prev</xsl:message></xsl:template>
+	<xsl:template name="nav-level1-cur"><xsl:message>override nav-level1-cur</xsl:message></xsl:template>
+	<xsl:template name="nav-level1-next"><xsl:message>override nav-level1-next</xsl:message></xsl:template>
+	<xsl:template name="nav-level2-prev"><xsl:message>override nav-level2-prev</xsl:message></xsl:template>
+	<xsl:template name="nav-level2-cur"><xsl:message>override nav-level2-cur</xsl:message></xsl:template>
+	<xsl:template name="nav-level2-next"><xsl:message>override nav-level2-next</xsl:message></xsl:template>
+	
 	<xsl:template name="back-to-top">
 		<a class="button button-backtotop" href="#top">
 			<span>
