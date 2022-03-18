@@ -23,6 +23,15 @@
 	<xsl:param name="act.file">../guidelines/act-mapping.json</xsl:param>
 	<xsl:variable name="act.doc" select="json-to-xml(unparsed-text($act.file))"/>
 	
+	<xsl:param name="documentset"/>
+	<xsl:variable name="documentset.name">
+		<xsl:choose>
+			<xsl:when test="$documentset = 'Techniques'">Techniques</xsl:when>
+			<xsl:when test="$documentset = 'Understanding'">Understanding Documents</xsl:when>
+			<xsl:otherwise><xsl:value-of select="$documentset"/></xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	
 	<xsl:function name="wcag:isheading" as="xs:boolean">
 		<xsl:param name="el"/>
 		<xsl:choose>
@@ -194,10 +203,9 @@
 	</xsl:template>
 
 	<xsl:template name="header">
-		<xsl:param name="documentset.name" required="yes"/>
 		<header class="default-grid with-gap minimal-header-container">
 				<div class="minimal-header">
-						<span class="minimal-header-name"><a href="../">WCAG <xsl:value-of select="$guidelines.version.decimal"/>: <xsl:value-of select="$documentset.name"/></a></span>
+						<span class="minimal-header-name"><a href="../">WCAG <xsl:value-of select="$guidelines.version.decimal"/><xsl:text> </xsl:text><xsl:value-of select="$documentset.name"/></a></span>
 						<div class="minimal-header-logo">
 								<a href="http://w3.org/" aria-label="W3C">
 									<svg
@@ -246,14 +254,13 @@
 
 	<xsl:template name="navigation">
 		<xsl:param name="navigation.current" required="no"/>
-		<xsl:param name="documentset.name" required="yes"/>
 
 		<div class="nav-container">
 			<div class="default-grid">
 				<nav class="nav" aria-label="{$documentset.name}">
 					<ul>
 						<xsl:choose>
-							<xsl:when test="$documentset.name = 'Techniques'">
+							<xsl:when test="$documentset = 'Techniques'">
 								<li class="nav__item">
 									<xsl:choose>
 										<xsl:when test="$navigation.current = 'all'">
@@ -275,26 +282,26 @@
 									</xsl:choose>
 								</li>
 							</xsl:when>
-							<xsl:when test="$documentset.name = 'Understanding documents'">
+							<xsl:when test="$documentset = 'Understanding'">
 							<li class="nav__item">
 								<xsl:choose>
 									<xsl:when test="$navigation.current = 'all'">
 										<a href="."  class="active" aria-current="page">
-										All Understanding documents</a>
+										All Understanding Documents</a>
 									</xsl:when>
 									<xsl:otherwise>
 										<a href=".">
-										All Understanding documents</a>
+										All Understanding Documents</a>
 									</xsl:otherwise>								
 								</xsl:choose>
 							</li>
 							<li class="nav__item">
 								<xsl:choose>
 									<xsl:when test="$navigation.current = 'about'">
-										<a href="/understanding/about" aria-current="page" class="active">About WCAG Understanding documents</a>
+										<a href="/understanding/about" aria-current="page" class="active">About WCAG Understanding Docs</a>
 									</xsl:when>
 									<xsl:otherwise>
-										<a href="/understanding/about">About WCAG Understanding documents</a>
+										<a href="/understanding/about">About WCAG Understanding Docs</a>
 									</xsl:otherwise>
 								</xsl:choose>
 							</li>

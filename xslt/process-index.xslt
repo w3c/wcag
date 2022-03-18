@@ -10,7 +10,6 @@
 	
 	<xsl:include href="base.xslt"/>
 	
-	<xsl:param name="documentset.name" required="yes"/>
 	<xsl:param name="navigation.current" required="yes"/>
 	
 	<xsl:template match="/"><xsl:apply-templates/></xsl:template>
@@ -18,12 +17,9 @@
 	<xsl:template match="html:body">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<xsl:call-template name="header">
-				<xsl:with-param name="documentset.name" select="$documentset.name"/>
-			</xsl:call-template>
+			<xsl:call-template name="header"/>
 			<xsl:call-template name="navigation">
 				<xsl:with-param name="navigation.current" select="$navigation.current"/>
-				<xsl:with-param name="documentset.name" select="$documentset.name"/>
 			</xsl:call-template>
 			<xsl:apply-templates/>
 			<xsl:call-template name="wai-site-footer"/>

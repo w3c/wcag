@@ -804,12 +804,8 @@
 				<link rel="stylesheet" href="base.css"/>
 			</head>
 			<body dir="ltr">
-				<xsl:call-template name="header">
-					<xsl:with-param name="documentset.name">Understanding documents</xsl:with-param>
-				</xsl:call-template>
-				<xsl:call-template name="navigation">
-					<xsl:with-param name="documentset.name">Understanding documents</xsl:with-param>
-				</xsl:call-template>
+				<xsl:call-template name="header"/>
+				<xsl:call-template name="navigation"/>
 				<div class="default-grid">
 					<xsl:call-template name="sidebar"/>
 					<main class="main-content">

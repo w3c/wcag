@@ -150,12 +150,8 @@
 				<link rel="stylesheet" href="../base.css" />
 			</head>
 			<body class="wcag-docs" dir="ltr">
-				<xsl:call-template name="header">
-					<xsl:with-param name="documentset.name">Techniques</xsl:with-param>
-				</xsl:call-template>
-				<xsl:call-template name="navigation">
-					<xsl:with-param name="documentset.name">Techniques</xsl:with-param>
-				</xsl:call-template>
+				<xsl:call-template name="header"/>
+				<xsl:call-template name="navigation"/>
 				<div class="default-grid">
 					<main class="main-content">
 						<xsl:apply-templates select="//html:h1"/>
