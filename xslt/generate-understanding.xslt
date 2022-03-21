@@ -559,20 +559,22 @@
 		<xsl:param name="meta-for-link" required="yes"/>
 		<xsl:param name="prevnexttype" select="()"/>
 		<xsl:param name="prevnextdir" required="yes"/>
-		<xsl:param name="which" tunnel="yes"/>
-		<xsl:variable name="prefix-text">
-			<xsl:choose>
-				<xsl:when test="$meta-for-link/self::guideline">Guideline</xsl:when>
-				<xsl:when test="$meta-for-link/self::success-criterion">SC</xsl:when>
-				<xsl:when test="$meta-for-link/self::understanding"/>
-			</xsl:choose>
-		</xsl:variable>
+		<xsl:param name="elided" select="false()" tunnel="yes"/>
+		<xsl:if test="not($elided)">
+			<xsl:variable name="prefix-text">
+				<xsl:choose>
+					<xsl:when test="$meta-for-link/self::guideline">Guideline</xsl:when>
+					<xsl:when test="$meta-for-link/self::success-criterion">SC</xsl:when>
+					<xsl:when test="$meta-for-link/self::understanding"/>
+				</xsl:choose>
+			</xsl:variable>
 			<span>
 				<xsl:value-of select="$prevnexttype"/>
 				<xsl:text> </xsl:text>
 				<xsl:value-of select="$prefix-text"/>
 				<xsl:text>: </xsl:text>
 			</span>
+		</xsl:if>
 		<xsl:choose>
 			<xsl:when test="$prevnextdir = 'context'">
 				<xsl:value-of select="$meta-for-link/name"/>
