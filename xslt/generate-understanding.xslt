@@ -612,13 +612,13 @@
 							</a>
 						</li>
 						<xsl:if test="$meta/self::guideline or $meta/self::understanding">
-							<li class="nav__item"><xsl:call-template name="nav-level1-prev"><xsl:with-param name="elided" select="true()"/></xsl:call-template></li>
-							<li class="nav__item"><xsl:call-template name="nav-level1-next"><xsl:with-param name="elided" select="true()"/></xsl:call-template></li>
+							<li class="nav__item"><xsl:call-template name="nav-level1-prev"/></li>
+							<li class="nav__item"><xsl:call-template name="nav-level1-next"/></li>
 						</xsl:if>
 						<xsl:if test="$meta/self::success-criterion">
-							<li class="nav__item"><xsl:call-template name="nav-level1-cur"><xsl:with-param name="elided" select="true()"/></xsl:call-template></li>
-							<li class="nav__item"><xsl:call-template name="nav-level2-prev"><xsl:with-param name="elided" select="true()"/></xsl:call-template></li>
-							<li class="nav__item"><xsl:call-template name="nav-level2-next"><xsl:with-param name="elided" select="true()"/></xsl:call-template></li>
+							<li class="nav__item"><xsl:call-template name="nav-level1-cur"/></li>
+							<li class="nav__item"><xsl:call-template name="nav-level2-prev"/></li>
+							<li class="nav__item"><xsl:call-template name="nav-level2-next"/></li>
 						</xsl:if>
 								<!--
 							<li class="nav__item">
