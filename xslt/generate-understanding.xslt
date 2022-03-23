@@ -566,6 +566,7 @@
 		<xsl:param name="prevnexttype" select="()"/>
 		<xsl:param name="prevnextdir" required="yes"/>
 		<xsl:param name="elided" select="false()" tunnel="yes"/>
+		<!--
 		<xsl:if test="not($elided)">
 			<xsl:variable name="prefix-text">
 				<xsl:choose>
@@ -581,6 +582,7 @@
 				<xsl:text>: </xsl:text>
 			</span>
 		</xsl:if>
+		-->
 		<xsl:choose>
 			<xsl:when test="$prevnextdir = 'context'">
 				<xsl:value-of select="$meta-for-link/name"/>
@@ -934,6 +936,7 @@
 	<xsl:template name="sidebar">
 		<xsl:param name="meta" tunnel="yes"/>
 		<aside class="your-report your-report--expanded sidebar" aria-labelledby="about-this-page" style="font-size: 0.85rem;">
+			<!--
 			<nav>
 				<h2 style="margin-top: 0; margin-bottom: 0; padding-bottom: 0; font-size: 1rem" id="about-this-page">Navigation</h2>
 				<ul>
@@ -942,13 +945,16 @@
 					</xsl:call-template>
 				</ul>
 			</nav>
+			-->
 			<nav>
-				<h3 style="margin-top: 21px; margin-bottom: 7px;font-size: 1rem;">This page contents</h3>
+				<h3 style="margin-top: 21px; margin-bottom: 7px;font-size: 1rem;">Page contents</h3>
 			<xsl:call-template name="navtoc"/>
 			</nav>
+			<!-- 
 			<p>
 				<em>This Understanding document is not normative, which means it is <a href="about"> not required to meet WCAG</a>.</em>
 			</p>
+			-->
 		</aside>
 	</xsl:template>
 
