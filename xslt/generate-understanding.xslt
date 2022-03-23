@@ -916,11 +916,13 @@
 								</div>
 							</xsl:when>
 						</xsl:choose>
+						<!--
 						<nav class="pager" aria-label="Previous/Next Page">
 							<ul id="navigation">
 								<xsl:call-template name="prevnext.bak"/>
 							</ul>
 						</nav>
+						-->
 						<xsl:call-template name="back-to-top"/>
 					</main>
 					<xsl:call-template name="help-improve"/>
