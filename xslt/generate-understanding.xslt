@@ -788,9 +788,12 @@
 					<xsl:copy-of select="$meta/ancestor::guidelines/term[name = current()]"/>
 				</xsl:for-each>
 			</xsl:variable>
+			<section id="key-terms"><details><summary><h2>Key Terms</h2></summary>
 			<xsl:apply-templates select="$termids" mode="key-terms">
 				<xsl:sort select="id"/>
 			</xsl:apply-templates>
+			</details>
+			</section>
 		</xsl:if>
 	</xsl:template>
 
@@ -905,11 +908,11 @@
 									<xsl:apply-templates select="//html:section[@id = 'advisory']" mode="gladvisory"/>
 									<xsl:call-template name="gl-sc"/>
 								</xsl:if>
+								<xsl:call-template name="key-terms"/>
 							</xsl:when>
 							<xsl:when test="name($meta) = 'understanding'">
 								<div>
 									<xsl:apply-templates select="descendant::html:body/node()[not(wcag:isheading(.))]"/>
-									<xsl:call-template name="key-terms"/>
 								</div>
 							</xsl:when>
 						</xsl:choose>
