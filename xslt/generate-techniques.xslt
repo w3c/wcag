@@ -64,9 +64,10 @@
 	</xsl:template>
 	
 	<xsl:template name="technique-link">
-		<xsl:param name="technique" select="."/>
+		<xsl:param name="technique"/>
 		<xsl:choose>
 			<xsl:when test="$technique"><a href="../{$technique/parent::technology/@name}/{$technique/@id}"><xsl:value-of select="$technique/@id"/>: <xsl:value-of select="$technique/title"/></a></xsl:when>
+			<xsl:when test="not($technique)"><xsl:value-of select="ancestor::using/parent::technique/title"/></xsl:when>
 			<xsl:otherwise>an unwritten technique</xsl:otherwise>
 		</xsl:choose>
 		
@@ -85,33 +86,6 @@
 			<xsl:text>: </xsl:text>
 			<xsl:value-of select="$guidelines.meta/name"/>
 		</a>
-	</xsl:template>
-	
-	<xsl:template name="technique-sufficiency">
-		<xsl:param name="meta" tunnel="yes"/>
-		<xsl:choose>
-			<xsl:when test="ancestor::sufficient">Sufficient</xsl:when>
-			<xsl:when test="ancestor::advisory">Advisory</xsl:when>
-			<xsl:when test="ancestor::failure">Failure</xsl:when>
-		</xsl:choose>
-		<xsl:if test="parent::and">
-			<xsl:text>, together with </xsl:text>
-			<xsl:for-each select="parent::and/technique[not(@id = current()/@id)]">
-				<xsl:call-template name="technique-link">
-					<xsl:with-param name="technique" select="$meta/ancestor::techniques//technique[@id = current()/@id]"/>
-				</xsl:call-template>
-				<xsl:if test="position() != last()"> and </xsl:if>
-			</xsl:for-each>
-		</xsl:if>
-		<xsl:if test="using">
-			<xsl:text> using a more specific technique</xsl:text>
-		</xsl:if>
-		<xsl:if test="ancestor::using">
-			<xsl:text> when used with </xsl:text>
-			<xsl:call-template name="technique-link">
-				<xsl:with-param name="technique" select="$meta/ancestor::techniques//technique[@id = current()/ancestor::using[1]/parent::technique/@id]"/>
-			</xsl:call-template>
-		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="/techniques">
@@ -285,8 +259,32 @@
 								</xsl:choose>
 							</xsl:with-param>
 						</xsl:call-template>
+						<!-- sufficiency -->
 						<xsl:text> (</xsl:text>
-						<xsl:call-template name="technique-sufficiency"/>
+						<xsl:choose>
+							<xsl:when test="ancestor::sufficient">Sufficient</xsl:when>
+							<xsl:when test="ancestor::advisory">Advisory</xsl:when>
+							<xsl:when test="ancestor::failure">Failure</xsl:when>
+						</xsl:choose>
+						<xsl:if test="parent::and">
+							<xsl:text>, together with </xsl:text>
+							<xsl:for-each select="parent::and/technique[not(@id = current()/@id)]">
+								<xsl:call-template name="technique-link">
+									<xsl:with-param name="technique" select="$meta/ancestor::techniques//technique[@id = current()/@id]"/>
+								</xsl:call-template>
+								<xsl:if test="position() != last()"> and </xsl:if>
+							</xsl:for-each>
+						</xsl:if>
+						<xsl:if test="using">
+							<xsl:text> using a more specific technique</xsl:text>
+						</xsl:if>
+						<xsl:if test="ancestor::using">
+							<xsl:variable name="user" select="ancestor::using[1]/parent::technique"/>
+							<xsl:text> when used with </xsl:text>
+							<xsl:call-template name="technique-link">
+								<xsl:with-param name="technique" select="$meta/ancestor::techniques//technique[@id = $user/@id]"/>
+							</xsl:call-template>
+						</xsl:if>
 						<xsl:text>)</xsl:text>
 					</span>
 				</xsl:for-each>
