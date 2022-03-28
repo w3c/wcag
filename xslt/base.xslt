@@ -20,6 +20,9 @@
 	<xsl:param name="versions.file">../guidelines/versions.xml</xsl:param>
 	<xsl:variable name="versions.doc" select="document($versions.file)"/>
 	
+	<xsl:param name="guidelines.file">../guidelines/wcag.xml</xsl:param>
+	<xsl:variable name="meta-guidelines" select="document($guidelines.file)"/>
+	
 	<xsl:param name="act.file">../guidelines/act-mapping.json</xsl:param>
 	<xsl:variable name="act.doc" select="json-to-xml(unparsed-text($act.file))"/>
 	
@@ -33,7 +36,7 @@
 	
 	<xsl:function name="wcag:generate-id">
 		<xsl:param name="title"/>
-		<xsl:value-of select="lower-case(replace(replace($title, ' ', '-'), '[,():]', ''))"/>
+		<xsl:value-of select="lower-case(replace(replace($title, '\s+', '-'), '[\s,\():]+', ''))"/>
 	</xsl:function>
 	
 	<xsl:function name="wcag:find-heading">
