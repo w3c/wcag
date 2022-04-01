@@ -31,10 +31,16 @@
 		<section id="email">
 			<h2>Email lists</h2>
 			<ul>
-				<li><strong>w3c-wai-gl@w3.org</strong> - Working Group discussion list; public archive; (<a href="http://lists.w3.org/Archives/Public/w3c-wai-gl/">w3c-wai-gl archives</a>).</li> 
-				<li><strong><a href="mailto:public-comments-wcag20@w3.org">public-comments-wcag20@w3.org</a></strong> - For WG to receive public comments on publications; public archive; anyone may post; only editors subscribe (<a href="http://lists.w3.org/Archives/Public/public-comments-wcag20/">public-comments-wcag20 archives</a>).</li> 
+				<li><strong><a href="mailto:w3c-wai-gl@w3.org">w3c-wai-gl@w3.org</a></strong> - Working Group discussion list; public archive (<a href="http://lists.w3.org/Archives/Public/w3c-wai-gl/">w3c-wai-gl archives</a>).</li> 
+				<li><strong><a href="mailto:public-agwg-comments@w3.org">public-agwg-comments@w3.org</a></strong> - For WG to receive public comments on publications; public archive; anyone may post; only editors subscribe (<a href="https://lists.w3.org/Archives/Public/public-agwg-comments/">public-agwg-comments archives</a>).</li> 
 				<li><strong><a href="mailto:group-ag-chairs@w3.org">group-ag-chairs@w3.org</a></strong> - for private input to the AG chairs from the public; anyone may post; only editors subscribe</li>
-				<li><strong>w3c-wai-ig@w3.org</strong> - Announcements only Working Group activities; public archive; anyone may post or subscribe (<a href="http://lists.w3.org/Archives/Public/w3c-wai-ig/">w3c-wai-ig archives</a>).</li> 
+				<li><strong><a href="mailto:public-ag-admin@w3.irg">public-ag-admin@w3.org</a></strong> - Working Group consensus tracking list; public archive (<a href="http://lists.w3.org/Archives/Public/public-ag-admin/">public-ag-admin archives</a>).</li> 
+			</ul>
+			<p>The AG Admin list will be used to approve WCAG 3 issues. Proposed resolutions will be discussed in the relevant subgroup before coming to the group via email on this list. When proposed resolutions are brought to the list, the group will have 7 days to vote. </p>
+			<ul>
+				<li>If all responses are  +1, 0 or no response is provided then the issue will be resolved;</li>
+				<li>If -1 responses can be quickly resolved via email, we will do so;</li>
+				<li>If -1 responses require discussion they will be queued up for Tuesday meetings.</li>
 			</ul>
 		</section>
 		
