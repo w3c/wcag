@@ -20,7 +20,7 @@
         <blockquote>
             <p class="conformance-level">AA</p>
         
-            <p>When a <a>user interface components</a> has keyboard focus, the focus indicator:</p>
+            <p>When a <a>user interface component</a> has keyboard focus, the focus indicator:</p>
             <ul>
                 <li><a>Encloses</a> the visual presentation of the user interface component;</li>
                 <li>Has a contrast ratio of at least 3:1 between its pixels in the focused and unfocused states;</li>
@@ -35,12 +35,13 @@
                     <ul>
                         <li>Is at least as large as the area of a 1 CSS pixel thick <a>perimeter</a> of the unfocused component, or an area at least as large as a 4 CSS pixel thick line along the shortest side of a <a>minimum bounding box</a> of the unfocused component;</li>
                         <li>Has a contrast ratio of at least 3:1 against the same pixels in the unfocused state;</li>
-                        <li>Has a contrast ratio of at least 3:1 against the adjacent colors, or is no thinner than 2 CSS pixels.</li>
+                        <li>Has a contrast ratio of at least 3:1 against adjacent colors, or is no thinner than 2 CSS pixels.</li>
                     </ul>
                 </li>
             </ul>
 
             <p>Where a user interface component has active sub-components (for example, an opened drop-down menu shows a list of menu items), the above requirements apply to the indicator of the active sub-component.</p>
+            <p class="note">Note: Contrast calculations can be based on colors defined within the technology (such as HTML, CSS and SVG). Pixels modified by user agent resolution enhancements and anti-aliasing can be ignored.</p>
             <dl>
             <dt class="new"><dfn>Focus indicator</dfn></dt>
             <dd class="new">
@@ -54,6 +55,10 @@
             <dd class="new">
                 Solidly bounds or surrounds
             </dd>
+            <dt class="new"><dfn>perimeter</dfn></dt>
+            <dd class="new">
+                continuous line forming the boundary of a shape not including shared pixels, or the minimum bounding box of a complex shape, whichever is shortest. For example, the perimeter calculation for a rectangle is 2<em>h</em>+2<em>w</em> -4, where <em>h</em> is the height and <em>w</em> is the width and the corners are not counted twice. The perimeter of a circle is 2𝜋<em>r</em>.
+            </dd>
             </dl>
         </blockquote>
      </section>
@@ -63,59 +68,67 @@
         <h2>Intent of Focus Appearance (Minimum)</h2>
 
 
-        <p>The purpose of this Success Criterion is to ensure a keyboard focus indicator is clearly visible and discernible. This Success Criterion is closely related to <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html">2.4.7 Focus Visible</a> and <a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html">1.4.11 Non-text Contrast</a>. Where Focus Visible merely requires a visible focus indicator, 2.4.11 defines a minimum level of visibility. Where Non-text Contrast requires a component to have adequate contrast against the background in each of its states, 2.4.11 requires sufficient contrast for the focus indicator itself.</p>
+        <p>The purpose of this Success Criterion (SC) is to ensure a keyboard focus indicator is clearly visible and discernible. This Success Criterion is closely related to <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html">2.4.7 Focus Visible</a> and <a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html">1.4.11 Non-text Contrast</a>. Where Focus Visible merely requires a visible focus indicator, this SC defines a minimum level of visibility. Where Non-text Contrast requires a component to have adequate contrast against the background in each of its states, this SC requires sufficient contrast for the focus indicator itself.</p>
 
         <p>For sighted people with mobility impairments who use a keyboard-like device (such as a switch or voice input), knowing the current point of focus is very important. Visible focus must also meet the needs of users with low vision, who may also be keyboard-only users.</p>
             
         <p>A keyboard focus indicator can take different forms. This Success Criterion lists three primary considerations that can be met to consistently acheive a sufficient focus appearance. It then provides a list of exceptions for a focus indicator which may be less optimal for some users but still achieves a minimum level of focus appearance. This Understanding document will elaborate on each of the three primary considerations, then address the exceptions.
 
         <h3>Encloses</h3>
-        <p>The first of the primary bullets states that the focus indicator "encloses" the user interface component. This is defined to mean "solidly bounds or surrounds." Both "bounds" and "surrounds" describe optimal and established ways of showing focus, as illustrated in the following series of images of a set of ratings stars. In all examples, the same three stars have already been selected, and focus is on the second star.</p>
+        <p>The first of the primary bullets states that the focus indicator "encloses" the user interface component. This is defined to mean "solidly bounds or surrounds." Both "bounds" and "surrounds" describe optimal and established ways of showing focus. "Bounds" and its related term "bounding box" generally describe a rectangle drawn around the outside of a user interface component. It is the most common form of focus indication and is sometimes referred to as a "focus rectangle."</p>
+
+        <figure id="focus-indicator-basic">
+            <img src="img/focus-indicator-basic.png" alt="2 blue buttons with a dark 1 pixel thick offset focus rectangle around the second" />
+            <figcaption>Passes: A solid focus rectangle around the second of two buttons.</figcaption>
+        </figure>
+
+        "Surrounds" also refers to something that solidly encloses a shape. However, a shape can be surrounded" in many ways. For instance, the focus indicator may follow the outline of the object being enclosed. The difference between <em>bounds</em> and <em>surrounds</em> is illustrated in the following two images of a set of ratings stars. In both examples, the same three stars have already been selected, and focus is on the second star.</p>
         <figure id="focus-border-solid">
-            <img src="img/focus-indicator-solid-border.png" alt="Three of 5 stars are selected with a solid-line rectangular focus indicator around the second" />
+            <img src="img/focus-indicator-solid-border.svg" alt="Three of 5 stars are selected with a solid-line rectangular focus indicator around the second" />
             <figcaption> Passes: a solidly bound focus rectangle encloses the second of 5 stars.</figcaption>
         </figure>
 
         <figure id="focus-outline-solid">
-            <img src="img/focus-indicator-solid-outline.png" alt="Three of 5 stars are selected with a solid-line focus indicator outlining the second" />
+            <img src="img/focus-indicator-solid-outline.svg" alt="Three of 5 stars are selected with a solid-line focus indicator in the shape of a star outlining the second" />
             <figcaption> Passes: a solid outline indicator surrounds the second of 5 stars.</figcaption>
         </figure>  
 
-        <p>Where the indicator does not "solidly" bound or surround the component, as with a dashed or dotted line, it cannot meet this primary consideration. However, a non-solid line can still pass if it meets the wording of the exceptions (discussed in more detail under Exceptions).</p>
+        <h4>Solidly</h4>
+            <p>Where the indicator does not "solidly" bound or surround the component, as with a dashed or dotted line, it cannot meet this primary consideration. However, a non-solid line can still pass if it meets the wording of the exceptions (discussed in more detail under Exceptions).</p>
 
         <figure id="focus-indicator-weak-dashed">
-            <img src="img/focus-indicator-weak-dashed-border.png" alt="Three of 5 stars are selected with the whole second star outlined with a 1 pixel thick dashed line" />
+            <img src="img/focus-indicator-weak-dashed-border.svg" alt="Three of 5 stars are selected with the whole second star outlined with a 1 pixel thick dashed line" />
             <figcaption> Fails: the dashed outline does not "solidly bound" the second star and does not meet the exception language.</figcaption>
         </figure>         
 
         <figure id="focus-indicator-strong-dashed">
-            <img src="img/focus-indicator-strong-dashed-border.png" alt="Three of 5 stars are selected with the whole second star outlined with a 2 pixel thick dashed line" />
+            <img src="img/focus-indicator-strong-dashed-border.svg" alt="Three of 5 stars are selected with the whole second star outlined with a 2 pixel thick dashed line" />
             <figcaption> Passes: the dashed outline does not "solidly bound" the second star; however, the dashed line meets the area requirements of the exception langauge.</figcaption>
         </figure>      
 
 <h3>Indicator contrasts between its focused and unfocused states</h3>
 
-<p>The second of the primary bullets states that the indicator "has a contrast ratio of at least 3:1 between its pixels in the focused and unfocused states." The following illustration shows a *minimally* contrasting focus indicator, where some of the white pixels making up the page background have been altered to a mid-grey, which contrast 3:1 with the original white. Authors are encouraged to exceed the minimum focus appearance. For instance, the dark blue line in Figure 1 is much more visible.</p>
+<p>The second of the primary bullets states that the indicator "has a contrast ratio of at least 3:1 between its pixels in the focused and unfocused states." The following illustration shows a <strong>minimally</strong> contrasting focus indicator, where some of the white pixels making up the page background have been altered to a mid-grey, which contrast 3:1 with the original white. Authors are encouraged to exceed the minimum focus appearance. For instance, the dark blue line in Figure 2 is much more visible.</p>
 
 <figure id="focus-indicator-star-with-light-focus">
-    <img src="img/focus-indicator-star-with-light-focus.png" alt="Two orange-yellow five-pointed stars, one with a mid-gray focus" width=80%  />
-    <figcaption> A button in the shape of a star, with a gray focus indicator that contrasts 3:1 with the white page background.</figcaption>
+    <img src="img/focus-indicator-star-with-light-focus.svg" alt="Two orange-yellow five-pointed stars, one with a mid-gray focus rectangle" />
+    <figcaption> Passes: Two buttons in the shape of a star, with a gray focus indicator that contrasts 3:1 with the white page background around the second.</figcaption>
 </figure> 
 
 <h3>Contrasts at least 3:1 against adjacent colors</h3>
 
-The focus indicator must contrast against the pixels on either side. Where the indicator does not directly abut the component or any other object, it simply needs to contrast at least 3:1 against the page background. However, if the indicator abuts another shape, it must contrast 3:1 against this as well. [to be continued]
+The focus indicator must contrast against the pixels on either side. Where the indicator is offset from the shape and does not directly abut the component or any other object, as in all preceding examples, it simply needs to contrast at least 3:1 against the page background. This is the recommended way of creating a more visible focus indicator. However, where authors choose to position the indicator so it is directly next to another shape, it must contrast 3:1 against this adjacent shape well. 
 
 <figure id="focus-indicator-abutted">
-    <img src="img/focus-indicator-star-with-abutted-line.png" alt="Three of 5 stars are selected with the whole second star outlined with a 1px thick line directly next to the star edge" />
-    <figcaption> ALASTAIR, I'm a bit concerned about this...</figcaption>
+    <img src="img/focus-indicator-star-with-abutted-line.svg" alt="Three of 5 stars are selected with the whole second star outlined with a 1px thick line directly next to the star edge" />
+    <figcaption>Passes: The second of two stars has a star-shaped blue outline that directly abuts the star, with which it contrasts 3:1, creating a minimally visible focus indicator.</figcaption>
 </figure>    
 
----
-            <p>a requirement to make it clearly distinguishable. For example, using a thick outline that contrasts with the background behind the component would pass this criterion.</p>
+<h3>Exceptions</h3>
+[ have not progressed past here in the rewrite]
 
         <figure id="focus-indicator-strong">
-            <img src="img/focus-indicators-passing.png" alt="Three of 5 stars are selected with a solid blue focus indicator around the second. indicators, an outline separated from the button, an inner outline, and a thick outline." width="250" />
+            <img src="img/focus-indicators-passing.svg" alt="Three of 5 stars are selected with a solid blue focus indicator around the second. indicators, an outline separated from the button, an inner outline, and a thick outline." width="250" />
             <figcaption> Examples of outlines that would pass easily on a light background.</figcaption>
         </figure>
         <p>The minimum size requirement for each focus indicator shown above are:</p>
@@ -187,7 +200,7 @@ The focus indicator must contrast against the pixels on either side. Where the i
                 <p>The bigger the visible change when an item receives focus, the easier it is for someone to see. Authors are encouraged to make the change as significant as possible, for example, by designing a thick border around the element.</p>
 
                 <figure id="focus-indicator-whole">
-                    <img src="img/focus-indicator-whole-star.png" alt="Three of 5 stars are selected with the whole second star altered in color to indicate focus" />
+                    <img src="img/focus-indicator-whole-star.svg" alt="Three of 5 stars are selected with the whole second star altered in color to indicate focus" />
                     <figcaption> Pass: a color change applies to the whole second star to indicate focus. Clearly, the area is sufficient.</figcaption>
                 </figure> 
     
