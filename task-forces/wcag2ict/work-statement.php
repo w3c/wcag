@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" dir="ltr">
 	<head>
 <?php include "../../_head.phi"; ?>
-		<title>Accessibility Guidelines WCAG2ICT Task Force Work Statement</title>
+		<title>DRAFT Accessibility Guidelines WCAG2ICT Task Force Work Statement</title>
 	</head>
 	<body>
 <?php include "../../_header.phi"; ?>
-		<h1>WCAG2ICT Task Force Work Statement</h1>
+		<h1>DRAFT WCAG2ICT Task Force Work Statement</h1>
 		<p>The WCAG2ICT Task Force is a task force of the <a href="https://www.w3.org/WAI/GL/">Accessibility Guidelines Working Group (AG WG)</a>. It assists this Working Group with the work identified below.</p>
 		<section id="status">
 			<h2>Status</h2>
