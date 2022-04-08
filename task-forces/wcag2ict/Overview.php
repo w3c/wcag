@@ -16,7 +16,7 @@
 			<li><a href="wiki/">wiki</a>;</li>
 			<li><a href="https://github.com/w3c/wcag2ict/">wcag2ict GitHub repository</a> and <a href="https://w3c.github.io/wcag2ict/">GitHub draft documents</a>;</li>
 			<li>IRC discussion on the <a href="irc://irc.w3.org/wcag2ict">#wcag2ict</a> IRCchannel, used largely for minute-taking;</li>
-			<li><a href="/2002/09/wbs/94845/">Web-Based Surveys (WBS)</a>;</li>
+			<li><a href="/2002/09/wbs/55145/">Web-Based Surveys (WBS)</a>;</li>
 			<li>Teleconferences of the task force (also see <a href="minutes">meeting minutes</a>);</li>
 			<li>Face to face meetings;</li>
 		</ul>
