@@ -839,10 +839,8 @@
 	</xsl:template>
 
 	<xsl:template match="term" mode="key-terms">
-		<dd id="{id}">
-			<xsl:value-of select="name[1]"/>
-		</dd>
-		<!-- <dd><xsl:apply-templates select="definition"/></dd> -->
+		<dt id="{id}"><xsl:value-of select="name[1]"/></dt>
+		<dd><xsl:apply-templates select="definition"/></dd>
 	</xsl:template>
 
 	<xsl:template match="guidelines">
