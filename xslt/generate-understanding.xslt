@@ -585,7 +585,9 @@
 		-->
 		<xsl:choose>
 			<xsl:when test="$prevnextdir = 'context'">
-				<xsl:value-of select="$meta-for-link/name"/>
+				<a aria-current="page" href="{$meta-for-link/file/@href}" class="active">
+					<xsl:value-of select="$meta-for-link/name"/>
+				</a>
 			</xsl:when>
 			<xsl:otherwise>
 				<a href="{$meta-for-link/file/@href}">
