@@ -109,10 +109,11 @@
 	</xsl:template>
 	
 	<xsl:template name="technique-link">
-		<xsl:param name="technique" select="."/>
+		<xsl:param name="technique"/>
 		<xsl:choose>
 			<xsl:when test="$technique"><a href="../{$technique/parent::technology/@name}/{$technique/@id}"><xsl:value-of select="$technique/@id"/>: <xsl:value-of select="$technique/title"/></a></xsl:when>
-			<xsl:otherwise></xsl:otherwise>
+			<xsl:when test="not($technique)"><xsl:value-of select="ancestor::using/parent::technique/title"/></xsl:when>
+			<xsl:otherwise>an unwritten technique</xsl:otherwise>
 		</xsl:choose>
 		
 	</xsl:template>
@@ -402,6 +403,88 @@
 					</xsl:choose>
 				</xsl:otherwise>
 			</xsl:choose>
+			
+			<!-- Put in deprecation warning for out-dated technologies -->
+			<xsl:choose>
+				<xsl:when test="$technology = 'flash'">
+					<div class="note">
+						<div role="heading" class="note-title marker" aria-level="3">Note</div>
+						<p>Adobe has plans to stop updating and distributing the Flash Player at the end of 2020, and encourages authors interested in creating accessible web content to use HTML.</p>
+					</div>
+				</xsl:when>
+				<xsl:when test="$technology = 'silverlight'">
+					<div class="note">
+						<div role="heading" class="note-title marker" aria-level="3">Note</div>
+						<p>Microsoft has stopped updating and distributing Silverlight, and authors are encouraged to use HTML for accessible web content.</p>
+					</div>
+				</xsl:when>
+			</xsl:choose>
+			
+			<!-- Add links to the Understanding pages that reference this technique -->
+			<!-- This has gotten really hairy, would like to find a more elegant way to sort the associations -->
+			<xsl:variable name="associations" select="$associations.doc//technique[@id = $meta/@id]"/>
+			<xsl:variable name="association-links">
+				<xsl:for-each select="$associations">
+					<span>
+						<xsl:call-template name="understanding-link">
+							<xsl:with-param name="understanding-id">
+								<xsl:choose>
+									<xsl:when test="ancestor::success-criterion"><xsl:value-of select="ancestor::success-criterion/@id"/></xsl:when>
+									<xsl:when test="ancestor::guideline"><xsl:value-of select="ancestor::guideline/@id"/></xsl:when>
+								</xsl:choose>
+							</xsl:with-param>
+						</xsl:call-template>
+						<!-- sufficiency -->
+						<xsl:text> (</xsl:text>
+						<xsl:choose>
+							<xsl:when test="ancestor::sufficient">Sufficient</xsl:when>
+							<xsl:when test="ancestor::advisory">Advisory</xsl:when>
+							<xsl:when test="ancestor::failure">Failure</xsl:when>
+						</xsl:choose>
+						<xsl:if test="parent::and">
+							<xsl:text>, together with </xsl:text>
+							<xsl:for-each select="parent::and/technique[not(@id = current()/@id)]">
+								<xsl:call-template name="technique-link">
+									<xsl:with-param name="technique" select="$meta/ancestor::techniques//technique[@id = current()/@id]"/>
+								</xsl:call-template>
+								<xsl:if test="position() != last()"> and </xsl:if>
+							</xsl:for-each>
+						</xsl:if>
+						<xsl:if test="using">
+							<xsl:text> using a more specific technique</xsl:text>
+						</xsl:if>
+						<xsl:if test="ancestor::using">
+							<xsl:variable name="user" select="ancestor::using[1]/parent::technique"/>
+							<xsl:text> when used with </xsl:text>
+							<xsl:call-template name="technique-link">
+								<xsl:with-param name="technique" select="$meta/ancestor::techniques//technique[@id = $user/@id]"/>
+							</xsl:call-template>
+						</xsl:if>
+						<xsl:text>)</xsl:text>
+					</span>
+				</xsl:for-each>
+			</xsl:variable>
+			<xsl:variable name="association-links-filtered">
+				<xsl:for-each select="$association-links/html:span">
+					<xsl:if test="not(preceding-sibling::html:span[. = current()])">
+						<xsl:copy-of select="."/>
+					</xsl:if>
+				</xsl:for-each>
+			</xsl:variable>
+			<xsl:choose>
+				<xsl:when test="count($association-links-filtered/html:span) &gt; 1">
+					<p>This technique relates to:</p>
+					<ul>
+						<xsl:for-each select="$association-links-filtered/html:span">
+							<li><xsl:copy-of select="node()"/></li>
+						</xsl:for-each>
+					</ul>
+				</xsl:when>
+				<xsl:when test="count($association-links-filtered/html:span) = 1">
+					<p>This technique relates to <xsl:copy-of select="$association-links-filtered/node()"/>.</p>
+				</xsl:when>
+				<xsl:otherwise><p>This technique is not referenced from any Understanding document.</p></xsl:otherwise>
+			</xsl:choose>
 		</section>
 	</xsl:template>
 	
@@ -552,7 +635,7 @@
 	<xsl:template match="html:a[not(@href)]" mode="#all">
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:variable name="dfn" select="lower-case(.)"/>
-		<a href="{$loc.guidelines}#{$meta/ancestor::guidelines/term[name = $dfn]/id}" target="terms"><xsl:value-of select="."/></a>
+		<a href="{$loc.guidelines}#{$meta-guidelines//term[name = $dfn]/id}" target="terms"><xsl:value-of select="."/></a>
 	</xsl:template>
 	
 	<xsl:template match="html:*[@class = 'instructions']"/>
