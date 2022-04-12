@@ -354,8 +354,7 @@
 		<xsl:variable name="technology" select="$meta/parent::technology/@name"/>
 		<xsl:variable name="applicability" select="//html:section[@id = 'applicability']"/>
 		<section id="applicability">
-			<details>
-			<summary><h2 id="applicability">Applicability</h2></summary>
+			<h2 id="applicability">Applicability</h2>
 
 			<!-- Copy applicability if provided, otherwise put in a stock one for technology -->
 			<xsl:choose>
@@ -403,7 +402,6 @@
 					</xsl:choose>
 				</xsl:otherwise>
 			</xsl:choose>
-			</details>
 		</section>
 	</xsl:template>
 	
@@ -413,10 +411,8 @@
 		<xsl:choose>
 			<xsl:when test="wcag:section-meaningfully-exists('description', $description)">
 				<section id="description">
-					<details open="open">
-						<summary><h2>Description</h2></summary>
+					<h2>Description</h2>
 					<xsl:apply-templates select="$description/html:*[not(wcag:isheading(.))]"/>
-					</details>
 				</section>
 			</xsl:when>
 			<xsl:otherwise>
@@ -430,10 +426,8 @@
 		<xsl:variable name="examples" select="//html:section[@id = 'examples']"/>
 		<xsl:if test="wcag:section-meaningfully-exists('examples', $examples)">
 			<section id="examples">
-				<details>
-				<summary><h2>Examples</h2></summary>
+				<h2>Examples</h2>
 				<xsl:apply-templates select="$examples/html:*[not(wcag:isheading(.))]"/>
-				</details>
 			</section>
 		</xsl:if>
 	</xsl:template>
@@ -467,10 +461,8 @@
 		<xsl:choose>
 			<xsl:when test="wcag:section-meaningfully-exists('tests', $tests)">
 				<section id="tests">
-					<details>
-					<summary><h2>Tests</h2></summary>
+					<h2>Tests</h2>
 					<xsl:apply-templates select="$tests/html:*[not(wcag:isheading(.))]"/>
-					</details>
 				</section>
 			</xsl:when>
 			<xsl:otherwise>
