@@ -8,7 +8,7 @@
 		<?php include "../../_header.phi"; ?>
 		<h1>Minutes from Cognitive and Learning Disabilities Accessibility Task Force meetings</h1>
 		<?php
-	$channel_id = "coga";
+	$channel_id = ["coga", "coga-accessibility"];
 	include "../../../../2022/01/minutes/default-view.phi";
 	?>
 		<?php include "../../_footer.phi"; ?>
