@@ -5,9 +5,10 @@
 	xmlns:wcag="https://www.w3.org/WAI/GL/"
 	xmlns="http://www.w3.org/1999/xhtml"
 	exclude-result-prefixes="#all"
-	version="2.0">
+	version="3.0">
 	
 	<xsl:param name="guidelines.version"/>
+	<xsl:variable name="guidelines.version.decimal" select="replace($guidelines.version, '(\d)(\d)', '$1.$2')" />
 	
 	<xsl:param name="loc.guidelines">/guidelines/</xsl:param>
 	<xsl:param name="loc.understanding">/understanding/</xsl:param>
@@ -19,6 +20,12 @@
 	<xsl:param name="versions.file">../guidelines/versions.xml</xsl:param>
 	<xsl:variable name="versions.doc" select="document($versions.file)"/>
 	
+	<xsl:param name="guidelines.file">../guidelines/wcag.xml</xsl:param>
+	<xsl:variable name="meta-guidelines" select="document($guidelines.file)"/>
+	
+	<xsl:param name="act.file">../guidelines/act-mapping.json</xsl:param>
+	<xsl:variable name="act.doc" select="json-to-xml(unparsed-text($act.file))"/>
+	
 	<xsl:function name="wcag:isheading" as="xs:boolean">
 		<xsl:param name="el"/>
 		<xsl:choose>
@@ -29,7 +36,7 @@
 	
 	<xsl:function name="wcag:generate-id">
 		<xsl:param name="title"/>
-		<xsl:value-of select="lower-case(replace(replace($title, ' ', '-'), '[,():]', ''))"/>
+		<xsl:value-of select="lower-case(replace(replace($title, '\s+', '-'), '[\s,\():]+', ''))"/>
 	</xsl:function>
 	
 	<xsl:function name="wcag:find-heading">

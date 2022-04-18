@@ -3,6 +3,7 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:wcag="https://www.w3.org/WAI/GL/"
+	xmlns:func="http://www.w3.org/2005/xpath-functions"
 	xmlns="http://www.w3.org/1999/xhtml"
 	exclude-result-prefixes="#all"
 	version="2.0">
@@ -90,8 +91,8 @@
 						<li><a href="{$meta/preceding-sibling::understanding[1]/file/@href}">Previous: <xsl:value-of select="$meta/preceding-sibling::understanding[1]/name"/></a></li>
 					</xsl:if>
 					<xsl:if test="name($meta/preceding-sibling::element()[1]) = 'principle'">
-						<li><a href="{$meta/preceding-sibling::principle[1]/guideline[last()]/success-criterion[last()]/file/@href}">Previous <abbr title="Guideline">GL</abbr>: <xsl:value-of select="$meta/preceding-sibling::principle[1]/guideline[last()]/name"/></a></li>
-						<li><a href="{$meta/preceding-sibling::principle[1]/guideline[last()]/file/@href}">Previous <abbr title="Success Criterion">SC</abbr>: <xsl:value-of select="$meta/preceding-sibling::principle[1]/guideline[last()]/success-criterion[last()]/name"/></a></li>
+						<li><a href="{$meta/preceding-sibling::principle[1]/guideline[last()]/file/@href}">Previous <abbr title="Guideline">GL</abbr>: <xsl:value-of select="$meta/preceding-sibling::principle[1]/guideline[last()]/name"/></a></li>
+						<li><a href="{$meta/preceding-sibling::principle[1]/guideline[last()]/success-criterion[last()]/file/@href}">Previous <abbr title="Success Criterion">SC</abbr>: <xsl:value-of select="$meta/preceding-sibling::principle[1]/guideline[last()]/success-criterion[last()]/name"/></a></li>
 					</xsl:if>
 					<xsl:if test="name($meta/following-sibling::element()[1]) = 'principle'">
 						<li><a href="{$meta/following-sibling::principle[1]/guideline[1]/file/@href}">First <abbr title="Guideline">GL</abbr>: <xsl:value-of select="$meta/following-sibling::principle[1]/guideline[1]/name"/></a></li>
@@ -117,6 +118,9 @@
 					<xsl:if test="wcag:section-meaningfully-exists('examples', //html:section[@id = 'examples'])"><li><a href="#examples">Examples</a></li></xsl:if>
 					<xsl:if test="wcag:section-meaningfully-exists('resources', //html:section[@id = 'resources'])"><li><a href="#resources">Related Resources</a></li></xsl:if>
 					<li><a href="#techniques">Techniques</a></li>
+					<xsl:if test="$act.doc//func:array[@key = 'successCriteria'][func:string = $meta/@id]">
+						<li><a href="#test-rules">Test Rules</a></li>
+					</xsl:if>
 				</xsl:if>
 				<xsl:if test="name($meta) = 'guideline'">
 					<li><a href="#intent">Intent</a></li>
@@ -183,15 +187,14 @@
 	
 	<xsl:template name="key-terms">
 		<xsl:param name="meta" tunnel="yes"/>
-		<xsl:variable name="termrefs" select="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]"/>
-		<xsl:if test="$termrefs">
-			<xsl:variable name="termrefs-canonical">
-				<xsl:for-each select="$termrefs">
-					<xsl:copy-of select="$meta/ancestor::guidelines/term[name = lower-case(normalize-space(current()))]/name[1]"/>
-				</xsl:for-each>
+		<xsl:if test="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]">
+			<xsl:variable name="termrefs">
+				<xsl:sequence>
+					<xsl:apply-templates select="//html:a[not(@href)] | $meta/content/descendant::html:a[not(@href)]" mode="find-key-terms"/>
+				</xsl:sequence>
 			</xsl:variable>
 			<xsl:variable name="termids" as="node()*">
-				<xsl:for-each select="distinct-values($termrefs-canonical/name)">
+				<xsl:for-each select="distinct-values($termrefs/name)">
 					<xsl:copy-of select="$meta/ancestor::guidelines/term[name = current()]"/>
 				</xsl:for-each>
 			</xsl:variable>
@@ -204,12 +207,49 @@
 		</xsl:if>
 	</xsl:template>
 	
+	<xsl:template name="act">
+		<xsl:param name="meta" tunnel="yes"/>
+		
+		<xsl:if test="$act.doc//func:array[@key = 'successCriteria'][func:string = $meta/@id]">
+			<section id="test-rules">
+				<h2>Test Rules</h2>
+				<p>The following are Test Rules for certain aspects of this Success Criterion. It is not necessary to use these particular Test Rules to check for conformance with WCAG, but they are defined and approved test methods. For information on using Test Rules, see <a href="understanding-act-rules.html">Understanding Test Rules for WCAG Success Criteria</a>.</p>
+				<ul>
+					<xsl:for-each select="$act.doc//func:array[@key = 'successCriteria']/func:string[. = $meta/@id]">
+						<li><a href="/WAI{ancestor::func:map/func:string[@key = 'permalink']}"><xsl:value-of select="ancestor::func:map/func:string[@key = 'title']"/></a></li>
+					</xsl:for-each>
+				</ul>
+			</section>
+		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="html:a[not(@href)]" mode="find-key-terms" priority="1">
+		<xsl:param name="meta" tunnel="yes"/>
+		<xsl:param name="list-so-far"></xsl:param>
+		<xsl:variable name="canonical-name" select="$meta/ancestor::guidelines/term[name = lower-case(normalize-space(current()))]/name[1]"/>
+		<xsl:choose>
+			<xsl:when test="empty($canonical-name)">
+				<xsl:message>Unable to find term "<xsl:value-of select="."/>" in "<xsl:value-of select="$meta/name"/> (<xsl:value-of select="$meta/name()"/>)"; key terms list will be incomplete.</xsl:message>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:sequence><xsl:copy-of select="$canonical-name"/></xsl:sequence>
+				<xsl:if test="not(index-of($list-so-far, $canonical-name))">
+					<xsl:apply-templates select="$meta/ancestor::guidelines/term[name = $canonical-name]//html:a[not(@href)]" mode="find-key-terms">
+						<xsl:with-param name="list-so-far" select="($list-so-far, $canonical-name)"/>
+					</xsl:apply-templates>
+				</xsl:if>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
 	<xsl:template match="term" mode="key-terms">
 		<dt id="{id}"><xsl:value-of select="name[1]"/></dt>
 		<dd><xsl:apply-templates select="definition"/></dd>
 	</xsl:template>
 	
 	<xsl:template match="guidelines">
+		<!--<xsl:result-document href="wcag-act-rules.xml"><xsl:apply-templates select="$act.doc/*"/></xsl:result-document>-->
+		
 		<xsl:apply-templates select="//understanding | //guideline | //success-criterion"/>
 	</xsl:template>
 	
@@ -260,6 +300,7 @@
 							<xsl:apply-templates select="//html:section[@id = 'examples']"/>
 							<xsl:apply-templates select="//html:section[@id = 'resources']"/>
 							<xsl:apply-templates select="//html:section[@id = 'techniques']"/>
+							<xsl:call-template name="act"/>
 							<xsl:if test="name($meta) = 'guideline'">
 								<xsl:apply-templates select="//html:section[@id = 'advisory']" mode="gladvisory"/>
 								<xsl:call-template name="gl-sc"/>

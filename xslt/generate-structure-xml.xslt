@@ -26,12 +26,16 @@
 	<xsl:template match="html:html">
 		<guidelines lang="{@lang}">
 			<understanding>
-				<name>Introduction to Understanding WCAG 2.1</name>
+				<name>Introduction to Understanding WCAG <xsl:value-of select="$guidelines.version.decimal"/></name>
 				<file href="intro"/>
 			</understanding>
 			<understanding>
 				<name>Understanding Techniques for WCAG Success Criteria</name>
 				<file href="understanding-techniques"/>
+			</understanding>
+			<understanding>
+				<name>Understanding Test Rules for WCAG Success Criteria</name>
+				<file href="understanding-act-rules"/>
 			</understanding>
 			<xsl:apply-templates select="//html:section[@class='principle']"/>
 			<understanding>
@@ -39,7 +43,7 @@
 				<file href="conformance"/>
 			</understanding>
 			<understanding>
-				<name>How to Refer to WCAG 2.1 from Other Documents</name>
+				<name>How to Refer to WCAG <xsl:value-of select="$guidelines.version.decimal"/> from Other Documents</name>
 				<file href="refer-to-wcag"/>
 			</understanding>
 			<understanding>
