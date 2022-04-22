@@ -135,27 +135,53 @@ The third of the primary bullets states that the focus indicator must contrast a
     <h3>Component keyboard focus</h3>
     <p>The preamble to this SC is "When a user interface component has keyboard focus..." The <em>keyboard focus</em> is the point of interaction for someone using a keyboard. For environments with a keyboard-operable interface, the keyboard focus can be moved around the interface in order to interact with different components. Whichever component is being interacted with has focus.</p>
 
-    <p>Some components have sub-components that can take focus, such as the menu items on a menu. Some designs maintain a focus indicator on both the component and sub-component in this situation. That is considered a best practice, and can assist keyboard users in understanding the interaction. However, for the purposes of this SC, the item considered to have keyboard focus is whichever is being interacted with. For example, after you tab to a menu and arrow down to a menu item, it is the menu item that is in focus; pressing Enter would activate the menu item.</p>
+    <p>WCAG defines <em>user interface component</em> as "a part of the content that is perceived by users as a single control for a distinct function." Because different users may perceive controls differently, there is a potential for some variation when interpreting what constitutes both a <em>single control</em> and what is a <em>distinct function</em>. This is particularly the case when something visually presents in a way that may differ from how it is programmatically created under the covers. Where there is not a native HTML component to base designs on, there can be great variations in how the components and their focus indicators are portrayed. Some examples will help illustrate. Further, some components have sub-components that can take focus, such as the menu items on a menu.</p>
+    <p> Nonetheless, consistent results from different testers were obtained for this SC by using the focus indicator itself as the gauge of what constitutes the component being interacted with. For complex components, the three typical focus indicators are as follows:</p>
 
-    <p>WCAG defines User Interface Component as "a part of the content that is perceived by users as a single control for a distinct function." Because different users may perceive controls differently, there is a potential for some interpretation on what constitutes both a <em>single control</em> and what is a <em>distinct function</em>. Consistent results from different testers were obtained for this SC by using the focus indicator itself as the gauge of what constitutes the component being interacted with. This is particularly the case when something visually presents in a way that may differ from how it is programmatically created under the covers.
-        
-    For example, a star-rating mechanism can be created as a slider, a group of radio buttons, a list of interactive individuals stars, or other custom implementations. There are three distinct and common ways focus can be shown for the stars, all of which are acceptable and can be judged for focus appearance.
-    
     <ul>
-    <li>Focus around group of stars</li>
-    <li>on current value of stars</li>
-    <li>around group and current value</li>
+        <li>Focus indicator around only the whole component</li>
+        <li>Focus indicators around both the component and subcomponent</li>
+        <li>Focus indicator around only the subcomponent</li>
     </ul>
+   
+    Each of these will be discussed, using a tablist as a familiar complex component.
+        
+            <h4>Focus indicator around only the whole component</h4>
+            [ Future image: a tablist with a focus indicator around only the whole]
+            
+            <p>When the focus indicator is shown only around the whole tablist, the user is guided to considering the tablist as a single user component. The tab items within it are visually distinguished between selected and unselected states.</p>
+        
+            <p>For a tablist which synchronizes its tab panel content with whatever tab is active, only one tab item can be selected at a time, and since whatever tab is selected is considered active, a separate focus indicator is redundant.</p>
+            
+            <p>Result: the group focus indicator must meet the requirements of this SC.</p>
+        
+            <p>A <a href="https://www.w3.org/TR/wai-aria-practices-1.2/examples/slider/slider-rating.html#ex_label">star-rating widget that uses a whole-component focus indicator</a> provides a working example of a different complex component using a single focus indicator that passes the primary requirements of this SC.</p>
 
-    In the first case, the group of stars are treated as a single component. The focus indicator encompasses all 5 stars, which guides the user to think of them all as... A construct like a star-rating is made more complex by the fact that the selection of the stars can potentially serve double duty as both an indication of how many stars are currently selected and what the 
+            <h4>Focus indicators around both the component and subcomponent</h4>
+        
+            [Image set: The same tablist in two states. In the first, focus is around both the tablist and the currently selected tab; in the second, focus is around both the tablist and an unselected tab]
+        
+            <p>For a tablist which does not keep its tab panel content synchronized with whatever tab is selected, there <em>is</em> a separate focus indicator for the tab item subcomponent. The user can navigate to the tablist (normally using the Tab key) which has a focus rectangle around the whole tablist as well as one around a tab item (conventionally the item that is currently selected). The focus around the whole cues a keyboard user that it is a complex component that has its own sub-operation. The user can then move focus between the unselected and selected tab items (normally with arrow keys) -- each of which in turn has its own focus indicator -- before activating one (normally with the Enter or Space key), which then makes it selected as well as focused, and updates the tab panel to match.</p>
+        
+            <p>Result: the focus indicator for the tab item must meet the requirements of this SC. The tablist focus indicator does not need to meet the requirements.</p>
 
-    Remembering that the purpose of this SC is to ensure users can orient themselves to the point of keyboard operation on the page, testers should bias to testing only the... The word <em>indicator</em> in the phrase "focus indicator"</em>helps make this obvious.</p>
+            <p>A <a href="https://www.w3.org/TR/wai-aria-practices-1.2/examples/slider/slider-color-viewer.html#ex_label">slider to pick colors</a> provides a working example of a different complex component that predominantly shows focus for the subcomponent. In this case, the thumb slider sub-component has a focus indicator of sufficient size and contrast to pass the exception. There is also a subtle focus around the whole slider component, but it does not need to be assessed to pass this SC.</p>
+        
+            <h4>Focus indicator around only the subcomponent</h4>
+        
+            <p>[Future image set: The same images as in the prior set, but here the focus indicator around the whole is removed in both images]</p>
+        
+        
+            <p>The same unsynchronized tablist can also be implemented as something which only shows focus on the tab items and not on the whole. The behaviour is the same as in the prior example, but there is never a focus indicator placed around the tablist. This interaction is acceptable, but it is not best practice for a number of reasons, since it demands more understanding from the user with less information. Some visual cues for the tablist and tab items (and tab panel) may not be clear. Keyboard users may not initially understand the expected keyboard interaction.</p>
+        
+            <p>Result: the focus indicator for the tab item must the requirements of this SC, judging focus with both selected and unselected tab items.</p>
 
-    
-
+            <p>A <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role#example"> functional example of sub-component-only tab focus</a> has an indicator that is large enoughwith sufficient contrast to pass the exception language of this SC.</p>
+        
+            <h4>Where something with focus is not a user interface component</h4>
     <p>Some pages contain very large editing regions, such as web implementations of word processors and code editors. Unlike a `textarea` element, which is a user interface component, these large editing regions do not typically meet the definition of <a href="https://w3c.github.io/wcag/guidelines/22/#dfn-user-interface-components">user interface components</a>; they are not "perceived by users as a single control for a distinct function." Providing focus indicators around such editing regions may still be beneficial to some; however, where the region is not perceived as a single control, it is not covered by this Success Criterion. The web page will still need to provide a insertion point (caret indicator) in such editing regions in order to meet the requirements of <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html">2.4.7 Focus Visible</a>.</p>
 
-    <p>Some non-operable elements can take focus (such as a heading element that is the target of a skip link). However, the preamble refers to user interface components; it is only when the element with focus is operable by keyboard that this Success Criterion applies.</p>
+    <p>Some non-operable elements can take focus (such as a heading element that is the target of a skip link). However, the preamble of this SC refers to user interface components; it is only when the element with focus is operable by keyboard that this Success Criterion applies.</p>
 </section>
 <section id="exceptions">
 <h3>Exceptions</h3>
