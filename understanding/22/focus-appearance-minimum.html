@@ -84,28 +84,28 @@
             <figcaption>Passes: A solid focus rectangle around the second of two buttons.</figcaption>
         </figure>
 
-        "Surrounds" also refers to something that solidly encloses a shape. However, a shape can be surrounded in many ways. For instance, the focus indicator may follow the outline of the object being enclosed. The difference between <em>bounds</em> and <em>surrounds</em> is illustrated in the following two images of a set of ratings stars. In both examples, the same three stars have already been selected, and focus is on the second star.</p>
+        "Surrounds" also refers to something that solidly encloses a shape. However, a shape can be surrounded in many ways. For instance, the focus indicator may follow the outline of the object being enclosed. The difference between <em>bounds</em> and <em>surrounds</em> is illustrated in the following two images of a set of ratings stars. In both examples, the same three stars have already been selected, and focus is on the third star.</p>
         <figure id="focus-border-solid">
-            <img src="img/focus-indicator-solid-border.svg" alt="Three of 5 stars are selected with a solid-line rectangular focus indicator around the second" />
-            <figcaption> Passes: a solidly bound focus rectangle encloses the second of 5 stars.</figcaption>
+            <img src="img/focus-indicator-solid-border.svg" alt="3 of 5 stars are selected with a solid-line rectangular focus indicator around the third" />
+            <figcaption> Passes: a solidly bound focus rectangle encloses the third of five stars.</figcaption>
         </figure>
 
         <figure id="focus-outline-solid">
-            <img src="img/focus-indicator-solid-outline.svg" alt="Three of 5 stars are selected with a solid-line focus indicator in the shape of a star outlining the second" />
-            <figcaption> Passes: a solid outline indicator surrounds the second of 5 stars.</figcaption>
+            <img src="img/focus-indicator-solid-outline.svg" alt="Three of 5 stars are selected with a solid-line focus indicator in the shape of a star outlining the third" />
+            <figcaption> Passes: a solid outline indicator surrounds the third of five stars.</figcaption>
         </figure>  
 
         <h4>Solidly</h4>
             <p>Where the indicator does not "solidly" bound or surround the component, as with a dashed or dotted line, it cannot meet this primary consideration. However, a non-solid line can still pass if it meets the wording of the exceptions (discussed in more detail under Exceptions).</p>
 
         <figure id="focus-indicator-weak-dashed">
-            <img src="img/focus-indicator-weak-dashed-border.svg" alt="Three of 5 stars are selected with the whole second star outlined with a 1 pixel thick dashed line" />
-            <figcaption> Fails: the dashed outline does not "solidly bound" the second star and does not meet the exception language.</figcaption>
+            <img src="img/focus-indicator-weak-dashed-border.svg" alt="3 of 5 stars are selected with the whole third star outlined with a 1 pixel thick dashed line" />
+            <figcaption> Fails: the dashed outline does not "solidly bound" the third star and does not meet the exception language.</figcaption>
         </figure>         
 
         <figure id="focus-indicator-strong-dashed">
-            <img src="img/focus-indicator-strong-dashed-border.svg" alt="Three of 5 stars are selected with the whole second star outlined with a 2 pixel thick dashed line" />
-            <figcaption> Passes: the dashed outline does not "solidly bound" the second star; however, the dashed line meets the area requirements of the exception langauge.</figcaption>
+            <img src="img/focus-indicator-strong-dashed-border.svg" alt="3 of 5 stars are selected with the whole third star outlined with a 2 pixel thick dashed line" />
+            <figcaption> Passes: the dashed outline does not "solidly bound" the third star; however, the dashed line meets the area requirements of the exception langauge.</figcaption>
         </figure>      
 </section>
 
@@ -113,7 +113,7 @@
 
 <h3>Indicator contrasts between its focused and unfocused states</h3>
 
-<p>The second of the primary bullets states that the indicator "has a contrast ratio of at least 3:1 between its pixels in the focused and unfocused states." The following illustration shows a <strong>minimally</strong> contrasting focus indicator, where some of the white pixels making up the page background have been altered to a mid-grey, which contrast 3:1 with the original white. Authors are encouraged to exceed the minimum focus appearance. For instance, the dark blue lines in the first two illustartions are much more visible.</p>
+<p>The second of the primary bullets states that the indicator "has a contrast ratio of at least 3:1 between its pixels in the focused and unfocused states." The following illustration shows a <strong>minimally</strong> contrasting focus indicator, where some of the white pixels making up the page background have been altered to a mid-grey, which contrast 3:1 with the original white. Authors are encouraged to exceed the minimum focus appearance. For instance, the dark blue lines in the first two illustrations are much more visible.</p>
 
 <figure id="focus-indicator-star-with-light-focus">
     <img src="img/focus-indicator-star-with-light-focus.svg" alt="Two orange-yellow five-pointed stars, one with a mid-gray focus rectangle" />
@@ -136,6 +136,20 @@ The third of the primary bullets states that the focus indicator must contrast a
     <p>The preamble to this SC is "When a user interface component has keyboard focus..." The <em>keyboard focus</em> is the point of interaction for someone using a keyboard. For environments with a keyboard-operable interface, the keyboard focus can be moved around the interface in order to interact with different components. Whichever component is being interacted with has focus.</p>
 
     <p>Some components have sub-components that can take focus, such as the menu items on a menu. Some designs maintain a focus indicator on both the component and sub-component in this situation. That is considered a best practice, and can assist keyboard users in understanding the interaction. However, for the purposes of this SC, the item considered to have keyboard focus is whichever is being interacted with. For example, after you tab to a menu and arrow down to a menu item, it is the menu item that is in focus; pressing Enter would activate the menu item.</p>
+
+    <p>WCAG defines User Interface Component as "a part of the content that is perceived by users as a single control for a distinct function." Because different users may perceive controls differently, there is a potential for some interpretation on what constitutes both a <em>single control</em> and what is a <em>distinct function</em>. Consistent results from different testers were obtained for this SC by using the focus indicator itself as the gauge of what constitutes the component being interacted with. This is particularly the case when something visually presents in a way that may differ from how it is programmatically created under the covers.
+        
+    For example, a star-rating mechanism can be created as a slider, a group of radio buttons, a list of interactive individuals stars, or other custom implementations. There are three distinct and common ways focus can be shown for the stars, all of which are acceptable and can be judged for focus appearance.
+    
+    * Focus around group of stars
+    * Focus on current value of stars
+    * Focus around group and current value
+
+    In the first case, the group of stars are treated as a single component. The focus indicator encompasses all 5 stars, which guides the user to think of them all as... A construct like a star-rating is made more complex by the fact that the selection of the stars can potentially serve double duty as both an indication of how many stars are currently selected and what the 
+
+    Remembering that the purpose of this SC is to ensure users can orient themselves to the point of keyboard operation on the page, testers should bias to testing only the... The word <em>indicator</em> in the phrase "focus indicator"</em>helps make this obvious.</p>
+
+    
 
     <p>Some pages contain very large editing regions, such as web implementations of word processors and code editors. Unlike a `textarea` element, which is a user interface component, these large editing regions do not typically meet the definition of <a href="https://w3c.github.io/wcag/guidelines/22/#dfn-user-interface-components">user interface components</a>; they are not "perceived by users as a single control for a distinct function." Providing focus indicators around such editing regions may still be beneficial to some; however, where the region is not perceived as a single control, it is not covered by this Success Criterion. The web page will still need to provide a insertion point (caret indicator) in such editing regions in order to meet the requirements of <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html">2.4.7 Focus Visible</a>.</p>
 
@@ -211,8 +225,8 @@ The third of the primary bullets states that the focus indicator must contrast a
 
                 <p>Another way of achieving the area exception is to alter the appearance of the entire component, for instance by changing its color. This can be effective in a set of closely placed buttons. The following example using the same set of 5 ratings stars given in the first illustrations in this document, shows how this can be achieved. However, it is much more difficult to detect such a focus indicator when components are not near each other and so cannot be easily compared. For users using magnfication, even components relatively close together may be difficult to compare, so it is not considered a best practice.  </p>
                 <figure id="focus-indicator-whole">
-                    <img src="img/focus-indicator-whole-star.svg" alt="Three of 5 stars are selected with the whole second star altered in color to indicate focus" />
-                    <figcaption> Passes: a color change applies to the whole second star to indicate focus. Clearly, the area is sufficient.</figcaption>
+                    <img src="img/focus-indicator-whole-star.svg" alt="3 of 5 stars are selected with the whole third star altered in color to indicate focus" />
+                    <figcaption> Passes: a color change applies to the whole third star to indicate focus. Clearly, the area is sufficient.</figcaption>
                 </figure> 
 
                 <p>The Success Criterion includes an alternative size measure of "at least as large as a 4 CSS pixels border along the shortest side". This is included to allow for smaller but thick indicators. For example, some controls might be of a fixed height but variable width, in which case this measure allows for a more consistent approach.</p>
