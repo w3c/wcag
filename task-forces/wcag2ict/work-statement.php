@@ -41,13 +41,13 @@
 		</ul>
 		<section id="approach">
 			<h2>Approach</h2>
-			<p>The primary effort of this Task Force will be describing how to interpret WCAG 2.x and its principles, guidelines, success criteria and conformance requirements when applying them to non-web ICT, including all WCAG 2.x A and AA success criteria; and evaluating what WCAG Conformance means in the context of non-Web ICT. The resulting Working Group Note will include a success-criteria-by-success-criteria discussion of applying WCAG 2.x to non-Web ICT, including their interface components and platforms, and the extent to which <a href="http://www.w3.org/TR/WCAG20/#conformance">WCAG Conformance</a> is meaningful to non-Web ICT.</p>
-			<p>The work may be broken down into ad hoc sub-teams if and as necessary, under the coordination of the Task Force facilitator(s), to efficiently develop the core Working Group Note.</p>
+			<p>WCAG2ICT is a Task Force of the AG WG, which has oversight over the Task Force to ensure accurate interpretation and representation of WCAG 2.x. The primary effort of this Task Force will be describing how to interpret WCAG 2.x and its principles, guidelines, success criteria and conformance requirements when applying them to non-web ICT, including all WCAG 2.x A and AA success criteria; and evaluating what WCAG Conformance means in the context of non-Web ICT. The resulting Working Group Note will include a success-criteria-by-success-criteria discussion of applying WCAG 2.x to non-Web ICT, including their interface components and platforms, and the extent to which <a href="http://www.w3.org/TR/WCAG20/#conformance">WCAG Conformance</a> is meaningful to non-Web ICT.</p>
+			<p>In order to efficiently develop the core Working Group Note, the work may be broken down into ad hoc sub-groups if and as necessary, under the coordination of the Task Force facilitator(s) and following established AG WG procedures for sub-groups.</p>
 			<p>The work will be carried out through a series of document drafts, all publicly visible, with opportunities for public comment through publicly available comment lists. In particular, key stakeholders such as developers, evaluators, accessibility experts, researchers, procurement experts, and end users will be regularly involved in the development process. Key participants will be drawn from people with expertise not only in Web technologies, but also those with platform-specific accessibility expertise, including people involved in the development of accessibility frameworks, accessible platforms, accessible user interface components, and accessible software (including products closed to assistive technology) for a broad variety of computing environments.</p>
 		</section>
 		<section id="timeline">
 			<h2>Timeline</h2>
-			<p>Following is a rough timeline of the work:</p>
+			<p>To include WCAG 2.2, the Recommendation version standard must be published with sufficient time to update the draft Note with finalized requirements verbiage. Following is a rough timeline of the work:</p>
 			<ul>
 				<li>April - May 2022 (2 months): <ul>
 						<li>obtain approval from AG WG and launch the WCAG2ICT Task Force;</li>
@@ -78,13 +78,12 @@
 		</section>
 		<section id="liaisons">
 			<h2>Liaisons</h2>
-			<p>WCAG2ICT is a Task Force of the AG WG, which has oversight over the Task Force to ensure accurate interpretation and representation of WCAG 2.x. To include WCAG 2.2, the Recommendation version standard must be published with sufficient time to update the draft Note with finalized requirements verbiage.</p>
 			<p>While there are no direct dependencies at the Task Force level (please see  <a href="https://www.w3.org/2019/12/ag-charter#deliverables">deliverables section of the AG WG Charter</a> for more information), please note the following proposed liaisons:</p>
 			<p>The following proposed participating liaisons may change pending confirmation, and/or be expanded:</p>
 			<ul>
-				<li><a>US CIO Council, Accessibility Committee</a></li>
-				<li><a href="http://www.etsi.org/">ETSI</a></li>
-				<li>Other?</li>
+				<li>US Access Board</li>
+				<li>ETSI, CEN and CENELEC</li>
+				<li>Potentially other liaisons with government and/or regulatory agencies considering referencing the updated WCAG2ICT</li>
 			</ul>
 		</section>
 		<section id="communication">
