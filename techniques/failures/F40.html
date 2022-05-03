@@ -1,5 +1,5 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Failure of Success Criterion 2.2.1 and 2.2.4 due to using meta redirect with a time limit
-        </title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Failure of Success Criterion 2.2.1 and 2.2.4 due to using meta redirect with a time limit
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Failure due to using meta redirect with a time limit
+        </title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Failure due to using meta redirect with a time limit
         </h1><section class="meta"><p class="id">ID: F40</p><p class="technology">Technology: failures</p><p class="type">Type: Failure</p></section><section id="applicability"><h2>When to Use</h2>
       <p> All pages</p>
    </section><section id="description"><h2>Description</h2>
@@ -39,20 +39,26 @@
       </section>
    </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
-         <ol>
-            <li> View a page. </li>
-            <li> Check that the page does not redirect after a time-out. </li>
-         </ol>
+        <p>For a page that uses <code>meta http-equiv="refresh"</code>:</p> 
+        <ol>
+          <li>Check that the numerical value for seconds until refresh in the <att>content</att> attribute is present.</li>
+          <li>Check that the numerical value for seconds until refresh in the <att>content</att> attribute is less than one or greater than 72,000.</li>
+          <li>Check if the page qualifies for Real-time or Essential Exceptions in <a href="https://www.w3.org/TR/WCAG21/#timing-adjustable">Success Criterion 2.2.1 Timing Adjustable</a>.</li>
+          <li>Check if the user is provided an opportunity to turn off, extend, or adjust the timing of the page refresh.</li>
+            <li>Check if the page does not redirect after the duration specified in the <att>content</att> attribute.</li>
+        </ol>
       </section>
       <section class="results"><h3>Expected Results</h3>
          <ol>
-            <li>If check #2 is false, this failure condition applies and content fails the Success Criterion.</li>
+            <li>If checks #1-5 are false, this failure condition applies and the content fails Success Criterion 2.2.1.</li>
+            <li>If checks #1, #2, #4, and #5 are false, this failure condition applies and the content fails Success Criterion 2.2.4.</li>
+            <li>If checks #1, #4, and #5 are false, this failure condition applies and the content fails Success Criterion 3.2.5.</li>
          </ol>
       </section>
-   </section><section id="related"><h2>Related Techniques</h2>
-      
-      
-   </section><section id="resources"><h2>Resources</h2>
+   </section><section id="related"><h2>Related Techniques</h2><ul>
+      <li><a href="../server-side-script/SVR1">SVR1</a></li>
+      <li><a href="../html/H76">H76</a></li>
+   </ul></section><section id="resources"><h2>Resources</h2>
       
          <ul>
             <li> 

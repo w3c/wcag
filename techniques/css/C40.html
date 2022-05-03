@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<title>Creating a two-color focus indicator to ensure sufficient contrast with all components</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css"/>
+	</head>
+	<body>
+		<h1>Creating a two-color focus indicator to ensure sufficient contrast with all components</h1>
+		<section id="meta">
+			<h2>Metadata</h2>
+			<p id="id"></p>
+			<p id="technology">CSS</p>
+			<p id="type"></p>
+		</section>
+		<section id="applicability">
+			<h2>When to Use</h2>
+			<p>All technologies that support CSS.</p>
+		</section>
+		<section id="description">
+			<h2>Description</h2>
+			<p>The objective of this technique is to create a two-color focus indicator that has sufficient contrast against any background color. This technique eliminates the need for multiple classes to ensure sufficient contrast of the focus indicator when viewed against different backgrounds.</p>	
+
+			<p>The default focus indicators provided by browsers are typically one color, so they are highly visible when some components have focus and not well seen on other components. For instance, if a focus indicator is dark blue and a button is on a white background then it will be easily seen, but if the background is also blue it will not be easily seen.</p>
+
+			<p>Although it is possible to create individual CSS classes to address the different buttons across a site, this can be time consuming and easy to miss some types of interactive content. However, if the focus indicator is two colors - a light color and a dark color - then it will always have sufficient contrast against any background color. Currently, this can be done by combining the <code>text-shadow</code> property with the <code>outline</code> property on the <code>focus</code> indicator.</p>
+
+			<p>Developers may apply this technique to parts of the site where its hard to keep track of the focus indicator (such as when there are lots of different component colors). Developers can also provide a single-color focus indicator for components such as a navigation menus that are used across a site, have specific design requirements, and are easy to test and maintain.</p>
+
+			<p class="note">If it can be determined that the two-color focus indicator CSS takes precedence then the test can be applied programmatically rather than by manually focusing on each interface component.</p>
+		
+		</section>
+		<section id="examples">
+			<h2>Examples</h2>
+			<p>The examples demonstrate a simple implementation where focus styles are applied to all links and inputs. In use on a more complex website care would need to be taken that these styles are not overridden by more specific styles.</p>
+
+			<section class="example">
+				<h3>A light and dark dotted indicator</h3>
+				<p>Description</p>
+				<pre><code>*:focus {
+	box-shadow: 0 0 0px 2px white;
+	outline: dotted;
+}</code></pre>
+			<p class="working-example"><a href="../../working-examples/css-two-focus-colors/dotted.html">Working example of combining a dark outline and light text shadow</a></p>
+        
+			</section>
+      
+			<section class="example">
+			<h3>A thicker light and dark indicator</h3>
+			<p>Description</p>
+			<pre><code>*:focus { 
+	/* ensure high-contrast mode still has an indicator */
+	outline: 2px transparent solid;
+
+	/* Apply a thick yellow box-shadow with 
+	   a thin dark blue indicator in the middle */
+	box-shadow: 0 0 0 2px #F9F9D1, 0 0 0 4px #396196, 0 0 4px 8px #F9F9D1;
+}</code></pre>
+			<p class="working-example"><a href="../../working-examples/css-two-focus-colors/lined.html">Working example of combining a dark outline and light text shadow</a></p>
+        
+		</section>
+
+		</section>
+		<section id="tests">
+			<h2>Tests</h2>
+			
+			<section class="test-procedure">
+				<h3>Procedure</h3>
+				<p>For each focusable user interface element:</p>
+				<ol>
+					<li>Check that the two-colors in the focus indicator are adjacent and have a contrast ratio that is 3:1 or greater with each other.</li>
+					<li>Check that the colors used contrast with the adjacent colors, or are at least 2 CSS pixels thick.</li>
+				</ol>
+			</section>
+			<section class="test-results">
+				<h3>Expected Results</h3>
+				<ul>
+					<li>#1 and #2 are true.</li>
+				</ul>
+			</section>
+		</section>
+		<section id="related">
+			<h2>Related Techniques</h2>
+			<ul>
+				<li><a href="../general/G149">G149</a></li>
+				<li><a href="../general/G195">G195</a></li>
+			</ul>
+		</section>
+		<section id="resources">
+			<h2>Resources</h2>
+			<ul>
+				<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:focus">The :focus pseudo-class on the Mozilla Developer Network</a></li>
+				<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible">The :focus-visible pseudo-class on the Mozilla Developer Network</a></li>
+			</ul>
+		</section>
+	</body>
+</html>

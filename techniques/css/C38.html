@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>Using CSS width, max-width and flexbox to fit labels and inputs</title>
+    <link rel="stylesheet" type="text/css" href="../../css/editors.css"/>
+  </head>
+  <body>
+    <h1>Using <code>CSS width</code>, <code>max-width</code> and <code>flexbox</code> to fit labels and inputs</h1>
+    <section id="meta">
+      <h2>Metadata</h2>
+      <p id="id"></p>
+      <p id="technology">css</p>
+      <p id="type">sufficient</p>
+    </section>
+    <section id="applicability">
+      <h2>When to Use</h2>
+      <p>This technique is applicable to Cascading Style Sheet / HTML technologies.</p>
+    </section>
+    <section id="description">
+      <h2>Description</h2>
+      <p>The objective of this technique is to be able to present labels and inputs without introducing a horizontal scroll bar at a width equivalent to 320 CSS pixels for content intended to scroll vertically. When space is limited in the viewport for the label and input to sit next to each other horizontally, they will be changed to a vertical alignment. This is done by using CSS properties for <code>width</code>, <code>max-width</code> and <code>flexbox</code> that adapt to the available space.</p>
+      
+      <p>Responsive layouts can add or remove columns or layout blocks, and each part of the layout can be wider or smaller at different points. This technique ensures labels and inputs do not break out of their layout area, including in one-column layouts where it would cause horizontal scrolling.</p>
+
+      <p>The basic approach for fitting labels and inputs is to:</p>
+      
+      <ol>
+        <li>Define the size of layout regions using flexbox properties and media queries for specific viewport sizes, so they enlarge, shrink or wrap in the available space and respond to zoom levels;</li>       
+         <li>Position the layout regions in the flexbox container as a row of adjacent flexbox items, which may wrap to new rows as needed in much the same way as words in a paragraph wrap.</li>
+        <li>Define the width and max-width property for labels and inputs so they enlarge or shrink in the available space and respond to zoom levels.</li>
+      </ol>
+      
+      <p>All labels and inputs require design finesse by making sure the original size fits the biggest size of the available spaces to achieve good-looking results at a wide range of viewport sizes and zoom levels. For help on flexbox please see the <a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox">MDN article on Flexbox</a>.</p>
+      
+    </section>
+    <section id="examples">
+      <h2>Examples</h2>
+      <section class="example">
+        <h3>Fitting labels, inputs and flexbox layout with HTML and CSS.</h3>
+        <p>The following example uses HTML and CSS to fit labels and inputs within various width containers, including the viewport. The layout regions adjust their size as the viewport is adjusted. The labels and inputs subsequently adjust their size to fit within the layout region containers.</p>
+        <p>The zoom level can be increased to 400% without requiring horizontal scrolling. This particular example uses a percent size for the <code>width</code> and <code>max-width</code> for the labels and inputs. The <code>max-width</code> is applied in order to fix elements spilling out of the grid in a cross-browser way, as replaced elements such as the <code>select</code> have intrinsic sizing.</p>
+
+<pre>
+<code>
+
+&lt;style&gt;
+
+/* Fitting Inputs Styling */
+
+.form-group {
+  display: flex;
+  flex-flow: row wrap;
+  margin: 0 -1rem 1rem -1rem;
+}
+
+[class*="form-col"] {
+  flex: 0 1 100%;
+  padding: 0 1rem;
+}
+
+@media (min-width: 576px) {
+  .form-col-4 {
+    flex: 0 0 33.33333%;
+    max-width: 33.33333%;
+  }
+  
+  .form-col-8 {
+    flex: 0 0 66.66667%;
+    max-width: 66.66667%;
+  }
+  
+  .offset-form-col-4 {
+    margin-left: 33.33333%;
+  }
+  
+}
+
+input {
+  display: block;
+  width: 100%;
+}
+
+label,
+select {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+&lt;/style&gt;
+
+&lt;div class="form-group"&gt;
+  &lt;div class="form-col-4"&gt;
+    &lt;label for="fname"&gt;First Name&lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div class="form-col-8"&gt;
+    &lt;input type="text" id="fname" autocomplete="given-name"&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="form-group"&gt;
+  &lt;div class="form-col-4"&gt;
+    &lt;label for="lname"&gt;Last Name&lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div class="form-col-8"&gt;
+    &lt;input type="text" id="lname" autocomplete="family-name"&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="form-group"&gt;
+  &lt;div class="form-col-4"&gt;
+   &lt;label for="favorite-fruit"&gt;Favorite fruit&lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div id="favorite-fruit" class="form-col-8"&gt;
+    &lt;select&gt;
+      &lt;option&gt;Banana&lt;/option&gt;
+      &lt;option&gt;Pineapple&lt;/option&gt;
+      &lt;option&gt;Strawberry&lt;/option&gt;
+    &lt;/select&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="form-group"&gt;
+  &lt;div class="offset-form-col-4 form-col-8"&gt;
+    &lt;button&gt;Submit&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code>
+</pre>
+        
+        <p class="working-examples">Working example: <a href="../../working-examples/css-fit-labels-inputs/">Using Adjustable Labels and Inputs for Reflow</a></p>
+        
+      </section>
+    </section>
+    <section id="tests">
+      <h2>Tests</h2>      
+      <section class="test-procedure">
+        <h3>Procedure</h3>
+        <ol>
+          <li>Display the web page in a user agent capable of 400% zoom and set the viewport dimensions (in CSS pixels) to 1280 wide and 1024 high.</li>
+          <li>Zoom in by 400%.</li>
+          <li>For vertically scrolling content, all labels and inputs fit in their available space without horizontal scrolling.</li>
+        </ol>
+        <p>NB: If the browser is not capable of zooming to 400%, you can reduce the width of the browser proportionally. For example, at 300% zoom the viewport should be sized to 960px wide.</p>
+      </section>
+      <section class="test-results">
+        <h3>Expected Results</h3>
+        <p>Check #3 is true.</p>
+    </section>
+    </section>
+    <section id="related">
+      <h2>Related Techniques</h2>
+      <ul>
+        <li>ID</li>
+      </ul>
+    </section>
+  </body>
+</html>

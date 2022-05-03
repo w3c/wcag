@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<title>Failure of Success Criterion 2.5.3 due to the accessible name not containing the visible label text</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css"/>
+	</head>
+	<body>
+		<h1>Failure due to the accessible name not containing the visible label text</h1>
+		<section id="meta">
+			<h2>Metadata</h2>
+			<p id="id"></p>
+			<p id="technology">general</p>
+			<p id="type">failure</p>
+		</section>
+
+		<section id="applicability">
+			<h2>When to Use</h2>
+			<p>All technologies that include interactive controls (such as links or form inputs).</p>
+		</section>
+
+		<section id="description">
+			<h2>Description</h2>
+			<p>The objective of this Failure is to describe situations where speech input users cannot reliably speak the name of a control because it differs from the visible label.</p>
+			<p>When speech input users interact with a web page, they usually speak a command followed by the reference to some visible label (like the text in a button or a link, or the text labelling some input). If the visible label does not match the accessible name of the control, speech users may be unable to directly activate that control.</p>	
+			<p>There are techniques that go beyond the visible label text of elements. The idea is to provide more context for users of assistive technologies to whom the visible context may not be available. Examples are the use of accessible hidden (e.g., offscreen-positioned) text, the use of the aria-label attribute to overwrite the label text, or the use of the aria-labelledby attribute to compose a label text from one or more strings strings on the page.</p>
+			<p>When the use of these techniques results in an accessible name in which the exact string of the visible label does not occur in the accessible name, speech users may be unable to activate that control. Refer to the <a href="https://www.w3.org/TR/accname/">Accessible Name and Description Computation</a> algorithm to work out the order of precedence in computing the accessible name of a control.</p>
+		</section>
+		
+		<section id="examples">
+			<h2>Examples</h2>
+      
+      <section class="example">
+				<h3>Mismatch of visible button text and accessible name supplied via aria-label</h3>
+				<p>The text in a search button reads "Go" but the accessible name provided in an aria-label attribute is "Find in this site"</p>
+				<pre><code>
+        &lt;button id="sitesearch" aria-label="Find in this site"&gt;Go&lt;/button&gt;
+        </code></pre>
+      </section>
+      
+      <section class="example">
+				<h3>Invisible link text disrupts visible label text string in accessible name</h3>
+				<p>A download link reads "Download specification" but there is invisible link text so that the accessible name of that link is "Download gizmo specification". While the visible label text is contained in the accessible name, there is no string match which may prevent the link from being activated by speech input.</p>
+        <pre><code>
+        &lt;a href="#"&gt;Download &lt;span class="accessibly-hidden"&gt;gizmo&lt;/span&gt; specification&lt;/a&gt;
+        </code></pre>
+      </section>
+          
+      <section class="example">
+				<h3>Input with a hidden label carrying text that differs from the input's value attribute</h3>
+				<p>An input of type="submit" with the value="search" which is exposed as visible label of the input, has a programmatically linked and accessibly hidden label enclosing the text "Find in this site" referenced by aria-labelledby. Because aria-labelledby takes precedence over the value of the input, the accessible name of the input in most browser / screen reader combinations will be "Find in this site". Speech users speaking a command such as "Click search" will be unable to activate the input.</p>
+        <pre><code>
+        &lt;div id="hidden-label"&gt;Find in this site&lt;/div&gt;
+        &lt;input type="submit" aria-labelledby="hidden-label" value="search"&gt;
+        </code></pre>
+      </section>
+    </section>
+    
+		<section id="tests">
+			<h2>Tests</h2>
+			<section class="test-procedure">
+				<h3>Procedure</h3>
+				<p>For all controls with a visible label (e.g., link text, button text, programmatically linked label, images in links with text), check that:</p>
+				<ol>
+					<li>The accessible name is the same as the visible label.</li>
+          <li>The accessible name contains a match for the string of the visible label.</li>
+				</ol>
+			</section>
+			<section class="test-results">
+				<h3>Expected Results</h3>
+				<ul>
+					<li>If checks #1 and #2 are false, the content fails the Success Criterion.</li>
+				</ul>
+			</section>
+		</section>
+		<section id="related">
+			<h2>Related Techniques</h2>
+			<ul>
+        <li><a href="../../techniques/general/G131">G131</a></li>
+        <li><a href="../../techniques/aria/ARIA7">ARIA7</a></li>
+        <li><a href="../../techniques/aria/ARIA8">ARIA8</a></li>
+        <li><a href="../../techniques/aria/ARIA9">ARIA9</a></li>
+				<li><a href="../../techniques/aria/ARIA14">ARIA14</a></li>
+        <li><a href="../../techniques/aria/ARIA16">ARIA16</a></li>
+        <li><a href="../../techniques/client-side-script/SCR30">SCR30</a></li>
+			</ul>
+		</section>
+	</body>
+</html>

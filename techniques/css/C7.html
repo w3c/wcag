@@ -1,84 +1,77 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using CSS to hide a portion of the link text </title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using CSS to hide a portion of the link text </h1><section class="meta"><p class="id">ID: C7</p><p class="technology">Technology: css</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+   <title>Using CSS to hide a portion of the link text </title>
+   <link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link>
+</head>
+<body>
+   <h1>Using CSS to hide a portion of the link text</h1>
+   <section class="meta">
+      <p class="id">ID: C7</p>
+      <p class="technology">Technology: css</p>
+      <p class="type">Type: Technique</p>
+   </section>
+   <section id="applicability">
+      <h2>When to Use</h2>
       <p>All technologies that support CSS .</p>
-   </section><section id="description"><h2>Description</h2>
+   </section>
+   <section id="description"><h2>Description</h2>
       <p>The objective of this technique is to supplement the link text by adding additional text that describes the unique function of the link and styling the additional text so that it is not rendered on the screen by user agents that support CSS. When information in the surrounding context is needed to interpret the displayed link text, this technique provides a complete description of the link's input function while permitting the less complete text to be displayed.</p>
-      <p>This technique works by creating a CSS selector to target text that is to be hidden. The rule set for the selector places the text to be hidden in a 1-pixel box with overflow hidden, and positions the text outside of the viewport. This ensures the text does not display on screen but remains accessible to assistive technologies such as screen readers and braille displays. Note that the technique does not use visibility:hidden or display:none properties, since these can have the unintentional effect of hiding the text from assistive technology in addition to preventing on-screen display.</p>
+      <p>This technique works by creating a CSS selector to target text that is to be hidden. The rule set for the selector places the text to be hidden in a 1-pixel box with overflow hidden. This ensures the text does not display on screen but remains accessible to assistive technologies such as screen readers and braille displays. Note that the technique does not use visibility:hidden or display:none properties, since these can have the unintentional effect of hiding the text from assistive technology in addition to preventing on-screen display.</p>
+      <p>This technique is <strong>not</strong> a method for hiding complete links, only a section of text within a link. The <a href="#resources">resources</a> below include methods for hiding and showing links aimed at screenreader users.</p>
       <div class="note">
          <p>This technique to hide link text has been advocated by some screen reader users and corporate Web authors. It has proved effective on some Web sites. Other screen reader users and accessibility experts don't recommend this as a general technique because the results can be overly chatty and constrain the ability of the experienced screen reader user to control the verbosity. The working group believes the technique can be useful for Web pages that do not have repetitive content in the hidden text areas.</p>
-         <p>This technique can be used in combination with a style switching technique to present a page that is a <a href="https://www.w3.org/TR/WCAG21/#dfn-conforming-alternate-version">conforming alternate version</a> for non-conforming content. Refer to <a href="#C29"></a> and <a href="https://www.w3.org/WAI/WCAG21/Understanding/conformance#conforming-alt-versions">Understanding Conforming Alternate Versions</a> for more information. </p>
+         <p>This technique can be used in combination with a style switching technique to present a page that is a <a>conforming alternate version</a> for non-conforming content. Refer to <a href="#C29"></a> and <a href="https://www.w3.org/WAI/WCAG21/Understanding/conformance#conforming-alt-versions">Understanding Conforming Alternate Versions</a> for more information. </p>
       </div>
-   </section><section id="examples"><h2>Examples</h2>
+   </section>
+   <section id="examples">
+      <h2>Examples</h2>
       <p>The following examples use the CSS selector and rule set below:</p>
-      
-a span {
-height: 1px;
-width: 1px;
-position: absolute;
-overflow: hidden;
-top: -10px;
-}
+<pre><code>.visually-hidden {
+   clip-path: inset(100%);
+   clip: rect(1px, 1px, 1px, 1px);
+   height: 1px;
+   overflow: hidden;
+   position: absolute;
+   white-space: nowrap;
+   width: 1px;
+}</code></pre>      
 
       <section class="example">
          
             <p>This example describes a news site that has a series of short synopsis of stories followed by a link that says "full story". Hidden link text describes the purpose of the link.</p>
          
-         <pre xml:space="preserve">
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
-  "https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt; 
-&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"&gt; 
-&lt;head&gt;
-&lt;meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" /&gt; 
-&lt;link href="access.css" rel="stylesheet" type="text/css" /&gt;
-&lt;title&gt;Hidden Link Text&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt; 
+<pre><code>
 &lt;p&gt;Washington has announced plans to stimulate economic growth.
-  &lt;a href="#"&gt; &lt;span&gt;Washington stimulates economic growth &lt;/span&gt;
-  Full Story&lt;/a&gt;&lt;/p&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</pre>
+  &lt;a href="#"&gt;&lt;span class="visually-hidden"&gt;Washington stimulates economic growth &lt;/span&gt;
+  Full Story&lt;/a&gt;&lt;/p&gt;</code></pre>
       </section>
       <section class="example">
          
-            <p>This example describes a resource that has electronic books in different formats. The title of each book is followed by links that say "HTML" and "PDF." Hidden text describes the purpose of each link.</p>
+         <p>This example describes a resource that has electronic books in different formats. The title of each book is followed by links that say "HTML" and "PDF." Hidden text describes the purpose of each link.</p>
          
-         <pre xml:space="preserve">
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
- "https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt; 
-&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"&gt; 
-&lt;head&gt;
-&lt;meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" /&gt; 
-&lt;link href="access.css" rel="stylesheet" type="text/css" /&gt;
-&lt;title&gt;Hidden Link Text &lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;dl&gt;
+<pre><code>&lt;dl&gt;
 &lt;dt&gt;Winnie the Pooh &lt;/dt&gt;
    &lt;dd&gt;&lt;a href="winnie_the_pooh.html"&gt;
-      &lt;span&gt;Winnie the Pooh &lt;/span&gt;HTML&lt;/a&gt;&lt;/dd&gt;
+      &lt;span class="visually-hidden"&gt;Winnie the Pooh &lt;/span&gt;HTML&lt;/a&gt;&lt;/dd&gt;
    &lt;dd&gt;&lt;a href="winnie_the_pooh.pdf"&gt;
-         &lt;span&gt;Winnie the Pooh &lt;/span&gt;PDF&lt;/a&gt;&lt;/dd&gt;
+         &lt;span class="visually-hidden"&gt;Winnie the Pooh &lt;/span&gt;PDF&lt;/a&gt;&lt;/dd&gt;
 &lt;dt&gt;War and Peace&lt;/dt&gt;
     &lt;dd&gt;&lt;a href="war_and_peace.html"&gt;
-      &lt;span&gt;War and Peace &lt;/span&gt;HTML&lt;/a&gt;&lt;/dd&gt; 
+      &lt;span class="visually-hidden"&gt;War and Peace &lt;/span&gt;HTML&lt;/a&gt;&lt;/dd&gt; 
     &lt;dd&gt;&lt;a href="war_and_peace.pdf"&gt;
-      &lt;span&gt;War and Peace &lt;/span&gt;PDF&lt;/a&gt;&lt;/dd&gt;
-&lt;/dl&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</pre>
+      &lt;span class="visually-hidden"&gt;War and Peace &lt;/span&gt;PDF&lt;/a&gt;&lt;/dd&gt;
+&lt;/dl&gt;</code></pre>
+
       </section>
-   </section><section id="tests"><h2>Tests</h2>
+   </section>
+   <section id="tests">
+      <h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
-         <p>For each anchor element using this technique:
-							</p>
+         <p>For each anchor element using this technique:</p>
          <ol>
-            <li>Check that an element has been defined that confines its display to a pixel and positions text outside the display with overflow hidden</li>
-            <li>Check that the element of that class is included in the content of the anchor
-								       </li>
+            <li>Check that an element has been defined that confines its display to a pixel and hides the text</li>
+            <li>Check that the element of that class is included in the content of the anchor</li>
             <li>Check that the combined content of the anchor describes the purpose of the link</li>
          </ol>
       </section>
@@ -87,19 +80,19 @@ top: -10px;
             <li>All checks above are true.</li>
          </ul>
       </section>
-   </section><section id="related"><h2>Related Techniques</h2>
-      
-      
-      
-   </section><section id="resources"><h2>Resources</h2>
-      
+   </section>
+   <section id="related"><h2>Related Techniques</h2>
+      <ul>
+         <li><a href="../general/G91">G91</a></li>      
+         <li><a href="../html/H33">H33</a></li>
+      </ul>
+   </section>
+   <section id="resources">
+      <h2>Resources</h2>
          <ul>
-            <li>
-                  <a href="http://www.rnib.org.uk/blogs/expert-series?Name=Hidden%20barriers">Hidden barriers - out of sight</a>
-               </li>
-            <li>
-                  <a href="http://webaim.org/techniques/css/invisiblecontent/">CSS in Action: Invisible Content Just for Screen Reader Users</a>
-               </li>
+            <li><a href="https://developer.paciellogroup.com/blog/2012/05/html5-accessibility-chops-hidden-and-aria-hidden/">HTML5 Accessibility Chops: hidden and aria-hidden</a></li>
+            <li><a href="http://webaim.org/techniques/css/invisiblecontent/">CSS in Action: Invisible Content Just for Screen Reader Users</a></li>
          </ul>
-      
-   </section></body></html>
+   </section>
+</body>
+</html>

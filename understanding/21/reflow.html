@@ -22,8 +22,8 @@
     	<section>
       <h3>Viewing distance and display resolution</h3>
         <p>The value of 320 CSS pixels was chosen as a reasonable minimum size that authors can achieve. This value lines up with the reported viewport width of small displays of common mobile devices. The width of 320 CSS pixels exactly corresponds to a desktop browser window set to a width of 1280px and zoomed in to 400%. It should be noted that 400% applies to the dimension, not the area. It means four times the default width and four times the default height.</p> 
-      <figure><img src="img/css-pixel-by-device.png" width="462" height="198" alt="Diagram showing the size of character needed by viewing distance to make the same image on the retina with small screen devices close, large screen devices further away." />
-        <figcaption>Fig. 1: A letter of the same CSS pixel size on different displays with different resolutions</figcaption>
+      <figure id="figure-CSS-pixel-letter-4x"><img src="img/css-pixel-by-device.png" width="462" height="198" alt="Diagram showing the size of character needed by viewing distance to make the same image on the retina with small screen devices close, large screen devices further away." />
+        <figcaption>A letter of the same CSS pixel size on different displays with different resolutions</figcaption>
       </figure>
         <p>When we read, the size of the print is not as important as the image it projects on the retina of our eye. Phones are designed for close viewing while desktops are designed for viewing farther away. As a consequence 16px print on a phone is physically smaller than 16px print on a desktop. This is not a problem because both print sizes cast the same image on our retina if they are viewed at their intended distance.</p>
     	</section>
@@ -35,15 +35,10 @@
     	<section>
 
       <h3>Content exceptions for reflow</h3>
-      <p>Content which requires two-dimensional layout for usage or meaning cannot reflow without losing meaning, and is therefore out of scope of this Success Criterion. For example, graphics and video are by their nature two-dimensional. Cutting up an image and stacking the blocks would render the content unusable so that is out of scope. However, it is possible to have these elements stay within the bounds of viewport at zoom levels to 400% (see advisory techniques).</p>
-<p>Complex data tables have a two-dimensional relationship between the headings and data cells. This relationship is essential to convey the content. This Success Criterion therefore does not apply to data tables.</p>
+      <p>Content which requires two-dimensional layout for usage or meaning cannot reflow without losing meaning, and is therefore out of scope of this Success Criterion. For example, graphics and video are by their nature two-dimensional. Cutting up an image and stacking the blocks would render the content unusable so that is out of scope. It is acceptable to provide two-dimensional scrolling for such parts of the content. However, it is possible to have these elements stay within the bounds of viewport at zoom levels to 400% (see advisory techniques).</p>
+      <p>Complex data tables have a two-dimensional relationship between the headings and data cells. This relationship is essential to convey the content. This Success Criterion therefore does not apply to whole data tables, and it is acceptable to provide two-dimensional scrolling for them.  However, cells within data tables should fit within the size requirement unless the cell contains types of content that also requires two-dimensional layout for usage or meaning.</p>
       <p>Interfaces which provide toolbars to edit content need to show both the content and the toolbar in the viewport. Depending on the number of toolbar buttons, the toolbar may need to scroll in the direction of text (e.g., horizontally in a vertically scrolling page). This Success Criterion therefore does not apply to interfaces which provide toolbars.</p>
     	</section>
-       <section>
-      <h3>Browsers in mobile operating systems</h3>
-      <p>The layout method of most common browsers in mobile operating systems does not offer reflow in the same way as on desktop browsers. In these browsers, content can be magnified in different ways, for example, by using a pinch gesture to scale up content, or a double tap on a particular column to make it fill the viewport width. This means that currently, mobile browsers usually exhibit horizontal scrolling regardless of what an author does.</p>
-      <p>In principle, mobile user agents can equally offer reflow when users zoom into content, as evidenced by the Dolphin browser for Android. The lack of reflow support in mobile operating systems can therefore be regarded as a user agent support issue.</p>
-       </section>
     	<section>
       <h3>Responsive web design and other ways to meet this Success Criterion</h3>
       <p>Using the responsive web design approach is the most effective method of achieving the goal of allowing people to zoom in to 400%. Each variation (CSS break point) of the page at the same URL should conform (compare <a href="https://www.w3.org/TR/WCAG21/#h-note-27">Conformance for WCAG 2.1</a>).</p>
@@ -51,12 +46,18 @@
     	</section>
     	<section>
  <h3>Avoiding scrolling in horizontally and vertically written languages</h3>
-        <p>The success Criterion applies to both horizontally and verticaly written languages. Zooming the page for horizontally written languages where pages scroll vertically by default (e.g. English) should not require horizontal scrolling. Zooming the page for vertically written languages which scroll horizontally by default should not require vertical scrolling.</p>
+        <p>The success Criterion applies to both horizontally and vertically written languages. Zooming the page for horizontally written languages where pages scroll vertically by default (e.g. English) should not require horizontal scrolling. Zooming the page for vertically written languages which scroll horizontally by default should not require vertical scrolling.</p>
     	</section>
       <section>
  <h3>The relation of Reflow to the Success Criterion 1.4.4 Resize Text</h3>
-        <p>The focus of the Reflow Success Criterion is to enable users to zoom in without having to scroll in two directions. The Resize Text (<a href="resize-text" class="sc">Success criterion 1.4.4</a>) also applies, so it should be possible to increase the size of all text by at least 200% <em>as well</em>. If text is reduced in size when people zoom in (or for small-screen usage), it should still be possible to get to 200% bigger. For example, if text is set at 20px when the window is 1280px wide, at 200% zoom it should be at least 20px (so 200% larger), but at 400% zoom it could be set to 10px (therefore still 200% larger than the 100% view. It is not required to be 200% larger at every breakpoint, but it should be possible to get 200% large text in some way.</p>
+        <p>The focus of the Reflow Success Criterion is to enable users to zoom in without having to scroll in two directions. <a href="resize-text" class="sc">Success Criterion 1.4.4 Resize Text</a> also applies, so it should be possible to increase the size of all text to at least 200% while simultaneously meeting the reflow requirement. For most implementations, the text is expected to continue to enlarge as the magnification increases, so that users can magnify text up to (and beyond) 400%. In an implementation where text does not consistently increase its size as people zoom in (such as when it is tranformed based on a media query to adapt to small-screen usage), it must still be possible to get to 200% enlargement in order to satisfy the Resize Text criterion.</p>
+        <p>For example, if at the default browser setting of 100% zoom, text is set at 20px when the window is 1280px wide, the same 20px at 200% zoom would mean a text size of 200%. At 400% zoom, the author may decide to set the text size to 10px: the text would now still be enlarged to 200% compared to the default browser setting of 100% zoom. It is not required to achieve 200% text enlargement at every breakpoint, but it should be possible to get 200% text enlargement in some way.</p>
       </section>
+             <section>
+      <h3>Browsers on mobile operating systems</h3>
+      <p>Most browsers on mobile operating systems do not combine reflow and zoom in the same way as on desktop browsers. These mobile browsers normally support reflow when changing the orientation of the device -- content will be adjusted to the new viewport width. However, these mobile browsers can only magnify content to achieve 1.4.4. Resize Text in manners which do not constrain reflow to a single dimension, for example by using a pinch gesture to scale up content or a double tap on a particular column to make it fill the viewport width. This means that zoomed content in most mobile browsers involves two-dimensional scrolling regardless of what an author does.</p>
+      <p>Mobile user agents <em>can</em> offer reflow when users zoom into content, as evidenced by the Dolphin browser for Android. The lack of magnified reflow support in browsers on mobile operating systems can therefore be regarded as a user agent support issue.</p>
+       </section>
     </section>
   
     <section id="benefits">
@@ -71,7 +72,7 @@
           <h2>Examples</h2>
           <section class="example">
             <h3>Example 1: Responsive Design</h3>
-            <p><video controls="controls"><source src="https://alastairc.ac/w3c/reflow-example-1-BBC.mp4" type="video/mp4" /><source src="https://alastairc.ac/w3c/reflow-example-1-BBC.ogv" type="video/ogg" />Animation of zooming in on a responsive site. The content reflows to fit the screen.</video></p>
+            <p><video controls="controls"><source src="https://alastairc.uk/w3c/reflow-example-1-BBC.mp4" type="video/mp4" /><source src="https://alastairc.uk/w3c/reflow-example-1-BBC.ogv" type="video/ogg" />Animation of zooming in on a responsive site. The content reflows to fit the screen.</video></p>
             <p>Note that as the zoom percentage increases, the navigation changes first to hide options behind a &quot;More&quot; dropdown menu. As zooming continues, most navigation options are eventually behind a &quot;hamburger&quot; menu button. All the information and functionality is still available from this web page. There is no horizontal scrolling.</p>
         </section>
 </section>
@@ -91,27 +92,28 @@
         <ul>
             <li><a href="../../techniques/css/C32">Using CSS grids to reflow content (CSS)</a></li>
             <li><a href="../../techniques/css/C31">Using CSS Flexbox to reflow content (CSS)</a></li>
-        	<li><a href="https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR34" class="script"> SCR34: Calculating size and position in a way that scales with text size (Scripting)</a></li>
-        	<li><a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G206" class="general"> G206: Providing options within the content to switch to a layout that does not require the user to scroll horizontally to read a line of text</a></li>
-            <li>@@ New: Using PDF/UA when creating PDFs.</li>
+            <li><a href="../../techniques/css/C33">C33</a></li>
+            <li><a href="../../techniques/css/C38">C38</a></li>
+            <li><a href="../../techniques/client-side-script/SCR34" class="script">SCR34</a></li>
+            <li><a href="../../techniques/general/G206" class="general">G206</a></li>
+            <li>Using PDF/UA when creating PDFs (Potential future technique)</li>
         </ul>
     </section>
     <section id="advisory">
         <h2>Advisory Techniques</h2>
        <ul>
-         <li>CSS, Fitting images to the viewport;</li>
-         <li>CSS, Reflowing simple data tables.</li>
-         <li>CSS, Fitting data cells within the width of the viewport.</li>
-         <li>Mechanism to allow mobile view at any time</li>
+         <li><a href="../../techniques/css/C34">C34</a></li>
+         <li><a href="../../techniques/CSS/C37">CSS, Fitting images to the viewport;</a></li>
+         <li>CSS, Reflowing simple data tables (Potential future technique)</li>
+         <li>CSS, Fitting data cells within the width of the viewport (Potential future technique)</li>
+         <li>Mechanism to allow mobile view at any time (Potential future technique)</li>
          </ul>
          
     </section>
     <section id="failure">
         <h2>Failures</h2>
         <ul>
-            <li>@@ Using fixed sized containers and fixed position content (CSS)</li>
-            <li> @@ "Interfering with a user agent's ability to zoom" i.e., author using: maximum-scale or minimum-scale or user-scalable=no or user-scalable=0 in the meta element ?? @@ Note: In <a href="https://lists.w3.org/Archives/Public/w3c-wai-gl/2016AprJun/0502.html"> Pinch zoom thread on the WCAG list</a> people did not seem to be in favor of this as a failure.</li>
-            <li> @@ (HTML) Using preformatted text or excluding preformatting text  as an exception to no two dimensional scrolling. </li>
+            <li><a href="https://www.w3.org/WAI/WCAG21/Techniques/failures/F102" class="failure">Failure of Success Criterion 1.4.10 due to content disappearing and not being available when content has reflowed</a></li>
         </ul>
     </section>
 </section><!-- end techniques -->

@@ -1,4 +1,4 @@
-var biblio = {
+respecConfig.localBiblio = {
 	
       	"CAPTCHA": {
       		"href": "http://www.captcha.net/",
@@ -30,18 +30,6 @@ var biblio = {
         "title": "Ergonomics of human-system interaction -- Part 112: Principles for the presentation of information",
         "publisher": "International Standards Organization"
     },
-      	
-      	"sRGB": {
-      		"authors": [
-      			"M. Stokes",
-      			"M. Anderson",
-      			"S. Chandrasekar",
-      			"R. Motta"
-      		],
-      		"date": "November 5, 1996",
-      		"href": "https://www.w3.org/Graphics/Color/sRGB.html",
-      		"title": "A Standard Default Color Space for the Internet - sRGB, Version 1.10"
-      	},
       	
       	"UNESCO": {
       		"date": "1997",

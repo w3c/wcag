@@ -19,15 +19,6 @@
 		</xsl:attribute>
 	</xsl:template>
 	
-	<xsl:template name="version">
-		<version>
-			<xsl:choose>
-				<xsl:when test="@class = 'sc new' or @class = 'guideline new'">WCAG21</xsl:when>
-				<xsl:otherwise>WCAG20</xsl:otherwise>
-			</xsl:choose>
-		</version>
-	</xsl:template>
-	
 	<xsl:template name="content">
 		<content><xsl:copy-of select="*[not(name() = 'h1' or name() = 'h2' or name() = 'h3' or name() = 'h4' or name() = 'h5' or name() = 'h6' or name() = 'section' or @class = 'conformance-level' or @class = 'change')]"></xsl:copy-of></content>
 	</xsl:template>
@@ -35,12 +26,16 @@
 	<xsl:template match="html:html">
 		<guidelines lang="{@lang}">
 			<understanding>
-				<name>Introduction to Understanding WCAG 2.1</name>
+				<name>Introduction to Understanding WCAG <xsl:value-of select="$guidelines.version.decimal"/></name>
 				<file href="intro"/>
 			</understanding>
 			<understanding>
 				<name>Understanding Techniques for WCAG Success Criteria</name>
 				<file href="understanding-techniques"/>
+			</understanding>
+			<understanding>
+				<name>Understanding Test Rules for WCAG Success Criteria</name>
+				<file href="understanding-act-rules"/>
 			</understanding>
 			<xsl:apply-templates select="//html:section[@class='principle']"/>
 			<understanding>
@@ -48,7 +43,7 @@
 				<file href="conformance"/>
 			</understanding>
 			<understanding>
-				<name>How to Refer to WCAG 2.1 from Other Documents</name>
+				<name>How to Refer to WCAG <xsl:value-of select="$guidelines.version.decimal"/> from Other Documents</name>
 				<file href="refer-to-wcag"/>
 			</understanding>
 			<understanding>
@@ -74,11 +69,10 @@
 		</principle>
 	</xsl:template>
 	
-	<xsl:template match="html:section[@class='guideline' or @class='guideline new']">
+	<xsl:template match="html:section[contains(@class, 'guideline')]">
 		<guideline>
 			<xsl:call-template name="id"/>
-			<xsl:call-template name="version"/>
-			<num><xsl:number level="multiple" count="html:section[@class='principle']|html:section[@class='guideline' or @class = 'guideline new']" format="1.1"/></num>
+			<num><xsl:number level="multiple" count="html:section[contains(@class, 'principle')]|html:section[contains(@class, 'guideline')]" format="1.1"/></num>
 			<name><xsl:value-of select="wcag:find-heading(.)"/></name>
 			<xsl:call-template name="content"/>
 			<file href="{wcag:generate-id(wcag:find-heading(.))}"/>
@@ -86,11 +80,10 @@
 		</guideline>
 	</xsl:template>
 	
-	<xsl:template match="html:section[@class='sc' or @class='sc new']">
+	<xsl:template match="html:section[contains(@class, 'sc')]">
 		<success-criterion>
 			<xsl:call-template name="id"/>
-			<xsl:call-template name="version"/>
-			<num><xsl:number level="multiple" count="html:section[@class='principle']|html:section[@class='guideline' or @class = 'guideline new']|html:section[@class='sc' or @class='sc new']" format="1.1.1"/></num>
+			<num><xsl:number level="multiple" count="html:section[contains(@class, 'principle')]|html:section[contains(@class, 'guideline')]|html:section[contains(@class, 'sc')]" format="1.1.1"/></num>
 			<name><xsl:value-of select="wcag:find-heading(.)"/></name>
 			<xsl:call-template name="content"/>
 			<level><xsl:value-of select="html:p[@class='conformance-level']"/></level>

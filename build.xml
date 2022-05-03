@@ -10,6 +10,8 @@
 	<!-- The following properties need to be set appropriately before doing a build - they should all be overridden by the above property file, but are kept here to serve as defaults -->
 	<property name="outputdir" location="." description="Directory within which the output folders are created, normally &quot;../YYYY&quot; unless doing TR in which case it is &quot;../../../TR/&lt;YYYY&gt;&quot;"/>
 	<property name="uri.prefix" value="file:///" description="Prefix if any that must be prepended to URIs to make it resolve on the platform"/>
+	<property name="guidelines.version" value="22" description="Which version of WCAG is being built"/>
+	<property name="w3ccvs.location" location="../../../w3ccvs"/>
 	
 	<property name="xslt.factory" value="net.sf.saxon.TransformerFactoryImpl" description="Class name of the XSLT transformer factory, which sets which XSLT engine to use; must be an XSLT 2.0 processor"/>
 	<property name="classpath.saxon" value="lib/saxon9he.jar" description="Path to Saxon jar in order to run XSLT 2.0"/>
@@ -38,12 +40,18 @@
 	
 	<target name="clean" description="Clean up any temp files">
 		<delete file="${inputdir.guidelines}/index-flat.html" failonerror="false"/>
+		<delete file="${inputdir.techniques}/index-flat.html" failonerror="false"/>
+		<delete file="${inputdir.understanding}/index-flat.html" failonerror="false"/>
+		<delete file="${inputdir.understanding}/about-flat.html" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/wcag.xml" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/wcag.json" failonerror="false"/>
+		<delete file="${inputdir.guidelines}/versions.xml" failonerror="false"/>
 		<delete file="${inputdir.techniques}/techniques.xml" failonerror="false"/>
 		<delete file="${inputdir.techniques}/technique-associations.xml" failonerror="false"/>
+		<delete file="${inputdir.techniques}/about-flat.html" failonerror="false"/>
 		<delete file="output.html" failonerror="false"/>
 		<delete dir="output" failonerror="false"/>
+		<delete dir="input" failonerror="false"/>
 	</target>
 	
 	<target name="flatten" depends="init" description="Build a copy of guidelines with all data-include files incorporated">
@@ -62,8 +70,53 @@
 		</xslt>
 	</target>
 	
+	<target name="guidelines-versions" description="Create XML list of which WCAG version introduces which guidelines">
+		<local name="output.file"/>
+		<property name="output.file" value="${inputdir.guidelines}/versions.xml"/>
+		<echo file="${output.file}"><![CDATA[<versions>
+]]></echo>
+		<for param="current.dir">
+			<path><dirset dir="understanding" includes="*"/></path>
+			<sequential>
+				<local name="version"/>
+				<basename file="@{current.dir}" property="version"/>
+				<echo file="${output.file}" append="yes"><![CDATA[	<version name="${version}">
+]]></echo>
+				<for param="current.file">
+					<path><fileset dir="@{current.dir}" includes="*"/></path>
+					<sequential>
+						<local name="id"/>
+						<basename file="@{current.file}" property="id" suffix="html"/>
+						<echo file="${output.file}" append="yes"><![CDATA[		<id id="${id}"/>
+]]></echo>
+					</sequential>
+				</for>
+				<echo file="${output.file}" append="yes"><![CDATA[	</version>
+]]></echo>
+			</sequential>
+		</for>
+		<echo file="${output.file}" append="yes"><![CDATA[</versions>
+]]></echo>
+	</target>
+	
+	<target name="guidelines" depends="init">
+		<mkdir dir="output/guidelines/${guidelines.version}"/>
+		<copy file="css/base.css" todir="output/guidelines/${guidelines.version}"/>
+		<copy file="guidelines/guidelines.css" todir="output/guidelines/${guidelines.version}"/>
+		<copy file="guidelines/relative-luminance.xml" todir="output/guidelines/${guidelines.version}"/>
+		<exec executable="curl">
+			<arg value="&quot;https://labs.w3.org/spec-generator/?type=respec&amp;url=https://raw.githack.com/w3c/wcag/master/guidelines/index.html&quot;"/>
+			<arg value="-o"/>
+			<arg value="output/guidelines/${guidelines.version}/index.html"/>
+			<arg value="-f"/>
+			<arg value="--retry"/>
+			<arg value="3"/>
+		</exec>
+	</target>
+	
 	<!-- Techniques -->
 	<target name="techniques-list" description="Create XML list of all the technique files">
+		<local name="output.file"/>
 		<property name="output.file" value="${inputdir.techniques}/techniques.xml"/>
 		<echo file="${output.file}"><![CDATA[<techniques>
 ]]></echo>
@@ -106,7 +159,7 @@
 ]]></echo>
 	</target>
 	
-	<target name="techniques-association" depends="flatten, guidelines-xml" description="Build an XML structure of all techniques">
+	<target name="techniques-association" depends="flatten, guidelines-xml, guidelines-versions" description="Build an XML structure of all techniques">
 		<makeurl file="${basedir}/techniques" property="techniques.dir"/>
 		<makeurl file="${basedir}/understanding" property="understanding.dir"/>
 		<xslt in="${inputdir.guidelines}/wcag.xml" out="${inputdir.techniques}/technique-associations.xml" style="xslt/generate-technique-associations.xslt">
@@ -127,16 +180,18 @@
 		<xslt in="${inputdir.techniques}/techniques.xml" out="output.html" style="xslt/generate-techniques.xslt" force="true">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
+			<param name="guidelines.version" expression="${guidelines.version}"/>
 			<param name="techniques.dir" expression="${base.techniques}"/>
 			<param name="associations.file" expression="${associations.file}"/>
 			<param name="output.dir" expression="${output.dir}"/>
-			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG21/" if="publication"/>
-			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG21/Understanding/" if="publication"/>
-			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG21/Techniques/" if="publication"/>
+			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG${guidelines.version}/" if="publication"/>
+			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Understanding/" if="publication"/>
+			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Techniques/" if="publication"/>
 			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
 		</xslt>
+		<copy file="css/base.css" todir="output/techniques/"/>
 		<copy file="techniques/techniques.css" todir="output/techniques/"/>
 		<copy file="css/slicenav.css" todir="output/techniques/"/>
 		<copy todir="output/techniques/">
@@ -154,15 +209,27 @@
 	<target name="techniques-index" depends="techniques-toc" description="Flatten the techniques index file">
 		<makeurl file="${basedir}/techniques/" property="base.techniques"/>
 		<mkdir dir="${basedir}/output/techniques/"/>
-		<xslt in="${inputdir.techniques}/index.html" out="${basedir}/output/techniques/index.html" style="xslt/flatten-document.xslt" force="true">
+		<xslt in="${inputdir.techniques}/index.html" out="${inputdir.techniques}/index-flat.html" style="xslt/flatten-document.xslt" force="true">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.techniques}"/>
 		</xslt>
+		<xslt in="${inputdir.techniques}/index-flat.html" out="${basedir}/output/techniques/index.html" style="xslt/base.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+			<param name="base.dir" expression="${base.techniques}"/>
+			<param name="guidelines.version" expression="${guidelines.version}"/>
+			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG${guidelines.version}/" if="publication"/>
+			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Understanding/" if="publication"/>
+			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Techniques/" if="publication"/>
+			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
+			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
+			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
+		</xslt>
 	</target>
 	
 	<!-- Understanding -->
-	<target name="understanding" depends="guidelines-xml, techniques-list, understanding-index" description="Generate formatted Understanding docs">
+	<target name="understanding" depends="guidelines-xml, guidelines-versions, techniques-list, understanding-index" description="Generate formatted Understanding docs">
 		<makeurl file="${basedir}/understanding/" property="base.understanding"/>
 		<mkdir dir="${basedir}/output/understanding/"/>
 		<local name="output.dir"/>
@@ -173,17 +240,22 @@
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.understanding}"/>
 			<param name="output.dir" expression="${output.dir}"/>
-			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG21/" if="publication"/>
-			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG21/Understanding/" if="publication"/>
-			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG21/Techniques/" if="publication"/>
+			<param name="guidelines.version" expression="${guidelines.version}"/>
+			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG${guidelines.version}/" if="publication"/>
+			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Understanding/" if="publication"/>
+			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Techniques/" if="publication"/>
 			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
 		</xslt>
+		<copy file="css/base.css" todir="output/understanding/"/>
 		<copy file="understanding/understanding.css" todir="output/understanding/"/>
 		<copy file="css/slicenav.css" todir="output/understanding/"/>
-		<copy todir="output/understanding/img/">
-			<fileset dir="understanding/21/img"/>
+		<copy file="guidelines/relative-luminance.xml" todir="output/understanding/"/>
+		<copy todir="output/understanding/img/" flatten="true">
+			<fileset dir="understanding">
+				<patternset includes="*/img/*"/>
+			</fileset>
 		</copy>
 	</target>
 	
@@ -197,18 +269,59 @@
 	<target name="understanding-index" depends="understanding-toc" description="Flatten the understanding index file">
 		<makeurl file="${basedir}/understanding/" property="base.understanding"/>
 		<mkdir dir="${basedir}/output/understanding/"/>
-		<xslt in="${inputdir.understanding}/index.html" out="${basedir}/output/understanding/index.html" style="xslt/flatten-document.xslt" force="true">
+		<xslt in="${inputdir.understanding}/index.html" out="${basedir}/understanding/index-flat.html" style="xslt/flatten-document.xslt" force="true">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.understanding}"/>
 		</xslt>
+		<xslt in="${inputdir.understanding}/index-flat.html" out="${basedir}/output/understanding/index.html" style="xslt/base.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+			<param name="base.dir" expression="${base.understanding}"/>
+			<param name="guidelines.version" expression="${guidelines.version}"/>
+			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG${guidelines.version}/" if="publication"/>
+			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Understanding/" if="publication"/>
+			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Techniques/" if="publication"/>
+			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
+			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
+			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
+		</xslt>
+	</target>
+	
+	<!-- Requirements -->
+	<target name="requirements" depends="init">
+		<mkdir dir="output/requirements/${guidelines.version}"/>
+		<exec executable="curl">
+			<arg value="&quot;https://labs.w3.org/spec-generator/?type=respec&amp;url=https://raw.githack.com/w3c/wcag/master/requirements/${guidelines.version}/index.html&quot;"/>
+			<arg value="-o"/>
+			<arg value="output/requirements/${guidelines.version}/index.html"/>
+			<arg value="-f"/>
+			<arg value="--retry"/>
+			<arg value="3"/>
+		</exec>
+	</target>
+	
+	<!-- Conformance Challenges -->
+	<target name="conformance-challenges" depends="init">
+		<mkdir dir="output/conformance-challenges"/>
+		<exec executable="curl">
+			<arg value="&quot;https://labs.w3.org/spec-generator/?type=respec&amp;url=https://raw.githack.com/w3c/wcag/master/conformance-challenges/index.html&quot;"/>
+			<arg value="-o"/>
+			<arg value="output/conformance-challenges/index.html"/>
+			<arg value="-f"/>
+			<arg value="--retry"/>
+			<arg value="3"/>
+		</exec>
 	</target>
 	
 	<!-- Publish -->
 	<target name="deploy" depends="init, understanding-toc, techniques-toc" description="Generate content ready to deploy to gh-pages">
 		<property name="editors" value="true"/>
+		<antcall target="guidelines"/>
 		<antcall target="techniques"/>
 		<antcall target="understanding"/>
+		<antcall target="requirements"/>
+		<antcall target="conformance-challenges"/>
 		<copy todir="output/working-examples/">
 			<fileset dir="working-examples/"/>
 		</copy>
@@ -218,19 +331,28 @@
 		<property name="publication" value="true"/>
 		<antcall target="techniques"/>
 		<antcall target="understanding"/>
-		<copy todir="../../../smartcvs/WWW/WAI/WCAG21/">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${w3ccvs.location}/WWW/WAI/WCAG${guidelines.version}">
+				<type type="file"/>
+				<include name="Understanding/**"/>
+				<include name="Techniques/**"/>
+				<include name="working-examples/**"/>
+				<exclude name="**/CVS/*"/>
+			</fileset>
+		</delete>
+		<copy todir="${w3ccvs.location}/WWW/WAI/WCAG${guidelines.version}/" failonerror="false">
 			<fileset dir="output/"/>
 			<globmapper from="*index.html" to="*Overview.html"/>
 		</copy>
-		<copy todir="../../../smartcvs/WWW/WAI/WCAG21/">
-			<fileset dir="output"/>
+		<copy todir="${w3ccvs.location}/WWW/WAI/WCAG${guidelines.version}/" failonerror="false">
+			<fileset dir="output" excludes="index.html **/index.html"/>
 		</copy>
-		<copy todir="../../../smartcvs/WWW/WAI/WCAG21/working-examples/">
+		<copy todir="${w3ccvs.location}/WWW/WAI/WCAG${guidelines.version}/working-examples/" failonerror="false">
 			<fileset dir="working-examples/"/>
 			<globmapper from="*index.html" to="*Overview.html"/>
 		</copy>
-		<copy todir="../../../smartcvs/WWW/WAI/WCAG21/working-examples/">
-			<fileset dir="working-examples/" excludes="**/index.html"/>
+		<copy todir="${w3ccvs.location}/WWW/WAI/WCAG${guidelines.version}/working-examples/" failonerror="false">
+			<fileset dir="working-examples/" excludes="index.html **/index.html"/>
 		</copy>
 	</target>
 	
@@ -243,7 +365,7 @@
 	</target>
 	
 	<!-- Everything -->
-	<target name="all" depends="init" description="Generate entire suite"/>
+	<target name="all" depends="init, understanding, techniques" description="Generate entire suite"/>
 	
 	<!-- === Sanity check === -->
 	<target name="sanity" depends="init" description="Identifies inconsistencies in documents"></target>

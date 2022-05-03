@@ -2,6 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:wcag="https://www.w3.org/WAI/GL/"
+	xmlns="http://www.w3.org/1999/xhtml"
 	exclude-result-prefixes="#all"
 	version="2.0">
 	
@@ -11,9 +12,15 @@
 	
 	<xsl:template match="techniques">
 		<xsl:result-document href="toc.html" method="xhtml">
-			<xsl:apply-templates select="technology">
-				<xsl:sort select="@name"/>
-			</xsl:apply-templates>
+			<nav id="toc">
+				<h2 class="introductory" id="techniques-pages">
+					Techniques
+					<!-- <span class="permalink"><a href="#toc" aria-label="Permalink for Techniques" title="Permalink for Techniques"><span>§</span></a></span> -->
+				</h2>
+				<xsl:apply-templates select="technology">
+					<xsl:sort select="@name"/>
+				</xsl:apply-templates>
+			</nav>
 		</xsl:result-document>
 	</xsl:template>
 	

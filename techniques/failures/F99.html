@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<head>
+  <title>Failure of Success Criterion 2.1.4 due to implementing character key shortcuts that cannot be turned off or
+    remapped</title>
+  <link rel="stylesheet" type="text/css" href="../../css/editors.css" />
+</head>
+
+<body>
+  <h1>Failure of Success Criterion 2.1.4 due to implementing character key shortcuts that cannot be turned off or
+    remapped</h1>
+  <section id="meta">
+    <h2>Metadata</h2>
+    <p id="id">ID: W##</p>
+    <p id="technology">Technology: General</p>
+    <p id="type">Type: Failure</p>
+  </section>
+  <section id="applicability">
+    <h2>Applicability</h2>
+    <p>This failure applies to web content that can be interacted with using a physical keyboard as input mechanism.</p>
+  </section>
+  <section id="description">
+    <h2>Description</h2>
+    <p>When keyboard shortcuts using only character keys are implemented, voice commands can inadvertently trigger functionality. Character key shortcuts use a single key such as a letter key (including upper- and lower-case letters),
+      punctuation, number, or symbol characters.</p>
+    <p>Content must either not implement single character key shortcuts, or offer settings to either turn off these
+      shortcuts or to map them to keyboard shortcuts that employ an additional modifier key, such <kbd>Alt</kbd> or
+      <kbd>Ctrl</kbd>.</p>
+    <p class="note">The use of a single key keyboard shortcut is not a failure if the shortcut is only active when a particular interface element has focus. For example, when a select element or a custom listbox has focus, the input of single character keys to navigate the list is a useful feature.</p>
+    <p>The test procedure suggests asking the author (often the developer of the site) whether keyboard shortcuts are used. If that information is trusted then the procedure can be simpler than pressing all the keys.</p>
+
+    <p>The success criterion does not apply when single key shortcuts are only active when interface elements have the focus, for example, a <code>select</code> element. Here, pressing a letter key is used for fast navigation within the select options.</p>
+    <p>Viewing page scripts and searching for typical keyboard event handlers like <code>document.addEventListener('keydown' ...) </code> or the presence of the <code>.keycode</code> attribute
+      may establish the presence of scripts that intercept keyboard shortcuts without modification keys like ALT or
+       Ctrl being held down at the same time. As there are several ways of implementing character key events, this
+      method is not considered reliable.</p>
+    <p>Some browsers employ single key shortcuts with <kbd>Shift</kbd>. For example, Firefox opens a page search when pressing
+      <kbd>Shift</kbd> + <kbd>/</kbd> and a search in page links when pressing <kbd>Shift</kbd> + <kbd>'</kbd>. In these cases, it will be necessary to press <kbd>Esc</kbd> or click an empty part of the page to remove the focus from the browser input.</p>
+  </section>
+  <section id="examples">
+    <h2>Example</h2>
+    <p>An application uses the single key shortcut <kbd>S</kbd> to bring up a search popup. There is no setting available to turn off or modify the shortcut.</p>
+  </section>
+  <section id="tests">
+    <h2>Tests</h2>
+    <section class="test-procedure">
+      <h3>Procedure</h3>
+      <p>If the site does <em>not</em> provide settings to disable or remap keyboard shortcuts:</p>
+      <ol>
+        <li>If loading the page sets focus to an input, click on an empty part of the page to ensure that
+          no inputs are in focus.</li>
+          <li>Press keys identified by the author as shortcut keys, or if this information is not available, press all printing characters (i.e., all number, letter, sign and punctuation keys). Do not press non-printing
+          modifier and control keys such as <kbd>Ctrl</kbd>, <kbd>Alt</kbd>, <kbd>Esc</kbd>, Arrow keys and (where present) the function keys <kbd>F1</kbd>-<kbd>F12</kbd>. Also
+          exempt are <kbd>Space</kbd>, <kbd>Enter</kbd>, <kbd>Return</kbd>, <kbd>Tab</kbd>, and the <kbd>Delete</kbd> key.</li>
+        <li>Hold the <kbd>Shift</kbd> key and press the same keys again.</li>
+        <li>Check whether a function has been triggered by pressing the keys</li>
+      </ol>
+    </section>
+    <section class="test-results">
+      <h3>Expected Results</h3>
+	  <p>If step #4 is false then this failure condition applies and the content fails the Success Criterion.</p>
+
+    </section>
+  </section>
+  <section id="related">
+    <h2>Related Techniques</h2>
+    <ul>
+      <li>ID</li>
+    </ul>
+  </section>
+</body>
+
+</html>

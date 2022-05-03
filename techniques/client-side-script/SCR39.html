@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<head>
+  <title>Making content on focus or hover hoverable, dismissible, and persistent</title>
+  <link rel="stylesheet" type="text/css" href="../../css/editors.css" />
+</head>
+
+<body>
+  <h1>Making content on focus or hover hoverable, dismissible, and persistent</h1>
+  <section id="meta">
+    <h2>Metadata</h2>
+    <p id="id"></p>
+    <p id="technology"></p>
+    <p id="type"></p>
+  </section>
+  <section id="applicability">
+    <h2>When to Use</h2>
+    <p>The Technique is applicable to any technology that supports the display of additional content on pointer hover.
+    </p>
+  </section>
+  <section id="description">
+    <h2>Description</h2>
+    <p>Additional content that is displayed when a user moves the pointer over a trigger or moves the keyboard focus to the trigger (for example, a pop-up) must remain visible to allow users time to read and interact with the content and must allow the user to move the pointer over the additional content.</p>
+
+    <p>Low vision users who magnify their screens often see only a small part of the screen at a time (their viewport).
+      This means that the additional content may not be fully visible in the current viewport and users may need to move
+      their mouse over the additional content to read it. Web authors should therefore ensue that additional content stays visible
+      when the pointer moves away from the trigger to the (mostly adjacent) additional content. additional content should also be
+      dismissible without moving the focus, so that users can read content covered by the additional content.</p>
+  </section>
+  <section id="examples">
+    <h2>Examples</h2>
+    <p class="instructions"></p>
+    <section class="example">
+		<h3>Content preview for links</h3>
+		<p>When hovering over or focusing on a link, a content preview for the link appears just above or below that link.
+			Users can move the pointer over the additional content (pop-up) so that they can fully read the additional content. Pressing the Esc
+			key dismisses (closes) the additional content.</p>
+		<section>
+			<h4>HTML of example 1</h4>
+			<pre><code>&lt;p&gt;This is the &lt;a class=&quot;a-and-tooltip&quot; id=&quot;parent&quot; href=&quot;index.html&quot;&gt;trigger
+&lt;span id=&quot;popup&quot; role=&quot;tooltip&quot;&gt;And this additional text 
+gives additional context on the trigger term&lt;/span&gt;&lt;/a&gt;.
+Text and popup are &lt;strong&gt;in one link (a)&lt;/strong&gt; element.&lt;/p&gt;</code></pre>
+<hr />
+		</section>
+		<section>
+			<h4>CSS of example 1</h4>
+			<pre><code>[role=&quot;tooltip&quot;] {
+    display: none;
+    padding: 0.5em;
+    background:white;
+    color: black;
+    border:solid black 2px;
+    width:10em;
+}
+
+.a-and-tooltip {
+  position: relative;
+}
+
+[role=&quot;tooltip&quot;] {
+    position: absolute;
+    left:0;
+    top:1em;
+}</code></pre>
+			<hr />
+		</section>
+		<section>
+			<h4>JavaScript of example 1</h4>
+			<pre><code>// trigger and popup inside the same link
+
+var parent = document.getElementById(&apos;parent&apos;);
+
+parent.onmouseover = function() {
+    document.getElementById(&apos;popup&apos;).style.display = &apos;block&apos;;
+}
+
+parent.onmouseout = function() {
+    document.getElementById(&apos;popup&apos;).style.display = &apos;none&apos;;
+}
+
+parent.onfocus = function() {
+    document.getElementById(&apos;popup&apos;).style.display = &apos;block&apos;;
+}
+
+parent.onblur = function() {
+    document.getElementById(&apos;popup&apos;).style.display = &apos;none&apos;;
+}
+
+// hide when ESC is pressed
+
+document.addEventListener(&apos;keydown&apos;, (e) =&gt; {
+  if ((e.keyCode || e.which) === 27)
+       document.getElementById(&apos;popup&apos;).style.display = &apos;none&apos;;
+});</code></pre>
+		</section>
+
+		<p class="working-example"><a href="../../working-examples/script-hoverable/">Working example of content on hover
+          or focus</a></p>
+    </section>
+  </section>
+  <section id="tests">
+    <h2>Tests</h2>
+  	<section class="test-procedure">
+
+    <h3>Procedure</h3>
+    <p>For additional content that appears on hover check that:</p>
+    <ol>
+      <li>The pointer can be moved over the additional content without the additional content disappearing.</li>
+      <li>The additional content stays visible and does not automatically close after a time.</li>
+      <li>The content can be closed without moving the pointer way from the trigger. Either by pressing <kbd>Esc</kbd>, by pressing another documented keyboard shortcut, or by activating the trigger.</li>
+	</ol>
+	<p>For additional content that appears on focus check that:</p>
+    <ol>
+      <li>The additional content stays visible and does not automatically close after a time.</li>
+      <li>The content can be closed without moving the focus way from the trigger. Either by pressing <kbd>Esc</kbd>, by  pressing another other documented keyboard shortcut, or by activating the trigger.</li>
+    </ol>
+  </section>
+  <section class="test-results">
+	<h3>Expected Results</h3>
+	<p>For content that appears on hover:</p>
+    <ul>
+      <li>#1, #2 and #3 are true.</li>
+	</ul>
+	<p>For content that appears on focus:</p>
+    <ul>
+      <li>#1 and #2 are true.</li>
+    </ul>
+  </section>
+  </section>
+  <section id="related">
+    <h2>Related Techniques</h2>
+    <p>Currently none.</p>
+    <ul>
+      <li>ID</li>
+    </ul>
+  </section>
+</body>
+
+</html>

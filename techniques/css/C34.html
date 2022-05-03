@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Using media queries to un-fix sticky headers / footers</title>
+    <link rel="stylesheet" type="text/css" href="https://rawgit.com/w3c/wcag21/master/css/sources.css"/>
+  </head>
+  <body>
+    <h1>Using media queries to un-fixing sticky headers / footers</h1>
+    <section id="meta">
+      <h2>Metadata</h2>
+      <p id="id"></p>
+      <p id="technology">css</p>
+      <p id="type">sufficient</p>
+    </section>
+    <section id="applicability">
+      <h2>When to Use</h2>
+      <p>This technique is applicable to Cascading Style Sheet / HTML technologies.</p>
+    </section>
+    <section id="description">
+      <h2>Description</h2>
+      <p>The objective of this technique is to be able to present content with sticky headers and footers when there is enough space. This is done by using <code>min-height</code>, <code>max-height</code> and <code>min-width</code> media queries techniques that adapt to the available space of the viewport.</p>
+
+      <p>Sticky regions always stay visible in the viewport while the other content will disappear underneath when scrolling. In terms of content visibility, this is often not a problem on the desktop and on mobile devices in portrait orientation. However, when using mobile devices in landscape orientation or when zooming in on the desktop, sticky regions may block a big portion of the screen: the height of the sticky region may leave only a small part of the screen for the display of page content.</p>
+      
+      <p>Disabling, or un-fixing sticky regions, is an effective way to allow for enough available space when users prefer different reading and zoom preferences or when using landscape mode.</p>
+
+      <p class="note">Be aware that sticky regions can create disadvantages for keyboard users and should therefore be used judiciously. The problem for keyboard users tabbing through a page with a fixed header is that once the page has started to scroll, tabbing backwards to reach interactive elements higher up on the page will often mean that the focus becomes invisible once it moves behind the sticky header. Users must then scroll up to be able to see the focus, something they may not necessarily be aware of. In the same way the visible focus can disappear behind a sticky footer, so users would need to scroll down to be able to see their focus position, which is a major inconvenience.</p>
+
+      <p>The basic approach for un-fixing sticky headers / footers is to:</p>
+      <ol>
+        <li>Define the first sticky regions using media query <code>min-height</code> properties, so they get fixed or un-fixed depending on the available space;</li>
+
+        <li>Define other sticky regions using media query <code>min-width</code> and <code>max-height</code> properties for specific viewport sizes, so they get fixed or un-fixed depending on the available space, e.g. for tablets depending on the portrait or landscape position of the device;</li>
+      </ol>
+
+    </section>
+    <section id="examples">
+      <h2>Examples</h2>
+      <section class="example">
+        <h3>Un-fix sticky headers / footers in HTML and CSS</h3>
+        <p>The following example uses HTML and CSS to un-fix sticky headers / footers.
+
+        The sticky regions get un-fixed as the height of the viewport is limited or the orientation is changed.
+
+        When the <code>min-height</code> property matches the viewport space defined via media queries, regions which are not sticky get fixed or vice versa. This particular example uses the CSS <code>min-height</code>, <code>max-height</code> and <code>min-width</code> media query properties.</p>
+<pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Using media queries to un-fix sticky headers / footers&lt;/title&gt;
+    &lt;style&gt;
+
+    /* Sticky Styling */
+
+    header { min-height: 130px; }
+
+    @media (min-height: 480px) {
+      header {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+      }
+    }
+
+    @media (min-device-width: 576px) and (max-device-width: 1024px) and (orientation: landscape) {
+      header {
+        position: static;
+      }
+    }
+
+    footer { min-height: 130px; }
+
+    @media (min-height: 480px) {
+      footer {
+        position: -webkit-sticky;
+        position: sticky;
+        bottom: 0;
+      }
+    }
+
+    @media (min-device-width: 576px) and (max-device-width: 1024px) and (orientation: landscape)  {
+      footer {
+        position: static;
+      }
+    }
+
+    &lt;/style&gt;
+
+  &lt;/head&gt;
+
+  &lt;body class="grid"&gt;
+
+    &lt;header role="banner" class="grid-item"&gt;
+      ...
+    &lt;/header&gt;
+
+    &lt;main role="main" class="grid-item"&gt;        
+      ...
+    &lt;/main&gt;
+
+    &lt;aside role="complementary" class="grid-item"&gt;
+      ...
+    &lt;/aside&gt;
+
+    &lt;footer role="contentinfo" class="grid-item"&gt;
+      ...
+    &lt;/footer&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+        <p class="working-example">Working example: <a href="../../working-examples/css-sticky/">Using CSS Flexbox for Reflow</a></p>
+      </section>
+    </section>
+    <section id="tests">
+      <h2>Tests</h2>
+      <section class="test-procedure">
+        <h3>Procedure</h3>
+        <p class="note">Depending on the environment to be tested the actual modes or sizes can differ.</p>
+        <ol>
+          <li>Display content on a device / user agent in portrait mode.</li>
+          <li>Change the orientation to landscape.</li>
+          <li>Check whether the sticky header and footer will be un-fixed depending on the existing media query settings.</li>
+          <li>Display content on a desktop / user agent at a starting viewport width of 1280x1024 CSS pixels.</li>
+          <li>Change the viewport size in width and height or use the zoom function of the browser.</li>
+          <li>Check whether the sticky header and footer will be un-fixed at specific sizes depending on the existing media query settings.</li>
+        </ol>
+      </section>
+      <section class="test-results">
+        <h3>Expected Results</h3>
+        <ul>
+          <li>#3 and #6 are true.</li>
+        </ul>
+        <p>If this is a sufficient technique for a success criterion, failing this test procedure does not necessarily mean that the success criterion has not been satisfied in some other way, only that this technique has not been successfully implemented and can not be used to claim conformance.</p>
+      </section>
+    </section>
+    <section id="related">
+      <h2>Related Techniques</h2>
+    </section>
+  </body>
+</html>

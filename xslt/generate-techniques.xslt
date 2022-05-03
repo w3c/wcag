@@ -3,6 +3,7 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:wcag="https://www.w3.org/WAI/GL/"
+	xmlns:func="http://www.w3.org/2005/xpath-functions"
 	xmlns="http://www.w3.org/1999/xhtml"
 	exclude-result-prefixes="#all"
 	version="2.0">
@@ -16,19 +17,6 @@
 	
 	<xsl:variable name="associations.doc" select="document($associations.file)"/>
 	<xsl:variable name="guidelines.meta.doc" select="document($guidelines.meta.file)"/>
-	
-	<xsl:function name="wcag:section-meaningfully-exists" as="xs:boolean">
-		<xsl:param name="id"/>
-		<xsl:param name="section"/>
-		<xsl:choose>
-			<xsl:when test="$id = 'applicability'"><xsl:value-of select="$section and $section/html:p[not(@class = 'instructions')]"/></xsl:when>
-			<xsl:when test="$id = 'description'"><xsl:value-of select="$section and $section/html:p[not(@class = 'instructions')]"/></xsl:when>
-			<xsl:when test="$id = 'examples'"><xsl:value-of select="$section and $section/html:section[@class = 'example'] or $section/html:ul or $section/html:ol"/></xsl:when>
-			<xsl:when test="$id = 'resources'"><xsl:value-of select="$section and ($section/html:p[not(@class = 'instructions')] or $section//html:li[not(. = 'Resource')] or $section//html:a[@href])"/></xsl:when>
-			<xsl:when test="$id = 'related'"><xsl:value-of select="$section and $section//html:li//html:a[@href]"/></xsl:when>
-			<xsl:when test="$id = 'tests'"><xsl:value-of select="$section and $section//html:section[@class = 'test-procedure' or @class = 'procedure']//html:li and $section//html:section[@class = 'test-results' or @class = 'results']"/></xsl:when>
-		</xsl:choose>
-	</xsl:function>
 	
 	<xsl:template name="navigation">
 		<xsl:param name="meta" tunnel="yes"/>
@@ -68,14 +56,18 @@
 				<xsl:if test="wcag:section-meaningfully-exists('resources', //html:section[@id = 'resources'])"><li><a href="#resources">Related Resources</a></li></xsl:if>
 				<xsl:if test="wcag:section-meaningfully-exists('related', //html:section[@id = 'related'])"><li><a href="#related">Related Techniques</a></li></xsl:if>
 				<li><a href="#tests">Tests</a></li>
+				<xsl:if test="$act.doc//func:array[@key = 'wcagTechniques'][func:string = $meta/@id]">
+					<li><a href="#test-rules">Test Rules</a></li>
+				</xsl:if>
 			</ul>
 		</nav>
 	</xsl:template>
 	
 	<xsl:template name="technique-link">
-		<xsl:param name="technique" select="."/>
+		<xsl:param name="technique"/>
 		<xsl:choose>
 			<xsl:when test="$technique"><a href="../{$technique/parent::technology/@name}/{$technique/@id}"><xsl:value-of select="$technique/@id"/>: <xsl:value-of select="$technique/title"/></a></xsl:when>
+			<xsl:when test="not($technique)"><xsl:value-of select="ancestor::using/parent::technique/title"/></xsl:when>
 			<xsl:otherwise>an unwritten technique</xsl:otherwise>
 		</xsl:choose>
 		
@@ -94,33 +86,6 @@
 			<xsl:text>: </xsl:text>
 			<xsl:value-of select="$guidelines.meta/name"/>
 		</a>
-	</xsl:template>
-	
-	<xsl:template name="technique-sufficiency">
-		<xsl:param name="meta" tunnel="yes"/>
-		<xsl:choose>
-			<xsl:when test="ancestor::sufficient">Sufficient</xsl:when>
-			<xsl:when test="ancestor::advisory">Advisory</xsl:when>
-			<xsl:when test="ancestor::failure">Failure</xsl:when>
-		</xsl:choose>
-		<xsl:if test="parent::and">
-			<xsl:text>, together with </xsl:text>
-			<xsl:for-each select="parent::and/technique[not(@id = current()/@id)]">
-				<xsl:call-template name="technique-link">
-					<xsl:with-param name="technique" select="$meta/ancestor::techniques//technique[@id = current()/@id]"/>
-				</xsl:call-template>
-				<xsl:if test="position() != last()"> and </xsl:if>
-			</xsl:for-each>
-		</xsl:if>
-		<xsl:if test="using">
-			<xsl:text> using a more specific technique</xsl:text>
-		</xsl:if>
-		<xsl:if test="ancestor::using">
-			<xsl:text> as a way to meet </xsl:text>
-			<xsl:call-template name="technique-link">
-				<xsl:with-param name="technique" select="$meta/ancestor::techniques//technique[@id = current()/ancestor::using[1]/parent::technique/@id]"/>
-			</xsl:call-template>
-		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="/techniques">
@@ -151,7 +116,7 @@
 	
 	<xsl:template match="technique">
 		<xsl:variable name="technology" select="parent::technology/@name"/>
-		<xsl:result-document href="{$output.dir}/{$technology}/{@id}.html" encoding="utf-8" exclude-result-prefixes="#all" indent="yes" method="xhtml" omit-xml-declaration="yes">
+		<xsl:result-document href="{$output.dir}/{$technology}/{@id}.html" encoding="utf-8" exclude-result-prefixes="#all" include-content-type="no" indent="yes" method="xhtml" omit-xml-declaration="yes">
 			<xsl:apply-templates select="document(resolve-uri(concat($technology, '/', @id, '.html'), $techniques.dir))">
 				<xsl:with-param name="meta" select="." tunnel="yes"/>
 			</xsl:apply-templates>
@@ -174,6 +139,7 @@
 				<meta charset="UTF-8" />
 				<xsl:apply-templates select="//html:title"/>
 				<link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/base" />
+				<link rel="stylesheet" type="text/css" href="base.css" />
 				<link rel="stylesheet" type="text/css" href="../techniques.css" />
 				<link rel="stylesheet" type="text/css" href="../slicenav.css" />
 			</head>
@@ -183,7 +149,7 @@
 				<xsl:apply-templates select="//html:h1"/>
 				<section id="important-information">
 					<h2>Important Information about Techniques</h2>
-					<p>See <a href="{$loc.understanding}understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how they relate to the normative WCAG 2.1 success criteria. The Applicability section explains the scope of the technique, and the presence of techniques for a specific technology does not imply that the technology can be used in all situations to create content that meets WCAG 2.1.</p>
+					<p>See <a href="{$loc.understanding}understanding-techniques">Understanding Techniques for WCAG Success Criteria</a> for important information about the usage of these informative techniques and how they relate to the normative WCAG <xsl:value-of select="$guidelines.version.decimal"/> success criteria. The Applicability section explains the scope of the technique, and the presence of techniques for a specific technology does not imply that the technology can be used in all situations to create content that meets WCAG <xsl:value-of select="$guidelines.version.decimal"/>.</p>
 				</section>
 				<main>
 					<xsl:call-template name="applicability"/>
@@ -192,6 +158,7 @@
 					<xsl:call-template name="resources"/>
 					<xsl:call-template name="related"/>
 					<xsl:call-template name="tests"/>
+					<xsl:call-template name="act"/>
 				</main>
 			</body>
 		</html>
@@ -292,8 +259,32 @@
 								</xsl:choose>
 							</xsl:with-param>
 						</xsl:call-template>
+						<!-- sufficiency -->
 						<xsl:text> (</xsl:text>
-						<xsl:call-template name="technique-sufficiency"/>
+						<xsl:choose>
+							<xsl:when test="ancestor::sufficient">Sufficient</xsl:when>
+							<xsl:when test="ancestor::advisory">Advisory</xsl:when>
+							<xsl:when test="ancestor::failure">Failure</xsl:when>
+						</xsl:choose>
+						<xsl:if test="parent::and">
+							<xsl:text>, together with </xsl:text>
+							<xsl:for-each select="parent::and/technique[not(@id = current()/@id)]">
+								<xsl:call-template name="technique-link">
+									<xsl:with-param name="technique" select="$meta/ancestor::techniques//technique[@id = current()/@id]"/>
+								</xsl:call-template>
+								<xsl:if test="position() != last()"> and </xsl:if>
+							</xsl:for-each>
+						</xsl:if>
+						<xsl:if test="using">
+							<xsl:text> using a more specific technique</xsl:text>
+						</xsl:if>
+						<xsl:if test="ancestor::using">
+							<xsl:variable name="user" select="ancestor::using[1]/parent::technique"/>
+							<xsl:text> when used with </xsl:text>
+							<xsl:call-template name="technique-link">
+								<xsl:with-param name="technique" select="$meta/ancestor::techniques//technique[@id = $user/@id]"/>
+							</xsl:call-template>
+						</xsl:if>
 						<xsl:text>)</xsl:text>
 					</span>
 				</xsl:for-each>
@@ -391,18 +382,42 @@
 		</xsl:choose>
 	</xsl:template>
 	
-	<xsl:template match="html:section[@class='test-procedure']">
+	<xsl:template name="act">
+		<xsl:param name="meta" tunnel="yes"/>
+		
+		<xsl:if test="$act.doc//func:array[@key = 'wcagTechniques'][func:string = $meta/@id]">
+			<section id="test-rules">
+				<h2>Test Rules</h2>
+				<p>The following are Test Rules related to this Technique. It is not necessary to use these particular Test Rules to check for conformance with WCAG, but they are defined and approved test methods. For information on using Test Rules, see <a href="{$loc.understanding}understanding/understanding-act-rules.html">Understanding Test Rules for WCAG Success Criteria</a>.</p>
+				<ul>
+					<xsl:for-each select="$act.doc//func:array[@key = 'wcagTechniques']/func:string[. = $meta/@id]">
+						<li><a href="/WAI{ancestor::func:map/func:string[@key = 'permalink']}"><xsl:value-of select="ancestor::func:map/func:string[@key = 'title']"/></a></li>
+					</xsl:for-each>
+				</ul>
+			</section>
+		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="html:section[@class='test']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>Procedure</h2>
+			<h3><xsl:value-of select="html:*[wcag:isheading(.)][1]"/></h3>
+			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
+		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="html:section[@class='test-procedure']">
+		<xsl:copy>
+			<xsl:apply-templates select="@*[not(name(.) = 'id')]"/>
+			<xsl:element name="h{count(ancestor::html:section[@class = 'test' or @id = 'tests']) + 2}">Procedure</xsl:element>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
 	
 	<xsl:template match="html:section[@class='test-results']">
 		<xsl:copy>
-			<xsl:apply-templates select="@*"/>
-			<h2>Expected Results</h2>
+			<xsl:apply-templates select="@*[not(name(.) = 'id')]"/>
+			<xsl:element name="h{count(ancestor::html:section[@class = 'test' or @id = 'tests']) + 2}">Expected Results</xsl:element>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.))]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -445,10 +460,10 @@
 		</xsl:element>
 	</xsl:template>
 	
-	<xsl:template match="html:a[not(@href)]">
+	<xsl:template match="html:a[not(@href)]" mode="#all">
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:variable name="dfn" select="lower-case(.)"/>
-		<a href="{$loc.guidelines}#{$meta/ancestor::guidelines/term[name = $dfn]/id}" target="terms"><xsl:value-of select="."/></a>
+		<a href="{$loc.guidelines}#{$meta-guidelines//term[name = $dfn]/id}" target="terms"><xsl:value-of select="."/></a>
 	</xsl:template>
 	
 	<xsl:template match="html:*[@class = 'instructions']"/>

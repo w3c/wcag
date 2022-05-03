@@ -7,15 +7,15 @@
       </ul>
    </section><section id="description"><h2>Description</h2>
       <p>The objective of this technique is to use the combination of HTML
-    				Lang attribute, CultureInfo and Language to
+    				<code class="att">Lang</code> attribute, <code class="obj">CultureInfo</code> and <code class="prop">Language</code> to
     				correctly specify the language of the entirety of Silverlight content,
     				or of parts within the Silverlight content. </p>
       <p>In general, Silverlight does not attempt to repurpose HTML Lang, because
     				Silverlight is not HTML. Instead, internally within the Silverlight
     				content area, Silverlight uses language definition concepts that relate
-    				to XML (Language is a remapping of xml:lang) or .NET
-    				Framework programming (CultureInfo). For these reasons,
-    				HTML Lang techniques as described in [<a href="https://www.w3.org/WAI/WCAG21/Techniques/html/H58">H58</a>]
+    				to XML (<code class="prop">Language</code> is a remapping of xml:lang) or .NET
+    				Framework programming (<code class="obj">CultureInfo</code>). For these reasons,
+    				HTML Lang techniques as described in [<a href="https://www.w3.org/WAI/WCAG21/Techniques/techniques/H58">H58</a>]
     				are not useful for Silverlight programming of Silverlight-specific "parts". </p>
       <p>What becomes important in Silverlight application programming then
     				is to make sure that the HTML language concept of Lang and the Silverlight
@@ -62,7 +62,7 @@
    	<section id="SL27_html-lang">
          <h4> HTML Lang </h4>
          <p>When Silverlight is embedded in an HTML document with the   &lt;object&gt; element,
-    					the value of the HTML Lang attribute of the surrounding HTML becomes
+    					the value of the HTML <code class="att">Lang</code> attribute of the surrounding HTML becomes
     					a factor. Browsers process the outer HTML, and the browser's processing
     					has possible influence over values reported to any DOM script that
     					acts, or to any accessibility framework that is reporting the browser
@@ -75,17 +75,17 @@
     					content to match will assist authors in meeting SC 3.1.2. </p>
          <p>The Silverlight runtime itself does not attempt to inherit language
     					settings that come from markup that is outside the Silverlight-specific
-    					content. In particular, the HTML Lang attribute applied to the html
+    					content. In particular, the HTML <code class="att">Lang</code> attribute applied to the html
     					tag, Lang on host object tag, specific parameters of the Silverlight
-    					object tag, all have no affect on the value of any Silverlight Language attribute.
-    					Instead, the Silverlight Language defaults to the CultureInfo of
+    					object tag, all have no affect on the value of any Silverlight <code class="prop">Language</code> attribute.
+    					Instead, the Silverlight <code class="prop">Language</code> defaults to the <code class="obj">CultureInfo</code> of
     					the Silverlight runtime as instantiated by HTML object tag invocation.
     					It is expected that if a Silverlight application contains extensive
     					text where language of text is a factor for assistive technology purposes,
-    					developers will manually set the HTML Lang tag to match the Language value
+    					developers will manually set the HTML Lang tag to match the <code class="prop">Language</code> value
     					on the Silverlight root element in XAML. Development tools might or
     					might not enforce or inform the relationship between HTML Lang and
-    					Silverlight Language; that consideration is outside
+    					Silverlight <code class="prop">Language</code>; that consideration is outside
     					the scope of Silverlight as a technology. If language is not a major
     					factor in the application, application authors should consider leaving
     					HTML Lang blank on the hosting HTML page. </p>
@@ -97,32 +97,32 @@
    	<section id="SL27-language-property">
          <h4> Silverlight Language property </h4>
          <p>
-            Language is an attribute that is available on all
+            <code class="prop">Language</code> is an attribute that is available on all
     					Silverlight objects that directly represent a UI element. Language
     					can be queried (or set) by Silverlight managed code run time, such
-    					that the Language value can be programatically determined
+    					that the <code class="prop">Language</code> value can be programatically determined
     					within the Silverlight programming model. </p>
-         <p>The format of the value that is used to set Language is
+         <p>The format of the value that is used to set <code class="prop">Language</code> is
     					based on ISO-639-1, and is thus compatible with <a href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">http://www.rfc-editor.org/rfc/bcp/bcp47.txt</a>. </p>
          <p>
-            Language has a behavior that parallels the behavior
-    					of xml:lang in an XML document: if Language is set on
-    					a parent element, all child elements inherit that Language value.
-    					An actual xml:lang attribute in XAML is also valid for this purpose. </p>
+            <code class="prop">Language</code> has a behavior that parallels the behavior
+    					of <code class="att">xml:lang</code> in an XML document: if <code class="prop">Language</code> is set on
+    					a parent element, all child elements inherit that <code class="prop">Language</code> value.
+    					An actual <code class="att">xml:lang</code> attribute in XAML is also valid for this purpose. </p>
          <p>
-            Language can be set at the root of a XAML document,
-    					so that the entire UI shares the same language setting. If Language is
-    					not explicitly set at the root by application markup, Language is
-    					inferred per running instance, based on processing the acting CultureInfo at
+            <code class="prop">Language</code> can be set at the root of a XAML document,
+    					so that the entire UI shares the same language setting. If <code class="prop">Language</code> is
+    					not explicitly set at the root by application markup, <code class="prop">Language</code> is
+    					inferred per running instance, based on processing the acting <code class="obj">CultureInfo</code> at
     					run time. </p>
-         <p>However, another usage is for application authors to set Language on
-    					a specific child element, to override the root-level or client-environment-inferred Language value.
+         <p>However, another usage is for application authors to set <code class="prop">Language</code> on
+    					a specific child element, to override the root-level or client-environment-inferred <code class="prop">Language</code> value.
     					This enables consciously embedding a content part that is deliberately
     					in a different language than the remainder of the Silverlight content. </p>
-         <p>Exactly what happens when a Language is set on a
+         <p>Exactly what happens when a <code class="prop">Language</code> is set on a
     					part is not always specified, and is largely a matter of implementation
     					detail of the individual Silverlight classes that might be a "part".
-    					However, as an informative generalization, the value of Language might
+    					However, as an informative generalization, the value of <code class="prop">Language</code> might
     					affect considerations such as: how white space is processed (in particular
     					CR or LF); character sets for fonts; string formatting when using APIs
     					specifically on that part. </p>
@@ -130,10 +130,10 @@
    	<section id="SL27_cultureinfo">
          <h4> CultureInfo </h4>
          <p>
-            CultureInfo is a concept that is relevant to .NET
+            <code class="obj">CultureInfo</code> is a concept that is relevant to .NET
     					Framework programming. This concept applies to Silverlight because
     					Silverlight uses a specific implementation of a CLR runtime that uses
-    					.NET Framework principles. CultureInfo potentially
+    					.NET Framework principles. <code class="obj">CultureInfo</code> potentially
     					specifies both a language and a culture. This distinction becomes relevant
     					for advanced string formatting concepts that are provided in the .NET
     					Framework, such as decimal separators, dates, and currency. For example,
@@ -142,12 +142,12 @@
     					the application was using string formatting for currency values with
     					the intention of displaying Pounds Sterling as currency unit in string
     					formatting. </p>
-         <p>Silverlight applications often run using an inferred CultureInfo based
+         <p>Silverlight applications often run using an inferred <code class="obj">CultureInfo</code> based
     					on the operating system where the user agent browser host exists (in
     					other words, the culture of the client computer where the Silverlight
-    					application is run). This CultureInfo can be queried
+    					application is run). This <code class="obj">CultureInfo</code> can be queried
     					by applications at run time; see <a href="https://msdn.microsoft.com/en-us/library/system.globalization.cultureinfo.currentculture%28VS.95%29.aspx">CultureInfo.CurrentCulture</a>.
-    					Application authors can deliberately constrain the set of CultureInfo cases
+    					Application authors can deliberately constrain the set of <code class="obj">CultureInfo</code> cases
     					that a Silverlight application can be run under, in order to verify
     					that necessary string resources for that culture are available in that
     					application. This is done by setting &lt;SupportedCultures&gt; in the
@@ -169,18 +169,18 @@
          <p>For more information, see <a href="https://msdn.microsoft.com/en-us/library/dd941932%28VS.95%29.aspx">How
     					to: Create a Build that Targets a Specific Culture</a>. </p>
          <p>
-            CultureInfo generally applies to the Silverlight
+            <code class="obj">CultureInfo</code> generally applies to the Silverlight
     					application as a whole. There are advanced techniques whereby worker
     					threads can be run as separate cultures, but that is not discussed
     					here and is not relevant because only the main UI thread has relevance
     					to Web content accessibility. So, if an application author wants to
     					declare specific language settings for a part (component, region or
     					control) of the Silverlight application, a different Silverlight-specific
-    					property Language is used. </p>
+    					property <code class="prop">Language</code> is used. </p>
    	</section>
    </section><section id="examples"><h2>Examples</h2>
       <p>These examples show Silverlight behaviors that are based on interpreting
-    				the Language property value, as a way of illustrating
+    				the <code class="prop">Language</code> property value, as a way of illustrating
     				the programmatic determination of language values specifically in the
     				Silverlight application framework. To determine HTML Lang, application
     				authors should use the HTML DOM as enabled by browser host scripting,

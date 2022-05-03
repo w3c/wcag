@@ -1,9 +1,15 @@
-WCAG (Web Content Accessibility Guidelines)
+WCAG (Web Content Accessibility Guidelines) - Branch for production of August 2016 review versions
 ===
 
-Please do not submit any new pull requests against this branch - please look in the list of branches for the most current Working Branch and use that one.
+Please use this branch as the target for pull requests until July 10, 2016.
 
 This repository is used to develop content for WCAG 2, as well as associated understanding documents and techniques.
+
+## Editorial style guide
+
+@@To complete
+
+* Avoid use of RFC2119 terms such as "must", "shall", or "may" in non-normative content, to avoid confusion with normative role.
 
 ## File Structure
 
@@ -103,11 +109,13 @@ Techniques are in the techniques folder, and grouped by technology into sub-fold
 
 The [technique template](techniques/technique-template.html) shows the structure of techniques. Main sections are in top-level &lt;section> elements with specific IDs: meta, applicability, description, examples, tests, related, resources. The description and tests sections are required; the applicability and examples sections are recommended; the related and resources sections are optional. The meta section provides context for the technique during authoring but is removed for publication. The title of the technique is in the `<h1>` element. Elements with `class="instructions"` provide information about populating the template. They should be removed as the technique is developed but if not removed, will be ignored by the generator. **Do not copy `class="instructions"` on real content.**
 
+Techniques can use a temporary style sheet to facilitate review of drafts. This style sheet is replaced by other style sheets and structure for formal publication. To use this style sheet, add `<link rel="stylesheet" type="text/css" href="../../css/editors.css"/>` to the head of the technique.
+
 The generator used to publish techniques uses XML processing, so techniques must be well-formed XML. Techniques use HTML 5 structure so are actually [HTML Polyglot](https://www.w3.org/TR/html-polyglot/).  
 
 ### Images, Examples, Cross References for Techniques
 
-Techniques can include images. Place the image file in the `img` folder of the relevant technology - meaning all techniques for a technology share a common set of images. Use a relative link to load the image. Most images should be loaded with a `<figure>` element and labeled with a `<figcaption>` positioned at the bottom of the figure. Small inline images may be loaded with a `<img>` element with suitable `alt` text.
+Techniques can include images. Place the image file in the `img` folder of the relevant technology - meaning all techniques for a technology share a common set of images. Use a relative link to load the image. Most images should be loaded with a `<figure>` element and labeled with a `<figcaption>` positioned at the bottom of the figure. `<figure>` elements must have an `id` attribute. Small inline images may be loaded with a `<img>` element with suitable `alt` text.
 
 Techniques should include brief code examples to demonstrate how to author content that follows the technique. Code examples should be easy to read, and usually not complete content in themselves. More complete examples can be provided as [working examples](#user-content-provide-working-examples-of-techniques) (see below). Link to working examples at the bottom of each example, in a `<p class="working-example">` element, containing a relative link to `../../working-examples/{example-name}/`.
 
@@ -168,3 +176,16 @@ To create a working example:
 * Refer to resources shared among multiple examples using relative links, e.g., `../css/example.css`. Place other resources in the same directory as the main example, e.g., `working-examples/alt-attribute/css/alt.css`.
 * Reference working examples from techniques using the rawgit URI to the example in its development branch, e.g., `https://rawgit.com/w3c/wcag/master/working-examples/alt-attribute/`. Editors will update links when examples are approved.
 * When the example is complete and functional, submit a pull request into the master branch.
+
+## Translations
+
+WCAG 2.1 is ready for translation. WCAG 2.2 is still under development so should not be translated yet. To translate WCAG 2.1, ensure you are set up to use [GitHub](https://github.com/), then:
+
+* [Fork](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo) the w3c/wcag repository.
+* Change to the [branch](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/about-branches) "WCAG-2.1".
+* Create a new branch from this branch.
+* Translate all user-oriented content in the "guidelines" folder, including the sub-folders. User-oriented content includes text in elements, and attributes such as "title" and "alt" that provide content to users. **Leave other markup as is.**
+* Load the index.html document in a modern browser and allow the script to compile the content and format it.
+* Activate the "Respec" link in the top right corner, and choose "Export...", then the "HTML" option.
+* Edit the resulting file to translate text that was inserted by the script.
+* Edit the file to meet the requirements of the [W3C Authorized Translations](https://www.w3.org/2005/02/TranslationPolicy) process. 
