@@ -61,16 +61,16 @@
                <ul>
                   
                   <li>At least as large as the area of a 1 CSS pixel thick perimeter of the unfocused component,
-                     or is at least as large as a 4 CSS pixel thick line along the shortest side of a minimum
-                     bounding box of the unfocused component, and
+                     or is at least as large as a 4 CSS pixel thick line along the shortest side of the
+                     minimum bounding box of the unfocused component, and
                   </li>
                   
                   <li>has a contrast ratio of at least 3:1 against the same pixels in the unfocused state,
                      and 
                   </li>
                   
-                  <li>has a contrast ratio of at least 3:1 against adjacent colors, or is no thinner than
-                     2 CSS pixels.
+                  <li>has a contrast ratio of at least 3:1 against adjacent non-focus-indicator colors,
+                     or is no thinner than 2 CSS pixels.
                   </li>
                   
                </ul>
@@ -219,8 +219,8 @@
                directly abut the component or any other object -- as in all preceding examples --
                it simply needs to contrast at least 3:1 against the page background. Offsetting is
                the recommended way of creating a more visible focus indicator. However, where authors
-               choose to position the indicator so it is directly next to another shape, it must
-               contrast 3:1 against this adjacent shape as well. 
+               choose to position the indicator so it is directly next to or overlaps another shape,
+               it must contrast 3:1 against this adjacent shape as well. 
                
                
                <figure id="focus-indicator-abutted">
@@ -286,22 +286,28 @@
                
                
                <p>When the focus indicator is shown only around the whole tablist, the user is guided
-                  to considering the tablist as a single user component. The tab items within it are
-                  visually distinguished between selected and unselected states.
+                  to consider the tablist as a single user component. The tab items within it are visually
+                  distinguished between selected and unselected states. (The selection state must achieve
+                  a 3:1 contrast, as per <a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html">1.4.11 Non-text Contrast</a>.)
                </p>
                
                
-               <p>For a tablist which synchronizes its tab panel content with whatever tab is active,
-                  only one tab item can be selected at a time, and since whatever tab is selected is
-                  considered active, a separate focus indicator is redundant.
+               <p>Having a focus indicator <em>only</em> around the whole is possible where there is no need to have a selected sub-component
+                  while another sub-component has focus. For a tablist which synchronizes its tab panel
+                  content with whatever tab is active, only one tab item can be selected at a time,
+                  and since whatever tab is selected is considered active, a separate focus indicator
+                  is redundant.
                </p>
                
                
                <p>Result: the group focus indicator must meet the requirements of this SC.</p>
                
                
-               <p>A <a href="https://www.w3.org/TR/wai-aria-practices-1.2/examples/slider/slider-rating.html#ex_label">star-rating widget that uses a whole-component focus indicator</a> provides a working example of a different complex component using a single focus
-                  indicator that passes the primary requirements of this SC.
+               <p>A <a href="https://codesandbox.io/s/practical-cori-nl4pld?file=/index.html">radio button group</a> and a <a href="https://www.w3.org/TR/wai-aria-practices-1.2/examples/slider/slider-rating.html#ex_label">star-rating widget</a>, which each use only a whole-component focus indicator, provide working examples
+                  of different complex components that pass the primary requirements of this SC. In
+                  the star ratings example, users can increment the rating by 1/2 stars. Not only is
+                  a focus indicator for each 1/2 star unnecessary, but it would actually be difficult
+                  to achieve without making the interaction confusing.
                </p>
                
                
@@ -322,14 +328,14 @@
                
                
                <p>For a tablist which does not keep its tab panel content synchronized with whatever
-                  tab is selected, there <em>is</em> a separate focus indicator for the tab item subcomponent. The user can navigate to
-                  the tablist (normally using the Tab key) which has a focus rectangle around the whole
-                  tablist as well as one around a tab item (conventionally the item that is currently
-                  selected). The focus around the whole cues a keyboard user that it is a complex component
-                  that has its own sub-operation. The user can then move focus between the unselected
-                  and selected tab items (normally with arrow keys) -- each of which in turn has its
-                  own focus indicator -- before activating one (normally with the Enter or Space key),
-                  which then makes it selected as well as focused, and updates the tab panel to match.
+                  tab is selected, there <em>is</em> a need for a separate focus indicator for the tab item subcomponent. When the user
+                  navigates to the tablist, a focus rectangle appears around the whole tablist as well
+                  as around a tab item (conventionally the item that is currently selected). The focus
+                  around the whole cues a keyboard user that it is a complex component that has its
+                  own sub-operation. The additional focus indicator around the subcomponent helps cue
+                  users that they can move focus between the unselected and selected tab items -- each
+                  of which in turn has its own focus indicator -- before activating one, which then
+                  makes it selected as well as focused, and updates the tab panel to match.
                </p>
                
                
@@ -373,8 +379,8 @@
                </p>
                
                
-               <p>A <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role#example"> functional example of sub-component-only tab focus</a> has an indicator that is large enough with sufficient contrast to pass the exception
-                  language of this SC.
+               <p>A <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role#example"> functional example of sub-component-only tab focus</a> has an indicator that is large enough (at least four times the shortest side) with
+                  sufficient contrast to pass the exception language of this SC.
                </p>
                
                
