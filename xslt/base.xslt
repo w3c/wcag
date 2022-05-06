@@ -208,7 +208,18 @@
 	<xsl:template name="header">
 		<header class="default-grid with-gap minimal-header-container">
 				<div class="minimal-header">
-						<span class="minimal-header-name"><a href="../">WCAG <xsl:value-of select="$guidelines.version.decimal"/><xsl:text> </xsl:text><xsl:value-of select="$documentset.name"/></a></span>
+						<span class="minimal-header-name">
+							<a>
+								<xsl:attribute name="href">
+									<xsl:if test="$documentset = 'Understanding'">./</xsl:if>
+									<xsl:if test="$documentset = 'Techniques'">../</xsl:if>
+								</xsl:attribute>
+								<xsl:text>WCAG </xsl:text>
+								<xsl:value-of select="$guidelines.version.decimal"/>
+								<xsl:text> </xsl:text>
+								<xsl:value-of select="$documentset.name"/>
+							</a>
+						</span>
 						<div class="minimal-header-logo">
 								<a href="http://w3.org/" aria-label="W3C">
 									<svg
