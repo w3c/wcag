@@ -662,7 +662,7 @@
 
 	<xsl:template name="navtoc">
 		<xsl:param name="meta" tunnel="yes"/>
-			<ul id="navbar">
+			<ul>
 				<xsl:if test="name($meta) = 'success-criterion'">
 					<li>
 						<a href="#intent">Intent</a>
@@ -949,7 +949,7 @@
 
 	<xsl:template name="sidebar">
 		<xsl:param name="meta" tunnel="yes"/>
-		<aside class="your-report your-report--expanded sidebar" aria-labelledby="about-this-page" style="font-size: 0.85rem;">
+		<aside class="box nav-hack sidebar standalone-resource__sidebar ">
 			<!--
 			<nav>
 				<h2 style="margin-top: 0; margin-bottom: 0; padding-bottom: 0; font-size: 1rem" id="about-this-page">Navigation</h2>
@@ -961,8 +961,10 @@
 			</nav>
 			-->
 			<nav>
-				<h3 style="margin-top: 21px; margin-bottom: 7px;font-size: 1rem;">Page contents</h3>
-			<xsl:call-template name="navtoc"/>
+				<header class="box-h ">Page Contents</header>
+				<div class="box-i">
+					<xsl:call-template name="navtoc"/>
+				</div>
 			</nav>
 			<!-- 
 			<p>
