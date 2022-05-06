@@ -30,7 +30,7 @@
 	<xsl:variable name="documentset.name">
 		<xsl:choose>
 			<xsl:when test="$documentset = 'Techniques'">Techniques</xsl:when>
-			<xsl:when test="$documentset = 'Understanding'">Understanding Documents</xsl:when>
+			<xsl:when test="$documentset = 'Understanding'">Understanding Docs</xsl:when>
 			<xsl:otherwise><xsl:value-of select="$documentset"/></xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
@@ -208,18 +208,23 @@
 	<xsl:template name="header">
 		<header class="default-grid with-gap minimal-header-container">
 				<div class="minimal-header">
-						<span class="minimal-header-name">
-							<a>
-								<xsl:attribute name="href">
-									<xsl:if test="$documentset = 'Understanding'">./</xsl:if>
-									<xsl:if test="$documentset = 'Techniques'">../</xsl:if>
-								</xsl:attribute>
-								<xsl:text>WCAG </xsl:text>
-								<xsl:value-of select="$guidelines.version.decimal"/>
-								<xsl:text> </xsl:text>
-								<xsl:value-of select="$documentset.name"/>
-							</a>
-						</span>
+					<span class="minimal-header-name">
+						<xsl:text>WCAG </xsl:text>
+						<xsl:value-of select="$guidelines.version.decimal"/>
+						<xsl:text> </xsl:text>
+						<xsl:value-of select="$documentset.name"/>
+					</span>
+					<span class="minimal-header-subtitle">Informative explanations, not required to meet WCAG</span>
+					<span class="minimal-header-link">
+						<a>
+							<xsl:attribute name="href">
+								<xsl:if test="$documentset = 'Understanding'">./about</xsl:if>
+								<xsl:if test="$documentset = 'Techniques'">../about</xsl:if>
+							</xsl:attribute>
+							<xsl:text>About WCAG </xsl:text>
+							<xsl:value-of select="$documentset.name"/>
+						</a>
+					</span>
 						<div class="minimal-header-logo">
 								<a href="http://w3.org/" aria-label="W3C">
 									<svg
