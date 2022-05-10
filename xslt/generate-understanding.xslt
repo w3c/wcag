@@ -584,10 +584,14 @@
 			
 			<xsl:if test="$prevnextdir != 'next'">
 				<xsl:if test="$meta-for-link/self::guideline and $meta/self::success-criterion">
-					<xsl:text>^ </xsl:text>
+					<svg alt="up" focusable="false" aria-hidden="true" class="icon-arrow-up-thin pager-icon" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"></path>
+					</svg>
 				</xsl:if>
 				<xsl:if test="$prevnextdir = 'previous'">
-					<xsl:text>&lt;- </xsl:text>
+					<svg focusable="false" aria-hidden="true" class="icon-arrow-left-thin pager-icon" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"></path>
+					</svg>
 				</xsl:if>
 			</xsl:if>
 			
@@ -601,7 +605,9 @@
 			<xsl:value-of select="$meta-for-link/name"/>
 			
 			<xsl:if test="$prevnextdir = 'next'">
-				<xsl:text> -></xsl:text>
+				<svg focusable="false" aria-hidden="true" class="icon-arrow-right-thin pager-icon" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"></path>
+				</svg>
 			</xsl:if>
 				
 		</a>
