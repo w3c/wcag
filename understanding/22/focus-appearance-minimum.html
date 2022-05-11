@@ -38,9 +38,11 @@
                         <li>Has a contrast ratio of at least 3:1 against adjacent non-focus-indicator colors, or is no thinner than 2 CSS pixels.</li>
                     </ul>
                 </li>
-            </ul>
+                </ul>
 
-            <p>Where a user interface component has active sub-components (for example, an opened drop-down menu shows a list of menu items), if the focus indicator is applied to the sub-component then these requirements can be applied to the sub-components instead.</p>
+            <p>Where a user interface component has active sub-components, if a sub-component receives a focus indicator, these requirements can be applied to the sub-component instead.</p>
+
+            <p class="note">Note: Examples of sub-components that may receive a focus indicator are menu items in an opened drop-down menu. However, it may also be possible to indicate user interaction for such sub-components by relying strictly on a visual indication of which item is <em>selected</em>. Where selectable sub-components have no differentiated focus indicator, the visual indicator for sub-component selection is measured against <a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html">1.4.11 Non-text Contrast</a> requirements, not against this Criterion.</p>
 
             <p class="note">Note: Contrast calculations can be based on colors defined within the technology (such as HTML, CSS and SVG). Pixels modified by user agent resolution enhancements and anti-aliasing can be ignored.</p>
             <dl>
@@ -71,7 +73,7 @@
 
         <p>The purpose of this Success Criterion (SC) is to ensure a keyboard focus indicator is clearly visible and discernible. Focus Appearance (Minimum) is closely related to <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html">2.4.7 Focus Visible</a> and <a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html">1.4.11 Non-text Contrast</a>. Where Focus Visible merely requires a visible focus indicator, this SC defines a minimum level of visibility. Where Non-text Contrast requires a component to have adequate contrast against the background in each of its states, this SC requires sufficient contrast for the focus indicator itself.</p>
 
-        <p>For sighted people with mobility impairments who use a keyboard-like device (such as a switch or voice input), knowing the current point of focus is very important. Visible focus must also meet the needs of users with low vision, who may also be keyboard-only users.</p>
+        <p>For sighted people with mobility impairments who use a keyboard or keyboard-like device (such as a switch or voice input), knowing the current point of focus is very important. Visible focus must also meet the needs of users with low vision, who may also be keyboard-only users.</p>
             
         <p>A keyboard focus indicator can take different forms. This Success Criterion lists three primary considerations that can be met to consistently acheive a sufficient focus appearance. It then provides a list of exceptions for a focus indicator which may be less optimal for some users but still achieves a minimum level of focus appearance. This Understanding document will elaborate on each of the three primary considerations, then address the exceptions.</p>
 
@@ -136,7 +138,7 @@
             <h3>Component keyboard focus</h3>
             <p>The preamble to this SC is "When a user interface component has keyboard focus..." The <em>keyboard focus</em> is the point of interaction for someone using a keyboard. For environments with a keyboard-operable interface, the keyboard focus can be moved around the interface in order to interact with different components. Whichever component is being interacted with has focus.</p>
 
-            <p>WCAG defines <em>user interface component</em> as "a part of the content that is perceived by users as a single control for a distinct function." Because different users may perceive controls differently, there is a potential for some variation when interpreting what constitutes both a <em>single control</em> and a <em>distinct function</em>. This is particularly the case when something visually presents in a way that may differ from how it is programmatically created under the covers. Where there is not a native HTML component to base designs on, there can be great variations in how the components and their focus indicators are portrayed. Further, some components have sub-components that can take focus, such as the menu items on a menu.</p>
+            <p>WCAG defines <em>user interface component</em> as "a part of the content that is perceived by users as a single control for a distinct function." Because different users may perceive controls differently, there is a potential for some variation when interpreting what constitutes both a <em>single control</em> and a <em>distinct function</em>. This is particularly the case when something visually presents in a way that may differ from how it is programmatically created under the covers. Where there is not a native HTML component upon which to base designs, there can be great variations in how the components and their focus indicators are portrayed. Further, some components have sub-components that can take focus, such as the menu items on a menu.</p>
             <p> Nonetheless, consistent results from different testers were obtained for this SC by using the focus indicator itself as the gauge of what constitutes the component being interacted with. For complex components, the three typical focus indicators are as follows:</p>
 
             <ul>
@@ -153,7 +155,7 @@
                 <figcaption> A tablist with a focus indicator around only the whole.</figcaption>
             </figure>    
             
-            <p>When the focus indicator is shown only around the whole tablist, the user is guided to consider the tablist as a single user component. The tab items within it are visually distinguished between selected and unselected states. (The selection state must achieve a 3:1 contrast, as per <a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html">1.4.11 Non-text Contrast</a>.)</p>
+            <p>When the focus indicator is shown only around the whole tablist, the user is guided to considering the tablist as a single user component. The tab items within it are visually distinguished between selected and unselected states (and visual indicators of selection state must meet the criteria given in <a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html">1.4.11 Non-text Contrast</a>).</p>
         
             <p>Having a focus indicator <em>only</em> around the whole is possible where there is no need to have a selected sub-component while another sub-component has focus. For a tablist which synchronizes its tab panel content with whatever tab is active, only one tab item can be selected at a time, and since whatever tab is selected is considered active, a separate focus indicator is redundant.</p>
             
@@ -170,9 +172,11 @@
                 <figcaption> The same tablist in two states. In the first, focus is around both the tablist and the currently selected tab; in the second, focus is around both the tablist and an unselected tab.</figcaption>
             </figure>    
         
-            <p>For a tablist which does not keep its tab panel content synchronized with whatever tab is selected, there <em>is</em> a need for a separate focus indicator for the tab item subcomponent. When the user navigates to the tablist, a focus rectangle appears around the whole tablist as well as around a tab item (conventionally the item that is currently selected). The focus around the whole cues a keyboard user that it is a complex component that has its own sub-operation. The additional focus indicator around the subcomponent helps cue users that they can move focus between the unselected and selected tab items -- each of which in turn has its own focus indicator -- before activating one, which then makes it selected as well as focused, and updates the tab panel to match.</p>
+            <p>For a tablist which does not keep its tab panel content synchronized with whatever tab is selected, there needs to be a focus indicator for the tab item subcomponent. This is because the tab item with focus may be different than the selected item.</p>
+            <p>The user can navigate to the tablist, which in this implementation has a focus rectangle around the whole tablist as well as one around a tab item (conventionally the item that is currently selected). The focus around the whole is helpful in cueing a keyboard user that this is a complex component that has its own interaction. The user can then move focus between the unselected and selected tab items -- each of which in turn has its own focus indicator -- before activating one, which then makes it selected as well as focused, and updates the tab panel to match.</p>
+            <p>In this scenario, either the group focus indicator or the sub-component indicator must meet the requirements of this Success Criterion. To avoid being overly prescriptive, the Success Criterion allows authors to choose which makes the most sense. Generally, if a sub-component focus is necessary, it should be assessed instead of the group indicator.</p>
         
-            <p>Result: the focus indicator for the tab item must meet the requirements of this SC. The tablist focus indicator does not need to meet the requirements.</p>
+            <p>Result: the focus indicator for the tab item meets the requirements of this SC. The tablist focus indicator does not need to meet the requirements.</p>
 
             <p>A <a href="https://www.w3.org/TR/wai-aria-practices-1.2/examples/slider/slider-color-viewer.html#ex_label">slider to pick colors</a> provides a working example of a different complex component that predominantly shows focus for the subcomponent. In this case, the thumb slider sub-component has a focus indicator of sufficient size and contrast to pass the exception. There is also a subtle focus around the whole slider component, but it does not need to be assessed to pass this SC.</p>
         
@@ -184,14 +188,14 @@
             </figure>   
         
         
-            <p>The same unsynchronized tablist can also be implemented as something which only shows focus on the tab items and not on the whole. The behaviour is the same as in the prior example, but there is never a focus indicator placed around the tablist. This interaction is acceptable, but it is not best practice for a number of reasons, since it demands more understanding from the user with less information. Some visual cues for the tablist and tab items (and tab panel) may not be clear. Keyboard users may not initially understand the expected keyboard interaction.</p>
+            <p>The same unsynchronized tablist can also be implemented as something which only shows focus on the tab items and not on the whole. The behaviour is the same as in the prior example, but there is never a focus indicator placed around the tablist. This interaction is acceptable, but it is not best practice since it demands more understanding from the user with less information. For example, some visual cues for the tablist and tab items (and tab panel) may not be clear. As well, keyboard users may not initially understand the expected keyboard interaction.</p>
         
             <p>Result: the focus indicator for the tab item must meet the requirements of this SC, judging focus with both selected and unselected tab items.</p>
 
             <p>A <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role#example"> functional example of sub-component-only tab focus</a> has an indicator that is large enough (at least four times the shortest side) with sufficient contrast to pass the exception language of this SC.</p>
         
             <h4>Where something with focus is not a user interface component</h4>
-            <p>Some pages contain very large editing regions, such as web implementations of word processors and code editors. Unlike a `textarea` element, which is a user interface component, these large editing regions do not typically meet the definition of <a href="https://w3c.github.io/wcag/guidelines/22/#dfn-user-interface-components">user interface components</a>; they are not "perceived by users as a single control for a distinct function." Providing focus indicators around such editing regions may still be beneficial to some; however, where the region is not perceived as a single control, it is not covered by this Success Criterion. The web page will still need to provide a insertion point (caret indicator) in such editing regions in order to meet the requirements of <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html">2.4.7 Focus Visible</a>.</p>
+            <p>Some pages contain very large editing regions, such as web implementations of word processors and code editors. Unlike a <code>textarea</code> element, which is a user interface component, these large editing regions do not typically meet the definition of <a href="https://w3c.github.io/wcag/guidelines/22/#dfn-user-interface-components">user interface components</a>; they are not "perceived by users as a single control for a distinct function." Providing focus indicators around such editing regions may still be beneficial to some; however, where the region is not perceived as a single control, it is not covered by this Success Criterion. The web page will still need to provide a insertion point (caret indicator) in such editing regions in order to meet the requirements of <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html">2.4.7 Focus Visible</a>.</p>
 
             <p>Some non-operable elements can take focus (such as a heading element that is the target of a skip link). However, the preamble of this SC refers to user interface components; it is only when the element with focus is operable by keyboard that this Success Criterion applies.</p>
         </section>
@@ -209,7 +213,12 @@
             <h3>First exception: the focus indicator cannot be adjusted by the author</h3>
 
             <blockquote><p>The focus indicator is determined by the user-agent and cannot be adjusted by the author</p></blockquote>
-            <p>Some components or technologies may not allow the author to adjust the focus indicator. In this case the Success Criterion does not apply.</p>
+            <p>Some components or technologies may not allow the author to adjust the focus indicator. This is the case with HTML <code>select</code> elements (both single and multi-select), where the visual treatments for selection and focus cannot be adjusted by the author. In this case the Success Criterion does not apply.</p>
+            <figure id="country-select">
+                <img src="img/focus-indicator-select.png" alt="A country select element with Afghanistan selected and Albani with focus" />
+                <figcaption>Passes: The user agent's default <code>select</code> element presentation cannot be modified by the author, so it passes regardless of the quality of the focus indicator</figcaption>
+            </figure>  
+        
         </section>
         <section id="default">
             <h3>Second exception: the default indicator and background are not modified</h3>
@@ -245,7 +254,7 @@
     
                 <p>For the first calculation, the minimum area of the focus indicator must be at least as large as the area of a 1 CSS pixel thick perimeter (border) of the control in its unfocused state. The indicator does not have to be a border, but the indicator's area must be at least as large. For example, if a control is a rectangle of 90px wide and 30px tall, the size of the outer border is 90 + 90 + 30 + 30 = 240 CSS pixels. You then must subtract the 4 corner pixels (which are counted twice, both horizontally and vertically), for a total minimum area of 236 CSS pixels.</p>
     
-                <p class="note">A <a>CSS pixel</a> is what developers use in CSS declarations like “width: 200px”, it is device-independent and not to be confused with device pixels which vary depending on the physical pixel density. <br />
+                <p class="note">A <a>CSS pixel</a> is what developers use in CSS declarations like “width: 200px”. It is device-independent and not to be confused with device pixels which vary depending on the physical pixel density. <br />
                     The rest of this document notates CSS pixels as "px".
                 </p>
     
@@ -320,6 +329,7 @@
                     <img src="img/focus-indicator-box-shadow-only.png" alt="The middle button with the drop-shadow included, but the subtle grey areas removed to only show the contrasting area." />
                     <figcaption> Passes: the focused button with the non-contrasting areas removed, showing that it is a thick indicator that meets the requirements.</figcaption>
                 </figure>
+                <p class="note">Some of the examples in this document, especially in the Exceptions section, are screen-captured images of elements. Due to loss of resolution in these images, the actual pixel color may not match the original. As such, they are intended to be used for illustrative purposes, and should not be inspected on a pixel-by-pixel basis for sufficient contrast.</p>    
                 <p>Some designs have pages with a non-solid background image covering the whole (or part) of the page or make use of parallax scrolling effects which result in a near-infinite number of color combinations if a page is scrolled and/or changes are made to the viewport size.</p>
                 <p>If the contrast of background colors that change are close enough to need to be tested for each combination then they would likely not meet the user need of people with low vision in certain scroll combinations and would likely fail in certain combinations as well. In these cases it would be an easy solution to use a <a href="https://www.w3.org/WAI/WCAG22/Techniques/css/C40">double ring focus indicator</a> or some other mechanism to indicate focus such as a solid box with a border to guarantee there is sufficient contrast across variations of background images or background gradients.</p>
                 <h5>Inline links</h5>
