@@ -78,9 +78,18 @@
             </li>
             
          </ul>
-         <p>Where a user interface component has active sub-components (for example, an opened
-            drop-down menu shows a list of menu items), if the focus indicator is applied to the
-            sub-component then these requirements can be applied to the sub-components instead.
+         <p>Where a user interface component has active sub-components, if a sub-component receives
+            a focus indicator, these requirements can be applied to the sub-component instead.
+         </p>
+         <p class="note">Note: Examples of sub-components that may receive a focus indicator are menu items
+            in an opened drop-down menu. However, it may also be possible to indicate user interaction
+            for such sub-components by relying strictly on a visual indication of which item is
+            <em>selected</em>. Where selectable sub-components have no differentiated focus indicator, the visual
+            indicator for sub-component selection is measured against <a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html">1.4.11 Non-text Contrast</a> requirements, not against this Criterion.
+         </p>
+         <p class="note">Note: Contrast calculations can be based on colors defined within the technology (such
+            as HTML, CSS and SVG). Pixels modified by user agent resolution enhancements and anti-aliasing
+            can be ignored.
          </p>
       </blockquote>
       <main>
@@ -101,8 +110,8 @@
                adequate contrast against the background in each of its states, this SC requires sufficient
                contrast for the focus indicator itself.
             </p>
-            <p>For sighted people with mobility impairments who use a keyboard-like device (such
-               as a switch or voice input), knowing the current point of focus is very important.
+            <p>For sighted people with mobility impairments who use a keyboard or keyboard-like device
+               (such as a switch or voice input), knowing the current point of focus is very important.
                Visible focus must also meet the needs of users with low vision, who may also be keyboard-only
                users.
             </p>
@@ -249,9 +258,9 @@
                   function." Because different users may perceive controls differently, there is a potential
                   for some variation when interpreting what constitutes both a <em>single control</em> and a <em>distinct function</em>. This is particularly the case when something visually presents in a way that may
                   differ from how it is programmatically created under the covers. Where there is not
-                  a native HTML component to base designs on, there can be great variations in how the
-                  components and their focus indicators are portrayed. Further, some components have
-                  sub-components that can take focus, such as the menu items on a menu.
+                  a native HTML component upon which to base designs, there can be great variations
+                  in how the components and their focus indicators are portrayed. Further, some components
+                  have sub-components that can take focus, such as the menu items on a menu.
                </p>
                
                <p> Nonetheless, consistent results from different testers were obtained for this SC
@@ -286,9 +295,9 @@
                
                
                <p>When the focus indicator is shown only around the whole tablist, the user is guided
-                  to consider the tablist as a single user component. The tab items within it are visually
-                  distinguished between selected and unselected states. (The selection state must achieve
-                  a 3:1 contrast, as per <a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html">1.4.11 Non-text Contrast</a>.)
+                  to considering the tablist as a single user component. The tab items within it are
+                  visually distinguished between selected and unselected states (and visual indicators
+                  of selection state must meet the criteria given in <a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html">1.4.11 Non-text Contrast</a>).
                </p>
                
                
@@ -328,19 +337,29 @@
                
                
                <p>For a tablist which does not keep its tab panel content synchronized with whatever
-                  tab is selected, there <em>is</em> a need for a separate focus indicator for the tab item subcomponent. When the user
-                  navigates to the tablist, a focus rectangle appears around the whole tablist as well
-                  as around a tab item (conventionally the item that is currently selected). The focus
-                  around the whole cues a keyboard user that it is a complex component that has its
-                  own sub-operation. The additional focus indicator around the subcomponent helps cue
-                  users that they can move focus between the unselected and selected tab items -- each
-                  of which in turn has its own focus indicator -- before activating one, which then
-                  makes it selected as well as focused, and updates the tab panel to match.
+                  tab is selected, there needs to be a focus indicator for the tab item subcomponent.
+                  This is because the tab item with focus may be different than the selected item.
+               </p>
+               
+               <p>The user can navigate to the tablist, which in this implementation has a focus rectangle
+                  around the whole tablist as well as one around a tab item (conventionally the item
+                  that is currently selected). The focus around the whole is helpful in cueing a keyboard
+                  user that this is a complex component that has its own interaction. The user can then
+                  move focus between the unselected and selected tab items -- each of which in turn
+                  has its own focus indicator -- before activating one, which then makes it selected
+                  as well as focused, and updates the tab panel to match.
+               </p>
+               
+               <p>In this scenario, either the group focus indicator or the sub-component indicator
+                  must meet the requirements of this Success Criterion. To avoid being overly prescriptive,
+                  the Success Criterion allows authors to choose which makes the most sense. Generally,
+                  if a sub-component focus is necessary, it should be assessed instead of the group
+                  indicator.
                </p>
                
                
-               <p>Result: the focus indicator for the tab item must meet the requirements of this SC.
-                  The tablist focus indicator does not need to meet the requirements.
+               <p>Result: the focus indicator for the tab item meets the requirements of this SC. The
+                  tablist focus indicator does not need to meet the requirements.
                </p>
                
                
@@ -367,10 +386,10 @@
                <p>The same unsynchronized tablist can also be implemented as something which only shows
                   focus on the tab items and not on the whole. The behaviour is the same as in the prior
                   example, but there is never a focus indicator placed around the tablist. This interaction
-                  is acceptable, but it is not best practice for a number of reasons, since it demands
-                  more understanding from the user with less information. Some visual cues for the tablist
-                  and tab items (and tab panel) may not be clear. Keyboard users may not initially understand
-                  the expected keyboard interaction.
+                  is acceptable, but it is not best practice since it demands more understanding from
+                  the user with less information. For example, some visual cues for the tablist and
+                  tab items (and tab panel) may not be clear. As well, keyboard users may not initially
+                  understand the expected keyboard interaction.
                </p>
                
                
@@ -387,8 +406,8 @@
                <h3>Where something with focus is not a user interface component</h3>
                
                <p>Some pages contain very large editing regions, such as web implementations of word
-                  processors and code editors. Unlike a `textarea` element, which is a user interface
-                  component, these large editing regions do not typically meet the definition of <a href="https://w3c.github.io/wcag/guidelines/22/#dfn-user-interface-components">user interface components</a>; they are not "perceived by users as a single control for a distinct function." Providing
+                  processors and code editors. Unlike a <code>textarea</code> element, which is a user interface component, these large editing regions do not
+                  typically meet the definition of <a href="https://w3c.github.io/wcag/guidelines/22/#dfn-user-interface-components">user interface components</a>; they are not "perceived by users as a single control for a distinct function." Providing
                   focus indicators around such editing regions may still be beneficial to some; however,
                   where the region is not perceived as a single control, it is not covered by this Success
                   Criterion. The web page will still need to provide a insertion point (caret indicator)
@@ -410,18 +429,17 @@
                <p>In addition to achieving a minimum keyboard focus appearance using the three primary
                   means described above, an author can also meet this SC's requirements through one
                   of several exceptions, where either:
-                  
-                  <ul>
-                     
-                     <li>the focus indicator cannot be adjusted by the author,</li>
-                     
-                     <li>the author has not modified the effects of the user agent default, or</li>
-                     
-                     <li>the author provides an indicator of sufficient size and contrast.</li>
-                     
-                  </ul>
-                  
                </p>
+               
+               <ul>
+                  
+                  <li>the focus indicator cannot be adjusted by the author,</li>
+                  
+                  <li>the author has not modified the effects of the user agent default, or</li>
+                  
+                  <li>the author provides an indicator of sufficient size and contrast.</li>
+                  
+               </ul>
                
             </section>
             <section id="cannot-adjust">
@@ -436,8 +454,20 @@
                </blockquote>
                
                <p>Some components or technologies may not allow the author to adjust the focus indicator.
-                  In this case the Success Criterion does not apply.
+                  This is the case with HTML <code>select</code> elements (both single and multi-select), where the visual treatments for selection
+                  and focus cannot be adjusted by the author. In this case the Success Criterion does
+                  not apply.
                </p>
+               
+               <figure id="country-select">
+                  <img src="img/focus-indicator-select.png" alt="A country select element with Afghanistan selected and Albani with focus" />
+                  
+                  <figcaption>Figure 11 Passes: The user agent's default <code>select</code> element presentation cannot be modified by the author, so it passes regardless of
+                     the quality of the focus indicator
+                  </figcaption>
+                  
+               </figure>  
+               
                
             </section>
             <section id="default">
@@ -542,7 +572,7 @@
                   
                   <div class="note">
                      <div role="heading" class="note-title marker" aria-level="5">Note</div>
-                     <p>A <a href="#dfn-css-pixel">CSS pixel</a> is what developers use in CSS declarations like “width: 200px”, it is device-independent
+                     <p>A <a href="#dfn-css-pixel">CSS pixel</a> is what developers use in CSS declarations like “width: 200px”. It is device-independent
                         and not to be confused with device pixels which vary depending on the physical pixel
                         density. <br />
                         The rest of this document notates CSS pixels as "px".
@@ -560,7 +590,7 @@
                   <figure id="focus-indicator-innerline">
                      <img src="img/focus-indicator-innerline.png" alt="Three dark blue buttons on a white background. The middle button has a yellow inner border." width="284" />
                      
-                     <figcaption>Figure 11  Passes: the inner outline is slightly smaller than the outer edge of the component
+                     <figcaption>Figure 12  Passes: the inner outline is slightly smaller than the outer edge of the component
                         (236px minus 2px on each side), but using a 2px thick indicator means it is well over
                         the minimum requirement of 236px squared.
                      </figcaption>
@@ -571,7 +601,7 @@
                   <figure id="focus-indicator-underline">
                      <img src="img/focus-indicator-underline.png" alt="Three dark blue buttons on a white background. The middle button has a thick yellow line under the text." width="284" />
                      
-                     <figcaption>Figure 12  Passes: the thick (3px) yellow underline, at 80px almost as long as the longest edge,
+                     <figcaption>Figure 13  Passes: the thick (3px) yellow underline, at 80px almost as long as the longest edge,
                         multiplied by 3px exceeds the requirement of 236px squared.
                      </figcaption>
                      
@@ -597,7 +627,7 @@
                   <figure id="focus-indicator-whole">
                      <img src="img/focus-indicator-whole-star.svg" alt="3 of 5 stars are selected with the whole third star altered in color to indicate focus" />
                      
-                     <figcaption>Figure 13  Passes: a color change applies to the whole third star to indicate focus.</figcaption>
+                     <figcaption>Figure 14  Passes: a color change applies to the whole third star to indicate focus.</figcaption>
                      
                   </figure> 
                   
@@ -612,7 +642,7 @@
                   <figure id="focus-indicator-shortside">
                      <img src="img/focus-indicator-thick-short-side.png" alt="Two dark blue buttons on a white background. The left button has a very thick yellow block of color left of the text." width="284" />
                      
-                     <figcaption>Figure 14  Passes: the yellow block on the left is along the short side, but very thick.</figcaption>
+                     <figcaption>Figure 15  Passes: the yellow block on the left is along the short side, but very thick.</figcaption>
                      
                   </figure>
                   
@@ -655,7 +685,7 @@
                   <figure id="focus-indicator-circle">
                      <img src="img/focus-indicator-circle.png" alt="Two orange circular buttons with an icon in the middle. The right hand circle has a dark outline around the whole circle to indicate focus" width="150" />
                      
-                     <figcaption>Figure 15  Passes: a circular button in the default state, and then with a focus indicator.</figcaption>
+                     <figcaption>Figure 16  Passes: a circular button in the default state, and then with a focus indicator.</figcaption>
                      
                   </figure>
                   
@@ -668,7 +698,7 @@
                   <figure id="focus-indicator-star-shadow">
                      <img src="img/focus-indicator-star-shadow.png" alt="Two yellow star symbols, the second has a dark drop-shadow." width="400" />
                      
-                     <figcaption>Figure 16  Passes? An unfocused star component beside one using a drop shadow to show focus.</figcaption>
+                     <figcaption>Figure 17  Passes? An unfocused star component beside one using a drop shadow to show focus.</figcaption>
                      
                   </figure>
                   
@@ -699,7 +729,7 @@
                   <figure id="focus-indicator-box-shadow">
                      <img src="img/focus-indicator-box-shadow.png" alt="Three buttons, the middle with a heavy drop-shadow indicating focus." />
                      
-                     <figcaption>Figure 17  Passes? When a gradient is used on a focus indicator, the measure of surface area
+                     <figcaption>Figure 18  Passes? When a gradient is used on a focus indicator, the measure of surface area
                         should only include the area that has changed enough to meet the 3:1 contrast ratio.
                      </figcaption>
                      
@@ -712,11 +742,20 @@
                   <figure id="focus-indicator-box-shadow-only">
                      <img src="img/focus-indicator-box-shadow-only.png" alt="The middle button with the drop-shadow included, but the subtle grey areas removed to only show the contrasting area." />
                      
-                     <figcaption>Figure 18  Passes: the focused button with the non-contrasting areas removed, showing that it
+                     <figcaption>Figure 19  Passes: the focused button with the non-contrasting areas removed, showing that it
                         is a thick indicator that meets the requirements.
                      </figcaption>
                      
                   </figure>
+                  
+                  <div class="note">
+                     <div role="heading" class="note-title marker" aria-level="5">Note</div>
+                     <p>Some of the examples in this document, especially in the Exceptions section, are screen-captured
+                        images of elements. Due to loss of resolution in these images, the actual pixel color
+                        may not match the original. As such, they are intended to be used for illustrative
+                        purposes, and should not be inspected on a pixel-by-pixel basis for sufficient contrast.
+                     </p>
+                  </div>    
                   
                   <p>Some designs have pages with a non-solid background image covering the whole (or part)
                      of the page or make use of parallax scrolling effects which result in a near-infinite
@@ -744,7 +783,7 @@
                   <figure id="focus-indicator-inline-link">
                      <img src="img/focus-inline-link.png" alt="A paragraph of text containing a link broken over two lines. The red focus indicator has a gap on the right of one part of the link, and on the left of the other part of the link." />
                      
-                     <figcaption>Figure 19  Passes? The wrapping affects the calculation since the element is not contiguous
+                     <figcaption>Figure 20  Passes? The wrapping affects the calculation since the element is not contiguous
                         and each part is missing one side of the perimeter.
                      </figcaption>
                      
@@ -754,7 +793,7 @@
                   <figure id="focus-indicator-inline-link-outline">
                      <img src="img/focus-inline-link-outline.png" alt="A paragraph of text containing a link broken over two lines. The red focus indicator is a complete rectangle around each part of the link." />
                      
-                     <figcaption>Figure 20  Passes: the CSS outline property wraps each part of the link completely, so does
+                     <figcaption>Figure 21  Passes: the CSS outline property wraps each part of the link completely, so does
                         not affect the calculation of indicator area.
                      </figcaption>
                      
@@ -797,7 +836,7 @@
                   <figure id="focus-indicator-innerline-2">
                      <img src="img/focus-indicator-innerline.png" alt="Three dark blue buttons on a white background. The middle button has a yellow inner border." width="284" />
                      
-                     <figcaption>Figure 21  Passes: adding a yellow outline to a link is a change of color from blue to yellow.
+                     <figcaption>Figure 22  Passes: adding a yellow outline to a link is a change of color from blue to yellow.
                         That change has a contrast ratio of 12:1.
                      </figcaption>
                      
@@ -813,7 +852,7 @@
                   <figure id="focus-indicator-non-contrast">
                      <img src="img/focus-indicator-non-contrast.png" alt="Three buttons with light background and dark border on a white background. The middle button has a light grey outline." width="250" />
                      
-                     <figcaption>Figure 22  Fails: the second link has a light-grey (#ccc) focus outline which <strong>fails</strong> this Success Criterion because the change from white-background to light-grey outline
+                     <figcaption>Figure 23  Fails: the second link has a light-grey (#ccc) focus outline which <strong>fails</strong> this Success Criterion because the change from white-background to light-grey outline
                         does not meet 3:1.
                      </figcaption>
                      
@@ -835,7 +874,7 @@
                   <figure id="focus-indicator-background">
                      <img src="img/focus-indicator-background.png" alt="Three black buttons with a dark background. The middle button has a dark grey background." width="250" />
                      
-                     <figcaption>Figure 23  Fails: the second link has a dark-grey (#555) which <strong>fails</strong> this Success Criterion because the change from black-background to dark-grey background
+                     <figcaption>Figure 24  Fails: the second link has a dark-grey (#555) which <strong>fails</strong> this Success Criterion because the change from black-background to dark-grey background
                         does not meet 3:1.
                      </figcaption>
                      
@@ -846,7 +885,7 @@
                   <figure id="focus-indicator-background-passing">
                      <img src="img/focus-indicator-background-passing.png" alt="Three black buttons with a dark border and two have a dark background. The middle button has a white background." width="250" />
                      
-                     <figcaption>Figure 24  Passes: the second link has a white background (#fff) which <strong>passes</strong> this Success Criterion because the change from black-background to white-background
+                     <figcaption>Figure 25  Passes: the second link has a white background (#fff) which <strong>passes</strong> this Success Criterion because the change from black-background to white-background
                         meets 3:1.
                      </figcaption>
                      
@@ -887,7 +926,7 @@
                   <figure id="focus-indicator-thin-non-contrast">
                      <img src="img/focus-indicator-thin-non-contrast.png" alt="Three dark buttons, the middle one appears very slightly larger due to a thin dark outline." width="255" />
                      
-                     <figcaption>Figure 25  Fails: adding a 1px dark outline around a dark button does not differentiate it.
+                     <figcaption>Figure 26  Fails: adding a 1px dark outline around a dark button does not differentiate it.
                         This example <strong>fails</strong> the Success Criterion.
                      </figcaption>
                      
@@ -903,7 +942,7 @@
                   <figure id="focus-indicator-thick-non-contrast">
                      <img src="img/focus-indicator-thick-non-contrast.png" alt="Three dark buttons, the middle one appears larger due to a thick dark outline." width="255" />
                      
-                     <figcaption>Figure 26  Passes: adding a 2px border around the button helps to differentiate which one is
+                     <figcaption>Figure 27  Passes: adding a 2px border around the button helps to differentiate which one is
                         focused.
                      </figcaption>
                      
@@ -913,7 +952,7 @@
                   <figure id="focus-indicator-outerline">
                      <img src="img/focus-indicator-outerline.png" alt="Three dark buttons, the middle one has a outline slightly offset away from the component, so there is a gap between the component's background and the outline." width="250" />
                      
-                     <figcaption>Figure 27  Adding an outline that is separated from the button helps to differentiate which
+                     <figcaption>Figure 28  Adding an outline that is separated from the button helps to differentiate which
                         one is focused.
                      </figcaption>
                      
@@ -931,7 +970,7 @@
                   <figure id="focus-indicator-extra-outline">
                      <img src="img/focus-indicator-extra-outline.png" alt="Two dark blue buttons on a white background. The second one has a dark outline, then a light grey outline on the outside." width="250" />
                      
-                     <figcaption>Figure 28  Passes: the 3px thick dark outline also meets the size and change of contrast requirements.
+                     <figcaption>Figure 29  Passes: the 3px thick dark outline also meets the size and change of contrast requirements.
                         The light grey outline can be ignored.
                      </figcaption>
                      
@@ -967,7 +1006,7 @@
                   <figure id="focus-indicator-ntc-comparison1">
                      <img src="img/focus-indicator-ntc-comparison1.png" alt="Three dark blue buttons, the center button also has a thin dark line around it." width="400" />
                      
-                     <figcaption>Figure 29  A 1px dark outline around a dark button would pass 1.4.11 Non-text Contrast, but
+                     <figcaption>Figure 30  A 1px dark outline around a dark button would pass 1.4.11 Non-text Contrast, but
                         fails this Success Criterion.
                      </figcaption>
                      
