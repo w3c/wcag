@@ -35,6 +35,11 @@
 		<h2>Silver Task Force</h2>
 			<p>The <a href="silver/">Silver Task Force</a> will perform preliminary development of a new version of Accessibility Guidelines following a research-focused, user-centered design methodology to produce the most effective and flexible outcome. These guidelines will address the process of making content and functionality accessible to people with disabilities, including the roles of content authoring, user agent support, and authoring tool support. These guidelines will address current technological and cultural web accessibility requirements and provide a base for continued evolution of the guidelines. Also see the related <a href="https://www.w3.org/community/silver/">Silver Community Group</a>.</p>
 		</section>
+		
+		<section id="wcag2ict">
+			<h2>WCAG2ICT Task Force</h2>
+			<p>The objective of the <a href="wcag2ict/">WCAG2ICT Task Force</a> is to develop documentation describing how WCAG 2.1 and 2.2 and its principles, guidelines, and success criteria could apply to non-Web Information and Communications Technologies (ICT). </p>
+		</section>
 
 <?php include "../_footer.phi"; ?>
 	</body>
