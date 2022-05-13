@@ -60,7 +60,7 @@
             </dd>
             <dt class="new"><dfn>perimeter</dfn></dt>
             <dd class="new">
-                continuous line forming the boundary of a shape not including shared pixels, or the minimum bounding box of a complex shape, whichever is shortest. For example, the perimeter calculation for a rectangle is 2<em>h</em>+2<em>w</em> -4, where <em>h</em> is the height and <em>w</em> is the width and the corners are not counted twice. The perimeter of a circle is 2𝜋<em>r</em>.
+                continuous line forming the boundary of a shape not including shared pixels, or the minimum bounding box of a complex shape, whichever is shortest. For example, the perimeter calculation for a rectangle is 2<em>h</em>+2<em>w</em> -4, where <em>h</em> is the height and <em>w</em> is the width and the corners are not counted twice. The perimeter of a circle is 2𝜋<em>r</em> For text links, the perimeter can be established based on how the link would appear on a single line (continguosly). Links that break across multiple lines are not considered to have a larger perimeter.
             </dd>
             </dl>
         </blockquote>
@@ -307,7 +307,7 @@
 
                 <figure id="focus-indicator-star-shadow">
                     <img src="img/focus-indicator-star-shadow.png" alt="Two yellow star symbols, the second has a dark drop-shadow." width="400" />
-                    <figcaption> Passes? An unfocused star component beside one using a drop shadow to show focus.</figcaption>
+                    <figcaption>An unfocused star component beside one using a drop shadow to show focus.</figcaption>
                 </figure>
 
                 <p>What is the contrasting area of the drop shadow? The quick method is:</p>
@@ -322,27 +322,29 @@
                 <p>If a focus indicator has a gradient, the principle is to measure the contrast of the changed area, and ignore the change that does not meet 3:1.</p>
                 <figure id="focus-indicator-box-shadow">
                     <img src="img/focus-indicator-box-shadow.png" alt="Three buttons, the middle with a heavy drop-shadow indicating focus." />
-                    <figcaption> Passes? When a gradient is used on a focus indicator, the measure of surface area should only include the area that has changed enough to meet the 3:1 contrast ratio.</figcaption>
+                    <figcaption> When a gradient is used on a focus indicator, the measure of surface area should only include the area that has changed enough to meet the 3:1 contrast ratio.</figcaption>
                 </figure>
                 <p>If you take some spot-checks on the gradient area and establish what area meets the contrast, it is straightforward to work out if that area is sufficient.</p>
                 <figure id="focus-indicator-box-shadow-only">
                     <img src="img/focus-indicator-box-shadow-only.png" alt="The middle button with the drop-shadow included, but the subtle grey areas removed to only show the contrasting area." />
-                    <figcaption> Passes: the focused button with the non-contrasting areas removed, showing that it is a thick indicator that meets the requirements.</figcaption>
+                    <figcaption> Passes: the same focused button with the non-contrasting areas removed, showing that it is a thick indicator that meets the requirements.</figcaption>
                 </figure>
                 <p class="note">Some of the examples in this document, especially in the Exceptions section, are screen-captured images of elements. Due to loss of resolution in these images, the actual pixel color may not match the original. As such, they are intended to be used for illustrative purposes, and should not be inspected on a pixel-by-pixel basis for sufficient contrast.</p>    
                 <p>Some designs have pages with a non-solid background image covering the whole (or part) of the page or make use of parallax scrolling effects which result in a near-infinite number of color combinations if a page is scrolled and/or changes are made to the viewport size.</p>
                 <p>If the contrast of background colors that change are close enough to need to be tested for each combination then they would likely not meet the user need of people with low vision in certain scroll combinations and would likely fail in certain combinations as well. In these cases it would be an easy solution to use a <a href="https://www.w3.org/WAI/WCAG22/Techniques/css/C40">double ring focus indicator</a> or some other mechanism to indicate focus such as a solid box with a border to guarantee there is sufficient contrast across variations of background images or background gradients.</p>
                 <h5>Inline links</h5>
-                <p>If an inline link is broken over multiple lines, some methods of focus indicator are treated differently by browsers. Using CSS, an <code>outline</code> wraps each part of a wrapped link separately. A <code>border</code> will wrap the whole link as one perimeter. Each part of the link will pass or fail as though they were separate links. If a 1px CSS border is used rather than outline, the thickness may need to be increased to compensate for the missing sides as it is not a complete perimeter for each part of the link.</p>
-                <figure id="focus-indicator-inline-link">
-                    <img src="img/focus-inline-link.png" alt="A paragraph of text containing a link broken over two lines. The red focus indicator has a gap on the right of one part of the link, and on the left of the other part of the link." />
-                    <figcaption> Passes? The wrapping affects the calculation since the element is not contiguous and each part is missing one side of the perimeter.</figcaption>
-                </figure>
-
+                <p>If an inline link is broken over multiple lines, some methods of creating a focus indicator create different results by browsers. CSS <code>outline</code> separately surrounds each part of a link that breaks across multiple lines. It is by far the most common CSS technique for focus indication, and produces a result that satisfies the minimum bounding box definition (each part is solidly bound). CSS <code>border</code> will split the perimeter across the parts of the link, which results in an unenclosed border for each line of the link. The definition of perimeter accommodates this non-contiguous border for links, by calculating what the area of the perimeter would be if the link appeared on a single line. Where the contrast requirements are met, each of these methods produces a sufficient focus indicator.</p>
                 <figure id="focus-indicator-inline-link-outline">
                     <img src="img/focus-inline-link-outline.png" alt="A paragraph of text containing a link broken over two lines. The red focus indicator is a complete rectangle around each part of the link." />
-                    <figcaption> Passes: the CSS outline property wraps each part of the link completely, so does not affect the calculation of indicator area.</figcaption>
+                    <figcaption> Passes: the CSS <code>outline</code> property wraps each part of the link completely, so meets the minimum bounding box requirements for indicator area.</figcaption>
                 </figure>
+
+                <figure id="focus-indicator-inline-link">
+                    <img src="img/focus-inline-link.png" alt="A paragraph of text containing a link broken over two lines. The red focus indicator has a gap on the right of one part of the link, and on the left of the other part of the link." />
+                    <figcaption> Passes. Although the CC <code>border</code> on a multi-line link is not contiguous, the focus indicator has the same area as it would if the link was located on a single line of text. The definition of perimeter allows this to meet the exception's area calculation.</figcaption>
+                </figure>
+
+
             </section>
 
             <section id="change-of-contrast">
