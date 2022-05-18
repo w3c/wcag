@@ -1,10 +1,11 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>Using HTML landmarks to identify regions of a page</title>
+    <title>Using semantic HTML elements to identify regions of a page</title>
     <link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
   </head>
   <body>
-    <h1>Using HTML landmarks to identify regions of a page</h1>
+    <h1>Using semantic HTML elements to identify regions of a page</h1>
     <section class="meta">
       <p class="id">ID: HTML100</p>
       <p class="technology">Technology: html</p>
@@ -17,17 +18,15 @@
     <section id="description">
       <h2>Description</h2>
       
-      <p>The purpose of this technique is to provide programmatic access to sections of a web page. Landmark roles (or "landmarks") programmatically identify sections of a page. Landmarks help assistive technology (AT) users orient themselves to a page and help them navigate easily to various sections of a page.</p>
+      <p>The purpose of this technique is to provide programmatic access to sections of a web page. Landmark roles (or "landmarks") programmatically identify sections of a page. Browsers don't expose landmarks directly to users, but they they are made available by assistive technology (AT) to users orient themselves to a page and help them navigate easily to various sections of a page. Landmarks also can help sighted keyboard-only users navigate to sections of a page using a <a href="https://www.tpgi.com/improving-access-to-landmark-navigation/">browser plugin</a>.</p>
       
-      <p>Landmarks also provide an easy way for users of assistive technology to skip over blocks of content that are repeated on multiple pages and notify them of programmatic structure of a page. For instance, if there is a common navigation menu found on every page, landmarks can be used to skip over it and navigate from section to section. This will save assistive technology users and keyboard users the trouble and time of tabbing through a large amount of content to find what they are really after, much like a traditional "skip links" mechanism. A blind user who may be familiar with a news site's menu, and is only interested in getting to the top story, could easily navigate to the "main" landmark, and bypass dozens of menu links. In another circumstance, a user who is blind may want to quickly find a navigation menu, and can do so by jumping to the navigation landmark.</p>
-      
-      <p>Landmarks also can help sighted keyboard-only users navigate to sections of a page using a <a href="https://www.tpgi.com/improving-access-to-landmark-navigation/">browser plugin</a></p>
+      <p>Landmarks provide an easy way for users of assistive technology to skip over blocks of content that are repeated on multiple pages and notify them of programmatic structure of a page. For instance, if there is a common navigation menu found on every page, landmarks can be used to skip over it and navigate from section to section. This will save assistive technology users and keyboard users the trouble and time of tabbing through a large amount of content to find what they are really after, much like a traditional "skip links" mechanism. A blind user who may be familiar with a news site's menu, and is only interested in getting to the top story, could easily navigate to the "main" landmark, and bypass dozens of menu links. In another circumstance, a user who is blind may want to quickly find a navigation menu, and can do so by jumping to the navigation landmark.</p>
 
-      <p>Landmarks are inserted into the page when certain semantic HTML elements are added to a web page. These elements are:</p>
+      <p>Landmark regions are implicitly created when certain semantic HTML elements are used. This is different from <a href="../aria/ARIA11">using ARIA to explicitly create landmarks</a>. Landmarks are created when certain semantic HTML elements are added to a web page. These elements are:</p>
 
       <ul>
         <li>&lt;header&gt;: When a <code class="el">header</code> is a direct child of the <code class="el">body</code> element, it creates a <code>banner</code> role, a region that typically contains the site's logo, name, and other persistent site-wide content at the top of a page.</li>
-        <li>&lt;nav&gt;: A collection of navigation links to other pages or different parts of the same page.</li>
+        <li>&lt;nav&gt;: A region that contains navigation links to other pages or different parts of the same page.</li>
         <li>&lt;main&gt;: A region that contains a page's main content.</li>
         <li>&lt;section&gt;: A region that contains a generic section of a document or application. A <code class="el">section</code> element isn't exposed as a landmark region unless it has an accessible name.</li>
         <li>&lt;form&gt;: A region of the document that represents a collection of form-associated elements, some of which can represent editable values that can be submitted to a server for processing. A <code class="el">form</code> element isn't exposed as a landmark region unless it has an accessible name.</li>
@@ -35,11 +34,11 @@
         <li>&lt;footer&gt;: A region that, when its nearest ancestor is the <code class="el">body</code> element, contains information about the page such as copyrights and links to privacy statements.</li>
       </ul>
 
-    <p>There are cases when a particular landmark role can be used more than once on a page, for example, primary and secondary blocks of navigation. In these cases, identical roles should be labeled using a valid technique for labelling regions.</p>
+      <p>Modern web browsers don't need to have the HTML element's related ARIA role added to them to be exposed as a landmark region. For example, <code class="el">&lt;main role="main"&gt;</code> is unnecessary, and should just be <code class="el">&lt;main&gt;</code>.</p>
 
-    <p>Landmarks are interpretable by WAI-ARIA-aware assistive technologies and are not exposed by browsers directly to users.</p>
+      <p>There are cases when a particular landmark role can be used more than once on a page, for example, primary and secondary blocks of navigation. In these cases, identical roles should be labeled using a valid technique for labelling regions.</p>
 
-    <p>It is a best practice to include all content on the page in landmarks, so that screen reader users who rely on landmarks to navigate from section to section do not lose track of content.</p>
+      <p>It is a best practice to include all content on the page in landmarks, so that screen reader users who rely on landmarks to navigate from section to section do not lose track of content.</p>
 
   </section>
   
@@ -65,17 +64,17 @@
         <pre xml:space="preserve">&lt;nav aria-labelledby="site-nav-heading"&gt;
   &lt;h2 id="site-nav-heading"&gt;Site&lt;/h2&gt;
     &lt;ul&gt;
-      &lt;li&gt;nav link 1&lt;/li&gt;
-      &lt;li&gt;nav link 2&lt;/li&gt;
-      &lt;li&gt;nav link 3&lt;/li&gt;
+      &lt;li&gt;&lt;a href="..."&gt;nav link 1&lt;/a&gt;&lt;/li&gt;  
+      &lt;li&gt;&lt;a href="..."&gt;nav link 2&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="..."&gt;nav link 3&lt;/a&gt;&lt;/li&gt;
    &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;nav aria-labelledby="related-nav-heading"&gt;
   &lt;h2 id="related-nav-heading"&gt;Related Topics&lt;/h2&gt;
     &lt;ul&gt;
-      &lt;li&gt;topic link 1&lt;/li&gt;
-      &lt;li&gt;topic link 2&lt;/li&gt;
-      &lt;li&gt;topic link 3&lt;/li&gt;
+      &lt;li&gt;&lt;a href="..."&gt;topic link 1&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="..."&gt;topic link 2&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="..."&gt;topic link 3&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
 &lt;/nav&gt;</pre>
   </section>
@@ -86,16 +85,16 @@
     <p>The following example shows a best practice of how landmarks might be added to an HTML document in situations where there are two or more of the same type of landmark on the same page, and there is no existing text on the page that can be referenced as the label:</p>
         <pre xml:space="preserve">&lt;nav aria-label="Site"&gt;
   &lt;ul&gt;
-    &lt;li&gt;nav link 1&lt;/li&gt;
-    &lt;li&gt;nav link 2&lt;/li&gt;
-    &lt;li&gt;nav link 3&lt;/li&gt;
+    &lt;li&gt;&lt; href="..."&gt;nav link 1&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt; href="..."&gt;nav link 2&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt; href="..."&gt;nav link 3&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;nav aria-label="Tags"&gt;
   &lt;ul&gt;
-    &lt;li&gt;tag link 1&lt;/li&gt;
-    &lt;li&gt;tag link 2&lt;/li&gt;
-    &lt;li&gt;tag link 3&lt;/li&gt;
+    &lt;li&gt;&lt;a href="..."&gt;tag link 1&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="..."&gt;tag link 2&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="..."&gt;tag link 3&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;</pre>
   </section>
@@ -117,14 +116,13 @@
     <ol>
       <li>Examine each HTML element that creates a <a href="https://www.w3.org/TR/wai-aria/#landmark_roles">landmark role</a>.</li>
       <li>Examine whether the correct element has been used to mark up content. For example: a <code class="el">nav</code> element has been used to mark up a section with navigation links, or the <code class="el">main</code> element is used to contain the page's main content.</li>
-      <li>If a landmark region needs to have an accessible name to be exposed as a landmark, check to see that there is an accessible name.</li>      
-      <li>Where multiple types of the same landmark are used, for example: multiple <code class="el">nav</code> elements, examine whether an accurate descriptive label has been given to each one.</li>
+      <li>If a landmark region needs to have an accessible name to be exposed as a landmark, check to see that there is an accessible name.</li>
     </ol>
   </section>
   <section class="results" id="expected-test-results">
     <h3>Expected Results</h3>
     <ul>
-      <li>#1, #2, #3, and #4 are true.</li>
+      <li>#1, #2, and #3 are true.</li>
     </ul>
   </section>
 </section>
@@ -142,22 +140,20 @@
   <h2>Resources</h2>
     <ul>
       <li>
-        <a href="https://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices</a>
+        <a href="https://www.w3.org/TR/using-aria/">Using ARIA</a>
       </li>
       <li>
-        <a href="https://www.w3.org/TR/wai-aria/#usage_intro">Accessible Rich Internet Applications (WAI-ARIA), Using WAI-ARIA Roles</a></li>
-      <li>
-        <a href="https://www.w3.org/TR/wai-aria/#states_and_properties">Accessible Rich Internet Applications (WAI-ARIA), Supported States and Properties</a>
+        <a href="https://www.w3.org/TR/html-aria/">ARIA in HTML</a>
       </li>
       <li>
         <a href="https://www.w3.org/TR/accname/">Accessible Name and Description Computation</a>
       </li>
-        <li>
-          <a href="https://www.tpgi.com/improving-access-to-landmark-navigation/">Improving access to landmark navigation</a>
-        </li>
-        <li>
-          <a href="https://matatk.agrip.org.uk/landmarks/">Landmarks browser extension</a>
-        </li>
+      <li>
+        <a href="https://www.tpgi.com/improving-access-to-landmark-navigation/">Improving access to landmark navigation</a>
+      </li>
+      <li>
+        <a href="https://matatk.agrip.org.uk/landmarks/">Landmarks browser extension</a>
+      </li>
      </ul>
     </section>
   </body>
