@@ -135,7 +135,7 @@
 	<xsl:param name="toc.level" select="5"/>
 	<xsl:key name="ids" match="*[@id]" use="@id"/>
 	<xsl:key name="specrefs" match="specref" use="@ref"/>
-	<xsl:output method="xml" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
+	<xsl:output method="xml" encoding="UTF-8" doctype-public="about:legacy-compat" indent="no" omit-xml-declaration="yes"/>
 	<!-- not handled:
     attribute:   unhandled IDL stuff
     case:        unhandled IDL stuff
@@ -1063,16 +1063,16 @@
 						<xsl:apply-templates select="pubdate/year"/>
 						<xsl:text> </xsl:text>
 						<a href="http://www.w3.org/">
-							<acronym title="World Wide Web Consortium">W3C</acronym>
+							<abbr title="World Wide Web Consortium">W3C</abbr>
 						</a>
 						<sup>®</sup>
 						<xsl:text> (</xsl:text>
 						<a href="http://www.csail.mit.edu/">
-							<acronym title="Massachusetts Institute of Technology">MIT</acronym>
+							<abbr title="Massachusetts Institute of Technology">MIT</abbr>
 						</a>
 						<xsl:text>, </xsl:text>
 						<a href="http://www.ercim.eu/">
-							<acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym>
+							<abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr>
 						</a>
 						<xsl:text>, </xsl:text>
 						<a href="http://www.keio.ac.jp/">Keio</a>
@@ -1640,7 +1640,7 @@
 						</dl>
 					</div>
 				</xsl:if>
-				<script src="//www.w3.org/scripts/TR/2016/fixup.js" type="text/javascript"></script>
+				<script src="//www.w3.org/scripts/TR/2016/fixup.js" type="text/javascript"><xsl:text> </xsl:text></script>
 			</body>
 		</html>
 	</xsl:template>

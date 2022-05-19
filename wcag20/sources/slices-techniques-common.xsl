@@ -34,7 +34,7 @@
     <xsl:variable name="prev" select="(preceding::div1)[last()]"/>
     <xsl:variable name="next" select="(following::technique | following::div2)[1]"/>
       	<xsl:variable name="filename"><xsl:apply-templates select="." mode="slice-techniques-filename"/></xsl:variable>
-      	<xsl:result-document method="xml" href="{$output.dir.prefix}{$output.dir}/{$filename}" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="no">
+      	<xsl:result-document method="xml" href="{$output.dir.prefix}{$output.dir}/{$filename}" indent="no">
         <html>
         	<xsl:if test="/spec/header/langusage/language">
         		<xsl:attribute name="lang"><xsl:value-of select="/spec/header/langusage/language/@id"/></xsl:attribute>
@@ -81,7 +81,7 @@
   	<xsl:variable name="filename">
   		<xsl:apply-templates select="." mode="slice-techniques-filename"/>
   	</xsl:variable>
-  	<xsl:result-document method="xml" href="{$output.dir.prefix}{$output.dir}/{$filename}" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="no">
+  	<xsl:result-document method="xml" href="{$output.dir.prefix}{$output.dir}/{$filename}" encoding="UTF-8" indent="no">
         <html>
         	<xsl:if test="/spec/header/langusage/language">
         		<xsl:attribute name="lang"><xsl:value-of select="/spec/header/langusage/language/@id"/></xsl:attribute>
@@ -134,7 +134,7 @@
     	<xsl:variable name="filename">
     		<xsl:apply-templates select="." mode="slice-techniques-filename"/>
     	</xsl:variable>
-    	<xsl:result-document method="xml" href="{$output.dir.prefix}{$output.dir}/{$filename}" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="no">
+    	<xsl:result-document method="xml" href="{$output.dir.prefix}{$output.dir}/{$filename}" encoding="UTF-8" indent="no">
     	    <html>
     	    	<xsl:if test="/spec/header/langusage/language">
     	    		<xsl:attribute name="lang"><xsl:value-of select="/spec/header/langusage/language/@id"/></xsl:attribute>
@@ -191,7 +191,7 @@
     	<xsl:variable name="filename">
     		<xsl:apply-templates select="." mode="slice-techniques-filename"/>
     	</xsl:variable>
-    	<xsl:result-document method="xml" href="{$output.dir.prefix}{$output.dir}/{$filename}" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="no">
+    	<xsl:result-document method="xml" href="{$output.dir.prefix}{$output.dir}/{$filename}" encoding="UTF-8" indent="no">
     	    <html>
     	    	<xsl:if test="/spec/header/langusage/language">
     	    		<xsl:attribute name="lang"><xsl:value-of select="/spec/header/langusage/language/@id"/></xsl:attribute>
@@ -241,7 +241,7 @@
       	<xsl:variable name="filename">
       		<xsl:apply-templates select="." mode="slice-techniques-filename"/>
       	</xsl:variable>
-      	<xsl:result-document method="xml" href="{$output.dir.prefix}{$output.dir}/{$filename}" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="no">
+      	<xsl:result-document method="xml" href="{$output.dir.prefix}{$output.dir}/{$filename}" encoding="UTF-8" indent="no">
       	    <html>
       	    	<xsl:if test="/spec/header/langusage/language">
       	    		<xsl:attribute name="lang"><xsl:value-of select="/spec/header/langusage/language/@id"/></xsl:attribute>
@@ -293,7 +293,7 @@
       	<xsl:variable name="filename">
       		<xsl:apply-templates select="." mode="slice-techniques-filename"/>
       	</xsl:variable>
-      	<xsl:result-document method="xml" href="{$output.dir.prefix}{$output.dir}/{$filename}" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="no">
+      	<xsl:result-document method="xml" href="{$output.dir.prefix}{$output.dir}/{$filename}" encoding="UTF-8" indent="no">
       	    <html>
       	    	<xsl:if test="/spec/header/langusage/language">
       	    		<xsl:attribute name="lang"><xsl:value-of select="/spec/header/langusage/language/@id"/></xsl:attribute>
@@ -337,7 +337,7 @@
   	<xsl:variable name="filename">
   		<xsl:apply-templates select="." mode="slice-techniques-filename"/>
   	</xsl:variable>
-  	<xsl:result-document method="xml" href="{$output.dir.prefix}{$output.dir}/{$filename}" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="no">
+  	<xsl:result-document method="xml" href="{$output.dir.prefix}{$output.dir}/{$filename}" encoding="UTF-8" indent="no">
         <html>
         	<xsl:if test="/spec/header/langusage/language">
         		<xsl:attribute name="lang"><xsl:value-of select="/spec/header/langusage/language/@id"/></xsl:attribute>
@@ -376,7 +376,7 @@
               <xsl:with-param name="next" select="$next"/>
             </xsl:call-template>
             <!--xsl:call-template name="footer"></xsl:call-template-->
-          	<script src="//www.w3.org/scripts/TR/2016/fixup.js" type="text/javascript"></script> 
+          	<script src="//www.w3.org/scripts/TR/2016/fixup.js" type="text/javascript"><xsl:text> </xsl:text></script> 
           </body>
         </html>
   		</xsl:result-document>
@@ -703,7 +703,7 @@
 <div class="footer">
 	<p class="copyright">This Web page is part of <a href="Overview.html">Techniques and Failures for Web Content Accessibility Guidelines 2.0</a><xsl:call-template name="footer-latest-version-ref"/>. The entire document is also available as a <a href="complete.html">single HTML file</a>. See the <a href="http://www.w3.org/WAI/intro/wcag20">The WCAG 2.0 Documents</a> for an explanation of how this document fits in with other Web Content Accessibility Guidelines (WCAG) 2.0 documents. To send public comments, please follow the <a href="http://www.w3.org/WAI/WCAG20/comments/">Instructions for Commenting on WCAG 2.0 Documents</a>.
  </p>
-	<p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © <xsl:apply-templates select="//pubdate/year"/><xsl:text> </xsl:text><a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div>
+	<p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © <xsl:apply-templates select="//pubdate/year"/><xsl:text> </xsl:text><a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div>
 </xsl:template>
   
 	<xsl:template name="footer-latest-version-ref">
