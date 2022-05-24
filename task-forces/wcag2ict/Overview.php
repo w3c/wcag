@@ -8,7 +8,7 @@
 <body>
 	<?php include "../../_header.phi"; ?>
 	<h1>WCAG2ICT Task Force</h1>
-	<p>The objective of theWCAG2ICT Task Force is to develop documentation describing how WCAG 2.1 and 2.2 and its principles, guidelines, and success criteria could apply to non-Web Information and Communications Technologies (ICT). </p>
+	<p>The objective of the WCAG2ICT Task Force is to develop documentation describing how WCAG 2.1 and 2.2 and its principles, guidelines, and success criteria could apply to non-Web Information and Communications Technologies (ICT). </p>
 	<section id="communication">
 		<h2>Meetings and Communication</h2>
 		<p>The WCAG2ICT TF conducts its work using a variety of synchronous and asynchronous tools. Most work is done via email and issues as shown below, supplemented by occasional teleconferences.</p>
@@ -38,7 +38,7 @@
 		</section>
 		<section id="email">
 			<h3>Mailing Lists</h3>
-			<p>The WCAG2ICT TF uses the public-wcag2ict-tf@w3.org mailing list (<a href="http://lists.w3.org/Archives/Public/public-wcag2ict-tf/">mailing list archives</a>) for email discussion; members of the public can post to this list to send input to the task force.</p>
+			<p>The WCAG2ICT TF uses the public-wcag2ict-tf@w3.org mailing list (<a href="http://lists.w3.org/Archives/Public/public-wcag2ict-tf/">mailing list archives</a>) for email discussion. Members of the public can post to this list to send input to the task force.</p>
 		</section>
 	</section>
 	
@@ -54,7 +54,7 @@
 	
 	<section id="contribute">
 		<h2>How to Comment, Contribute, and Participate</h2>
-		<p>To join the WCAG2ICT TF, individuals must be participants of the Accessibility Guidelines Working Group. Participants are expected to <a href="work-statement#participation">actively contribute</a> to the work of the Task Force. If you are interested in participating in the Silver TF, please send e-mail to @@ and include a little bit about what you’re interested in and how you think that you may be able to contribute to the Task Force. Then follow the <a href="../../participation">participation procedures of the Accessibility Guidelines Working Group</a>, and once you have joined ask <a href="mailto:cooper@w3.org">Michael Cooper</a> to add you to the task force.</p>
+		<p>To join the WCAG2ICT TF, individuals must be participants of the Accessibility Guidelines Working Group. Participants are expected to <a href="work-statement#participation">actively contribute</a> to the work of the Task Force. If you are interested in participating in the Silver TF, please send e-mail to @@ and include a little bit about what you’re interested in and how you think that you may be able to contribute to the Task Force. Then follow the <a href="../../participation">participation procedures of the Accessibility Guidelines Working Group</a>, and once you have joined, ask <a href="mailto:cooper@w3.org">Michael Cooper</a> to add you to the task force.</p>
 		<p><a href="https://www.w3.org/groups/tf/wcag2ict/participants">Current participants in the WCAG2ICT TF</a>.</p>
 		
 	</section> 
@@ -67,7 +67,7 @@
 			<ul>
 				<li><strong>Facilitators:</strong> TBD</li>
 				<li><strong>Technical Staff Contact:</strong> <a href="https://www.w3.org/People/Brewer/">Judy Brewer</a></li>
-				<li><strong>Adminstrative Staff Contact:</strong> <a href="http://www.w3.org/People/cooper/">Michael Cooper</a></li>
+				<li><strong>Administrative Staff Contact:</strong> <a href="http://www.w3.org/People/cooper/">Michael Cooper</a></li>
 			</ul>
 			<p>Contact the task force leadership and working group chairs by email to <a href="mailto:group-ag-chairs@w3.org">group-ag-chairs@w3.org</a></p>
 		</section>
