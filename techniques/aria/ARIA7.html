@@ -51,27 +51,27 @@
          </section>
          <section id="description">
             <h2>Description</h2>
-            <p>With the <code class="att">aria-labelledby</code> attribute, authors can use a visible text element on the page as a label for a focusable
+            <p>With the <code class="prop">aria-labelledby</code> attribute, authors can use a visible text element on the page as a label for a focusable
                element (a form control or a link). For example, a "read more..." link could be associated
                with the text of the heading of the preceding section to make the purpose of the link
                unambiguous (see example 1).
             </p>
-            <p>When associating text to a focusable element with the help of <code class="att">aria-labelledby</code>, the target text element is given an ID which is referenced in the value of the <code class="att">aria-labelledby</code> attribute of the focusable element.
+            <p>When associating text to a focusable element with the help of <code class="prop">aria-labelledby</code>, the target text element is given an ID which is referenced in the value of the <code class="prop">aria-labelledby</code> attribute of the focusable element.
             </p>
             <p>It is also possible to use several text elements on the page as a label for a focusable
                element. Each of the text elements used must be given a unique ID which is referenced
-               as a string of IDs (IDREF) in the value of the <code class="att">aria-labelledby</code> attribute. The label text should then be concatenated following the order of IDs
-               in the value of the <code class="att">aria-labelledby</code> attribute.
+               as a string of IDs (IDREF) in the value of the <code class="prop">aria-labelledby</code> attribute. The label text should then be concatenated following the order of IDs
+               in the value of the <code class="prop">aria-labelledby</code> attribute.
             </p>
-            <p>When applied on links, <code class="att">aria-labelledby</code> can be used to identify the purpose of a link that may be readily apparent for sighted
+            <p>When applied on links, <code class="prop">aria-labelledby</code> can be used to identify the purpose of a link that may be readily apparent for sighted
                users, but less obvious for screen reader users.
             </p>
-            <p>The specified behavior of <code class="att">aria-labelledby</code> is that the associated label text is announced instead of the link text (not in addition
+            <p>The specified behavior of <code class="prop">aria-labelledby</code> is that the associated label text is announced instead of the link text (not in addition
                to the link text). When the link text itself should be included in the label text,
                the ID of the link should be referenced as well in the string of IDs forming the value
-               of the <code class="att">aria-labelledby</code> attribute.
+               of the <code class="prop">aria-labelledby</code> attribute.
             </p>
-            <p>For more information on the naming hierarchy please consult the <a href="https://www.w3.org/TR/accname/">Accessible Name and Description Computation</a> and the <a href="https://www.w3.org/TR/html-aapi/#a-element">accessible name and description calculation for links</a> in the HTML to Platform Accessibility APIs Implementation Guide.
+            <p>For more information on the naming hierarchy please consult the <a href="https://www.w3.org/TR/accname/">Accessible Name and Description Computation</a>.
             </p>
          </section>
          <section id="examples">
@@ -79,22 +79,19 @@
             <section class="example" id="example-1-providing-additional-information-for-links">
                <h3>Example 1: Providing additional information for links</h3>
                <p>This example will mean that the link text as shown on screen is then used as the start
-                  of the accessible name for the link. Popular screen readers like JAWS and NVDA will
-                  announce this as:
+                  of the accessible name for the link. Screen readers will announce this as:
                   "Read more ...Storms hit east coast" and will display that same text in the links
                   list which is very useful for screen reader users who may browse by links.
                </p><pre xml:space="preserve">&lt;h2 id="headline"&gt;Storms hit east coast&lt;/h2&gt;
 
-&lt;p&gt;Torrential rain and gale force winds have struck the east coast, causing flooding in many coastal towns.
+&lt;p&gt;Torrential rain and gale force winds have struck the east coast, 
+   causing flooding in many coastal towns.
 &lt;a id="p123" href="news.html" aria-labelledby="p123 headline"&gt;Read more...&lt;/a&gt;&lt;/p&gt;</pre></section>
             <section class="example" id="example-2-concatenating-link-text-from-multiple-sources">
                <h3>Example 2: Concatenating link text from multiple sources</h3>
-               <p>There may be cases where an author will placed a tag around a section of code that
+               <p>There may be cases where an author will place a tag around a section of code that
                   will be referenced.
-               </p>
-               <p>Note: The use of tabindex="-1" on the <code class="el">span</code> element is not meant to support focusing by scripts - here, it merely serves to ensure
-                  that some browsers (IE9, IE10) will include the <code class="el">span</code> element in the accessibility tree, thus making it available for reference by <code class="att">aria-labelledby</code>. For more details see <a href="https://msdn.microsoft.com/en-us/library/ie/gg701963%28v=vs.85%29.aspx#Accessible_HTML_Elements">Accessible HTML Elements</a>.
-               </p><pre xml:space="preserve">&lt;p&gt;Download &lt;span id="report-title" tabindex="-1"&gt;2012 Sales Report&lt;/span&gt;:
+               </p><pre xml:space="preserve">&lt;p&gt;Download &lt;span id="report-title"&gt;2012 Sales Report&lt;/span&gt;:
 &lt;a aria-labelledby="report-title pdf" href="#" id="pdf"&gt;PDF&lt;/a&gt; |
 &lt;a aria-labelledby="report-title doc" href="#" id="doc"&gt;Word&lt;/a&gt; |
 &lt;a aria-labelledby="report-title ppt" href="#" id="ppt"&gt;Powerpoint&lt;/a&gt;&lt;/p&gt;</pre></section>
@@ -116,16 +113,16 @@
             <section class="procedure" id="procedure">
                <h3>Procedure</h3>
                
-               <p>For each link that has an <code class="att">aria-labelledby</code> attribute:
+               <p>For each link that has an <code class="prop">aria-labelledby</code> attribute:
                </p>
                
                <ol>
                   
-                  <li>Check that each ID in the value of the <code class="att">aria-labelledby</code> attribute matches an ID of a text element used as part of the link purpose.
+                  <li>Check that each ID in the value of the <code class="prop">aria-labelledby</code> attribute matches an ID of a text element used as part of the link purpose.
                   </li>
                   
                   <li>Check that the combined value of the text referenced by the one or more ID's in the
-                     <code class="att">aria-labelledby</code> attribute properly describes the purpose of the link element.
+                     <code class="prop">aria-labelledby</code> attribute properly describes the purpose of the link element.
                   </li>
                   
                </ol>
