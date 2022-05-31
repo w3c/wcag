@@ -1,59 +1,85 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Grouping related links using the nav element</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Grouping related links using the nav element</h1><section class="meta"><p class="id">ID: H97</p><p class="technology">Technology: html</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
-      <p>HTML5 documents that contain related links.</p>
-   </section><section id="description"><h2>Description</h2>
-      <p>The objective of this technique is to group navigation links using the HTML5 <code class="el">nav</code> element. The <code class="el">nav</code> element is one of several sectioning elements in HTML5. Use of this markup can make groups of links easier to locate and skip past by users of assistive technology such as screen readers. Using semantic structures allow custom style sheets to be used to change the presentation of groups of links while preserving their relationship. When the <code class="el">nav</code> element is employed more than once on a page, distinguish the navigation groups by using an <code class="att">aria-label</code> or <code class="att">aria-labelledby</code> attribute.</p>
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <title>Grouping related links using the nav element</title>
+      <link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
+   </head>
+   <body>
+      <h1>Grouping related links using the <code class="el">nav</code> element</h1>
+      <section class="meta">
+         <p class="id">ID: H97</p>
+         <p class="technology">Technology: html</p>
+         <p class="type">Type: Technique</p>
+      </section>
+      <section id="applicability">
+         <h2>When to Use</h2>
+      <p>HTML documents that contain related links.</p>
+   </section>
+   <section id="description">
+      <h2>Description</h2>
+      <p>The objective of this technique is to group navigation links using the HTML <code class="el">nav</code> element. The <code class="el">nav</code> element is one of several sectioning elements in HTML. Use of this markup can make groups of links easier to locate and skip past by users of assistive technology such as screen readers. Using semantic structures allow custom style sheets to be used to change the presentation of groups of links while preserving their relationship. When the <code class="el">nav</code> element is employed more than once on a page, distinguish the navigation groups by using an <code class="prop">aria-labelledby</code> or <code class="prop">aria-label</code> attribute.</p>
       <p>Not all groups of links need to use the <code class="el">nav</code> element for markup. For instance, links may be grouped in other structure such as lists or may use ARIA markup if they do not represent a discrete section of the page.</p>
-   </section><section id="examples"><h2>Examples</h2>
+   </section>
+   <section id="examples">
+      <h2>Examples</h2>
       <section class="example">
          <h3>Navigation links enclosed in a nav element</h3>
          
             <p>This example uses a <code class="el">nav</code> element to group navigation links in an accessibility curriculum.</p>
          
-         <pre xml:space="preserve">
-				 &lt;nav&gt;
-				    &lt;a href="../webaccessibility.html"&gt;Web Accessibility&lt;/a&gt;
-				    &lt;a href="../docaccessibility.html"&gt;Document Accessibility&lt;/a&gt;
-					&lt;a href="../mobileaccessibility.html"&gt;Mobile Accessibility&lt;/a&gt;
-				 &lt;/nav&gt;
-            </pre>
+<pre xml:space="preserve">
+&lt;nav&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href="/web-accessibility.html"&gt;Web Accessibility&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/doc-accessibility.html"&gt;Document Accessibility&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/mobile-accessibility.html"&gt;Mobile Accessibility&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;    
+&lt;/nav&gt;</pre>
       </section>
       <section class="example">
-         <h3>Multiple nav elements</h3>
+        <h3>Multiple <code class="el">nav</code> elements and <code class="prop">aria-labelledby</code></h3>
+        <p>The following example shows a best practice of how landmarks might be added to an HTML document in situations where there are two or more of the same type of landmark on the same page. For instance, if a <code class="el">nav</code> element is used multiple times on a page, each instance may have a unique label specified using <code class="prop">aria-labelledby</code>:</p>
          
-            <p>This example uses an nav element with an aria-label attribute to identify the navigation group when there is more than one nav element in a document.</p>
-         
-         <pre xml:space="preserve">
-			&lt;nav aria-label="Site menu"&gt;
-			  &lt;ul&gt;
-				  &lt;li&gt;...a list of links site navigation link here ...&lt;/li&gt;
-			  &lt;/ul&gt;
-			&lt;/nav&gt;
-			...
-			&lt;article&gt;
-			  &lt;nav aria-label="Related links"&gt;
-				...a list of related links here ...
-			  &lt;/nav&gt;
-			&lt;/article&gt;          </pre>
+<pre xml:space="preserve">&lt;nav aria-labelledby="site-nav-heading"&gt;
+  &lt;h2 id="site-nav-heading"&gt;Site&lt;/h2&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href="..."&gt;nav link 1&lt;/a&gt;&lt;/li&gt;  
+      &lt;li&gt;&lt;a href="..."&gt;nav link 2&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="..."&gt;nav link 3&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;nav aria-labelledby="related-nav-heading"&gt;
+  &lt;h2 id="related-nav-heading"&gt;Related Topics&lt;/h2&gt;
+    &lt;ul&gt;
+    &lt;li&gt;&lt;a href="..."&gt;topic link 1&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="..."&gt;topic link 2&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="..."&gt;topic link 3&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;</pre>
       </section>
       <section class="example">
-         <h3>Generic multiple nav elements</h3>
+         <h3>Multiple <code class="el">nav</code> elements and <code class="prop">aria-label</code></h3>
          
-            <p>The following example shows a best practice of situation where there are more than two navigation menus on the same page, and there is no existing text on the page that can be referenced as the label.</p>
-         
-         <pre xml:space="preserve">
-			&lt;nav aria-label="primary"&gt;
-				&lt;a href="home.html"&gt;Home&lt;/a&gt;
-				&lt;a href="about-us.html"&gt;About Us&lt;/a&gt;
-				&lt;a href="products.html"&gt;Products&lt;/a&gt;
-			&lt;/nav&gt;
+         <p>The following example shows a best practice of how landmarks might be added to an HTML document in situations where there are two or more of the same type of landmark on the same page, and there is no existing text on the page that can be referenced as the label:</p>
 
-			&lt;nav aria-label="secondary"&gt;
-				&lt;a href="adverts.html"&gt;Our Advertisers&lt;/a&gt;
-				&lt;a href="related.html"&gt;Related Links&lt;/a&gt;
-				&lt;a href="subsidiaries.html"&gt;Subsidiaries&lt;/a&gt;
-			&lt;/nav&gt;            </pre>
-      </section>
-   </section><section id="tests"><h2>Tests</h2>
+<pre xml:space="preserve">&lt;nav aria-label="Site"&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt; href="..."&gt;nav link 1&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt; href="..."&gt;nav link 2&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt; href="..."&gt;nav link 3&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;nav aria-label="Tags"&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href="..."&gt;tag link 1&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="..."&gt;tag link 2&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="..."&gt;tag link 3&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;</pre>
+</section>
+   </section>
+   <section id="tests">
+      <h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
          <ol>
             <li>Check that links that are visually grouped and represent a section of the page are enclosed in a <code class="el">nav</code> element.</li>
@@ -64,17 +90,23 @@
             <li>Check #1 is true.</li>
          </ul>
       </section>
-   </section><section id="related"><h2>Related Techniques</h2><ul>
-      <li><a href="../aria/ARIA11">ARIA11</a></li>
-      <li><a href="../general/G141">G141</a></li>
-      <li><a href="../general/G140">G140</a></li>
-      <li><a href="../html/H42">H42</a></li>
-   </ul></section><section id="resources"><h2>Resources</h2>
-      
-         <ul>
-            <li>
-                  <a href="https://html.spec.whatwg.org/multipage/sections.html#the-nav-element">HTML5 nav element</a>
-               </li>
-         </ul>
-      
-   </section></body></html>
+   </section>
+   <section id="related">
+      <h2>Related Techniques</h2>
+      <ul>
+         <li><a href="../aria/ARIA11">ARIA11</a></li>
+         <li><a href="../general/G141">G141</a></li>
+         <li><a href="../general/G140">G140</a></li>
+         <li><a href="../html/H42">H42</a></li>
+      </ul>
+   </section>
+   <section id="resources">
+      <h2>Resources</h2>
+      <ul>
+         <li>
+            <a href="https://html.spec.whatwg.org/multipage/sections.html#the-nav-element">HTML - <code class="el">nav</code> element</a>
+         </li>
+      </ul>
+   </section>
+</body>
+</html>
