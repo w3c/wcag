@@ -26,7 +26,7 @@
 	<xsl:template match="html:html">
 		<guidelines lang="{@lang}">
 			<understanding>
-				<name>Introduction to Understanding WCAG 2.1</name>
+				<name>Introduction to Understanding WCAG <xsl:value-of select="$guidelines.version.decimal"/></name>
 				<file href="intro"/>
 			</understanding>
 			<understanding>
@@ -43,7 +43,7 @@
 				<file href="conformance"/>
 			</understanding>
 			<understanding>
-				<name>How to Refer to WCAG 2.1 from Other Documents</name>
+				<name>How to Refer to WCAG <xsl:value-of select="$guidelines.version.decimal"/> from Other Documents</name>
 				<file href="refer-to-wcag"/>
 			</understanding>
 			<understanding>
