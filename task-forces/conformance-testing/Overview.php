@@ -126,7 +126,7 @@
 		</section>
 		<section id="contribute">
 			<h2>How to Comment, Contribute, and Participate</h2>
-			<p>To join the ACT TF, individuals must be participants of the AG WG. Participants are expected to <a href="work-statement#participation">actively contribute</a> to the work of the Task Force. If you are interested in participating in the ACT TF, please send e-mail to: <a href="mailto:shadi@w3.org?subject=ACT%20TF%20Enquiry">Shadi Abou-Zahra</a> and include a little bit about what you're interested in and how you think that you may be able to contribute to the Task Force. Then follow the <a href="../../participation">AG Working Group participation</a> procedures to join the Working Group, and once you have joined ask <a href="mailto:shadi@w3.org">Shadi Abou-Zahra</a> to add you to the task force.</p>
+			<p>To join the ACT TF, individuals must be participants of the AG WG. Participants are expected to <a href="work-statement#participation">actively contribute</a> to the work of the Task Force. If you are interested in participating in the ACT TF, please send e-mail to: <a href="mailto:dmontalvo@w3.org?subject=ACT%20TF%20Enquiry">Daniel Montalvo</a> and include a little bit about what you're interested in and how you think that you may be able to contribute to the Task Force. Then follow the <a href="../../participation">AG Working Group participation</a> procedures to join the Working Group, and once you have joined ask <a href="mailto:dmontalvo@w3.org">Daniel Montalvo</a> to add you to the task force.</p>
 			<p>To contribute without joining the task force, see the <a href="../../contribute">AG Working Group contribute page</a> for general instructions. To contribute to documents under development, see <a href="https://github.com/w3c/wcag-act/">GitHub repository</a> directly.</p>
 			<p><a href="https://www.w3.org/2000/09/dbwg/details?group=93339&amp;public=1">Current participants in the ACT TF</a>.</p>
 		</section>
@@ -138,10 +138,10 @@
 				<li><strong>Task Force co-facilitators:</strong>
                 	<ul>
                 		<li>Wilco Fiers, Deque Systems</li>
-                        <li>Mary Jo Mueller, IBM Corporation</li>
+                        <li>Kathy Eng, Access Board</li>
                     </ul>
                 </li>
-				<li><strong>Staff Contact: </strong><a href="http://www.w3.org/People/shadi/">Shadi Abou-Zahra</a></li>
+				<li><strong>Staff Contact: </strong><a href="http://www.w3.org/People/#dmontalvo">Daniel Montalvo</a></li>
 			</ul>
 			<h3 id="work-statement">Work Statement</h3>
 			<p>The <a href="work-statement">Accessibility Conformance Testing (ACT) Task Force Work Statement</a> defines the initial objective, scope, approach, and participation of the Task Force.</p>
