@@ -15,7 +15,7 @@
 		<section id="objective">
 			<h2>Objective</h2>
 			<p>The objective of the WCAG2ICT Task Force is to develop documentation describing how WCAG 2.x and its principles, guidelines, and success criteria could apply to non-Web Information and Communications Technologies (ICT). </p>
-			<p>This Task Force was formed to update the existing document: “Guidance on Applying WCAG 2.0 to Non-Web Information and Communications Technologies (WCAG2ICT)” working group Note. Updates are needed to include new guidelines and success criteria added in the WCAG 2.1 Recommendation as well as new requirements added in WCAG 2.2. WCAG2ICT was developed to describe how to apply WCAG 2.0 and its principles, guidelines, and success criteria to non-web ICT (Information and Communications Technology) that are not web content. WCAG2ICT also plans to add new content that identifies problematic WCAG provisions when applied to non-Web ICT.</p>
+			<p>This Task Force was formed to update the 2013 “<a href="https://www.w3.org/TR/wcag2ict/">Guidance on Applying WCAG 2.0 to Non-Web Information and Communications Technologies (WCAG2ICT)</a>” working group Note published on 5 September 2013. Updates are needed to include new guidelines and success criteria added in the WCAG 2.1 Recommendation as well as new requirements added in WCAG 2.2. WCAG2ICT was developed to describe how to apply WCAG 2.0 and its principles, guidelines, and success criteria to non-web ICT (Information and Communications Technology) that are not web content. WCAG2ICT also plans to add new content that identifies problematic WCAG provisions when applied to non-Web ICT.</p>
 		</section>
 		<section id="scope">
 			<h2>Scope of Work</h2>
