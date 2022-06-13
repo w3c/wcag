@@ -10,7 +10,7 @@
 		<p>The WCAG2ICT Task Force is a task force of the <a href="https://www.w3.org/WAI/GL/">Accessibility Guidelines Working Group (AG WG)</a>. It assists this Working Group with the work identified below.</p>
 		<section id="status">
 			<h2>Status</h2>
-			<p>This task force is being reopened to update WCAG2ICT for WCAG 2.x. The TF will pursue continuation of the work in the upcoming AGWG Charter. This is a draft work statement.</p>
+			<p>This task force is being reopened to update WCAG2ICT for WCAG 2.x. The TF will pursue continuation of the work in the upcoming AG WG Charter. This is a draft work statement.</p>
 		</section>
 		<section id="objective">
 			<h2>Objective</h2>
@@ -22,7 +22,7 @@
 			<p>The work of the task force includes: </p>
 		</section>
 		<ul>
-			<li>Determining how to apply each of the new WCAG 2.1 and WCAG 2.2 (hereafter called “WCAG 2.x”) guidelines and A and AA success criteria to non-Web ICT; (this includes provision of additional details for application to closed product software and where applying individual criteria might be difficult and why; and</li>
+			<li>Determining how to apply each of the new WCAG 2.1 and WCAG 2.2 (hereafter called “WCAG 2.x”) guidelines and A and AA success criteria to non-Web ICT; this includes provision of additional details for application to closed product software and where applying individual criteria might be difficult and why; and</li>
 			<li>Producing an updated Working Group Note (a form of W3C Technical Report)—following the W3C process under the coordination, review, and approval of the AG WG—that describes: <ul>
 					<li>how each of the new WCAG 2.x A and AA success criteria could apply to non-Web ICT,</li>
 					<li>how each of the new WCAG 2.x guidelines could apply to non-Web ICT,</li>
@@ -37,12 +37,12 @@
 			<li>WCAG 2.x Level AAA success criteria. WCAG2ICT is scoped to the criteria that regulations and other standards (like the EN 301 549 and the U.S. Revised 508 Standards) are applying WCAG to non-web technology. These do not require Level AAA.</li>
 			<li>Developing techniques or interpretations of WCAG 2.x for implementing WCAG 2.x in Web technologies</li>
 			<li>Developing any specific, sufficient techniques, including platform-specific techniques, for implementing WCAG 2.x in non-Web ICT, though examples may be in scope</li>
-			<li>The WCAG2ICT Task Force will not revisit whether WCAG, as a whole, should be applied to non-web technologies</li>
-			<li>Developing a normative standard</li>
+			<li>The WCAG2ICT Task Force will not revisit whether WCAG, as a whole, should be applied to non-web technologies.</li>
+			<li>Developing a normative standard or any normative requirements</li>
 		</ul>
 		<section id="approach">
 			<h2>Approach</h2>
-			<p>WCAG2ICT is a Task Force of the AG WG, which has oversight over the Task Force to ensure accurate interpretation and representation of WCAG 2.x and the AG WG decision process will apply within the group. We will also have an AG WG co-chair  participate regularly to ensure the work is taken to the AG WG for review as the work progresses.</p> 
+			<p>WCAG2ICT is a Task Force of the AG WG, which has oversight over the Task Force to ensure accurate interpretation and representation of WCAG 2.x and the AG WG decision process will apply within the group. We will also have an AG WG co-chair participate regularly to ensure the work is taken to the AG WG for review as the work progresses.</p> 
 			<p>The primary effort of this Task Force will be describing how to interpret WCAG 2.x and its principles, guidelines, success criteria and conformance requirements when applying them to non-web ICT, including all WCAG 2.x A and AA success criteria; and evaluating what WCAG Conformance means in the context of non-Web ICT. The resulting Working Group Note will include a discussion of the application of each of the criteria in WCAG 2.x to non-Web ICT, including their interface components and platforms, and the extent to which <a href="http://www.w3.org/TR/WCAG20/#conformance">WCAG Conformance</a> is meaningful to non-Web ICT.</p>
 			<p>In order to efficiently develop the core Working Group Note, the work may be broken down into sub-groups if and as necessary, under the coordination of the Task Force facilitator(s) and following established AG WG procedures for sub-groups.</p>
 			<p>The work will be carried out through a series of document drafts, all publicly visible, with opportunities for public comment through publicly available comment lists. In particular, key stakeholders such as developers, evaluators, accessibility experts, researchers, procurement experts, and end users will be regularly involved in the development process. Key participants will be drawn from people with expertise not only in Web technologies, but also those with platform-specific accessibility expertise, including people involved in the development of accessibility frameworks, accessible platforms, accessible user interface components, and accessible software (including products closed to assistive technology) for a broad variety of computing environments.</p>
