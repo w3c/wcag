@@ -37,7 +37,7 @@
 			<li>WCAG 2.x Level AAA success criteria. WCAG2ICT is scoped to the criteria that regulations and other standards (like the EN 301 549 and the U.S. Revised 508 Standards) are applying WCAG to non-web technology. These do not require Level AAA.</li>
 			<li>Developing techniques or interpretations of WCAG 2.x for implementing WCAG 2.x in Web technologies</li>
 			<li>Developing any specific, sufficient techniques, including platform-specific techniques, for implementing WCAG 2.x in non-Web ICT, though examples may be in scope</li>
-			<li>The WCAG2ICT Task Force will not revisit whether WCAG should be applied to non-web technologies.</li>
+			<li>Determining whether WCAG provisions <i>should be</i> applied to non-web content</li>
 			<li>Developing a normative standard or any normative requirements</li>
 		</ul>
 		<section id="approach">
