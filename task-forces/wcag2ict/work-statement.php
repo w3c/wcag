@@ -10,7 +10,8 @@
 		<p>The WCAG2ICT Task Force is a task force of the <a href="https://www.w3.org/WAI/GL/">Accessibility Guidelines Working Group (AG WG)</a>. It assists this Working Group with the work identified below.</p>
 		<section id="status">
 			<h2>Status</h2>
-			<p>This task force is being reopened to update WCAG2ICT for WCAG 2.x. The TF will pursue continuation of the work in the upcoming AG WG Charter. This is a draft work statement.</p>
+			<p>This is the draft work statement updated as of June 14. This task force is being reopened to update WCAG2ICT for WCAG 2.x.</p>
+			<p>NOTE: The TF will pursue continuation of the work in the upcoming AG WG Charter.</p>
 		</section>
 		<section id="objective">
 			<h2>Objective</h2>
@@ -27,7 +28,6 @@
 					<li>how each of the new WCAG 2.x A and AA success criteria could apply to non-Web ICT,</li>
 					<li>how each of the new WCAG 2.x guidelines could apply to non-Web ICT,</li>
 					<li>clarification of challenges of applying particular WCAG 2.x success criteria to non-web technologies, including closed product software,</li>
-					<li>indication of where application of some individual WCAG success criteria might be problematic for certain non-web technologies</li>
 					<li>address challenges in <a href="https://github.com/w3c/wcag/issues?q=is%3Aopen+is%3Aissue+label%3Awcag2ict">WCAG open issues labeled WCAG2ICT</a>.</li>
 				</ul></li>
 		</ul>
@@ -37,7 +37,7 @@
 			<li>WCAG 2.x Level AAA success criteria. WCAG2ICT is scoped to the criteria that regulations and other standards (like the EN 301 549 and the U.S. Revised 508 Standards) are applying WCAG to non-web technology. These do not require Level AAA.</li>
 			<li>Developing techniques or interpretations of WCAG 2.x for implementing WCAG 2.x in Web technologies</li>
 			<li>Developing any specific, sufficient techniques, including platform-specific techniques, for implementing WCAG 2.x in non-Web ICT, though examples may be in scope</li>
-			<li>The WCAG2ICT Task Force will not revisit whether WCAG, as a whole, should be applied to non-web technologies.</li>
+			<li>The WCAG2ICT Task Force will not revisit whether WCAG should be applied to non-web technologies.</li>
 			<li>Developing a normative standard or any normative requirements</li>
 		</ul>
 		<section id="approach">
