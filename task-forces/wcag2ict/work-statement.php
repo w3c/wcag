@@ -11,7 +11,7 @@
 		<section id="status">
 			<h2>Status</h2>
 			<p>This is the draft work statement updated as of June 14. This task force is being reopened to update WCAG2ICT for WCAG 2.x.</p>
-			<p>NOTE: This work is mentioned in the <a href="www.w3.org/2019/12/ag-charter#ig-other-deliverables">Other Deliverables section of the current AG WG Charter.</a>  The continuation of the work is also included in the proposed AG WG Charter.</p>
+			<p>NOTE: This work is mentioned in the <a href="https://www.w3.org/2019/12/ag-charter#ig-other-deliverables">Other Deliverables section of the current AG WG Charter.</a>  The continuation of the work is also included in the proposed AG WG Charter.</p>
 		</section>
 		<section id="objective">
 			<h2>Objective</h2>
