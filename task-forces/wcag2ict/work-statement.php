@@ -109,7 +109,7 @@
 				<li>Remain current on the WCAG2ICT TF mailing list and respond in a timely manner to postings;</li>
 				<li>Participate in WCAG2ICT Task Force teleconference meetings.</li>
 			</ul>
-			<p><a href="https://www.w3.org/2000/09/dbwg/details?group=94845&amp;public=1">Current WCAG2ICT Task Force participants</a></p>
+			<p><a href="https://www.w3.org/2000/09/dbwg/details?group=55145&amp;public=1">Current WCAG2ICT Task Force participants</a></p>
 			<p>Contact <a href="mailto:cooper@w3.org">Michael Cooper</a> to become a participant of the WCAG2ICT Task Force or with questions.</p>
 		</section>
 		<section id="facilitation">
