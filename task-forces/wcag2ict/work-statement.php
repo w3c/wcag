@@ -10,7 +10,7 @@
 		<p>The WCAG2ICT Task Force is a task force of the <a href="https://www.w3.org/WAI/GL/">Accessibility Guidelines Working Group (AG WG)</a>. It assists this Working Group with the work identified below.</p>
 		<section id="status">
 			<h2>Status</h2>
-			<p>This is the draft work statement updated as of June 14. This task force is being reopened to update WCAG2ICT for WCAG 2.x.</p>
+			<p>This work statement was <a href="https://lists.w3.org/Archives/Public/w3c-wai-gl/2022AprJun/0280.html">accepted by the AG WG on 22 June 2022</a>. The task force is active.</p>
 			<p>NOTE: This work is mentioned in the <a href="https://www.w3.org/2019/12/ag-charter#ig-other-deliverables">Other Deliverables section of the current AG WG Charter.</a>  The continuation of the work is also included in the proposed AG WG Charter.</p>
 		</section>
 		<section id="objective">
