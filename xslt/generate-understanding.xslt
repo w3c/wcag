@@ -595,12 +595,10 @@
 				</xsl:if>
 			</xsl:if>
 			
-			<span>
-				<xsl:value-of select="$prevnexttype"/>
-				<xsl:text> </xsl:text>
-				<xsl:value-of select="$prefix-text"/>
-				<xsl:text>: </xsl:text>
-			</span>
+			<xsl:value-of select="$prevnexttype"/>
+			<xsl:text> </xsl:text>
+			<xsl:value-of select="$prefix-text"/>
+			<xsl:text>: </xsl:text>
 			
 			<xsl:value-of select="$meta-for-link/name"/>
 			
@@ -897,9 +895,9 @@
 			<body dir="ltr">
 				<xsl:call-template name="header"/>
 				<xsl:call-template name="navigation"/>
-				<div class="default-grid">
+				<div class="default-grid with-gap leftcol">
 					<xsl:call-template name="sidebar"/>
-					<main class="main-content">
+					<main class="standalone-resource__main">
 						<h1>
 							<xsl:apply-templates select="//html:h1"/>
 							<xsl:if test="name($meta) = 'success-criterion'"> (Level <xsl:value-of select="$meta/level"/>)</xsl:if>
