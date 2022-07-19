@@ -224,8 +224,9 @@
 			<body class="wcag-docs" dir="ltr">
 				<xsl:call-template name="header"/>
 				<xsl:call-template name="navigation"/>
-				<div class="default-grid">
-					<main class="main-content">
+				<div class="default-grid with-gap leftcol">
+					<xsl:call-template name="sidebar" />
+					<main class="standalone-resource__main">
 						<xsl:apply-templates select="//html:h1"/>
 						<xsl:call-template name="most-important-meta" />
 						<div class="excol-all"></div>
@@ -235,7 +236,6 @@
 						<xsl:call-template name="tests"/>
 						<xsl:call-template name="back-to-top"/>
 					</main>
-					<xsl:call-template name="sidebar" />
 					<xsl:call-template name="help-improve"/>
 				</div>
 				<xsl:call-template name="wai-site-footer"/>
@@ -281,7 +281,7 @@
 	<xsl:template match="html:section[@id = 'meta']"/>
 	
 	<xsl:template name="sidebar">
-  	<aside class="your-report your-report--expanded sidebar" aria-labelledby="about-this-page">
+		<aside class="box nav-hack sidebar standalone-resource__sidebar" aria-labelledby="about-this-page">
 			<h2 style="margin-top: 0" id="about-this-page">About this page</h2>
 			<p><em>Techniques</em> are examples of ways to meet a WCAG success criterion. They are <a href="{$loc.techniques}/about">not required to meet WCAG</a>.</p>
 			<xsl:call-template name="resources"/>
