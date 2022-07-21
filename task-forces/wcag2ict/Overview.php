@@ -73,8 +73,8 @@
 	
 	<section id="contribute">
 		<h2>How to Comment, Contribute, and Participate</h2>
-		<p>To join the WCAG2ICT TF, individuals must be participants of the Accessibility Guidelines Working Group. Participants are expected to <a href="work-statement#participation">actively contribute</a> to the work of the Task Force. If you are interested in participating in the Silver TF, please send e-mail to @@ and include a little bit about what you’re interested in and how you think that you may be able to contribute to the Task Force. Then follow the <a href="../../participation">participation procedures of the Accessibility Guidelines Working Group</a>, and once you have joined, ask <a href="mailto:cooper@w3.org">Michael Cooper</a> to add you to the task force.</p>
-		<p><a href="https://www.w3.org/groups/tf/wcag2ict/participants">WCAG2ICT Task Force - Participants</a> lists current and past participants.</p>
+		<p>To join the WCAG2ICT TF, individuals must be participants of the Accessibility Guidelines Working Group. Participants are expected to <a href="work-statement#participation">actively contribute</a> to the work of the Task Force. If you are interested in participating in the WCAG2ICT TF, email the task force leadership and working group chairs at <a href="mailto:group-ag-chairs@w3.org">group-ag-chairs@w3.org</a> and include a little bit about what you’re interested in and how you think that you may be able to contribute to the Task Force. Then follow the <a href="../../participation">participation procedures of the Accessibility Guidelines Working Group</a>, and once you have joined ask <a href="mailto:cooper@w3.org">Michael Cooper</a> to add you to the task force.</p>
+		<p><a href="https://www.w3.org/groups/tf/wcag2ict/participants">Current participants in the WCAG2ICT TF</a>.</p>
 		
 	</section> 
 	
@@ -84,7 +84,7 @@
 		<section id="facilitator">
 			<h3>Facilitator and Contacts</h3>
 			<ul>
-				<li><strong>Facilitators:</strong> TBD</li>
+				<li><strong>Facilitators:</strong> Mary Jo Mueller (IBM) and TBD</li>
 				<li><strong>Technical Staff Contact:</strong> <a href="https://www.w3.org/People/Brewer/">Judy Brewer</a></li>
 				<li><strong>Administrative Staff Contact:</strong> <a href="http://www.w3.org/People/cooper/">Michael Cooper</a></li>
 			</ul>
