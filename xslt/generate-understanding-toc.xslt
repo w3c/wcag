@@ -13,12 +13,6 @@
 					All Understanding documents
 					<!-- <span class="permalink"><a href="#toc" aria-label="Permalink for Understanding Pages" title="Permalink for Understanding Pages"><span>§</span></a></span> -->
 				</h1>
-				<aside class="box">
-				<header class="box-h ">Summary</header>
-				<div class="box-i">
-			<p><em>Understanding documents</em> explain intent, benefits, examples and key terms for WCAG success criteria, guidelines and related concepts.</p>
-				</div>
-				</aside>
 				<h2>Understanding Guidelines and Success Criteria</h2>
 				<xsl:apply-templates select="principle | guideline | success-criterion"/>
 				<h2>Other Understanding documents</h2>
