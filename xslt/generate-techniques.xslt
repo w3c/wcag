@@ -92,9 +92,8 @@
 	<xsl:template name="navtoc">
 		<xsl:param name="meta" tunnel="yes"/>
 		<nav class="navtoc">
-			<p>On this page:</p>
 			<ul id="navbar">
-				<li><a href="#important-information">Important Information about Techniques</a></li>
+				<!-- <li><a href="#important-information">Important Information about Techniques</a></li> -->
 				<li><a href="#applicability">Applicability</a></li>
 				<li><a href="#description">Description</a></li>
 				<xsl:if test="wcag:section-meaningfully-exists('examples', //html:section[@id = 'examples'])"><li><a href="#examples">Examples</a></li></xsl:if>
@@ -230,11 +229,13 @@
 						<xsl:apply-templates select="//html:h1"/>
 						<xsl:call-template name="most-important-meta" />
 						<div class="excol-all"></div>
+						<xsl:call-template name="applicability"/>
 						<xsl:call-template name="description"/>
 						<xsl:call-template name="examples"/>
-						<xsl:call-template name="applicability"/>
+						<xsl:call-template name="resources"/>
+						<xsl:call-template name="related"/>
 						<xsl:call-template name="tests"/>
-						<xsl:call-template name="back-to-top"/>
+						<xsl:call-template name="act"/>
 					</main>
 					<xsl:call-template name="help-improve"/>
 				</div>
@@ -281,10 +282,13 @@
 	<xsl:template match="html:section[@id = 'meta']"/>
 	
 	<xsl:template name="sidebar">
-		<aside class="box nav-hack sidebar standalone-resource__sidebar" aria-labelledby="about-this-page">
-			<h2 style="margin-top: 0" id="about-this-page">About this page</h2>
-			<p><em>Techniques</em> are examples of ways to meet a WCAG success criterion. They are <a href="{$loc.techniques}/about">not required to meet WCAG</a>.</p>
-			<xsl:call-template name="resources"/>
+		<aside class="box nav-hack sidebar standalone-resource__sidebar" aria-labelledby="page-contents">
+			<nav>
+				<header class="box-h" id="page-contents">Page Contents</header>
+				<div class="box-i">
+					<xsl:call-template name="navtoc"/>
+				</div>
+			</nav>
 		</aside>
 	</xsl:template>
 
@@ -533,8 +537,10 @@
 		<xsl:variable name="related" select="//html:section[@id = 'related']"/>
 		<!-- put in related techniques section if present and not template -->
 		<xsl:if test="wcag:section-meaningfully-exists('related', $related)">
-			<dt>Related Techniques</dt>
-			<dd><xsl:apply-templates select="$related/html:*[not(wcag:isheading(.))]"/></dd>
+			<section id="related">
+				<h2>Related Techniques</h2>
+				<xsl:apply-templates select="$related/html:*[not(wcag:isheading(.))]"/>
+			</section>
 		</xsl:if>
 	</xsl:template>
 	
