@@ -9,10 +9,6 @@
 	
 	<xsl:template match="guidelines">
 		<xsl:result-document href="toc.html" method="xhtml">
-				<h1 class="introductory" id="understanding-pages">
-					All Understanding documents
-					<!-- <span class="permalink"><a href="#toc" aria-label="Permalink for Understanding Pages" title="Permalink for Understanding Pages"><span>§</span></a></span> -->
-				</h1>
 				<h2>Understanding Guidelines and Success Criteria</h2>
 				<xsl:apply-templates select="principle | guideline | success-criterion"/>
 				<h2>Other Understanding documents</h2>

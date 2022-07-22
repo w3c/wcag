@@ -13,9 +13,6 @@
 	
 	<xsl:template match="techniques">
 		<xsl:result-document href="toc.html" method="xhtml">
-			<h1 class="introductory" id="techniques-pages">
-				All Techniques
-			</h1>
 			<xsl:apply-templates select="technology">
 				<xsl:sort select="@name"/>
 			</xsl:apply-templates>
