@@ -46,6 +46,7 @@
 		<delete file="${inputdir.guidelines}/wcag.xml" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/wcag.json" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/versions.xml" failonerror="false"/>
+		<delete file="${inputdir.guidelines}/test-sql.sql" failonerror="false"/>
 		<delete file="${inputdir.techniques}/techniques.xml" failonerror="false"/>
 		<delete file="${inputdir.techniques}/technique-associations.xml" failonerror="false"/>
 		<delete file="${inputdir.techniques}/about-flat.html" failonerror="false"/>
@@ -367,6 +368,14 @@
 	<!-- Redirects -->
 	<target name="redirects">
 		<xslt in="xslt/ids.xml" out="output/understanding/.htaccess" style="xslt/ids-to-redirects.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+		</xslt>
+	</target>
+	
+	<!-- SQL for CR test tool -->
+	<target name="cr-sql" depends="guidelines-xml, guidelines-versions, techniques-list, techniques-association">
+		<xslt in="${inputdir.guidelines}/wcag.xml" out="${inputdir.guidelines}/test-sql.sql" style="xslt/generate-test-sql.xslt" force="true">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 		</xslt>
