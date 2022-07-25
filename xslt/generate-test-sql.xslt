@@ -37,15 +37,15 @@
 	</xsl:function>
 	
 	<xsl:template match="/">
-		<xsl:text>insert into success_criteria (sc_id, principle, guideline, criterion, sc_num, level, handle, text, spec_source) values 
+		<xsl:text>insert ignore into success_criteria (sc_id, principle, guideline, criterion, sc_num, level, handle, text, spec_source) values 
 </xsl:text>
 		<xsl:apply-templates select="//success-criterion" mode="success-criteria"/>
 		
-		<xsl:text>insert into techniques (technique_id, title, technology_id, test_procedure, expected_result) values 
+		<xsl:text>insert ignore into techniques (technique_id, title, technology_id, test_procedure, expected_result) values 
 </xsl:text>
 		<xsl:apply-templates select="$techniques.doc//technique" mode="techniques"/>
 		
-		<xsl:text>insert into techniques_applicability (technique_id, sc_id, nature) values 
+		<xsl:text>insert ignore into techniques_applicability (technique_id, sc_id, nature) values 
 </xsl:text>
 		<xsl:apply-templates select="$associations.doc//technique" mode="associations"/>
 	</xsl:template>
