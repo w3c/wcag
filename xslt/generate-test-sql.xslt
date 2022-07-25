@@ -47,7 +47,7 @@
 		
 		<xsl:text>insert ignore into techniques_applicability (technique_id, sc_id, nature) values 
 </xsl:text>
-		<xsl:apply-templates select="$associations.doc//technique" mode="associations"/>
+		<xsl:apply-templates select="$associations.doc//technique[@id]" mode="associations"/>
 	</xsl:template>
 	
 	<!-- success-criteria -->
