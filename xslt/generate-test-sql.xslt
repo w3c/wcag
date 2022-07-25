@@ -29,6 +29,13 @@
 		<xsl:text>'</xsl:text><xsl:value-of select="$str"/><xsl:text>'</xsl:text>
 	</xsl:function>
 	
+	<xsl:function name="wcag:escape-apos">
+		<xsl:param name="str"/>
+		<xsl:variable name="apos">&#39;</xsl:variable>
+		<xsl:variable name="eapos">&#39;&#39;</xsl:variable>
+		<xsl:value-of select="replace($str, $apos, $eapos)"/>
+	</xsl:function>
+	
 	<xsl:template match="/">
 		<xsl:text>insert into success_criteria (sc_id, principle, guideline, criterion, sc_num, level, handle, text, spec_source) values 
 </xsl:text>
@@ -46,7 +53,7 @@
 		<xsl:value-of select="wcag:quote-string(num)"/><xsl:text>, </xsl:text>
 		<xsl:value-of select="wcag:quote-string(level)"/><xsl:text>, </xsl:text>
 		<xsl:value-of select="wcag:quote-string(name)"/><xsl:text>, </xsl:text>
-		<xsl:value-of select="wcag:quote-string(replace(serialize(content/node()), '\&#39;', &#39;'))"/><xsl:text>, </xsl:text>
+		<xsl:value-of select="wcag:quote-string(wcag:escape-apos(serialize(content/node())))"/><xsl:text>, </xsl:text>
 		<xsl:value-of select="wcag:quote-string(concat('WCAG', $versions.doc//id[@id = current()/@id]/parent::version/@name))"/>
 		<xsl:text>)</xsl:text>
 		<xsl:choose>
