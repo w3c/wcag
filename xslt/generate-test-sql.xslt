@@ -40,6 +40,10 @@
 		<xsl:text>insert into success_criteria (sc_id, principle, guideline, criterion, sc_num, level, handle, text, spec_source) values 
 </xsl:text>
 		<xsl:apply-templates select="//success-criterion" mode="success-criteria"/>
+		
+		<xsl:text>insert into techniques (technique_id, title, technology_id, test_procedure, expected_result) values 
+</xsl:text>
+		<xsl:apply-templates select="$techniques.doc//technique"/>
 	</xsl:template>
 	
 	<!-- success-criteria -->
@@ -61,11 +65,37 @@
 			<xsl:otherwise><xsl:text>,</xsl:text></xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>
-
 </xsl:text>
 	</xsl:template>
 	
 	<!-- techniques -->
+	<xsl:template match="technique">
+		<xsl:variable name="technique-doc" select="document(concat('../techniques/', parent::technology/@name, '/', @id, '.html'))"/>
+		<xsl:text>(</xsl:text>
+		<xsl:value-of select="wcag:quote-string(@id)"/><xsl:text>, </xsl:text>
+		<xsl:value-of select="wcag:quote-string(wcag:escape-apos(title))"/><xsl:text>, </xsl:text>
+		<xsl:choose>
+			<xsl:when test="parent::technology/@name = 'aria'">8</xsl:when>
+			<xsl:when test="parent::technology/@name = 'client-side-script'">4</xsl:when>
+			<xsl:when test="parent::technology/@name = 'css'">3</xsl:when>
+			<xsl:when test="parent::technology/@name = 'failures'">null</xsl:when>
+			<xsl:when test="parent::technology/@name = 'general'">1</xsl:when>
+			<xsl:when test="parent::technology/@name = 'html'">2</xsl:when>
+			<xsl:when test="parent::technology/@name = 'pdf'">10</xsl:when>
+			<xsl:when test="parent::technology/@name = 'server-side-script'">5</xsl:when>
+			<xsl:when test="parent::technology/@name = 'smil'">6</xsl:when>
+			<xsl:when test="parent::technology/@name = 'text'">7</xsl:when>
+		</xsl:choose><xsl:text>, </xsl:text>
+		<xsl:value-of select="wcag:quote-string(wcag:escape-apos(serialize($technique-doc//html:section[@class='procedure']/html:ol)))"/><xsl:text>, </xsl:text>
+		<xsl:value-of select="wcag:quote-string(wcag:escape-apos(serialize($technique-doc//html:section[@class='results']/html:ul)))"/>
+		<xsl:text>)</xsl:text>
+		<xsl:choose>
+			<xsl:when test="position() = last()"><xsl:text>;</xsl:text></xsl:when>
+			<xsl:otherwise><xsl:text>,</xsl:text></xsl:otherwise>
+		</xsl:choose>
+		<xsl:text>
+</xsl:text>
+	</xsl:template>
 	
 	<!-- techniques-applicability -->
 	
