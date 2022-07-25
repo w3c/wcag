@@ -13,10 +13,10 @@
 	<xsl:output method="text"/>
 	
 	<!--
-	<xsl:param name="versions.file">technique-assocations.xml</xsl:param>
-	<xsl:param name="techniques.file">technique-assocations.xml</xsl:param>
+	<xsl:param name="versions.file">../guidelines/versions.xml</xsl:param>
+	<xsl:param name="techniques.file">techniques.xml</xsl:param>
 	-->
-	<xsl:param name="associations.file">technique-assocations.xml</xsl:param>
+	<xsl:param name="associations.file">../techniques/technique-associations.xml</xsl:param>
 	
 	<!--
 	<xsl:variable name="versions.doc" select="document($versions.file)"/>
@@ -43,7 +43,11 @@
 		
 		<xsl:text>insert into techniques (technique_id, title, technology_id, test_procedure, expected_result) values 
 </xsl:text>
-		<xsl:apply-templates select="$techniques.doc//technique"/>
+		<xsl:apply-templates select="$techniques.doc//technique" mode="techniques"/>
+		
+		<xsl:text>insert into techniques_applicability (technique_id, sc_id, nature) values 
+</xsl:text>
+		<xsl:apply-templates select="$associations.doc//technique" mode="associations"/>
 	</xsl:template>
 	
 	<!-- success-criteria -->
@@ -69,7 +73,7 @@
 	</xsl:template>
 	
 	<!-- techniques -->
-	<xsl:template match="technique">
+	<xsl:template match="technique" mode="techniques">
 		<xsl:variable name="technique-doc" select="document(concat('../techniques/', parent::technology/@name, '/', @id, '.html'))"/>
 		<xsl:text>(</xsl:text>
 		<xsl:value-of select="wcag:quote-string(@id)"/><xsl:text>, </xsl:text>
@@ -98,5 +102,17 @@
 	</xsl:template>
 	
 	<!-- techniques-applicability -->
-	
+	<xsl:template match="technique" mode="associations">
+		<xsl:text>(</xsl:text>
+		<xsl:value-of select="wcag:quote-string(@id)"/><xsl:text>, </xsl:text>
+		<xsl:value-of select="wcag:quote-string(ancestor::success-criterion/@id)"/><xsl:text>, </xsl:text>
+		<xsl:value-of select="wcag:quote-string(name(ancestor::sufficient | ancestor::advisory | ancestor::failure))"/>
+		<xsl:text>)</xsl:text>
+		<xsl:choose>
+			<xsl:when test="position() = last()"><xsl:text>;</xsl:text></xsl:when>
+			<xsl:otherwise><xsl:text>,</xsl:text></xsl:otherwise>
+		</xsl:choose>
+		<xsl:text>
+</xsl:text>
+	</xsl:template>
 </xsl:stylesheet>
