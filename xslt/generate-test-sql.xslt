@@ -61,7 +61,7 @@
 		<xsl:value-of select="wcag:quote-string(num)"/><xsl:text>, </xsl:text>
 		<xsl:value-of select="wcag:quote-string(level)"/><xsl:text>, </xsl:text>
 		<xsl:value-of select="wcag:quote-string(name)"/><xsl:text>, </xsl:text>
-		<xsl:value-of select="wcag:quote-string(wcag:escape-apos(serialize(content/node())))"/><xsl:text>, </xsl:text>
+		<xsl:value-of select="wcag:quote-string(wcag:escape-apos(normalize-space(serialize(content/node()))))"/><xsl:text>, </xsl:text>
 		<xsl:value-of select="wcag:quote-string(concat('WCAG', $versions.doc//id[@id = current()/@id]/parent::version/@name))"/>
 		<xsl:text>)</xsl:text>
 		<xsl:choose>
@@ -90,8 +90,8 @@
 			<xsl:when test="parent::technology/@name = 'smil'">6</xsl:when>
 			<xsl:when test="parent::technology/@name = 'text'">7</xsl:when>
 		</xsl:choose><xsl:text>, </xsl:text>
-		<xsl:value-of select="wcag:quote-string(wcag:escape-apos(serialize($technique-doc//html:section[@class='procedure']/html:ol)))"/><xsl:text>, </xsl:text>
-		<xsl:value-of select="wcag:quote-string(wcag:escape-apos(serialize($technique-doc//html:section[@class='results']/html:ul)))"/>
+		<xsl:value-of select="wcag:quote-string(wcag:escape-apos(normalize-space(serialize($technique-doc//html:section[@class='procedure']/html:ol))))"/><xsl:text>, </xsl:text>
+		<xsl:value-of select="wcag:quote-string(wcag:escape-apos(normalize-space(serialize($technique-doc//html:section[@class='results']/html:ul))))"/>
 		<xsl:text>)</xsl:text>
 		<xsl:choose>
 			<xsl:when test="position() = last()"><xsl:text>;</xsl:text></xsl:when>
