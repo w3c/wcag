@@ -8,11 +8,12 @@ var respecConfig = {
 	permalinkHide:     false,
 	tocIntroductory: true,
 	// specification status (e.g., WD, LC, NOTE, etc.). If in doubt use ED.
-	specStatus:           "ED",
-	//crEnd:                "2012-04-30",
+	specStatus:           "CRD",
+	crEnd:                "2022-09-30",
 	//perEnd:               "2013-07-23",
-	//publishDate:          "2013-08-22",
+	publishDate:          "2022-08-16",
 	diffTool:             "http://www.aptest.com/standards/htmldiff/htmldiff.pl",
+	implementationReportURI: "https://www.w3.org/WAI/WCAG22/implementation-report/",
 	
 	// the specifications short name, as in https://www.w3.org/TR/short-name/
 	shortName:            "WCAG22",
