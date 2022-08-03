@@ -42,11 +42,13 @@
 		<delete file="${inputdir.guidelines}/index-flat.html" failonerror="false"/>
 		<delete file="${inputdir.techniques}/index-flat.html" failonerror="false"/>
 		<delete file="${inputdir.understanding}/index-flat.html" failonerror="false"/>
+		<delete file="${inputdir.understanding}/about-flat.html" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/wcag.xml" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/wcag.json" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/versions.xml" failonerror="false"/>
 		<delete file="${inputdir.techniques}/techniques.xml" failonerror="false"/>
 		<delete file="${inputdir.techniques}/technique-associations.xml" failonerror="false"/>
+		<delete file="${inputdir.techniques}/about-flat.html" failonerror="false"/>
 		<delete file="output.html" failonerror="false"/>
 		<delete dir="output" failonerror="false"/>
 		<delete dir="input" failonerror="false"/>
@@ -249,6 +251,7 @@
 		<copy file="css/base.css" todir="output/understanding/"/>
 		<copy file="understanding/understanding.css" todir="output/understanding/"/>
 		<copy file="css/slicenav.css" todir="output/understanding/"/>
+		<copy file="guidelines/relative-luminance.xml" todir="output/understanding/"/>
 		<copy todir="output/understanding/img/" flatten="true">
 			<fileset dir="understanding">
 				<patternset includes="*/img/*"/>
@@ -328,18 +331,27 @@
 		<property name="publication" value="true"/>
 		<antcall target="techniques"/>
 		<antcall target="understanding"/>
-		<copy todir="${w3ccvs.location}/WWW/WAI/WCAG${guidelines.version}/">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${w3ccvs.location}/WWW/WAI/WCAG${guidelines.version}">
+				<type type="file"/>
+				<include name="Understanding/**"/>
+				<include name="Techniques/**"/>
+				<include name="working-examples/**"/>
+				<exclude name="**/CVS/*"/>
+			</fileset>
+		</delete>
+		<copy todir="${w3ccvs.location}/WWW/WAI/WCAG${guidelines.version}/" failonerror="false">
 			<fileset dir="output/"/>
 			<globmapper from="*index.html" to="*Overview.html"/>
 		</copy>
-		<copy todir="${w3ccvs.location}/WWW/WAI/WCAG${guidelines.version}/">
+		<copy todir="${w3ccvs.location}/WWW/WAI/WCAG${guidelines.version}/" failonerror="false">
 			<fileset dir="output" excludes="index.html **/index.html"/>
 		</copy>
-		<copy todir="${w3ccvs.location}/WWW/WAI/WCAG${guidelines.version}/working-examples/">
+		<copy todir="${w3ccvs.location}/WWW/WAI/WCAG${guidelines.version}/working-examples/" failonerror="false">
 			<fileset dir="working-examples/"/>
 			<globmapper from="*index.html" to="*Overview.html"/>
 		</copy>
-		<copy todir="${w3ccvs.location}/WWW/WAI/WCAG${guidelines.version}/working-examples/">
+		<copy todir="${w3ccvs.location}/WWW/WAI/WCAG${guidelines.version}/working-examples/" failonerror="false">
 			<fileset dir="working-examples/" excludes="index.html **/index.html"/>
 		</copy>
 	</target>
