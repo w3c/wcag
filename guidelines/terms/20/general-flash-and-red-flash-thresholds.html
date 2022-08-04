@@ -38,10 +38,16 @@
    <p class="note">For general software or Web content, using a 341 x 256 pixel rectangle anywhere on
       the displayed screen area when the content is viewed at 1024 x 768 pixels will provide
       a good estimate of a 10 degree visual field for standard screen sizes and viewing
-      distances (e.g., 15-17 inch screen at 22-26 inches). (Higher resolutions displays
+      distances (e.g., 15-17 inch screen at 22-26 inches). (This resolution of 75 – 85 ppi is known to be lower, and thus more conservative, than the nominal CSS pixel resolution of 96 ppi in CSS specifications. Higher resolutions displays
       showing the same rendering of the content yield smaller and safer images so it is
       lower resolutions that are used to define the thresholds.)
    </p>
+
+   <p class="note">Content should be analyzed at the largest scale at which a user may view the content, and at the standard zoom level of the user agent. For example, with a video that may play in an area of a web page and also at full screen, the video should be analyzed for risks at full screen. When determining the size of the “full screen” for analysis purposes, a safe assumption to use is that the short dimension of the full screen represents a 25-degree viewing angle. This metric works well for computer screens, and is even safer when used for content displayed on TVs and smart phones because of typical viewing distances.</p>
+
+   <p class="note">For cases where output luminance is known, or for color spaces other than sRGB, the industry standard definition of a general flash is a change in luminance of 20 cd/m2 or more where the darker image is below 160 cd/m2. [ITU-R BT.1702] This is applicable for standard dynamic range (SDR) and high dynamic range (HDR) content. For HDR content when the darker state is 160 cd/m2 or more, a general flash is one where the Michelson contrast is 1/17 or greater — where the Michelson contrast is calculated as (LHigh – LLow) / (LHigh + LLow), and where LHigh and LLow are the luminance of the high and low luminance states, respectively. [ITU-R BT.1702]</p>
+
+   <p class="note">For short clips that might be looped (such as GIF animations), the content should be analyzed while looping. </p>
    
    <p class="note">A transition is the change in relative luminance (or relative luminance/color for
       red flashing) between adjacent peaks and valleys in a plot of relative luminance (or
@@ -49,11 +55,18 @@
       of two opposing transitions.
    </p>
    
-   <p class="note">The current working definition in the field for <strong>"pair of opposing transitions involving a saturated red"</strong> is where, for either or both states involved in each transition, R/(R+ G + B) &gt;=
-      0.8, and the change in the value of (R-G-B)x320 is &gt; 20 (negative values of (R-G-B)x320
-      are set to zero) for both transitions. R, G, B values range from 0-1 as specified
-      in “relative luminance” definition. [[HARDING-BINNIE]]
-   </p>
+   <div class="note">
+      <p>The current working definition in the field for <strong>"pair of opposing transitions involving a saturated red"</strong> is a pair of opposing transitions where, one transition is either to or from a state with a value R/(R + G + B) that is greater than or equal to 0.8, and the difference between states is more than 0.2 (unitless) in the CIE 1976 UCS chromaticity diagram. [ISO 9241-391] </p>
+   <p>The chromaticity difference is calculated as:
+   <ul><li>SQRT( (u'1 - u'2)^2 + (v'1 - v'2)^2 )</li></ul>
+   where u'1 and v'1 are chromaticity coordinates of State 1 and u'2 and v'2 are chromaticity coordinates of State 2. The 1976 UCS chromaticity coordinates of u' and v’ are calculated as:
+  <ul><li>u' = 4 * X / (X + 15 * Y + 3 * Z)</li>
+  <li>v' = 9 * Y / (X + 15 * Y + 3 * Z)</li></ul>
+   where X, Y, and Z are the tristimulus values of a color in the CIE XYZ colorspace, which can be calculated as:<br>
+  <ul><li>X = 0.4124564 * R + 0.3575761 * G + 0.1804375 * B</li>
+  <li>Y = 0.2126729 * R + 0.7151522 * G + 0.0721750 * B</li>
+  <li>Z = 0.0193339 * R + 0.1191920 * G + 0.9503041 * B</li></ul>
+where R, G, & B are values that range from 0-1 as specified in “relative luminance” definition. </p>
    
    <p class="note">Tools are available that will carry out analysis from video screen capture. However,
       no tool is necessary to evaluate for this condition if flashing is less than or equal
