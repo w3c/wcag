@@ -31,18 +31,6 @@ respecConfig.localBiblio = {
         "publisher": "International Standards Organization"
     },
       	
-      	"sRGB": {
-      		"authors": [
-      			"M. Stokes",
-      			"M. Anderson",
-      			"S. Chandrasekar",
-      			"R. Motta"
-      		],
-      		"date": "November 5, 1996",
-      		"href": "https://www.w3.org/Graphics/Color/sRGB.html",
-      		"title": "A Standard Default Color Space for the Internet - sRGB, Version 1.10"
-      	},
-      	
       	"UNESCO": {
       		"date": "1997",
       		"href": "http://www.unesco.org/education/information/nfsunesco/doc/isced_1997.htm",
