@@ -278,7 +278,7 @@
 					<ul>
 						<xsl:choose>
 							<xsl:when test="$documentset = 'Techniques'">
-								<li>
+								<li class="nav__item">
 									<xsl:choose>
 										<xsl:when test="$navigation.current = 'all'">
 											<a aria-current="page" href="{$loc.techniques}#techniques" class="active">All Techniques</a>
@@ -289,7 +289,7 @@
 									</xsl:choose>
 								</li>
 								<!--
-								<li>
+								<li class="nav__item">
 									<xsl:choose>
 										<xsl:when test="$navigation.current = 'about'">
 											<a aria-current="page" class="active" href="{$loc.techniques}/about">About Techniques</a>
@@ -302,7 +302,7 @@
 								-->
 							</xsl:when>
 							<xsl:when test="$documentset = 'Understanding'">
-							<li>
+								<li class="nav__item">
 								<a href=".">
 									<xsl:if test="$navigation.current = 'all'">
 										<xsl:attribute name="class">active</xsl:attribute>
@@ -312,7 +312,7 @@
 								</a>
 							</li>
 								<!--
-							<li>
+							<li class="nav__item">
 								<xsl:choose>
 									<xsl:when test="$navigation.current = 'about'">
 										<a href="/understanding/about" aria-current="page" class="active">About WCAG Understanding Docs</a>
