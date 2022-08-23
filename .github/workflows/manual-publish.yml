@@ -8,8 +8,8 @@ on:
     branches: [main]
 
 jobs:
-  main:
-    name: deploy to
+  build-xslt:
+    name: run xslt-based generator
     runs-on: ubuntu-20.04
     env:
       GH_REF: github.com/w3c/wcag.git
@@ -31,14 +31,37 @@ jobs:
         run: |
           mkdir output
           git clone --depth=1 --branch=gh-pages https://github.com/w3c/wcag.git output
-          curl https://labs.w3.org/spec-generator/?type=respec"&"url=https://raw.githack.com/w3c/wcag/main/guidelines/index.html -o output/guidelines/22/index.html -f  --retry 3
-          curl https://labs.w3.org/spec-generator/?type=respec"&"url=https://raw.githack.com/w3c/wcag/main/requirements/22/index.html -o output/requirements/22/index.html -f  --retry 3
-          curl https://labs.w3.org/spec-generator/?type=respec"&"url=https://raw.githack.com/w3c/wcag/main/conformance-challenges/index.html -o output/conformance-challenges/index.html -f  --retry 3
           ant deploy
-      - name: deploy
-        run: .github/scripts/deploy.sh
-        env:
-          BRANCH: gh-pages
-          LOCAL_DIR: output
-          GITHUB_TOKEN: ${{ secrets.W3CGRUNTBOT_TOKEN }}
+  build-spec:
+    name: run spec-prod based build
+    runs-on: ubuntu-20.04
+    env:
+      GH_REF: github.com/w3c/wcag.git
+    needs: build-xslt
+    strategy:
+      max-parallel: 1
+      matrix:
+        include:
+          - source: guidelines/index.html
+            destination: output/guidelines/22/index.html
+          - source: requirements/22/index.html
+            destination: output/requirements/22/index.html
+          - source: conformance-challenges/index.html
+            destination: output/conformance-challenges/index.html
+        steps:
+          - uses: actions/checkout@v2
+          - uses: w3c/spec-prod@v2
+            with:
+              SOURCE: ${{ matrix.source }}
+              DESTINATION: ${{ matrix.destination }}
+  deploy:
+    name: deploy
+    runs-on: ubuntu-20.04
+    env:
+      GH_REF: github.com/w3c/wcag.git
+      BRANCH: gh-pages
+      LOCAL_DIR: output
+      GITHUB_TOKEN: ${{ secrets.W3CGRUNTBOT_TOKEN }}
+    needs: build-spec
+    run: .github/scripts/deploy.sh
 
