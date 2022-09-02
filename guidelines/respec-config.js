@@ -63,10 +63,10 @@ var respecConfig = {
 		},
 		{
 			name: "Michael Cooper",
-			url: 'https://www.w3.org/People/cooper',
+			url: 'https://www.w3.org/People/cooper/',
 			//mailto: "cooper@w3.org",
 			company: "W3C",
-			companyURI: "https://www.w3.org",
+			companyURI: "https://www.w3.org/",
 			w3cid: 34017
 		},
 		{
@@ -74,7 +74,7 @@ var respecConfig = {
 			//url: "http://www.adobe.com/",
 			mailto: "akirkpat@adobe.com",
 			company: "Adobe",
-			companyURI: "http://www.adobe.com/",
+			companyURI: "https://www.adobe.com/",
 			w3cid: 39770
 		}
 	],
