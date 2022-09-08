@@ -34,7 +34,15 @@
 			<xsl:when test="version = 'WCAG20'">["2.0", "2.1", "2.2"]</xsl:when>
 			<xsl:when test="version = 'WCAG21'">["2.0", "2.1"]</xsl:when>
 			<xsl:when test="version = 'WCAG22'">["2.2"]</xsl:when>
-      <xsl:otherwise>[]</xsl:otherwise>
+			<xsl:when test="empty($versions.doc//id[@id = current()/@id])">[]</xsl:when>
+      		<xsl:otherwise>
+        		<xsl:variable name="versionstr" select="$versions.doc//id[@id = current()/@id]/parent::version/@name"/>
+        		<xsl:choose>
+          			<xsl:when test="$versionstr = '20'">["2.0", "2.1", "2.2"]</xsl:when>
+          			<xsl:when test="$versionstr = '21'">["2.0", "2.1"]</xsl:when>
+          			<xsl:when test="$versionstr = '22'">["2.2"]</xsl:when>
+        		</xsl:choose>
+      		</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 	
