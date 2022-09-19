@@ -15,7 +15,7 @@ var respecConfig = {
 	diffTool:             "http://www.aptest.com/standards/htmldiff/htmldiff.pl",
 	
 	// the specifications short name, as in https://www.w3.org/TR/short-name/
-	shortName:            "WCAG22",
+	shortName:            "WCAG21",
 	
 	
 	// if you wish the publication date to be other than today, set this
