@@ -26,9 +26,9 @@
 			<li>Determining how to apply each of the new WCAG 2.1 and WCAG 2.2 (hereafter called “WCAG 2.x") guidelines and Levels A, AA, and AAA success criteria to non-Web documents and software; this includes provision of additional details for application to closed product software and where applying individual criteria might be difficult and why; and</li>
 			<li>Producing an updated Working Group Note (a form of W3C Technical Report)—following the W3C process under the coordination, review, and approval of the AG WG—that describes: 
 				<ul>
-					<li>how each of the new WCAG 2.x A, AA, and AAA success criteria could apply to non-Web documents and software;</li>
-					<li>how each of the new WCAG 2.x guidelines could apply to non-Web documents and software;</li>
-					<li>clarification of challenges of applying particular WCAG 2.x success criteria to non-web documents and software, including closed product software; and</li>
+					<li>how each of the new WCAG 2.x A, AA, and AAA success criteria could apply to non-Web ICT;</li>
+					<li>how each of the new WCAG 2.x guidelines could apply to non-Web ICT;</li>
+					<li>clarification of challenges of applying particular WCAG 2.x success criteria to non-web ICT, including closed product software; and</li>
 					<li>address challenges in <a href="https://github.com/w3c/wcag2ict/issues?q=is%3Aissue+is%3Aopen+label%3Awcag2ict">Open issues labeled WCAG2ICT</a>.</li>
 				</ul>
 			</li>
