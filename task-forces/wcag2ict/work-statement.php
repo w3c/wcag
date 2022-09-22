@@ -23,7 +23,7 @@
 			<p>The work of the task force includes: </p>
 		</section>
 		<ul>
-			<li>Determining how to apply each of the new WCAG 2.1 and WCAG 2.2 (hereafter called “WCAG 2.x") guidelines and Levels A, AA, and AAA success criteria to non-Web documents and software; this includes provision of additional details for application to closed product software and where applying individual criteria might be difficult and why; and</li>
+			<li>Determining how to apply each of the new WCAG 2.1 and WCAG 2.2 (hereafter called “WCAG 2.x") guidelines and Levels A, AA, and AAA success criteria to non-Web ICT; this includes provision of additional details for application to closed product software and where applying individual criteria might be difficult and why; and</li>
 			<li>Producing an updated Working Group Note (a form of W3C Technical Report)—following the W3C process under the coordination, review, and approval of the AG WG—that describes: 
 				<ul>
 					<li>how each of the new WCAG 2.x A, AA, and AAA success criteria could apply to non-Web ICT;</li>
