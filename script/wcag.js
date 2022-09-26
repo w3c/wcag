@@ -64,7 +64,7 @@ function markConformanceLevel() {
 function swapInDefinitions() {
 	if (new URLSearchParams(window.location.search).get("defs") != null) document.querySelectorAll('.internalDFN').forEach(function(node){
 		node.title = node.textContent;
-		node.textContent = findDef(document.querySelector(node.href.substring(node.href.indexOf('#'))).parentNode.nextElementSibling.firstElementChild).textContent;
+		node.textContent = findDef(document.querySelector(node.href.substring(node.href.indexOf('#'))).parentNode.nextElementSibling.querySelector(':not(.change)')).textContent;
 	})
 	function findDef(el){
 		if (el.hasAttribute('class')) return findDef(el.nextElementSibling);
@@ -76,7 +76,7 @@ function termTitles() {
 	// put definitions into title attributes of term references
 	document.querySelectorAll('.internalDFN').forEach(function(node){
 		var dfn = document.querySelector(node.href.substring(node.href.indexOf('#')));
-		if (dfn.parentNode.nodeName == "DT") node.title = dfn.parentNode.nextElementSibling.firstElementChild.textContent.trim().replace(/\s+/g,' ');
+		if (dfn.parentNode.nodeName == "DT") node.title = dfn.parentNode.nextElementSibling.querySelector(':not(.change)').textContent.trim().replace(/\s+/g,' ');
 		else if (dfn.title) node.title=dfn.title;
 	});	
 }
