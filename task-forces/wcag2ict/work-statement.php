@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" dir="ltr">
 	<head>
 		<?php include "../../_head.phi"; ?>
-		<title>Accessibility Guidelines WCAG2ICT Task Force Work Statement</title>
+		<title>DRAFT Accessibility Guidelines WCAG2ICT Task Force Work Statement</title>
 	</head>
 	<body>
 		<?php include "../../_header.phi"; ?>
-		<h1>WCAG2ICT Task Force Work Statement</h1>
+		<h1>DRAFT WCAG2ICT Task Force Work Statement</h1>
 		<p>The WCAG2ICT Task Force is a task force of the <a href="https://www.w3.org/WAI/GL/">Accessibility Guidelines Working Group (AG WG)</a>. It assists this Working Group with the work identified below.</p>
 		<section id="status">
 			<h2>Status</h2>
@@ -16,14 +16,14 @@
 		<section id="objective">
 			<h2>Objective</h2>
 			<p>The objective of the WCAG2ICT Task Force is to develop documentation describing how WCAG 2.x and its principles, guidelines, and success criteria could apply to non-Web Information and Communications Technologies (ICT). </p>
-			<p>This Task Force was formed to update the 2013 “<a href="https://www.w3.org/TR/wcag2ict/">Guidance on Applying WCAG 2.0 to Non-Web Information and Communications Technologies (WCAG2ICT)</a>� working group Note published on 5 September 2013. Updates are needed to include new guidelines and success criteria added in the WCAG 2.1 Recommendation as well as new requirements added in WCAG 2.2. WCAG2ICT was developed to describe how to apply WCAG 2.0 and its principles, guidelines, and success criteria to non-web ICT (Information and Communications Technology) that are not web content. WCAG2ICT also plans to add new content that identifies problematic WCAG provisions when applied to non-Web ICT.</p>
+			<p>This Task Force was formed to update the 2013 “<a href="https://www.w3.org/TR/wcag2ict/">Guidance on Applying WCAG 2.0 to Non-Web Information and Communications Technologies (WCAG2ICT)</a>” working group Note published on 5 September 2013. Updates are needed to include new guidelines and success criteria added in the WCAG 2.1 Recommendation as well as new requirements added in WCAG 2.2. WCAG2ICT was developed to describe how to apply WCAG 2.0 and its principles, guidelines, and success criteria to non-web ICT (Information and Communications Technology) that are not web content. WCAG2ICT also plans to add new content that identifies problematic WCAG provisions when applied to non-Web ICT.</p>
 		</section>
 		<section id="scope">
 			<h2>Scope of Work</h2>
 			<p>The work of the task force includes: </p>
 		</section>
 		<ul>
-			<li>Determining how to apply each of the new WCAG 2.1 and WCAG 2.2 (hereafter called “WCAG 2.x�) guidelines and Levels A, AA, and AAA success criteria to non-Web ICT; this includes provision of additional details for application to closed product software and where applying individual criteria might be difficult and why; and</li>
+			<li>Determining how to apply each of the new WCAG 2.1 and WCAG 2.2 (hereafter called “WCAG 2.x”) guidelines and Levels A, AA, and AAA success criteria to non-Web ICT; this includes provision of additional details for application to closed product software and where applying individual criteria might be difficult and why; and</li>
 			<li>Producing an updated Working Group Note (a form of W3C Technical Report)—following the W3C process under the coordination, review, and approval of the AG WG—that describes: <ul>
 					<li>how each of the new WCAG 2.x A, AA, and AAA success criteria could apply to non-Web ICT,</li>
 					<li>how each of the new WCAG 2.x guidelines could apply to non-Web ICT,</li>
