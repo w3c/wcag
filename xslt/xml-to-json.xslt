@@ -34,6 +34,7 @@
 			<xsl:when test="version = 'WCAG20'">["2.0", "2.1", "2.2"]</xsl:when>
 			<xsl:when test="version = 'WCAG21'">["2.1", "2.2"]</xsl:when>
 			<xsl:when test="version = 'WCAG22'">["2.2"]</xsl:when>
+			<xsl:otherwise>[]</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 	
