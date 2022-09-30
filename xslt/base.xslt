@@ -220,7 +220,7 @@
 						<xsl:value-of select="$documentset.name"/>
 						</a>
 					</div>
-					<div class="minimal-header-subtitle">Informative explanations, not required to meet WCAG</div>
+					<div class="minimal-header-subtitle">Examples of ways to meet WCAG; not required</div>
 						<a class="minimal-header-link">
 							<xsl:attribute name="href">
 								<xsl:if test="$documentset = 'Understanding'"><xsl:value-of select="$loc.understanding"/>about</xsl:if>
