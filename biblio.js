@@ -32,8 +32,8 @@ respecConfig.localBiblio = {
     },
       	
       	"UNESCO": {
-      		"date": "1997",
-      		"href": "http://www.unesco.org/education/information/nfsunesco/doc/isced_1997.htm",
+      		"date": "2011",
+      		"href": "https://unesdoc.unesco.org/ark:/48223/pf0000219109",
       		"title": "International Standard Classification of Education"
       	}
 	
