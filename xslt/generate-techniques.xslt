@@ -271,7 +271,7 @@
 
 	<xsl:template match="html:title">
 		<xsl:param name="meta" tunnel="yes"/>
-		<title><xsl:value-of select="$meta/@id"/>: <xsl:value-of select="//html:h1"/></title>
+		<title><xsl:value-of select="$meta/@id"/>: <xsl:value-of select="//html:h1"/> | WAI | W3C</title>
 	</xsl:template>
 	
 	<xsl:template match="html:h1">

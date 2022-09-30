@@ -888,6 +888,7 @@
 				<meta name="viewport" content="width=device-width, initial-scale=1"/>
 				<title>
 					<xsl:apply-templates select="//html:title"/>
+					<xsl:text> | WAI | W3C</xsl:text>
 				</title>
 				<link rel="stylesheet" href="https://w3.org/WAI/assets/css/style.css"/>
 				<link rel="stylesheet" href="base.css"/>
