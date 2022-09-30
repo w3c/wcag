@@ -8,7 +8,7 @@
 	<xsl:output method="xhtml" indent="yes" omit-xml-declaration="yes" encoding="UTF-8"/>
 	
 	<xsl:template match="guidelines">
-		<xsl:result-document href="toc.html" method="xhtml">
+		<xsl:result-document href="toc.html" method="xhtml" omit-xml-declaration="yes">
 				<h2>Understanding Guidelines and Success Criteria</h2>
 				<xsl:apply-templates select="principle | guideline | success-criterion"/>
 				<h2>Other Understanding documents</h2>

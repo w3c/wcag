@@ -12,7 +12,7 @@
 	
 	
 	<xsl:template match="techniques">
-		<xsl:result-document href="toc.html" method="xhtml">
+		<xsl:result-document href="toc.html" method="xhtml" omit-xml-declaration="yes">
 			<xsl:apply-templates select="technology">
 				<xsl:sort select="@name"/>
 			</xsl:apply-templates>

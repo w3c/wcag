@@ -12,7 +12,15 @@
 	
 	<xsl:param name="navigation.current" required="yes"/>
 	
+	<xsl:output method="xhtml" exclude-result-prefixes="#all" omit-xml-declaration="yes" indent="yes"/>
+	
 	<xsl:template match="/"><xsl:apply-templates/></xsl:template>
+	
+	<xsl:template match="html:html">
+		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE html>
+]]></xsl:text>
+		<xsl:copy><xsl:apply-templates select="node()|@*"/></xsl:copy>
+	</xsl:template>
 	
 	<xsl:template match="html:body">
 		<xsl:copy>
