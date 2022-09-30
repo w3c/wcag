@@ -209,16 +209,22 @@
 		<div class="minimal-header-container default-grid">
 				<div class="minimal-header" id="site-header">
 					<div class="minimal-header-name">
+						<a class="minimal-header-link">
+							<xsl:attribute name="href">
+								<xsl:if test="$documentset = 'Understanding'"><xsl:value-of select="$loc.understanding"/></xsl:if>
+								<xsl:if test="$documentset = 'Techniques'"><xsl:value-of select="$loc.techniques"/></xsl:if>
+							</xsl:attribute>
 						<xsl:text>WCAG </xsl:text>
 						<xsl:value-of select="$guidelines.version.decimal"/>
 						<xsl:text> </xsl:text>
 						<xsl:value-of select="$documentset.name"/>
+						</a>
 					</div>
 					<div class="minimal-header-subtitle">Informative explanations, not required to meet WCAG</div>
 						<a class="minimal-header-link">
 							<xsl:attribute name="href">
-								<xsl:if test="$documentset = 'Understanding'">./about</xsl:if>
-								<xsl:if test="$documentset = 'Techniques'">./about</xsl:if>
+								<xsl:if test="$documentset = 'Understanding'"><xsl:value-of select="$loc.understanding"/>about</xsl:if>
+								<xsl:if test="$documentset = 'Techniques'"><xsl:value-of select="$loc.techniques"/>about</xsl:if>
 							</xsl:attribute>
 							<xsl:text>About WCAG </xsl:text>
 							<xsl:value-of select="$documentset.name"/>
