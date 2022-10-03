@@ -134,6 +134,7 @@
 					<li><strong>Liaison to AG WG:</strong> one of the AG WG co-chairs</li>
 				<li><strong>Editorial Team:</strong> TBD</li>
 			</ul>
+			<p class="ednote">The TBD's above will be updated in the work statement once these positions are filled.</p>
 		</section>
 		<section id="patentpolicy">
 			<h2>Patent Policy</h2>
