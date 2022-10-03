@@ -54,7 +54,7 @@
 			<p>The following sections contain rough timelines for the WCAG2ICT work. Actual timelines and project management will be handled outside of this work statement, and will not be maintained herein.</p>
 			<p>As previously mentioned, a phased delivery of the WCAG2ICT Working Group Note is necessary to provide timely guidance for the upcoming EN 301 549 standards update and ADA regulations.<p>
 			<h3>Phase 1</h3>
-			<p>Goals are to incorporate new WCAG 2.1 and 2.2 Level A and AA success criteria, and make other necessary updates to the other content in the document to align with WCAG 2.2. In addition, this phase will address known documented issues.</p>
+			<p>Goals are to incorporate new WCAG 2.1 and 2.2 Level A and AA success criteria, and make other necessary updates to the other content in the document to align with WCAG 2.2. In addition, this phase will address known documented issues. </p>
 			<p>Note: To include WCAG 2.2, the Recommendation version standard must be published with sufficient time to update the draft Note with finalized requirements verbiage. </p>
 			<ul>
 				<li>April - August 2022: <ul>
@@ -88,13 +88,13 @@
 		</section>
 		<section id="liaisons">
 			<h2>Liaisons</h2>
-			<p>While there are no direct dependencies at the Task Force level (please see <a href="https://www.w3.org/2019/12/ag-charter#deliverables">deliverables section of the AG WG Charter</a> for more information), please note the following proposed liaisons:</p>
-			<p>The following proposed participating liaisons may change pending confirmation, and/or be expanded:</p>
+			<p>While there are no direct dependencies at the Task Force level (please see <a href="https://www.w3.org/2019/12/ag-charter#deliverables">deliverables section of the AG WG Charter</a> for more information). The following proposed participating liaisons may change pending confirmation, and/or be expanded:</p>
 			<ul>
-				<li>US Access Board</li>
-				<li>ETSI, CEN and CENELEC</li>
-				<li>Potentially other liaisons with government and/or regulatory agencies considering referencing the updated WCAG2ICT</li>
+				<li>Liaisons from worldwide accessibility consulting and advocacy groups</li>
+				<li>Liaisons from worldwide standards organizations (ISO, ETSI, CEN and CENELEC, etc.)</li>
+				<li>Liaisons from worldwide government and/or regulatory agencies considering referencing the updated WCAG2ICT (U.S. Access Board, EU, Canada, potentially others)</li>
 			</ul>
+			<p class="ednote">The list of liaisons will be updated to show official organization representation of the participants in the task force, once known.</p>
 		</section>
 		<section id="communication">
 			<h2>Communication</h2>
@@ -105,6 +105,7 @@
 				<li>Weekly (and at times twice-weekly) teleconferences, with teleconference minutes sent to AG WG mailing list and linked from the <a href="https://www.w3.org/WAI/GL/task-forces/wcag2ict/minutes">WCAG2ICT TF minutes</a> page;</li>
 				<li>Regular updates and feedback to AG WG, and to the <a href="http://www.w3.org/WAI/CG/">WAI Coordination Group</a> (WAI CG) as needed;</li>
 				<li>Regular submission of deliverables to the AG WG for approval;</li>
+				<li>Management of project information and schedule in the <a href="https://github.com/w3c/wcag2ict/wiki">WCAG2ICT wiki</a>;</li>
 				<li>Summary of current status and progress on the <a href="https://www.w3.org/WAI/GL/WCAG2ICT-TF">WCAG2ICT Task Force home page</a>.</li>
 			</ol>
 		</section>
