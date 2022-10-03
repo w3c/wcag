@@ -52,7 +52,7 @@
 		<section id="timeline">
 			<h2>Timeline</h2>
 			<p>The following sections contain rough timelines for the WCAG2ICT work. Actual timelines and project management will be handled outside of this work statement, and will not be maintained herein.</p>
-			<p>As previously mentioned, a phased delivery of the WCAG2ICT Working Group Note is necessary to provide timely guidance for the upcoming EN 301 549 standards update and ADA regulations.<p>
+			<p>As previously mentioned, a phased delivery of the WCAG2ICT Working Group Note will likely be necessary to provide timely guidance for upcoming regulatory and standards updates.<p>
 			<h3>Phase 1</h3>
 			<p>Goals are to incorporate new WCAG 2.1 and 2.2 Level A and AA success criteria, and make other necessary updates to the other content in the document to align with WCAG 2.2. In addition, this phase will address known documented issues. </p>
 			<p>Note: To include WCAG 2.2, the Recommendation version standard must be published with sufficient time to update the draft Note with finalized requirements verbiage. </p>
