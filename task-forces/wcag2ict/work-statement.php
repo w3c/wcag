@@ -21,7 +21,6 @@
 		<section id="scope">
 			<h2>Scope of Work</h2>
 			<p>The work of the task force includes: </p>
-		</section>
 		<ul>
 			<li>Determining how to apply each of the new WCAG 2.1 and WCAG 2.2 (hereafter called “WCAG 2.x") guidelines and Levels A, AA, and AAA success criteria to non-Web ICT; this includes provision of additional details for application to closed product software and where applying individual criteria might be difficult and why; and</li>
 			<li>Producing an updated Working Group Note (a form of W3C Technical Report)—following the W3C process under the coordination, review, and approval of the AG WG—that describes: 
@@ -41,6 +40,8 @@
 			<li>determining whether WCAG, as a whole, <i>should be</i> applied to non-web content; and</li>
 			<li>developing a normative standard or any normative requirements.</li>
 		</ul>
+				</section>
+
 		<section id="approach">
 			<h2>Approach</h2>
 			<p>WCAG2ICT is a Task Force of the AG WG, which has oversight over the Task Force to ensure accurate interpretation and representation of WCAG 2.x. The AG WG decision process applies within the group. We have an AG WG co-chair liaison to ensure draft content is taken to the AG WG for review as it progresses.</p> 
@@ -53,6 +54,7 @@
 			<h2>Timeline</h2>
 			<p>The following sections contain rough timelines for the WCAG2ICT work. Actual timelines and project management will be handled outside of this work statement, and will not be maintained herein.</p>
 			<p>As previously mentioned, a phased delivery of the WCAG2ICT Working Group Note will likely be necessary to provide timely guidance for upcoming regulatory and standards updates.<p>
+			<section id="phase-1">
 			<h3>Phase 1</h3>
 			<p>Goals are to incorporate new WCAG 2.1 and 2.2 Level A and AA success criteria, and make other necessary updates to the other content in the WCAG2ICT document to align with WCAG 2.2. In addition, this phase will address known documented issues. </p>
 			<p>Note: To include WCAG 2.2, the Recommendation version standard must be published with sufficient time to update the draft WCAG2ICT Note with finalized requirements verbiage. </p>
@@ -83,8 +85,11 @@
 						<li>Publish updated WCAG2ICT Note.</li>
 					</ul></li>
 			</ul>
+			</section>
+			<section id="phase-2">
 			<h3>Phase 2</p>
-			<p>The next phase of updates would include any other in-scope work, including Level AAA, that was not addressed in Phase 1. Details of the Phase 2 timeline will be developed outside of this document when more is known about the scope of work left to do.</p> 
+			<p>The next phase of updates would include any other in-scope work, including Level AAA, that was not addressed in Phase 1. Details of the Phase 2 timeline will be developed outside of this document when more is known about the scope of work left to do.</p>
+			</section> 
 		</section>
 		<section id="liaisons">
 			<h2>Liaisons</h2>
