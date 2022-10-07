@@ -87,7 +87,7 @@
 			</ul>
 			</section>
 			<section id="phase-2">
-			<h3>Phase 2</p>
+			<h3>Phase 2</h3>
 			<p>The next phase of updates would include any other in-scope work, including Level AAA, that was not addressed in Phase 1. Details of the Phase 2 timeline will be developed outside of this document when more is known about the scope of work left to do.</p>
 			</section> 
 		</section>
