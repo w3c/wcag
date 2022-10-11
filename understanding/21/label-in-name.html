@@ -35,23 +35,27 @@
 	<figcaption>A detail of the rich text editor in Github, showing a variety of unlabeled icons, including icons resembling text characters.</figcaption>
 </figure>
 <p>Likewise, where an author has used a greater-than symbol (">") to mimic the appearance of the right-facing arrow, the text does not convey something in human language. It is a symbol, in this scenario likely meant to mimic the icons used for a "Play" button or a "Next" arrow.</p>
+</section>
 <h4>Punctuation and capitalization</h4>
-				</section>
+				
 				<section>
 <p>The use of punctuation and capitalization in labels <em>may</em> also be considered optional for the same reason. For example, the colon conventionally added at the end of input labels does not express something in human language, and capitals on the first letter of each word in a label do not normally alter the words' meaning. This is particularly relevant in the context of this SC, since it is primarily aimed at users of speech recognition; capitals and most punctuation are frequently ignored when a user speaks a label as a means of interacting with a control.</p>
+
 <p>While it is certainly not an error to include the colon and capitalization in the accessible name, a computed name of "First name" should not be considered a failure of "First Name:".<br />
 <label for="firstname">First Name: </label><input id="firstname" type="text" name="firstname" /><br />
-Likewise, "Next…" visibly shown on a button could have "Next" as the accessible name. When in doubt, where a meaningful visible label exists, match the string exactly for the accessible name.<br />
-<input type="submit" value="Next..." /></p>
-				</section>
-				<section>
+Likewise, "Next…" visibly shown on a button could have "Next" as the accessible name.<br />
+<input type="submit" value="Next..." />. When in doubt, where a meaningful visible label exists, match the string exactly for the accessible name.</p>
 
+				</section>
+				
 <h4>Mathematical expressions and formulae</h4>
-<p>Mathematical expressions are an exception to the previous subsection about symbolic characters. Math symbols can be used as labels; for example "11&#215;3=33" and "A>B" convey meaning. The label should not be overwritten in the accessible name, and substitutions of words where a formula is used should be avoided since there are multiple ways to express the same equation. For example, making the name "eleven multiplied by three is equivalent to thirty-three" might mean a user who said "eleven times three equals thirty-three" may not match. It is best to leave the formulas as used in the label and count on the user's familiarity with their speech software to achieve a match. Further, converting a mathematical formula label into an accessible name that is a spelled-out equivalent may create issues for translation. The name should match the label's formula text. Note that a consideration for authors is to use the proper symbol in the formula. For instance 11x3 (with a lower or upper case letter X), 11*3 (with the asterisk symbol), and 11&#215;3 (with the <code>&amp;</code>times<code>;</code> symbol) are all easy for sighted users to interpret as meaning the same formula, but may not all be matched to "11 times 3" by the speech recognition software. The proper operator symbol (in this case the times symbol) should be used.<br />
+<section>
+<p>Mathematical expressions are an exception to the previous subsection about symbolic characters. Math symbols can be used as labels; for example "11&#215;3=33" and "A>B" convey meaning.<br />
 
     <input type="radio" name="equation" id="answer1" value="A&gt;B" /><label for="answer1">A&gt;B</label>
-    <input type="radio" name="equation" id="answer2" value="A=B" /><label for="answer2">A=B</label>
-    <input type="radio" name="equation" id="answer3" value="A&lt;B" /><label for="answer3">A&lt;B</label></p>
+    <input type="radio" name="equation" id="answer2" value="11&times3=33" /><label for="answer2">11&times3=33</label>
+    </p>
+	<p>The label should not be overwritten in the accessible name, and substitutions of words where a formula is used should be avoided since there are multiple ways to express the same equation. For example, making the name "eleven multiplied by three is equivalent to thirty-three" might mean a user who said "eleven times three equals thirty-three" may not match. It is best to leave the formulas as used in the label and count on the user's familiarity with their speech software to achieve a match. Further, converting a mathematical formula label into an accessible name that is a spelled-out equivalent may create issues for translation. The name should match the label's formula text. Note that a consideration for authors is to use the proper symbol in the formula. For instance 11x3 (with a lower or upper case letter X), 11*3 (with the asterisk symbol), and 11&#215;3 (with the <code>&amp;</code>times<code>;</code> symbol) are all easy for sighted users to interpret as meaning the same formula, but may not all be matched to "11 times 3" by the speech recognition software. The proper operator symbol (in this case the times symbol) should be used.</p>
 				</section>
 			</section>
 			<section>
@@ -61,12 +65,16 @@ Likewise, "Next…" visibly shown on a button could have "Next" as the accessibl
  <p>Other text displayed on the screen that is correctly coded to meet 1.3.1: Info and Relationships is <strong>not</strong> normally factored into the calculation for the accessible name of a UI component without author intervention (via ARIA labeling techniques). The most common of these are:</p>
 	<ul>
 		<li>headings and instructions</li>
-<li>group labels for sets of components (i.e., used with <code>legend</code>/<code>fieldset</code> or with role of <code>group</code> or <code>radiogroup</code>)</li> 
+<li>group labels for sets of components (i.e., used with <code>legend</code>/<code>fieldset</code> or with role of <code>group</code> or <code>radiogroup</code>)</li>
 </ul>
 <p>Such textual information may constitute part of the component's <em>description</em>. So from both a programmatic viewpoint, and from the conservative tactic of only considering a label to be "adjacent text," neither headings, instructions, nor group 'labels' should normally be considered <strong>labels</strong> for the purpose of this Success Criterion.</p>
  <p>It is important to note that the specification allows authors to override the name calculated through native semantics. Both <code>aria-label</code> and <code>aria-labelledby</code> take precedence in the name calculation, overriding the visible text as the accessible name even when the visible text label is programmatically associated with the control. For this reason, when a visible label already exists, <code>aria-label</code> should be avoided or used carefully, and <code>aria-labelledby</code> should be used as a supplement with care.</p>
 <p>Finally, <code>aria-describedby</code> is not included in the Accessible Name computation (instead it is part of the Accessible Description computation). By convention, text associated with a control through <code>aria-describedby</code> is announced immediately after the accessible name by screen readers. Therefore, the context of headings, instructions, and group labels can be provided through the accessible description to assist users of screen readers without affecting the experience of those who navigate using speech recognition software.</p>
-			</section>
+</section>
+<h4>Parenthetical text</h4>
+	<section>
+	<p>It is important to mention parenthetical text in labels in the context of accessible name versus description. In common usage, text in parentheses is considered secondary but relevant to meaning. Users of speech recognition would not typically announce text in parentheses as part of the input name. For that reason, parenthetical text may be optionally considered a description and left out of the accessible name.</p>
+	<p>However, where parenthetical information provides important context, as indication of a required field or guidance on input masks, this information must be provided programmatically in some other way to the user if that information is not included as part of the accessible name. For example, "Name (required)" and "Date (YYYY-MM-DD)" could accept "Name" and "Date" as the accessible names, but in order to pass 1.3.1 Info & Relationships authors would need to surface the required attribute as well as the mask information programmatically (such as through <code>aria-required</code> and <code>aria-describedby</code>).</p>
 		</section>
 
 
