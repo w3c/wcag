@@ -56,9 +56,9 @@
 						<li>
 							<p>If objections are received but the Chairs believe the objections have already been considered as far as is possible and reasonable, and the reviewers providing the objections can accept the decision, the draft decision becomes a formal decision of the Working Group.</p>
 						</li>
-            <li>
-              <p>If objections are received and the reviewers providing the objection cannot accept the decision, the Chairs will provide the opportunity to propose an alternative, and have the Working Group review the alternative.</p>
-            </li>
+						<li>
+							<p>If objections are received and the reviewers providing the objection cannot accept the decision, the Chairs will provide the opportunity to propose an alternative, and have the Working Group review the alternative.</p>
+						</li>
 						<li>
 							<p>If objections are received that the Chairs believe present substantive new information or if the Chairs believe there is not a clear consensus in the Working Group, they will reopen the discussion, as detailed in <a href="http://www.w3.org/Consortium/Process/#WGChairReopen">section 3.3.4 of the Process Document (Reopening a Decision When Presented With New Information)</a>.</p>
 						</li>
