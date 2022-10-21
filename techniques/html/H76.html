@@ -1,50 +1,70 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using meta refresh to create an instant client-side redirect</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using meta refresh to create an instant client-side redirect</h1><section class="meta"><p class="id">ID: H76</p><p class="technology">Technology: html</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
-      <p> HTML and XHTML</p>
-   </section><section id="description"><h2>Description</h2>
-      <p> The objective of this technique is to enable redirects on the client side without
-            confusing the user. Redirects are preferably implemented on the server side (see <a href="https://www.w3.org/WAI/WCAG21/Techniques/server-side-script/SVR1">Implementing automatic redirects on the server side
-              instead of on the client side</a>), but authors do not always have control over
-            server-side technologies. </p>
-      <p>In HTML and XHTML, one can use the <code class="el">meta</code> element with the value of
-            the <code class="att">http-equiv</code> attribute set to "Refresh" and the value of the
-              <code class="att">content</code> attribute set to "0" (meaning zero seconds), followed by the URI
-            that the browser should request. It is important that the time-out is set to zero, to
-            avoid that content is displayed before the new page is loaded. The page containing the
-            redirect code should only contain information related to the redirect. </p>
-   </section><section id="examples"><h2>Examples</h2>
-      <section class="example">
-         <pre xml:space="preserve"> &lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;    
-  &lt;head&gt;      
-    &lt;title&gt;The Tudors&lt;/title&gt;      
-    &lt;meta http-equiv="refresh" content="0;URL='http://thetudors.example.com/'" /&gt;    
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <title>Using meta refresh to create an instant client-side redirect</title>
+      <link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
+   </head>
+   <body>
+      <h1>Using <code class="language-html">meta</code> <code class="language-html">refresh</code> to create an instant client-side redirect</h1>
+      <section class="meta">
+         <p class="id">ID: H76</p>
+         <p class="technology">Technology: html</p>
+         <p class="type">Type: Technique</p>
+      </section>
+      <section id="applicability">
+         <h2>When to Use</h2>
+         <p>HTML</p>
+      </section>
+      <section id="description">
+         <h2>Description</h2>
+         <p>The objective of this technique is to enable redirects on the client side without confusing the user. Redirects are preferably implemented on the server side (see <a href="https://www.w3.org/WAI/WCAG21/Techniques/server-side-script/SVR1">Implementing automatic redirects on the server side instead of on the client side</a>), but authors do not always have control over server-side technologies.</p>
+         <p>In HTML, one can use the <code class="language-html">meta</code> element with the value of the <code class="att">http-equiv</code> attribute set to <code class="language-html">refresh</code> and the value of the <code class="language-html">content</code> attribute set to <code class="language-html">0</code> (meaning zero seconds), followed by the <abbr title="Uniform Resource Identifier">URI</abbr> that the browser should request. It is important that the time-out is set to zero, to avoid that content is displayed before the new page is loaded. The page containing the redirect code should only contain information related to the redirect.</p>
+      </section>
+      <section id="examples">
+         <h2>Examples</h2>
+         <section class="example">
+            <h3>Instantly redirecting a page</h3>
+<pre xml:space="preserve">&lt;!doctype html&gt;
+&lt;html lang="en"&gt;    
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;title&gt;Panucci's Pizza&lt;/title&gt;
+    &lt;meta http-equiv="refresh" content="0; URL=https://planet-express.example.com"&gt;
   &lt;/head&gt;    
-  &lt;body&gt; 
-    &lt;p&gt;This page has moved to a &lt;a href="http://thetudors.example.com/"&gt;
-      theTudors.example.com&lt;/a&gt;.&lt;/p&gt; 
+  &lt;body&gt;
+    &lt;p&gt;This page has moved to &lt;a href="https://planet-express.example.com"&gt;
+       Planet Express&lt;/a&gt;.&lt;/p&gt; 
   &lt;/body&gt;  
-&lt;/html&gt;     </pre>
+&lt;/html&gt;</pre>
+         </section>
       </section>
-   </section><section id="tests"><h2>Tests</h2>
-      <section class="procedure"><h3>Procedure</h3>
-         <ol>
-            <li> Find all <code class="el">meta</code> elements in the document. </li>
-            <li> For each meta element, check if it contains the attribute
-                  <code class="att">http-equiv</code> with value "refresh" (case-insensitive) and the
-                    <code class="att">content</code> attribute with a number greater than 0 followed by
-                    ;'URL=anyURL' (where anyURL stands for the URI that should replace
-                  the current page). </li>
-         </ol>
+      <section id="tests">
+         <h2>Tests</h2>
+         <section class="procedure">
+            <h3>Procedure</h3>
+            <p>Find all <code class="language-html">meta</code> elements in the document that contain the <code class="language-html">http-equiv</code> attribute with value <code class="language-html">refresh</code>, check that:</p>
+            <ol>
+               <li>the <code class="language-html">content</code> attribute has a number with a value of <code class="language-html">0</code>, and</li>
+               <li>the number is followed by <code class="language-html">;URL=anyURL</code> (where anyURL stands for the URI that should replace the current page).</li>
+            </ol>
+         </section>
+         <section class="results">
+            <h3>Expected Results</h3>
+            <p>Steps 1 and 2 are true.</p>
       </section>
-      <section class="results"><h3>Expected Results</h3>
-         <p> Step 2 is false. </p>
-      </section>
-   </section><section id="related"><h2>Related Techniques</h2><ul>
-      <li><a href="../general/G110">G110</a></li>
-   </ul></section><section id="resources"><h2>Resources</h2>
-      
-         <ul>
-            <li> See also <a href="https://www.w3.org/WAI/WCAG21/Techniques/failures/F41">Failure due to using meta refresh
-                    with a time-out</a>. </li>
-         </ul>
-      
-   </section></body></html>
+   </section>
+   <section id="related">
+      <h2>Related Techniques</h2>
+      <ul>
+         <li><a href="../general/G110">G110</a></li>
+      </ul>
+   </section>
+   <section id="resources">
+      <h2>Resources</h2>
+      <ul>
+         <li><a href="https://html.spec.whatwg.org/multipage/semantics.html#attr-meta-http-equiv-refresh">HTML - Refresh state (<code class="language-html">http-equiv="refresh"</code>)</a>.</li>
+         <li><a href="https://www.w3.org/WAI/WCAG21/Techniques/failures/F41">Failure due to using <code class="language-html">meta</code> <code class="language-html">refresh</code> with a time-out</a>.</li>
+      </ul>
+   </section>
+</body>
+</html>
