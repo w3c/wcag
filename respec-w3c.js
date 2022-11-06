@@ -1377,15 +1377,15 @@ var.respec-hl{background:0 0;color:#000;box-shadow:unset}
       hidden
       role="dialog"
       aria-modal="true"
-      aria-label="Links in this document to definition: ${i}"
+      aria-label="Посилання на визначення в цьому документі: ${i}"
     >
       <span class="caret"></span>
       <div>
         <a
           class="self-link"
           href="${n}"
-          aria-label="Permalink for definition: ${i}. Activate to close this dialog."
-          >Permalink</a
+          aria-label="Постійне посилання для визначення: ${i}. Активуйте, щоб закрити це діалогове вікно."
+          >Постійне посилання</a
         >
         ${function (e) {
         return e.matches("dfn[data-export]") ? Nt`<span
@@ -1405,7 +1405,7 @@ var.respec-hl{background:0 0;color:#000;box-shadow:unset}
         } return null
       }(e, r)}
       </div>
-      <p><b>Referenced in:</b></p>
+      <p><b>Посилається в:</b></p>
       ${function (e, t) {
         if (!t.length) return Nt`<ul>
       <li>Not referenced in this document.</li>

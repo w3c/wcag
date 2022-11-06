@@ -1151,8 +1151,8 @@ window.respecVersion = "25.6.0", function () {
               t && t.remove(); const r = n.closest("dfn, .index-term"); t = function (e) {
                 const { id: t } = e, n = e.dataset.href || "#" + t, r = document.querySelectorAll(`a[href="${n}"]:not(.index-term)`); return Qt`
     <aside class="dfn-panel" id="dfn-panel">
-      <b><a class="self-link" href="${n}">Permalink</a></b>
-      <b>Referenced in:</b>
+      <b><a class="self-link" href="${n}">Постійне посилання</a></b>
+      <b>Посилається в:</b>
       ${function (e, t) { if (!t.length) return Qt`<ul><li>Not referenced in this document.</li></ul>`; const n = new Map; t.forEach((t, r) => { const o = t.id || `ref-for-${e}-${r + 1}`; t.id || (t.id = o); const i = function (e) { const t = e.closest("section"); if (!t) return null; const n = t.querySelector("h1, h2, h3, h4, h5, h6"); return n ? bn(n.textContent) : null }(t); (n.get(i) || n.set(i, []).get(i)).push(o) }); const r = [...n].map(e => Qt`<li>${(([e, t]) => [{ title: e, id: t[0] }].concat(t.slice(1).map((e, t) => ({ title: `(${t + 2})`, id: e }))))(e).map(e => Qt`<a href="#${e.id}">${e.title}</a>${" "}`)}</li>`); return Qt`<ul>${r}</ul>` }(t, r)}
     </aside>
   `}(r), function (e, t, { x: n, y: r }) { document.body.appendChild(t); const o = e.getClientRects(); let i = 0, s = 1 / 0; for (const e of o) { const { top: t, bottom: n } = e, o = Math.abs((t + n) / 2 - r); o < s && (s = o, i = t) } const a = window.scrollY + i + o[0].height, c = n - 20; t.style.setProperty("--left", c + "px"), t.style.setProperty("--top", a + "px"); const l = t.getBoundingClientRect(), u = Math.min(window.innerWidth, window.screen.width); if (l.right > u) { const e = Math.max(20, n + 20 - l.width), r = c - e; t.style.setProperty("--left", e + "px"), t.style.setProperty("--caret-offset", r + "px") } }(r, t, { x: e.clientX, y: e.clientY }); break
