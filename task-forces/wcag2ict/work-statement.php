@@ -2,15 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" dir="ltr">
 	<head>
 		<?php include "../../_head.phi"; ?>
-		<title>DRAFT Accessibility Guidelines WCAG2ICT Task Force Work Statement</title>
+		<title>Accessibility Guidelines WCAG2ICT Task Force Work Statement</title>
 	</head>
 	<body>
 		<?php include "../../_header.phi"; ?>
-		<h1>DRAFT WCAG2ICT Task Force Work Statement</h1>
+		<h1>WCAG2ICT Task Force Work Statement</h1>
 		<p>The WCAG2ICT Task Force is a task force of the <a href="https://www.w3.org/WAI/GL/">Accessibility Guidelines Working Group (AG WG)</a>. It assists this Working Group with the work identified below.</p>
 		<section id="status">
 			<h2>Status</h2>
-			<p>This work statement was <a href="https://lists.w3.org/Archives/Public/w3c-wai-gl/2022AprJun/0280.html">accepted by the AG WG on 22 June 2022</a>. The task force is active.</p>
+			<p>This work statement was <a href="https://lists.w3.org/Archives/Public/w3c-wai-gl/2022AprJun/0280.html">approved by the AG WG on 26 October 2022</a>. The task force is active.</p>
 			<p>NOTE: This work is mentioned in the <a href="https://www.w3.org/2019/12/ag-charter#ig-other-deliverables">Other Deliverables section of the current AG WG Charter.</a>  The continuation of the work is also included in the proposed AG WG Charter.</p>
 		</section>
 		<section id="objective">
@@ -130,16 +130,20 @@
 			<h2>Facilitation</h2>
 			<p>Staff contacts from the Accessibility Guidelines Working Group oversee attention to W3C Process with respect to the chartered requirements of the Working Group. The facilitators set agenda, lead meetings, determine consensus, and are the primary liaison to the Working Group.</p>
 			<ul>
-				<li><strong>Facilitators:</strong>
-					<a href="mailto:maryjom@us.ibm.com">Mary Jo Mueller</a> and TBD</li>
+				<li><strong>Facilitator:</strong>
+					<a href="mailto:maryjom@us.ibm.com">Mary Jo Mueller</a></li>
 				<li><strong>Technical Staff Contact:</strong>
-					<a href="https://www.w3.org/People/Brewer/">Judy Brewer</a></li>
-				<li><strong>Administrative Staff Contact:</strong>
 					<a href="http://www.w3.org/People/cooper/">Michael Cooper</a></li>
+				<li><strong>Administrative Staff Contact:</strong>
+					<a href="http://www.w3.org/People#dmontalvo">Daniel Montalvo</a></li>
 					<li><strong>Liaison to AG WG:</strong> one of the AG WG co-chairs</li>
-				<li><strong>Editorial Team:</strong> TBD</li>
+				<li><strong>Editorial Team:</strong></li>
+				<ul>
+					<li>Mary Jo Mueller</li>
+					<li>Phil Day</li>
+					<li>Chris Loiselle</li>
+				</ul>
 			</ul>
-			<p class="ednote">The TBD's above will be updated in the work statement once these positions are filled.</p>
 		</section>
 		<section id="patentpolicy">
 			<h2>Patent Policy</h2>

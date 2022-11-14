@@ -26,10 +26,10 @@
 	</section>
 	<section id="communication">
 		<h2>Meetings and Communication</h2>
-		<p>The WCAG2ICT TF conducts its work using a variety of synchronous and asynchronous tools. Once the TF is re-established, its work will be done via teleconference, email and GitHub issues.</p>
+		<p>The WCAG2ICT TF conducts its work using a variety of synchronous and asynchronous tools. Work is being done via teleconference, email and GitHub issues.</p>
 		<ul>
 			<li><a href="#email">Email lists</a>;</li>
-			<li><a href="https://github.com/w3c/wcag2ict/">wcag2ict GitHub repository</a> and <a href="https://w3c.github.io/wcag2ict/">GitHub draft documents</a>;</li>
+			<li><a href="https://github.com/w3c/wcag2ict/">wcag2ict GitHub repository</a> and <a href="https://w3c.github.io/wcag2ict/">GitHub draft document</a>;</li>
 			<li>IRC options</li>
 			<ul>
 				<li>IRC discussion on the <li><a href="http://irc.w3.org/?channels=#wcag2ict">#wcag2ict</a> IRC channel, used largely for minute-taking;</li>
@@ -43,7 +43,7 @@
 		
 		<section id="teleconferences">
 			<h3>Teleconferences</h3>
-			<p>A teleconference schedule will be created when the WCAG2ICT Task Force is officially re-established.</p>
+			<p>Weekly teleconferences are being held on Thursdays at 10:00 AM Eastern (Boston time).</p>
 			<ul>
 				<?php
 					include "../../../../2017/01/telecon-info/filtered-telecon-list.phi";
@@ -63,7 +63,7 @@
 	
 	<section id="work">
 		<h2>Current Work</h2>
-		<p><a href="https://w3c.github.io/wcag2ict/">Editors' draft of Guidance on Applying WCAG 2.x to Non-Web Information and Communications Technologies (WCAG2ICT)</a></p>
+		<p><a href="https://w3c.github.io/wcag2ict/">Editors' draft of Guidance on Applying WCAG 2.2 to Non-Web Information and Communications Technologies (WCAG2ICT)</a></p>
 	</section>
 	
 	<section id="publications">
@@ -84,15 +84,15 @@
 		<section id="facilitator">
 			<h3>Facilitator and Contacts</h3>
 			<ul>
-				<li><strong>Facilitators:</strong> Mary Jo Mueller (IBM) and TBD</li>
-				<li><strong>Technical Staff Contact:</strong> <a href="https://www.w3.org/People/Brewer/">Judy Brewer</a></li>
-				<li><strong>Administrative Staff Contact:</strong> <a href="http://www.w3.org/People/cooper/">Michael Cooper</a></li>
+				<li><strong>Facilitator:</strong> Mary Jo Mueller (IBM)</li>
+				<li><strong>Technical Staff Contact:</strong> <a href="http://www.w3.org/People/cooper/">Michael Cooper</a></li>
+				<li><strong>Administrative Staff Contact:</strong> <a href="http://www.w3.org/People/#dmontalvo"></a></li>
 			</ul>
-			<p>Contact the task force leadership and working group chairs by email to <a href="mailto:group-ag-chairs@w3.org">group-ag-chairs@w3.org</a></p>
+			<p>Contact the task force leadership and working group chairs via email at <a href="mailto:group-ag-chairs@w3.org">group-ag-chairs@w3.org</a></p>
 		</section>
 		<section id="work-statement">
 			<h3>Work Statement</h3>
-			<p>The <a href="work-statement">Draft WCAG2ICT Task Force Work Statement</a> defines the initial objective, scope, approach, and participation of the Task Force. The draft work statement is subject to the review and approval of the Accessibility Guidelines WG.</p>
+			<p>The <a href="work-statement">WCAG2ICT Task Force Work Statement</a> defines the objectives, scope, approach, and participation of the Task Force. The work statement has been approved by the Accessibility Guidelines WG.</p>
 		</section>
 	</section>
 	
