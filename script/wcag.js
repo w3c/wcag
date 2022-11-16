@@ -81,10 +81,24 @@ function termTitles() {
 	});	
 }
 
+// clear removed sections after respec has run to preserve generated numbering
+function clearRemoved() {
+  const removeIds = ["parsing"];
+  removeIds.forEach(function(currentValue) {
+    var selector = ".tocline > a[href=\"#" + currentValue + "\"]";
+    var tocEl = document.querySelector(selector);
+    tocEl.remove();
+    
+    var section = document.querySelector("#" + currentValue);
+    section.remove();
+  });
+}
+
 // scripts after Respec has run
 function postRespec() {
 	addTextSemantics();
 	swapInDefinitions();
 	termTitles();
 	linkUnderstanding();
+	clearRemoved();
 }
