@@ -469,7 +469,7 @@ p:is(.respec-hint,.respec-occurrences){display:block;margin-top:.5em}
   `}(t) : e.isTagFinding ? t.additionalContent : e.isNoTrack ? function (e, t) {
         const { isMO: n } = e, { additionalContent: r } = t; return Nt`
     <p>
-    Цей документ є лише внутрішнім документом W3C.
+    Цей документ є лише внутрішнім документом W3C
       ${n ? "member-confidential" : ""}. Він не має жодного офіційного статусу та не відображає консенсусу членів W3C.
     </p>
     ${r}
