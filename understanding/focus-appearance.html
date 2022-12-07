@@ -114,10 +114,10 @@
                component to have adequate contrast against the background in each of its states,
                this SC requires sufficient contrast for the focus indicator itself.
             </p>
-            <p>For sighted people with mobility impairments who use a keyboard or keyboard-like device
-               (such as a switch or voice input), knowing the current point of focus is very important.
-               Visible focus must also meet the needs of users with low vision, who may also be keyboard-only
-               users.
+            <p>For sighted people with mobility impairments who use a keyboard or a device that utilizes
+               the <a href="https://www.w3.org/TR/WCAG22/#dfn-keyboard-interface">keyboard interface</a> (such as a switch or voice input), knowing the current point of focus is very important.
+               Visible focus must also meet the needs of users with low vision, who may also rely
+               on the keyboard.
             </p>
             <p>A keyboard focus indicator can take different forms. This Success Criterion lists
                two ways to achieve a sufficient focus appearance. The first involves three primary
@@ -173,8 +173,8 @@
                
                <p>Where the indicator does not "solidly" bound or surround the component, as with a
                   dashed or dotted line, it cannot meet this primary consideration. However, a non-solid
-                  line can still pass if it meets the wording of the exceptions (discussed in more detail
-                  under Exceptions).
+                  line can still pass if it meets the area calculations for the size of the focus indicator
+                  (discussed in more detail under Area of focus indicator).
                </p>
                
                
@@ -182,7 +182,7 @@
                   <img src="img/focus-indicator-weak-dashed-border.svg" alt="3 of 5 stars are selected with the whole third star outlined with a 1 pixel thick dashed line" />
                   
                   <figcaption>Figure 4  Fails: the dashed outline does not "solidly bound" the third star and does not meet
-                     the exception language.
+                     the size requirements of the focus area calculation.
                   </figcaption>
                   
                </figure>         
@@ -192,7 +192,7 @@
                   <img src="img/focus-indicator-strong-dashed-border.svg" alt="3 of 5 stars are selected with the whole third star outlined with a 2 pixel thick dashed line" />
                   
                   <figcaption>Figure 5  Passes: the dashed outline does not "solidly bound" the third star; however, the
-                     dashed line meets the area requirements of the exception language.
+                     dashed line meets the size requirements of the focus area calculation.
                   </figcaption>
                   
                </figure>      
@@ -372,9 +372,9 @@
                
                <p>A <a href="https://www.w3.org/WAI/ARIA/apg/example-index/slider/slider-color-viewer.html">slider to pick colors</a> provides a working example of a different complex component that predominantly shows
                   focus for the subcomponent. In this case, the thumb slider sub-component has a focus
-                  indicator of sufficient size and contrast to pass the exception. There is also a subtle
-                  focus around the whole slider component, but it does not need to be assessed to pass
-                  this SC.
+                  indicator of sufficient size and contrast to pass the sufficient area calculation.
+                  There is also a subtle focus around the whole slider component, but it does not need
+                  to be assessed to pass this SC.
                </p>
                
                
@@ -406,7 +406,7 @@
                
                
                <p>A <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role#example"> functional example of sub-component-only tab focus</a> has an indicator that is large enough (at least four times the shortest side) with
-                  sufficient contrast to pass the exception language of this SC.
+                  sufficient contrast to pass the focus area language of this SC.
                </p>
                
                
@@ -539,9 +539,10 @@
                   
                   
                   <p>The Success Criterion includes an alternative size measure of "at least as large as
-                     a 4 CSS pixels border along the shortest side". This is included to allow for smaller
+                     a 4 CSS pixel thick line along the shortest side". This is included to allow for smaller
                      but thick indicators. For example, some controls might be of a fixed height but variable
-                     width, in which case this measure allows for a more consistent approach.
+                     width, in which case this measure, 4×<em>h</em>, allows for a more consistent approach. A button that is 40 CSS pixels high would
+                     need to have a focus area of at least 160 CSS pixels (40×4).
                   </p>
                   
                   
@@ -656,10 +657,10 @@
                   
                   <div class="note">
                      <div role="heading" class="note-title marker" aria-level="5">Note</div>
-                     <p>Some of the examples in this document, especially in the Exceptions section, are screen-captured
-                        images of elements. Due to loss of resolution in these images, the actual pixel color
-                        may not match the original. As such, they are intended to be used for illustrative
-                        purposes, and should not be inspected on a pixel-by-pixel basis for sufficient contrast.
+                     <p>Some of the examples in this document are screen-captured images of elements. Due
+                        to loss of resolution in these images, the actual pixel color may not match the original.
+                        As such, they are intended to be used for illustrative purposes, and should not be
+                        inspected on a pixel-by-pixel basis for sufficient contrast.
                      </p>
                   </div>    
                   
@@ -682,13 +683,12 @@
                   <p>If an inline link is broken over multiple lines, some methods of creating a focus
                      indicator create different results by browsers. CSS <code>outline</code> separately surrounds each part of a link that breaks across multiple lines. It is
                      by far the most common CSS technique for focus indication, and produces a result that
-                     satisfies the minimum bounding box definition (each part is solidly bound). CSS <code>border</code> will split the perimeter across the parts of the link, which results in an unenclosed
-                     border for each line of the link. Such an effect still meets the area requirement
-                     both since text links are inevitably longer than they are tall (thus the three sides
-                     of the focus indicator are "at least as large as" four times the shortest side), and
-                     since the focus indicator around links includes some padding and so exceeds the minimum
-                     bounding box. Where the contrast requirements are met, each of these methods produces
-                     a sufficient focus indicator.
+                     satisfies the minimum bounding box definition since each part is solidly bound. CSS
+                     <code>border</code> will split the perimeter across the parts of the link, which results in an unenclosed
+                     border for each line of the link. The minimum bounding box definition states that
+                     link focus can be assessed as if the link was all on one line, so these are also considered
+                     to meet the "encloses" language. Therefore, where the contrast requirements are met,
+                     each of these methods produces a sufficient focus indicator.
                   </p>
                   
                   <figure id="focus-indicator-inline-link-outline">
@@ -704,8 +704,9 @@
                   <figure id="focus-indicator-inline-link">
                      <img src="img/focus-inline-link.png" alt="A paragraph of text containing a link broken over two lines. The red focus indicator has a gap on the right of one part of the link, and on the left of the other part of the link." />
                      
-                     <figcaption>Figure 20  Passes: Although the CSS <code>border</code> on a multi-line link does not enclose the link, the size of the indicator meets the
-                        shortest-side calculation of the minimum bounding box requirements for indicator area.
+                     <figcaption>Figure 20  Passes: Although the CSS <code>border</code> on a multi-line link does not enclose the link, the minimum bounding box definition
+                        allows it to be assessed as if it was on a single line. As well, the indicator's area
+                        is invariably more than four times the shortest-side calculation .
                      </figcaption>
                      
                   </figure>

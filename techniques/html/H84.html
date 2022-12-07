@@ -41,7 +41,7 @@
       <main>
          <section id="applicability">
             <h2>Applicability</h2>
-            <p>HTML and XHTML</p>
+            <p><abbr title="HyperText Markup Language">HTML</abbr></p>
             <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/on-input">Success Criterion 3.2.2: On Input</a> (Sufficient when used with <a href="../general/G80">G80: Providing a submit button to initiate a change of context</a>)</span>.
             </p>
          </section>
@@ -49,55 +49,57 @@
             <h2>Description</h2>
             <p>The objective of this technique is to allow the user to control when an action is
                performed, rather than having the action occur as a side effect of choosing a value
-               for the <code class="el">select</code> element. The user may inspect the different values of the <code class="el">select</code> element, or may accidentally choose the wrong value, without causing the action to
+               for the <code class="language-html">select</code> element. The user may inspect the different values of the <code class="language-html">select</code> element, or may accidentally choose the wrong value, without causing the action to
                occur. When the user is satisfied with their choice, they select the button to perform
                the action.
             </p>
-            <p>This is particularly important for users who are choosing the value of the <code class="el">select</code> element via the keyboard, since navigating through the options of the <code class="el">select</code> element changes the value of the control. 
+            <p>This is particularly important for users who are choosing the value of the <code class="language-html">select</code> element via the keyboard, since navigating through the options of the <code class="language-html">select</code> element changes the value of the control.
             </p>
          </section>
          <section id="examples">
             <h2>Examples</h2>
             <section class="example" id="example-1-a-calendar">
-               <h3>Example 1: A Calendar</h3>
-               <p>A Web page lets the user choose any month of any year and display the calendar for
-                  that month. After the user has set the month and year, he displays the calendar by
-                  pressing the "Show" button. This example relies on client-side scripting to implement
+               <h3>Example 1: A calendar</h3>
+               <p>A Web page lets the user choose a quarter of any year and display the calendar for
+                  those months. After the user has set the quarter and year, they display the calendar
+                  by pressing the "Show" button. This example relies on client-side scripting to implement
                   the action.
                </p><pre xml:space="preserve">
-&lt;label for="month"&gt;Month:&lt;/label&gt;
-&lt;select name="month" id="month"&gt;
-  &lt;option value="1"&gt;January&lt;/option&gt;
-  &lt;option value="2"&gt; February&lt;/option&gt;
-  ...
-  &lt;option value="12"&gt;December&lt;/option&gt;
+&lt;label for="quarter"&gt;Quarter:&lt;/label&gt;
+&lt;select id="quarter" name="quarter"&gt;
+  &lt;option value="1"&gt;Quarter 1 (January - March)&lt;/option&gt;
+  &lt;option value="2"&gt;Quarter 2 (April - June)&lt;/option&gt;
+  &lt;option value="3"&gt;Quarter 3 (July - September)&lt;/option&gt;
+  &lt;option value="4"&gt;Quarter 4 (October - December)&lt;/option&gt;
 &lt;/select&gt; 
 &lt;label for="year"&gt;Year:&lt;/label&gt;
-&lt;input type="text" name="year" id="year"&gt;
-&lt;input type="button" value="Show" onclick = "..."&gt;</pre></section>
+&lt;input name="year" type="text" id="year"&gt;
+&lt;button name="show" type="button"&gt;Show&lt;/button&gt;</pre></section>
             <section class="example" id="example-2-choosing-an-action">
                <h3>Example 2: Choosing an action</h3>
-               <p>A <code class="el">select</code> element contains a list of possible actions. The action is not performed until the
-                  user presses the "Do it" button.
+               <p>A <code class="language-html">select</code> element contains a list of possible actions. The action is not performed until the
+                  user presses the "Update" button.
                </p><pre xml:space="preserve">
-&lt;form action="http://somesite.com/action" method="post"&gt;
+&lt;form action="/action" method="post"&gt;
   &lt;label for="action"&gt;Options:&lt;/label&gt;
   &lt;select name="action" id="action"&gt;
-    &lt;option value="help"&gt;Help&lt;/option&gt;
-    &lt;option value="reset"&gt;Reset&lt;/option&gt;
-    &lt;option value="submit"&gt;Submit&lt;/option&gt;
+    &lt;option value="add"&gt;Add&lt;/option&gt;
+    &lt;option value="remove"&gt;Remove&lt;/option&gt;
+    &lt;option value="cancel"&gt;Cancel&lt;/option&gt;
+    &lt;option value="order"&gt;Order&lt;/option&gt;
   &lt;/select&gt; 
-  &lt;button type="submit" name="submit" value="submit"&gt;Do It &lt;/button&gt;
-&lt;/form&gt;              </pre></section>
+  &lt;button name="submit" type="submit"&gt;Update&lt;/button&gt;
+&lt;/form&gt;</pre></section>
          </section>
          <section id="resources">
             <h2>Resources</h2>
             <p>Resources are for information purposes only, no endorsement implied.</p>
             <ul>
                
-               <li>
-                  									         <a href="http://www.cs.tut.fi/~jkorpela/forms/navmenu.html">Jukka Korpela: Navigational pulldown menus in HTML</a>
-                  								       
+               <li><a href="https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element">HTML - the <code class="language-html">button</code> element</a>.
+               </li>
+               
+               <li><a href="https://html.spec.whatwg.org/multipage/form-elements.html#the-select-element">HTML - the <code class="language-html">select</code> element</a>.
                </li>
                
             </ul>
@@ -115,23 +117,25 @@
          <section id="tests">
             <h2>Tests</h2>
             <section class="procedure" id="procedure">
+               
                <h3>Procedure</h3>
                
-               <p>For each <code class="el">select</code> element/button element combination:
+               <p>For each <code class="language-html">select</code> element/button element combination:
                </p>
                
                <ol>
                   
-                  <li>Check that focus (including keyboard focus) on an option in the <code class="el">select</code> element does not result in any actions
+                  <li>Check that focus (including keyboard focus) on an option in the <code class="language-html">select</code> element does not result in any actions
                   </li>
                   
-                  <li>Check that selecting the button performs the action associated with the current <code class="el">select</code> value
+                  <li>Check that selecting the button performs the action associated with the current <code class="language-html">select</code> value
                   </li>
                   
                </ol>
                
             </section>
             <section class="results" id="expected-results">
+               
                <h3>Expected Results</h3>
                
                <ul>

@@ -45,44 +45,41 @@
       <main>
          <section id="applicability">
             <h2>Applicability</h2>
-            <p>HTML and XHTML</p>
+            <p><abbr title="HyperText Markup Language">HTML</abbr></p>
             <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/meaningful-sequence">Success Criterion 1.3.2: Meaningful Sequence</a> (Sufficient when used with <a href="../general/G57">G57: Ordering the content in a meaningful sequence</a>)</span>.
             </p>
          </section>
          <section id="description">
             <h2>Description</h2>
             <p>The objective of this technique is to identify changes in the text direction of text
-               that includes nested directional runs by providing the <code class="att">dir</code> attribute on
-               inline elements. A nested directional run is a run of text that includes mixed directional
-               text, for example, a paragraph in English containing a quoted Hebrew sentence which
-               in turn includes an English phrase. Use of the <code class="att">dir</code> attribute on an enclosing <code class="el">span</code> or other inline element may be necessary because the <a href="https://www.w3.org/International/articles/inline-bidi-markup/">Unicode bidirectional algorithm</a> can produce undesirable results when mixed
-               directional text contains spaces or punctuation. The concepts used in this technique
-               are described in <a href="https://www.w3.org/International/articles/inline-bidi-markup/">What you need to know about the bidi algorithm and inline markup</a>. 
+               that includes nested directional runs by providing the <code class="language-html">dir</code> attribute on inline elements. A nested directional run is a run of text that includes
+               mixed directional text, for example, a paragraph in English containing a quoted Hebrew
+               sentence which in turn includes an English phrase. Use of the <code class="language-html">dir</code> attribute on an enclosing <code class="language-html">span</code> or other inline element may be necessary because the <a href="https://www.w3.org/International/articles/inline-bidi-markup/">Unicode bidirectional algorithm</a> can produce undesirable results when mixed directional text contains spaces or punctuation.
+               The concepts used in this technique are described in <a href="https://www.w3.org/International/articles/inline-bidi-markup/">What you need to know about the bidi algorithm and inline markup</a>.
             </p>
          </section>
          <section id="examples">
             <h2>Examples</h2>
-            <section class="example" id="example-1">
-               <h3>Example 1</h3>
-               <p>This example defines the text direction of a nested, mixed-direction phrase, in Hebrew
-                  and English, to be right-to-left. Because the whole quote is in Hebrew, and therefore
-                  runs right to left, the text "W3C" and the comma should appear to the left of (i.e.,
-                  after) the Hebrew text, like this:
+            <section class="example" id="example-1-defining-the-text-direction-of-a-nested-mixed-direction-phrase-in-hebrew-and-english-to-be-right-to-left">
+               <h3>Example 1: Defining the text direction of a nested, mixed-direction phrase, in Hebrew
+                  and English, to be right-to-left
+               </h3>
+               <p>Because the whole quote is in Hebrew, and therefore runs right to left, the text "W3C"
+                  and the comma should appear to the left of (i.e., after) the Hebrew text, like this:
                </p>
                <p>The title is "<span lang="he">פעילות הבינאום, W3C</span>" in Hebrew.
                </p>
-               <p>Visually-ordered ASCII version (RTL text in uppercase, LTR in lower):</p>
-               <p>the title is "w3c ,YTIVITCA NOITAZILANOITANRETNI" in hebrew.</p>
+               <p>Visually-ordered <abbr title="American Standard Code for Information Interchange">ASCII</abbr> version (<abbr title="Right To Left">RTL</abbr> text in uppercase, <abbr title="Left To Right">LTR</abbr> in lower):
+               </p>
+               <p>the title is "w3c ,YTIVITCA NOITAZILANOITANRETNI" in Hebrew.</p>
                <p>The Unicode bidirection algorithm alone is insufficient to achieve the right result,
-                  and leaves the text 'W3C' on the right side of the quote:
+                  and leaves the text "W3C" on the right side of the quote:
                </p>
                <p>The title is "<span lang="he">פעילות הבינאום</span>, W3C" in Hebrew.
                </p>
                <p>Visually-ordered ASCII version:</p>
                <p>the title is "YTIVITCA NOITAZILANOITANRETNI, w3c" in hebrew.</p>
-               <p>The following markup will produce the expected result:</p><pre xml:space="preserve">
-&lt;p&gt;The title says "&lt;span lang="he" 
-dir="rtl"&gt;פעילות הבינאום, W3C&lt;/span&gt;" in Hebrew.&lt;/p&gt; </pre></section>
+               <p>The following markup will produce the expected result:</p><pre xml:space="preserve">&lt;p&gt;The title says "&lt;span lang="he" dir="rtl"&gt;פעילות הבינאום, W3C&lt;/span&gt;" in Hebrew.&lt;/p&gt;</pre></section>
          </section>
          <section id="resources">
             <h2>Resources</h2>
@@ -90,14 +87,18 @@ dir="rtl"&gt;פעילות הבינאום, W3C&lt;/span&gt;" in Hebrew.&lt;/p&gt;
             <ul>
                
                <li>
-                  									         <a href="https://www.w3.org/TR/html401/struct/dirlang.html#blocklevel-bidi">Inheritance of text direction information</a>
-                  								       
+                  <a href="https://html.spec.whatwg.org/multipage/dom.html#attr-dir">HTML - the <code class="language-html">dir</code> attribute</a>.
+                  
                </li>
                
                <li>
-                  									         <a href="https://www.w3.org/TR/i18n-html-tech-bidi/">Authoring Techniques for
-                     XHTML &amp; HTML Internationalization: Handling Bidirectional Text 1.0</a>
-                  								       
+                  <a href="https://html.spec.whatwg.org/multipage/rendering.html#bidi-rendering">HTML - bidirectional text</a>.
+                  
+               </li>
+               
+               <li>
+                  <a href="https://www.w3.org/TR/i18n-html-tech-bidi/">Authoring HTML: Handling Right-to-left Scripts</a>.
+                  
                </li>
                
             </ul>
@@ -114,30 +115,29 @@ dir="rtl"&gt;פעילות הבינאום, W3C&lt;/span&gt;" in Hebrew.&lt;/p&gt;
          <section id="tests">
             <h2>Tests</h2>
             <section class="procedure" id="procedure">
+               
                <h3>Procedure</h3>
                
                <ol>
                   
                   <li>Examine the text direction of text in the document</li>
                   
-                  <li>If the text direction is right-to-left, check that for the ancestor element that
-                     has a <code class="att">dir</code> attribute, the attribute has the value "rtl"
-                  </li>
+                  <li>If the text direction is right-to-left, check that for the ancestor element that has
+                     a <code class="language-html">dir</code> attribute, the attribute has the value <code class="language-html">"rtl"</code></li>
                   
-                  <li>If the text direction is left-to-right, check that there is no ancestor element
-                     with a <code class="att">dir</code> attribute, or that for the ancestor element that has a
-                     <code class="att">dir</code> attribute, the attribute has the value "ltr"
-                  </li>
+                  <li>If the text direction is left-to-right, check that there is no ancestor element with
+                     a <code class="language-html">dir</code> attribute, or that for the ancestor element that has a <code class="language-html">dir</code> attribute, the attribute has the value <code class="language-html">"ltr"</code></li>
                   
                </ol>
                
             </section>
             <section class="results" id="expected-results">
+               
                <h3>Expected Results</h3>
                
                <ul>
                   
-                  <li>Checks #2 and #3 are true for all text.</li>
+                  <li>Checks 2 and 3 are true for all text.</li>
                   
                </ul>
                
