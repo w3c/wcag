@@ -46,6 +46,7 @@
 		<delete file="${inputdir.guidelines}/wcag.xml" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/wcag.json" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/versions.xml" failonerror="false"/>
+		<delete file="${inputdir.guidelines}/test-sql.sql" failonerror="false"/>
 		<delete file="${inputdir.techniques}/techniques.xml" failonerror="false"/>
 		<delete file="${inputdir.techniques}/technique-associations.xml" failonerror="false"/>
 		<delete file="${inputdir.techniques}/about-flat.html" failonerror="false"/>
@@ -64,7 +65,7 @@
 		</xslt>
 	</target>
 	
-	<target name="guidelines-xml" depends="flatten" description="Build an XML representation of the guidelines">
+	<target name="guidelines-xml" depends="flatten, guidelines-versions" description="Build an XML representation of the guidelines">
 		<xslt in="${inputdir.guidelines}/index-flat.html" out="${inputdir.guidelines}/wcag.xml" style="xslt/generate-structure-xml.xslt">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
@@ -104,7 +105,7 @@
 		<mkdir dir="output/guidelines/${guidelines.version}"/>
 		<copy file="css/base.css" todir="output/guidelines/${guidelines.version}"/>
 		<copy file="guidelines/guidelines.css" todir="output/guidelines/${guidelines.version}"/>
-		<copy file="guidelines/relative-luminance.xml" todir="output/guidelines/${guidelines.version}"/>
+		<copy file="guidelines/relative-luminance.html" todir="output/guidelines/${guidelines.version}"/>
 		<exec executable="curl">
 			<arg value="&quot;https://labs.w3.org/spec-generator/?type=respec&amp;url=https://raw.githack.com/w3c/wcag/master/guidelines/index.html&quot;"/>
 			<arg value="-o"/>
@@ -280,7 +281,7 @@
 			<param name="documentset" expression="Understanding"/>
 		</xslt>
 		<copy file="understanding/understanding.css" todir="output/understanding/"/>
-		<copy file="guidelines/relative-luminance.xml" todir="output/understanding/"/>
+		<copy file="guidelines/relative-luminance.html" todir="output/understanding/"/>
 		<copy todir="output/understanding/img/" flatten="true">
 			<fileset dir="understanding">
 				<patternset includes="*/img/*"/>
@@ -415,6 +416,22 @@
 	<!-- JSON -->
 	<target name="json" depends="init, guidelines-xml, techniques-list, techniques-association">
 		<xslt in="${inputdir.guidelines}/wcag.xml" out="${inputdir.guidelines}/wcag.json" style="xslt/xml-to-json.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+		</xslt>
+	</target>
+	
+	<!-- Redirects -->
+	<target name="redirects">
+		<xslt in="xslt/ids.xml" out="output/understanding/.htaccess" style="xslt/ids-to-redirects.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+		</xslt>
+	</target>
+	
+	<!-- SQL for CR test tool -->
+	<target name="cr-sql" depends="guidelines-xml, guidelines-versions, techniques-list, techniques-association">
+		<xslt in="${inputdir.guidelines}/wcag.xml" out="${inputdir.guidelines}/test-sql.sql" style="xslt/generate-test-sql.xslt" force="true">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 		</xslt>
