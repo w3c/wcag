@@ -278,7 +278,7 @@
 	<xsl:template name="navigation">
 		<xsl:param name="navigation.current" required="no"/>
 
-		<div class="nav-container">
+		<div class="default-grid nav-container nav-page-specific">
 			<div class="default-grid">
 				<nav class="nav" aria-label="{$documentset.name}">
 					<ul>
@@ -423,5 +423,19 @@
 				</ul>
 			</div>
 		</footer>
+	</xsl:template>
+	
+	<xsl:template name="waiscript">
+		<link rel="stylesheet" href="../a11y-light.css" />
+		<script src="../highlight.min.js" />
+		<script>
+			document.addEventListener('DOMContentLoaded', (event) => {
+			document.querySelectorAll('pre').forEach((el) => {
+			hljs.highlightElement(el);
+			});
+			});
+			var translationStrings = {}; /* fix WAI JS */
+		</script>
+		<script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
 	</xsl:template>
 </xsl:stylesheet>

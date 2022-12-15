@@ -236,23 +236,13 @@
 						<xsl:call-template name="related"/>
 						<xsl:call-template name="tests"/>
 						<xsl:call-template name="act"/>
+						<xsl:call-template name="back-to-top"/>
 					</main>
 					<xsl:call-template name="help-improve"/>
 				</div>
 				<xsl:call-template name="wai-site-footer"/>
 				<xsl:call-template name="site-footer"/>
-				<link rel="stylesheet" href="../a11y-light.css" />
-				<script src="../highlight.min.js" />
-				<script><xsl:text disable-output-escaping="yes">
-				document.addEventListener('DOMContentLoaded', (event) => {
-			  	document.querySelectorAll('pre').forEach((el) => {
-    				hljs.highlightElement(el);
-  				});
-				});
-				var translationStrings = {}; /* fix WAI JS */
-				</xsl:text>
-				</script>
-		    <script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
+				<xsl:call-template name="waiscript"/>
 			</body>
 		</html>
 	</xsl:template>

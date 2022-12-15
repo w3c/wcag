@@ -943,11 +943,7 @@
 				</div>
 				<xsl:call-template name="wai-site-footer"/>
 				<xsl:call-template name="site-footer"/>
-				<script><xsl:text disable-output-escaping="yes">
-				var translationStrings = {}; /* fix WAI JS */
-				</xsl:text>
-				</script>
-				<script src="https://www.w3.org/WAI/assets/scripts/main.js"/>
+				<xsl:call-template name="waiscript"/>
 			</body>
 		</html>
 	</xsl:template>
