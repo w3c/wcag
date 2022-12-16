@@ -871,12 +871,6 @@
 		</xsl:result-document>
 	</xsl:template>
 
-	<xsl:template match="node() | @*" mode="#all">
-		<xsl:copy>
-			<xsl:apply-templates select="node() | @*" mode="#current"/>
-		</xsl:copy>
-	</xsl:template>
-
 	<xsl:template match="html:html">
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:variable name="lang" select="$meta/ancestor::guidelines/@lang"/>

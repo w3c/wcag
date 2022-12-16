@@ -92,7 +92,7 @@
 		</xsl:choose>
 	</xsl:function>
 	
-	<xsl:template match="node()|@*" priority="-1">
+	<xsl:template match="node()|@*" mode="#all" priority="-1">
 		<xsl:copy>
 			<xsl:apply-templates select="node()|@*"/>
 		</xsl:copy>
