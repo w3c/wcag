@@ -551,13 +551,13 @@
 				</xsl:call-template>
 			</xsl:when>
 			<!-- Otherwise Level 2 Next link, if any -->
-			<xsl:otherwise>
+			<xsl:when test="count($meta/following-sibling::success-criterion) &gt; 1">
 				<xsl:call-template name="meta-link">
 					<xsl:with-param name="meta-for-link" select="$meta/following-sibling::success-criterion[1]"/>
 					<xsl:with-param name="prevnexttype">Next</xsl:with-param>
 					<xsl:with-param name="prevnextdir">next</xsl:with-param>
 				</xsl:call-template>
-			</xsl:otherwise>
+			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
 
