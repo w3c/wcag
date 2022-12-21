@@ -18,36 +18,38 @@
 		</xsl:result-document>
 	</xsl:template>
 
-	<xsl:template match="understanding">
-		<li><a href="{file/@href}" class="tocxref"><xsl:value-of select="name"/></a></li>
-	</xsl:template>
-
-	<xsl:template match="principle | guideline | success-criterion">
-		<xsl:choose>
-			<xsl:when test="name() != 'principle'">
-			<li>
-				<a href="{file/@href}" class="tocxref">
-					<span class="secno"><xsl:value-of select="num"/><xsl:text> </xsl:text></span>
-					<xsl:value-of select="name"/>
-				</a>
-			</li>
-			</xsl:when>
-			<xsl:otherwise>
-				<h3><xsl:value-of select="name"/></h3>
-			</xsl:otherwise>				
-		</xsl:choose>
-		<xsl:if test="guideline">
+	<xsl:template match="principle">
+		<section>
+			<h3><xsl:value-of select="name"/></h3>
 			<ol class="toc toc-wcag-docs toc-understanding-guideline">
 				<xsl:apply-templates select="guideline"/>
 			</ol>
-		</xsl:if>
-		<xsl:if test="success-criterion">
-			<li>
-				<ol class="toc toc-wcag-docs">
-					<xsl:apply-templates select="success-criterion"/>
-				</ol>
-			</li>
-		</xsl:if>
+		</section>
 	</xsl:template>
-		
+	
+	<xsl:template match="guideline">
+		<li class="tocline">
+			<a href="{file/@href}" class="tocxref">
+				<span class="secno"><xsl:value-of select="num"/><xsl:text> </xsl:text></span>
+				<xsl:value-of select="name"/>
+			</a>
+			<ol class="toc toc-wcag-docs toc-understanding-guideline">
+				<xsl:apply-templates select="success-criterion"/>
+			</ol>
+		</li>
+	</xsl:template>
+	
+	<xsl:template match="success-criterion">
+		<li class="tocline">
+			<a href="{file/@href}" class="tocxref">
+				<span class="secno"><xsl:value-of select="num"/><xsl:text> </xsl:text></span>
+				<xsl:value-of select="name"/>
+			</a>
+		</li>
+	</xsl:template>
+	
+	<xsl:template match="understanding">
+		<li class="tocline"><a href="{file/@href}" class="tocxref"><xsl:value-of select="name"/></a></li>
+	</xsl:template>
+	
 </xsl:stylesheet>
