@@ -206,6 +206,7 @@
 	</xsl:template>
 
 	<xsl:template name="header">
+    <a href="#main" class="button button--skip-link">Skip to content</a>
 		<div class="minimal-header-container default-grid">
 				<div class="minimal-header" id="site-header">
 					<div class="minimal-header-name">

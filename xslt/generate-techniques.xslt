@@ -225,7 +225,7 @@
 				<xsl:call-template name="navigation"/>
 				<div class="default-grid with-gap leftcol">
 					<xsl:call-template name="sidebar" />
-					<main class="standalone-resource__main">
+					<main id="main" class="standalone-resource__main">
 						<xsl:apply-templates select="//html:h1"/>
 						<xsl:call-template name="most-important-meta" />
 						<div class="excol-all"></div>
