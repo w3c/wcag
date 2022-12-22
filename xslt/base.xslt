@@ -209,7 +209,7 @@
 		<div class="minimal-header-container default-grid">
 				<div class="minimal-header" id="site-header">
 					<div class="minimal-header-name">
-						<a class="minimal-header-link">
+						<a>
 							<xsl:attribute name="href">
 								<xsl:if test="$documentset = 'Understanding'"><xsl:value-of select="$loc.understanding"/></xsl:if>
 								<xsl:if test="$documentset = 'Techniques'"><xsl:value-of select="$loc.techniques"/></xsl:if>
