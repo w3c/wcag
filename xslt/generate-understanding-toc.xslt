@@ -10,22 +10,24 @@
 	<xsl:template match="guidelines">
 		<xsl:result-document href="toc.html" method="xhtml" omit-xml-declaration="yes">
 				<xsl:apply-templates select="principle | guideline | success-criterion"/>
+			<section id="other">
 				<h2>Other Understanding documents</h2>
 				<ul class="toc-wcag-docs">
 				<xsl:apply-templates select="understanding"/>
 				</ul>
+			</section>
 		</xsl:result-document>
 	</xsl:template>
 
 	<xsl:template match="principle">
-		<section>
+		<section id="{@id}">
 			<h2><xsl:value-of select="name"/></h2>
 			<xsl:apply-templates select="guideline"/>
 		</section>
 	</xsl:template>
 	
 	<xsl:template match="guideline">
-		<section>
+		<section id="{@id}">
 			<h3>
 				<a href="{file/@href}">
 					<span class="secno"><xsl:value-of select="num"/><xsl:text> </xsl:text></span>
