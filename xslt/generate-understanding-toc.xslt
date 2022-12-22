@@ -20,29 +20,27 @@
 	<xsl:template match="principle">
 		<section>
 			<h2><xsl:value-of select="name"/></h2>
-			<ol class="toc toc-wcag-docs toc-understanding-guideline">
-				<xsl:apply-templates select="guideline"/>
-			</ol>
+			<xsl:apply-templates select="guideline"/>
 		</section>
 	</xsl:template>
 	
 	<xsl:template match="guideline">
 		<section>
 			<h3>
-				<a href="{file/@href}" class="tocxref">
+				<a href="{file/@href}">
 					<span class="secno"><xsl:value-of select="num"/><xsl:text> </xsl:text></span>
 					<xsl:value-of select="name"/>
 				</a>
 			</h3>
-			<ol class="toc toc-wcag-docs toc-understanding-guideline">
-				<xsl:apply-templates select="success-criterion"/>
-			</ol>
+			<ul>
+			<xsl:apply-templates select="success-criterion"/>
+			</ul>
 		</section>
 	</xsl:template>
 	
 	<xsl:template match="success-criterion">
 		<li>
-			<a href="{file/@href}" class="tocxref">
+			<a href="{file/@href}">
 				<span class="secno"><xsl:value-of select="num"/><xsl:text> </xsl:text></span>
 				<xsl:value-of select="name"/>
 			</a>
@@ -50,7 +48,7 @@
 	</xsl:template>
 	
 	<xsl:template match="understanding">
-		<li><a href="{file/@href}" class="tocxref"><xsl:value-of select="name"/></a></li>
+		<li><a href="{file/@href}"><xsl:value-of select="name"/></a></li>
 	</xsl:template>
 	
 </xsl:stylesheet>
