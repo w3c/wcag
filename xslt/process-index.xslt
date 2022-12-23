@@ -32,6 +32,7 @@
 			<xsl:apply-templates/>
 			<xsl:call-template name="wai-site-footer"/>
 			<xsl:call-template name="site-footer"/>
+			<xsl:call-template name="waiscript"/>
 		</xsl:copy>
 	</xsl:template>
 	
