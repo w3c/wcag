@@ -221,7 +221,14 @@
 						<xsl:value-of select="$documentset.name"/>
 						</a>
 					</div>
-					<div class="minimal-header-subtitle">Examples of ways to meet WCAG; not required</div>
+          <xsl:choose>
+            <xsl:when test="$documentset = 'Techniques'">
+    					<div class="minimal-header-subtitle">Informative explanations, not required to meet WCAG</div>
+            </xsl:when>
+            <xsl:when test="$documentset = 'Understanding'">
+    					<div class="minimal-header-subtitle">Examples of ways to meet WCAG; not required</div>
+            </xsl:when>
+          </xsl:choose>
 						<a class="minimal-header-link">
 							<xsl:attribute name="href">
 								<xsl:if test="$documentset = 'Understanding'"><xsl:value-of select="$loc.understanding"/>about</xsl:if>
@@ -279,72 +286,25 @@
 	<xsl:template name="navigation">
 		<xsl:param name="navigation.current" required="no"/>
 
-		<div class="default-grid nav-container nav-page-specific">
-			<div class="default-grid">
-				<nav class="nav" aria-label="{$documentset.name}">
-					<ul>
-						<xsl:choose>
-							<xsl:when test="$documentset = 'Techniques'">
-								<li class="nav__item">
-									<xsl:choose>
-										<xsl:when test="$navigation.current = 'all'">
-											<a aria-current="page" href="{$loc.techniques}#techniques" class="active">All Techniques</a>
-										</xsl:when>
-										<xsl:otherwise>
-											<a href="{$loc.techniques}#techniques">All Techniques</a>
-										</xsl:otherwise>								
-									</xsl:choose>
-								</li>
-								<!--
-								<li class="nav__item">
-									<xsl:choose>
-										<xsl:when test="$navigation.current = 'about'">
-											<a aria-current="page" class="active" href="{$loc.techniques}/about">About Techniques</a>
-										</xsl:when>
-										<xsl:otherwise>
-											<a href="{$loc.techniques}/about">About Techniques</a>
-										</xsl:otherwise>								
-									</xsl:choose>
-								</li>
-								-->
-							</xsl:when>
-							<xsl:when test="$documentset = 'Understanding'">
-								<li class="nav__item">
-								<a href=".">
-									<xsl:if test="$navigation.current = 'all'">
-										<xsl:attribute name="class">active</xsl:attribute>
-										<xsl:attribute name="aria-current">page</xsl:attribute>
-									</xsl:if>
-									All Understanding Docs
-								</a>
-							</li>
-								<!--
+    <xsl:if test="$documentset = 'Understanding'">
+  		<div class="default-grid nav-container nav-page-specific">
+  			<div class="default-grid">
+  				<nav class="nav" aria-label="{$documentset.name}">
+  					<ul>
 							<li class="nav__item">
-								<xsl:choose>
-									<xsl:when test="$navigation.current = 'about'">
-										<a href="/understanding/about" aria-current="page" class="active">About WCAG Understanding Docs</a>
-									</xsl:when>
-									<xsl:otherwise>
-										<a href="/understanding/about">About WCAG Understanding Docs</a>
-									</xsl:otherwise>
-								</xsl:choose>
+							<a href=".">
+								<xsl:if test="$navigation.current = 'all'">
+									<xsl:attribute name="class">active</xsl:attribute>
+									<xsl:attribute name="aria-current">page</xsl:attribute>
+								</xsl:if>
+								All Understanding Docs
+							</a>
 							</li>
-						-->
-							</xsl:when>
-						</xsl:choose>
-						<!--
-						<li>
-								<a href="/WAI/standards-guidelines/wcag/docs/">All WCAG 2 Guidance 
-									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24" width="24">
-										<path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" d="M14 5C13.4477 5 13 4.55228 13 4C13 3.44772 13.4477 3 14 3H20C20.2652 3 20.5196 3.10536 20.7071 3.29289C20.8946 3.48043 21 3.73478 21 4L21 10C21 10.5523 20.5523 11 20 11C19.4477 11 19 10.5523 19 10L19 6.41422L9.70711 15.7071C9.31658 16.0976 8.68342 16.0976 8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929L17.5858 5H14ZM3 7C3 5.89543 3.89543 5 5 5H10C10.5523 5 11 5.44772 11 6C11 6.55228 10.5523 7 10 7H5V19H17V14C17 13.4477 17.4477 13 18 13C18.5523 13 19 13.4477 19 14V19C19 20.1046 18.1046 21 17 21H5C3.89543 21 3 20.1046 3 19V7Z" fill="#282828"></path>
-									</svg>
-								</a>
-						</li>
-						-->
-					</ul>
-				</nav>
-			</div>
-		</div>
+  					</ul>
+  				</nav>
+  			</div>
+  		</div>
+    </xsl:if>
 	</xsl:template>
 	
 	<xsl:template name="nav-level1-prev"><xsl:message>override nav-level1-prev</xsl:message></xsl:template>

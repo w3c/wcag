@@ -214,7 +214,6 @@
 ]]></xsl:text>
 		<html lang="{$lang}" xml:lang="{$lang}">
 			<head>
-				<meta charset="UTF-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<xsl:apply-templates select="//html:title"/>
 		    <link rel="stylesheet" href="https://w3.org/WAI/assets/css/style.css" />
@@ -222,7 +221,6 @@
 			</head>
 			<body class="wcag-docs" dir="ltr">
 				<xsl:call-template name="header"/>
-				<xsl:call-template name="navigation"/>
 				<div class="default-grid with-gap leftcol">
 					<xsl:call-template name="sidebar" />
 					<main id="main" class="standalone-resource__main">
