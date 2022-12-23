@@ -45,7 +45,12 @@
 	
 	<xsl:function name="wcag:generate-id">
 		<xsl:param name="title"/>
-		<xsl:value-of select="lower-case(replace(replace($title, '\s+', '-'), '[\s,\():]+', ''))"/>
+		<xsl:choose>
+			<xsl:when test="$title = 'Parsing (Obsolete and removed)'">parsing</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="lower-case(replace(replace($title, '\s+', '-'), '[\s,\():]+', ''))"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:function>
 	
 	<xsl:function name="wcag:find-heading">
