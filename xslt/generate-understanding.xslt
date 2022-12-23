@@ -577,11 +577,6 @@
 		</xsl:variable>
 
 		<a href="{$meta-for-link/file/@href}">
-			<xsl:if  test="$prevnextdir = 'context'">
-				<xsl:attribute name="aria-current">page</xsl:attribute>
-				<xsl:attribute name="class">active</xsl:attribute>
-			</xsl:if>
-			
 			<xsl:if test="$prevnextdir != 'next'">
 				<xsl:if test="$meta-for-link/self::guideline and $meta/self::success-criterion">
 					<svg alt="up" focusable="false" aria-hidden="true" class="icon-arrow-up-thin pager-icon" viewBox="0 0 16 16">
