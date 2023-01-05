@@ -721,6 +721,9 @@
 						<a href="#key-terms">Key Terms</a>
 					</li>
 				</xsl:if>
+				<xsl:if test="$act.doc//func:array[@key = 'successCriteria'][func:string = $meta/@id]">
+					<li><a href="#test-rules">Test Rules</a></li>
+				</xsl:if>
 			</ul>
 	</xsl:template>
 
@@ -912,6 +915,7 @@
 									<xsl:call-template name="gl-sc"/>
 								</xsl:if>
 								<xsl:call-template name="key-terms"/>
+								<xsl:call-template name="act"/>
 							</xsl:when>
 							<xsl:when test="name($meta) = 'understanding'">
 								<div>
