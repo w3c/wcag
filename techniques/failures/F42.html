@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Failure of Success Criteria 1.3.1, 2.1.1, 2.1.3, or 4.1.2 when emulating links</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Failure of Success Criteria 1.3.1, 2.1.1, 2.1.3, or 4.1.2 when emulating links</h1><section class="meta"><p class="id">ID: F42</p><p class="technology">Technology: failures</p><p class="type">Type: Failure</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Failure of Success Criteria 1.3.1, 2.1.1, 2.1.3, or 4.1.2 when emulating links</title><link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link></head><body><h1>Failure of Success Criteria 1.3.1, 2.1.1, 2.1.3, or 4.1.2 when emulating links</h1><section class="meta"><p class="id">ID: F42</p><p class="technology">Technology: failures</p><p class="type">Type: Failure</p></section><section id="applicability"><h2>When to Use</h2>
       <p>HTML and XHTML</p>
    </section><section id="description"><h2>Description</h2>
       <p>This failure occurs when JavaScript event handlers are attached to elements
@@ -18,11 +18,7 @@
                                 that it functions as a link when clicked with a mouse. Assistive
                                 technology does not recognize this element as a link.</p>
          
-         <pre xml:space="preserve">
-&lt;span onclick="location.href='newpage.html'"&gt;
-    Fake link
-&lt;/span&gt;
-</pre>
+<pre xml:space="preserve"><code class="language-html">&lt;span onclick="location.href='newpage.html'"&gt;Fake link&lt;/span&gt;</code></pre>
       </section>
       <section class="example">
          <h3>Scripting an <code class="el">img</code> element</h3>
@@ -31,50 +27,39 @@
                                 that it functions as a link when clicked with a mouse. Assistive
                                 technology does not recognize this element as a link.</p>
          
-         <pre xml:space="preserve">
-   &lt;img src="go.gif" 
-   alt="go to the new page" 
-   onclick="location.href='newpage.html'"&gt;
+<pre xml:space="preserve"><code class="language-html">&lt;img src="go.gif" alt="go to the new page" onclick="location.href='newpage.html'"&gt;</code>
 </pre>
       </section>
       <section class="example">
-         <h3>Scripting an <code class="el">img</code> element, with keyboard
+         <h3>Scripting an <code class="language-html">img</code> element, with keyboard
                             support</h3>
          
-            <p>Scripted event handling is added to an <code class="el">img</code> element so
+            <p>Scripted event handling is added to an <code class="language-html">img</code> element so
                                 that it functions as a link. In this example, the link functionality
                                 can be invoked with the mouse or via the Enter key if the user agent
                                 includes the element in the tab chain. Nevertheless, the element
                                 will not be recognized as a link.</p>
          
-         <pre xml:space="preserve">
-function doNav(url)
-{
-   window.location.href = url;
+<pre xml:space="preserve"><code class="language-javascript">function doNav(url){
+  window.location.href = url;
 }
-
-function doKeyPress(url)
-{
-   //if the enter key was pressed
-   if (window.event.type == "keypress" &amp;&amp;
-       window.event.keyCode == 13)
-   {
-      doNav(url);
-   }
-}
-</pre>
+   
+function doKeyPress(url){
+  //if the enter key was pressed
+  if (window.event.type == "keypress" &amp;&amp; window.event.keyCode == 13){
+    doNav(url);
+  }
+}</code></pre>
          
             <p>The markup for the image is:</p>
          
-         <pre xml:space="preserve">
-&lt;p&gt;
-	&lt;img src="bargain.jpg"
-		tabindex="0" 
-		alt="View Bargains"
-		onclick="doNav('viewbargains.html');"
-		onkeypress="doKeyPress('viewbargains.html');"&gt;
-&lt;/p&gt;
-</pre>
+<pre xml:space="preserve"><code class="language-html">&lt;p&gt;
+  &lt;img src="bargain.jpg"
+  tabindex="0" 
+  alt="View Bargains"
+  onclick="doNav('viewbargains.html');"
+  onkeypress="doKeyPress('viewbargains.html');"&gt;
+&lt;/p&gt;</code></pre>
       </section>
       <section class="example">
          <h3>Scripting a <code class="el">div</code> element</h3>
@@ -85,45 +70,36 @@ function doKeyPress(url)
                                 repurposing of the content, the <code class="el">div</code> element will not be
                                 recognized as a link by assistive technology.</p>
          
-         <pre xml:space="preserve">
-window.onload = init;
-
-function init()
-{
-	var objAnchor = document.getElementById('linklike');
-
-	objAnchor.onclick = function(event){return changeLocation(event,
-'surveyresults.html');};
-	objAnchor.onkeypress = function(event){return changeLocation(event,
-'surveyresults.html');};
+<pre xml:space="preserve"><code class="language-javascript">window.onload = init;
+function init(){
+  var objAnchor = document.getElementById('linklike');
+  
+  objAnchor.onclick = function(event){return changeLocation(event,
+   'surveyresults.html');};
+      objAnchor.onkeypress = function(event){return changeLocation(event,
+   'surveyresults.html');};
 }
-
-function changeLocation(objEvent, strLocation)
-{
-	var iKeyCode;
-
-	if (objEvent &amp;&amp; objEvent.type == 'keypress')
-	{
-		if (objEvent.keyCode)
-			iKeyCode = objEvent.keyCode;
-		else if (objEvent.which)
-			iKeyCode = objEvent.which;
-
-		if (iKeyCode != 13 &amp;&amp; iKeyCode != 32)
-			return true;
-	}
-
-	window.location.href = strLocation;
-}
-</pre>
+   
+function changeLocation(objEvent, strLocation){
+  var iKeyCode;
+   
+  if (objEvent &amp;&amp; objEvent.type == 'keypress'){
+    if (objEvent.keyCode){
+      iKeyCode = objEvent.keyCode;
+    }
+    else if (objEvent.which){
+      iKeyCode = objEvent.which;
+    }
+  if (iKeyCode != 13 &amp;&amp; iKeyCode != 32){
+    return true;
+    }
+  }
+  window.location.href = strLocation;
+}</code></pre>
          
-            <p>The markup for the <code class="el">div</code> element is:</p>
+            <p>The markup for the <code class="language-html">div</code> element is:</p>
          
-         <pre xml:space="preserve">
-&lt;div id="linklike"&gt;
-View the results of the survey.
-&lt;/div&gt;
-</pre>
+<pre xml:space="preserve"><code class="language-html">&lt;div id="linklike"&gt;View the results of the survey.&lt;/div&gt;</code></pre>
       </section>
    </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
@@ -150,4 +126,5 @@ View the results of the survey.
                </li>
          </ul>
       
-   </section></body></html>
+   </section>
+</body></html>
