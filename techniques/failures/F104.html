@@ -21,7 +21,7 @@
 			<p>The purpose of this technique is to identify and test a failure condition where part of the content clips and is unreadable when the user overrides the spacing of the text within the boundaries set out in the Text Spacing success criterion. In general, this failure occurs when text is presented in a size-constrained block which does not expand if the size of the content increases. Some of the ways in which this can occur include:</p>
 			<ul>
 			  <li>
-			   Setting the overflow property of the enclosing element to hidden
+			   Setting the <code class="language-css">overflow</code> property of the enclosing element to <code class="language-css">hidden</code>
 		      </li>
 			  <li>
 			   Using absolutely positioned content
@@ -37,36 +37,44 @@
 			<section class="example">
 				<h3>Text inside a box overflows and overlaps text below it when text spacing is implemented.</h3>
 				<p>The code below is what is implemented in the DOM <em><strong>before</strong></em> the user implements any CSS test spacing overrides. The text renders correctly in the box and doesn't interfere with the next paragraph.</p>
-				<p><code>&lt;div style=&quot;font-size:100%; width:130px; height:95px; border: thin solid gray;&quot;&gt;
-			    Now is the time for all good men to come to the aid of their country.
-  &lt;/div&gt;
-  &lt;p&gt;Now is the time for all good men to come to the aid of their country.&lt;/p&gt;</code></p>
-				<p><div style="font-size:100%; width:130px; height:95px; border: thin solid gray;"> 
-  Now is the time for all good men to come to the aid of their country. 
-				</div></p>
-<p>Now is the time for all good men to come to the aid of their country.</p> 
-				<p>Here is the  view AFTER the text spacing has been overridden by the user with the text spacing in the success criterion. The text overlaps the paragraph below it.</p>
-        <p><div style="font-size:100%; width:130px; height:95px;  border: thin solid gray; line-height: 1.5; margin-bottom: 2em; letter-spacing: 0.12em; word-spacing: 0.16em;">
-				Now is the time for all good men to come to the aid of their country. 
-</div></p>
-<p>Now is the time for all good men to come to the aid of their country.</p>
+
+<pre><code class="language-html">&lt;div style="font-size:100%; width:130px; height:125px; border: thin solid gray;"&gt;
+  &lt;p style="margin:0;"&gt;Now is the time for all good men to come to 
+   the aid of their country.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p style="margin:0;"&gt;The quick brown fox jumps over the lazy dog.&lt;/p&gt;</code></pre>
+
+<div style="font-size:100%; width:130px; height:125px; border:thin solid gray;"> 
+  <p style="margin:0;">Now is the time for all good men to come to the aid of their country.</p>
+</div>
+<p style="margin:0;">The quick brown fox jumps over the lazy dog.</p> 
+				<p>Here is the view AFTER the text spacing has been overridden by the user with the text spacing in the success criterion. The text overlaps the paragraph below it.</p>
+        <div style="font-size:100%; width:130px; height:125px; border:thin solid gray;">
+					<p style="margin:0; line-height: 1.5; margin-bottom: 2em; letter-spacing: 0.12em; word-spacing: 0.16em;">Now is the time for all good men to come to the aid of their country.</p>
+				</div>
+				<p style="margin:0;">The quick brown fox jumps over the lazy dog.</p>
 
 </section>
 			
 			<section class="example">
 				<h3>Text inside a box is clipped when text spacing is implemented.</h3>
 				<p>The code below is what is implemented in the DOM <em><strong>before</strong></em> the user implements any CSS test spacing overrides. The text renders correctly in the box and doesn't interfere with the next paragraph.</p>
-				<p><code>&lt;div style="font-size:100%; width:130px; height:95px; overflow: hidden; border: thin solid gray;"&gt;  Now is the time for all good men to come to the aid of their country.  &lt;/div&gt; &lt;p&gt;Now is the time for all good men to come to the aid of their country.&lt;/p&gt;</code></p>
-				<p>Here is the default view before the text spacing has been overridden by the user, The text renders properly in the box</p>
-				<p><div style="font-size:100%; width:130px; height:95px; overflow: hidden; border: thin solid gray;">
- Now is the time for all good men to come to the aid of their country. 
-				</div></p>
-<p>Now is the time for all good men to come to the aid of their country.</p>
+<pre><code class="language-html">&lt;div style="font-size:100%; width:130px;
+ height:95px; overflow:hidden; border:thin solid gray;"&gt;
+  &lt;p&gt;Now is the time for all good men to come to the aid of their country.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;The quick brown fox jumps over the lazy dog.&lt;/p&gt;</code></pre>
+				<p>Here is the default view before the text spacing has been overridden by the user, The text renders properly in the box.</p>
+				<div style="font-size:100%; width:130px; height:125px; overflow:hidden; border:thin solid gray;">
+					<p style="margin:0;">Now is the time for all good men to come to the aid of their country.</p>
+				</div>
+				<p style="margin:0;">The quick brown fox jumps over the lazy dog.</p>
+
 <p>Here is the  view AFTER the text spacing has been overridden by the user with the maximum text spacing in the success criterion,  the text is clipped.</p>
-<p><div style="font-size:100%; width:130px; height:95px; overflow: hidden; border: thin solid gray; line-height: 1.5; margin-bottom: 2em; letter-spacing: 0.12em; word-spacing: 0.16em;">
- Now is the time for all good men to come to the aid of their country. 
-				</div></p>
-<p>Now is the time for all good men to come to the aid of their country.</p>
+<div style="font-size:100%; width:130px; height:125px; overflow: hidden; border: thin solid gray;">
+	<p style="margin:0; line-height: 1.5; margin-bottom: 2em; letter-spacing: 0.12em; word-spacing: 0.16em;">Now is the time for all good men to come to the aid of their country.</p>
+</div>
+<p style="margin:0;">The quick brown fox jumps over the lazy dog.</p>
 			
 	</section>
 </section>
