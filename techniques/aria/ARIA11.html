@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using ARIA landmarks to identify regions of a page</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using ARIA landmarks to identify regions of a page</h1><section class="meta"><p class="id">ID: ARIA11</p><p class="technology">Technology: aria</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using ARIA landmarks to identify regions of a page</title><link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link></head><body><h1>Using ARIA landmarks to identify regions of a page</h1><section class="meta"><p class="id">ID: ARIA11</p><p class="technology">Technology: aria</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <p>Technologies that support <a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</a>. </p>
    </section><section id="description"><h2>Description</h2>
       <p>The purpose of this technique is to provide programmatic access to sections of a web page.  Landmark roles (or "landmarks") programmatically identify sections of a page. Landmarks help assistive technology (AT) users orient themselves to a page and help them navigate easily to various sections of a page. 
@@ -10,19 +10,19 @@
       <p>Landmarks are inserted into the page using the role attribute on an element that marks the section. The value of the attribute is the name of the landmark. These role values are listed below:
 </p>
       <ul>
-         <li>banner: A region that contains the prime heading or internal title of a page.
+         <li><code class="language-html">banner</code>: A region that contains the prime heading or internal title of a page.
 </li>
-         <li>complementary: Any section of the document that supports the main content, yet is separate and meaningful on its own.
+         <li><code class="language-html">complementary</code>: Any section of the document that supports the main content, yet is separate and meaningful on its own.
 </li>
-         <li>contentinfo:  A region that contains information about the parent document such as copyrights and links to privacy statements.
+         <li><code class="language-html">contentinfo</code>:  A region that contains information about the parent document such as copyrights and links to privacy statements.
 </li>
-         <li>form: A region of the document that represents a collection of form-associated elements, some of which can represent editable values that can be submitted to a server for processing.
+         <li><code class="language-html">form</code>: A region of the document that represents a collection of form-associated elements, some of which can represent editable values that can be submitted to a server for processing.
 </li>
-         <li>main: Main content in a document. In almost all cases a page will have only one role="main".
+         <li><code class="language-html">main</code>: Main content in a document. In almost all cases a page will have only one role="main".
 </li>
-         <li>navigation: A collection of links suitable for use when navigating the document or related documents.
+         <li><code class="language-html">navigation</code>: A collection of links suitable for use when navigating the document or related documents.
 </li>
-         <li>search: The search tool of a Web document.
+         <li><code class="language-html">search</code>: The search tool of a Web document.
 </li>
       </ul>
       <p>There are cases when a particular landmark role could be used more than once on a page, such as on primary and secondary navigation menus. In these cases, identical roles should be disambiguated from each other using a valid technique for labelling regions (see examples below).
@@ -35,47 +35,52 @@
       <section class="example">
          <h3>Simple landmarks</h3>
          
-            <p>The following example shows how landmarks might be added to an HTML4 or XHTML 1.0 document:</p>
-            <pre xml:space="preserve">&lt;div id="header" role="banner"&gt;A banner image and introductory title&lt;/div&gt;
-&lt;div id="sitelookup" role="search"&gt;....&lt;/div&gt;
-&lt;div id="nav" role="navigation"&gt;...a list of links here ... &lt;/div&gt;
-&lt;div id="content" role="main"&gt; ... Ottawa is the capital of Canada ...&lt;/div&gt;
-&lt;div id="rightsideadvert" role="complementary"&gt;....an advertisement here...&lt;/div&gt;
-&lt;div id="footer" role="contentinfo"&gt;(c)The Freedom Company, 123 Freedom Way, Helpville, USA&lt;/div&gt;</pre>
+            <p>The following example shows how landmarks might be added to an HTML document:</p>
+<pre xml:space="preserve"><code class="language-html">&lt;div id="header" role="banner"&gt;A banner image and introductory title&lt;/div&gt;
+&lt;div id="sitelookup" role="search"&gt;...&lt;/div&gt;
+&lt;div id="nav" role="navigation"&gt;... a list of links here ...&lt;/div&gt;
+&lt;div id="content" role="main"&gt;... the main content of the page here ...&lt;/div&gt;
+&lt;div id="rightsideadvert" role="complementary"&gt;... an advertisement here ...&lt;/div&gt;
+&lt;div id="footer" role="contentinfo"&gt;(c) The Turbo Encabulator Company&lt;/div&gt;</code></pre>
          
       </section>
       <section class="example">
          <h3>Multiple landmarks of the same type and aria-labelledby</h3>
          
-            <p>The following example shows a best practice of how landmarks might be added to an HTML4 or XHTML 1.0 document in situations where there are more than two of the same type of landmark on the same page. For instance, if a navigation role is used multiple times on a Web page, each instance may have a unique label specified using <code class="att">aria-labelledby</code>:
+            <p>The following example shows a best practice of how landmarks might be added to an HTML document in situations where there are more than two of the same type of landmark on the same page. For instance, if a navigation role is used multiple times on a Web page, each instance may have a unique label specified using <code class="language-html">aria-labelledby</code>:
 
 </p>
-            <pre xml:space="preserve">&lt;div id="leftnav" role="navigation" aria-labelledby="leftnavheading"&gt;
-&lt;h2 id="leftnavheading"&gt;Institutional Links&lt;/h2&gt;
-&lt;ul&gt;&lt;li&gt;...a list of links here ...&lt;/li&gt; &lt;/ul&gt;&lt;/div&gt;
+<pre xml:space="preserve"><code class="language-html">&lt;div id="leftnav" role="navigation" aria-labelledby="leftnavheading"&gt;
+  &lt;h2 id="leftnavheading"&gt;Institutional Links&lt;/h2&gt;
+  &lt;ul&gt;&lt;li&gt;... a list of links here ...&lt;/li&gt;&lt;/ul&gt;
+&lt;/div&gt;
 &lt;div id="rightnav" role="navigation" aria-labelledby="rightnavheading"&gt;
-&lt;h2 id="rightnavheading"&gt;Related topics&lt;/h2&gt;
-&lt;ul&gt;&lt;li&gt;...a list of links here ...&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;</pre>
+  &lt;h2 id="rightnavheading"&gt;Related topics&lt;/h2&gt;
+  &lt;ul&gt;&lt;li&gt;... a list of links here ...&lt;/li&gt;&lt;/ul&gt;
+&lt;/div&gt;</code></pre>
          
       </section>
       <section class="example">
          <h3>Multiple landmarks of the same type and aria-label</h3>
          
-            <p>The following example shows a best practice of how landmarks might be added to an HTML4 or XHTML 1.0 document in situations where there are more than two of the same type of landmark on the same page, and there is no existing text on the page that can be referenced as the label.</p>
-            <pre xml:space="preserve">&lt;div id="leftnav" role="navigation" aria-label="Primary"&gt;
-&lt;ul&gt;&lt;li&gt;...a list of links here ...&lt;/li&gt;&lt;/ul&gt; &lt;/div&gt;
+            <p>The following example shows a best practice of how landmarks might be added to an HTML document in situations where there are more than two of the same type of landmark on the same page, and there is no existing text on the page that can be referenced as the label.</p>
+<pre xml:space="preserve"><code class="language-html">&lt;div id="leftnav" role="navigation" aria-label="Primary"&gt;
+   &lt;ul&gt;&lt;li&gt; ...a list of links here ...&lt;/li&gt;&lt;/ul&gt;
+&lt;/div&gt;
 &lt;div id="rightnav" role="navigation" aria-label="Secondary"&gt;
-&lt;ul&gt;&lt;li&gt;...a list of links here ...&lt;/li&gt; &lt;/ul&gt;&lt;/div&gt;</pre>
+   &lt;ul&gt;&lt;li&gt; ...a list of links here ...&lt;/li&gt;&lt;/ul&gt;
+&lt;/div&gt;</code></pre>
          
       </section>
       <section class="example">
          <h3>Search form</h3>
          
-            <p>The following example shows a search form with a "search" landmark. The search role typically goes on the form element or a div surrounding the form.</p>
-            <pre xml:space="preserve">&lt;form role="search"&gt;
-&lt;label for="s6"&gt;search&lt;/label&gt;&lt;input id="s6" type="text" size="20"&gt;
-...
-&lt;/form&gt; </pre>
+            <p>The following example shows a search form with a "search" landmark. The <code class="language-html">search</code> role typically goes on the <code class="language-html">form</code> element or a <code class="language-html">div</code> surrounding the form.</p>
+<pre xml:space="preserve"><code class="language-html">&lt;form role="search"&gt;
+  &lt;label for="s6"&gt;search&lt;/label&gt;
+  &lt;input id="s6" type="text" size="20"&gt;
+  ...
+&lt;/form&gt;</code></pre>
          
       </section>
    </section><section id="tests"><h2>Tests</h2>
@@ -117,4 +122,5 @@
             </li>
          </ul>
       
-   </section></body></html>
+   </section>
+</body></html>
