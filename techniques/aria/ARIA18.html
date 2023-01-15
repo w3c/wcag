@@ -1,60 +1,47 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using aria-alertdialog to Identify Errors</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using aria-alertdialog to Identify Errors</h1><section class="meta"><p class="id">ID: ARIA18</p><p class="technology">Technology: aria</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using aria-alertdialog to Identify Errors</title><link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link></head><body><h1>Using aria-alertdialog to Identify Errors</h1><section class="meta"><p class="id">ID: ARIA18</p><p class="technology">Technology: aria</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <p>Technologies that support <a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</a>. </p>
    </section><section id="description"><h2>Description</h2>
-      <p>The purpose of this technique is to alert people that an input error has occured. Using role="alertdialog" creates a notification. This notification should be modal with the following characteristics:
+      <p>The purpose of this technique is to alert people that an input error has occurred. Using role="alertdialog" creates a notification. This notification should be modal with the following characteristics:
 </p>
       <ul>
-         <li>
-               <code class="att">aria-label</code> or <code class="att">aria-labelledby</code> attribute gives the alertdialog an accessible name.
-</li>
-         <li>
-               <code class="att">aria-describedby</code> provides a reference to the text of the alert.
-</li>
-         <li>The alertdialog contains at least one focusable control, and the focus should move to that control when the alertdialog opens.
-</li>
-         <li>The tab order is constrained within the alertdialog whilst it is open.
-</li>
-         <li>When the dialog is dismissed, the focus moves back to the position it had before the dialog opened, if possible.
-</li>
+         <li><code class="language-html">aria-label</code> or <code class="language-html">aria-labelledby</code> attribute gives the alertdialog an accessible name.</li>
+         <li>The <code class="language-html">alertdialog</code> contains at least one focusable element, and the focus should move to that element when the <code class="language-html">alertdialog</code> opens.</li>
+         <li>The tab order is constrained within the <code class="language-html">alertdialog</code> whilst it is open.</li>
+         <li>When the <code class="language-html">alertdialog</code> is dismissed, the focus moves back to the position it had before the <code class="language-html">alertdialog</code> opened, if possible.</li>
       </ul>
-      <p>Note that the alertdialog should not be present in a way that it will be accessed by AT until it is needed. One way to do this is not to include it in the static HTML and instead to insert it into the DOM via script when the error condition is triggered. The insertion would correspond to the following HTML sample.
+
+      <p>Note that the <code class="language-html">alertdialog</code> should not be present in a way that it will be accessed by assistive technology until it is needed. One way to do this is not to include it in the static HTML and instead to insert it into the DOM via script when the error condition is triggered. The insertion would correspond to the following HTML sample.
 </p>
    </section><section id="examples"><h2>Examples</h2>
       <section class="example">
          <h3>Alert dialog</h3>
          
-            <p>This example shows how a notification using role="alertdialog" can be used to notify someone they have entered invalid information.</p>
-            <pre xml:space="preserve">&lt;div role="alertdialog" aria-labelledby="alertHeading" aria-describedby="alertText"&gt;
-&lt;h1 id="alertHeading"&gt;Error&lt;/h1&gt;
-&lt;div id="alertText"&gt;Employee's Birth Date is after their hire date. Please verify the birth date and hire date.&lt;/div&gt;
-&lt;button&gt;Save and Continue&lt;/button&gt;
-&lt;button&gt;Return to page and correct error&lt;/button&gt;
-&lt;/div&gt;</pre>
+            <p>This example shows how a notification using <code class="language-html">role="alertdialog"</code> can be used to notify someone they have entered invalid information.</p>
+<pre xml:space="preserve"><code class="language-html">&lt;div role="alertdialog" aria-labelledby="alertHeading"&gt;
+  &lt;h1 id="alertHeading"&gt;Error&lt;/h1&gt;
+  &lt;p&gt;Employee's Birth Date is after their hire date.
+   Please verify the birth date and hire date.&lt;/p&gt;
+  &lt;button&gt;Save and Continue&lt;/button&gt;
+  &lt;button&gt;Return to page and correct error&lt;/button&gt;
+&lt;/div&gt;</code></pre>
             <p class="working-example">Working example: <a href="../../working-examples/aria-alertdialog-identify-errors/">Alert dialog</a>.</p>
          
       </section>
    </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
          <ol>
-            <li>Trigger the error that causes the alertdialog to appear.
-</li>
-            <li>Determine that the alertdialog contains at least one focusable control, and the focus moves to that control when the alertdialog opens.
-</li>
-            <li>Determine that the tab order is constrained within the alertdialog while it is open, and when the dialog is dismissed, the focus moves back to the position it had before the dialog opene, if possible.
-</li>
-            <li>Examine the element with role="alertdialog" applied.
-</li>
-            <li>Determine that either the <code class="att">aria-label</code> or <code class="att">aria-labelledby</code> attribute has been correctly used to give the alertdialog an accessible name.
-</li>
-            <li>Determine that the contents of the alertdialog identifies the input error.
-</li>
-            <li>Determine whether contents of the alertdialog suggests how to fix the error.
-</li>
+            <li>Trigger the error that causes the <code class="language-html">alertdialog</code> to appear.</li>
+            <li>Determine that the <code class="language-html">alertdialog</code> contains at least one focusable element, and the focus moves to that element when the <code class="language-html">alertdialog</code> opens.</li>
+            <li>Determine that the tab order is constrained within the <code class="language-html">alertdialog</code> while it is open, and when the <code class="language-html">alertdialog</code> is dismissed, the focus moves back to the position it had before the <code class="language-html">alertdialog</code> opened, if possible.</li>
+            <li>Examine the element with <code class="language-html">alertdialog</code> applied.</li>
+            <li>Determine that either the <code class="language-html">aria-label</code> or <code class="language-html">aria-labelledby</code> attribute has been correctly used to give the alertdialog an accessible name.</li>
+            <li>Determine that the contents of the <code class="language-html">alertdialog</code> identifies the input error.</li>
+            <li>Determine whether contents of the <code class="language-html">alertdialog</code> suggests how to fix the error.</li>
          </ol>
       </section>
       <section class="results"><h3>Expected Results</h3>
          <ul>
-            <li>Checks 2, 3, 5 and 6 are true. For SC 3.3.3, Check 7 is also true.</li>
+            <li>Checks 2, 3, 5 and 6 are true. For Success Criterion 3.3.3, Check 7 is also true.</li>
          </ul>
       </section>
    </section><section id="related"><h2>Related Techniques</h2></section><section id="resources"><h2>Resources</h2>
@@ -65,4 +52,5 @@
                </li>
          </ul>
       
-   </section></body></html>
+   </section>
+</body></html>
