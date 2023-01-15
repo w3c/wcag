@@ -1,114 +1,117 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using Aria-Invalid to Indicate An Error Field</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using Aria-Invalid to Indicate An Error Field</h1><section class="meta"><p class="id">ID: ARIA21</p><p class="technology">Technology: aria</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using aria-invalid to Indicate An Error Field</title><link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link></head><body><h1>Using <code class="language-html">aria-invalid</code> to Indicate An Error Field</h1><section class="meta"><p class="id">ID: ARIA21</p><p class="technology">Technology: aria</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <p>HTML with <a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications</a>.</p>
    </section><section id="description"><h2>Description</h2>
-<p>This technique demonstrates how <code class="att">aria-invalid</code> may be employed to specifically identify fields that have failed validation. Its use is most suitable when:</p>   
+<p>This technique demonstrates how <code class="language-html">aria-invalid</code> may be employed to specifically identify fields that have failed validation. Its use is most suitable when:</p>   
  <ul>
  <li>The error description does not programmatically identify the failed fields</li>
  <li>The failed fields are identified in a manner that is not available to some users - for example by using an error-icon rendered visually by some technique that does not rely on color such as a visual cue like a border.</li>
  </ul>
-<div class="note"><p>One of the above two situations may be true for a field which has programmatically associated label and / or instructions that conveys data format, a data range, or the <code class="prop">required</code> property.</p></div>   
-<p>While it is always preferable to programmatically associate specific error description with the failed field, the page's design or the framework employed may sometimes constrain the author's ability to do so. In these cases, authors may programmatically set <code class="att">aria-invalid</code> to "true" on the fields that have failed validation. This is interpretable mainly by assistive technologies (like screen readers / screen magnifiers) employed by users who are vision impaired. When a field has <code class="att">aria-invalid</code> set to “true”, VoiceOver in Safari announces “invalid data” when the field gets focus; JAWS and NVDA notify the error as an “invalid entry”.</p>
-<p>This ARIA attribute has to be set / turned on programmatically. It should not be set to “true” before input validation is performed or the form is submitted. Setting <code class="att">aria-invalid</code> to “false” is the same as not placing the attribute for the form control at all. Quite understandably, nothing is conveyed by assistive technology to users in this case.</p>
-<p>When visible text is used to programmatically identify a failed field and / or convey how the error can be corrected, setting <code class="att">aria-invalid</code> to "true" is not required from a strict compliance standpoint but may still provide helpful information for users.</p>
+<div class="note"><p>One of the above two situations may be true for a field which has programmatically associated label and / or instructions that conveys data format, a data range, or the <code class="language-html">required</code> property.</p></div>   
+<p>While it is always preferable to programmatically associate specific error description with the failed field, the page's design or the framework employed may sometimes constrain the author's ability to do so. In these cases, authors may programmatically set <code class="language-html">aria-invalid</code> to <code class="language-html">"true"</code> on the fields that have failed validation. This is interpretable mainly by assistive technologies (like screen readers / screen magnifiers) employed by users who are vision impaired. When a field has <code class="language-html">aria-invalid</code> set to “true”, VoiceOver in Safari announces <samp>invalid</samp> data when the field gets focus; JAWS and NVDA notify the error as an <samp>invalid entry</samp>.</p>
+<p>This ARIA attribute has to be set / turned on programmatically. It should not be set to “true” before input validation is performed or the form is submitted. Setting <code class="language-html">aria-invalid</code> to “false” is the same as not placing the attribute for the form control at all. Quite understandably, nothing is conveyed by assistive technology to users in this case.</p>
+<p>When visible text is used to programmatically identify a failed field and / or convey how the error can be corrected, setting <code class="language-html">aria-invalid</code> to "true" is not required from a strict compliance standpoint but may still provide helpful information for users.</p>
       </section><section id="examples"><h2>Examples</h2>
       <section class="example">
          <h3>Using aria-invalid on required fields</h3>
          
-            <p>The <code class="att">aria-invalid</code> attribute is used on required fields that have no input. A message above the form conveys that form submission has failed due to this.</p>
+            <p>The <code class="language-html">aria-invalid</code> attribute is used on required fields that have no input. A message above the form conveys that form submission has failed due to this.</p>
 			<p>A portion of the jQuery code and the HTML form markup follow:</p>
-         <pre xml:space="preserve">
-&lt;code&gt;
-&lt;script&gt;
+<pre xml:space="preserve"><code class="language-html">&lt;script&gt;
 ...
 ...
-		if ($('#first').val() === '') {
-			$('#first').attr("aria-invalid", "true");
+   if ($('#first').val() === '') {
+      $('#first').attr("aria-invalid", "true");
 $("label[for='first']").addClass('failed');
-		}
-		if ($('#last').val() === '') {
-			$('#last').attr("aria-invalid", "true");
+   }
+   if ($('#last').val() === '') {
+      $('#last').attr("aria-invalid", "true");
 $("label[for='last']").addClass('failed');
-		} 
-		if ($('#email').val() === '') {
-			$('#email').attr("aria-invalid", "true");
+   } 
+   if ($('#email').val() === '') {
+      $('#email').attr("aria-invalid", "true");
 $("label[for='email']").addClass('failed');
-		} 
+   } 
 ...
 ...
 &lt;/script&gt;
-&lt;style type="text/css"&gt;
-label.failed {
-	border: red thin solid;
-}
+
+&lt;style&gt;
+  label.failed {
+    border: red thin solid;
+  }
 &lt;/style&gt;
-&lt;form name="signup" id="signup" method="post" action="#"&gt;
- &lt;p&gt;
-    &lt;label for="first"&gt;First Name (required)&lt;/label&gt;&lt;br&gt;
+
+&lt;form name="signup" id="signup"&gt;
+  &lt;div&gt;
+    &lt;label for="first"&gt;First Name (required)&lt;/label&gt;
     &lt;input type="text" name="first" id="first"&gt;
-  &lt;/p&gt;
-  &lt;p&gt;
-    &lt;label for="last"&gt;Last Name (required)&lt;/label&gt;&lt;br&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;label for="last"&gt;Last Name (required)&lt;/label&gt;
     &lt;input type="text" name="last" id="last"&gt;
-  &lt;/p&gt;
-  &lt;p&gt;
-    &lt;label for="email"&gt;Email (required)&lt;/label&gt;&lt;br&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;label for="email"&gt;Email (required)&lt;/label&gt;
     &lt;input type="text" name="email" id="email"&gt;
-  &lt;/p&gt;
-  &lt;p&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
     &lt;input type="submit" name="button" id="button" value="Submit"&gt;
-  &lt;/p&gt;
-&lt;/form&gt;
-&lt;/code&gt;            </pre>
+  &lt;/div&gt;
+&lt;/form&gt;</code></pre>
       	<p class="working-example"><a href="../../working-examples/aria-invalid-required-fields/">Working example: Using aria-invalid on required fields</a>.</p>
          
       </section>
       <section class="example">
          <h3>Identifying errors in data format</h3>
          
-            <p><code class="att">Aria-invalid</code> and <code class="att">aria-describedby</code> are used together to indicate an error when the personal identification number (PIN), email address, or start date are not in the expected format. The error message is associated with the field using <code class="att">aria-describedby</code>, and <code class="att">aria-invalid</code> makes it easier to programmatically find fields with errors.</p>
+            <p><code class="language-html">Aria-invalid</code> and <code class="language-html">aria-describedby</code> are used together to indicate an error when the personal identification number (PIN), email address, or start date are not in the expected format. The error message is associated with the field using <code class="language-html">aria-describedby</code>, and <code class="language-html">aria-invalid</code> makes it easier to programmatically find fields with errors.</p>
             <p>Below is the rendered HTML code for the email address field in Example 1: When an invalid email address is entered by the user such as "samexample.com" (instead of sam@example.com), the HTML code is:</p>
-         <pre xml:space="preserve">
-&lt;div class="control"&gt;
-&lt;p&gt;&lt;label for="email"&gt;Email address: [*]&lt;/label&gt; 
-&lt;input type="text" name="email" id="email" class="error" aria-invalid="true" aria-describedBy="err_1" /&gt;&lt;/p&gt; 
-&lt;span class="errtext" id="err_1"&gt;Error: Incorrect data&lt;/span&gt;&lt;/div&gt;
-            </pre>
+<pre xml:space="preserve"><code class="language-html">&lt;div class="control"&gt;
+  &lt;div&gt;
+    &lt;label for="email"&gt;Email address: [*]&lt;/label&gt; 
+    &lt;input type="text" name="email" id="email" class="error"
+     aria-invalid="true" aria-describedBy="err_1"&gt;
+  &lt;/div&gt;
+  &lt;span class="errtext" id="err_1"&gt;Error: Incorrect data&lt;/span&gt;
+&lt;/div&gt;</code></pre>
 <p>And when no data is entered in the email field, the HTML code is:</p>
-         <pre xml:space="preserve">
-&lt;div class="control"&gt;
-&lt;p&gt;&lt;label for="email"&gt;Email address: [*]&lt;/label&gt; 
-&lt;input type="text" name="email" id="email" class="error" aria-invalid="true" aria-describedBy="err_2" /&gt;&lt;/p&gt;
-&lt;span class="errtext" id="err_2"&gt;
- Error: Input data missing&lt;/span&gt;
-&lt;/div&gt;            </pre>
+
+<pre xml:space="preserve"><code class="language-html">&lt;div class="control"&gt;
+  &lt;div&gt;&lt;label for="email"&gt;Email address: [*]&lt;/label&gt; 
+    &lt;input type="text" name="email" id="email" class="error"
+     aria-invalid="true" aria-describedBy="err_2"&gt;
+  &lt;/div&gt;
+  &lt;span class="errtext" id="err_2"&gt;Error: Input data missing&lt;/span&gt;
+&lt;/div&gt;</code></pre>
 <p>jQuery code: jQuery is used to add aria-invalid or aria-describedby attributes as well as the class attribute and append the error text. This is the code that inserts aria-invalid and class="error" but does not associate the error text "incorrect data" with the control programmatically:</p>
 
-         <pre xml:space="preserve">
-$(errFld).attr("aria-invalid", "true").attr("class", "error");
+<pre xml:space="preserve"><code class="language-javascript">$(errFld).attr("aria-invalid", "true").attr("class", "error");
 // Suffix error text: 
-$(errFld).parent().append('&lt;span class="errtext"&gt;Error: Incorrect data&lt;/span&gt;');
-            </pre>
+$(errFld).parent().append('&lt;span class="errtext"&gt;Error: Incorrect data&lt;/span&gt;');</code></pre>
 
 <p>CSS Code:</p>
-         <pre xml:space="preserve">
-input.error {
-   border: red thin solid;}
-span.errtext {
-	margin-bottom: 1em; 	padding: .25em 1.4em .25em .25em;
-	border: red thin solid; 	background-color: #EEEEFF;
-	background-image:url('images/iconError.gif');
-	background-repeat:no-repeat; 	background-position:right;	
+<pre xml:space="preserve"><code class="language-css">input.error {
+  border: red thin solid;
 }
-            </pre>
+
+span.errtext {
+  background-color: #EEEEFF;
+  background-image:url('images/iconError.gif');
+  background-position:right;	
+  background-repeat:no-repeat;
+  border: red thin solid;
+  margin-bottom: 1em;
+  padding: .25em 1.4em .25em .25em;
+}</code></pre>
       	<p class="working-example"><a href="../../working-examples/aria-invalid-data-format/">Working example: Identifying errors in data format</a>.</p>
          
       </section>
    </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
-         <p>For each form control that relies on <code class="att">aria-invalid</code> to convey a validation failure:</p>
+         <p>For each form control that relies on <code class="language-html">aria-invalid</code> to convey a validation failure:</p>
          <ol>
-            <li>Check that <code class="att">aria-invalid</code> is not set to true when a validation failure does not exist.</li>
-            <li>Check that <code class="att">aria-invalid</code> is set to true when a validation failure does exist.</li>
+            <li>Check that <code class="language-html">aria-invalid</code> is not set to true when a validation failure does not exist.</li>
+            <li>Check that <code class="language-html">aria-invalid</code> is set to true when a validation failure does exist.</li>
             <li>Check that the programmatically associated labels / programmatically associated instructional text for the field provide enough information to understand the error.</li>
          </ol>
       </section>
@@ -135,4 +138,5 @@ span.errtext {
                </li>
          </ul>
       
-   </section></body></html>
+   </section>
+</body></html>
