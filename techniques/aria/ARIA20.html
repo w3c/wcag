@@ -1,71 +1,86 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using the region role to identify a region of the page</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using the region role to identify a region of the page</h1><section class="meta"><p class="id">ID: ARIA20</p><p class="technology">Technology: aria</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using the region role to identify a region of the page</title><link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link></head><body><h1>Using the region role to identify a region of the page</h1><section class="meta"><p class="id">ID: ARIA20</p><p class="technology">Technology: aria</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <p>Technologies that support <a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications</a>.</p>
    </section><section id="description"><h2>Description</h2>
-<p>This technique demonstrates how to assign a generic <code class="prop">region</code> role to a section of a page so that user agents and assistive technologies may be able to programmatically identify it. The <code class="prop">region</code> role demarcates a segment of the page that contains content of significance so that it is more readily discoverable and navigable. The generic region should be used when the section cannot be marked up using a standard document landmark role (see <a href="https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA11">ARIA11</a>).</p>
-<p>It is important to name regions, because they are generic grouping elements and users will need some way to tell which region they are in. Regions can be named using <code class="att">aria-labelledby</code>, <code class="att">aria-label</code>, or another technique. Doing so helps to better expose content and information relationships on the page. The role of <code class="prop">region</code> should be used prudently, because if overused they can make the page overly verbose for screen reader users.</p>
+<p>This technique demonstrates how to assign a generic <code class="language-html">region</code> role to a section of a page so that user agents and assistive technologies may be able to programmatically identify it. The <code class="language-html">region</code> role demarcates a segment of the page that contains content of significance so that it is more readily discoverable and navigable. The generic region should be used when the section cannot be marked up using a standard document landmark role (see <a href="https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA11">ARIA11</a>).</p>
+<p>It is important to name regions, because they are generic grouping elements and users will need some way to tell which region they are in. Regions can be named using <code class="language-html">aria-labelledby</code>, <code class="language-html">aria-label</code>, or another technique. Doing so helps to better expose content and information relationships on the page. The role of <code class="language-html">region</code> should be used prudently, because if overused they can make the page overly verbose for screen reader users.</p>
    </section><section id="examples"><h2>Examples</h2>
       <section class="example">
          <h3>Region on a news website</h3>
          
-            <p>A section on the home page of a news website that contains a poll that changes every week is marked up with role="region". The h3 text above the form is referenced as the region's name using <code class="att">aria-labelledby</code>.</p>
-         <pre xml:space="preserve">
-&lt;div role="region" aria-labelledby="pollhead"&gt;
-&lt;h3 id="pollhead"&gt;This week's Poll&lt;/h3&gt;
-&lt;form method="post" action="#"&gt;
-  &lt;fieldset&gt;
-    &lt;legend&gt;Do you believe the tax code needs to be overhauled?&lt;/legend&gt;
-    &lt;input type="radio" id="r1" name="poll" /&gt;
-    &lt;label for="r1"&gt;No, it's fine the way it is&lt;/label&gt;
-    &lt;input type="radio" id="r2" name="poll" /&gt;
-    &lt;label for="r2"&gt;Yes, the wealthy need to pay more&lt;/label&gt;
-    &lt;input type="radio" id="r3" name="poll" /&gt;
-    &lt;label for="r3"&gt;Yes, we need to close corporate loopholes&lt;/label&gt;
-    &lt;input type="radio" id="r4" name="poll" /&gt;
-    &lt;label for="r4"&gt;Changes should be made across the board&lt;/label&gt;
-  &lt;/fieldset&gt;
-&lt;/form&gt;
-&lt;a href="results.php"&gt;See Poll Results&lt;/a&gt;
-&lt;/div&gt;			
-            </pre>
+            <p>A section on the home page of a news website that contains a poll that changes every week is marked up with <code class="language-html">role="region"</code>. The <code class="language-html">h3</code> above the form is referenced as the region's name using <code class="language-html">aria-labelledby</code>.</p>
+<pre xml:space="preserve"><code class="language-html">&lt;div role="region" aria-labelledby="pollhead"&gt;
+  &lt;h3 id="pollhead"&gt;This week's Poll&lt;/h3&gt;
+  &lt;form&gt;
+    &lt;fieldset&gt;
+      &lt;legend&gt;Do you believe the tax code needs to be overhauled?&lt;/legend&gt;
+      &lt;input type="radio" id="r1" name="poll"&gt;
+      &lt;label for="r1"&gt;No, it's fine the way it is&lt;/label&gt;
+      &lt;input type="radio" id="r2" name="poll"&gt;
+      &lt;label for="r2"&gt;Yes, the wealthy need to pay more&lt;/label&gt;
+      &lt;input type="radio" id="r3" name="poll"&gt;
+      &lt;label for="r3"&gt;Yes, we need to close corporate loopholes&lt;/label&gt;
+      &lt;input type="radio" id="r4" name="poll"&gt;
+      &lt;label for="r4"&gt;Changes should be made across the board&lt;/label&gt;
+    &lt;/fieldset&gt;
+  &lt;/form&gt;
+  &lt;a href="results.php"&gt;See Poll Results&lt;/a&gt;
+&lt;/div&gt;</code></pre>
             
          
       </section>
       <section class="example">
          <h3>Identifying a region on a banking site</h3>
          
-            <p>A user can expand links on a bank website after logging in to see details of term deposit accounts. The details are within a span marked up with <code class="prop">region</code> role. The heading for the region has role=heading and is included in the <code class="att">aria-labelledby</code> that names the region.</p>
-         <pre xml:space="preserve">
-&lt;ol&gt;
-	&lt;li&gt;&lt;a id="l1" href="#" aria-expanded="false" title="Show details" aria-controls="block1" &gt;John Henry's Account&lt;/a&gt;&lt;img src="images/panel_expand.gif" alt="" /&gt;
-		 &lt;div id="block1" class="nowHidden" tabindex="-1" aria-labelledby="l1 cd1" role="region"&gt;&lt;span id="cd1" role="heading" aria-level="3"&gt;Certificate of  Deposit:&lt;/span&gt;
-		 &lt;table&gt;
-			 &lt;tr&gt;&lt;th scope="row"&gt;Account:&lt;/th&gt; &lt;td&gt;25163522&lt;/td&gt;&lt;/tr&gt;
-			 &lt;tr&gt;&lt;th scope="row"&gt;Start date:&lt;/th&gt; &lt;td&gt;February 1, 2014&lt;/td&gt;&lt;/tr&gt;
-			 &lt;tr&gt;&lt;th scope="row"&gt;Maturity date:&lt;/th&gt;&lt;td&gt;February 1, 2016&lt;/td&gt;&lt;/tr&gt;
-			 &lt;tr&gt;&lt;th scope="row"&gt;Deposit Amount:&lt;/th&gt; &lt;td&gt;$ 3,000.00&lt;/td&gt;&lt;/tr&gt;
-			 &lt;tr&gt;&lt;th scope="row"&gt;Maturity Amount:&lt;/th&gt; &lt;td&gt;$ 3,072.43&lt;/td&gt;&lt;/tr&gt;
-		 &lt;/table&gt;
-		 &lt;/div&gt;
-	 &lt;/li&gt;
- &lt;/ol&gt;
-            </pre>
+            <p>A user can expand links on a bank website after logging in to see details of term deposit accounts. The details are within a <code class="language-html">span</code> marked up with <code class="language-html">region</code> role. The heading for the region has <code class="language-html">role=heading</code> and is included in the <code class="language-html">aria-labelledby</code> that names the region.</p>
+<pre xml:space="preserve"><code class="language-html">&lt;ol&gt;
+  &lt;li&gt;
+    &lt;button aria-controls=&quot;block1&quot; aria-expanded=&quot;false&quot; id=&quot;l1&quot; title=&quot;show details&quot;
+      type=&quot;button&quot;&gt;John Henry&#39;s Account &lt;img alt=&quot;&quot; src=&quot;images/panel_expand.gif&quot;&gt;
+    &lt;/button&gt;
+    &lt;div id=&quot;block1&quot; class=&quot;nowHidden&quot; tabindex=&quot;-1&quot; aria-labelledby=&quot;l1 cd1&quot;
+      role=&quot;region&quot;&gt;
+      &lt;span id=&quot;cd1&quot; role=&quot;heading&quot; aria-level=&quot;3&quot;&gt;Certificate Of Deposit&lt;/span&gt;
+      &lt;table&gt;
+        &lt;tr&gt;
+          &lt;th scope=&quot;row&quot;&gt;Account:&lt;/th&gt;
+          &lt;td&gt;25163522&lt;/td&gt;
+         &lt;/tr&gt;
+         &lt;tr&gt;
+          &lt;th scope=&quot;row&quot;&gt;Start date:&lt;/th&gt;
+          &lt;td&gt;February 1, 2014&lt;/td&gt;
+         &lt;/tr&gt;
+         &lt;tr&gt;
+          &lt;th scope=&quot;row&quot;&gt;Maturity date:&lt;/th&gt;
+          &lt;td&gt;February 1, 2016&lt;/td&gt;
+         &lt;/tr&gt;
+         &lt;tr&gt;
+          &lt;th scope=&quot;row&quot;&gt;Deposit Amount:&lt;/th&gt;
+          &lt;td&gt;$ 3,000.00&lt;/td&gt;
+         &lt;/tr&gt;
+         &lt;tr&gt;
+          &lt;th scope=&quot;row&quot;&gt;Maturity Amount:&lt;/th&gt;
+          &lt;td&gt;$ 3,072.43&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</code></pre>
             
          
       </section>
       <section class="example">
          <h3>Identifying a portlet with a generic region</h3>
          
-            <p>This example shows how a generic <code class="prop">region</code> landmark might be added to a weather portlet. There is no existing text on the page that can be referenced as the label, so it is labelled with <code class="att">aria-label</code>.
+            <p>This example shows how a generic <code class="language-html">region</code> landmark might be added to a weather portlet. There is no existing text on the page that can be referenced as the label, so it is labelled with <code class="language-html">aria-label</code>.
 </p>
          
-         <pre xml:space="preserve">
-&lt;div role="region" aria-label="weather portlet"&gt; 
-	...
-&lt;/div&gt;            </pre>
+<pre xml:space="preserve"><code class="language-html">&lt;div role="region" aria-label="weather portlet"&gt; 
+  ...
+&lt;/div&gt;</code></pre>
       </section>
    </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
-         <p>For each section marked up with role="region":</p>
+         <p>For each section marked up with <code class="language-html">role="region"</code>:</p>
          <ol>
             <li>Examine the content and ensure that it is important enough to have an independent landmark</li>
             <li>Ensure that a standard landmark role is not appropriate for this content</li>
@@ -88,5 +103,5 @@
                   <a href="https://www.w3.org/TR/wai-aria/#region">The Roles Model (role=region)</a>
                </li>
          </ul>
-      
-   </section></body></html>
+   </section>
+</body></html>
