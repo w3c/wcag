@@ -1,57 +1,63 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using scripts to make nonessential alerts optional</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using scripts to make nonessential alerts optional</h1><section class="meta"><p class="id">ID: SCR14</p><p class="technology">Technology: client-side-script</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using scripts to make nonessential alerts optional</title><link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link></head><body><h1>Using scripts to make nonessential alerts optional</h1><section class="meta"><p class="id">ID: SCR14</p><p class="technology">Technology: client-side-script</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <p>Scripting technologies which use scripting alerts for non-emergency communication.</p>
    </section><section id="description"><h2>Description</h2>
       <p>The objective of this technique is to display a dialog containing a message (alert) to the user.  When the alert is displayed, it receives focus and the user must activate the OK button on the dialog to dismiss it. Since these alerts cause focus to change they may distract the user, especially when used for non-emergency information. Alerts for non-emergency purposes such as displaying a quote of the day, helpful usage tip, or count down to a particular event, are not presented unless the user enables them through an option provided in the Web page.</p>
-      <p>This technique assigns a global JavaScript variable to store the user preference for displaying alerts. The default value is false. A wrapper function is created to check the value of this variable before displaying an alert. All calls to display an alert are made to this wrapper function rather than calling the alert() function directly. Early in the page, a button is provided for the user to enable the display of alerts on the page. This technique works on a visit by visit basis.     Each time the page is loaded, alerts will be disabled and the user must manually enable them. Alternatively, the author could use cookies to store user preferences across sessions.</p>
+      <p>This technique assigns a global JavaScript variable to store the user preference for displaying alerts. The default value is false. A wrapper function is created to check the value of this variable before displaying an alert. All calls to display an alert are made to this wrapper function rather than calling the <code class="language-javascript">alert()</code> function directly. Early in the page, a button is provided for the user to enable the display of alerts on the page. This technique works on a visit by visit basis. Each time the page is loaded, alerts will be disabled and the user must manually enable them. Alternatively, the author could use cookies to store user preferences across sessions.</p>
    </section><section id="examples"><h2>Examples</h2>
       <section class="example">
          
             <p>The script below will display a quote in an alert box every ten seconds, if the user selects the "Turn Alerts On" button. The user can turn the quotes off again by choosing "Turn Alerts Off".</p>
          
-         <pre xml:space="preserve">
-&lt;script type="text/javascript"&gt;
-var bDoAlerts = false;  // global variable which specifies whether to 
-                                       // display alerts or not
-/* function to enable/disable alerts.
- * param boolean bOn - true to enable alerts, false to disable them.
-*/
-function modifyAlerts(isEnabled) {
-   bDoAlerts = isEnabled;
-}
-/* wrapper function for displaying alerts.  Checks the value of bDoAlerts
-*and only calls the alert() function when bDoAlerts is true.
-*/
-function doAlert(aMessage) {
+<pre xml:space="preserve"><code class="language-javascript">&lt;script&gt;
+  var bDoAlerts = false;  // global variable which specifies whether to 
+                         // display alerts or not
+  /* function to enable/disable alerts.
+   * param boolean bOn - true to enable alerts, false to disable them.
+  */
+  
+  function modifyAlerts(isEnabled) {
+    bDoAlerts = isEnabled;
+  }
+   
+  /* wrapper function for displaying alerts.  Checks the value of bDoAlerts
+   * and only calls the alert() function when bDoAlerts is true.
+   */
+   
+   function doAlert(aMessage) {
     if (bDoAlerts) {
-       alert(aMessage);
-    }
-}
-// example usage - a loop to display famous quotes.
-var gCounter = -1;  // global to store counter
-// quotes variable would be initialized with famous quotations
-var quotes = new Array("quote 1", "quote 2", "quote 3", "quote 4", "quote 5");
-function showQuotes() {
-   if (++gCounter &gt;= quotes.length) {
-     gCounter = 0;
+      alert(aMessage);
+      }
    }
-   doAlert(quotes[gCounter]);
-   setTimeout("showQuotes();", 10000);
-}
-showQuotes();
-&lt;/script&gt;
-</pre>
+   
+   // example usage - a loop to display famous quotes.
+   var gCounter = -1;  // global to store counter
+   
+   // quotes variable would be initialized with famous quotations
+   var quotes = new Array("quote 1", "quote 2", "quote 3", "quote 4", "quote 5");
+   
+   function showQuotes() {
+     if (++gCounter &gt;= quotes.length) {
+      gCounter = 0;
+     }
+      doAlert(quotes[gCounter]);
+      setTimeout("showQuotes();", 10000);
+   }
+
+   showQuotes();
+&lt;/script&gt;</code></pre>
          
             <p>Within the body of the page, include a way to turn the alerts on and off. Below is one example:</p>
          
-         <pre xml:space="preserve">
-&lt;body&gt;
-&lt;p&gt;Press the button below to enable the display of famous quotes 
-using an alert box&lt;br /&gt;
-&lt;button id="enableBtn" type="button" onclick="modifyAlerts(true);"&gt;
-Turn Alerts On&lt;/button&gt;&lt;br /&gt;
-&lt;button id="disableBtn" type="button" onclick="modifyAlerts(false);"&gt;
-Turn Alerts Off&lt;/button&gt;&lt;/p&gt;
-</pre>
+<pre xml:space="preserve"><code class="language-html">&lt;body&gt;
+  &lt;p&gt;Press the button below to enable the display of famous quotes 
+   using an alert box:&lt;/p&gt;
+  &lt;div&gt;
+    &lt;button id="enableBtn" type="button" onclick="modifyAlerts(true);"&gt;
+    Turn Alerts On&lt;/button&gt;
+    &lt;button id="disableBtn" type="button" onclick="modifyAlerts(false);"&gt;
+    Turn Alerts Off&lt;/button&gt;
+  &lt;/div&gt;    
+&lt;/body&gt;</code></pre>
          
             <p class="working-example">Working example of this code: <a href="../../working-examples/script-enable-alerts/">Demonstration of Alerts</a>.</p>
          
@@ -70,4 +76,5 @@ Turn Alerts Off&lt;/button&gt;&lt;/p&gt;
             <li>For a Web page that supports non-emergency interruptions using a JavaScript alert, checks 1, 2, and 3 above are true.</li>
          </ul>
       </section>
-   </section></body></html>
+   </section>
+</body></html>
