@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Providing client-side validation and alert</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Providing client-side validation and alert</h1><section class="meta"><p class="id">ID: SCR18</p><p class="technology">Technology: client-side-script</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Providing client-side validation and alert</title><link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link></head><body><h1>Providing client-side validation and alert</h1><section class="meta"><p class="id">ID: SCR18</p><p class="technology">Technology: client-side-script</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <p>Content that validates user input.</p>
    </section><section id="description"><h2>Description</h2>
       <p>The objective of this technique is to validate user input as values are entered for each field, by means of client-side scripting. If errors are found, an alert dialog describes the nature of the error in text. Once the user dismisses the alert dialog, it is helpful if the script positions the keyboard focus on the field where the error occurred.</p>
@@ -8,60 +8,62 @@
          
             <p>The following script will check that a valid date has been entered in the form control.</p>
          
-         <pre xml:space="preserve">
-&lt;label for="date"&gt;Date:&lt;/label&gt;
+<pre xml:space="preserve"><code class="language-html">&lt;label for="date"&gt;Date:&lt;/label&gt;
 &lt;input type="text" name="date" id="date" 
-onchange="if(isNaN(Date.parse(this.value))) 
-alert('This control is not a valid date. 
-Please re-enter the value.');" /&gt;
-</pre>
+  onchange="if(isNaN(Date.parse(this.value))) 
+  alert('This control is not a valid date. 
+  Please re-enter the value.');"&gt;</code></pre>
       </section>
    	<section class="example">
    		<h3>Checking multiple controls when the user submits the form</h3>
    		
-   			<p>The following sample shows multiple controls in a form. The <code class="el">form</code> element uses the <code class="att">onsubmit</code> attribute which creates an event handler to execute the validation script when the user attempts to submit the form. If the validation is successful, the event returns <code class="propval">true</code> and the form submission proceeds; if the validation finds errors, it displays an error message and returns <code class="propval">false</code> to cancel the submit attempt so the user can fix the problems.</p>
+   			<p>The following sample shows multiple controls in a form. The <code class="language-html">form</code> element uses the <code class="language-html">onsubmit</code> attribute which creates an event handler to execute the validation script when the user attempts to submit the form. If the validation is successful, the event returns <code class="javascript">true</code> and the form submission proceeds; if the validation finds errors, it displays an error message and returns <code class="javascript">false</code> to cancel the submit attempt so the user can fix the problems.</p>
    			<div class="note">
    				<p>This example demonstrates an alert for simplicity. A more helpful notification to the user would be to highlight the controls with problems and add information to the page about the nature of the errors and how to navigate to the controls that require data fixes.</p>
-   				<p>Although this example uses an <code class="att">onsubmit</code> attribute on the <code class="el">form</code> element for brevity, normal practice is to create a submit event listener when the page is loaded.</p>
+   				<p>Although this example uses an <code class="language-javascript">onsubmit</code> attribute on the <code class="language-html">form</code> element for brevity, normal practice is to create a submit event listener when the page is loaded.</p>
    			</div>
    			<p>Script code:</p>
-   			<pre xml:space="preserve">
-function validate() {
-	// initialize error message
-	var msg = "";
+<pre xml:space="preserve"><code class="language-javascript">function validate() {
+  // initialize error message
+  var msg = "";
 	
-	//validate name
-	var pattern = /^[a-zA-Z\s]+$/;
-	var el = document.getElementById("name");
-	if (!pattern.test(el.value))  msg += "Name can only have letters and spaces. ";
+  //validate name
+  var pattern = /^[a-zA-Z\s]+$/;
+  var el = document.getElementById("name");
+  
+  if (!pattern.test(el.value)) {
+    msg += "Name can only have letters and spaces. ";
+  }
 	
-	// validate number
-	var pattern = /^[\d\-+\.\s]+$/;
-	var el = document.getElementById("tel");
-	if (!pattern.test(el.value))  msg += "Telephone number can only have digits and separators. ";
+  // validate number
+  var pattern = /^[\d\-+\.\s]+$/;
+  var el = document.getElementById("tel");
+
+  if (!pattern.test(el.value)) {
+    msg += "Telephone number can only have digits and separators. ";
+  }
 	
-	if (msg != "") {
-		alert(msg);
-		return false;
-	} else return true;
-}
-</pre>
+  if (msg != "") {
+    alert(msg);
+    return false;
+  }
+  else {
+  return true;
+  }</code></pre>
    			<p>Form code:</p>
-   			<pre xml:space="preserve">
-&lt;form action="multiple-controls.html" onsubmit="return validate()"&gt;
-	&lt;p&gt;
-		&lt;label for="name"&gt;Name: &lt;/label&gt;
-		&lt;input type="text" name="name" id="name" /&gt;
-	&lt;/p&gt;
-	&lt;p&gt;
-		&lt;label for="tel"&gt;Telephone number: &lt;/label&gt;
-		&lt;input type="text" name="tel" id="tel" /&gt;				
-	&lt;/p&gt;
-	&lt;p&gt;
-		&lt;input type="submit" /&gt;
-	&lt;/p&gt;
-&lt;/form&gt;
-</pre>
+<pre xml:space="preserve"><code class="language-html">&lt;form action="multiple-controls.html" onsubmit="return validate()"&gt;
+  &lt;div&gt;
+    &lt;label for="name"&gt;Name:&lt;/label&gt;
+    &lt;input autocomplete="name" id="name" name="name" type="text"&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;label for="tel"&gt;Telephone number:&lt;/label&gt;
+    &lt;input autocomplete="tel" id="tel" name="tel" type="tel"&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;input type="submit"&gt;
+  &lt;/div&gt;
+&lt;/form&gt;</code></pre>
    			<p class="working-example">This is demonstrated in the <a href="../../working-examples/script-check-multiple-controls/">working example of checking multiple controls when the user submits the form</a>.</p>
    		
    	</section>
@@ -80,4 +82,5 @@ function validate() {
       </section>
    </section><section id="related"><h2>Related Techniques</h2><ul>
       <li><a href="../general/G89">G89</a></li>
-   </ul></section></body></html>
+   </ul></section>
+</body></html>
