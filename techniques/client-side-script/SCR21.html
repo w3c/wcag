@@ -1,43 +1,32 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using functions of the Document Object Model (DOM) to add content to a page</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using functions of the Document Object Model (DOM) to add content to a page</h1><section class="meta"><p class="id">ID: SCR21</p><p class="technology">Technology: client-side-script</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
-      <p>ECMAScript used inside HTML and XHTML</p>
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using functions of the Document Object Model (DOM) to add content to a page</title><link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link></head><body><h1>Using functions of the Document Object Model (DOM) to add content to a page</h1><section class="meta"><p class="id">ID: SCR21</p><p class="technology">Technology: client-side-script</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+      <p>ECMAScript used inside HTML</p>
    </section><section id="description"><h2>Description</h2>
-      <p>The objective of this technique is to demonstrate how to use functions of the Document Object Model (DOM) to add content to a page instead of using document.write or object.innerHTML. The document.write() method does not work with XHTML when served with the correct MIME type (application/xhtml+xml), and the innerHTML property is not part of the DOM specification and thus should be avoided.  If the DOM functions are used to add the content, user agents can access the DOM to retrieve the content. The createElement() function can be used to create elements within the DOM.  The createTextNode() is used to create text associated with elements.  The appendChild(), removeChild(), insertBefore() and replaceChild() functions are used to add and remove elements and nodes. Other DOM functions are used to assign attributes to the created elements.</p>
+      <p>The objective of this technique is to demonstrate how to use functions of the Document Object Model (DOM) to add content to a page. If the DOM functions are used to add the content, user agents can access the DOM to retrieve the content. The <code class="language-javascript">createElement()</code> function can be used to create elements within the DOM. The <code class="language-javascript">createTextNode()</code> is used to create text associated with elements. The <code class="language-javascript">appendChild()</code>, <code class="language-javascript">removeChild()</code>, <code class="language-javascript">insertBefore()</code>, and <code class="language-javascript">replaceChild()</code> functions are used to add and remove elements and nodes. Other DOM functions are used to assign attributes to the created elements.</p>
       <div class="note">
-         <p>When adding focusable elements into the document, do not add tabindex attributes to explicitly set the tab order as this can cause problems when adding focusable elements into the middle of a document. Let the default tab order be assigned to the new element by not explicitly setting a tabindex attribute.</p>
+         <p>When adding focusable elements into the document, do not add <code class="language-html">tabindex</code> attributes to explicitly set the tab order as this can cause problems when adding focusable elements into the middle of a document. Let the default tab order be assigned to the new element by not explicitly setting a tabindex attribute.</p>
       </div>
    </section><section id="examples"><h2>Examples</h2>
       <section class="example">
          
-            <p>This example demonstrates use of client-side scripting to validate a form. If errors are found appropriate error messages are displayed.  The example uses the DOM functions to add error notification consisting of a title, a short paragraph explaining that an error has occurred, and a list of errors in an ordered list. The content of the title is written as a link so that it can be used to draw the user's attention to the error using the focus method. Each item in the list is also written as a link that places the focus onto the form field in error when the link is followed.</p>
-            <p>For simplicity, the example just validates two text fields, but can easily be extended to become a generic form handler. Client-side validation should not be the sole means of validation , and should be backed up with server-side validation. The benefit of client-side validation is that you can provide immediate feedback to the user to save them waiting for the errors to come back from the server, and it helps reduce unnecessary traffic to the server.</p>
-            <p>Here is the script that adds the event handlers to the form. If scripting is enabled, the validateNumbers() function will be called to perform client-side validation before the form is submitted to the server. If scripting is not enabled, the form will be immediately submitted to the server, so validation should also be implemented on the server. 
-              </p>
+            <p>This example demonstrates use of client-side scripting to validate a form. If errors are found appropriate error messages are displayed. The example uses the DOM functions to add error notification consisting of a title, a short paragraph explaining that an error has occurred, and a list of errors in an ordered list. The content of the title is written as a link so that it can be used to draw the user's attention to the error using the focus method. Each item in the list is also written as a link that places the focus onto the form field in error when the link is followed.</p>
+            <p>For simplicity, the example just validates two text fields, but can easily be extended to become a generic form handler. Client-side validation should not be the sole means of validation, and should be backed up with server-side validation. The benefit of client-side validation is that you can provide immediate feedback to the user to save them waiting for the errors to come back from the server, and it helps reduce unnecessary traffic to the server.</p>
+            <p>Here is the script that adds the event handlers to the form. If scripting is enabled, the <code class="language-javascript">validateNumbers()</code> function will be called to perform client-side validation before the form is submitted to the server. If scripting is not enabled, the form will be immediately submitted to the server, so validation should also be implemented on the server.</p>
          
-         <pre xml:space="preserve">
-window.onload = initialise;
-function initialise()
-{
-  // Ensure we're working with a relatively standards compliant user agent
-  if (!document.getElementById || !document.createElement || !document.createTextNode)
-    return;
-
+<pre xml:space="preserve"><code class="language-javascript">window.onload = initialise;
+function initialise() {
   // Add an event handler for the number form
   var objForm = document.getElementById('numberform');
   objForm.onsubmit= function(){return validateNumbers(this);};
-}
-</pre>
+}</code></pre>
          
-            <p>Here is the validation function.  Note the use of the createElement(), createTextNode(), and appendChild() DOM functions to create the error message elements.</p>
+            <p>Here is the validation function.  Note the use of the <code class="language-javascript">createElement()</code>, <code class="language-javascript">createTextNode()</code>, and <code class="language-javascript">appendChild()</code> DOM functions to create the error message elements.</p>
          
-         <pre xml:space="preserve">
-function validateNumbers(objForm)
-{
+<pre xml:space="preserve"><code class="language-javascript">function validateNumbers(objForm) {
   // Test whether fields are valid
   var bFirst = isNumber(document.getElementById('num1').value);
   var bSecond = isNumber(document.getElementById('num2').value);
   // If not valid, display errors
-  if (!bFirst || !bSecond)
-  {
+  if (!bFirst || !bSecond) {
     var objExisting = document.getElementById('validationerrors');
     var objNew = document.createElement('div');
     var objTitle = document.createElement('h2');
@@ -56,111 +45,113 @@ function validateNumbers(objForm)
     objNew.setAttribute('id', 'validationerrors');
     objNew.appendChild(objTitle);
     objNew.appendChild(objParagraph);
+
     // Add each error found to the list of errors
-    if (!bFirst)
-    {
+    if (!bFirst) {
       strError = 'Please provide a numeric value for the first number';
       objList.appendChild(addError(strError, '#num1', objForm, strID));
       strID = '';
     }
-    if (!bSecond)
-    {
+    if (!bSecond) {
       strError = 'Please provide a numeric value for the second number';
       objList.appendChild(addError(strError, '#num2', objForm, strID));
       strID = '';
     }
+
     // Add the list to the error information
     objNew.appendChild(objList);
+
     // If there were existing errors, replace them with the new lot,
     // otherwise add the new errors to the start of the form
-    if (objExisting)
+    if (objExisting) {
       objExisting.parentNode.replaceChild(objNew, objExisting);
-    else
-    {
+    }
+    else {
       var objPosition = objForm.firstChild;
       objForm.insertBefore(objNew, objPosition);
     }
+
     // Place focus on the anchor in the heading to alert
     // screen readers that the submission is in error
     objAnchor.focus();
+      
     // Do not submit the form
     objForm.submitAllowed = false;
     return false;
   }
   return true;
 }
-
+  
 // Function to validate a number
-function isNumber(strValue)
-{
+function isNumber(strValue) {
   return (!isNaN(strValue) &amp;&amp; strValue.replace(/^\s+|\s+$/, '') !== '');
-} 
-</pre>
+}</code></pre>
          
             <p>Below are the helper functions to create the error message and to set focus to the associated form field.</p>
          
-         <pre xml:space="preserve">
-// Function to create a list item containing a link describing the error
+<pre xml:space="preserve"><code class="language-javascript">// Function to create a list item containing a link describing the error
 // that points to the appropriate form field
-function addError(strError, strFragment, objForm, strID)
-{
+function addError(strError, strFragment, objForm, strID) {
   var objAnchor = document.createElement('a');
   var objListItem = document.createElement('li');
   objAnchor.appendChild(document.createTextNode(strError));
   objAnchor.setAttribute('href', strFragment);
   objAnchor.onclick = function(event){return focusFormField(this, event, objForm);};
   objAnchor.onkeypress = function(event){return focusFormField(this, event, objForm);};
+
   // If strID has a value, this is the first error in the list
-  if (strID.length &gt; 0)
+  if (strID.length &gt; 0){
     objAnchor.setAttribute('id', strID);
+  }
   objListItem.appendChild(objAnchor);
   return objListItem;
 }
-
+  
 // Function to place focus to the form field in error
-function focusFormField(objAnchor, objEvent, objForm)
-{
+function focusFormField(objAnchor, objEvent, objForm) {
+  
   // Allow keyboard navigation over links
-  if (objEvent &amp;&amp; objEvent.type == 'keypress')
-    if (objEvent.keyCode != 13 &amp;&amp; objEvent.keyCode != 32)
+  if (objEvent &amp;&amp; objEvent.type == 'keypress') {
+    if (objEvent.keyCode != 13 &amp;&amp; objEvent.keyCode != 32){
       return true;
+    }
+  }
+  
   // set focus to the form control
   var strFormField = objAnchor.href.match(/[^#]\w*$/);
   objForm[strFormField].focus();
   return false;
-}</pre>
+}</code></pre>
          
-            <p>Here is the HTML for the example form.</p>
+  <p>Here is the HTML for the example form.</p>
          
-         <pre xml:space="preserve">
-&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "https://www.w3.org/TR/html4/strict.dtd"&gt;
-&lt;html&gt;
+<pre xml:space="preserve"><code class="language-html">&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
 &lt;head&gt;
-	&lt;title&gt;ECMAScript Form Validation&lt;/title&gt;
-	&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"&gt;
-	&lt;script type="text/javascript" src="validate.js"&gt;&lt;/script&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;title&gt;ECMAScript Form Validation&lt;/title&gt;
+  &lt;script src="validate.js"&gt;&lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;
-&lt;h1&gt;Form Validation&lt;/h1&gt;
-&lt;form id="numberform" method="post" action="form.php"&gt;
-&lt;fieldset&gt;
-&lt;legend&gt;Numeric Fields&lt;/legend&gt;
-&lt;p&gt;
-&lt;label for="num1"&gt;Enter first number&lt;/label&gt;
-&lt;input type="text" size="20" name="num1" id="num1"&gt;
-&lt;/p&gt;
-&lt;p&gt;
-&lt;label for="num2"&gt;Enter second number&lt;/label&gt;
-&lt;input type="text" size="20" name="num2" id="num2"&gt;
-&lt;/p&gt;
-&lt;/fieldset&gt;
-&lt;p&gt;
-&lt;input type="submit" name="submit" value="Submit Form"&gt;
-&lt;/p&gt;
-&lt;/form&gt;
+  &lt;h1&gt;Form Validation&lt;/h1&gt;
+  &lt;form id="numberform"&gt;
+    &lt;fieldset&gt;
+      &lt;legend&gt;Numeric Fields&lt;/legend&gt;
+      &lt;div&gt;
+        &lt;label for="num1"&gt;Enter first number&lt;/label&gt;
+        &lt;input type="text" size="20" name="num1" id="num1"&gt;
+      &lt;/div&gt;
+      &lt;div&gt;
+        &lt;label for="num2"&gt;Enter second number&lt;/label&gt;
+        &lt;input type="text" size="20" name="num2" id="num2"&gt;
+      &lt;/div&gt;
+    &lt;/fieldset&gt;
+    &lt;div&gt;
+      &lt;input type="submit" name="submit" value="Submit Form"&gt;
+    &lt;/div&gt;
+  &lt;/form&gt;
 &lt;/body&gt;
-&lt;/html&gt;
-</pre>
+&lt;/html&gt;</code></pre>
          
             <p>This example is limited to client-side scripting, and should be backed up with server-side validation. The example is limited to the creation of error messages when client-side scripting is available. 
               </p>
@@ -183,11 +174,9 @@ function focusFormField(objAnchor, objEvent, objForm)
    </section><section id="related"><h2>Related Techniques</h2></section><section id="resources"><h2>Resources</h2>
       
          <ul>
-            <li>HTML 4.01  <a href="http://www.webreference.com/js/column44/index.html">The Document Object Model, More methods</a> from Webreference.com
-									</li>
-            <li>
-                  <a href="http://usability.com.au/2008/09/accessible-forms-using-wcag-2-0/">Accessible Forms using WCAG 2.0</a>
-               </li>
+            <li><a href="https://webreference.com/javascript/basics/dom/">Introduction to JavaScript's Document Object Model (DOM)</a> from Webreference.com</li>
+            <li><a href="https://www.w3.org/WAI/tutorials/forms/">Web Accessibility Initiative Forms Tutorial</a></li>
          </ul>
       
-   </section></body></html>
+   </section>
+  </body></html>
