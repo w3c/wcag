@@ -1,75 +1,98 @@
 <!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using WAI-ARIA state and property attributes to expose the state of a user interface component</title><link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link></head><body><h1>Using WAI-ARIA state and property attributes to expose the state of a user interface component</h1><section class="meta"><p class="id">ID: ARIA5</p><p class="technology">Technology: aria</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
-      <p>Technologies that support <a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</a>. </p>
-   </section><section id="description"><h2>Description</h2>
-      <p>The objective of this technique is to use <a href="https://www.w3.org/TR/wai-aria/#states_and_properties">WAI-ARIA state and property attributes</a> to expose the state, properties and values of a user interface component so that they can be read and set by assistive technology, and so that assistive technology is notified of changes to these values. The WAI-ARIA specification provides a normative description of each attribute, and the role of the user interface elements that they support. When rich internet applications define new user interface widgets, exposing the state and property attributes enables users to understand the widget and how to interact with it.</p>
-   </section><section id="examples"><h2>Examples</h2>
-      <section class="example">
-         <h3>A toggle button</h3>
-         
-            <p>A widget with role <code class="language-html">button</code> acts as a toggle button when it implements the attribute <code class="language-html">aria-pressed</code>. When <code class="language-html">aria-pressed</code> is true, the button is in a "pressed" state. When <code class="language-html">aria-pressed</code> is false, it is not pressed. If the attribute is not present, the button is a simple command button.</p>
-            <p>The following snippet shows WAI-ARIA mark-up for a toggle button that selects bold text:</p>
-<pre xml:space="preserve"><code class="language-html">&lt;li id="bold1"  
-   class="toggleButton"
-   role="button"
-   tabindex="0"
-   aria-pressed="false"
-   aria-labelledby="bold_label"
-   aria-controls="text1"&gt;
-   &lt;img src="/images/button-bold.png" alt="bold text"&gt;
-&lt;/li&gt;</code></pre>
-            <p>The <code class="language-html">li</code> element has a role of "button" and an "aria-pressed" attribute. The following excerpt from the Javascript for this example updates the value of the "aria-pressed" attribute:</p>
+   <p>Technologies that support <a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</a>. </p>
+</section><section id="description"><h2>Description</h2>
+   <p>The objective of this technique is to use <a href="https://www.w3.org/TR/wai-aria/#states_and_properties">WAI-ARIA state and property attributes</a> to expose the state, properties and values of a user interface component so that they can be read and set by assistive technology, and so that assistive technology is notified of changes to these values. The WAI-ARIA specification provides a normative description of each attribute, and the role of the user interface elements that they support. When rich internet applications define new user interface widgets, exposing the state and property attributes enables users to understand the widget and how to interact with it.</p>
+</section>
+<section id="examples">
+   <h2>Examples</h2>
+   <section class="example">
+      <h3>A toggle button</h3>
+         <p>A widget with role <code class="language-html">button</code> acts as a toggle button when it implements the attribute <code class="language-html">aria-pressed</code>. When <code class="language-html">aria-pressed</code> is true, the button is in a "pressed" state. When <code class="language-html">aria-pressed</code> is false, it is not pressed. If the attribute is not present, the button is a simple command button.</p>
+         <p>The following snippet from the <a href="https://www.w3.org/WAI/ARIA/apg/example-index/button/button.html">ARIA Authoring Practices Guide (APG) examples for button</a> shows WAI-ARIA mark-up for a toggle button to mute/unmute audio:</p>
+<pre xml:space="preserve"><code class="language-html">&lt;a tabindex="0"
+  role="button"
+  id="toggle"
+  aria-pressed="false"&gt;
+  Mute
+  ...
+&lt;/a&gt;</code></pre>
+         <p>The <code class="language-html">a</code> element has a <code>role="button"</code> and an <code>aria-pressed</code> attribute. The following excerpt from the Javascript for this example updates the value of the <code>aria-pressed</code> attribute:</p>
 <pre xml:space="preserve"><code class="language-javascript">/**
-togglePressed() toggles the aria-pressed attribute between true or false 
-**/
-function togglePressed(id) {
-  if (document.getElementById(id).getAttribute("aria-pressed") === "true"){
-    document.getElementById(id).setAttribute("aria-pressed", "false");
-  }
-  else {
-    document.getElementById(id).setAttribute("aria-pressed", "true");
-  }
+* Toggles the toggle button's state between *pressed* and *not pressed*.
+*
+* @param {HTMLElement} button
+*/
+
+function toggleButtonState(button) {
+  var isAriaPressed = button.getAttribute('aria-pressed') === 'true';
+  button.setAttribute('aria-pressed', isAriaPressed ? 'false' : 'true');
+  ...
 }</code></pre>
-   </section>
-   </section><section id="tests"><h2>Tests</h2>
-      <section class="procedure"><h3>Procedure</h3>
-         <p>
-            <a href="https://www.w3.org/TR/wai-aria/#roles_categorization">The WAI-ARIA specification, Section 5.3, Categorization of Roles</a> defines the required and inherited states and properties for each role.</p>
-         <p>For a user interface component using the WAI-ARIA role attribute:</p>
-         <ol>
-            <li>Check that the required states and properties for the role are present.</li>
-            <li>Check that no WAI-ARIA states or properties that are neither required, supported, nor inherited are present.</li>
-            <li>Check that the state and property values are updated to reflect the current state when the user interface component changes state.</li>
-         </ol>
-      </section>
-      <section class="results"><h3>Expected Results</h3>
-         <ul>
-            <li>#1, #2, and #3 are true.</li>
-         </ul>
-      </section>
-   </section><section id="related"><h2>Related Techniques</h2><ul>
-      <li><a href="../aria/ARIA4">ARIA4</a></li>
-      <li><a href="../html/H91">H91</a></li>
-   </ul></section><section id="resources"><h2>Resources</h2>
       
-         <ul>
-            <li>
-                  <a href="https://www.w3.org/TR/wai-aria/#usage_intro">Accessible Rich Internet Applications (WAI-ARIA), Roles</a>
-               </li>
-            <li>
-                  <a href="https://www.w3.org/TR/wai-aria/#roles">Accessible Rich Internet Applications (WAI-ARIA), The Roles Model</a>
-               </li>
-            <li>
-                  <a href="https://www.w3.org/TR/wai-aria/#states_and_properties">Accessible Rich Internet Applications (WAI-ARIA), Supported States and Properties</a>
-               </li>
-            <li>
-                  <a href="https://www.w3.org/TR/html-aapi/#html-element-to-accessibility-api-role-mapping-matrix">HTML to Platform Accessibility APIs Implementation Guide: HTML Element to Accessibility API Role Mapping Matrix</a>
-               </li>
-            <li>
-                  <a href="https://www.w3.org/WAI/ARIA/apg/">WAI-ARIA Authoring Practices Guide</a>
-               </li>
-            <li>
-                  <a href="https://www.w3.org/TR/aria-in-html/">Using WAI-ARIA in HTML</a> 
-               </li>
-         </ul>
    </section>
-</body></html>
+   <section class="example">
+      <h3>A slider</h3>
+      
+         <p>A widget with role <code class="language-html">slider</code> lets a user select a value from within a given range. The slider represents the current value and the range of possible values via the size of the slider and the position of the handle. These properties of the slider are represented by the attributes <code class="language-html">aria-valuemin</code>, <code class="language-html">aria-valuemax</code>, and <code class="language-html">aria-valuenow</code>.</p>
+         <p>The following snippet from the <a href="https://www.w3.org/WAI/ARIA/apg/example-index/slider/slider-color-viewer.html">ARIA Authoring Practices Guide (APG) color viewer slider example</a> shows WAI-ARIA mark-up for one of the sliders:</p>
+<pre xml:space="preserve"><code class="language-html">&lt;div id="id-red" class="color-slider-label"&gt;Red&lt;/div&gt;
+&lt;div class="color-slider red"
+  role="slider"
+  tabindex="0"
+  aria-valuemin="0"
+  aria-valuenow="128"
+  aria-valuemax="255"
+  aria-labelledby="id-red"&gt;
+   ...
+&lt;/div&gt;</code></pre>
+         <p>The following excerpt from the Javascript for this example updates the value of the <code>aria-valuenow</code> attribute when the value of the slider handle is changed:</p>
+<pre xml:space="preserve"><code class="language-javascript">moveSliderTo(slider, value) {
+  ...
+  slider.sliderNode.setAttribute('aria-valuenow', value);
+  ...
+}</code></pre>
+
+   </section>
+</section>
+<section id="tests"><h2>Tests</h2>
+   <section class="procedure"><h3>Procedure</h3>
+      <p>
+         <a href="https://www.w3.org/TR/wai-aria/#roles_categorization">The WAI-ARIA specification, Section 5.3, Categorization of Roles</a> defines the required and inherited states and properties for each role.</p>
+      <p>For a user interface component using the WAI-ARIA role attribute:</p>
+      <ol>
+         <li>Check that the required states and properties for the role are present.</li>
+         <li>Check that no WAI-ARIA states or properties that are neither required, supported, nor inherited are present.</li>
+         <li>Check that the state and property values are updated to reflect the current state when the user interface component changes state.</li>
+      </ol>
+   </section>
+   <section class="results"><h3>Expected Results</h3>
+      <ul>
+         <li>#1, #2, and #3 are true.</li>
+      </ul>
+   </section>
+</section><section id="related"><h2>Related Techniques</h2><ul>
+   <li><a href="../aria/ARIA4">ARIA4</a></li>
+   <li><a href="../html/H91">H91</a></li>
+</ul></section><section id="resources"><h2>Resources</h2>
+   
+      <ul>
+         <li>
+               <a href="https://www.w3.org/TR/wai-aria/#usage_intro">Accessible Rich Internet Applications (WAI-ARIA), Roles</a>
+            </li>
+         <li>
+               <a href="https://www.w3.org/TR/wai-aria/#roles">Accessible Rich Internet Applications (WAI-ARIA), The Roles Model</a>
+            </li>
+         <li>
+               <a href="https://www.w3.org/TR/wai-aria/#states_and_properties">Accessible Rich Internet Applications (WAI-ARIA), Supported States and Properties</a>
+            </li>
+         <li>
+               <a href="https://www.w3.org/TR/html-aapi/#html-element-to-accessibility-api-role-mapping-matrix">HTML to Platform Accessibility APIs Implementation Guide: HTML Element to Accessibility API Role Mapping Matrix</a>
+            </li>
+         <li>
+               <a href="https://www.w3.org/WAI/ARIA/apg/">WAI-ARIA Authoring Practices Guide</a>
+            </li>
+         <li>
+               <a href="https://www.w3.org/TR/aria-in-html/">Using WAI-ARIA in HTML</a> 
+            </li>
+      </ul>
+</section></body></html>
