@@ -1,38 +1,44 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Inserting dynamic content into the Document Object Model immediately following its trigger element</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Inserting dynamic content into the Document Object Model immediately following its trigger element</h1><section class="meta"><p class="id">ID: SCR26</p><p class="technology">Technology: client-side-script</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
-      <p>HTML and XHTML, script</p>
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Inserting dynamic content into the Document Object Model immediately following its trigger element</title><link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link></head><body><h1>Inserting dynamic content into the Document Object Model immediately following its trigger element</h1><section class="meta"><p class="id">ID: SCR26</p><p class="technology">Technology: client-side-script</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+      <p>HTML and script</p>
    </section><section id="description"><h2>Description</h2>
       <p>The objective of this technique is to place inserted user interface elements into the Document Object Model (DOM) in such a way that the tab order and screen-reader reading order are set correctly by the default behavior of the user agent. This technique can be used for any user interface element that is hidden and shown, such as menus and dialogs.</p>
-      <p>The reading order in a screen-reader is based on the order of the HTML or XHTML elements in the Document Object Model, as is the default tab order. This technique inserts new content into the DOM immediately following the element that was activated to trigger the script. The triggering element must be a link or a button, and the script must be called from its onclick event. These elements are natively focusable, and their onclick event is device independent. Focus remains on the activated element and the new content, inserted after it, becomes the next thing in both the tab order and screen-reader reading order.</p>
+      <p>The reading order in a screen-reader is based on the order of the HTML elements in the Document Object Model, as is the default tab order. This technique inserts new content into the DOM immediately following the element that was activated to trigger the script. The triggering element must be a link or a button, and the script must be called from its <code class="language-javascript">onclick</code> event. These elements are natively focusable, and their <code class="language-javascript">onclick</code> event is device independent. Focus remains on the activated element and the new content, inserted after it, becomes the next thing in both the tab order and screen-reader reading order.</p>
       <p>Note that this technique works for synchronous updates. For asynchronous updates (sometimes called AJAX), an additional technique is needed to inform the assistive technology that the asynchronous content has been inserted. </p>
    </section><section id="examples"><h2>Examples</h2>
       <section class="example">
          
-            <p>This example creates a menu when a link is clicked and inserts it after the link. The onclick event of the link is used to call the ShowHide script, passing in an ID for the new menu as a parameter.</p>
+            <p>This example creates a menu when a link is clicked and inserts it after the link. The <code class="language-javascript">onclick</code> event of the link is used to call the ShowHide script, passing in an <code class="language-html">id</code> for the new menu as a parameter.</p>
          
-         <pre xml:space="preserve">&lt;a href="#" onclick="ShowHide('foo',this)"&gt;Toggle&lt;/a&gt;</pre>
+<pre xml:space="preserve"><code class="language-html">&lt;button aria-expanded="false" type="button" onclick="ShowHide('foo',this)"&gt;
+  Toggle
+&lt;/button&gt;</code></pre>
          
-            <p>The ShowHide script creates a div containing the new menu, and inserts a link into it. The last line is the core of the script. It finds the parent of the element that triggered the script, and appends the div it created as a new child to it. This causes the new div to be in the DOM after the link. When the user hits tab, the focus will go to the first focusable item in the menu, the link we created.</p>
+            <p>The ShowHide script creates a <code class="language-html">div</code> containing the new menu, and inserts a link into it. The last line is the core of the script. It finds the parent of the element that triggered the script, and appends the div it created as a new child to it. This causes the new <code class="language-html">div</code> to be in the DOM after the menu. When the user hits tab, the focus will go to the first focusable item in the menu, the link we created.</p>
          
-         <pre xml:space="preserve">function ShowHide(id,src)
-{
-	var el = document.getElementById(id);
-	if (!el)
-	{
-		el = document.createElement("div");
-		el.id = id;
-		var link = document.createElement("a");
-		link.href = "javascript:void(0)";
-		link.appendChild(document.createTextNode("Content"));
-		el.appendChild(link);
-		src.parentElement.appendChild(el);
-	}
-	else
-	{
-		el.style.display = ('none' == el.style.display ? 'block' : 'none');
-	}
-}</pre>
+<pre xml:space="preserve"><code class="language-javascript">function ShowHide(id,src){
+  var el = document.getElementById(id);
+  if (!el){
+    el = document.createElement("div");
+    el.id = id;
+    var link = document.createElement("a");
+    link.href = "/laptops";
+    link.appendChild(document.createTextNode("Laptops"));
+    el.appendChild(link);
+    src.parentElement.appendChild(el);
+    src.setAttribute("aria-controls", id);
+    src.setAttribute("aria-expanded", "true");
+   }
+   else if (el && src.getAttribute("aria-expanded") === "false"){
+     el.style.display = 'block';
+     src.setAttribute("aria-expanded", "true");
+   }
+   else{
+     el.style.display = 'none';
+     src.setAttribute("aria-expanded", "false");    
+   }   
+}</code></pre>
          
-            <p>CSS is used to make the div and link look like a menu.</p>
+   <p>CSS is used to make the <code class="language-html">div</code> and link look like a menu.</p>
          
       </section>
    </section><section id="tests"><h2>Tests</h2>
@@ -48,4 +54,5 @@
             <li>#2 and #3 are true.</li>
          </ul>
       </section>
-   </section></body></html>
+   </section>
+</body></html>
