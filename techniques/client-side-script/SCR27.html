@@ -1,6 +1,22 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Reordering page sections using the Document Object Model</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Reordering page sections using the Document Object Model</h1><section class="meta"><p class="id">ID: SCR27</p><p class="technology">Technology: client-side-script</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
-      <p>HTML and XHTML, script</p>
-   </section><section id="description"><h2>Description</h2>
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Reordering page sections using the Document Object Model</title>
+    <link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
+  </head>
+  <body>
+    <h1>Reordering page sections using the Document Object Model</h1>
+    <section class="meta">
+      <p class="id">ID: SCR27</p>
+      <p class="technology">Technology: client-side-script</p>
+      <p class="type">Type: Technique</p>
+    </section>
+    <section id="applicability">
+      <h2>When to Use</h2>
+      <p><abbr title="HyperText Markup Language">HTML</abbr>, script</p>
+    </section>
+    <section id="description">
+      <h2>Description</h2>
       <p>The objective of this technique is to provide a mechanism for re-ordering component which is both highly usable and accessible. The two most common mechanisms for reordering are to send users to a set-up page where they can number components, or to allow them to drag and drop components to the desired location. The drag and drop method is much more usable, as it allows the user to arrange the items in place, one at a time, and get a feeling for the results. Unfortunately, drag and drop relies on the use of a mouse. This technique allows users to interact with a menu on the components to reorder them in place in a device independent way. It can be used in place of, or in conjunction with drag and drop reordering functionality.</p>
       <p>The menu is a list of links using the device-independent onclick event to trigger scripts which re-order the content. The content is re-ordered in the Document Object Model (DOM), not just visually, so that it is in the correct order for all devices. </p>
    </section><section id="examples"><h2>Examples</h2>
@@ -8,103 +24,146 @@
          
             <p>This example does up and down reordering. This approach can also be used for two-dimensional reordering by adding left and right options.</p>
             <p>The components in this example are list items in an unordered list. Unordered lists are a very good semantic model for sets of similar items, like these components. The menu approach can also be used for other types of groupings.</p>
-            <p>The modules are list items, and each module, in addition to content in div elements, contains a menu represented as a nested list. </p>
+            <p>The modules are list items, and each module, in addition to content in <code class="language-html">div</code> elements, contains a menu represented as a nested list.</p>
          
-         <pre xml:space="preserve">&lt;ul id="swapper"&gt;
+<pre xml:space="preserve"><code class="language-html">&lt;ul id="swapper"&gt;
     &lt;li id="black"&gt;
-        &lt;div class="module"&gt;
-            &lt;div class="module_header"&gt;
-                &lt;!-- menu link --&gt;
-                &lt;a href="#" onclick="ToggleMenu(event);"&gt;menu&lt;/a&gt;
-                &lt;!-- menu --&gt;
-                &lt;ul class="menu"&gt;
-                    &lt;li&gt;&lt;a href="#" onclick="OnMenuClick(event)" 
-                        onkeypress="OnMenuKeypress(event);"&gt;up&lt;/a&gt;&lt;/li&gt;
-                    &lt;li&gt;&lt;a href="#" onclick="OnMenuClick(event)" 
-                        onkeypress="OnMenuKeypress(event);"&gt;down&lt;/a&gt;&lt;/li&gt;
-                &lt;/ul&gt;
-            &lt;/div&gt;
-            &lt;div class="module_body"&gt;
-                Text in the black module
-            &lt;/div&gt;
+      &lt;div class="module"&gt;
+        &lt;div class="module_header"&gt;
+          &lt;!-- menu link --&gt;
+          &lt;a href="#" onclick="ToggleMenu(event);"&gt;menu&lt;/a&gt;
+          &lt;!-- menu --&gt;
+          &lt;ul class="menu"&gt;
+            &lt;li&gt;&lt;a href="#" onclick="OnMenuClick(event)" 
+              onkeypress="OnMenuKeypress(event);"&gt;up&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#" onclick="OnMenuClick(event)" 
+              onkeypress="OnMenuKeypress(event);"&gt;down&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
         &lt;/div&gt;
-    &lt;/li&gt;
-    ...
-&lt;/ul&gt;</pre>
+      &lt;div class="module_body"&gt;
+        Text in the black module
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  ...
+&lt;/ul&gt;</code></pre>
          
-            <p>Since we've covered the showing and hiding of menus in the simple tree samples, we'll focus here just on the code that swaps the modules. Once we harmonize the events and cancel the default link action, we go to work. First, we set a bunch of local variables for the elements with which we'll be working: the menu, the module to be reordered, the menuLink. Then, after checking the reorder direction, we try to grab the node to swap. If we find one, we then call swapNode() to swap our two modules, and PositionElement() to move the absolutely-positioned menu along with the module, and then set focus back on the menu item which launched the whole thing.</p>
+            <p>Since we've covered the showing and hiding of menus in the simple tree samples, we'll focus here just on the code that swaps the modules. Once we harmonize the events and cancel the default link action, we go to work. First, we set a bunch of local variables for the elements with which we'll be working: the menu, the module to be reordered, the menuLink. Then, after checking the reorder direction, we try to grab the node to swap. If we find one, we then call <code class="language-javascript">swapNode()</code> to swap our two modules, and <code class="language-javascript">PositionElement()</code> to move the absolutely-positioned menu along with the module, and then set focus back on the menu item which launched the whole thing.</p>
          
-         <pre xml:space="preserve">function MoveNode(evt,dir)
-{
-    HarmonizeEvent(evt);
-    evt.preventDefault();
-
-    var src = evt.target;
-    var menu = src.parentNode.parentNode;
-    var module = menu.parentNode.parentNode.parentNode;
-    var menuLink = module.getElementsByTagName("a")[0];
-    var swap = null;
+<pre xml:space="preserve"><code class="language-javascript">function MoveNode(evt,dir){
+  
+  HarmonizeEvent(evt);
+  evt.preventDefault();
     
-    switch(dir)
-    {
-        case 'up':
-        {
-            swap = module.previousSibling;
-            while (swap &amp;&amp; swap.nodeType != 1)
-            {
-                swap = swap.previousSibling;
-            }
-            break;
-        }
-        case 'down':
-        {
-            swap = module.nextSibling;
-            while (swap &amp;&amp; swap.nodeType != 1)
-            {
-                swap = swap.nextSibling;
-            }
-            break;
-        }
+  var src = evt.target;
+  var menu = src.parentNode.parentNode;
+  var module = menu.parentNode.parentNode.parentNode;
+  var menuLink = module.getElementsByTagName("a")[0];
+  var swap = null;
+  
+  switch(dir){
+    case 'up': {
+      swap = module.previousSibling;
+      while (swap &amp;&amp; swap.nodeType != 1){
+        swap = swap.previousSibling;
+      }
+        break;
     }
-    if (swap &amp;&amp; swap.tagName == node.tagName)
-    {
-        module.swapNode(swap);
-        PositionElement(menu,menuLink,false,true);
+    case 'down': {
+      swap = module.nextSibling;
+      while (swap &amp;&amp; swap.nodeType != 1){
+        swap = swap.nextSibling;
+      }
+        break;
     }
-    src.focus();
-}</pre>
+  }
+  if (swap &amp;&amp; swap.tagName == node.tagName){
+    module.swapNode(swap);
+    PositionElement(menu,menuLink,false,true);
+  }
+  src.focus();
+}</code></pre>
          
-            <p>The CSS for the node swap is not much different than that of our previous tree samples, with some size and color adjustment for the modules and the small menu.</p>
+            <p>The <abbr title="Cascading Style Sheets">CSS</abbr> for the node swap is not much different than that of our previous tree samples, with some size and color adjustment for the modules and the small menu.</p>
          
-         <pre xml:space="preserve">ul#swapper { margin:0px; padding:0px; list-item-style:none; }
-ul#swapper li { padding:0; margin:1em; list-style:none; height:5em; width:15em; 
-    border:1px solid black; }
-ul#swapper li a { color:white; text-decoration:none; font-size:90%; }
+<pre xml:space="preserve"><code class="language-css">ul#swapper {
+  list-item-style:none;
+  margin:0px;
+  padding:0px;
+}
 
-ul#swapper li div.module_header { text-align:right; padding:0 0.2em; }
-ul#swapper li div.module_body { padding:0.2em; }
+ul#swapper li {
+  border:1px solid black;
+  height:5em;
+  list-style:none;
+  margin:1em;
+  padding:0;
+  width:15em;
+}
 
-ul#swapper ul.menu { padding:0; margin:0; list-style:none; background-color:#eeeeee; 
-    height:auto; position:absolute; text-align:left; border:1px solid gray; display:none; }
-ul#swapper ul.menu li { height:auto; border:none; margin:0; text-align:left; 
-    font-weight:normal; width:5em; }
-ul#swapper ul.menu li a { text-decoration:none; color:black; padding:0 0.1em; 
-    display:block; width:100%; }
-</pre>
+ul#swapper li a {
+  color:white;
+  font-size:90%;
+  text-decoration:none;
+}
+    
+ul#swapper li div.module_header {
+  padding:0 0.2em;
+  text-align:right;
+}
+
+ul#swapper li div.module_body {
+  padding:0.2em;
+}
+    
+ul#swapper ul.menu {
+  background-color:#eeeeee; 
+  border:1px solid gray;
+  display:none;
+  height:auto;
+  list-style:none;
+  margin:0;
+  padding:0;
+  position:absolute;
+  text-align:left;
+}
+
+ul#swapper ul.menu li {
+  border:none;
+  font-weight:normal;
+  height:auto;
+  margin:0;
+  text-align:left;
+  width:5em;
+}
+
+ul#swapper ul.menu li a {
+  color:black;
+  display:block;
+  padding:0 0.1em;
+  text-decoration:none;
+  width:100%;
+}</code></pre>
       </section>
-   </section><section id="tests"><h2>Tests</h2>
-      <section class="procedure"><h3>Procedure</h3>
-         <ol>
-            <li>Find all components in the Web Unit which can be reordered via drag and drop.</li>
-            <li>Check that there is also a mechanism to reorder them using menus build of lists of links.</li>
-            <li>Check that the menus are contained within the reorderable items in the DOM.</li>
-            <li>Check that scripts for reordering are triggered only from the onclick event of links.</li>
-            <li>Check that items are reordered in the DOM, not only visually.</li>
-         </ol>
-      </section>
-      <section class="results"><h3>Expected Results</h3>
-         <ul>
-            <li>#2 through #5 are true.</li>
-         </ul>
-      </section>
-   </section></body></html>
+   </section>
+   <section id="tests">
+    <h2>Tests</h2>
+    <section class="procedure">
+      <h3>Procedure</h3>
+      <ol>
+        <li>Find all components in the Web Unit which can be reordered via drag and drop.</li>
+        <li>Check that there is also a mechanism to reorder them using menus build of lists of links.</li>
+        <li>Check that the menus are contained within the re-orderable items in the DOM.</li>
+        <li>Check that scripts for reordering are triggered only from the onclick event of links.</li>
+        <li>Check that items are reordered in the DOM, not only visually.</li>
+      </ol>
+    </section>
+    <section class="results">
+      <h3>Expected Results</h3>
+      <ul>
+        <li>#2 through #5 are true.</li>
+      </ul>
+    </section>
+  </section>
+</body>
+</html>
