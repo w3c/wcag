@@ -1,41 +1,43 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using progressive enhancement to open new windows on user request</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using progressive enhancement to open new windows on user request</h1><section class="meta"><p class="id">ID: SCR24</p><p class="technology">Technology: client-side-script</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
-      <p> HTML 4.01 and XHTML 1.0 </p>
-   </section><section id="description"><h2>Description</h2>
-      <p> The objective of this technique is to avoid confusion that may be caused by
-                        the appearance of new windows that were not requested by the user. Suddenly
-                        opening new windows can disorient or be missed completely by some users.
-                        If the document type does not allow the target attribute (it
-                        does not exist in HTML 4.01 Strict or XHTML 1.0 Strict) or if the developer
-                        prefers not to use it, new windows can be opened with ECMAScript. The
-                        example below demonstrates how to open new windows with script: it adds an
-                        event handler to a link (a element) and warns the user that the
-                        content will open in a new window. </p>
-   </section><section id="examples"><h2>Examples</h2>
-      <section class="example">
-         <h3></h3>
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Using progressive enhancement to open new windows on user request</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
+	</head>
+	<body>
+		<h1>Using progressive enhancement to open new windows on user request</h1>
+		<section class="meta">
+			<p class="id">ID: SCR24</p>
+			<p class="technology">Technology: client-side-script</p>
+			<p class="type">Type: Technique</p>
+		</section>
+		<section id="applicability">
+			<h2>When to Use</h2>
+      <p>HTML</p>
+		</section>
+		<section id="description">
+			<h2>Description</h2>
+      <p>The objective of this technique is to avoid confusion that may be caused by the appearance of new windows that were not requested by the user. Suddenly opening new windows can disorient or be missed completely by some users. New windows / tabs can be opened with the HTML <code class="language-html">target</code> attribute or JavaScript. The example below demonstrates how to open new windows with script: it adds an event handler to a link and warns the user that the content will open in a new window.</p>
+		</section>
+		<section id="examples">
+			<h2>Examples</h2>
+			<section class="example">
+				<h3>Using JavaScript to open a new tab / window</h3>
+				<h4>Markup:</h4>
+				<p>The script is included in the head of the document, and the link has an <code class="language-html">id</code> that can be used as a hook by the script.</p>
          
-            <p>Markup:</p>
-            <p> The script is included in the head of the document, and the link has
-                                an id that can be used as a hook by the script. </p>
+<pre xml:space="preserve"><code class="language-html">&lt;script src="popup.js"&gt;&lt;/script&gt;
+...
+&lt;a href="help.html" id="newwin"&gt;Show Help&lt;/a&gt;</code></pre>
          
-         <pre xml:space="preserve">
-&lt;script type="text/javascript" src="popup.js"&gt;&lt;/script&gt;
-…
-&lt;a href="help.html" id="newwin"&gt;Show Help&lt;/a&gt;</pre>
+            <h4>Script:</h3>
          
-            <p>Script:</p>
-         
-         <pre xml:space="preserve"> 
-// Use traditional event model whilst support for event registration
-// amongst browsers is poor.
-window.onload = addHandlers;
+<pre xml:space="preserve"><code class="language-javascript">window.onload = addHandlers;
 
-function addHandlers()
-{
+function addHandlers(){
   var objAnchor = document.getElementById('newwin');
-
-  if (objAnchor)
-  {
+  
+  if (objAnchor){
     objAnchor.firstChild.data = objAnchor.firstChild.data + ' (opens in a new window)';
     objAnchor.onclick = function(event){return launchWindow(this, event);}
     // UAAG requires that user agents handle events in a device-independent manner
@@ -43,64 +45,76 @@ function addHandlers()
     objAnchor.onkeypress = function(event){return launchWindow(this, event);}
   }
 }
-
-function launchWindow(objAnchor, objEvent)
-{
-  var iKeyCode, bSuccess=false;
-
-  // If the event is from a keyboard, we only want to open the
-  // new window if the user requested the link (return or space)
-  if (objEvent &amp;&amp; objEvent.type == 'keypress')
-  {
-    if (objEvent.keyCode)
-      iKeyCode = objEvent.keyCode;
-    else if (objEvent.which)
-      iKeyCode = objEvent.which;
-
-    // If not carriage return or space, return true so that the user agent
-    // continues to process the action
-    if (iKeyCode != 13 &amp;&amp; iKeyCode != 32)
-      return true;
-  }
-
-  bSuccess = window.open(objAnchor.href);
-
-  // If the window did not open, allow the browser to continue the default
-  // action of opening in the same window
-  if (!bSuccess)
-    return true;
-
-  // The window was opened, so stop the browser processing further
-  return false;
-}</pre>
-      </section>
-   </section><section id="tests"><h2>Tests</h2>
-      <section class="procedure"><h3>Procedure</h3>
-         <ol>
-            <li> Activate each link in the document to check if it opens a new window. </li>
-            <li>
-               <p>For each link that opens a new window, check that it uses script to accomplish each of the following:</p>
-               <ol>
-                  <li>indicates that the link will open in a new window,</li>
-                  <li>uses device-independent event handlers, and</li>
-                  <li>allows the browser to open the content in the same window if a new window was not opened.</li>
-               </ol>
-            </li>
-         </ol>
-      </section>
-      <section class="results"><h3>Expected Results</h3>
-         <ul>
-            <li> #2 is true. </li>
-         </ul>
-      </section>
-   </section><section id="related"><h2>Related Techniques</h2><ul>
-      <li><a href="../html/H83">H83</a></li>
-   </ul></section><section id="resources"><h2>Resources</h2>
-      
-         <ul>
-            <li>
-                  <a href="https://en.wikipedia.org/wiki/Progressive_enhancement">Wikipedia: Progressive Enhancement</a>
-               </li>
-         </ul>
-      
-   </section></body></html>
+   
+   function launchWindow(objAnchor, objEvent)
+   {
+     var iKeyCode, bSuccess=false;
+   
+     // If the event is from a keyboard, we only want to open the
+     // new window if the user requested the link (return or space)
+     if (objEvent &amp;&amp; objEvent.type == 'keypress')
+     {
+       if (objEvent.keyCode)
+         iKeyCode = objEvent.keyCode;
+       else if (objEvent.which)
+         iKeyCode = objEvent.which;
+   
+       // If not carriage return or space, return true so that the user agent
+       // continues to process the action
+       if (iKeyCode != 13 &amp;&amp; iKeyCode != 32)
+         return true;
+     }
+   
+     bSuccess = window.open(objAnchor.href);
+   
+     // If the window did not open, allow the browser to continue the default
+     // action of opening in the same window
+     if (!bSuccess)
+       return true;
+   
+     // The window was opened, so stop the browser processing further
+     return false;
+   }</code></pre>
+			</section>
+		</section>
+		<section id="tests">
+			<h2>Tests</h2>
+			<section class="procedure">
+				<h3>Procedure</h3>
+				<ol>
+					<li>Activate each link in the document to check if it opens a new window.</li>
+					<li><p>For each link that opens a new window, check that it uses script to accomplish each of the following:</p>
+						<ol>
+							<li>indicates that the link will open in a new window,</li>
+							<li>uses device-independent event handlers, and</li>
+							<li>allows the browser to open the content in the same window if a new window was not opened.</li>
+						</ol>
+					</li>
+				</ol>
+			</section>
+			<section class="results">
+				<h3>Expected Results</h3>
+				<ul>
+					<li>#2 is true.</li>
+				</ul>
+			</section>
+		</section>
+		<section id="related">
+			<h2>Related Techniques</h2>
+			<ul>
+				<li><a href="../html/H83">H83</a></li>
+			</ul>
+		</section>
+		<section id="resources">
+			<h2>Resources</h2>
+			<ul>
+				<li>
+					<a href="https://html.spec.whatwg.org/multipage/document-sequences.html#navigable-target-names">HTML - Navigable target names</a>
+				</li>
+				<li>
+					<a href="https://en.wikipedia.org/wiki/Progressive_enhancement">Wikipedia: Progressive Enhancement</a>
+				</li>
+			</ul>
+    </section>
+	</body>
+</html>
