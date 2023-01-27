@@ -20,13 +20,15 @@ function linkUnderstanding() {
 	var understandingBaseURI;
 	if (respecConfig.specStatus == "ED") understandingBaseURI = "../../understanding/";
 	else understandingBaseURI = "https://www.w3.org/WAI/WCAG" + version + "/Understanding/";
-	document.querySelectorAll('.sc').forEach(function(node){
+	document.querySelectorAll('.sc,.guideline').forEach(function(node){
 		var heading = textNoDescendant(findHeading(node));
 		var pathFrag = titleToPathFrag(heading);
+		if (node.id == "parsing") pathFrag = "parsing"; // special case parsing
 		var el = document.createElement("div");
 		el.setAttribute("class", "doclinks");
 		el.innerHTML = "<a href=\"" + understandingBaseURI + pathFrag + ".html\">Understanding " + heading + "</a> <span class=\"screenreader\">|</span> <br /><a href=\"https://www.w3.org/WAI/WCAG" + version + "/quickref/#" + pathFrag + "\">How to Meet " + heading + "</a>";
-		node.insertBefore(el, node.children[2]);
+		if (node.className = "sc") node.insertBefore(el, node.children[2]);
+		if (node.className = "guideline") node.insertBefore(el, node.children[1]);
 	})
 }
 
