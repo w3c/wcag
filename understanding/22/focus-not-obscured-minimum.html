@@ -36,16 +36,18 @@
  
          <p>Another form of obscuring can occur due to light boxes or other semi-opaque effects overlapping the item with focus. While less than 100 percent opacity is not causing the component to be "entirely hidden," such semi-opaque overlaps may cause a failure of <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html">2.4.11 Focus Appearance</a>. When a focus indicator can be covered by a semi-opaque component, the ability of the focus indicator to pass 2.4.11 should be evaluated (and pass) while the focus indicator is under the semi-opaque component. The intention in both situations is that the component receiving focus should never be obscured to the point a user cannot tell which item has focus.</p>
 
-      <p class="note">If the interface is configurable so that the user can move toolbars and non-modal dialogs around, then only the initial positions of user-movable content would be considered for testing and conformance of this Success Criterion.</p>
+        <p>Where other content can overlap with a focused item, the focused element should not be hidden.  Typical types of content that can overlap focused items are sticky footers, sticky headers, or non-modal dialogues.  As a user tabs through the page (thus moving the keyboard focus indicator), these layers of content can obscure the focused item, including the focus indicator.  Such behavior is usually indiccative of a failure to satisfy this success criterion.</p>
 
-        <p>Where other content can overlap with a focused item, the focused element should not be hidden. Typical types of content that can overlap focused items are sticky footers, sticky headers, or non-modal dialogues. As a user tabs through the page, these layers of content can obscure the focused item, including the focus indicator.</p>
-        
-        <p>If the interface is configurable so that the user can move toolbars and non-modal dialogs around, then only the initial positions of user-movable content would be considered for testing and conformance of this success criterion. Similarly, if the interface contains content that the user can open / close or expand / collapse, only the default state of that user-controlled content would be considered.</p>
+        <p>If the interface is configurable so that the user can manually open, close, and/or move components such as toolbars and non-modal dialogues, then only the initial default position and state of user-movable content is applicable for testing and conformance of this success criterion.  Similarly, if the interface contains content where user interation causes eleements to open/close or expand/collapse (i.e., a change is initiated by the user), only the initial default state of user-controlable components is in scope for this success criterion.</p>
+
+        <p>Converserely, if a component automatically opens and obscures focused elements, that behavior would fail this criterion.  For example, if a navigation drop-down opens upon focus, but does not close when focus moves to other element, the page would not pass if focusable elements were visually obscured.</p>
+
+        <p>Selecting or activating a component (for example, by mouse click or return key) is not in scope for this SC, since that woould be a change initiated by the user, and is distict from when the keyboard focus indicator is visible.</p>
 
     </section>
 
     <section id="benefits">
-      <h2>Benefits of Focus  Not Obscured</h2>
+      <h2>Benefits of Focus Not Obscured</h2>
       
       <ul>
          <li>This Success Criterion allows many who rely on a keyboard to operate the page by letting them visually determine the component on which keyboard operations will interact at any point in time. This includes people with low vision and/or mobility impairments, who may rely on keyboard emulators including speech input, sip-and-puff software, onscreen keyboards, scanning software, and a variety of assistive technologies and alternate keyboards.</li>
@@ -94,7 +96,7 @@
          <h3>Failures</h3>
          <ol>
             <li>
-
+              It is essentially a bug (and a failure against this SC) if a component (for example, a hamburger menu) stays open on keyboard focus after keyboard focus is removed &ndash; when mouse-over behavior works as is typically expected (that is, the component automatically expands, but then collapses after the mouse cursor moves away from the component).
             </li>
          </ol>
       </section>
