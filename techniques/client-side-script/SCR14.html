@@ -1,80 +1,106 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using scripts to make nonessential alerts optional</title><link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link></head><body><h1>Using scripts to make nonessential alerts optional</h1><section class="meta"><p class="id">ID: SCR14</p><p class="technology">Technology: client-side-script</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Using scripts to make nonessential alerts optional</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
+	</head>
+	<body>
+		<h1>Using scripts to make nonessential alerts optional</h1>
+		<section class="meta">
+			<p class="id">ID: SCR14</p>
+			<p class="technology">Technology: client-side-script</p>
+			<p class="type">Type: Technique</p>
+		</section>
+		<section id="applicability">
+			<h2>When to Use</h2>
       <p>Scripting technologies which use scripting alerts for non-emergency communication.</p>
-   </section><section id="description"><h2>Description</h2>
-      <p>The objective of this technique is to display a dialog containing a message (alert) to the user.  When the alert is displayed, it receives focus and the user must activate the OK button on the dialog to dismiss it. Since these alerts cause focus to change they may distract the user, especially when used for non-emergency information. Alerts for non-emergency purposes such as displaying a quote of the day, helpful usage tip, or count down to a particular event, are not presented unless the user enables them through an option provided in the Web page.</p>
-      <p>This technique assigns a global JavaScript variable to store the user preference for displaying alerts. The default value is false. A wrapper function is created to check the value of this variable before displaying an alert. All calls to display an alert are made to this wrapper function rather than calling the <code class="language-javascript">alert()</code> function directly. Early in the page, a button is provided for the user to enable the display of alerts on the page. This technique works on a visit by visit basis. Each time the page is loaded, alerts will be disabled and the user must manually enable them. Alternatively, the author could use cookies to store user preferences across sessions.</p>
-   </section><section id="examples"><h2>Examples</h2>
-      <section class="example">
-         
-            <p>The script below will display a quote in an alert box every ten seconds, if the user selects the "Turn Alerts On" button. The user can turn the quotes off again by choosing "Turn Alerts Off".</p>
+		</section>
+		<section id="description">
+			<h2>Description</h2>
+      <p>The objective of this technique is to toggle announcements to screen readers of changes in a stock-price alert component. By default, when the stock price changes, the change is announced by screen readers. This could be annoying to some users, so there are buttons to allow users to toggle the announcements on or off.</p>
+      <p>This technique uses the <code class="language-html">aria-live</code> property to turn the stock component into a live region and the <code class="language-html">aria-atomic</code> property to tell screen readers to announce all of the component's content rather than just what was updated when the stock is updated. For the sake of this demo, the stock updates every 10 seconds. If announcements are turned on, the <code class="language-html">aria-live</code> property is set to <code class="language-html">assertive</code>; if announcements are turned off, the <code class="language-html">aria-live</code> property is set to <code class="language-html">off</code>. The two buttons used to control the announcements use the <code class="language-html">aria-pressed</code> property, updated to either <code class="language-html">true</code> or <code class="language-html">false</code>, to inform screen reader users which button is pressed and therefore whether their screen reader will announce the stock updates or not. In a real-life situation, an author should consider setting a cookie (or equivalent) to store the user's preference so that it's set over multiple visits to the page.</p>
+		</section>
+		<section id="examples">
+			<h2>Examples</h2>
+			<section class="example">
+				<h3>Updating screen reader settings for stock price update alerts</h3>
+				<p>The script below will update a stock value in an aria-live component every 10 seconds. If the user presses the "Turn Announcements Off" button, their screen reader will stop making announcements when the stock value changes; if they press the "Turn Announcements On" button, the announcements will start again.</p>
+
+				<h4>The JavaScript</h4>
          
 <pre xml:space="preserve"><code class="language-javascript">&lt;script&gt;
-  var bDoAlerts = false;  // global variable which specifies whether to 
-                         // display alerts or not
-  /* function to enable/disable alerts.
-   * param boolean bOn - true to enable alerts, false to disable them.
-  */
-  
-  function modifyAlerts(isEnabled) {
-    bDoAlerts = isEnabled;
+document.addEventListener("DOMContentLoaded", function (e) {
+  const stockBox = document.querySelector("#stock-box");
+  const stockMovement = document.querySelector("#stock-movement");
+  const onBtn = document.querySelector("#live-on");
+  const offBtn = document.querySelector("#live-off"); 
+  const stocks = new Array("stock went down", "stock stayed the same", "stock went up");
+  let loopCount = 0;	
+		
+  onBtn.addEventListener("click", modifyLive, false);
+  offBtn.addEventListener("click", modifyLive, false);
+		
+  function modifyLive(e){
+    let elm = e.currentTarget;
+    let liveState = elm.getAttribute("id");
+    if (liveState === "live-off"){
+      stockBox.setAttribute("aria-live", "off");
+      onBtn.setAttribute("aria-pressed", "false");
+      offBtn.setAttribute("aria-pressed", "true");
+    }
+    else{
+      stockBox.setAttribute("aria-live", "assertive");
+      onBtn.setAttribute("aria-pressed", "true");
+      offBtn.setAttribute("aria-pressed", "false");      
+    }
   }
-   
-  /* wrapper function for displaying alerts.  Checks the value of bDoAlerts
-   * and only calls the alert() function when bDoAlerts is true.
-   */
-   
-   function doAlert(aMessage) {
-    if (bDoAlerts) {
-      alert(aMessage);
-      }
-   }
-   
-   // example usage - a loop to display famous quotes.
-   var gCounter = -1;  // global to store counter
-   
-   // quotes variable would be initialized with famous quotations
-   var quotes = new Array("quote 1", "quote 2", "quote 3", "quote 4", "quote 5");
-   
-   function showQuotes() {
-     if (++gCounter &gt;= quotes.length) {
-      gCounter = 0;
-     }
-      doAlert(quotes[gCounter]);
-      setTimeout("showQuotes();", 10000);
-   }
-
-   showQuotes();
+		
+  setInterval(() => {
+    if(loopCount >2){
+      loopCount = 0;
+    }
+    stockMovement.innerHTML = stocks[loopCount];
+      loopCount++;
+    }, 10000)
+  });
 &lt;/script&gt;</code></pre>
          
-            <p>Within the body of the page, include a way to turn the alerts on and off. Below is one example:</p>
+<h4>The <abbr title="HyperText Markup Language">HTML</abbr></h4>
          
 <pre xml:space="preserve"><code class="language-html">&lt;body&gt;
-  &lt;p&gt;Press the button below to enable the display of famous quotes 
-   using an alert box:&lt;/p&gt;
+  &lt;h1&gt;Turbo Encabulator Stock Information&lt;/h1&gt;	
+  &lt;div id=&quot;stock-box&quot; aria-atomic=&quot;true&quot; aria-live=&quot;assertive&quot;&gt;
+    &lt;span&gt;Turbo Encabulator Stock Price: &lt;/span&gt;
+    &lt;span id=&quot;stock-movement&quot;&gt;stock went up&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;p&gt;Use the buttons to toggle screen reader announcements of stock changes:&lt;/p&gt;
   &lt;div&gt;
-    &lt;button id="enableBtn" type="button" onclick="modifyAlerts(true);"&gt;
-    Turn Alerts On&lt;/button&gt;
-    &lt;button id="disableBtn" type="button" onclick="modifyAlerts(false);"&gt;
-    Turn Alerts Off&lt;/button&gt;
-  &lt;/div&gt;    
+    &lt;button aria-pressed=&quot;true&quot; id=&quot;live-on&quot; type=&quot;button&quot;&gt;
+     Turn Announcements On&lt;/button&gt;
+    &lt;button aria-pressed=&quot;false&quot; id=&quot;live-off&quot; type=&quot;button&quot;&gt;
+     Turn Announcements Off&lt;/button&gt;
+  &lt;/div&gt;
 &lt;/body&gt;</code></pre>
          
-            <p class="working-example">Working example of this code: <a href="../../working-examples/script-enable-alerts/">Demonstration of Alerts</a>.</p>
+    <p class="working-example">Working example of this code: <a href="../../working-examples/script-toggle-aria-alerts/">Demonstration of toggling ARIA alerts</a>.</p>
          
       </section>
    </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
-         <p>For a Web page that supports non-emergency interruptions using a JavaScript alert:</p>
+         <p>For a Web page that supports non-emergency interruptions:</p>
          <ol>
             <li>Load the Web page and verify that no non-emergency alerts are displayed.</li>
-            <li>Verify there is a mechanism to activate the non-emergency alerts.</li>
-            <li>Activate the non-emergency alerts and verify that the alerts are displayed.</li>
+            <li>Verify there is a mechanism to activate and deactivate the non-emergency interruptions.</li>
          </ol>
       </section>
-      <section class="results"><h3>Expected Results</h3>
+      <section class="results">
+				<h3>Expected Results</h3>
          <ul>
-            <li>For a Web page that supports non-emergency interruptions using a JavaScript alert, checks 1, 2, and 3 above are true.</li>
+            <li>For a Web page that supports non-emergency interruptions, checks 1 and 2 are true.</li>
          </ul>
       </section>
    </section>
+	 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+	 <script>hljs.highlightAll();</script>	 
 </body></html>
