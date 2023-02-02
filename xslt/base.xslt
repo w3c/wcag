@@ -379,13 +379,13 @@
 			</div>
 			<div dir="auto" translate="no" class="q4-start q4-end" lang="en">
 				<ul style="margin-bottom:0">
-					<li><a href="/about/contacting/">Contact WAI</a></li>
+					<li><a href="/WAI/about/contacting/">Contact WAI</a></li>
 					<li><a href="/sitemap/">Site Map</a></li>
 					<li><a href="/news/">News</a></li>
 					<li><a href="/sitemap/#archive">Archive</a></li>
-					<li><a href="/about/accessibility-statement/">Accessibility Statement</a></li>
+					<li><a href="/WAI/about/accessibility-statement/">Accessibility Statement</a></li>
 					<li><a href="/translations/"> Translations</a></li>
-					<li><a href="/roles/">Resources for Roles</a></li>
+					<li><a href="/WAI/roles/">Resources for Roles</a></li>
 				</ul>
 			</div>
 		</footer>
