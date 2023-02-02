@@ -8,14 +8,32 @@ function linkUnderstanding() {
 	var understandingBaseURI;
 	if (respecConfig.specStatus == "ED") understandingBaseURI = "../../understanding/";
 	else understandingBaseURI = "https://www.w3.org/WAI/WCAG" + version + "/Understanding/";
-	document.querySelectorAll('.sc').forEach(function(node){
-		var heading = node.firstElementChild.textContent;
+	document.querySelectorAll('.sc,.guideline').forEach(function(node){
+		var heading = textNoDescendant(findHeading(node));
 		var pathFrag = titleToPathFrag(heading);
+		if (node.id == "parsing") pathFrag = "parsing"; // special case parsing
 		var el = document.createElement("div");
 		el.setAttribute("class", "doclinks");
-		el.innerHTML = "<a href=\"" + understandingBaseURI + pathFrag + ".html\">Розуміння " + heading + "</a> <span class=\"screenreader\">|</span> <br /><a href=\"https://www.w3.org/WAI/WCAG" + version + "/quickref/#" + pathFrag + "\">Як відповідати вимогам " + heading + "</a>";
-		node.insertBefore(el, node.children[1]);
+		el.innerHTML = "<a href=\"" + understandingBaseURI + pathFrag + ".html\" hreflang=\"en\">Розуміння " + heading + "</a> <span class=\"screenreader\">|</span> <br /><a href=\"https://www.w3.org/WAI/WCAG" + version + "/quickref/#" + pathFrag + "\" hreflang=\"en\">Як відповідати вимогам " + heading + "</a>";
+		if (node.className = "sc") node.insertBefore(el, node.children[2]);
+		if (node.className = "guideline") node.insertBefore(el, node.children[1]);
 	})
+}
+
+function textNoDescendant(el) {
+	var textContent = "";
+	el.childNodes.forEach(function(node) {
+		if (node.nodeType == 3) textContent += node.textContent;
+	})
+	return textContent;
+}
+
+function titleToPathFrag (title) {
+	return title.toLowerCase().replace(/[\s,]+/g, "-").replace(/[\(\)]/g, "");
+}
+
+function findHeading(el) {
+	return el.querySelector('h1, h2, h3, h4, h5, h6');
 }
 
 function addTextSemantics() {
