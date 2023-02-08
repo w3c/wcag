@@ -46,9 +46,11 @@
 		<delete file="${inputdir.guidelines}/wcag.xml" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/wcag.json" failonerror="false"/>
 		<delete file="${inputdir.guidelines}/versions.xml" failonerror="false"/>
+		<delete file="${inputdir.guidelines}/test-sql.sql" failonerror="false"/>
 		<delete file="${inputdir.techniques}/techniques.xml" failonerror="false"/>
 		<delete file="${inputdir.techniques}/technique-associations.xml" failonerror="false"/>
 		<delete file="${inputdir.techniques}/about-flat.html" failonerror="false"/>
+		<delete file="${inputdir.understanding}/about-flat.html" failonerror="false"/>
 		<delete file="output.html" failonerror="false"/>
 		<delete dir="output" failonerror="false"/>
 		<delete dir="input" failonerror="false"/>
@@ -63,7 +65,7 @@
 		</xslt>
 	</target>
 	
-	<target name="guidelines-xml" depends="flatten" description="Build an XML representation of the guidelines">
+	<target name="guidelines-xml" depends="flatten, guidelines-versions" description="Build an XML representation of the guidelines">
 		<xslt in="${inputdir.guidelines}/index-flat.html" out="${inputdir.guidelines}/wcag.xml" style="xslt/generate-structure-xml.xslt">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
@@ -103,7 +105,7 @@
 		<mkdir dir="output/guidelines/${guidelines.version}"/>
 		<copy file="css/base.css" todir="output/guidelines/${guidelines.version}"/>
 		<copy file="guidelines/guidelines.css" todir="output/guidelines/${guidelines.version}"/>
-		<copy file="guidelines/relative-luminance.xml" todir="output/guidelines/${guidelines.version}"/>
+		<copy file="guidelines/relative-luminance.html" todir="output/guidelines/${guidelines.version}"/>
 		<exec executable="curl">
 			<arg value="&quot;https://labs.w3.org/spec-generator/?type=respec&amp;url=https://raw.githack.com/w3c/wcag/master/guidelines/index.html&quot;"/>
 			<arg value="-o"/>
@@ -170,7 +172,7 @@
 		</xslt>
 	</target>
 	
-	<target name="techniques" depends="techniques-list, techniques-association, techniques-index">
+	<target name="techniques" depends="techniques-list, techniques-association, techniques-index, techniques-about">
 		<makeurl file="${basedir}/techniques/" property="base.techniques"/>
 		<makeurl file="${basedir}/techniques/technique-associations.xml" property="associations.file"/>
 		<mkdir dir="${basedir}/output/techniques/"/>
@@ -190,10 +192,12 @@
 			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
+			<param name="documentset" expression="Techniques"/>
 		</xslt>
 		<copy file="css/base.css" todir="output/techniques/"/>
+		<copy file="css/a11y-light.css" tofile="output/techniques/a11y-light.css"/>
+		<copy file="script/highlight.min.js" todir="output/techniques/"/>
 		<copy file="techniques/techniques.css" todir="output/techniques/"/>
-		<copy file="css/slicenav.css" todir="output/techniques/"/>
 		<copy todir="output/techniques/">
 			<fileset dir="techniques" includes="**/img/*"/>
 		</copy>
@@ -206,7 +210,7 @@
 		</xslt>
 	</target>
 	
-	<target name="techniques-index" depends="techniques-toc" description="Flatten the techniques index file">
+	<target name="techniques-index" depends="techniques-toc" description="Process the techniques index file">
 		<makeurl file="${basedir}/techniques/" property="base.techniques"/>
 		<mkdir dir="${basedir}/output/techniques/"/>
 		<xslt in="${inputdir.techniques}/index.html" out="${inputdir.techniques}/index-flat.html" style="xslt/flatten-document.xslt" force="true">
@@ -214,7 +218,7 @@
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.techniques}"/>
 		</xslt>
-		<xslt in="${inputdir.techniques}/index-flat.html" out="${basedir}/output/techniques/index.html" style="xslt/base.xslt" force="true">
+		<xslt in="${inputdir.techniques}/index-flat.html" out="${basedir}/output/techniques/index.html" style="xslt/process-index.xslt" force="true">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.techniques}"/>
@@ -225,11 +229,38 @@
 			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
+			<param name="documentset" expression="Techniques"/>
+			<param name="navigation.current" expression="all"/>
 		</xslt>
 	</target>
 	
+	<target name="techniques-about" description="Process the techniques about file">
+		<makeurl file="${basedir}/techniques/" property="base.techniques"/>
+		<mkdir dir="${basedir}/output/techniques/"/>
+		<xslt in="${inputdir.techniques}/about.html" out="${inputdir.techniques}/about-flat.html" style="xslt/flatten-document.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+			<param name="base.dir" expression="${base.techniques}"/>
+		</xslt>
+		<xslt in="${inputdir.techniques}/about-flat.html" out="${basedir}/output/techniques/about.html" style="xslt/process-index.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+			<param name="base.dir" expression="${base.techniques}"/>
+			<param name="guidelines.version" expression="${guidelines.version}"/>
+			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG${guidelines.version}/" if="publication"/>
+			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Understanding/" if="publication"/>
+			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Techniques/" if="publication"/>
+			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
+			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
+			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
+			<param name="documentset" expression="Techniques"/>
+			<param name="navigation.current" expression="about"/>
+		</xslt>
+		<copy file="css/base.css" todir="output/techniques/"/>
+	</target>
+	
 	<!-- Understanding -->
-	<target name="understanding" depends="guidelines-xml, guidelines-versions, techniques-list, understanding-index" description="Generate formatted Understanding docs">
+	<target name="understanding" depends="guidelines-xml, guidelines-versions, techniques-list, understanding-index, understanding-about" description="Generate formatted Understanding docs">
 		<makeurl file="${basedir}/understanding/" property="base.understanding"/>
 		<mkdir dir="${basedir}/output/understanding/"/>
 		<local name="output.dir"/>
@@ -247,11 +278,10 @@
 			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
+			<param name="documentset" expression="Understanding"/>
 		</xslt>
-		<copy file="css/base.css" todir="output/understanding/"/>
 		<copy file="understanding/understanding.css" todir="output/understanding/"/>
-		<copy file="css/slicenav.css" todir="output/understanding/"/>
-		<copy file="guidelines/relative-luminance.xml" todir="output/understanding/"/>
+		<copy file="guidelines/relative-luminance.html" todir="output/understanding/"/>
 		<copy todir="output/understanding/img/" flatten="true">
 			<fileset dir="understanding">
 				<patternset includes="*/img/*"/>
@@ -266,15 +296,15 @@
 		</xslt>
 	</target>
 	
-	<target name="understanding-index" depends="understanding-toc" description="Flatten the understanding index file">
+	<target name="understanding-index" depends="understanding-toc" description="Process the understanding index file">
 		<makeurl file="${basedir}/understanding/" property="base.understanding"/>
 		<mkdir dir="${basedir}/output/understanding/"/>
-		<xslt in="${inputdir.understanding}/index.html" out="${basedir}/understanding/index-flat.html" style="xslt/flatten-document.xslt" force="true">
+		<xslt in="${inputdir.understanding}/index.html" out="${inputdir.understanding}/index-flat.html" style="xslt/flatten-document.xslt" force="true">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.understanding}"/>
 		</xslt>
-		<xslt in="${inputdir.understanding}/index-flat.html" out="${basedir}/output/understanding/index.html" style="xslt/base.xslt" force="true">
+		<xslt in="${inputdir.understanding}/index-flat.html" out="${basedir}/output/understanding/index.html" style="xslt/process-index.xslt" force="true">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 			<param name="base.dir" expression="${base.understanding}"/>
@@ -285,7 +315,34 @@
 			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
 			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
 			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
+			<param name="documentset" expression="Understanding"/>
+			<param name="navigation.current" expression="all"/>
 		</xslt>
+	</target>
+	
+	<target name="understanding-about" description="Process the understanding about file">
+		<makeurl file="${basedir}/understanding/" property="base.understanding"/>
+		<mkdir dir="${basedir}/output/understanding/"/>
+		<xslt in="${inputdir.understanding}/about.html" out="${inputdir.understanding}/about-flat.html" style="xslt/flatten-document.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+			<param name="base.dir" expression="${base.understanding}"/>
+		</xslt>
+		<xslt in="${inputdir.understanding}/about-flat.html" out="${basedir}/output/understanding/about.html" style="xslt/process-index.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+			<param name="base.dir" expression="${base.understanding}"/>
+			<param name="guidelines.version" expression="${guidelines.version}"/>
+			<param name="loc.guidelines" expression="https://www.w3.org/TR/WCAG${guidelines.version}/" if="publication"/>
+			<param name="loc.understanding" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Understanding/" if="publication"/>
+			<param name="loc.techniques" expression="https://www.w3.org/WAI/WCAG${guidelines.version}/Techniques/" if="publication"/>
+			<param name="loc.guidelines" expression="https://w3c.github.io/wcag/guidelines/" if="editors"/>
+			<param name="loc.understanding" expression="https://w3c.github.io/wcag/understanding/" if="editors"/>
+			<param name="loc.techniques" expression="https://w3c.github.io/wcag/techniques/" if="editors"/>
+			<param name="documentset" expression="Understanding"/>
+			<param name="navigation.current" expression="about"/>
+		</xslt>
+		<copy file="css/base.css" todir="output/understanding/"/>
 	</target>
 	
 	<!-- Requirements -->
@@ -359,6 +416,22 @@
 	<!-- JSON -->
 	<target name="json" depends="init, guidelines-xml, techniques-list, techniques-association">
 		<xslt in="${inputdir.guidelines}/wcag.xml" out="${inputdir.guidelines}/wcag.json" style="xslt/xml-to-json.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+		</xslt>
+	</target>
+	
+	<!-- Redirects -->
+	<target name="redirects">
+		<xslt in="xslt/ids.xml" out="output/understanding/.htaccess" style="xslt/ids-to-redirects.xslt" force="true">
+			<classpath path="${classpath.saxon}"/>
+			<factory name="${xslt.factory}"/>
+		</xslt>
+	</target>
+	
+	<!-- SQL for CR test tool -->
+	<target name="cr-sql" depends="guidelines-xml, guidelines-versions, techniques-list, techniques-association">
+		<xslt in="${inputdir.guidelines}/wcag.xml" out="${inputdir.guidelines}/test-sql.sql" style="xslt/generate-test-sql.xslt" force="true">
 			<classpath path="${classpath.saxon}"/>
 			<factory name="${xslt.factory}"/>
 		</xslt>
