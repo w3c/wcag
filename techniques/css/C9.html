@@ -1,112 +1,82 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using CSS to include decorative images</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using CSS to include decorative images</h1><section class="meta"><p class="id">ID: C9</p><p class="technology">Technology: css</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
-      <p> Any technology that can use CSS to include images. </p>
-   </section><section id="description"><h2>Description</h2>
-      <p> The objective of this technique is to provide a mechanism to add purely
-                        decorative images and images used for visual formatting to Web content
-                        without requiring additional markup within the content. This makes it
-                        possible for assistive technologies to ignore the non-text content. Some
-                        user agents can ignore or turn off CSS at the user's request, so that
-                        background images included with CSS simply "disappear" and do not interfere
-                        with display settings such as enlarged fonts or high contrast settings. </p>
-      <p>Background images can be included with the following CSS properties:</p>
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head>
+	<title>Using CSS to include decorative images</title>
+	<link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
+</head>
+<body>
+	<h1>Using <abbr title="Cascading Style Sheets">CSS</abbr> to include decorative images</h1>
+	<section class="meta">
+		<p class="id">ID: C9</p>
+		<p class="technology">Technology: css</p>
+		<p class="type">Type: Technique</p>
+	</section>
+	<section id="applicability">
+		<h2>When to Use</h2>
+		<p>Any technology that can use CSS to include images.</p>
+   </section>
+	 <section id="description">
+		<h2>Description</h2>
+		<p> The objective of this technique is to provide a mechanism to add purely decorative images and images used for visual formatting to Web content without requiring additional markup within the content. This makes it possible for assistive technologies to ignore the non-text content. Some user agents can ignore or turn off CSS at the user's request, so that background images included with CSS simply "disappear" and do not interfere with display settings such as enlarged fonts or high contrast settings.</p>
+		<p>Background images can be included with the following CSS properties:</p>
       <ul>
-         <li> 
-               background, </li>
-         <li> 
-               background-image, </li>
-         <li>
-								       content, combined with the <code>::before</code> and
-                                    <code>::after</code> pseudo-elements, </li>
-         <li> 
-               list-style-image. </li>
+         <li><code class="language-css">background</code>;</li>
+         <li><code class="language-css">background-image</code>;</li>
+         <li><code class="language-css">content</code>, combined with the <code class="language-css">::before</code> and <code class="language-css">::after</code> pseudo-elements;</li>
+         <li><code class="language-css">list-style-image</code>.</li>
       </ul>
       <div class="note">
         <p>This technique is not appropriate for any image that conveys information or provides functionality, or for any image primarily intended to create a specific sensory experience.</p>
       </div>
-   </section><section id="examples"><h2>Examples</h2>
-      <section class="example">
-         <h3>Background image for an HTML page </h3>
+   </section>
+	 <section id="examples">
+		<h2>Examples</h2>
+		<section class="example">
+			<h3>Background image for an <abbr title="HyperText Markup Language">HTML</abbr> page</h3>
+      <p>The stylesheet for a Web page specifies a background image for the whole page.</p>
          
-            <p> The stylesheet for a Web page specifies a background image for the
-                                whole page.</p>
-         
-         <pre xml:space="preserve">…
-  &lt;style type="text/css"&gt;
-    body { background: #ffe url('/images/home-bg.jpg') repeat; }
-  &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-...
-</pre>
+<pre xml:space="preserve"><code class="language-html">&lt;style&gt;
+  body { background: #ffe url('/images/home-bg.jpg') repeat; }
+&lt;/style&gt;</code></pre>
       </section>
       <section class="example">
          <h3>Background image with CSS for image rollovers </h3>
+         <p>The stylesheet for a Web page uses the CSS background property to create a decorative rollover effects when a user hovers their mouse pointer over a link.</p>
          
-            <p> The stylesheet for a Web page uses the CSS background
-                                property to create a decorative rollover effects when a user hovers
-                                the mouse pointer over a link. </p>
-         
-         <pre xml:space="preserve">a:hover { background: #ffe url('/images/hover.gif') repeat; color: #000;
+<pre xml:space="preserve"><code class="language-css">a:hover {
+  background: #ffe url('/images/hover.gif') repeat;
+  color: #000;
   text-decoration: none;
-}</pre>
-      </section>
-      <section class="example">
-         <h3>Background images with CSS to create rounded corners on
-                            tabs or other elements </h3>
-         
-            <p> The styleseet for a Web page uses the CSS background
-                                property to create rounded corners on elements. </p>
-         
-         <pre xml:space="preserve">…
-  &lt;style type="text/css"&gt;
-    div#theComments { width:600px; }
-    div.aComment { background: url('images/middle.gif') repeat-y left top; 
-    margin:0 0 30px 0; }
-    div.aComment blockquote { background: url('images/top.gif') no-repeat left top; 
-    margin:0; padding:8px 16px; }
-    div.aComment div.submitter { background:#fff url('images/bottom.gif') no-repeat left top; 
-    margin:0; padding-top:30px; }
-  &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;div id="theComments"&gt;
-    &lt;div class="aComment"&gt;
-      &lt;blockquote&gt;
-        &lt;p&gt;Hi John, I really like this technique and I'm gonna use it on my own Website!&lt;/p&gt;
-      &lt;/blockquote&gt;
-      &lt;div class="submitter"&gt;
-        &lt;cite&gt;&lt;a href="http://example.com/"&gt;anonymous coward&lt;/a&gt; from Elbonia&lt;/cite&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;div class="aComment"&gt;
-…
- &lt;/div&gt;
-&lt;/div&gt;
-…</pre>
-      </section>
-   </section><section id="tests"><h2>Tests</h2>
-      <section class="procedure"><h3>Procedure</h3>
-         <ol>
-            <li> Check for the presence of decorative images </li>
-            <li> Check that they are included with CSS </li>
-         </ol>
-      </section>
-      <section class="results"><h3>Expected Results</h3>
-         <ul>
-            <li> If #1 is true, then #2 is true. </li>
-         </ul>
-      </section>
-   </section><section id="related"><h2>Related Techniques</h2><ul>
-      <li><a href="../css/C30">C30</a></li>
-      <li><a href="../failures/F3">F3</a></li>
-   </ul></section><section id="resources"><h2>Resources</h2>
-      
-         <ul>
-            <li> The <a href="https://www.w3.org/TR/CSS2/colors.html#propdef-background">background property in the CSS 2 specification</a> 
-               </li>
-            <li> The <a href="https://www.w3.org/TR/1999/REC-html401-19991224/struct/global.html#adef-background">HTML 4.01 specification</a> states that the
-                                        background attribute of the body
-                                    element is deprecated </li>
-         </ul>
-      
-   </section></body></html>
+}</code></pre>
+		</section>
+   </section>
+	 <section id="tests">
+		<h2>Tests</h2>
+		<section class="procedure">
+			<h3>Procedure</h3>
+			<ol>
+				<li>Check for the presence of decorative images</li>
+				<li>Check that they are included with CSS</li>
+			</ol>
+		</section>
+		<section class="results">
+			<h3>Expected Results</h3>
+			<ul>
+				<li>If #1 is true, then #2 is true.</li>
+			</ul>
+		</section>
+	</section>
+	<section id="related">
+		<h2>Related Techniques</h2>
+		<ul>
+			<li><a href="../css/C30">C30</a></li>
+			<li><a href="../failures/F3">F3</a></li>
+		</ul>
+	</section>
+	<section id="resources">
+		<h2>Resources</h2>
+		<ul>
+			<li>The <a href="https://www.w3.org/TR/css-backgrounds-3/#propdef-background"><code class="language-css">background</code> property in the CSS specification</a>.</li>
+		</ul>
+	</section>
+</body>
+</html>
