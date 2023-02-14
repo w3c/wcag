@@ -1,60 +1,81 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Scaling form elements which contain text</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Scaling form elements which contain text</h1><section class="meta"><p class="id">ID: C17</p><p class="technology">Technology: css</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
-      <p>(X)HTML, CSS</p>
-   </section><section id="description"><h2>Description</h2>
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Scaling form elements which contain text</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
+	</head>
+	<body>
+		<h1>Scaling form elements which contain text</h1>
+		<section class="meta">
+			<p class="id">ID: C17</p>
+			<p class="technology">Technology: css</p>
+			<p class="type">Type: Technique</p>
+		</section>
+		<section id="applicability">
+			<h2>When to Use</h2>
+      <p><abbr title="HyperText Markup Language">HTML</abbr>, <abbr title="Cascading Style Sheets">CSS</abbr></p>
+		</section>
+		<section id="description">
+			<h2>Description</h2>
       <p>The objective of this technique is to ensure text-based form controls resize when text size is changed in the user agent. This will allow users to enter text and read what they have entered in input boxes because the text is displayed at the size required by the user.</p>
-      <p>Text-based form controls include input boxes (text and textarea) as well as buttons.</p>
-   </section><section id="examples"><h2>Examples</h2>
+      <p>Text-based form controls include <code class="language-html">input</code> boxes (<code class="language-html">text</code> and <code class="language-html">textarea</code>) as well as buttons.</p>
+		</section>
+		<section id="examples">
+			<h2>Examples</h2>
       <section class="example">
-         <h3>A Contact Form</h3>
+				<h3>A Contact Form</h3>
+				<p>A Contact Us form has some introductory information and then form controls for users to enter their first name, last name, telephone number and email address. All of the text and form controls have been implemented in a scalable way.</p>
+				
+				<h4>The HTML</h4>
          
-            <p>A Contact Us form has some introductory information and then form controls for users to enter their first name, last name, telephone number and email address. All of the text and form controls have been implemented in a scalable way. This includes specifying a font size for the form controls themselves because the font size is not inherited in Internet Explorer.</p>
-            <p>The XHTML component:</p>
+<pre xml:space="preserve"><code class="language-html">&lt;h1&gt;Contact Us&lt;/h1&gt;
+&lt;p&gt;Please provide us with your details and we will contact you as soon as we can.
+  Note that all of the form fields are required.&lt;/p&gt;
+&lt;div&gt;
+  &lt;label for="fname"&gt;First Name&lt;/label&gt;
+  &lt;input autocomplete="given-name" id="fname" name="fname" type="text"&gt;
+&lt;/div&gt;
+&lt;div&gt;
+  &lt;label for="lname"&gt;Last Name&lt;/label&gt;
+  &lt;input autocomplete="family-name" id="lname" name="lname" type="text"&gt;
+&lt;/div&gt;
+&lt;div&gt;
+  &lt;label for="phone"&gt;Telephone&lt;/label&gt;
+  &lt;input autocomplete="tel" id="phone" name="phone" type="text"&gt;
+&lt;/div&gt;
+&lt;div&gt;
+  &lt;label for="email"&gt;Email&lt;/label&gt;
+  &lt;input autocomplete="email" id="email" name="email" type="text"&gt;
+&lt;/div&gt;
+&lt;input id="submit" name="submit" type="submit" value="Submit"&gt;</code></pre>
          
-         <pre xml:space="preserve">&lt;h1&gt;Contact Us&lt;/h1&gt;
-&lt;p&gt;Please provide us with your details and we will contact you as soon as we can. Note that all of the form fields are required.&lt;/p&gt;
-&lt;label for="fname"&gt;First Name&lt;/label&gt;&lt;input type="text" name="fname" id="fname" /&gt;&lt;br /&gt;
-&lt;label for="lname"&gt;Last Name&lt;/label&gt;&lt;input type="text" name="lname" id="lname" /&gt;&lt;br /&gt;
-&lt;label for="phone"&gt;Telephone&lt;/label&gt;&lt;input type="text" name="phone" id="phone" /&gt;&lt;br /&gt;
-&lt;label for="email"&gt;Email&lt;/label&gt;&lt;input type="text" name="email" id="email" /&gt;&lt;br /&gt;
-&lt;input type="submit" name="Submit" value="Submit" id="Submit" /&gt;</pre>
+		<h4>The CSS component</h4>
          
-            <p>The CSS component:</p>
+<pre xml:space="preserve"><code class="language-css">h1 { font-size: 2em; }
+p, label { font-size: 1em; }
+label { display:block; }
+input { font: inherit; }
+div { margin-bottom: 1rem; }</code></pre>
          
-         <pre xml:space="preserve">h1 { font-size: 2em; }
-            p, label, input { font-size: 1em; }</pre>
-         
-            <p class="working-example">Working example of this code: <a href="../../working-examples/input-resize/">Example of resizing input with CSS</a>.</p>
-         
-      </section>
-      <section class="example">
-         <h3>Radio button</h3>
-         
-            <p>This example works in IE with its text size feature. However, it doesn't scale in Firefox 2.0.</p>
-            <p>The XHTML component:</p>
-         
-         <pre xml:space="preserve">&lt;input type="radio" name="r1" value="r1" id="r1" class="geomsize" /&gt;
-&lt;input type="checkbox" name="c1" id="c1" value="c1" class="geomsize" /&gt;</pre>
-         
-            <p>The CSS component:</p>
-         
-         <pre xml:space="preserve">input.geomsize {
-width: 1.2em;
-height: 1.2em;}</pre>
-         
-            <p class="working-example">Working example of this code: <a href="../../working-examples/radio-checkbox-resize/">Example of resizing radio buttons and checkboxes with CSS</a>.</p>
-         
-      </section>
-   </section><section id="tests"><h2>Tests</h2>
-      <section class="procedure"><h3>Procedure</h3>
-         <ol>
-            <li>Enter some text into text-based form controls that receive user entered text.</li>
-            <li>Increase the text size of the content by 200%.</li>
-            <li>Check that the text in text-based form controls has increased by 200%.</li>
-         </ol>
-      </section>
-      <section class="results"><h3>Expected Results</h3>
-         <ul>
-            <li>#3 is true.</li>
-         </ul>
-      </section>
-   </section></body></html>
+				<p class="working-example">Working example of this code: <a href="../../working-examples/input-resize/">Example of resizing input with CSS</a>.</p>
+			</section>
+		</section>
+		<section id="tests">
+			<h2>Tests</h2>
+			<section class="procedure">
+				<h3>Procedure</h3>
+				<ol>
+					<li>Enter some text into text-based form controls that receive user entered text.</li>
+					<li>Increase the text size of the content by 200%.</li>
+					<li>Check that the text in text-based form controls has increased by 200%.</li>
+				</ol>
+			</section>
+			<section class="results">
+				<h3>Expected Results</h3>
+				<ul>
+					<li>#3 is true.</li>
+				</ul>
+			</section>
+		</section>
+	</body>
+</html>
