@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Creating Dialogs With The HTML Dialog Element</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
+   </head>
+	 <body>
+		<h1>Creating Dialogs With The <abbr title="HyperText Markup Language">HTML</abbr> <code class="language-html">dialog</code> Element</h1>
+		<section class="meta">
+			<p class="id">ID: </p>
+			<p class="technology">Technology: html</p>
+			<p class="type">Type: Technique</p>
+		</section>
+		<section id="applicability">
+			<h2>When to Use</h2>
+      <p>HTML</p>
+		</section>
+		<section id="description">
+			<h2>Description</h2>
+			<p>Site designers often want to create modal dialogs to get users to focus on a task-related activity outside of the rest of the page's content. Although this can be accomplished using <a href="https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/">ARIA to create a modal dialog</a>, the HTML <code class="language-html">dialog</code> element can also be used. As well as meeting <a href="https://www.w3.org/TR/using-aria/#rule1">the first rule of ARIA</a>, the HTML <code class="language-html">dialog</code> element offers several advantages to its ARIA equivalent, with the browser handling these features:</p>
+      <ul>
+        <li>focus management into the newly-opened modal <code class="language-html">dialog</code>;</li>
+        <li>focus management back onto the triggering element (assuming the trigger is still on the page) when the modal <code class="language-html">dialog</code> is closed;</li>
+        <li>trapping keyboard focus inside the modal <code class="language-html">dialog</code>;</li>
+        <li>with no extra code, the underlying page is hidden from assistive technology when the modal <code class="language-html">dialog</code> is open;</li>
+        <li>the use of the <kbd>Escape</kbd> key to close the modal <code class="language-html">dialog</code>.</li>
+      </ul>
+      <p>This technique uses the HTML <code class="language-html">dialog</code> element rather than the ARIA equivalent.</p>
+   </section><section id="examples"><h2>Examples</h2>
+      <section class="example">
+         <h3>A dialog to sign up to a mailing list</h3>
+				 <p>This is an example of using a modal <code class="language-html">dialog</code> element to show a mailing-list sign-up form to a user. The main part of the page contains a <code class="language-html">button</code> element that, when activated, triggers the appearance of the modal <code class="language-html">dialog</code>. The <code class="language-html">button</code> uses the <code class="language-html">aria-controls</code> property to create a programmatic connection between the <code class="language-html">button</code> and the <code class="language-html">dialog</code>; the <code class="language-html">aria-haspopup</code> property, set to <code class="language-html">dialog</code>, to tell assistive technology that the <code class="language-html">button</code> controls a <code class="language-html">dialog</code>, and the <code class="language-html">type</code> attribute to tell the browser that this isn't a <code class="language-html">submit</code> <code class="language-html">button</code>.</p>
+				 
+				 <p>When the modal <code class="language-html">dialog</code> is opened, the browser will hide all of the content on the underlying page from assistive technology. For example: a screen reader will not announce any of the content. Additionally, focusing with the keyboard is constrained to the the <code class="language-html">dialog</code> element's focusable content and the browser's controls. The browser takes care of focus management for us by putting the focus onto the first focusable element in the dialog's <abbr title="Document Object Model">DOM</abbr>, which in this demo is the <code class="language-html">h1</code> element because it has a <code class="language-html">tabindex="-1"</code> attribute, making it focusable by scripts. Note that, although the <code class="language-html">dialog</code>'s close <code class="language-html">button</code> is visibly before the <code class="language-html">h1</code>, it is the last item in the <code class="language-html">dialog</code>'s DOM. If the <code class="language-html">button</code> was first, it would receive focus when dialog was opened, which could result in the <code class="language-html">dialog</code> being closed by mistake if the <code class="language-html">button</code> was accidentally activated.</p>
+         <h4>The HTML</h4>
+<pre xml:space="preserve"><code class="language-html">&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta name="viewport" content="width=device-width,
+     initial-scale=1, shrink-to-fit=no"&gt;
+    &lt;title&gt;Turbo Encabulator News&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;main&gt;
+      &lt;h1&gt;All The News About Turbo Encabulators&lt;/h1&gt;
+      &lt;button aria-controls=&quot;mailing-list-dialog&quot; aria-haspopup=&quot;dialog&quot;
+       class=&quot;open-modal&quot; type=&quot;button&quot;&gt;
+       Sign up to our mailing list!
+      &lt;/button&gt;
+    &lt;/main&gt;
+    &lt;dialog aria-labelledby=&quot;dialog-heading&quot; id=&quot;mailing-list-dialog&quot;&gt;
+      &lt;h1 id=&quot;dialog-heading&quot; tabindex=&quot;-1&quot;&gt;Sign up to our mailing list&lt;/h1&gt;
+      &lt;form&gt;
+        &lt;p class=&quot;req-note&quot;&gt;All form fields are required.&lt;/p&gt;
+        &lt;div&gt;
+          &lt;label for=&quot;fname&quot;&gt;First Name&lt;/label&gt;
+          &lt;input aria-required=&quot;true&quot; autocomplete=&quot;given-name&quot; id=&quot;fname&quot; type=&quot;text&quot;&gt;
+        &lt;/div&gt;
+        &lt;div&gt;
+          &lt;label for=&quot;lname&quot;&gt;Last Name&lt;/label&gt;
+          &lt;input aria-required=&quot;true&quot; autocomplete=&quot;family-name&quot; id=&quot;lname&quot; type=&quot;text&quot;&gt;
+        &lt;/div&gt;
+        &lt;div&gt;
+          &lt;label for=&quot;email&quot;&gt;Email address&lt;/label&gt;
+          &lt;input aria-required=&quot;true&quot; autocomplete=&quot;email&quot; id=&quot;email&quot; type=&quot;text&quot;&gt;
+        &lt;/div&gt;
+        &lt;button class=&quot;sign-up&quot; type=&quot;submit&quot;&gt;Sign up&lt;/button&gt;
+      &lt;/form&gt;
+      &lt;button aria-label=&quot;close&quot; class=&quot;close-modal&quot; type=&quot;button&quot;&gt;&amp;times;&lt;/button&gt;
+    &lt;/dialog&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+         
+<h4>The CSS</h4>
+         
+<pre xml:space="preserve"><code class="language-css">*, *::after, *::before {
+  box-sizing: inherit;
+}
+
+body {
+  background:#fff;
+  color:#000;
+  font:1rem/1.5 system-ui, Helvetica, Roboto, sans-serif;
+}
+
+*:focus-visible{
+  outline:1px solid #0054AE;
+  outline-offset:1px;
+}
+
+dialog {
+  border:1px solid #000;
+  padding:2rem;
+  position:relative;
+}
+ 
+dialog::backdrop {
+  background-color:hsla(0, 0%, 0%, .5);
+}
+ 
+.close-modal {
+  inset-block-start:1.5rem;  
+  inset-inline-end:1.5rem;  
+  line-height:1.3;
+  padding:0.25em 0.5em;
+  position:absolute;
+}
+
+.sign-up{
+  background:#000;
+  color:#fff;
+  padding:0.25em;
+}
+
+dialog h1 {
+  display:inline-block;
+  line-height:1.3333;
+  margin:0;
+  max-inline-size:95%;
+}
+
+form{
+  display:grid;
+  grid-gap:20px;
+  grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.req-note, .sign-up{
+  grid-column:1 / -1;
+}
+ 
+label {
+  display:block;
+}
+ 
+input {
+  border:1px solid hsl(0, 0%, 50%);
+  font:inherit;
+  inline-size:calc(100% - 4px);
+}
+
+button{
+  background:#fff;
+  border:1px solid hsl(0, 0%, 50%);
+  border-radius:3px;
+  color:inherit;
+  font:inherit;
+  margin:0;
+}</code></pre>
+     
+		<h4>The JavaScript</h4>
+		<p>The script toggles the display of the <code class="language-html">dialog</code>. The HTML <code class="language-html">dialog</code> element can be opened using two different commands: <code class="language-javascript">show()</code> (for non-modal <code class="language-html">dialog</code>s), and  <code class="language-javascript">showModal()</code> (for modal <code class="language-html">dialog</code>s).</p>
+         
+<pre xml:space="preserve"><code class="language-javascript">document.addEventListener("DOMContentLoaded", function(e){
+  const d = document.querySelector("dialog");
+  const btnOpen = document.querySelector(".open-modal");
+  const btnClose = document.querySelector(".close-modal");
+
+  btnOpen.addEventListener("click", function(){
+    d.showModal();
+  }, false);
+
+  btnClose.addEventListener("click", function(){
+    d.close();
+  }, false);
+});</code></pre>
+         
+      </section>
+   </section><section id="tests"><h2>Tests</h2>
+      <section class="procedure"><h3>Procedure</h3>
+         <ol>
+            <li>Find the components on the page that trigger modal <code class="language-html">dialog</code> elements.</li>
+            <li>Check that each <code class="language-html">dialog</code> can be opened using the keyboard to activate the triggering element (for example: activate a <code class="language-html">button</code> by pressing the <kbd>Enter</kbd> key or <kbd>Space Bar</kbd>.</li>
+            <li>When the <code class="language-html">dialog</code> is opened, check that focus is placed inside it.</li>
+            <li>While the <code class="language-html">dialog</code> is open, check that focus is trapped inside the <code class="language-html">dialog</code>.</li>
+						<li>When the <code class="language-html">dialog</code> is closed, check that focus is placed back onto the triggering element, if that is still on the page.</li>
+         </ol>
+      </section>
+      <section class="results"><h3>Expected Results</h3>
+         <ul>
+            <li>Checks #2, #3, #4 and #5 are true. </li>
+         </ul>
+      </section>
+   </section>
+	 <section id="related">
+		<h2>Related Techniques</h2>
+		<ul>
+      <li>
+				<a href="../client-side-script/SCR26">SCR26</a>
+			</li>
+      <li>
+				<a href="../general/G59">G59</a>
+			</li>
+		</ul>
+	</section>
+	<section id="resources">
+		<h2>Resources</h2>
+		<ul>
+			<li>
+				<a href="https://html.spec.whatwg.org/multipage/interactive-elements.html#the-dialog-element">HTML - the <code class="language-html">dialog</code> element</a>.
+			</li>
+			<li>
+				<a href="https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element">HTML - the <code class="language-html">button</code> element</a>.
+			</li>
+			<li>
+				<a href="https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/">ARIA Authoring Practices Guide - dialog (modal) pattern</a>.
+			</li>
+			<li>
+				<a href="https://www.w3.org/TR/using-aria/">Using ARIA</a>.
+			</li>
+		</ul>
+	</section>
+	 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</body>
+</html>
