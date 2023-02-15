@@ -1,79 +1,87 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Providing a script that warns the user a time limit is about to expire</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Providing a script that warns the user a time limit is about to expire</h1><section class="meta"><p class="id">ID: SCR16</p><p class="technology">Technology: client-side-script</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
-      <p>
-Time limits exist that are controlled by script.
-</p>
-   </section><section id="description"><h2>Description</h2>
-      <p>
-The objective of this technique is to notify users that they are almost out of time to complete an interaction. When scripts provide functionality that has time limits, the script can include functionality to warn the user of imminent time limits and provide a mechanism to request more time. 20 seconds or more before the time limit occurs, the script provides a confirm dialog that states that a time limit is imminent and asks if the user needs more time. If the user answers "yes" then the time limit is reset. If the user answers "no" or does not respond, the time limit is allowed to expire.
-</p>
-      <p>
-This technique involves time limits set with the window.setTimeout() method. If, for example, the time limit is set to expire in 60 seconds, you can set the time limit for 40 seconds and provide the confirm dialog. When the confirm dialog appears, a new time limit is set for the remaining 20 seconds. Upon expiry of the "grace period time limit" the action that would have been taken at the expiry of the 60 second time limit in the original design is taken.
-</p>
-   </section><section id="examples"><h2>Examples</h2>
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head>
+   <title>Providing a script that warns the user a time limit is about to expire</title>
+   <link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
+</head>
+<body>
+   <h1>Providing a script that warns the user a time limit is about to expire</h1>
+   <section class="meta">
+      <p class="id">ID: SCR16</p>
+      <p class="technology">Technology: client-side-script</p>
+      <p class="type">Type: Technique</p>
+   </section>
+   <section id="applicability">
+      <h2>When to Use</h2>
+      <p>Time limits exist that are controlled by script.</p>
+   </section>
+   <section id="description">
+      <h2>Description</h2>
+      <p>The objective of this technique is to notify users that they are almost out of time to complete an interaction. When scripts provide functionality that has time limits, the script can include functionality to warn the user of imminent time limits and provide a mechanism to request more time. 20 seconds or more before the time limit occurs, the script provides a confirm dialog that states that a time limit is imminent and asks if the user needs more time. If the user answers "yes" then the time limit is reset. If the user answers "no" or does not respond, the time limit is allowed to expire.</p>
+      <p>This technique involves time limits set with the <code class="language-javascript">window.setTimeout()</code> method. If, for example, the time limit is set to expire in 60 seconds, you can set the time limit for 40 seconds and provide the confirm dialog. When the confirm dialog appears, a new time limit is set for the remaining 20 seconds. Upon expiry of the "grace period time limit" the action that would have been taken at the expiry of the 60 second time limit in the original design is taken.</p>
+   </section>
+   <section id="examples">
+      <h2>Examples</h2>
       <section class="example">
          
-            <p>
-A page of stock market quotes uses script to refresh the page every five minutes in order to ensure the latest statistics remain available. 20 seconds before the five minute period expires, a confirm dialog appears asking if the user needs more time before the page refreshes. This allows the user to be aware of the impending refresh and to avoid it if desired.
-</p>
+         <p>A page of stock market quotes uses script to refresh the page every five minutes in order to ensure the latest statistics remain available. 20 seconds before the five minute period expires, a confirm dialog appears asking if the user needs more time before the page refreshes. This allows the user to be aware of the impending refresh and to avoid it if desired.</p>
          
-         <pre xml:space="preserve">
-&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "https://www.w3.org/TR/html4/loose.dtd"&gt;
+<pre xml:space="preserve">
+&lt;!doctype html&gt;
 &lt;html lang="en"&gt;
 &lt;head&gt;
-&lt;title&gt;Stock Market Quotes&lt;/title&gt;
-&lt;script type="text/javascript"&gt;
-&lt;!--
-function timeControl() {
-	// set timer for 4 min 40 sec, then ask user to confirm.
-	setTimeout('userCheck()', 280000);
-}
-function userCheck() {
-	// set page refresh for 20 sec
-	var id=setTimeout('pageReload()', 20000);
-	// If user selects "OK" the timer is reset 
-	// else the page will refresh from the server.
-	if (confirm("This page is set to refresh in 20 seconds. 
-	Would you like more time?"))
-	{
-	clearTimeout(id);
-	timeControl();
-	}
-}
-function pageReload() {
-	window.location.reload(true);
-}
-timeControl();
---&gt;
-&lt;/script&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;title&gt;Stock Market Quotes&lt;/title&gt;
+  &lt;script&gt;
+    function timeControl() {
+      // set timer for 4 min 40 sec, then ask user to confirm.
+      setTimeout('userCheck()', 280000);
+    }
+    function userCheck() {
+      // set page refresh for 20 sec
+      var id=setTimeout('pageReload()', 20000);
+      // If user selects "OK" the timer is reset 
+      // else the page will refresh from the server.
+      if (confirm("This page is set to refresh in 20 seconds. 
+        Would you like more time?"))
+        {
+          clearTimeout(id);
+          timeControl();
+        }
+    }
+    function pageReload() {
+      window.location.reload(true);
+    }
+    timeControl();
+  &lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;
-&lt;h1&gt;Stock Market Quotes&lt;/h1&gt;
-...etc...
+  &lt;h1&gt;Stock Market Quotes&lt;/h1&gt;
+  ...
 &lt;/body&gt;
-&lt;/html&gt;
-</pre>
+&lt;/html&gt;</pre>
       </section>
-   </section><section id="tests"><h2>Tests</h2>
+   </section>
+   <section id="tests">
+      <h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
-         <p>
-On a Web page that has a time limit controlled by a script: </p>
+         <p>On a Web page that has a time limit controlled by a script:</p>
          <ol>
-            <li>
-load the page and start a timer that is 20 seconds less than the time limit.
-    </li>
-            <li>
-when the timer expires, check that a confirmation dialog is displayed warning of the impending time limit.
-    </li>
+            <li>Load the page and start a timer that is 20 seconds less than the time limit.</li>
+            <li>When the timer expires, check that a confirmation dialog is displayed warning of the impending time limit.</li>
          </ol>
       </section>
-      <section class="results"><h3>Expected Results</h3>
+      <section class="results">
+         <h3>Expected Results</h3>
          <ul>
-            <li>
-#2 is true.
-    </li>
+            <li>#2 is true.</li>
          </ul>
       </section>
-   </section><section id="related"><h2>Related Techniques</h2><ul>
-      <li><a href="../client-side-script/SCR1">SCR1</a></li>
-   </ul></section></body></html>
+   </section>
+   <section id="related">
+      <h2>Related Techniques</h2>
+      <ul>
+         <li><a href="../client-side-script/SCR1">SCR1</a></li>
+      </ul>
+   </section>
+</body>
+</html>
