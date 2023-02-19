@@ -15,6 +15,10 @@
 
 			<p>Low contrast controls are more difficult to perceive, and may be completely missed by people with a visual impairment. Similarly, if a graphic is needed to understand the content or functionality of the webpage then it should be perceivable by people with low vision or other impairments without the need for contrast-enhancing assistive technology.</p>
 
+			<div class="note">
+				<p>The 3:1 contrast ratios referenced in this Success Criterion is intended to be treated as threshold values. When comparing the computed contrast ratio to the Success Criterion ratio, the computed values should not be rounded (e.g. 2.999:1 would not meet the 3:1 threshold).</p>
+			</div>
+
 			<section id="user-interface-components">
 				<h3>Active User Interface Components</h3>
 
@@ -59,10 +63,10 @@
 
 				<figure id="figure-three-radios">
 					<img alt="Four radio buttons, the first is a plain circle labelled 'Not selected'. The second shows the circle filled with a darker color than the border. The third is filled with the same color as the border. The fourth has an inner filled circle with a gap between it and the outer border." src="img/radio-custom.png" />
-					<figcaption>The first radio button shows the default state with a grey (#949494) circle. The second and third show the radio button selected and filled with a color that contasts with the color adjacent to the component. The last example shows the state indicator contrasting with the component colors.</figcaption>
+					<figcaption>The first radio button shows the default state with a grey (#949494) circle. The second and third show the radio button selected and filled with a color that contrasts with the color adjacent to the component. The last example shows the state indicator contrasting with the component colors.</figcaption>
 				</figure>
 
-				<h4 id="related-scs">Relationship with Use of Color and Focus Visible</h4>
+				<h4 id="related-color">Relationship with Use of Color</h4>
 
 				<p>The <a href="use-of-color">Use of Color</a> success criterion addresses changing <strong>only the color</strong> (hue) of an object or text without otherwise altering the object's form. The principle is that contrast ratio (the difference in brightness) can be used to distinguish text or graphics. For example, <a href="../../techniques/general/G183.html">G183</a> is a technique to use a contrast ratio of 3:1 with surrounding text to distinguish links and controls. In that case the Working Group regards a link color that meets the 3:1 contrast ratio relative to the non-linked text color as satisfying the Success Criterion <a href="use-of-color">1.4.1 Use of color</a> since it is relying on contrast ratio as well as color (hue) to convey that the text is a link.</p>
 
@@ -83,8 +87,82 @@
 
 				<p>Using a change of contrast for focus and other states is a technique to differentiate the states. This is the basis for <a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G195" class="general">G195: Using an author-supplied, highly visible focus indicator</a>, and more techniques are being added.</p>
 
+
+				<h4 id="related-focus">Relationship with Focus Visible</h4>
+				
 				<p>In combination with <a href="https://www.w3.org/TR/WCAG21/#focus-visible">2.4.7 Focus Visible</a>, the visual focus indicator for a component <em>must</em> have sufficient contrast against the adjacent background when the component is focused, except where the appearance of the component is determined by the user agent and not modified by the author.</p>
-        <p>Note that this Success Criterion does not directly compare the focused and unfocused states of a control - if the focus state relies on a change of color (e.g., changing <em>only</em> the background color of a button), this Success Criterion does not define any requirement for the difference in contrast between the two states.</p>
+
+				<p>Most focus indicators appear outside the component - in that case it needs to contrast with the background that the component is on. Other cases include focus indicators which are:</p>
+
+				<ul>
+					<li>only inside the component and need to contrast with the adjacent color(s) within the component.</li>
+					<li>the border of the component (inside the component and adjacent to the outside) and need to contrast with both adjacent colours. </li>
+					<li>partly inside and partly outside, where either part of the focus indicator can contrast with the adjacent colors.</li>
+				</ul>
+
+				<figure id="figure-focus-inner">
+					<img src="img/ntc-focus-inner.png" alt="Three blue buttons, the middle has a thick yellow outline well inside the border of the button." width="400" />
+					<figcaption>
+						The internal yellow indicator (#FFFF00) contrasts with the blue button background (#4189B9), <strong>passing</strong> the criterion.
+					</figcaption>
+				</figure>
+
+
+				<figure id="figure-focus-outer-yellow">
+					<img src="img/ntc-focus-outer-yellow.png" alt="Three blue buttons on a white background, the middle has a light yellow outline outside of the botton's non-focused boundary." width="400" />
+					<figcaption>
+						The external yellow indicator (#FFFF00) does not contrast with the white background (#FFF) which the component is on, <strong>failing</strong> the criterion.
+					</figcaption>
+				</figure>
+
+				<figure id="figure-focus-outer-green">
+					<img src="img/ntc-focus-outer-green.png" alt="Three blue buttons on a white background, the middle has a dark green outline outside of the botton's non-focused boundary." width="400" />
+					<figcaption>
+						The external green indicator (#008000) does contrast with the white background (#FFF) which the component is on, <strong>passing</strong> the criterion. It does not need to contrast with both the component background and the component.
+					</figcaption>
+				</figure>
+				<p>Although the figure above with a dark outline passes non-text contrast, it is not a good indicator unless it is very thick. <span class="wcag22">There is a criterion in WCAG 2.2 that addresses this aspect, <a href="../22/focus-appearance-minimum.html">Focus Appearance</a>.</span></p>
+
+				<p>If an indicator is partly inside and partly outside the component, either part of the indicator could provide contrast.</p>
+
+				<figure id="figure-focus-outer-inner">
+					<img src="img/ntc-focus-inner-outer.png" alt="Three blue buttons on a white background, the middle has the outline of a yellow rectangle that is partly inside the button's boundary, and partly outside on the white background." width="400" />
+					<figcaption>
+						The focus indicator is partially inside, partially outside the button. The internal part of the yellow indicator (#FFFF00) contrasts with the blue button background (#4189B9), <strong>passing</strong> the criterion.
+					</figcaption>
+				</figure>
+
+				<p>If the focus indicator changes the border of the component within the visible boundary it must contrast with the component. Typically an outline goes around (outside) the visible boundary of the component, in this case changing the border is just inside the visible edge of the component.</p>
+
+				<figure id="figure-focus-border">
+					<img src="img/ntc-focus-border.png" alt="Three blue buttons on a white background, the center button has a green border exactly on the outer boundary of the button." width="400" />
+					<figcaption>
+						The border of the control changes from blue (#4189B9) to green (#4B933A). This is within the component and does not contrast with the inside background of the component therefore <strong>fails</strong> non-text contrast.
+					</figcaption>
+				</figure>
+
+				<figure id="figure-focus-inner-green">
+					<img src="img/ntc-focus-inner-border.png" alt="Three blue buttons with a black border on a white background, the center button has a green border inside, adjacent to the inner background and black border." width="400" />
+					<figcaption>
+						An inner border of dark green (#008000) does contrast with the black border, but does not contrast with the blue component background, therefore <strong>fails</strong> non-text contrast.
+					</figcaption>
+				</figure>
+
+				<figure id="figure-focus-inner-white">
+					<img src="img/ntc-focus-inner-white.png" alt="Three blue buttons with a black border on a white background, the center button has a white border inside, adjacent to the inner background and black border." width="400" />
+					<figcaption>
+						An inner border of white contrasts with the black border and the blue component background, therefore <strong>passes</strong> non-text contrast.
+					</figcaption>
+				</figure>
+
+		        <p>Note that this Success Criterion does not directly compare the focused and unfocused states of a control - if the focus state relies on a change of color (e.g., changing <em>only</em> the background color of a button), this Success Criterion does not define any requirement for the difference in contrast between the two states.</p>
+
+				<figure id="figure-focus-background">
+					<img src="img/ntc-focus-background.png" alt="Three blue buttons, the center button is a lighter blue than the others." width="400" />
+					<figcaption>
+						The change of background within the component is not in scope of non-text contrast. However, this would not pass <a href="use-of-color.html">Use of color</a>.
+					</figcaption>
+				</figure>
 
 				<section>
 					<h4>Active User Interface Component Examples</h4>
@@ -106,7 +184,7 @@
 						</tr>
 						<tr>
 							<th>Default focus style</th>
-							<td>Links are required to have a focus indicator by <a href="focus-visible.html">2.4.7 Focus Visible</a>. Where the focus style of the user-agent is not adjusted on interactive controls (such as links, form fields or buttons), the default focus style is sufficient.</td>
+							<td>Links are required to have a focus indicator by <a href="focus-visible.html">2.4.7 Focus Visible</a>. Where the user agent's default appearance of interactive controls (such as links, form fields or buttons) is not adjusted, the default focus style is sufficient.</td>
 							<td><img src="img/link-text-focus.png" alt="A browser-default styled link, with a black dotted outline around the link." /></td>
 						</tr>
 						<tr>
@@ -181,7 +259,7 @@
 							<th>Checkbox - Subtle focus style - fail</th>
 							<td>A focus indicator is required. If the focus indicator is styled by the author, it must meet the 3:1 contrast ratio with adjacent colors. In this case, the gray (#AAA) indicator has an insufficient ratio of 2.3:1 with the white (#FFF) adjacent background.</td>
 							<td>
-								<img src="img/checkbox-example5.png" alt="Unchecked checkbox with a thick gray additional outline as focus indication." />
+								<img src="img/checkbox-example5.png" alt="Unchecked checkbox with a thick gray additional outline as focus indication." width="150" />
 							</td>
 						</tr>
 					</table>
@@ -289,7 +367,7 @@
 				<section>
 				<h4>Dynamic Examples</h4>
 
-				<p>Some graphics may have interactions that either vary the contrast, or display the information as text when you mouseover/tap/focus each graphical object. In order for someone to discern the graphics exist at all, there must be contrasting colors or text in order to find the graphics. Within that area, information available by a conforming method (e.g., focusable elements) can be used to make that information available dynamically as text, or dynamically increase the contrast.</p>
+				<p>Some graphics may have interactions that either vary the contrast, or display the information as text when you mouseover/tap/focus each graphical object. In order for someone to discern the graphics exist at all, the unfocused default version must already have sufficiently contrasting colors or text. For the area that receives focus, information can then be made available dynamically as pop-up text, or be foregrounded dynamically by increasing the contrast.</p>
 
 				<!-- example from http://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=pieChart&demo=default -->
 				<figure id="figure-pie-slice-hover-data">
@@ -425,13 +503,13 @@
 			<section id="sufficient">
 				<h3>Sufficient</h3>
 				<section class="situation">
-					<section class="situation">
 						<h4>Situation A: Color is used to identify user interface components or used to identify user interface component states</h4>
 						<ul>
 							<li><a href="../../techniques/general/G195" class="general">G195: Using an author-supplied, highly visible focus indicator</a></li>
 							<li><a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G174" class="general">G174: Providing a control with a sufficient contrast ratio that allows users to switch to a presentation that uses sufficient contrast</a></li>
 						</ul>
-					</section>
+				</section>
+				<section class="situation">
 					<h4>Situation B: Color is required to understand graphical content</h4>
 					<ul>
 						<li><a href="../../techniques/general/G207" class="general">G207: Ensuring that a contrast ratio of 3:1 is provided for icons</a></li>

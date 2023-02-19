@@ -1,74 +1,87 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using a Unicode right-to-left mark (RLM) or left-to-right mark (LRM) to mix text
-          direction inline</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using a Unicode right-to-left mark (RLM) or left-to-right mark (LRM) to mix text
-          direction inline</h1><section class="meta"><p class="id">ID: H34</p><p class="technology">Technology: html</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
-      <p>HTML and XHTML</p>
-   </section><section id="description"><h2>Description</h2>
-      <p>The objective of this technique is to use Unicode right-to-left marks and left-to-right
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <title>Using a Unicode right-to-left mark (RLM) or left-to-right mark (LRM) to mix text direction inline</title>
+      <link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
+   </head>
+   <body>
+      <h1>Using a Unicode right-to-left mark (RLM) or left-to-right mark (LRM) to mix text direction inline</h1>
+      <section class="meta">
+         <p class="id">ID: H34</p>
+         <p class="technology">Technology: html</p>
+         <p class="type">Type: Technique</p>
+      </section>
+      <section id="applicability">
+         <h2>When to Use</h2>
+         <p><abbr title="HyperText Markup Language">HTML</abbr></p>
+      </section>
+      <section id="description">
+         <h2>Description</h2>
+         <p>The objective of this technique is to use Unicode right-to-left marks and left-to-right
             marks to override the HTML bidirectional algorithm when it produces undesirable results.
             This may be necessary, for instance, when placing neutral characters such as spaces or
             punctuation between different directional text runs. The concepts used in this technique
-            are described in <a href="https://www.w3.org/International/articles/inline-bidi-markup/">What you need to
-              know about the bidi algorithm and inline markup</a>.</p>
-      <p> Unicode right-to-left marks and left-to-right marks can be entered directly or by
-            means of character entities or numeric character references, as shown here.</p>
+            are described in <a href="https://www.w3.org/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a>.</p>
+            <p>Unicode right-to-left marks and left-to-right marks can be entered directly or by means of character entities or numeric character references, as shown here.</p>
       <ul>
-         <li>left-to-right mark: &amp;lrm; or &amp;#x200e; (U+200E)</li>
-         <li>right-to-left mark: &amp;rlm; or &amp;#x200f; (U+200F)</li>
+         <li>left-to-right mark: <code class="language-html">&amp;lrm;</code> or <code>&amp;#x200e;</code> (<code>U+200E</code>)</li>
+         <li>right-to-left mark: <code class="language-html">&amp;rlm;</code> or <code>&amp;#x200f;</code> (<code>U+200F</code>)</li>
       </ul>
-      <p>Due to the bidi algorithm, a source code editor
-            may not display character entities or numeric
-              character references as expected.</p>
-   </section><section id="examples"><h2>Examples</h2>
+      <p>Due to the <abbr title="bidirectional">bidi</abbr> algorithm, a source code editor may not display character entities or numeric character references as expected.</p>
+   </section>
+   <section id="examples">
+      <h2>Examples</h2>
       <section class="example">
-         
-            <p>This example shows an Arabic phrase in the middle of an English sentence. The exclamation point is part of the Arabic phrase and should appear on its left. Because it is between an Arabic and Latin character and the overall paragraph direction is LTR, the bidirectional algorithm positions the exclamation mark to the right of the Arabic phrase. </p>
-            <p>The title is "<span lang="ar">مفتاح معايير الويب!</span>" in Arabic.</p>
-            <p>Visually-ordered ASCII version (RTL text in uppercase, LTR in lower):</p>
-            <p>the title is "HCTIWS SDRADNATS BEW!" in arabic.</p>
-            <p>Inserting a Unicode right-to-left mark in the code immediately after the exclamation mark positions it correctly when you view the displayed text (see below). You can use a character escape or the (invisible) control character to insert the right-to-left mark.</p>
-            <p>The title is "<span lang="ar">مفتاح معايير الويب!‏</span>" in Arabic.</p>
-            <p>Visually-ordered ASCII version:</p>
-            <p>the title is "!HCTIWS SDRADNATS BEW" in arabic.</p>
+         <p>This example shows an Arabic phrase in the middle of an English sentence. The exclamation point is part of the Arabic phrase and should appear on its left. Because it is between an Arabic and Latin character and the overall paragraph direction is LTR, the bidirectional algorithm positions the exclamation mark to the right of the Arabic phrase. </p>
+         <p>The title is "<span lang="ar">مفتاح معايير الويب!</span>" in Arabic.</p>
+         <p>Visually-ordered <abbr title="American Standard Code for Information Interchange">ASCII</abbr> version (RTL text in uppercase, LTR in lower):</p>
+         <p>the title is "HCTIWS SDRADNATS BEW!" in arabic.</p>
+         <p>Inserting a Unicode right-to-left mark in the code immediately after the exclamation mark positions it correctly when you view the displayed text (see below). You can use a character escape or the (invisible) control character to insert the right-to-left mark.</p>
+         <p>The title is "<span lang="ar">مفتاح معايير الويب!‏</span>" in Arabic.</p>
+         <p>Visually-ordered ASCII version:</p>
+         <p>the title is "!HCTIWS SDRADNATS BEW" in arabic.</p>
          
       </section>
-   </section><section id="tests"><h2>Tests</h2>
-      <section class="procedure"><h3>Procedure</h3>
+   </section>
+   <section id="tests">
+      <h2>Tests</h2>
+      <section class="procedure">
+         <h3>Procedure</h3>
          <ol>
-            <li>Examine the source for places where text changes direction. </li>
-            <li>When text changes direction, check whether neutral characters such as spaces or
-                  punctuation occur adjacent to text that is rendered in the non-default
-                direction.</li>
-            <li>When #2 is true and the HTML bidirectional algorithm would produce the wrong
-                  placement of the neutral characters, check whether the neutral characters are
-                  followed by Unicode right-to-left or left-to-right marks that cause neutral
-                  characters to be placed as part of the preceding characters. </li>
+            <li>Examine the source for places where text changes direction.</li>
+            <li>When text changes direction, check whether neutral characters such as spaces or punctuation occur adjacent to text that is rendered in the non-default direction.</li>
+            <li>When check 2 is true and the HTML bidirectional algorithm would produce the wrong placement of the neutral characters, check whether the neutral characters are followed by Unicode right-to-left or left-to-right marks that cause neutral characters to be placed as part of the preceding characters.</li>
          </ol>
       </section>
-      <section class="results"><h3>Expected Results</h3>
+      <section class="results">
+         <h3>Expected Results</h3>
          <ul>
-            <li>Check #3 is true.</li>
+            <li>Check 3 is true.</li>
          </ul>
       </section>
-   </section><section id="related"><h2>Related Techniques</h2><ul>
-      <li><a href="../html/H56">H56</a></li>
-   </ul></section><section id="resources"><h2>Resources</h2>
-      
-         <ul>
+   </section>
+   <section id="related">
+      <h2>Related Techniques</h2>
+      <ul>
+         <li><a href="../html/H56">H56</a></li>
+      </ul>
+   </section>
+   <section id="resources">
+      <h2>Resources</h2>
+      <ul>
+         <li>
+            <a href="https://www.w3.org/TR/i18n-html-tech-bidi/">Authoring HTML: Handling Right-to-left Scripts</a>.
+         </li>
             <li>
-									         <a href="https://www.w3.org/TR/i18n-html-tech-bidi/">Authoring Techniques for
-                    XHTML &amp; HTML Internationalization: Handling Bidirectional Text 1.0</a>
-								       </li>
+               <a href="https://www.w3.org/TR/i18n-html-tech-bidi/#ri20030218.135304584">Mixing text direction inline</a>.
+            </li>
             <li>
-									         <a href="https://www.w3.org/TR/i18n-html-tech-bidi/#ri20030218.135304584">Mixing
-                    text direction inline</a>
-								       </li>
+               <a href="https://www.w3.org/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a>.
+            </li>
             <li>
-									         <a href="https://www.w3.org/International/articles/inline-bidi-markup/">What you
-                    need to know about the bidi algorithm and inline markup</a>
-								       </li>
-            <li>
-									         <a href="https://www.w3.org/International/geo/html-tech/tech-bidi.html#bidisource">Problems with bidirectional source text</a>
-								       </li>
+               <a href="https://www.w3.org/International/geo/html-tech/tech-bidi.html#bidisource">Problems with bidirectional source text</a>.
+            </li>
          </ul>
-      
-   </section></body></html>
+      </section>
+   </body>
+</html>
