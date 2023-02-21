@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Using media queries to un-fix sticky headers / footers</title>
-    <link rel="stylesheet" type="text/css" href="https://rawgit.com/w3c/wcag21/master/css/sources.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
   </head>
   <body>
     <h1>Using media queries to un-fixing sticky headers / footers</h1>
@@ -16,11 +16,11 @@
     </section>
     <section id="applicability">
       <h2>When to Use</h2>
-      <p>This technique is applicable to Cascading Style Sheet / HTML technologies.</p>
+      <p><abbr title="Cascading Style Sheets">CSS</abbr> and <abbr title="HyperText Markup Language">HTML</abbr>.</p>
     </section>
     <section id="description">
       <h2>Description</h2>
-      <p>The objective of this technique is to be able to present content with sticky headers and footers when there is enough space. This is done by using <code>min-height</code>, <code>max-height</code> and <code>min-width</code> media queries techniques that adapt to the available space of the viewport.</p>
+      <p>The objective of this technique is to be able to present content with sticky headers and footers when there is enough space. This is done by using <code class="language-css">min-height</code>, <code class="language-css">max-height</code>, and <code class="language-css">min-width</code> media queries techniques that adapt to the available space of the viewport.</p>
 
       <p>Sticky regions always stay visible in the viewport while the other content will disappear underneath when scrolling. In terms of content visibility, this is often not a problem on the desktop and on mobile devices in portrait orientation. However, when using mobile devices in landscape orientation or when zooming in on the desktop, sticky regions may block a big portion of the screen: the height of the sticky region may leave only a small part of the screen for the display of page content.</p>
       
@@ -30,9 +30,9 @@
 
       <p>The basic approach for un-fixing sticky headers / footers is to:</p>
       <ol>
-        <li>Define the first sticky regions using media query <code>min-height</code> properties, so they get fixed or un-fixed depending on the available space;</li>
+        <li>Define the first sticky regions using media query <code class="language-css">min-height</code> properties, so they get fixed or un-fixed depending on the available space;</li>
 
-        <li>Define other sticky regions using media query <code>min-width</code> and <code>max-height</code> properties for specific viewport sizes, so they get fixed or un-fixed depending on the available space, e.g. for tablets depending on the portrait or landscape position of the device;</li>
+        <li>Define other sticky regions using media query <code class="language-css">min-width</code> and <code class="language-css">max-height</code> properties for specific viewport sizes, so they get fixed or un-fixed depending on the available space, e.g. for tablets depending on the portrait or landscape position of the device.</li>
       </ol>
 
     </section>
@@ -40,12 +40,8 @@
       <h2>Examples</h2>
       <section class="example">
         <h3>Un-fix sticky headers / footers in HTML and CSS</h3>
-        <p>The following example uses HTML and CSS to un-fix sticky headers / footers.
-
-        The sticky regions get un-fixed as the height of the viewport is limited or the orientation is changed.
-
-        When the <code>min-height</code> property matches the viewport space defined via media queries, regions which are not sticky get fixed or vice versa. This particular example uses the CSS <code>min-height</code>, <code>max-height</code> and <code>min-width</code> media query properties.</p>
-<pre><code>
+        <p>The following example uses HTML and CSS to un-fix sticky headers / footers. The sticky regions get un-fixed as the height of the viewport is limited or the orientation is changed. When the <code class="language-css">min-height</code> property matches the viewport space defined via media queries, regions which are not sticky get fixed or vice versa. This particular example uses the CSS <code class="language-css">min-height</code>, <code class="language-css">max-height</code> and <code class="language-css">min-width</code> media query properties.</p>
+<pre><code class="language-html">
 &lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
   &lt;head&gt;
@@ -65,7 +61,9 @@
       }
     }
 
-    @media (min-device-width: 576px) and (max-device-width: 1024px) and (orientation: landscape) {
+    @media (min-device-width: 576px) and 
+    (max-device-width: 1024px) and 
+    (orientation: landscape) {
       header {
         position: static;
       }
@@ -75,13 +73,14 @@
 
     @media (min-height: 480px) {
       footer {
-        position: -webkit-sticky;
         position: sticky;
         bottom: 0;
       }
     }
 
-    @media (min-device-width: 576px) and (max-device-width: 1024px) and (orientation: landscape)  {
+    @media (min-device-width: 576px) and
+    (max-device-width: 1024px) and
+    (orientation: landscape)  {
       footer {
         position: static;
       }
@@ -93,26 +92,26 @@
 
   &lt;body class="grid"&gt;
 
-    &lt;header role="banner" class="grid-item"&gt;
+    &lt;header class="grid-item"&gt;
       ...
     &lt;/header&gt;
 
-    &lt;main role="main" class="grid-item"&gt;        
+    &lt;main class="grid-item"&gt;        
       ...
     &lt;/main&gt;
 
-    &lt;aside role="complementary" class="grid-item"&gt;
+    &lt;aside class="grid-item"&gt;
       ...
     &lt;/aside&gt;
 
-    &lt;footer role="contentinfo" class="grid-item"&gt;
+    &lt;footer class="grid-item"&gt;
       ...
     &lt;/footer&gt;
 
   &lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
-        <p class="working-example">Working example: <a href="../../working-examples/css-sticky/">Using CSS Flexbox for Reflow</a></p>
+        <p class="working-example">Working example: <a href="../../working-examples/css-sticky/">Using media queries to un-fix sticky headers / footers</a></p>
       </section>
     </section>
     <section id="tests">
