@@ -3,27 +3,19 @@
     <head>
     <meta charset="UTF-8">
     <title>Allowing for Reflow with Long URLs</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script>
-$(document).ready(function(){
-    $("button").click(function(){
-        $("a").toggleClass("wrapped");
-    });
-});
-</script>
     <style>
 /* Reflow Styling */
 
-header[role="banner"] {
+header{
 	grid-area: header;
 }
-main[role="main"] {
+main{
 	grid-area: main;
 }
-aside[role="complementary"] {
+aside {
 	grid-area: aside;
 }
-footer[role="contentinfo"] {
+footer {
 	grid-area: footer;
 }
 .grid {
@@ -50,8 +42,9 @@ html {
 	box-sizing: inherit;
 }
 body {
-	font-family: Noto Sans, Trebuchet MS, Helvetica Neue, Arial, sans-serif;
+  font: 1rem/1.5 system-ui, "Segoe UI", Roboto, Helvetica, sans-serif;
 	background-color: #fafafc;
+	color:#000;
 	margin: 0;
 }
 a:hover {
@@ -72,7 +65,7 @@ h3 {
 	font-size: 1.2em;
 	margin-top: 0;
 }
-header[role="banner"] {
+header {
 	background-color: #005a9c;
 	margin-top: 1em;
 }
@@ -96,14 +89,14 @@ nav ul {
 header nav ul li a {
 	color: #ffffff;
 }
-main[role="main"] {
+main {
 	background: #ffffff;
 	padding-bottom: 0;
 }
-aside[role="complementary"] {
+aside {
 	border-left: 1px solid #dddddd;
 }
-footer[role="contentinfo"] {
+footer {
 	color: #ffffff;
 	background-color: #3b3b3b;
 }
@@ -120,51 +113,72 @@ footer h2 {
 	border: 1px solid #ddd;
 	padding: 1rem;
 }
-    /* URL styling */
-    /* specific for IE10 & 11, they do not support these declarations with "a" or ".wrapped" selector
-      also, must use "word-wrap" property rather than "overflow-wrap" */
-    
-@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-* {
-	word-wrap: break-word;
-}
+
+button{
+	border:1px solid #001e50;
+	color:#fff;
+	font:inherit;
+	padding:0.5em;
 }
 
-/* for all Edge, does not support these declarations with "a" or ".wrapped" selector, so must use "*" selector */
-@supports (-ms-ime-align:auto) {
- * {
-word-wrap: break-word;
- overflow-wrap: break-word;
+button[aria-pressed=true]{
+	background:#001e50;
+	color:#fff;
 }
+
+button[aria-pressed=false]{
+	background:#0054ae;
+	color:#fff;
 }
-/* all other browsers long url styling */
+
+button:focus-visible{
+	outline: 1px solid #001e50;
+	outline-offset: 2px;
+}
 
 .wrapped {
-	word-wrap:break-word;
+	/* word-wrap:break-word; */
 	overflow-wrap: break-word;
 }
 </style>
     </head>
 
     <body class="grid">
-<header role="banner" class="grid-item"> <a href="https://w3.org/"><img alt="W3C" class="logo" src="https://www.w3.org/WAI/assets/images/w3c.svg"></a>
+<header class="grid-item"> <a href="https://w3.org/"><img alt="W3C" class="logo" src="https://www.w3.org/WAI/assets/images/w3c.svg"></a>
     </header>
-<main role="main" class="grid-item">
-  <h1>Allowing for Reflow with Long URLs</h1>
+<main class="grid-item">
+  <h1>Allowing for Reflow with Long <abbr title="Uniform Resource Locator">URL</abbr>s</h1>
   <p>Long URLs can break reflow when the page is zoomed. See the technique <a href="../../techniques/css/TBC">Allowing for Reflow with Long URLs and Strings of Text</a> for further details.</p>
 
-  <p>The default state of this page is to be 320px wide (like a mobile-sized display) with no styling on the links. You should see link-text breaking the boundaries of their containers. Some of which will cause horizontal scrolling at 320px wide, or you will see the URLs break-out of their container. When the style 'a.wrapped {overflow-wrap: break-word;} is toggled with the button, the long URLs will wrap within their respective containers. </p>
-  <button>Toggle CSS for long URLs</button>  
+  <p>The default state of this page is to be 320px wide (like a mobile-sized display) with no styling on the links. You should see link-text breaking the boundaries of their containers. Some of which will cause horizontal scrolling at 320px wide, or you will see the URLs break-out of their container. When the style '<code class="language-css">a.wrapped {overflow-wrap: break-word;}</code> is toggled with the button, the long URLs will wrap within their respective containers. </p>
+  <button aria-pressed="false" class="toggle-wrapping" type="button">Toggle CSS for long URLs</button>  
 
   <p>Example - URL with equal signs, underscores, ampersands, and dashes, but some long sections of unbroken alphanumeric characters.
-  Note: due to the * selector all examples work in IE/Edge styled or not.</p>
-  <ul>
-    <li><a href="#">https://www.somecompany.com/gp/product/0060899220/ref=s9u_ri_gw_i7/135-1685811-9188658?ie=UTF8&amp;pd_rd_r=83748ec1-7f0811e898f0e51cfb7ffc73&amp;pd_rd_w=KYrDt&amp;pd_rd_wg=lx9SR&amp;pf_rd_m=ATVPDKIKX0DER&amp;pf_rd_s=&amp;pf_rd_r=3868N2MAQAMF45G1WDFW&amp;pf_rd_t=367013868N2MAQAMF45G1WDFW&amp;pf_rd_p=5cd472c0-39fe-4ebd-be4b-f95163d1a3f5&amp;pf_rd_i=desktop</a></li>
-  </ul>
+  <p><a class="long-url" href="#">https://www.somecompany.com/gp/product/0060899220/ref=s9u_ri_gw_i7/135-1685811-9188658?ie=UTF8&amp;pd_rd_r=83748ec1-7f0811e898f0e51cfb7ffc73&amp;pd_rd_w=KYrDt&amp;pd_rd_wg=lx9SR&amp;pf_rd_m=ATVPDKIKX0DER&amp;pf_rd_s=&amp;pf_rd_r=3868N2MAQAMF45G1WDFW&amp;pf_rd_t=367013868N2MAQAMF45G1WDFW&amp;pf_rd_p=5cd472c0-39fe-4ebd-be4b-f95163d1a3f5&amp;pf_rd_i=desktop</a>
+	</p>
   
 </main>
-<footer role="contentinfo" class="grid-item">
+<footer class="grid-item">
     <h2>Footer</h2>
+		<p>Footer content</p>
 </footer>
+<script>
+	document.addEventListener("DOMContentLoaded", function(e){
+		const toggleBtn = document.querySelector(".toggle-wrapping");
+		const targetUrl = document.querySelector(".long-url");
+		
+		toggleBtn.addEventListener("click", function(e){
+			let elm = e.currentTarget;
+			if(elm.getAttribute("aria-pressed") === "false"){
+				elm.setAttribute("aria-pressed", "true");
+				targetUrl.classList.add("wrapped");
+			}
+			else{
+				elm.setAttribute("aria-pressed", "false");
+				targetUrl.classList.remove("wrapped");
+			}
+		}, false);
+	});
+</script>
 </body>
 </html>
