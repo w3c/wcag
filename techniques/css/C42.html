@@ -5,7 +5,7 @@
 		<link rel="stylesheet" type="text/css" href="../../css/editors.css"/>
 	</head>
 	<body>
-		<h1>Using min-height and min-width to ensure sufficient target spacing</h1>
+		<h1>Using <code class="language-css">min-height</code> and <code class="language-css">min-width</code> to ensure sufficient target spacing</h1>
 		<section id="meta">
 			<h2>Metadata</h2>
 			<p id="id"></p>
@@ -14,11 +14,11 @@
 		</section>
 		<section id="applicability">
 			<h2>When to Use</h2>
-			<p>All technologies that support CSS and pointer input.</p>
+			<p>All technologies that support <abbr title="Cascading Style Sheets">CSS</abbr> and pointer input.</p>
 		</section>
 		<section id="description">
 			<h2>Description</h2>
-			<p>The objective of this technique is to ensure that links in navigation or pagination menus will be spaced so that they fall within an area that measures at least 44 x 44 CSS pixels if the target area itself is smaller than that. The aim is to provide an adequate target clearance so the offset to adjacent targets is sufficient to prevent accidental pointer activation of adjacent targets.</p>	
+			<p>The objective of this technique is to ensure that links in navigation or pagination menus will be spaced so that they fall within an area that measures at least 44 &#215; 44 CSS pixels if the target area itself is smaller than that. The aim is to provide an adequate target clearance so the offset to adjacent targets is sufficient to prevent accidental pointer activation of adjacent targets.</p>	
 		
 		</section>
 		<section id="examples">
@@ -26,59 +26,62 @@
 			<p>The following examples can be seen as rendered versions in the <a href="../../working-examples/css-pointer-spacing/">working examples</a>.</p>
 
 			<section class="example">
-				<h3>Using a display value of inline-block and min-height / width</h3>
-				<p>The first example shows a situation where the targets (in this case, the linked numbers in th pagination menu) are smaller than 44 x 44 CSS pixels. However, the list items that contain them have a minimum height and width of 44 px set, so that sufficient target spacing is assured.</p>
+				<h3>Using a display value of <code class="language-css">inline-block</code>, <code class="language-css">min-height</code>, and <code class="language-css">min-width</code></h3>
+				<p>The first example shows a situation where the targets (in this case, the linked numbers in the pagination navigation) are smaller than 44 &#215; 44 CSS pixels. However, the list items that contain them have a minimum height and width of 44 px set, so that sufficient target spacing is assured.</p>
 				<figure id="pointer-spacing-block">
 					<img src="img/pointer-spacing-1.png" alt="A horizontal pagination component immediately above the search results." />
 					<figcaption>Example of using CSS to ensure enough spacing around targets</figcaption>
 				</figure>
-				<p>Given the following HTML:</p>
-				<pre><code>&lt;nav class=&quot;pag&quot; aria-label=&quot;pagination menu&quot;&gt;
-	&lt;ol class=&quot;pagination-1&quot;&gt;
-		&lt;li&gt;&lt;span&gt;previous&lt;/span&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;strong&gt;1&lt;/strong&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href=&quot;#&quot;&gt;2&lt;/a&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href=&quot;#&quot;&gt;3&lt;/a&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href=&quot;#&quot;&gt;4&lt;/a&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href=&quot;#&quot;&gt;5&lt;/a&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href=&quot;#&quot;&gt;next&lt;/a&gt;&lt;/li&gt;
-	&lt;/ol&gt;
+				<h4>The <abbr title="HyperText Markup Language">HTML</abbr></h4>
+<pre><code>&lt;nav class="pag" aria-label="pagination"&gt;
+  &lt;ol class="pagination-1"&gt;
+    &lt;li&gt;&lt;a class="previous"&gt;previous&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a aria-current="page"&gt;1&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/page-2"&gt;2&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/page-3"&gt;3&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/page-4"&gt;4&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/page-5"&gt;5&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/pages-6-10"&gt;next&lt;/a&gt;&lt;/li&gt;
+  &lt;/ol&gt;
 &lt;/nav&gt;</code></pre>
-				<p>The following CSS would ensure the minimum spacing is applied:</p>
-				<pre><code>ol.pagination-1 li {
-	display: inline-block; 
-	min-width: 44px;
-	min-height: 44px;
+<h4>The CSS</h4>
+<pre><code class="language-css">ol.pagination-1 li {
+  display: inline-block; 
+  min-height: 44px;
+  min-width: 44px;
 }</code></pre>
 			
 			</section>
 			<section class="example">
-				<h3>Using a display value of flex and min-height / width</h3>
-				<p>The second example uses min-width and min-height on the targets (the linked numbers in the pagination menu) and not on the parent container, thereby meeting this target spacing Success Criterion and incidentally also the AAA Success Criterion 2.5.5 Target Size.</p>
+				<h3>Using a <code class="language-css">display</code> value of <code class="language-css">flex</code> and <code class="language-css">min-height</code> / <code class="language-css">width</code></h3>
+				<p>The second example uses <code class="language-css">min-width</code> and <code class="language-css">min-height</code> on the targets (the linked numbers in the pagination menu) and not on the parent container, thereby meeting this target spacing Success Criterion and incidentally also the AAA Success Criterion 2.5.5 Target Size.</p>
 				<figure id="pointer-spacing-flex">
-					<img src="img/pointer-spacing-1.png" alt="A horizontal pagination component immediately above the search results. It looks identical to the previous example. " />
+					<img src="img/pointer-spacing-2.png" alt="A horizontal pagination component immediately above the search results." />
 					<figcaption>Example of using CSS to ensure enough spacing within targets</figcaption>
 				</figure>
-				<p>Given the following HTML:</p>
-				<pre><code>&lt;nav class=&quot;pag&quot; aria-label=&quot;pagination menu&quot;&gt;
-	&lt;ol class=&quot;pagination-2&quot;&gt;
-		&lt;li&gt;&lt;span&gt;previous&lt;/span&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;strong&gt;1&lt;/strong&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href=&quot;#&quot;&gt;2&lt;/a&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href=&quot;#&quot;&gt;3&lt;/a&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href=&quot;#&quot;&gt;4&lt;/a&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href=&quot;#&quot;&gt;5&lt;/a&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href=&quot;#&quot;&gt;next&lt;/a&gt;&lt;/li&gt;
-	&lt;/ol&gt;
-  &lt;/nav&gt;</code></pre>
-					<p>The following CSS ensures the minimum size is applied:</p>
-					<pre><code>ol.pagination-2 a,
-ol.pagination-2 strong,
-ol.pagination-2 span {
-	display: block;
-	line-height:44px;
-	min-height:44px;
-	min-width: 44px;
+				<h4>The HTML</h4>
+<pre><code class="language-html">&lt;nav class="pag" aria-label="pagination"&gt;
+  &lt;ol class="pagination-2"&gt;
+    &lt;li&gt;&lt;a class="previous"&gt;previous&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a aria-current="page"&gt;1&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/page-2"&gt;2&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/page-3"&gt;3&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/page-4"&gt;4&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/page-5"&gt;5&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/pages-6-10"&gt;next&lt;/a&gt;&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/nav&gt;</code></pre>
+					<h4>The CSS</h4>
+<pre><code class="language-css">ol.pagination-2 {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+ol.pagination-2 a {
+  display: block;
+  line-height: 44px;
+  min-height: 44px;
+  min-width: 44px;
 }</code></pre>
 			</section>
       
@@ -101,13 +104,12 @@ ol.pagination-2 span {
 				</ul>
 			</section>
 		</section>
-		<section id="related">
+		<!-- <section id="related">
 			<h2>Related Techniques</h2>
 
-		</section>
-		<section id="resources">
+		</section> -->
+		<!-- <section id="resources">
 			<h2>Resources</h2>
-
-		</section>
+		</section> -->
 	</body>
 </html>
