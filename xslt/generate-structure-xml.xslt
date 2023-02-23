@@ -27,44 +27,38 @@
 	</xsl:template>
 	
 	<xsl:template match="html:html">
-		<wcag lang="{@lang}" version="{$guidelines.version}">
-			<principles>
-				<xsl:apply-templates select="//html:section[@class='principle']"/>
-			</principles>
-			<terms>
-				<xsl:apply-templates select="//html:dfn"/>
-			</terms>
-			<understandings>
-				<understanding>
-					<name>Introduction to Understanding WCAG <xsl:value-of select="$guidelines.version.decimal"/></name>
-					<file href="intro"/>
-				</understanding>
-				<understanding>
-					<name>Understanding Techniques for WCAG Success Criteria</name>
-					<file href="understanding-techniques"/>
-				</understanding>
-				<understanding>
-					<name>Understanding Test Rules for WCAG Success Criteria</name>
-					<file href="understanding-act-rules"/>
-				</understanding>
-				<understanding>
-					<name>Understanding Conformance</name>
-					<file href="conformance"/>
-				</understanding>
-				<understanding>
-					<name>How to Refer to WCAG <xsl:value-of select="$guidelines.version.decimal"/> from Other Documents</name>
-					<file href="refer-to-wcag"/>
-				</understanding>
-				<understanding>
-					<name>Documenting Accessibility Support for Uses of a Web Technology</name>
-					<file href="documenting-accessibility-support"/>
-				</understanding>
-				<understanding>
-					<name>Understanding Metadata</name>
-					<file href="understanding-metadata"/>
-				</understanding>
-			</understandings>
-		</wcag>
+		<guidelines lang="{@lang}">
+			<understanding>
+				<name>Introduction to Understanding WCAG <xsl:value-of select="$guidelines.version.decimal"/></name>
+				<file href="intro"/>
+			</understanding>
+			<understanding>
+				<name>Understanding Techniques for WCAG Success Criteria</name>
+				<file href="understanding-techniques"/>
+			</understanding>
+			<understanding>
+				<name>Understanding Test Rules for WCAG Success Criteria</name>
+				<file href="understanding-act-rules"/>
+			</understanding>
+			<xsl:apply-templates select="//html:section[@class='principle']"/>
+			<understanding>
+				<name>Understanding Conformance</name>
+				<file href="conformance"/>
+			</understanding>
+			<understanding>
+				<name>How to Refer to WCAG <xsl:value-of select="$guidelines.version.decimal"/> from Other Documents</name>
+				<file href="refer-to-wcag"/>
+			</understanding>
+			<understanding>
+				<name>Documenting Accessibility Support for Uses of a Web Technology</name>
+				<file href="documenting-accessibility-support"/>
+			</understanding>
+			<understanding>
+				<name>Understanding Metadata</name>
+				<file href="understanding-metadata"/>
+			</understanding>
+			<xsl:apply-templates select="//html:dfn"/>
+		</guidelines>
 	</xsl:template>
 	
 	<xsl:template match="html:section[@class='principle']">
@@ -74,9 +68,7 @@
 			<num><xsl:number count="html:section[@class='principle']" format="1"/></num>
 			<name><xsl:value-of select="wcag:find-heading(.)"/></name>
 			<xsl:call-template name="content"/>
-			<guidelines>
-				<xsl:apply-templates select="html:section"/>
-			</guidelines>
+			<xsl:apply-templates select="html:section"/>
 		</principle>
 	</xsl:template>
 	
@@ -93,9 +85,7 @@
 			<name><xsl:value-of select="wcag:find-heading(.)"/></name>
 			<xsl:call-template name="content"/>
 			<file href="{wcag:generate-id(wcag:find-heading(.))}"/>
-			<success-criteria>
-				<xsl:apply-templates select="html:section"/>
-			</success-criteria>
+			<xsl:apply-templates select="html:section"/>
 		</guideline>
 	</xsl:template>
 	
