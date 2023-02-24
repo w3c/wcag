@@ -228,10 +228,10 @@
 					</div>
           <xsl:choose>
             <xsl:when test="$documentset = 'Techniques'">
-    					<div class="minimal-header-subtitle">Examples of ways to meet WCAG; not required</div>
+    					<div class="minimal-header-subtitle">Examples of ways to meet WCAG</div>
             </xsl:when>
             <xsl:when test="$documentset = 'Understanding'">
-    					<div class="minimal-header-subtitle">Informative explanations, not required to meet WCAG</div>
+    					<div class="minimal-header-subtitle">Informative explanations of the WCAG requirements</div>
             </xsl:when>
           </xsl:choose>
 						<a class="minimal-header-link">
