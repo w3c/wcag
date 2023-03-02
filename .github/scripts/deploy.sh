@@ -4,9 +4,8 @@ set -exu
 # x: Print commands and their arguments as they are executed
 # u: Treat unset variables as an error when substituting
 
-# NOTE: you probably need to add 'w3cbot' to the list of authorized users to push to your repository
-git config --global user.email github-actions@github.com
-git config --global user.name github-actions
+git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
+git config --global user.name github-actions[bot]
 git config --global user.password $GITHUB_TOKEN
 
 REPO_URL="https://github-actions:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git"
