@@ -1,62 +1,76 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Specifying the default language in the HTTP header</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Specifying the default language in the HTTP header</h1><section class="meta"><p class="id">ID: SVR5</p><p class="technology">Technology: server-side-script</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
-      <p>Server-side technologies, including server-side scripting languages and server configuration files for setting HTTP headers. </p>
-   </section><section id="description"><h2>Description</h2>
-      <p>The objective of this technique is to provide information on the  primary language or languages in a Web Page, in order to identify the  audience of the content. The Content-Language HTTP header can contain a  list of one or more language codes, which can be used for language  negotiation between a user agent and a server. If the language  preferences in a user agent are set correctly, language negotiation can  help the user to find a language version of the content that suits their preferences.</p>
-      <p>Note that the Content-Language HTTP header does not serve to  identify the language used for processing the content. The content  processing language can be identified by means of other techniques,  such as the attributes lang and xml:lang in markup languages. </p>
-      <p>This technique ensures that the primary language of the  document, as specified for example in the lang or xml:lang attribute,  is listed in the Content-Language HTTP header. </p>
-   </section><section id="examples"><h2>Examples</h2>
-      <section class="example">
-         <h3>Setting content language in Java Servlet and JSP</h3>
-         
-            <p>In Java Servlet or JavaServer Pages (JSP), developers can use response.setHeader("Content-Language", lang), in which "lang" stands for a language tag (for example, "en" for English): </p>
-         
-         <pre xml:space="preserve">…
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Specifying the default language in the HTTP header</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
+	</head>
+	<body>
+		<h1>Specifying the default language in the <abbr title="HyperText Transfer Protocol">HTTP</abbr> header</h1>
+		<section class="meta">
+			<p class="id">ID: SVR5</p>
+			<p class="technology">Technology: server-side-script</p>
+			<p class="type">Type: Technique</p>
+		</section>
+		<section id="applicability">
+			<h2>When to Use</h2>
+			<p>Server-side technologies, including server-side scripting languages and server configuration files for setting HTTP headers.</p>
+		</section>
+		<section id="description">
+			<h2>Description</h2>
+			<p>The objective of this technique is to provide information on the  primary language or languages in a Web page, in order to identify the  audience of the content. The <code>Content-Language</code> HTTP header can contain a  list of one or more language codes, which can be used for language  negotiation between a user agent and a server. If the language  preferences in a user agent are set correctly, language negotiation can  help the user to find a language version of the content that suits their preferences.</p>
+			<p>Note that the Content-Language HTTP header does not serve to  identify the language used for processing the content. The content  processing language can be identified by means of other techniques, such as the attributes <code class="language-html">lang</code> and <code class="language-xml">xml:lang</code> in markup languages.</p>
+			<p>This technique ensures that the primary language of the  document, as specified for example in the <code class="language-html">lang</code> or <code class="language-xml">xml:lang</code> attribute, is listed in the <code>Content-Language</code> HTTP header.</p>
+		</section>
+		<section id="examples">
+			<h2>Examples</h2>
+			<section class="example">
+				<h3>Setting content language in Java Servlet and <abbr title="Java Server Pages">JSP</abbr></h3>
+				<p>In Java Servlet or JavaServer Pages (JSP), developers can use <code class="language-java">response.setHeader("Content-Language", lang)</code>, in which "lang" stands for a language tag (for example, <code>"en"</code> for English): </p>
+
+<pre xml:space="preserve"><code class="language-java">...
 public void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException 
-{
-…
-  response.setHeader("Content-Language", "en");
-  PrintWriter out = response.getWriter();
-…
-}</pre>
-      </section>
-      <section class="example">
-         <h3>Setting content language in PHP</h3>
-         
-            <p>In PHP, developers can send a raw HTTP header with the header method. The following example sets the language to French: </p>
-         
-         <pre xml:space="preserve">&lt;?php  header('Content-language: fr');  …  ?&gt;  </pre>
-      </section>
-   </section><section id="tests"><h2>Tests</h2>
-      <section class="procedure"><h3>Procedure</h3>
-         <ol>
-            <li> Use a Live HTTP Header viewer to find the value of the "Content-Language" header. </li>
-            <li> Check that this value matches the default language of the Web page. </li>
-         </ol>
-      </section>
-      <section class="results"><h3>Expected Results</h3>
-         <ul>
-            <li> Step #2 is true. </li>
-         </ul>
-      </section>
-   </section><section id="related"><h2>Related Techniques</h2><ul>
-      <li><a href="../html/H57">H57</a></li>
-   </ul></section><section id="resources"><h2>Resources</h2>
-      
-         <p> 
-            <a href="https://www.w3.org/International/questions/qa-http-and-lang">W3C Internationalization FAQ: HTTP and meta for language information</a>
-						   </p>
-      
-      
-         <p> 
-            <a href="https://www.w3.org/TR/2014/NOTE-i18n-html-tech-lang-20140603/#metadata">Declaring metadata about the language(s) of the intended audience</a> in Authoring HTML: Language declarations - W3C Working Group Note 3 June 2014. </p>
-      
-      
-         <p> 
-            <a href="https://tools.ietf.org/html/rfc7231#section-3.1.3.2">RFC 7321 3.1.3.2.  Content-Language</a></p>
-      
-      
-         <p> 
-            <a href="http://php.net/manual/en/function.header.php">header</a> in the PHP Manual. </p>
-      
-   </section></body></html>
+  throws ServletException, IOException {
+   ...
+   response.setHeader("Content-Language", "en");
+   PrintWriter out = response.getWriter();
+   ...
+}</code></pre>
+   </section>
+   <section class="example">
+    <h3>Setting content language in <abbr title="PHP: Hypertext Preprocessor">PHP</abbr></h3>
+    
+    <p>In PHP, developers can send a raw <abbr title="HyperText Transfer Protocol">HTTP</abbr> header with the header method. The following example sets the language to French: </p>
+    
+<pre xml:space="preserve"><code class="language-php">&lt;?php header('Content-language: fr'); ... ?&gt;</code></pre>
+  </section>
+ </section><section id="tests"><h2>Tests</h2>
+   <section class="procedure"><h3>Procedure</h3>
+    <ol>
+     <li>Use a Live HTTP Header viewer to find the value of the <code>Content-Language</code> header. </li>
+     <li>Check that this value matches the default language of the Web page.</li>
+   </ol>
+ </section>
+ <section class="results">
+	<h3>Expected Results</h3>
+  <ul>
+		<li> Step #2 is true.</li>
+ </ul>
+ </section>
+ </section>
+ <section id="related">
+	<h2>Related Techniques</h2>
+	<ul>
+		<li><a href="../html/H57">H57</a></li>
+	</ul>
+</section>
+<section id="resources">
+	<h2>Resources</h2>
+	<ul>
+		<li><a href="https://www.w3.org/International/questions/qa-http-and-lang">W3C Internationalization FAQ: HTTP and meta for language information</a></li>
+		<li><a href="https://www.w3.org/TR/2014/NOTE-i18n-html-tech-lang-20140603/#metadata">Declaring metadata about the language(s) of the intended audience</a> in Authoring HTML: Language declarations - W3C Working Group Note 3 June 2014.</li>
+		<li><a href="https://tools.ietf.org/html/rfc7231#section-3.1.3.2">RFC 7321 3.1.3.2.  Content-Language</a></li>
+		<li><a href="https://php.net/manual/en/function.header.php">PHP header</a>.</li>
+	</ul>
+</section>
+</body>
+</html>
