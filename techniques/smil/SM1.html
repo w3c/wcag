@@ -1,98 +1,119 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Adding extended audio description in SMIL 1.0</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Adding extended audio description in SMIL 1.0</h1><section class="meta"><p class="id">ID: SM1</p><p class="technology">Technology: smil</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
-      <p> Applies whenever SMIL 1.0 player is available </p>
-   </section><section id="description"><h2>Description</h2>
-      <p> The purpose of this technique is to allow there to be more audio description than will fit into the gaps in the dialogue of the audio-visual material.</p>
-      <p>With SMIL 1.0 there is no easy way to do this but it can be done by breaking the audio and video files up into a series of files that are played sequentially. Additional audio description is then played while the audio-visual program is frozen. The last frame of the video file is frozen so that it remains on screen while the audio file plays out.</p>
-      <p>The effect is that the video appears to play through from end to end but freezes in places while a longer audio description is provided. It then continues automatically when the audio description is complete.</p>
-      <p>To turn the extended audio description on and off one could use script to switch back and forth between two SMIL scripts, one with and one without the extended audio description lines. Or script could be used to add or remove the extended audio description lines from the SMIL file so that the film clips would just play sequentially.</p>
-      <p>If scripting is not available then two versions of the video could be provided, one with and one without extended audio descriptions.</p>
-   </section><section id="examples"><h2>Examples</h2>
-      <section class="example">
-         <h3>SMIL 1.0 Video with audio descriptions that pause the main media in 4 locations to allow extended audio description</h3>
-         <pre xml:space="preserve">   
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Adding extended audio description in SMIL 1.0</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
+	</head>
+	<body>
+		<h1>Adding extended audio description in <abbr title="Synchronized Multimedia Integration Language">SMIL</abbr> 1.0</h1>
+		<section class="meta">
+			<p class="id">ID: SM1</p>
+			<p class="technology">Technology: SMIL</p>
+			<p class="type">Type: Technique</p>
+		</section>
+		<section id="applicability">
+			<h2>When to Use</h2>
+      <p>Applies whenever SMIL 1.0 player is available</p>
+   </section>
+	 <section id="description">
+		<h2>Description</h2>
+		<p> The purpose of this technique is to allow there to be more audio description than will fit into the gaps in the dialogue of the audio-visual material.</p>
+		<p>With SMIL 1.0 there is no easy way to do this but it can be done by breaking the audio and video files up into a series of files that are played sequentially. Additional audio description is then played while the audio-visual program is frozen. The last frame of the video file is frozen so that it remains on screen while the audio file plays out.</p>
+		<p>The effect is that the video appears to play through from end to end but freezes in places while a longer audio description is provided. It then continues automatically when the audio description is complete.</p>
+		<p>To turn the extended audio description on and off one could use script to switch back and forth between two SMIL scripts, one with and one without the extended audio description lines. Or script could be used to add or remove the extended audio description lines from the SMIL file so that the film clips would just play sequentially.</p>
+		<p>If scripting is not available then two versions of the video could be provided, one with and one without extended audio descriptions.</p>
+   </section>
+	 <section id="examples">
+		<h2>Examples</h2>
+		<section class="example">
+			<h3>SMIL 1.0 Video with audio descriptions that pause the main media in 4 locations to allow extended audio description</h3>
+<pre xml:space="preserve"><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;smil xmlns:qt="http://www.apple.com/quicktime/resources/smilextensions" 
-xmlns="https://www.w3.org/TR/REC-smil" qt:time-slider="true"&gt;
+ xmlns="https://www.w3.org/TR/REC-smil" qt:time-slider="true"&gt;
   &lt;head&gt;
     &lt;layout&gt;
       &lt;root-layout background-color="black" height="266" width="320"/&gt;
       &lt;region id="videoregion" background-color="black" top="26" left="0" 
-      height="144" width="320"/&gt;
+       height="144" width="320"/&gt;
     &lt;/layout&gt;
   &lt;/head&gt;
   &lt;body&gt;
-  &lt;par&gt;
-   &lt;seq&gt;
-     &lt;par&gt;
-       &lt;video src="video.rm" region="videoregion" clip-begin="0s" clip-end="5.4" 
-       dur="8.7" fill="freeze" alt="videoalt"/&gt;   
-       &lt;audio src="no1.wav" begin="5.4" alt="audio alt"/&gt;
-     &lt;/par&gt;
-     &lt;par&gt;
-       &lt;video src="video.rm" region="videoregion" clip-begin="5.4" clip-end="24.1" 
-       dur="20.3" fill="freeze" alt="videoalt"/&gt;
-       &lt;audio src="no2.wav" begin="18.7" alt="audio alt"/&gt;
-     &lt;/par&gt;
-     &lt;par&gt;
-       &lt;video src="video.rm" region="videoregion" clip-begin="24.1" clip-end="29.6" 
-       dur="7.7" fill="freeze" alt="videoalt"/&gt;
-       &lt;audio src="no3.wav" begin="5.5" alt="audio alt"/&gt;
-     &lt;/par&gt;
-     &lt;par&gt;
-       &lt;video src="video.rm" region="videoregion" clip-begin="29.6" clip-end="34.5" 
-       dur="5.7" fill="freeze" alt="videoalt"/&gt;
-       &lt;audio src="no4.wav" begin="4.9" alt="audio alt"/&gt;
-     &lt;/par&gt;
-     &lt;par&gt;
-       &lt;video src="video.rm" region="videoregion" clip-begin="77.4" alt="video alt"/&gt;
-     &lt;/par&gt;
-   &lt;/seq&gt;
-  &lt;/par&gt;
-&lt;/body&gt;
-&lt;/smil&gt;
-</pre>
+    &lt;par&gt;
+      &lt;seq&gt;
+        &lt;par&gt;
+          &lt;video src="video.rm" region="videoregion" clip-begin="0s" clip-end="5.4" 
+           dur="8.7" fill="freeze" alt="videoalt"/&gt;   
+           &lt;audio src="no1.wav" begin="5.4" alt="audio alt"/&gt;
+        &lt;/par&gt;
+        &lt;par&gt;
+          &lt;video src="video.rm" region="videoregion" clip-begin="5.4" clip-end="24.1" 
+           dur="20.3" fill="freeze" alt="videoalt"/&gt;
+          &lt;audio src="no2.wav" begin="18.7" alt="audio alt"/&gt;
+        &lt;/par&gt;
+        &lt;par&gt;
+          &lt;video src="video.rm" region="videoregion" clip-begin="24.1" clip-end="29.6" 
+           dur="7.7" fill="freeze" alt="videoalt"/&gt;
+          &lt;audio src="no3.wav" begin="5.5" alt="audio alt"/&gt;
+        &lt;/par&gt;
+        &lt;par&gt;
+          &lt;video src="video.rm" region="videoregion" clip-begin="29.6" clip-end="34.5" 
+           dur="5.7" fill="freeze" alt="videoalt"/&gt;
+          &lt;audio src="no4.wav" begin="4.9" alt="audio alt"/&gt;
+        &lt;/par&gt;
+        &lt;par&gt;
+          &lt;video src="video.rm" region="videoregion" clip-begin="77.4" alt="video alt"/&gt;
+        &lt;/par&gt;
+      &lt;/seq&gt;
+    &lt;/par&gt;
+  &lt;/body&gt;
+&lt;/smil&gt;</code></pre>
          
-            <p>The markup above is broken into five &lt;par&gt; segments. In each, there is a &lt;video&gt; and an &lt;audio&gt; tag (the last &lt;par&gt; has no &lt;audio&gt; tag intentionally). The convention with extended audio descriptions is that the main media pauses during the description. The way to make this happen in SMIL 1.0 is to set a "clip-begin" and "clip-end" which dictate the start and end of the video clip, and to set a duration for the clip that is longer than what is defined by the "clip-begin" and "clip-end". The fill="freeze" holds the last frame of the video during the extended description. The &lt;audio&gt; tag has a "<code class="att">begin</code>" attribute with a value that is equal to the "clip-end" value of the preceding &lt;video&gt; tag.</p>
-            <p>To determine the values for "clip-begin," "clip-end", and "dur", find the start and end time of the portion of the video being described, and find out the total length of the extended audio description. The "clip-begin" and "clip-end" define their own values, but the "<code class="att">dur</code>" value is the sum of the length of the extended description and the clip defined by the "clip-begin" and "clip-end". In the first &lt;par&gt;, the video clip starts at 0 seconds, ends at 5.4 seconds, and the description length is 3.3 seconds, so the "<code class="att">dur</code>" value is 5.4s + 3.3s = 8.7s.</p>
-         
+            <p>The markup above is broken into five <code class="language-xml">par</code> segments. In each, there is a <code class="language-xml">video</code> and an <code class="language-xml">audio</code> tag (the last <code class="language-xml">par</code> has no &lt;audio&gt; tag intentionally). The convention with extended audio descriptions is that the main media pauses during the description. The way to make this happen in SMIL 1.0 is to set a <code class="language-xml">clip-begin</code> and <code class="language-xml">clip-end</code> which dictate the start and end of the video clip, and to set a duration for the clip that is longer than what is defined by the <code class="language-xml">clip-begin</code> and <code class="language-xml">clip-end</code>. The <code class="language-xml">fill="freeze"</code> holds the last frame of the video during the extended description. The <code class="language-xml">audio</code> tag has a <code class="language-xml">begin</code> attribute with a value that is equal to the <code class="language-xml">clip-end</code> value of the preceding <code class="language-xml">video</code> tag.</p>
+            <p>To determine the values for <code class="language-xml">clip-begin</code>, <code class="language-xml">clip-end</code>, and <code class="language-xml">dur</code>, find the start and end time of the portion of the video being described, and find out the total length of the extended audio description. The <code class="language-xml">clip-begin</code> and <code class="language-xml">clip-end</code> define their own values, but the <code class="language-xml">dur</code> value is the sum of the length of the extended description and the clip defined by the <code class="language-xml">clip-begin</code> and <code class="language-xml">clip-end</code>. In the first <code class="language-xml">par</code>, the video clip starts at 0 seconds, ends at 5.4 seconds, and the description length is 3.3 seconds, so the <code class="language-xml">dur</code> value is 5.4s + 3.3s = 8.7s.</p>   
       </section>
-   </section><section id="tests"><h2>Tests</h2>
-      <section class="procedure"><h3>Procedure</h3>
-         <ol>
-            <li> Play file with extended audio descriptions</li>
-            <li> Play file with audio description </li>
-            <li>Check whether video freezes in places and plays extended audio description</li>
+		</section>
+		<section id="tests">
+			<h2>Tests</h2>
+			<section class="procedure">
+				<h3>Procedure</h3>
+				<ol>
+					<li>Play file with extended audio descriptions</li>
+					<li>Play file with audio description </li>
+					<li>Check whether video freezes in places and plays extended audio description</li>
          </ol>
       </section>
-      <section class="results"><h3>Expected Results</h3>
-         <ul>
-            <li> #3 is true </li>
-         </ul>
+      <section class="results">
+				<h3>Expected Results</h3>
+				<ul>
+					<li>#3 is true</li>
+				</ul>
       </section>
-   </section><section id="related"><h2>Related Techniques</h2><ul>
+   </section>
+	 <section id="related">
+		<h2>Related Techniques</h2>
+		<ul>
       <li><a href="../smil/SM2">SM2</a></li>
       <li><a href="../smil/SM6">SM6</a></li>
       <li><a href="../general/G81">G81</a></li>
       <li><a href="../smil/SM11">SM11</a></li>
-   </ul></section><section id="resources"><h2>Resources</h2>
-      
-         <ul>
-            <li> 
-                  <a href="https://www.w3.org/TR/REC-smil/">Synchronized
-                                        Multimedia Integration Language (SMIL) 1.0</a>
-								       </li>
-            <li> 
-                  <a href="https://www.w3.org/TR/SMIL/">Synchronized Multimedia
-                                        Integration Language (SMIL 2.0)</a>
-								       </li>
-            <li> 
-                  <a href="https://www.w3.org/TR/SMIL-access/">Accessibility
-                                        Features of SMIL</a>
-								       </li>
-            <li> 
-                  <a href="http://ncam.wgbh.org/invent_build/web_multimedia/accessible-digital-media-guide/guideline-h-multimedia#techH12">NCAM Rich Media Accessibility, Accessible SMIL
-                                    Templates</a>
-								       </li>
-         </ul>
-      
-   </section></body></html>
+		</ul>
+	</section>
+	<section id="resources">
+		<h2>Resources</h2>
+		<ul>
+			<li>
+				<a href="https://www.w3.org/TR/REC-smil/">Synchronized Multimedia Integration Language (SMIL) 1.0</a>
+			</li>
+			<li>
+				<a href="https://www.w3.org/TR/SMIL/">Synchronized Multimedia Integration Language (SMIL 2.0)</a>
+			</li>
+			<li>
+				<a href="https://www.w3.org/TR/SMIL3/">Synchronized Multimedia Integration Language (SMIL 3.0)</a>
+			</li>
+			<li>
+				<a href="https://www.w3.org/TR/SMIL-access/">Accessibility Features of SMIL</a>
+			</li>
+		</ul>
+   </section>
+	</body>
+	</html>
