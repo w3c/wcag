@@ -1,3 +1,5 @@
+## Uwaga
+
 To repozytorium jest rozwidleniem repozytorium WCAG W3C. Zostało wykonane, aby wesprzeć organizację pracy nad przygotowaniem oficjalnego tłumaczenia WCAG 2.2 na język polski.
 
 **Żadna treść widoczna w tym repozytorium nie jest oficjalnym, obowiązującym, zalecanym itd. stanowiskiem W3C. Nie powinna być wykorzystywana nigdzie, poza tym repozytorium i w pracach zespołu tłumaczy!**
@@ -21,6 +23,7 @@ W szczególności każdy może:
 
 Dla każdego nowego kryterium sukcesu, dla każdego nowego terminu oraz dla każdej z głównych części wprowadzenia do WCAG 2.2 zostanie założony wątek rozważań w obszarze Issues.
 Dla ułatwienia:
+
 - wątek każdego dyskutowanego kryterium sukcesu będzie zatytułowany przewidywanym numerem tego kryterium i roboczą nazwą tego kryterium,
 - wątek każdego dyskutowanego nowego terminu będzie zatytułowany numerem przedrostkiem 2.2-Termin, a po nim, po spacji zostanie przytoczone robocze tłumaczenie terminu
 - wątek każdej dyskutowanej części wprowadzenia będzie zatytułowany przedrostkiem 2.2-Wstęp, a po nim po spacji przytoczony zostanie nagłówek części wstępu. 
@@ -41,6 +44,7 @@ W szczególności moderator **czuwa** nad konsekwencjami, jakie niosą proponowa
 - jeżeli w tłumaczeniu KS stosowany jest termin słownikowy - spójnością zastosowanego znaczenia i sformułowania z defunicją terminu; w przypadku, gdy w definicji terminu nie ma formy gramatycznej użytej w tekście tłumaczenia, **moderator zgłasza propozycję uzupełnienia** w wątku dyskusji nad tym terminem   
  
 ### Format kryteriów sukcesu
+
 Kryteria sukcesu wykorzystują prostą strukturę elementów HTML z kilkoma wartościami atrybutów klas, aby zapewnić spójność. Skrypty ulepszające i styl wyłączają tę strukturę. Dostarczona przez Ciebie treść jest oznaczona w nawiasach klamrowych. Pozycje po komentarzach są opcjonalne.
 
 ```html
