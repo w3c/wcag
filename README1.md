@@ -104,7 +104,7 @@ Oficjalna lokalizacja publikacji stron objaśnień to obecnie https://www.w3.org
 
 Techniques are in the techniques folder, and grouped by technology into sub-folders. Each technique is a standalone file, which is in HTML format with a regular structure of elements, classes, and ids.
 
-### Technique File Structure
+### Struktura plików technik
 
 The [technique template](techniques/technique-template.html) shows the structure of techniques. Main sections are in top-level &lt;section> elements with specific IDs: meta, applicability, description, examples, tests, related, resources. The description and tests sections are required; the applicability and examples sections are recommended; the related and resources sections are optional. The meta section provides context for the technique during authoring but is removed for publication. The title of the technique is in the `<h1>` element. Elements with `class="instructions"` provide information about populating the template. They should be removed as the technique is developed but if not removed, will be ignored by the generator. **Do not copy `class="instructions"` on real content.**
 
@@ -122,7 +122,7 @@ Cross references to other techniques may be provided where useful. Generally the
 
 Cross references to guidelines and success criteria should use a relative URI to the *Understanding* page for that item. Cross references to other parts of the guidelines should use an absolute URI to the guidelines as published on the W3C TR page, a URI beginning with `https://www.w3.org/TR/WCAG21/#`. Note that references to guidelines or success criteria to which techniques relate are added by the generator upon publication based on information in the Understanding documents, so redundant links to those is not normally needed or advised.
 
-### Create Techniques
+### Utwórz technikę
 
 [General priorities and process to work on techniques are maintained in the wiki](https://www.w3.org/WAI/GL/wiki/Wcag21-techniques).
 
@@ -152,13 +152,13 @@ Once a technique branch and file is set up, populate the content and request rev
 * If you wish to reference the draft technique from an Understanding document, use the technique's rawgit URI.
 * After a technique is approved, the chairs will assign it an ID and update links to it in the Undestanding documents. 
 
-### Formatting Techniques
+### Formatowanie techniki
 
 Techniques in the repository are plain HTML files with minimal formatting. For publication to the editors' draft and W3C location, techniques are formatted by an XSLT-based generator managed by Apache Ant running in Java. Most people do not need to worry about this, but relevant files are the [Ant build file](build.xml) and [XSLT files](xslt).
 
 The generator compiles the techniques together as a suite with formatting and navigation. It enforces certain structures, such as ordering top-level sections described above and standardizing headings. It attempts to process cross reference links to make sure the URIs work upon publication. One of the most substantial roles is to populate the Applicability section with references to the guidelines or success criteria to which the technique relates. The information for this comes from the Understanding documents. Proper use of the technique template is important to enable this functionality, and mal-formed techniques may cause the generator to fail.
 
-## Working Examples
+## działające przykłady
 
 Examples in techniques should be brief easy-to-consume code samples of how the technique is used in content. Therefore examples should focus on the specific features the technique describes, and not include related content such as style, script, surrounding web content, etc.
 
