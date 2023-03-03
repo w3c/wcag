@@ -26,6 +26,9 @@
 			<section class="example">
 				<h3>Using CSS margin and scroll-margin to un-obscure content</h3>
 				<p>This example shows a situation where there is a fixed-position banner at the bottom of the screen that is covering up the site footer, which contains a link. This type of fixed-position banner is a common design for cookie-consent banners.</p>
+        <aside class="note">
+          <p>This example demonstrates a technique to un-obscure content underneath a fixed-position banner. To prevent the page becoming unusable at smaller screen sizes, the banner becomes un-fixed.</p>
+        </aside>
 				<p>Working example: <a href="../../working-examples/css-margin-focus-not-obscured/">Using CSS <code class="language-css">margin</code> and <code class="language-css">scroll-margin</code> to un-obscure content</a>.</p>
 <pre><code>&lt;!doctype html&gt;
 &lt;html lang="en"&gt;
@@ -34,31 +37,9 @@
   &lt;meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"&gt;
   &lt;title&gt;Using CSS margin and scroll-margin to un-obscure content&lt;/title&gt;
   &lt;style&gt;
-    :root{
-      font-size:100%;
-      box-sizing:border-box;
-      --banner-background:hsl(60,80%,90%);
-      --banner-border:hsl(0, 0%, 50%);
-      --default-focus-indicator:hsl(234, 72%, 42%);
-      --fixed-banner-focus-indicator:black;
-    }
-	
-    *, *::after, *::before{
-      box-sizing:inherit;
-    }
-	
-    body{
-      background:white;
-      color:black;
-      font:1rem/1.5 system-ui, "Segoe UI", Roboto, Helvetica, sans-serif;
-      margin:0;
-    }
+    ...
 
-    h1, h2, h3, h4, h5, h6{
-      font-weight:500;
-    }
-
-    .wrapper{
+    .wrapper {
       display:grid;
       gap:1rem;
       grid-template-columns:repeat(9, 1fr);
@@ -66,48 +47,39 @@
       height:100vh;
     }
 
-    .wrapper > *{
-      border:1px solid black;
+    .wrapper &gt; * {
+      border:1px solid var(--black);
       padding:1rem;
     }
 
-    .wrapper :focus-visible{
-      outline:2px solid transparent;
-      box-shadow:0 5px 0 0 var(--default-focus-indicator);
-    }
-
-    header{
-      align-items:center;
-      display:flex;
-      font-size:1.5rem;
-      font-weight:bold;
+    header {
       grid-column:1 / -1;
       grid-row:1;
     }
 
-    main{
+    main {
       grid-column:1 / 8;
     }
 
-    aside{
+    aside {
       grid-column:8 / 10;
     }
 
-    footer{
+    footer {
       grid-column:1 / -1;
     }
 
-    @media (max-width:70rem){
-      main{
+    @media (max-width:70rem) {
+      main {
        grid-column:1 / -1;
       }
 
-      aside{
+      aside {
         grid-column:1 / -1;
       }
     }
 
-    .fixed-position-banner{
+    .fixed-position-banner {
       background:var(--banner-background);
       border:3px solid var(--banner-border);
       bottom:0;
@@ -118,69 +90,27 @@
       width:calc(100vw - 1rem);
     }
 
-    .fixed-position-banner a{
-      outline-color:var(--fixed-banner-focus-indicator);
-    }
-
-    .fixed-position-banner h2{
-      display:inline-block;
-      margin-block-start:0;
-      padding:0.25em;
-    }
-
-    .fixed-position-banner h2:focus-visible{
-      outline:2px solid var(--fixed-banner-focus-indicator);
-    }
-
-    @media (min-width:70rem), (min-height:60rem){
-      .fixed-position-banner{
+    @media (min-width:70rem), (min-height:60rem) {
+      .fixed-position-banner {
         margin-bottom:0;
         position:fixed; 
       }
 
-      .banner-open{
+      .banner-open {
         margin-bottom:14rem;
       }
 
-      .banner-open footer a{
+      .banner-open footer a {
         scroll-margin-bottom:15.5rem;
       }
     }
-			
-    .close-banner{
-      background:hsl(0, 0%, 100%);
-      border:1px solid hsl(0, 0%, 50%);
-      border-radius:3px;
-      cursor:pointer;
-      font:inherit;
-      margin:0;
-      padding:0.33em;
-      position:absolute;
-      right:1rem;
-      top:1rem;
-    }
-
-    .close-banner-icon{
-      display:block;
-      height:1rem;
-      stroke:currentColor;
-      width:1rem;
-    }
-
-    .close-banner:focus-visible{
-      outline:2px solid var(--fixed-banner-focus-indicator);
-      outline-offset:2px;
-    }		
   &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
   &lt;dialog class="fixed-position-banner"&gt;
     &lt;h2 tabindex="-1"&gt;Fixed-Position Banner&lt;/h2&gt;
     &lt;button aria-label="close fixed-position banner" class="close-banner" type="button"&gt;
-      &lt;svg aria-hidden="true" class="close-banner-icon" role="img" viewbox="0 0 16 16"&gt;
-        &lt;line x1="0" y1="0" x2="15" y2="15" /&gt;
-        &lt;line x1="0" y1="15" x2="15" y2="0" /&gt;
-      &lt;/svg&gt;
+      ...
     &lt;/button&gt;
   &lt;/dialog&gt;
   &lt;div class="wrapper"&gt;
@@ -219,16 +149,6 @@
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 
-<aside class="note">
-	<p>Due to the current lack of cross-browser support for the the CSS <code class="language-css">:has</code> pseudo-class, this example uses JavaScript to create the <code class="language-css">margin</code> at the bottom of the page. Using the <code class="language-css">:has</code> selector, the relevant CSS is:</p>
-<pre><code>body:has(.fixed-position-banner[open]){
-  margin-bottom:14rem;
-}
-
-body:has(.fixed-position-banner[open]) footer a{
-  scroll-margin-bottom:15.5rem;
-}</code></pre>
-</aside>
 			</section>      
 		</section>
 		
