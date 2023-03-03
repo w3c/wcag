@@ -7,6 +7,7 @@ assignees: ''
 
 ---
 
+<!-- w tytule w nawiasach kwadratowych wpisz numer kryterium sukcesu -->
 ## Oryginał
 ````html
    <!-- Skopiuj i wklej tutaj kod HTML oryginalnego projektu. Przełącz się na gałąź main. Projekty nowych kryteriów znajdziesz w katalogu guidelines/sc/22/ -->
@@ -18,7 +19,4 @@ assignees: ''
 ````
 ## Rzeczy do rozważenia
 Możesz tu wypunktować rzeczy, które sugerujesz przedyskutować
-
-
-## Miejsce na  cząstkowe podsumowania dyskusji
 ---

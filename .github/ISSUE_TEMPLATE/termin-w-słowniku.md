@@ -1,6 +1,6 @@
 ---
 name: Termin w słowniku
-about: Describe this issue template's purpose here.
+about: Rozpoczyna dyskusję nad definicją terminu w słowniku.
 title: "[2.2-Termin]"
 labels: ''
 assignees: ''
