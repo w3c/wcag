@@ -1,7 +1,7 @@
 ---
 name: Termin w słowniku
 about: Rozpoczyna dyskusję nad definicją terminu w słowniku.
-title: "[2.2-Termin]"
+title: "[Termin]"
 labels: ''
 assignees: ''
 
