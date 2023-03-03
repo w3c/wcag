@@ -46,7 +46,7 @@ function addTextSemantics() {
 	// put principle in principle headings
 	document.querySelectorAll('section.sc h2 bdi.secno').forEach(function(node){
 		var num = node.textContent;
-		node.textContent = "Postrzegalność " + num;
+		node.textContent = "Zasada " + num;
 	})
 	// put guideline in GL headings
 	document.querySelectorAll('section.guideline h3 bdi.secno').forEach(function(node){
