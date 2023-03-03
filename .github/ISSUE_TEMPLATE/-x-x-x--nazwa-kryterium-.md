@@ -17,10 +17,8 @@ assignees: ''
 
 ````
 ## Rzeczy do rozważenia
-- **Nazwa kryterium**: Nieprzysłonięty fokus | Zakrywanie fokusu
-- **otrzymuje fokus**: _otrzymuje_ czy _przyjmuje_, czy _znajduje się w stanie fokusu_?
-- **całkowicie zasłaniany**: a może _zakrywany_? lub _zasłonięty_? _zakryty_?
-- **pojęcie fokusu**: nie ma go w słowniku, czy nie należałoby go dodać? A może użyć polskiego _skupienie_? 
+Możesz tu wypunktować rzeczy, które sugerujesz przedyskutować
+
 
 ## Miejsce na  cząstkowe podsumowania dyskusji
 ---
