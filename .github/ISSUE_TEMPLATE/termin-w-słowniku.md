@@ -1,5 +1,5 @@
 ---
-name: "[2.2-Termin] termin w słowniku"
+name: Termin w słowniku
 about: Describe this issue template's purpose here.
 title: "[2.2-Termin]"
 labels: ''
