@@ -1,24 +1,22 @@
-Contributions to this repository are intended to become part of Recommendation-track documents governed by the
-[W3C Patent Policy](https://www.w3.org/Consortium/Patent-Policy-20040205/) and
-[Document License](https://www.w3.org/Consortium/Legal/copyright-documents). To make substantive contributions to specifications, you must either participate
-in the relevant W3C Working Group or make a non-member patent licensing commitment.
+Wkłady do tego repozytorium mają stać się częścią dokumentów ścieżki rekomendacji regulowanej przez
+[W3C Patent Policy](https://www.w3.org/Consortium/Patent-Policy-20040205/) oraz
+[Document License](https://www.w3.org/Consortium/Legal/copyright-documents). Aby wnieść istotny wkład do specyfikacji, należy albo uczestniczyć w odpowiedniej grupie roboczej W3C lub zobowiązać się do udzielenia licencji patentowej osobie niebędącej członkiem.
 
-If you are not the sole contributor to a contribution (pull request), please identify all 
-contributors in the pull request comment.
+Jeśli nie jesteś jedynym współtwórcą wkładu (pull request), prosimy o wskazanie wszystkich 
+w komentarzu do pull requesta.
 
-To add a contributor (other than yourself, that's automatic), mark them one per line as follows:
-
-```
-+@github_username
-```
-
-If you added a contributor by mistake, you can remove them in a comment with:
+Aby dodać współtwórcę (innego niż ty, to jest automatyczne), oznacz je po jednym na linię w następujący sposób:
 
 ```
--@github_username
++@github_nazwauzytkownika
 ```
 
-If you are making a pull request on behalf of someone else but you had no part in designing the 
-feature, you can remove yourself with the above syntax.
+Jeśli dodałeś współpracownika przez pomyłkę, możesz go usunąć w komentarzu z:
 
-Public comments can be made by opening a new Issue https://github.com/w3c/wcag/issues/new. The public can also comment on any issue threads on Github https://github.com/w3c/wcag/issues.
+```
+-@github_nazwauzytkownika
+```
+
+Jeśli zgłaszasz pull request w imieniu kogoś innego, ale nie miałeś udziału w projektowaniu  możesz usunąć się za pomocą powyższej składni.
+
+Uwagi publiczne można zgłaszać poprzez otwarcie nowej sprawy https://github.com/w3c/wcag/issues/new. Publiczność może również komentować wszelkie wątki spraw na Githubie https://github.com/w3c/wcag/issues.
