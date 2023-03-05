@@ -25,8 +25,8 @@ Dla każdego nowego kryterium sukcesu, dla każdego nowego terminu oraz dla każ
 Dla ułatwienia:
 
 - wątek każdego dyskutowanego kryterium sukcesu będzie zatytułowany przewidywanym numerem tego kryterium i roboczą nazwą tego kryterium,
-- wątek każdego dyskutowanego nowego terminu będzie zatytułowany numerem przedrostkiem 2.2-Termin, a po nim, po spacji zostanie przytoczone robocze tłumaczenie terminu
-- wątek każdej dyskutowanej części wprowadzenia będzie zatytułowany przedrostkiem 2.2-Wstęp, a po nim po spacji przytoczony zostanie nagłówek części wstępu. 
+- wątek każdego dyskutowanego nowego terminu będzie zatytułowany numerem przedrostkiem [Termin], a po nim, po spacji zostanie przytoczone robocze tłumaczenie terminu
+- wątek każdej dyskutowanej części wprowadzenia będzie zatytułowany przedrostkiem [WCAG 2.2] Wstęp. , a po nim po spacji przytoczony zostanie nagłówek części wstępu. 
 
 ### Uzgadnianie wersji finalnej
 Uzgadnianie tekstów tłumaczeń odbywa się w drodze konsensusu.
