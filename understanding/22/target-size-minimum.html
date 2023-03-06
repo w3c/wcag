@@ -22,22 +22,23 @@
             <p class="conformance-level">AA</p>
              <p class="change">New</p>
 
-             <p>The size of the <a>target</a> for <a>pointer inputs</a> is at least 24 by 24 CSS pixels, except where:</p>
-
+             <p>The size of the <a>target</a> for <a>pointer inputs</a> is at least 24 by 24 <a>CSS pixels</a>, except where:</p>
             <ul>
-                <li><strong>Spacing:</strong> The <a>target offset</a> is at least 24 CSS pixels to every adjacent target;</li>
-                <li><strong>Inline:</strong> The target is in a sentence or block of text;</li>
-                <li><strong>Essential:</strong> A particular presentation of the target is <a>essential</a> or is legally required for the information being conveyed;</li>
+                <li><strong>Spacing:</strong> The target does not overlap any other target and has a <a>target offset</a> of at least 24 CSS pixels to every adjacent target;</li>
+                <li><strong>Equivalent:</strong> The function can be achieved through a different control on the same page that meets this criterion.</li>
+                <li><strong>Inline:</strong> The target is in a sentence, or is in a bulleted or numbered list, or its size is otherwise constrained by the line-height of non-target text;</li>
                 <li><strong>User agent control:</strong> The size of the target is determined by the user agent and is not modified by the author;</li>
-                <li><strong>Equivalent:</strong> The function can be achieved through a different control on the same page that has an area of at least 24 by 24 CSS pixels.</li>
+                <li><strong>Essential:</strong> A particular presentation of the target is <a>essential</a> or is legally required for the information being conveyed;</li>
             </ul>
-            <p class="note">Targets that allow for values to be selected spatially based on position within the target are considered one target for the purpose of the Success Criterion. Examples include sliders with granular values, color pickers displaying a gradient of colors, or editable areas where you position the cursor.</p>
-            <p class="note">Are there issues with internationalization when describing inline links?</p>
-            <p class="note">Are there issues with pop-over content overlapping targets triggering failures?</p>
+            <p class="note">Targets that allow for values to be selected spatially based on position within the target are considered one target for the purpose of the success criterion. Examples include sliders with granular values, color pickers displaying a gradient of colors, or editable areas where you position the cursor.</p>
+            <p class="note">For inline targets the line-height should be interpreted as perpendicular to the flow of text. For example, in a language displayed top to bottom, the line-height would be horizontal.</p>
             <dl><dt class="new"><dfn data-lt="target offsets">target offset</dfn></dt>
             <dd class="new">
                 <p class="change">New</p>
-            <p>the distance measured from the farthest point of a target (A), to the nearest point of the second target (B). The offset includes the target and spacing around the target. The offset from A to B may be different than the offset from B to A, if the sizes of these targets differ.</p>
+            <p>length of the longest possible line that starts at an edge of a target (A), intersects a second edge of A, and ends at the closest edge of a second target (B). For horizontally aligned targets, target offset is measured with a horizontal line. For vertically aligned targets, target offset is measured with a vertical line. For targets that are neither, target offset is measured diagonally.</p>
+                
+            <p>Two targets are horizontally aligned if a horizontal line can be drawn that goes through both targets, but no vertical line can be drawn that goes through both targets. Two targets are vertically aligned if a vertical line can be drawn that goes through both targets, but no horizontal line can be drawn that goes through both targets.</p>
+            <p class="note">The target offset from A to B may be different than the target offset from B to A, if the sizes of these targets differ.</p>
             </dd></dl>
         </blockquote>
     </section>
@@ -49,87 +50,109 @@
 
         <p>This Success Criterion defines a <em>minimum</em> size; using larger sizes will help many people use targets more easily. Meeting <a href="../21/target-size-enhanced.html">2.5.5 Target Size (Enhanced)</a> is recommended whenever possible.</p>
 
-        <p>The requirement is for targets to be at least 24 by 24 CSS pixels in size. There are five exceptions:</p>
+        <section id="exceptions">
+          <h3>Exceptions</h3>
+          <p>The requirement is for targets to be at least 24 by 24 CSS pixels in size. There are five exceptions:</p>
 
-        <ol>
-            <li>If a target is smaller than 24 by 24 CSS pixels but has sufficient spacing, it passes. The spacing is sufficient if the offset between targets is at least 24 CSS pixels. Target offset measures the distance between targets, measured from the farthest point of one target to the nearest point of the adjacent target, and is assessed for each of the adjacent targets. What edge of the target is <em>farthest</em> depends on the relative position of the neighboring target. For example, if considering distance above the target, the farthest edge would be the bottom of the target, and the offset would be measured from this bottom edge to the bottom edge of the neighboring target above. Note that where the targets differ in size or shape, the offset between targets may also differ. The offset distance must be at least 24 CSS pixels in all cases to fall under this exception.</li>
-            <li>The Success Criterion does not apply to inline targets in blocks of text – for example, text links inside a sentence or paragraph. This exception is allowed because text reflow based on viewport size makes it impossible for authors to anticipate where links may be positioned relative to one another. When multiple links are embedded in blocks of texts in smaller text sizes, maintaining a 24 CSS pixels offset between links in adjacent lines of text would require a large line height which can be undesirable in many design contexts. Also, inline numeric footnotes common in scientific texts may sometimes have a width well below 24 CSS pixels. Note: Stacked lists of links, as in navigation structures, do not count as inline links. Authors can anticipate the relative position of these links and accommodate sufficient target spacing.</li>
-            <li>If the spacing of the targets is essential to the information being conveyed, the "Essential" exception applies. For example, in digital maps, the position of pins is analogous to the position of places shown on the map. If there are many pins close together, the offset between pins and neighboring pins will often be below 24 CSS pixels. It is essential to show the pins at the correct map location, therefore the Essential exception applies. As well, some jurisdictions legally require online forms to replicate paper forms, which can impose constraints on the size of targets. In such jurisdictions, any legal requirement to replicate small targets can be considered essential.</li>
-            <li>Browsers have default renderings of some controls, such as the days of the month calendar in an <code>input type="date"</code>. As long as the author has not modified the user agent default, the target size for a "User agent control" is excepted.</li>
-            <li>In cases where a target does not have an area equivalent to 24 by 24 CSS pixels, but there is another control that can achieve the underlying function that <em>does</em> meet the minimum area, the target can be excepted based on the "Equivalent" exception.</li>
-        </ol>
+          <ol>
+              <li><strong>Spacing:</strong> If a target is smaller than 24 by 24 CSS pixels but has sufficient spacing, it passes. The spacing is sufficient if the <a href="#dfn-target-offset">target offset</a> between targets is at least 24 CSS pixels. Target offset is the length of the longest possible line that starts at an edge of a target (A), intersects a second edge of A, and ends at the closest edge of a second target (B). It is assessed from a target to <em>each</em> other nearby target; the target offset must be at least 24 CSS pixels to <em>all</em> nearby targets to fall under this exception. The line used to measure target offset depends on the sizes, shapes, and relative positions of the two targets. For example, if considering the target offset from a rectangular target (A) to an equally-sized rectangular neighbor target (B) directly to A's right, target offset would be measured with a horizontal line starting from the left edge of A, passing through the right edge of A, and ending at the left edge of B. Note that the target offset from A to B may be different than the target offset from B to A.</li>
+              <li><strong>Equivalent:</strong> In cases where a target does not have an size equivalent to 24 by 24 CSS pixels, but there is another control that can achieve the underlying function that <em>does</em> meet the minimum size, the target can be excepted based on the "Equivalent" exception.</li>
+              <li><strong>Inline:</strong> The Success Criterion does not apply to inline targets in sentences, bulleted / numbers lists, or where the size of the target is constrained by the line-height of non-target text. This exception is allowed because text reflow based on viewport size makes it impossible for authors to anticipate where links may be positioned relative to one another. When multiple links are embedded in blocks of texts in smaller text sizes, maintaining a 24 CSS pixels offset between links in adjacent lines of text would require a large line height which can be undesirable in many design contexts. Also, inline numeric footnotes common in scientific texts may sometimes have a size well below 24 CSS pixels. <br/>Note: Stacked links in navigation structure that happen to use list markup do not count as inline links. Authors can anticipate the relative position of these links and provide sufficient target spacing.</li>
+              <li><strong>User agent control:</strong> Browsers have default renderings of some controls, such as the days of the month calendar in an <code>input type="date"</code>. As long as the author has not modified the user agent default, the target size for a "User agent control" is excepted.</li>
+              <li><strong>Essential:</strong> If the spacing of the targets is essential to the information being conveyed, the "Essential" exception applies. For example, in digital maps, the position of pins is analogous to the position of places shown on the map. If there are many pins close together, the offset between pins and neighboring pins will often be below 24 CSS pixels. It is essential to show the pins at the correct map location, therefore the Essential exception applies. As well, some jurisdictions legally require online forms to replicate paper forms, which can impose constraints on the size of targets. In such jurisdictions, any legal requirement to replicate small targets can be considered essential.</li>
+          </ol>
+        </section>
 
-        <p>The requirement is independent of the zoom factor of the page; when users zoom in the CSS pixel size of elements does not change. This means that authors cannot meet it by claiming that the target will have enough spacing or sufficient size if the user zooms into the page.</p>
-      
-      <p>The requirement does not apply to targets while they are obscured by content displayed as a result of a user interaction or scripted behavior of content, for example:</p>
-      <ul>
-        <li>interacting with a combobox shows a dropdown list of suggestions</li>
-        <li>activating a button displays a modal dialog</li>
-        <li>content displays a cookie banner after page load</li>
-        <li>content displays a "Take a survey" dialog after some period of user inactivity</li>
-      </ul>    
-      <p>The requirement does however apply to targets in any new content that appears on top of other content.</p>
-      
-      <p>While the Success Criterion primarily helps touch users by providing target sizing to prevent accidental triggering of adjacent targets, it is also useful for mouse or pen users. It reduces the chances of erroneous activation due to either a tremor or reduced precision, whether because of reduced fine motor control or input imprecision.</p>
-           <h3>Spacing versus size</h3>
-        <p>Spacing, alone and in conjunction with size, can improve user experience. There is less chance of accidentally activating a neighboring target if a target is not immediately adjacent to another. Touchscreen devices and user agents generally have internal heuristics to identify which link or control is closest to a user's touch interaction - this means that sufficient spacing around a target can work as effectively as a larger target size itself.</p>
-        <p>The following illustrate a variety of situations using size and spacing of targets. In the top line of icons, the dimensions of each icon target are 44 by 44 CSS pixels with no space in between. This amply passes this Success Criterion and is actually sufficient to meet the AAA requirement for <a href="../21/target-size-enhanced.html">Target Size (Enhanced)</a>. In the next row, the dimensions of each icon target are 24 by 24 CSS pixels with no space in between, passing this Success Criterion. In the third row, the the same icon targets are only 20 by 20 CSS pixels but they have a 4 CSS pixel space in between, passing this Success Criterion via the spacing exception. In the last row, the the same icon targets are only 20 by 20 CSS pixels and have no space in between, failing this Success Criterion.</p>
+        <section id="size-requirement">
+          <h3>Size requirement</h3>
 
-        <figure id="pointer-target-24x24">
-            <img src="img/pointer-target-example1-full.png" alt="Four rows of icons with measurements, the first three passing,the last failing the requirement." />
-            <figcaption>Four rows of targets, illustrating three ways of meeting this Success Criterion and one way of failing it.</figcaption>
-        </figure>
-<p>When targets are not 24 by 24 CSS pixels, it is still possible to meet this Success Criterion. The next two illustrations show sets of buttons which are only 20 CSS pixels tall. In the first set, there are no targets immediately above or below the buttons, so they pass. In the second illustration, the buttons have been stacked on top of one another, resulting in a fail.</p>
-        <figure id="pointer-target-44x20-spacing">
-            <img src="img/pointer-target-example3-v2.png" alt="A row of buttons which are more that 44px wide and 20 CSS pixels high. There are no targets above or below." />
-            <figcaption>The widths of the buttons with adjacent neighbors is above 24 CSS pixels, while the height is only 20 CSS pixels. However, the lack of adjacent targets above and below means that the targets pass this Success Criterion.</figcaption>
-        </figure>
+          <p>For a target to be "24 by 24 CSS pixels", it must be possible to draw a solid 24 by 24 CSS pixel (px) square, aligned to the horizontal and vertical axis such that the square is completely within the target (does not extend outside the target's area).</p>
 
-        <figure id="pointer-target-44-20-nospace">
-            <img src="img/pointer-target-example4-v2.png" alt="Two rows of buttons only 20 CSS pixels high, with no spacing between them." />
-            <figcaption><strong>Fail:</strong> Two rows of buttons, both with a height of only 20 CSS pixels. The rows are flush, with no gap between them, which means that the offset from the top of the targets in the top row to the top of targets in the row below is below 24px, thus failing the Success Criterion.</figcaption>
-        </figure>
-      <p>The following two illustrations show how menu items can be adjusted to properly meet this requirement. In the first illustration, the <q>About us</q> menu has been activated, showing that each of the menu item targets (text and padding) has a 24 CSS pixel height. In the second illustration, the same menu is expanded, but the menu items only achieve 20 CSS pixels in height.</p>
-        <figure id="pointer-target-dropdown">
-            <img src="img/pointer-target-example4.jpg" alt="A dropdown menu - a pass example with menu items 24 CSS pixels high, and a fail example with menu items only 20 CSS pixels high." />
-            <figcaption>A dropdown menu is shown. The PASS example has menu items which are 24 CSS pixels high. In the FAIL example, the menu items are only 20 CSS pixels high.</figcaption>
-        </figure>
-<p>The following three examples illustrate how a target's position relative to another target affects the offset. Each illustration shows a person's profile image, which is a target leading to the profile page, as well as a magnifying glass icon, which opens a lightbox view of the profile image. In the first example, the magnifying icon is outside of the picture. Its horizontal dimension is 24 CSS pixels. The vertical dimension is below 24 CSS pixels but since there are no adjacent targets above and below, the target meets the Success Criterion. In the second example, the icon overlaps with the top-left corner of the image. The image, itself a target, is immediately adjacent to the magnifying glass icon. Measuring from the top of the magnifying glass icon to the nearest point of the image target shows that that the offset is only 20 CSS pixels. The second example therefore fails the Success Criterion. In the third example, the magnifying glass icon sits inside the linked image. Since it is surrounded by a larger target, the offset to the surrounding and immediately adjacent image target is only 20 CSS pixels at top and bottom. The icon target fails. </p>
-        <figure id="pointer-target-embedded">
-            <img src="img/pointer-target-example5-revised.png" alt="Three examples of a target adjacent to, or nested within, another target (see legend below)" />
-          <figcaption>Three illustrations showing the offsets between two targets when they abut and overlap.</figcaption>
-      </figure>
+          <figure id="basic-target-size">
+            <img src="img/target-size-requirement.png" alt="Three square boxes next to each other, each 24px wide." />
+            <figcaption>Where targets are a 24 by 24px square (and larger is better), they meet the first line of the criterion and pass.</figcaption>
+          </figure>
 
-        <figure id="pointer-target-inline-links">
-            <img src="img/pointer-target-example6-inline-links.png" alt="Inline links in a block of text and in an ordered list (see legend below)" />
-          <figcaption>Two examples show inline text links. The first example has various links in a block of text. The font size is 14px, line height is 16.8px. Depending on the position of links in the text, the vertical offset of links is smaller than 24 CSS pixels. For linked footnote numbers, the horizontal offset is also below 24 CSS pixels. The inline exception allows inline targets to have an offset below the requirement of 24 by 24 CSS pixels.</figcaption>
-      </figure>
+          <p>The 24 by 24px square has to be aligned with the page, although the target itself could be skewed.</p>
 
-        <figure id="pointer-target-stacked-links">
-            <img src="img/pointer-target-example7-stacked-links.png" alt="A bulleted list of stacked links with sufficient and insufficient offset (see legend below)" />
-          <figcaption>The two examples show lists of stacked links as used in navigation, for example in a list of contents of a longer text page. In both cases, the font size is 14px. In the first example, the line height is 25.8px, exceeding the requirement of 24 CSS pixels. In the second example, the stacked links have a line height of just 16.8px. They do not meet the vertical offset requirement of 24 CSS pixels.</figcaption>
-      </figure>
+          <figure id="basic-target-size-skewed">
+            <img src="img/target-size-requirement3.png" alt="A skewed rectangle that includes a 24 by 24px square within it." />
+            <figcaption>So long as there is a solid 24 by 24px square within the target, it meets the first line of the criterion and passes.</figcaption>
+          </figure>
 
-        <p>Users with different disabilities have different needs for control sizes. It can be beneficial to provide an option to increase the active target area without increasing the visible target size. Another option is to provide a mechanism to control the density of layout and thereby change target size or spacing, or both. This can be beneficial for a wide range of users. For example, users with visual field loss may prefer a more condensed layout with smaller sized controls while users with other forms of low vision may prefer large controls.</p>
+          <p>If a target does not include a 24 by 24px square but does have space around it, check the Spacing exception (below).</p>
 
-        <p>The aim of this Success Criterion is that targets are ideally at least 24 by 24 CSS pixels. However, the offset exception allows for smaller targets if there is sufficient spacing around them. Authors should be aware that using smaller targets can have an impact on layouts, as the combined space of the smaller target and the required spacing around it will generally require an overall area that is larger than 24 by 24 CSS pixels.</p>
+          <figure id="basic-target-size-circle">
+            <img src="img/target-size-requirement2.png" alt="A circle with a diameter of 24px, but not filling up a 24px square." />
+            <figcaption>The rounded corners of the circle do not fill the 24 by 24px square so <strong>does not pass</strong> the first line of the criterion. However, depending on the spacing to other targets it may pass by the spacing exception.</figcaption>
+          </figure>
 
-        <figure id="target-size-minimum">
-          <img src="img/target-size-minimum-diagram.png"
-            alt="Illustration showing four 24 by 24 pixel buttons ('play', 'previous', 'next', 'settings') arranged side by side in a row. Another row shows the same buttons, now reduced to a target size of 10 by 10 pixels, with spacing of 14 pixels on all sides of each button." />
-            <figcaption>Targets that are 24 by 24 pixels or larger can be arranged closely together. Reducing the target size to 10 by 10 pixels requires spacing/clearance of 14 pixels around each target, meaning that the overall space occupied by the four targets is bigger.</figcaption>
-        </figure>
+          <p>The requirement is independent of the zoom factor of the page; when users zoom in the CSS pixel size of elements does not change. This means that authors cannot meet it by claiming that the target will have enough spacing or sufficient size if the user zooms into the page.</p>
+        
+          <p>The requirement does not apply to targets while they are obscured by content displayed as a result of a user interaction or scripted behavior of content, for example:</p>
 
-        <figure id="target-size-minimum-redux">
-          <img src="img/target-size-minimum.png"
-            alt="First diagram: five 24 by 24 pixel targets, arranged in a cross (one target at the center, one target above, one to the right, one below, and one to the left), with no gaps. This passes. Second diagram: reducing the size of the central target to 10 by 10 pixels, while leaving the outer targets unchanged, leads to spacing of only 7 pixels between the central target and the outer targets. This fails. Third diagram: to pass, the outer targets need to be moved further away from the central target 10 by 10 pixel target, with spacing of 14 pixels." />
-          <figcaption>In this (hypothetical) cross arrangement of five 24 by 24 pixel targets, shrinking the central target to 10 by 10 pixels, with spacing of only 7 pixels to the other targets, will fail the Success Criterion. To pass, the outer targets will need to be moved further out, to achieve a spacing of 14 pixels - leading to an increase of the overall space occupied by the five targets.</figcaption>
-        </figure>
+          <ul>
+            <li>interacting with a combobox shows a dropdown list of suggestions</li>
+            <li>activating a button displays a modal dialog</li>
+            <li>content displays a cookie banner after page load</li>
+            <li>content displays a "Take a survey" dialog after some period of user inactivity</li>
+          </ul>    
+          <p>The requirement does however apply to targets in any new content that appears on top of other content.</p>
+          
+          <p>While the Success Criterion primarily helps touch users by providing target sizing to prevent accidental triggering of adjacent targets, it is also useful for mouse or pen users. It reduces the chances of erroneous activation due to either a tremor or reduced precision, whether because of reduced fine motor control or input imprecision.</p>
+
+        </section>
+        <section id="spacing-vs-size">
+          <h3>Spacing versus size</h3>
+          
+          <p>Spacing, alone and in conjunction with size, can improve user experience. There is less chance of accidentally activating a neighboring target if a target is not immediately adjacent to another. Touchscreen devices and user agents generally have internal heuristics to identify which link or control is closest to a user's touch interaction - this means that sufficient spacing around a target can work as effectively as a larger target size itself.</p>
+          
+          <p>The following illustrate a variety of situations using size and spacing of targets. In the top line of icons, the dimensions of each icon target are 44 by 44 CSS pixels with no space in between. This amply passes this Success Criterion and is actually sufficient to meet the AAA requirement for <a href="../21/target-size-enhanced.html">Target Size (Enhanced)</a>. In the next row, the dimensions of each icon target are 24 by 24 CSS pixels with no space in between, passing this Success Criterion. In the third row, the same icon targets are only 20 by 20 CSS pixels but they have a 4 CSS pixel space in between, passing this Success Criterion via the spacing exception. In the last row, the same icon targets are only 20 by 20 CSS pixels and have no space in between, failing this Success Criterion.</p>
+
+          <figure id="pointer-target-24x24">
+              <img src="img/pointer-target-example1-full.png" alt="Four rows of icons with measurements, the first three passing,the last failing the requirement." />
+              <figcaption>Four rows of targets, illustrating three ways of meeting this Success Criterion and one way of failing it.</figcaption>
+          </figure>
+          <p>When targets are not 24 by 24 CSS pixels, it is still possible to meet this Success Criterion. The next two illustrations show sets of buttons which are only 20 CSS pixels tall. In the first set, there are no targets immediately above or below the buttons, so they pass. In the second illustration, the buttons have been stacked on top of one another, resulting in a fail.</p>
+          <figure id="pointer-target-44x20-spacing">
+              <img src="img/pointer-target-example3-v2.png" alt="A row of buttons which are more that 44px wide and 20 CSS pixels high. There are no targets above or below." />
+              <figcaption>The widths of the buttons with adjacent neighbors is above 24 CSS pixels, while the height is only 20 CSS pixels. However, the lack of adjacent targets above and below means that the targets pass this Success Criterion.</figcaption>
+          </figure>
+
+          <figure id="pointer-target-44-20-nospace">
+              <img src="img/pointer-target-example4-v2.png" alt="Two rows of buttons only 20 CSS pixels high, with no spacing between them." />
+              <figcaption><strong>Fail:</strong> Two rows of buttons, both with a height of only 20 CSS pixels. The rows are flush, with no gap between them, which means that the offset from the top of the targets in the top row to the top of targets in the row below is below 24px, thus failing the Success Criterion.</figcaption>
+          </figure>
+          <p>The following two illustrations show how menu items can be adjusted to properly meet this requirement. In the first illustration, the <q>About us</q> menu has been activated, showing that each of the menu item targets (text and padding) has a 24 CSS pixel height. In the second illustration, the same menu is expanded, but the menu items only achieve 20 CSS pixels in height.</p>
+          <figure id="pointer-target-dropdown">
+              <img src="img/pointer-target-example4.jpg" alt="A dropdown menu - a pass example with menu items 24 CSS pixels high, and a fail example with menu items only 20 CSS pixels high." />
+              <figcaption>A dropdown menu is shown. The PASS example has menu items which are 24 CSS pixels high. In the FAIL example, the menu items are only 20 CSS pixels high.</figcaption>
+          </figure>
+
+
+          <p>Users with different disabilities have different needs for control sizes. It can be beneficial to provide an option to increase the active target area without increasing the visible target size. Another option is to provide a mechanism to control the density of layout and thereby change target size or spacing, or both. This can be beneficial for a wide range of users. For example, users with visual field loss may prefer a more condensed layout with smaller sized controls while users with other forms of low vision may prefer large controls.</p>
+
+          <p>The aim of this Success Criterion is that targets are ideally at least 24 by 24 CSS pixels. However, the Spacing exception allows for smaller targets if there is sufficient spacing around them. Authors should be aware that using smaller targets can have an impact on layouts, as the combined space of the smaller target and the required spacing around it will generally require an overall size that is larger than 24 by 24 CSS pixels.</p>
+
+          <figure id="target-size-minimum">
+            <img src="img/target-size-minimum-diagram.png"
+              alt="Illustration showing four 24 by 24 pixel buttons ('play', 'previous', 'next', 'settings') arranged side by side in a row. Another row shows the same buttons, now reduced to a target size of 10 by 10 pixels, with spacing of 14 pixels on all sides of each button." />
+              <figcaption>Targets that are 24 by 24 pixels or larger can be arranged closely together. Reducing the target size to 10 by 10 pixels requires spacing/clearance of 14 pixels around each target, meaning that the overall space occupied by the four targets is bigger.</figcaption>
+          </figure>
+
+          <figure id="target-size-minimum-redux">
+            <img src="img/target-size-minimum.png"
+              alt="First diagram: five 24 by 24 pixel targets, arranged in a cross (one target at the center, one target above, one to the right, one below, and one to the left), with no gaps. This passes. Second diagram: reducing the size of the central target to 10 by 10 pixels, while leaving the outer targets unchanged, leads to spacing of only 7 pixels between the central target and the outer targets. This fails. Third diagram: to pass, the outer targets need to be moved further away from the central target 10 by 10 pixel target, with spacing of 14 pixels." />
+            <figcaption>In this (hypothetical) cross arrangement of five 24 by 24 pixel targets, shrinking the central target to 10 by 10 pixels, with spacing of only 7 pixels to the other targets, will fail the Success Criterion. To pass, the outer targets will need to be moved further out, to achieve a spacing of 14 pixels - leading to an increase of the overall space occupied by the five targets.</figcaption>
+          </figure>
+
+          <p>The ability to select the central option is reduced in the second version, it is smaller (therefore harder to successfully hit) and there is little spacing around the target. In the third version the center target is still harder to hit, but it is less likely that you'd hit a neighboring target. The measure for target offset works intuitively for most cases, but in some cases, at small sizes, it can cause additional spacing to be required.</p>
+        </section>
     </section>
 
     <section id="benefits">
       <h2>Benefits of Target Size (Minimum)</h2>
-      <p>Having targets with sufficient size - or failing that, sufficient target spacing - can help all users who may have difficulty in confidently targeting or operating small controls. Users who benefit include, but are not limited to:</p>
+      <p>Having targets with sufficient size - or at least sufficient target spacing - can help all users who may have difficulty in confidently targeting or operating small controls. Users who benefit include, but are not limited to:</p>
       <ul>
         <li>People who use a mobile device where the touch screen is the primary mode of interaction;</li>
         <li>People using mouse, stylus or touch input who have mobility impairments such as hand tremors;</li>
@@ -145,8 +168,8 @@
         <h2>Examples of Target Size (Minimum)</h2>
 
         <ul>
-            <li>Three buttons are on-screen and the target area of each button is 24 by 24 CSS pixels. Since the target size itself is 24 by 24 CSS pixels, no additional spacing is required, the Success Criterion passes.</li>
-            <li>A row of buttons, each of which has a horizontal width of more than 24 CSS pixels, but a height of only 20 CSS pixels. Since there is sufficient spacing above and below the row of buttons, the Success Criterion passes.</li>
+            <li>Three buttons are on-screen and the target size of each button is 24 by 24 CSS pixels. Since the target size itself is 24 by 24 CSS pixels, no additional spacing is required, the Success Criterion passes.</li>
+            <li>A row of buttons, each of which has a horizontal width of more than 24 CSS pixels, a height of only 20 CSS pixels, and vertical margin of 4 CSS pixels above and below the row of buttons. Since there is sufficient spacing both above and below the row of buttons, the Success Criterion passes.</li>
             <li>Links within a paragraph of text have varying target dimensions. Links within paragraphs of text do not need to meet the 24 by 24 CSS pixels requirements, so the Success Criterion passes.</li>
         </ul>
    </section>
@@ -165,7 +188,6 @@
 
       <section id="sufficient">
          <h3>Sufficient Techniques for Target Size (Minimum)</h3>
-
 
          <ol>
             <li>
