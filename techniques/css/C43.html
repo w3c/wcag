@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<title>Using CSS margin and scroll-margin to un-obscure content</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css"/>
+	</head>
+	<body>
+		<h1>Using <abbr title="Cascading Style Sheets">CSS</abbr> <code class="language-css">margin</code> and <code class="language-css">scroll-margin</code> to un-obscure content</h1>
+		<section id="meta">
+			<h2>Metadata</h2>
+			<p id="id"></p>
+			<p id="technology">CSS</p>
+			<p id="type"></p>
+		</section>
+		<section id="applicability">
+			<h2>When to Use</h2>
+			<p>All technologies that support CSS.</p>
+		</section>
+		<section id="description">
+			<h2>Description</h2>
+			<p>The objective of this technique is to ensure that user interface components (for example: links, buttons, and form fields) that are initially completely obscured by a fixed-position component can still be accessed by users. In this example, this is achieved using the CSS <code class="language-css">margin</code> and <code class="language-css">scroll-margin</code> properties to create space underneath the site footer and allow the link in the footer to scroll into view when it is focused with a keyboard.</p>
+		</section>
+		<section id="examples">
+			<h2>Examples</h2>
+
+			<section class="example">
+				<h3>Using CSS margin and scroll-margin to un-obscure content</h3>
+				<p>This example shows a situation where there is a fixed-position banner at the bottom of the screen that is covering up the site footer, which contains a link. This type of fixed-position banner is a common design for cookie-consent banners.</p>
+        <aside class="note">
+          <p>This example demonstrates a technique to un-obscure content underneath a fixed-position banner. To prevent the page becoming unusable at smaller screen sizes, the banner becomes un-fixed. To observe the scroll-margin effect you will need to use a veiewport over 1120px wide.</p>
+        </aside>
+				<p>Working example: <a href="../../working-examples/css-margin-focus-not-obscured/">Using CSS <code class="language-css">margin</code> and <code class="language-css">scroll-margin</code> to un-obscure content</a>.</p>
+<pre><code>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"&gt;
+  &lt;title&gt;Using CSS margin and scroll-margin to un-obscure content&lt;/title&gt;
+  &lt;style&gt;
+    ...
+
+    .wrapper {
+      display:grid;
+      gap:1rem;
+      grid-template-columns:repeat(9, 1fr);
+      grid-template-rows:8rem auto minmax(10rem, max-content);
+      height:100vh;
+    }
+
+    .wrapper &gt; * {
+      border:1px solid var(--black);
+      padding:1rem;
+    }
+
+    header {
+      grid-column:1 / -1;
+      grid-row:1;
+    }
+
+    main {
+      grid-column:1 / 8;
+    }
+
+    aside {
+      grid-column:8 / 10;
+    }
+
+    footer {
+      grid-column:1 / -1;
+    }
+
+    @media (max-width:70rem) {
+      main {
+       grid-column:1 / -1;
+      }
+
+      aside {
+        grid-column:1 / -1;
+      }
+    }
+
+    .fixed-position-banner {
+      background:var(--banner-background);
+      border:3px solid var(--banner-border);
+      bottom:0;
+      height:12rem;
+      margin-bottom:1rem;
+      padding:1rem;
+      position:relative;
+      width:calc(100vw - 1rem);
+    }
+
+    @media (min-width:70rem), (min-height:60rem) {
+      .fixed-position-banner {
+        margin-bottom:0;
+        position:fixed; 
+      }
+
+      .banner-open {
+        margin-bottom:14rem;
+      }
+
+      .banner-open footer a {
+        scroll-margin-bottom:15.5rem;
+      }
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;dialog class="fixed-position-banner"&gt;
+    &lt;h2 tabindex="-1"&gt;Fixed-Position Banner&lt;/h2&gt;
+    &lt;button aria-label="close fixed-position banner" class="close-banner" type="button"&gt;
+      ...
+    &lt;/button&gt;
+  &lt;/dialog&gt;
+  &lt;div class="wrapper"&gt;
+    &lt;header&gt;
+      &lt;p&gt;Header Content&lt;/p&gt;
+    &lt;/header&gt;
+    &lt;main&gt;
+      &lt;h1&gt;Main Content&lt;/h1&gt;
+    &lt;/main&gt;
+    &lt;aside&gt;
+      &lt;h2&gt;Sidebar Content&lt;/h2&gt;
+    &lt;/aside&gt;
+    &lt;footer&gt;
+      &lt;h2&gt;Footer Content&lt;/h2&gt;
+      &lt;p&gt;&lt;a href="https://example.com"&gt;Here&#39;s an example link in the footer&lt;/a&gt;.&lt;/p&gt;
+    &lt;/footer&gt;
+  &lt;/div&gt;
+  &lt;script&gt;
+    document.addEventListener(&quot;DOMContentLoaded&quot;, function(e){
+      const cookieBanner = document.querySelector(&quot;.fixed-position-banner&quot;);
+      const closeBannerBtn = document.querySelector(&quot;.close-banner&quot;);
+      const pageBody = document.querySelector(&quot;body&quot;);
+
+      cookieBanner.show();
+
+      if(cookieBanner.hasAttribute(&quot;open&quot;)){
+        pageBody.classList.add(&quot;banner-open&quot;);
+      }
+
+      closeBannerBtn.addEventListener(&quot;click&quot;, function(e){
+        cookieBanner.close();
+        pageBody.classList.remove(&quot;banner-open&quot;);
+      }, false);
+    });
+  &lt;/script&gt;	
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+			</section>      
+		</section>
+		
+		<section id="tests">
+			<h2>Tests</h2>
+			<section class="test-procedure">
+				<h3>Procedure</h3>
+
+				<p>For each user interface component that can receive keyboard focus:</p>
+				<ol>
+					<li>Check that the user interface component is not entirely hidden when it receives keyboard focus.</li>
+				</ol>
+			</section>
+			<section class="test-results">
+				<h3>Expected Results</h3>
+				<ul>
+					<li>Check 1 is true.</li>
+				</ul>
+			</section>
+		</section>
+		<section id="related">
+			<h2>Related Techniques</h2>
+			<ol>
+				<li><a href="C32">C32</a></li>
+				<li><a href="C34">C34</a></li>
+			</ol>
+
+		</section>
+		<section id="resources">
+			<h2>Resources</h2>
+			<ol>
+				<li><a href="https://www.w3.org/TR/css-box/#margins"><abbr title="World Wide Web Consortium">W3C</abbr> - CSS margins</a></li>
+				<li><a href="https://www.w3.org/TR/css-scroll-snap/#scroll-margin">W3C - CSS the <code class="language-css">scroll-margin</code> property</a>.</li>
+				<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:has"><abbr title="Mozilla Developer Network">MDN</abbr> - <code class="language-css">:has()</code> property</a>.</li>
+			</ol>
+
+		</section>
+	</body>
+</html>
