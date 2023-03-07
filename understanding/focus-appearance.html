@@ -164,10 +164,10 @@
             <section id="intent">
                <h2>Intent</h2>
                <p>The purpose of this Success Criterion (SC) is to ensure a keyboard focus indicator
-                  is clearly visible and discernible. Focus Appearance is closely related to <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html">2.4.7 Focus Visible</a> and <a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html">1.4.11 Non-text Contrast</a>. Focus Visible requires a visible focus indicator exists whilst it has keyboard focus,
-                  this SC defines a minimum level of visibility. Where Non-text Contrast requires a
-                  component to have adequate contrast against the background in each of its states,
-                  this SC requires sufficient contrast for the focus indicator itself.
+                  is clearly visible and discernible. Focus Appearance is closely related to <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html">2.4.7 Focus Visible</a> and <a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html">1.4.11 Non-text Contrast</a>. Focus Visible requires that a visible focus indicator exists while a component has
+                  keyboard focus; this SC defines a minimum level of visibility. Where Non-text Contrast
+                  requires a component to have adequate contrast against the background in each of its
+                  states, this SC requires sufficient contrast for the focus indicator itself.
                </p>
                <p>For sighted people with mobility impairments who use a keyboard or a device that utilizes
                   the <a href="https://www.w3.org/TR/WCAG22/#dfn-keyboard-interface">keyboard interface</a> (such as a switch or voice input), knowing the current point of focus is very important.
@@ -203,9 +203,11 @@
                   
                   
                   <p>"Surrounds" also refers to something that solidly encloses a shape. However, a shape
-                     can be surrounded in many ways. For instance, the focus indicator may follow the outline
-                     of the object being enclosed. The difference between <em>bounds</em> and <em>surrounds</em> is illustrated in the following two images of a set of ratings stars. In both examples,
-                     the same three stars have already been selected, and focus is on the third star.
+                     can be surrounded in many ways, not just by a rectangle. For instance, the focus indicator
+                     may follow the outline of the object being enclosed. The difference between <em>bounds</em> and <em>surrounds</em> is illustrated in the following two images of a set of ratings stars. In both examples,
+                     the same three stars have already been selected, and focus is on the third star. The
+                     first has a rectangular bounding box. The second matches the star shape of the object
+                     itself. 
                   </p>
                   
                   <figure id="focus-border-solid">
@@ -767,16 +769,17 @@
                      </figure>
                      
                      
-                     <p>If authors rely on the text-decoration property of links as a focus indicator (i.e.
-                        no text underline by default, then showing a 1px underline when focused), that is
-                        likely to meet the minimum size requirement only if the text is more than 9 characters.
-                        If the number of characters in the links vary, it is likely some links will fail.
+                     <p>If authors rely on the text-decoration property of links as a focus indicator (for
+                        example, no text underline by default, then showing a 1px underline when focused),
+                        that is likely to meet the minimum size requirement only if the text is more than
+                        9 characters. If the number of characters in the links vary, it is likely some links
+                        will fail.
                      </p>
                      
                      
-                     <p>For example, a 16px tall text link would need a width of four times the <strong>shortest</strong> side (4 * 16 = 64px). With default browser styles, a 10 character word (e.g. "accessible")
-                        is usually over 70px wide, and would therefore pass. However, this is not a focus
-                        indicator that would <em>reliably</em> pass this criterion. It would be more visible to retain the browser's default indicator
+                     <p>For example, a 16px tall text link would need a width of four times the <strong>shortest</strong> side (4 × 16 = 64px). With default browser styles, a 10-character word (for example,
+                        "accessible") is usually over 70px wide, and would therefore pass. However, this is
+                        not a focus indicator that would <em>reliably</em> pass this criterion. It would be more visible to retain the browser's default indicator
                         or use a complete perimeter indicator, either of which would pass. The lack of indicator
                         for a link is also likely to fail <a href="use-of-color">1.4.1 Use of Color</a>.
                      </p>
@@ -1058,7 +1061,7 @@
                   
                   <p>The intent of this exception is to reduce burden on authors by allowing them to rely
                      on the default indicators provided by user agents (browsers). If all user agents provided
-                     good focus indicators, author would be able to concentrate efforts on other accessibility
+                     good focus indicators, authors would be able to concentrate efforts on other accessibility
                      considerations. Unfortunately, browser default focus indicators vary by component,
                      browser, and across devices and operating systems, and the default focus indicators
                      in some browsers can be difficult to see (such as a 1px dotted outline). For this
@@ -1074,22 +1077,31 @@
                   
                   <h3>Modifying the focus indicator background</h3>
                   
-                  <p>Browser default focus indicators can be made <em>more</em> difficult to see if the author modifies the page background color, for instance using
-                     a blue background in combination with a browser's blue default indicator.
-                  </p> 
+                  <p>Browser default focus indicators can be made <em>more</em> difficult to see if the author modifies the pixels directly adjacent to the indicator
+                     (commonly referred to as its background), such as by positioning a component on top
+                     of an image or gradient background, or altering the page's default white background
+                     color, for instance using a blue background in combination with a browser's blue default
+                     indicator. For this reason, where the author alters the pixels directly adjacent to
+                     the default focus indicator, the user agent exception does not apply, and the author
+                     will need to verify they meet the size and contrast requirements of this Success Criterion.
+                  </p>
                   
-                  
-                  <p>[Future image set: a button with a default light blue focus indicator; the same buton
-                     and focus indicator on a light blue page background]
+                  <p style="note">Altering the <code>body</code> element's <code>background-color</code> attribute <em>is</em> one way of altering the pixels directly adjacent to the indicator in most implementations.
+                     However, specifying a value of white (<code>#FFFFFF</code>) does not nullify this exception since, as established in the third note of the <a href="https://www.w3.org/TR/WCAG22/#dfn-contrast-ratio">contrast ratio definition</a>, the default ("unspecified") color is assumed to be white.
                   </p>
                   
                   
-                  <p>As well, if the browser provides an indicator within a component by default, then
-                     authors can potentially reduce the visibility by changing the component color. For
-                     example, if the default indicator on a button is a bright yellow inner focus rectangle,
-                     the authors can negatively affect the focus appearance by making the button yellow
-                     or orange. For this reason, this user agent exception can only be met if the author
-                     both does not modify the default focus indicator <em>and</em> does not modify its background. 
+                  <p>[Future image set: a button with a default light blue focus indicator on a white page;
+                     the same button and focus indicator on a light blue page background]
+                  </p>
+                  
+                  
+                  <p>As well, if the browser provides an indicator <em>within</em> a component by default, then authors can potentially reduce the visibility by changing
+                     the component color (which in such a scenario is the background color for the focus
+                     indicator). For example, if the default indicator on a button is a bright yellow inner
+                     focus rectangle, the authors can negatively affect the focus appearance by making
+                     the button yellow or orange. For this reason, this user agent exception can only be
+                     met if the author both does not modify the default focus indicator <em>and</em> does not modify its background.
                   </p>
                   
                   
@@ -1143,6 +1155,13 @@
                <ul>
                   
                   <li><a href="https://www.sarasoueidan.com/blog/focus-indicators/">A guide to designing accessible focus indicators</a> by Sara Soueidan
+                  </li>
+                  
+                  <li><a href="https://alastairc.uk/tests/wcag22-examples/focus-more-visible-3.html">Focus appearance - testing version 3</a></li>
+                  
+                  <li><a href="https://alastairc.uk/tests/wcag22-examples/focus-more-visible-6.html">Focus visible testing (Feb 2022)</a></li>
+                  
+                  <li><a href="https://adrianroselli.com/2017/02/avoid-default-browser-focus-styles.html">Avoid Default Browser Focus Styles</a> by Adrian Roselli
                   </li>
                   
                </ul>
@@ -1347,7 +1366,7 @@
       </div>
       <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
          <div class="inner" style="grid-column: 2 / 8">
-            <p><strong>Date:</strong> Updated 6 March 2023.
+            <p><strong>Date:</strong> Updated 7 March 2023.
             </p>
             <p><strong>Developed by</strong> <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a> (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff
                Contact: Michael Cooper).
