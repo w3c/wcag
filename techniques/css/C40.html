@@ -18,47 +18,34 @@
 		</section>
 		<section id="description">
 			<h2>Description</h2>
-			<p>The objective of this technique is to create a two-color focus indicator that has sufficient contrast against any background color. This technique eliminates the need for multiple classes to ensure sufficient contrast of the focus indicator when viewed against different backgrounds.</p>	
+			<p>The objective of this technique is to create a two-color focus indicator that has sufficient contrast against any solid background color. This technique can avoid the need for multiple classes to ensure sufficient contrast of the focus indicator when viewed against different backgrounds.</p>
 
-			<p>The default focus indicators provided by browsers are typically one color, so they are highly visible when some components have focus and not well seen on other components. For instance, if a focus indicator is dark blue and a button is on a white background then it will be easily seen, but if the background is also blue it will not be easily seen.</p>
+			<p>Authors may apply this technique to sites that use a variety of different colored backgrounds. Although it is possible to create different colored focus indicators for different parts of a page, this can be time consuming and it can be easy to miss some components. However, if the focus indicator uses two highly-contrasting colors - a light color and a dark color - then the same indicator can be re-used, since at least one of the two colors will always have enough contrast against any background color.</p>
 
-			<p>Although it is possible to create individual CSS classes to address the different buttons across a site, this can be time consuming and easy to miss some types of interactive content. However, if the focus indicator is two colors - a light color and a dark color - then it will always have sufficient contrast against any background color. Currently, this can be done by combining the <code>text-shadow</code> property with the <code>outline</code> property on the <code>focus</code> indicator.</p>
+			<p>As long as the two indicator colors have a contrast ratio of at least 9:1 with each other, at least one of the two colors is guaranteed to meet 3:1 contrast with any solid background color.</p>
 
-			<p>Developers may apply this technique to parts of the site where its hard to keep track of the focus indicator (such as when there are lots of different component colors). Developers can also provide a single-color focus indicator for components such as a navigation menus that are used across a site, have specific design requirements, and are easy to test and maintain.</p>
+			<p class="note">This technique only guarantees that an indicator will pass if the entire background behind the indicator is one single, solid color. For example, if the background is an image or gradient, or if the indicator is partially overlaid on top of a different UI component, it may still be necessary to compare the indicator pixel-by-pixel against the background.</p>
 
-			<p class="note">If it can be determined that the two-color focus indicator CSS takes precedence then the test can be applied programmatically rather than by manually focusing on each interface component.</p>
-		
+			<p>In CSS, two-color indicators can be implemented by combining the <code>outline</code> and <code>box-shadow</code> properties with the <code>:focus</code> or <code>:focus-visible</code> pseudo-classes.</p>
+
+			<p class="note">Avoid setting <code>outline: none</code> to use <code>box-shadow</code> on its own. User agents commonly suppress the <code>box-shadow</code> property in forced-color modes, so authors should avoid relying on <code>box-shadow</code> alone to implement focus indicators.</p>
 		</section>
 		<section id="examples">
 			<h2>Examples</h2>
-			<p>The examples demonstrate a simple implementation where focus styles are applied to all links and inputs. In use on a more complex website care would need to be taken that these styles are not overridden by more specific styles.</p>
+			<p>This example demonstrates a simple implementation where focus styles are applied to all focusable components. In use on a more complex website care would need to be taken that these styles are not overridden by more specific styles.</p>
 
 			<section class="example">
-				<h3>A light and dark dotted indicator</h3>
-				<p>Description</p>
+				<h3>A thick two-color indicator</h3>
+				<p>In this example, the indicator consists of two <code>2px</code> solid bands of color. Because each color band is <code>2px</code> thick, they are not required to have 3:1 adjacent contrast with other non-focus-indicator colors (for example, the component the indicator surrounds). As long as one of the two colors has 3:1 change contrast with the pixels behind the focus indicator, the indicator will satisfy the success criterion.</p>
 				<pre><code>*:focus {
-	box-shadow: 0 0 0px 2px white;
-	outline: dotted;
+	/* inner indicator */
+	outline: 2px #F9F9F9 solid;
+	outline-offset: 0;
+	/* outer indicator */
+	box-shadow: 0 0 0 4px #193146;
 }</code></pre>
-			<p class="working-example"><a href="../../working-examples/css-two-focus-colors/dotted.html">Working example of combining a dark outline and light text shadow</a></p>
-        
+				<p class="working-example"><a href="../../working-examples/css-two-focus-colors/">Working example of a thick two-color indicator</a></p>
 			</section>
-      
-			<section class="example">
-			<h3>A thicker light and dark indicator</h3>
-			<p>Description</p>
-			<pre><code>*:focus { 
-	/* ensure high-contrast mode still has an indicator */
-	outline: 2px transparent solid;
-
-	/* Apply a thick yellow box-shadow with 
-	   a thin dark blue indicator in the middle */
-	box-shadow: 0 0 0 2px #F9F9D1, 0 0 0 4px #396196, 0 0 4px 8px #F9F9D1;
-}</code></pre>
-			<p class="working-example"><a href="../../working-examples/css-two-focus-colors/lined.html">Working example of combining a dark outline and light text shadow</a></p>
-        
-		</section>
-
 		</section>
 		<section id="tests">
 			<h2>Tests</h2>
@@ -67,14 +54,15 @@
 				<h3>Procedure</h3>
 				<p>For each focusable user interface element:</p>
 				<ol>
-					<li>Check that the two-colors in the focus indicator are adjacent and have a contrast ratio that is 3:1 or greater with each other.</li>
-					<li>Check that the colors used contrast with the adjacent colors, or are at least 2 CSS pixels thick.</li>
+					<li>Check that the two colors in the focus indicator have a contrast ratio that is 9:1 or greater with each other.</li>
+					<li>Check that the colors used contrast with the adjacent non-indicator colors, or are at least 2 CSS pixels thick.</li>
+					<li>Check that the indicator only appears overtop one solid background color at a time.</li>
 				</ol>
 			</section>
 			<section class="test-results">
 				<h3>Expected Results</h3>
 				<ul>
-					<li>#1 and #2 are true.</li>
+					<li>#1, #2, and #3 are true.</li>
 				</ul>
 			</section>
 		</section>
