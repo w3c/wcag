@@ -1,88 +1,78 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Providing replacement text using the /Alt entry for links in PDF
-    			documents</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Providing replacement text using the /Alt entry for links in PDF
-    			documents</h1><section class="meta"><p class="id">ID: PDF13</p><p class="technology">Technology: pdf</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
-      <p>Tagged PDF documents that contain links. </p>
-   </section><section id="description"><h2>Description</h2>
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Providing replacement text using the /Alt entry for links in PDF documents</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
+	</head>
+	<body>
+		<h1>Providing replacement text using the <code>/Alt</code> entry for links in <abbr title="Portable Document Format">PDF</abbr> documents</h1>
+		<section class="meta">
+			<p class="id">ID: PDF13</p>
+			<p class="technology">Technology: pdf</p>
+			<p class="type">Type: Technique</p>
+		</section>
+		<section id="applicability">
+			<h2>When to Use</h2>
+      <p>Tagged PDF documents that contain links.</p>
+   </section>
+	 <section id="description">
+		<h2>Description</h2>
       <p>The objective of this technique is to provide replacement link text
-    				via the /Alt entry in the property list for a tag. This is usually
+    				via the <code>/Alt</code> entry in the property list for a tag. This is usually
     				not necessary, but in some situations, additional information beyond
     				the visible link text is needed, particularly for screen reader users.
     				Screen readers can read visible link text, but replacing the screen
     				text with meaningful alternate text for links in a PDF document can
-    				make links more accessible. </p>
-      <p>Links in PDF documents are represented by a Link tag and objects in
+    				make links more accessible.</p>
+      <p>Links in PDF documents are represented by a <code>Link</code> tag and objects in
     				its sub-tree, consisting of a link object reference (or Link annotation)
     				and one or more text objects. The text object or objects inside the
     				Link tag are used by assistive technologies to provide a name for the
-    				link. </p>
-      <p>Authors can replace the default link text by providing an /Alt entry
-    				for the Link tag. When the Link tag has an /Alt entry, screen readers
-    				ignore the value of any visible text objects in the Link tag and use
-    				the /Alt entry value for the link text. </p>
+    				link.</p>
+      <p>Authors can replace the default link text by providing an <code>/Alt</code> entry
+    				for the <code>Link</code> tag. When the <code>Link</code> tag has an <code>/Alt</code> entry, screen readers ignore the value of any visible text objects in the <code>Link</code> tag and use the <code>/Alt</code> entry value for the link text.</p>
       <p>The simplest way to provide context-independent link text that complies
     				with the WCAG 2.0 success criteria is to create them when authoring
     				the document, before conversion to PDF. In some cases, it may not be
     				possible to create the links using the original authoring tool. When editing PDF documents with Adobe Acrobat Pro, the best way to create accessible links is to use the Create Link command.</p>
-      <p>Authors should make sure that the alternate text makes sense in context
-    				of the screen text before and after the link. </p>
-   </section><section id="examples"><h2>Examples</h2>
-      <section class="example">
-         <h3>Adding alternate link text using Adobe Acrobat 9 Pro</h3>
-         
-            <p>This example is shown with Adobe Acrobat Pro. There are other software tools that perform similar functions. See the list of other software tools in <a href="#pdf_notes_acc-sup_files_applications"></a>.</p>
-            <p>The image below shows a document converted to PDF from Oracle Open
-    						Office. Note that the visible link text is the URL for the link target.
-    						A screen reader will read the entire URI as the link text. </p>
-            <figure id="figure-link-uri-link-text">
-               <img src="img/link-alt1.jpg" />
-                  
-                  <figcaption>A document with the link URI as the link text.</figcaption>
-                
-            </figure>
-            <p>To create more accessible link text for assistive technology: </p>
-            <ol>
-               <li> In the View menu, open the Tag panel by selecting Navigation Panels &gt; Tags. </li>
-               <li> Locate the Link tag in the tag tree, access the context menu for
-    						the link, and select Properties. </li>
-               <li> In the TouchUp Properties dialog, in the Tags tab, enter replacement
-    							text in the Alternate Text field. Screen readers will read this text
-    							instead of the entire URI. </li>
-            </ol>
-            <p>The next image shows the Link tag structure in the Tag panel. </p>
-            <figure id="figure-link-tag-structure">
-               <img src="img/link-alt2.jpg" />
-                  
-                  <figcaption>The Link tag structure in the tag panel.</figcaption>
-                
-            </figure>
-            <p>The last image shows the Alternate Text specified in the Link tag's
-    						TouchUp Properties dialog. A screen reader will read the Alternate
-    						Text as the link text. </p>
-            <figure id="figure-new-alt-text">
-               <img src="img/link-alt3.jpg" />
-                  
-                  <figcaption>The new Alternate Text: 'Boston Globe technology page'</figcaption>
-                
-            </figure>
-      	<p class="working-example">This example is shown in operation in the <a href="../../working-examples/pdf-link-alt-text/link-text.odt">working example of adding alternate link text (OpenOffice file)</a> and <a href="../../working-examples/pdf-link-alt-text/link-text-oo.pdf">working example of adding alternate link text (PDF file)</a>.</p>
-         
-      </section>
-      <section class="example">
-         <h3>Adding alternate link text in a PDF document using the
-    				/Alt entry</h3>
-         
-            <p>The following code fragment illustrates code that is typical for alternative
-    					text for a link. This is typically accomplished by an authoring tool. </p>
-            <pre xml:space="preserve">32 0 obj
+      <p>Authors should make sure that the alternate text makes sense in context of the screen text before and after the link.</p>
+   </section>
+	 <section id="examples">
+		<h2>Examples</h2>
+		<section class="example">
+			<h3>Adding alternate link text using Adobe Acrobat 9 Pro</h3>
+			<p>This example is shown with Adobe Acrobat Pro. There are other software tools that perform similar functions.</p>
+			<p>The image below shows a document converted to PDF from Oracle Open Office. Note that the visible link text is the <abbr title="Uniform Resource Locator">URL</abbr> for the link target. A screen reader will read the entire <abbr title="Uniform Resource Identifier">URI</abbr> as the link text.</p>
+			<div>
+				<img alt="A document with the link URI as the link text." src="img/link-alt1.jpg">
+			</div>
+			<p>To create more accessible link text for assistive technology:</p>
+			<ol>
+				<li>In the View menu, open the Tag panel by selecting Navigation Panels &#8594; Tags.</li>
+				<li>Locate the Link tag in the tag tree, access the context menu for the link, and select Properties.</li>
+				<li>In the TouchUp Properties dialog, in the Tags tab, enter replacement text in the Alternate Text field. Screen readers will read this text instead of the entire URI.</li>
+			</ol>
+			<p>The next image shows the Link tag structure in the Tag panel.</p>
+			<div>
+				<img alt="The Link tag structure in the tag panel." src="img/link-alt2.jpg">
+			</div>
+			<p>The last image shows the Alternate Text specified in the Link tag's TouchUp Properties dialog. A screen reader will read the Alternate Text as the link text.</p>
+			<div>
+				<img alt="The new Alternate Text: 'Boston Globe technology page'" src="img/link-alt3.jpg">
+			</div>
+			<p class="working-example">This example is shown in operation in the <a href="../../working-examples/pdf-link-alt-text/link-text.odt">working example of adding alternate link text (OpenOffice file)</a> and <a href="../../working-examples/pdf-link-alt-text/link-text-oo.pdf">working example of adding alternate link text (PDF file)</a>.</p>
+		</section>
+		<section class="example">
+			<h3>Adding alternate link text in a PDF document using the <code>/Alt</code> entry</h3>
+			<p>The following code fragment illustrates code that is typical for alternative text for a link. This is typically accomplished by an authoring tool.</p>
+            <pre xml:space="preserve"><code>32 0 obj
 &lt;&lt;
   /S/URI                                       %Action type (required), must be URI for a URI action
   /URI(http://www.boston.com/business/technology/)  %Uniform resource identifier(required), the URI to be resolved
 &gt;&gt;
-endobj
-</pre>
-            <p>The following illustrates how to specify alternate text for the
-    					URL in the above link: </p>
-            <pre xml:space="preserve">11 0 obj
+endobj</code></pre>
+      <p>The following illustrates how to specify alternate text for the URL in the above link:</p>
+            <pre xml:space="preserve"><code>11 0 obj
 &lt;&lt;
   /Alt(Boston Globe technology page)    %Alternate text entry
   /K [ 1                                                      
@@ -96,47 +86,48 @@ endobj
   /S
   /Link
 &gt;&gt;
-endobj
-</pre>
+endobj</code></pre>
          
       </section>
-   </section><section id="tests"><h2>Tests</h2>
-      <section class="procedure"><h3>Procedure</h3>
-         <ol>
-            <li>
-               <p> For the hyperlink, verify that the alternate link text is properly
-    					coded by one of the following:</p>
-               <ul>
-                  <li> Read the PDF document with a screen reader, listening to hear
-    						that the alternate link text is read correctly. </li>
-                  <li> Use a tool that is capable of showing the /Alt entry to open
-    							the PDF document and view the hyperlink and alternate link text. </li>
-                  <li> Use a tool that exposes the document through the accessibility
-    								API and verify that the alternate link text is the text for the
-    								link. </li>
+		</section>
+		<section id="tests">
+			<h2>Tests</h2>
+      <section class="procedure">
+				<h3>Procedure</h3>
+				<ol>
+					<li>
+						<p>For the hyperlink, verify that the alternate link text is properly coded by one of the following:</p>
+						<ul>
+							<li>Read the PDF document with a screen reader, listening to hear that the alternate link text is read correctly.</li>
+							<li>Use a tool that is capable of showing the <code>/Alt</code> entry to open the PDF document and view the hyperlink and alternate link text.</li>
+							<li>Use a tool that exposes the document through the accessibility <abbr title="Application Programming Interface">API</abbr> and verify that the alternate link text is the text for the link.</li>
                </ul>
             </li>
          </ol>
       </section>
-      <section class="results"><h3>Expected Results</h3>
+      <section class="results">
+				<h3>Expected Results</h3>
          <ul>
-            <li>#1 is true. </li>
+            <li>#1 is true.</li>
          </ul>
-      </section>
-   </section><section id="related"><h2>Related Techniques</h2><ul>
-      <li><a href="../general/G53">G53</a></li>
-      <li><a href="../general/G91">G91</a></li>
-      <li><a href="../general/G149">G149</a></li>
-      <li><a href="../pdf/PDF11">PDF11</a></li>
-   </ul></section><section id="resources"><h2>Resources</h2>
-      
-         <ul>
-            <li> Section 14.9.4 (Replacement Text) in <a href="http://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf">PDF
-    					1.7 (ISO 32000-1)</a> 
-               </li>
-            <li>
-                  <a href="http://www.adobe.com/accessibility/products/acrobat.html">PDF and Accessibility</a>
-               </li>
-         </ul>
-      
-   </section></body></html>
+				</section>
+			</section>
+			<section id="related">
+				<h2>Related Techniques</h2>
+				<ul>
+					<li><a href="../general/G53">G53</a></li>
+					<li><a href="../general/G91">G91</a></li>
+					<li><a href="../general/G149">G149</a></li>
+					<li><a href="../pdf/PDF11">PDF11</a></li>
+				</ul>
+			</section>
+			<section id="resources">
+				<h2>Resources</h2>
+				<ul>
+					<li>
+						<a href="https://helpx.adobe.com/acrobat/using/create-verify-pdf-accessibility.html">Create and verify PDF accessibility (Acrobat Pro)</a>
+					</li>
+				</ul>
+			</section>
+		</body>
+	</html>
