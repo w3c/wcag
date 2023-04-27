@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Using CSS margin and scroll-margin to un-obscure content</title>
+    <style>
+      :root {
+				font-size: 100%;
+				box-sizing: border-box;
+				-moz-osx-font-smoothing: grayscale;
+				-webkit-font-smoothing: antialiased;
+				--white: #fff;
+				--black: #000;
+				--banner-background:hsl(60,80%,90%);
+				--banner-border:hsl(0, 0%, 50%);
+				--default-focus-indicator:hsl(234, 72%, 42%);
+				--fixed-banner-focus-indicator:var(--black);
+      }
+			
+      *,
+      *::after,
+      *::before {
+				box-sizing: inherit;
+      }
+			
+      body {
+				background: var(--white);
+        color: var(--black);
+        font: 1rem/1.5 system-ui, "Segoe UI", Roboto, Helvetica, sans-serif;
+				margin:0;
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: 500;
+      }
+
+			.wrapper {
+				display:grid;
+				gap:1rem;
+				grid-template-columns: repeat(9, 1fr);
+				grid-template-rows:8rem auto minmax(10rem, max-content);
+				height:100vh;
+			}
+
+			.wrapper > * {
+				border:1px solid var(--black);
+				padding:1rem;
+			}
+
+			.wrapper :focus-visible{
+				outline:2px solid transparent;
+				box-shadow: 0 5px 0 0 var(--default-focus-indicator);
+			}
+
+			header {
+				align-items:center;
+				display:flex;
+				font-size:1.5rem;
+				font-weight:bold;
+				grid-column:1 / -1;
+				grid-row:1;
+			}
+
+			main {
+				grid-column:1 / 8;
+			}
+
+			aside {
+				grid-column:8 / 10;
+			}
+
+			footer {
+				grid-column: 1 / -1;
+			}
+
+			@media (max-width:70rem){
+ 				main{
+   				grid-column:1 / -1;
+  			}
+  
+  			aside{
+    			grid-column: 1 / -1;
+  			}
+			}
+
+			.fixed-position-banner{
+				background:var(--banner-background);
+				border:3px solid var(--banner-border);
+				height:12rem;
+				inset-block-end:0;
+				margin-block-end:1rem;
+				padding:1rem;
+				position:relative;
+				width:calc(100vw - 1rem);
+			}
+
+			.fixed-position-banner a{
+				outline-color: var(--fixed-banner-focus-indicator);
+			}
+
+			.fixed-position-banner h2{
+				display:inline-block;
+				margin-block-start: 0;
+				padding:0.25em;
+			}
+
+			.fixed-position-banner h2:focus-visible{
+				outline:2px solid var(--fixed-banner-focus-indicator);
+			}
+
+			@media (min-width: 70rem), (min-height: 60rem){
+				.fixed-position-banner{
+					margin-block-end:0;
+					position:fixed; 
+				}
+
+				.banner-open{
+					margin-block-end:14rem;
+				}
+
+				.banner-open footer a{
+					scroll-margin-block-end: 15.5rem;
+				}
+			}
+			
+			.close-banner{
+				background: hsl(0, 0%, 100%);
+				border: 1px solid hsl(0, 0%, 50%);
+				border-radius: 3px;
+				cursor: pointer;
+				font:inherit;
+				inset-block-start:1rem;
+				margin: 0;
+				padding:0.33em;
+				position:absolute;
+				right:1rem;
+			}
+
+			.close-banner-icon{
+				display:block;
+				height:1rem;
+				stroke:currentColor;
+				width:1rem;
+			}
+
+			.close-banner:focus-visible{
+				outline:2px solid var(--fixed-banner-focus-indicator);
+				outline-offset:2px;
+			}
+
+    </style>
+</head>
+<body>
+	<dialog class="fixed-position-banner">
+		<h2 tabindex="-1">Fixed-Position Banner</h2>
+		<button aria-label="close fixed-position banner" class="close-banner" type="button">
+			<svg aria-hidden="true" class="close-banner-icon" role="img" viewbox="0 0 16 16">
+				<line x1="0" y1="0" x2="15" y2="15" />
+				<line x1="0" y1="15" x2="15" y2="0" />
+			</svg>
+		</button>
+	</dialog>
+	<div class="wrapper">
+		<header>
+			<p>Header Content</p>
+		</header>
+		<main>
+			<h1>Main Content</h1>
+		</main>
+		<aside>
+			<h2>Sidebar Content</h2>
+		</aside>
+		<footer>
+			<h2>Footer Content</h2>
+			<p><a href="https://example.com">Here's an example link in the footer</a>.</p>
+		</footer>
+	</div>
+		<script>
+			document.addEventListener("DOMContentLoaded", function(e){
+				const cookieBanner = document.querySelector(".fixed-position-banner");
+				const closeBannerBtn = document.querySelector(".close-banner");
+				const pageBody = document.querySelector("body");
+
+				cookieBanner.show();
+
+				if(cookieBanner.hasAttribute("open")){
+					pageBody.classList.add("banner-open");
+				}
+		
+				closeBannerBtn.addEventListener("click", function(e){
+					cookieBanner.close();
+					pageBody.classList.remove("banner-open");    
+				}, false);
+			});
+		</script>
+</body>
+</html>
