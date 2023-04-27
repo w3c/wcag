@@ -21,7 +21,11 @@
         <blockquote>
             <p>When a <a>user interface component</a> receives keyboard focus, the component is not entirely hidden due to author-created content.</p>
         </blockquote>
-        <p class="note">If the interface is configurable so that the user can reposition content such as toolbars and non-modal dialogs, then only the initial positions of user-movable content are considered for testing and conformance of this Success Criterion.</p>
+
+        <p class="note">Where content in a configurable interface can be repositioned by the user, then only the initial positions of user-movable content is considered for testing and conformance of this Success Criterion.</p>
+
+        <p class="note">Content opened by the <em>user</em> may obscure the component receiving focus. If the user can reveal the focused component without advancing the keyboard focus, the component with focus is not considered hidden due to author-created content.</p>
+
      </section>
    
     <section id="intent">
@@ -41,12 +45,93 @@
        </p>
 
     </section>
+    <section id="Movable"><h3>User-movable content</h3>
+      <p>This SC contains a note regarding content that can be repositioned. If users can move content regions, then they can potentially position the movable content such that it obscures other content that may receive focus. In such a case, the author is only responsible for ensuring that the movable content <em>in its initial position</em> does not obscure the item receiving focus.</p>
+      <p>This note is intended to accommodate a common interaction in complex applications such as authoring tools, where the main editing region (also called a canvas) can be enhanced by displaying toolbars or other panels, which can be repositioned around the canvas. It is possible to design such toolbars so they do <em>not</em> obscure focus. Authors are encouraged to do so, as well as pursue techniques which ensure equitable keyboard use of such toolbars. However, in recognition of the complexities involved in responsive design as well as in supporting the ability to transform the text size and spacing of content, only the starting position of such movable panels is assessed.</p>
+
+      <figure id="">
+         <img src="" alt="" />
+         <figcaption>Placeholder for future simplified illustration showing an abstract layout of an authoring tool UI with a user-movable toolbar</figcaption>
+     </figure>
+  
+    </section>
+    <section id="Disclosed"><h3>User-disclosed content</h3>
+   <p>This SC contains a note regarding content that is opened or disclosed by the user. One example of such content is a menu button opened by a user that discloses a list of choices over pre-existing content on the screen. Most such disclosed content can obscure other information on the screen, but it does not obscure an item receiving keyboard focus, because the new content doesn't persist through a change of focus. However, authors may create user-opened content that is intentionally designed to persist until closed by the user, such as a chat window. Such persistent content has the potential to fail Focus Not Obscured (Minimum). Various types are described in this section. All can be designed so that they pass this Success Criterion.</p>
+
+   <p>In recognition of more complex applications, the note allows for <em>user-disclosed</em> content to obscure the item receiving focus, provided the user can bring the item with focus into view without actually altering the keyboard focus. Keyboard actions that may allow the item with focus to be revealled include: 1) using Esc to dismiss the disclosed content, 2) using keys to scroll the content in the viewport to reveal the item with focus, or 3) issuing a key to move between overlays. The rationale is that if a user opens a toolbar or chatbot, they have some context to understand why other content may be obscured by it.</p>
+
+   <p>It is important to emphasize two things. First, this note only applies to content that the user actively discloses. Content pre-positioned by the author (such as a sticky footer), or content that appears without direct user initiation, such as system warnings, must not prevent the item receiving focus from being immediately visible in the viewport. Second, this note is not intended to apply to disclosures that are by convention non-persistent. As discussed in the following sub-section, an open dropdown that does not close when no longer focused is not following convention. The note is not intended to excuse poor authoring practices.</p>
+   <section>
+      <h4>Non-persistent disclosed information</h4>
+      <p>A number of components on the web disclose additional content (on activation or on focus) intended for immediate user interaction or information. These disclosures often open on top of other content, obscuring it. Examples of such disclosures are menu items, select element items, combobox lists (and other dropdown items), date picker calendars, and tooltips. The common trait of all these disclosures is that they are not expected to persist after being acted on or once they are no longer the primary point of user interaction. Such non-persistent disclosures do not fail this SC since they do not obscure the item with focus. However, if an author allows such disclosures to <strong>persist</strong> after the user has 1) activated one of the disclosed items or 2) moved the focus away from the triggering item and the disclosure, the additional content is at risk of failing this SC by obscuring the item with focus. </p>
+
+      <figure id="">
+         <img src="" alt="" />
+         <figcaption>Placeholder for future illustration showing an open dropdown obscuring information underneath</figcaption>
+     </figure>
+
+    </section>
+   <section>
+      <h4>User openable, persistent disclosures</h4>
+      <p>Some disclosure patterns provide a mechanism for the user to open additional content that remains open until intentionally closed by the user. Accordions are a simple example of such a pattern. Chatbots and expandable side navigation are more complex examples. All of these patterns can be implemented so they are not at risk of failing this SC. Some possible approaches are:</p>
+
+       <ul>
+          <li><strong>When the additional content appears, it displaces existing content.</strong> An accordion is an example of this. When an accordion is opened, the disclosed content shifts existing content further down the page. Since the new content does not obscure existing content, it cannot obscure the item with focus.</ br>
+
+          <figure id="">
+            <img src="" alt="" />
+            <figcaption>Placeholder for future illustrations showing an abstract representation of an accordion pushing content down when opened</figcaption>
+        </figure>
+</li>
+
+          <li><strong>When the additional content appears, existing content reflows.</strong> The popout sidebar on the <a href="https://www.w3.org/TR/WCAG22/">WCAG standard</a> is an example of this pattern. When the side menu is activated, it discloses a new section of information along the left side of the page. The main content area is reduced horizontally to accommodate the new content, and the existing content reflows to fit in the thinner space. As a result, there is no overlapping content between the two sections; the item receiving focus, whether in the left navigation or in the main content, will not be obscured by the other section.</ br>
+
+            <figure id="">
+              <img src="" alt="" />
+              <figcaption>Placeholder for future illustration pair showing an abstract representation of a sidebar reflowing a thinner main content region</figcaption>
+          </figure>
+         </li>
+          <li><strong>When the additional content is disclosed, it takes focus and the tab ring is constrained to the new content until it is dismissed.</strong> This modality is somewhat like a dialog, in that a user cannot navigate beyond the disclosed content by keyboard without dismissing it first (typically by pressing Esc). However, unlike in a modal dialog, in some implementations a pointer user may be able to interact with content outside the disclosed section without dismissing it. Since this pattern potentially creates an inequitable experience between keyboard and pointer users, it should be used cautiously. That said, it does prevent the disclosed content from obscuring the keyboard focus in the main content, and thus should pass this SC. This is described and demonstrated in a short video in the Knowbility article in the reference section, under the section heading <a href="https://knowbility.org/blog/2020/accessible-slide-menus#keep-keyboard-focus-in-the-slide-out-navigation-until-its-closed">Keep keyboard focus in the slide-out navigation until it’s closed</a>.</ br>
+
+            <figure id="">
+              <img src="" alt="" />
+              <figcaption>Placeholder for future illustrations showing an abstract representation of a side panel where the tab ring is restricted to the panel</figcaption>
+          </figure>
+         </li>
+          <li><strong>The disclosure expands into an area of the page containing no other content.</strong> Many pages are designed with wide margins, providing significant white space into which new content can be disclosed. Many chatbots and toasters are designed to 'slide up' into the right unpopulated side of a page. Where authors are careful to ensure content is not obscured at each breakpoint in a responsive design, no obscuring of other operable content need occur.</ br>
+
+            <figure id="">
+              <img src="" alt="" />
+              <figcaption>Placeholder for future illustrations showing an abstract representation of a chat window expanding into empty space on the right side of the screen.</figcaption>
+          </figure>
+         </li>
+          <li><strong>When focus leaves the additional content, the additional content is hidden or collapsed.</strong> This is very similar to patterns discussed previously under Non-persistent disclosed information. A distinguishing factor can be that the user's last point of interaction in the disclosure is preserved (it persists) even though it may be hidden until a user returns. Some trees and left navigation pattterns behave this way. </ br>
+
+            <figure id="">
+              <img src="" alt="" />
+              <figcaption>Placeholder for future illustrations showing a collapsible tree that when expanded shows the prior point of interaction</figcaption>
+          </figure>
+         </li>
+       </ul>
+       <p>Where disclosed content persists and causes existing content to be obscured, it will be at risk of failing this criterion if it prevents users from seeing the item receiving focus. An example of this problem is described and captured in a short video in <a href="https://knowbility.org/blog/2020/accessible-slide-menus#slide-out-navigation-stays-open-while-focus-is-on-content-behind-it">Slide-out navigation stays open while focus is on content behind it</a>.</p>
+     </section>
+
+   
+   </section>
+       <section id="Dialogs">
+         <h3>Modal dialogs</h3>
+
+         <p>A properly constructed modal dialog will always pass this SC. Even if it appears directly on top of an item with focus, the dialog takes focus on appearance, and thus the item receiving focus -- the dialog or one of its components -- is visible. A properly constructed modal maintains that focus and prevents interaction outside the modal until it is dismissed.</p>
+         <p>A dialog-like overlay that does not take focus on appearance and does not either constrain interaction to the overlay or dismiss itself on loss of focus (thus allowing focus to exit into the content behind it) will be at risk of failing this SC, where it is positioned such that it can obscure other focusable items.</p>
+       </section>
+      
+</section>
 
     <section id="benefits">
       <h2>Benefits of Focus Not Obscured</h2>
       
       <ul>
-         <li>Sighted users who rely on a keyboard interface to operate the page will be able to see the component which gets keyboard focus. Such users include those who rely on devices which use the keyboard interface, including speech input, sip-and-puff software, onscreen keyboards, scanning software, and a variety of assistive technologies and alternate keyboards.</li>
+         <li>Sighted users who rely on a keyboard interface to operate the page will be able to see the component which gets keyboard focus. Such users include those who rely on a keyboard or on devices which use the keyboard interface, including speech input, sip-and-puff software, onscreen keyboards, scanning software, and a variety of assistive technologies and alternate keyboards.</li>
          <li>People with limited or low vision, who may primarily user a pointer for screen orientation and repositioning, nonetheless benefit from a visible indication of the current point of keyboard interaction, especially where magnification reduces the overall viewing portion of the screen.</li>
          <li>People with attention limitations, short term memory limitations, or limitations in executive processes benefit by being able to discover where the focus is located.</li>
       </ul>
@@ -66,6 +151,9 @@
 
    <section id="resources">
        <h2>Resources</h2>
+       <ul>
+         <li><a href="https://knowbility.org/blog/2020/accessible-slide-menus">Let's Focus on Slide-Out Navigation </a></li>
+       </ul>
 
    </section>
 
