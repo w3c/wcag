@@ -1,126 +1,67 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Indicating when user input falls outside the required format or
-    			values in PDF forms</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Indicating when user input falls outside the required format or
-    			values in PDF forms</h1><section class="meta"><p class="id">ID: PDF22</p><p class="technology">Technology: pdf</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Indicating when user input falls outside the required format or values in PDF forms</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
+	</head>
+	<body>
+		<h1>Indicating when user input falls outside the required format or values in <abbr title="Portable Document Format">PDF</abbr> forms</h1>
+		<section class="meta">
+			<p class="id">ID: PDF22</p>
+			<p class="technology">Technology: pdf</p>
+			<p class="type">Type: Technique</p>
+		</section>
+		<section id="applicability">
+			<h2>When to Use</h2>
       <p id="pdf.applicability.general">Tagged PDF documents</p>
-   </section><section id="description"><h2>Description</h2>
+		</section>
+		<section id="description">
+			<h2>Description</h2>
       <p>The objective of this technique is to notify the user when user
     				input to a field that requires a specific, required format (e.g.,
     				date fields) is not submitted in that format. </p>
       <p>If the required format is not used, an alert dialog describes the
     				nature of the error in text. This may be accomplished through scripting
-    				created by the author (see, for example, <a href="https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR18">SCR18:
-    					Providing client-side validation and alert</a>). User agents, such
-    				as Adobe LiveCycle can provide automatic alerts (as described in
-    				the examples below). </p>
+    				created by the author (see, for example, <a href="https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR18">SCR18: Providing client-side validation and alert</a>). User agents can provide automatic alerts (as described in the examples below).</p>
       <div class="note">
-         <p>Once the user dismisses the alert dialog,
-    				it may be helpful if the script positions the keyboard focus on
-    				the field where the error occurred, although some users may expect
-    				the focus to remain on the last control focused prior to the alert
-    				appearing. Authors should exercise care to ensure that any movement
-    				of the focus will be expected. For example, if the alert announces
-    				an error in a phone number format, positioning the focus on the
-    				phone number field when the alert is dismissed can be regarded as
-    				helpful and expected. In some cases, however, this may not be possible.
-    				If multiple input errors occur on the page, an alternative approach
-    				to error notification should be implemented. </p>
+         <p>Once the user dismisses the alert dialog, it may be helpful if the script positions the keyboard focus on the field where the error occurred, although some users may expect the focus to remain on the last control focused prior to the alert appearing. Authors should exercise care to ensure that any movement of the focus will be expected. For example, if the alert announces an error in a phone number format, positioning the focus on the phone number field when the alert is dismissed can be regarded as helpful and expected. In some cases, however, this may not be possible. If multiple input errors occur on the page, an alternative approach to error notification should be implemented.</p>
       </div>
-      <p>Ensuring that users are aware an error has occurred, can determine
-    				what is wrong, and can correct it are key to software usability
-    				and accessibility. Meeting this objective helps ensure that all
-    				users can complete for-based transactions with ease and confidence. </p>
+      <p>Ensuring that users are aware an error has occurred, can determine what is wrong, and can correct it are key to software usability and accessibility. Meeting this objective helps ensure that all users can complete for-based transactions with ease and confidence.</p>
       <section>
-         <h4>Labels for required formats in form controls</h4>
-         <p>It is also important that users are aware that an error <em>may</em> occur.
-    					You can incorporate this information in labels; for example, "Date
-    					(MM/DD/YYYY)." See <a href="../pdf/PDF10">PDF10</a>. </p>
+				<h3>Labels for required formats in form controls</h3>
+         <p>It is also important that users are aware that an error <em>may</em> occur. You can incorporate this information in labels; for example, "Date (MM/DD/YYYY)." See <a href="../pdf/PDF10">PDF10</a>.</p>
       </section>
-   </section><section id="examples"><h2>Examples</h2>
-      <section class="example">
-         <h3>Providing validation for an input field format using
-    					Adobe Acrobat 9 Pro</h3>
-         
-            <p>This example is shown with Adobe Acrobat Pro. There are other software
-    						tools that perform similar functions. See the list of other software
-    						tools in <a href="#pdf_notes_acc-sup_files_applications"></a>. </p>
-            <p>Many fields -- telephone number, postal code, date -- must have
-    						data entered in a specific format or pattern. </p>
-            <ol>
-               <li> Access the context menu for the form control that requires
-    						a specific format. </li>
-               <li> Select Properties... </li>
-               <li> In the Format tab, select the Format Category (in this case,
-    							Date). The Date Options appear. </li>
-               <li> Select the format for this form control (in this case, mm/dd/yyyy). </li>
-               <li> In the General tab, specify "Date (mm/dd/yyyy)" for
-    								the Name and Tooltip for the control. </li>
-            </ol>
-            <figure id="figure-date-format">
-               <img src="img/dateformat.jpg" />
-                  
-                  <figcaption>Specifying a required format for an input field format using Adobe Acrobat 9 Pro</figcaption> 
-                
-            </figure>
-            <p>When a user types a recognized date format, it is converted automatically
-    						to the specified format. If the date format or value is not recognized,
-    						an error alert appears and provides further information, as shown
-    						in the image below. </p>
-            <figure id="figure-date-error">
-               <img src="img/dateerror.jpg" />
-                  
-                  <figcaption>Error alert for date with unrecognized format or value.</figcaption>
-                
-            </figure>
-            <p class="working-example">This example is shown in operation in the <a href="../../working-examples/pdf-required-fields/required-fields.pdf">working example of Required Fields in Acrobat</a>.</p>
-         
-      </section>
-      <section class="example">
-         <h3>Providing validation for an input field format using
-    					Adobe LiveCycle Designer ES 8.2.1</h3>
-         
-            <p>This example is shown with Adobe LiveCycle Designer. There are
-    						other software tools that perform similar functions. See the list
-    						of other software tools in <a href="#pdf_notes_acc-sup_files_applications"></a>. </p>
-            <ol>
-               <li> Select the form control that has a required format. </li>
-               <li> In the Object palette, click the Validation Pattern... button. </li>
-               <li>
-                  <p> Because this is a date field the Patterns-Date Field dialog
-    						appears. Select the pattern or format you want users to enter.
-    						Then click OK.</p>
-                  <figure id="figure-form-validation">
-                     <img src="img/form-validation.jpg" />
-                        
-                        <figcaption>Using LiveCycle to specify form fields that require pattern validation</figcaption>
-                      
-                  </figure>
-               </li>
-               <li> In the Object palette, use the Validation Pattern Message box
-    							to type a warning message. Be sure to include the required pattern.
-    							This message appears when a user tries to submit the form using
-    							an invalid date format. </li>
-            </ol>
-      	<p class="working-example">This example is shown in operation in the <a href="../../working-examples/pdf-required-fields/required-fields-lc.pdf">working example of Required Fields in LiveCycle Designer</a>.</p>
-         
-      </section>
-      <section class="example">
-         <h3>Validating a required date format in a PDF form using
-    				JavaScript using Adobe Acrobat Pro 9</h3>
-         
-            <p>This example is shown with Adobe Acrobat Pro. There are other software
-    						tools that perform similar functions. See the list of other software
-    						tools in <a href="#pdf_notes_acc-sup_files_applications"></a>. </p>
-            <p>The following JavaScript code illustrates the use of a script to
-    						validate form fields, in this case, a date field. To add this script
-    						to the form field, open the Text Field Properties dialog, as shown
-    						in Example 1, and select Edit in the Validate tab: </p>
-            <figure id="figure-text-field-props">
-               <img src="img/jscript.jpg" />
-                  
-                   <figcaption>Text Field Properties dialog, with the Validate tab open to specify JavaScript validation code.</figcaption>
-                
-            </figure>
-            <pre xml:space="preserve">// JavaScript code for date mask format MM/DD/YYYY
+   </section>
+	 <section id="examples">
+		<h2>Examples</h2>
+		<section class="example">
+			<h3>Providing validation for an input field format using Adobe Acrobat 9 Pro</h3>
+			<p>This example is shown with Adobe Acrobat Pro. There are other software tools that perform similar functions.</p>
+			<p>Many fields -- telephone number, postal code, date -- must have data entered in a specific format or pattern.</p>
+			<ol>
+				<li>Access the context menu for the form control that requires a specific format.</li>
+				<li>Select Properties...</li>
+				<li>In the Format tab, select the Format Category (in this case, Date). The Date Options appear.</li>
+				<li>Select the format for this form control (in this case, mm/dd/yyyy).</li>
+				<li>In the General tab, specify "Date (mm/dd/yyyy)" for the Name and Tooltip for the control.</li>
+			</ol>
+			<div>
+				<img alt="Specifying a required format for an input field format using Adobe Acrobat 9 Pro" src="img/dateformat.jpg">
+			</div>
+			<p>When a user types a recognized date format, it is converted automatically to the specified format. If the date format or value is not recognized, an error alert appears and provides further information, as shown in the image below.</p>
+			<div>
+				<img alt="Error alert for date with unrecognized format or value." src="img/dateerror.jpg">
+			</div>
+      <p class="working-example">This example is shown in operation in the <a href="../../working-examples/pdf-required-fields/required-fields.pdf">working example of Required Fields in Acrobat</a> (PDF).</p>
+		</section>
+    <section class="example">
+			<h3>Validating a required date format in a PDF form using JavaScript using Adobe Acrobat Pro 9</h3>
+			<p>This example is shown with Adobe Acrobat Pro. There are other software tools that perform similar functions.</p>
+			<p>The following JavaScript code illustrates the use of a script to validate form fields, in this case, a date field. To add this script to the form field, open the Text Field Properties dialog, as shown in Example 1, and select Edit in the Validate tab:</p>
+      <div>
+				<img alt="Text Field Properties dialog, with the Validate tab open to specify JavaScript validation code." src="img/jscript.jpg">
+			</div>
+            <pre xml:space="preserve"><code class="language-javascript">// JavaScript code for date mask format MM/DD/YYYY
 var re = /^[mdy0-9]{2}\/[mdy0-9]{2}\/[mdy0-9]{4}$/
 //Allow blank space in field
 if (event.value !="") {
@@ -130,39 +71,43 @@ if (event.value !="") {
        cMsg: "Please enter date using mm/dd/yyyy format"
     });
   }
-}
-</pre>
-         
+}</code></pre>
       </section>
-   </section><section id="tests"><h2>Tests</h2>
-      <section class="procedure"><h3>Procedure</h3>
-         <p>For each form field that requires specific input, verify that validation
-    					information and instructions are provided by applying the following: </p>
+		</section>
+		<section id="tests">
+			<h2>Tests</h2>
+      <section class="procedure">
+				<h3>Procedure</h3>
+         <p>For each form field that requires specific input, verify that validation information and instructions are provided by applying the following:</p>
          <ol>
-            <li> Check that the format or value that is required is indicated
-    					in the form control's label. </li>
-            <li> Use an erroneous format or value and move off the field: make
-    						sure that an alert describing the error is provided. </li>
+					<li>Check that the format or value that is required is indicated in the form control's label.</li>
+          <li>Use an erroneous format or value and move off the field: make sure that an alert describing the error is provided.</li>
          </ol>
-      </section>
-      <section class="results"><h3>Expected Results</h3>
-         <ul>
-            <li>#1 and #2 are true. </li>
+				</section>
+				<section class="results">
+					<h3>Expected Results</h3>
+					<ul>
+						<li>#1 and #2 are true.</li>
          </ul>
-      </section>
-   </section><section id="related"><h2>Related Techniques</h2><ul>
-      <li><a href="../general/G89">G89</a></li>
-      <li><a href="../client-side-script/SCR18">SCR18</a></li>
-      <li><a href="../pdf/PDF23">PDF23</a></li>
-      <li><a href="../pdf/PDF10">PDF10</a></li>
-      <li><a href="../pdf/PDF5">PDF5</a></li>
-   </ul></section><section id="resources"><h2>Resources</h2>
-      
+				</section>
+			</section>
+			<section id="related">
+				<h2>Related Techniques</h2>
+				<ul>
+      		<li><a href="../general/G89">G89</a></li>
+      		<li><a href="../client-side-script/SCR18">SCR18</a></li>
+      		<li><a href="../pdf/PDF23">PDF23</a></li>
+      		<li><a href="../pdf/PDF10">PDF10</a></li>
+      		<li><a href="../pdf/PDF5">PDF5</a></li>
+				</ul>
+			</section>
+			<section id="resources">
+				<h2>Resources</h2>
          <ul>
-            <li> 
-                  <a href="http://www.adobe.com/devnet/acrobat/javascript.html">JavaScript
-    					for Acrobat</a> 
-               </li>
-         </ul>
-      
-   </section></body></html>
+            <li>
+							<a href="https://opensource.adobe.com/dc-acrobat-sdk-docs/acrobatsdk/">Acrobat <abbr title="Software Development Kit">SDK</abbr> 2021</a>
+						</li>
+					</ul>
+				</section>
+			</body>
+		</html>
