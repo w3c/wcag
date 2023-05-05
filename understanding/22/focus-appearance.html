@@ -64,41 +64,80 @@
 
         <p>For sighted people with mobility impairments who use a keyboard or a device that utilizes the <a href="https://www.w3.org/TR/WCAG22/#dfn-keyboard-interface">keyboard interface</a> (such as a switch or voice input), knowing the current point of focus is very important. Visible focus must also meet the needs of users with low vision, who may also rely on the keyboard.</p>
             
-        <p>A keyboard focus indicator can take different forms. This Success Criterion lists two ways to achieve a sufficient focus appearance. The first involves three primary considerations for the entire focus indicator. A second way of achieving sufficient focus appearance is by meeting similar considerations for an area of the focus indicator. This Understanding document will elaborate on each of the three primary considerations, then address the area considerations, and finally list some user agent exceptions.</p>
+        <p>A keyboard focus indicator can take different forms. This Success Criterion encourages the use of a solid outline around the focused user interface component, but allows other types of indicators that are at least as large.</p>
+        
+        <p>This Understanding document will elaborate on the size requirement, then address color contrast requirements, and finally list some user agent exceptions.</p>
 
-        <section id="encloses">
+        <section id="size">
 
-            <h3>Encloses</h3>
-            <p>The first of the focus indicator bullets states that the focus indicator "encloses" the user interface component. This is defined to mean "solidly bounds or surrounds." Both <em>bounds</em> and <em>surrounds</em> describe optimal and established ways of showing focus. <em>Bounds</em> and its related term "bounding box" generally describe a rectangle drawn around the outside of a user interface component. It is the most common form of focus indication and is sometimes referred to as a "focus rectangle."</p>
+            <h3>Indicator size</h3>
+
+            <p>The first of the focus indicator bullets states that the focus indicator must be "at least as large as the area of a 2 <a>CSS pixel</a> thick <a>perimeter</a> of the unfocused component or sub-component."</p>
+
+            <p>The simplest way to meet the size requirement is to use a focus indicator which <em>is</em> a solid 2 CSS pixel thick perimeter.</p>
+            
+            <h4>Using a solid outline</h4>
+
+            <p>The easiest and most common way to meet this requirement is to use a solid outline around the component. The outline must be at least 2 CSS pixels thick. The following illustration shows a <strong>minimally</strong> sized focus indicator, where some of the white pixels making up the page background have been altered to a mid-grey, which contrast 3:1 with the original white.</p>
 
             <figure id="focus-indicator-basic">
-                <img src="img/focus-indicator-basic.png" alt="2 blue buttons with a dark 1 pixel thick offset focus rectangle around the second" />
+                <img src="img/focus-indicator-basic.png" alt="2 blue buttons with a dark 2 pixel thick offset focus rectangle around the second" />
                 <figcaption>Passes: A solid focus rectangle around the second of two buttons.</figcaption>
             </figure>
 
-            <p>"Surrounds" also refers to something that solidly encloses a shape. However, a shape can be surrounded in many ways, not just by a rectangle. For instance, the focus indicator may follow the outline of the object being enclosed. The difference between <em>bounds</em> and <em>surrounds</em> is illustrated in the following two images of a set of ratings stars. In both examples, the same three stars have already been selected, and focus is on the third star. The first has a rectangular bounding box. The second matches the star shape of the object itself. </p>
-            <figure id="focus-border-solid">
-                <img src="img/focus-indicator-solid-border.svg" alt="3 of 5 stars are selected with a solid-line rectangular focus indicator around the third" />
-                <figcaption> Passes: a solidly bound focus rectangle encloses the third of five stars.</figcaption>
-            </figure>
+            <p>For non-rectangular components, the "perimeter" definition allows authors to use either of the following types of outline:</p>
+            
+            <ul>
+                <li>a line which solidly encloses a shape, or</li>
+                <li>a line which solidly encloses the <a>minimum bounding box</a> of a shape</li>
+            </ul>
+            
+            <p>For example, a star-shaped button may use either a focus indicator that follows the shape of the star or a focus indicator that follows the bounding box of the star. In the following examples, the same three stars have already been selected, and focus is on the third star. The first example uses a focus indicator which matches the star shape of the focused star. The second uses a rectangular indicator.</p>
 
+            <!-- TODO: Verify thickness -->
             <figure id="focus-outline-solid">
                 <img src="img/focus-indicator-solid-outline.svg" alt="Three of 5 stars are selected with a solid-line focus indicator in the shape of a star outlining the third" />
                 <figcaption> Passes: a solid outline indicator surrounds the third of five stars.</figcaption>
             </figure>  
 
-            <h4>Solidly</h4>
-                <p>Where the indicator does not "solidly" bound or surround the component, as with a dashed or dotted line, it cannot meet this primary consideration. However, a non-solid line can still pass if it meets the area calculations for the size of the focus indicator (discussed in more detail under Area of focus indicator).</p>
+            <!-- TODO: Verify thickness -->
+            <figure id="focus-border-solid">
+                <img src="img/focus-indicator-solid-border.svg" alt="3 of 5 stars are selected with a solid-line rectangular focus indicator around the third" />
+                <figcaption> Passes: a solidly bound focus rectangle encloses the third of five stars.</figcaption>
+            </figure>
 
+            <!-- TODO: discuss inside vs outside -->
+
+            <h4>Using a dashed or dotted outline</h4>
+
+            <p>Outlines that are not solid lines, like dashed or dotted outlines, may meet the size requirement but are not recommended.</p>
+
+            <p>In order to meet the minimum size requirements consistently, a dashed or dotted outline must be much thicker than an equivalent solid outline would be.</p>
+
+            <!-- TODO: update thickness of diagram -->
             <figure id="focus-indicator-weak-dashed">
-                <img src="img/focus-indicator-weak-dashed-border.svg" alt="3 of 5 stars are selected with the whole third star outlined with a 1 pixel thick dashed line" />
-                <figcaption> Fails: the dashed outline does not "solidly bound" the third star and does not meet the size requirements of the focus area calculation.</figcaption>
-            </figure>         
+                <img src="img/focus-indicator-weak-dashed-border.svg" alt="3 of 5 stars are selected with the whole third star outlined with a 2 pixel thick dashed line" />
+                <figcaption>Fails: the dashed outline is only 2 CSS pixels thick and does not meet the size requirements of the focus area calculation.</figcaption>
+            </figure>
 
+            <p>Different user agents use different rules for rendering dotted and dashed outlines. A focus indicator which passes in one user agent might fail in a different user agent.</p>
+
+            <!-- TODO: delete old diagram (focus-indicator-strong-dashed-border) -->
+            <!-- TODO: create new diagram -->
             <figure id="focus-indicator-strong-dashed">
-                <img src="img/focus-indicator-strong-dashed-border.svg" alt="3 of 5 stars are selected with the whole third star outlined with a 2 pixel thick dashed line" />
-                <figcaption> Passes: the dashed outline does not "solidly bound" the third star; however, the dashed line meets the size requirements of the focus area calculation.</figcaption>
-            </figure>      
+                <img src="img/focus-indicator-strong-dashed-border-long-dashes.svg" alt="3 of 5 stars are selected with the whole third star outlined with a 5 pixel thick dashed line, using 3 pixel thick dashes with 2 pixels of spacing" />
+                <figcaption>Passes: the thicker dashed outline meets the size requirements of the focus area calculation.</figcaption>
+            </figure>
+
+            <!-- TODO: create new diagram -->
+            <figure id="focus-indicator-strong-dashed">
+                <img src="img/focus-indicator-strong-dashed-border-short-dashes.svg" alt="3 of 5 stars are selected with the whole third star outlined with a 5 pixel thick dashed line, using 2 pixel thick dashes with 3 pixels of spacing" />
+                <figcaption>Fails: the dashed outline is defined by the same CSS as in the passing previous example, but is rendered in a different user agent which uses shorter dashes and no longer meets the minimum size requirements.</figcaption>
+            </figure>
+
+            <h4>Other indicator shapes</h4>              
+
+   
         </section>
 
         <section id="contrast-pixels">
@@ -110,17 +149,27 @@
             <figure id="focus-indicator-star-with-light-focus">
                 <img src="img/focus-indicator-star-with-light-focus.svg" alt="Two orange-yellow five-pointed stars, one with a mid-gray focus rectangle" />
                 <figcaption> Passes: Two buttons in the shape of a star, with the second surrounded by a focus indicator whose pixels contrast 3:1 between focused (light grey) and unfocused (white) states.</figcaption>
-            </figure> 
+            </figure>
+
+            <!-- TODO: add paragraph/example covering that only part of the indicator need meet change contrast, with a two-color indicator example -->
         </section>
+
         <section id="contrast-adjacent">
-            <h3>Contrasts at least 3:1 against adjacent colors</h3>
+            <h3>Relationship with Non-text Contrast</h3>
 
-            <p>The third of the focus indicator bullets states that the focus indicator must contrast against the pixels on either side. Where the indicator is offset from the shape and does not directly abut the component or any other object -- as in all preceding examples -- it simply needs to contrast at least 3:1 against the page background. Offsetting is the recommended way of creating a more visible focus indicator. However, where authors choose to position the indicator so it is directly next to or overlaps another shape, it must contrast 3:1 against this adjacent shape as well.</p>
+            <p>Focus indicators are visual information required to identify a state of a user interface component. That means that they are subject to <a>1.4.11 Non-text Contrast</a>. The focus indicator <em>must</em> have sufficient contrast against the adjacent background when the component is focused, except where the appearance of the component is determined by the user agent and not modified by the author.</p>
 
-            <figure id="focus-indicator-abutted">
-                <img src="img/focus-indicator-star-with-abutted-line.svg" alt="Two orange-yellow five-pointed stars, the second with a tightly cropped blue focus outline" />
-                <figcaption>Passes: The second of two stars has a star-shaped blue outline that directly abuts the star, with which it contrasts 3:1, creating a minimally visible focus indicator.</figcaption>
-            </figure>    
+            <p>Focus indicators which are drawn <em>outside</em> the boundary of the unfocused component, for example using a CSS <code>outline</code> property, do not need to meet 3:1 contrast with the component itself, but do need to meet 3:1 contrast with any background colors or other components adjacent to the focus indicator.</p>
+
+            <!-- TODO: add example figure, maybe reuse from non-text contrast understanding -->
+            
+            <p>Focus indicators which are drawn entirely or partially <em>within</em> the boundary of the unfocused component, for example using a CSS <code>border</code> property, must have 3:1 contrast contrast with <em>both</em> the adjacent pixels of the focused component itself <em>and</em> any adjacent background colors or different components.</p>
+
+            <!-- TODO: add example figure, maybe reuse from non-text contrast understanding -->
+
+            <p>See the Relationship with Focus Visible section of <a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html">Understanding 1.4.11 Non-text Contrast</a> for more details and examples.</p>
+
+            <!-- TODO: delete img/focus-indicator-star-with-abutted-line.svg -->
         </section>
 
         <section id="keyboard-focus">
@@ -128,7 +177,8 @@
             <p>The preamble to this SC is "When a user interface component has keyboard focus..." The <em>keyboard focus</em> is the point of interaction for someone using a keyboard. For environments with a keyboard-operable interface, the keyboard focus can be moved around the interface in order to interact with different components. Whichever component is being interacted with has focus.</p>
 
             <p>WCAG defines <em>user interface component</em> as "a part of the content that is perceived by users as a single control for a distinct function." Because different users may perceive controls differently, there is a potential for some variation when interpreting what constitutes both a <em>single control</em> and a <em>distinct function</em>. This is particularly the case when something visually presents in a way that may differ from how it is programmatically created under the covers. Where there is not a native HTML component upon which to base designs, there can be great variations in how the components and their focus indicators are portrayed. Further, some components have sub-components that can take focus, such as the menu items on a menu.</p>
-            <p> Nonetheless, consistent results from different testers were obtained for this SC by using the focus indicator itself as the gauge of what constitutes the component being interacted with. For complex components, the three typical focus indicators are as follows:</p>
+
+            <p>Nonetheless, consistent results from different testers were obtained for this SC by using the focus indicator itself as the gauge of what constitutes the component being interacted with. For complex components, the three typical focus indicators are as follows:</p>
 
             <ul>
                 <li>Focus indicator around only the whole component</li>
@@ -175,7 +225,6 @@
                 <img src="img/component-complex-sub.png" alt="Three tab buttons shown and the first button has a dark outline." />
                 <figcaption> The same tabs as in the prior set, but the focus indicator around the whole is removed.</figcaption>
             </figure>   
-        
         
             <p>The same unsynchronized tablist can also be implemented as something which only shows focus on the tab items and not on the whole. The behaviour is the same as in the prior example, but there is never a focus indicator placed around the tablist. This interaction is acceptable, but it is not best practice since it demands more understanding from the user with less information. For example, some visual cues for the tablist and tab items (and tab panel) may not be clear. As well, keyboard users may not initially understand the expected keyboard interaction.</p>
         
@@ -295,7 +344,7 @@
                     <figcaption> Passes: Although the CSS <code>border</code> on a multi-line link does not enclose the link, the minimum bounding box definition allows it to be assessed as if it was on a single line. As well, the indicator's area is invariably more than four times the shortest-side calculation .</figcaption>
                 </figure>
 
-<p>If authors rely on the text-decoration property of links as a focus indicator (for example, no text underline by default, then showing a 1px underline when focused), that is likely to meet the minimum size requirement only if the text is more than 9 characters. If the number of characters in the links vary, it is likely some links will fail.</p>
+                <p>If authors rely on the text-decoration property of links as a focus indicator (for example, no text underline by default, then showing a 1px underline when focused), that is likely to meet the minimum size requirement only if the text is more than 9 characters. If the number of characters in the links vary, it is likely some links will fail.</p>
 
                 <p>For example, a 16px tall text link would need a width of four times the <strong>shortest</strong> side (4 &#x000D7; 16 = 64px). With default browser styles, a 10-character word (for example, "accessible") is usually over 70px wide, and would therefore pass. However, this is not a focus indicator that would <em>reliably</em> pass this criterion. It would be more visible to retain the browser's default indicator or use a complete perimeter indicator, either of which would pass. The lack of indicator for a link is also likely to fail <a href="use-of-color">1.4.1 Use of Color</a>.</p>
 
@@ -380,9 +429,10 @@
                 <p>Where a focus indicator is defined in code as a certain size (e.g. 2px thickness) or color, anti-aliasing can be ignored for the purposes of calculation. Dotted or dashed outlines have various levels of gaps depending on the browser, screen density, and thickness. For example, in most browsers a "dotted" line will have roughly half the number of pixels due to gaps. However, in some sizes or browsers it might be slightly less than half, so increasing the thickness may be required.</p>
             </section>
 
+            <!-- TODO: consolidate this with new same-named section above -->
             <section id="relation-non-text-color-contrast">
                 <h3>Relationship to Non-text Contrast</h3>
-                <p>In combination with <a href="focus-visible">2.4.7 Focus Visible</a>,  <a href="non-text-contrast" class="sc">1.4.11 Non-text Contrast</a> requires that the visual focus indicator for a component must have sufficient contrast against the adjacent colors when the component is focused, except where the appearance of the component is determined by the user agent and not modified by the author.</p>
+                <p>In combination with <a href="focus-visible">2.4.7 Focus Visible</a>, <a href="non-text-contrast" class="sc">1.4.11 Non-text Contrast</a> requires that the visual focus indicator for a component must have sufficient contrast against the adjacent colors when the component is focused, except where the appearance of the component is determined by the user agent and not modified by the author.</p>
                     
                 <p>However, Non-text Contrast differs in what it assesses. Unlike the current Success Criterion, it does not require that the focus indicator has a change of contrast <em>between</em> the focused and non-focused states. Additionally, there is no size requirement and no exception for user agent default indicators.</p>
                 
@@ -450,7 +500,7 @@
 
         <ul>
             <li>When links receive focus, an outline is displayed around the link that contrasts with the background adjacent to the link.</li>
-            <li>When buttons receive focus, an outline is displayed within the button (around the text) that contrasts with the button’s background.</li>
+            <li>When buttons receive focus, an outline is displayed within the button (around the text) that contrasts with the button's background.</li>
             <li>When text fields receive focus, an outline is displayed around the field, indicating that the input has focus.</li>  
             <li>When radio buttons receive focus, an outline is displayed around the control, indicating that the input has focus.</li>        
         </ul>
