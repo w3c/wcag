@@ -32,7 +32,7 @@
 				$strError .= "<li><a href=\"#age\">Please enter your age</a></li>\n";
 			}
 
-			if (!preg_match("/^[\w-\.\']{1,}\@([\da-zA-Z-]{1,}\.){1,}[\da-zA-Z-]{2,}$/", $strEmail))
+			if (!preg_match("/^[\w\-\.\']{1,}\@([\da-zA-Z\-]{1,}\.){1,}[\da-zA-Z\-]{2,}$/", $strEmail))
 			{
 				$iErrorCount++;
 				$strError .= "<li><a href=\"#email\">Please enter your email address</a></li>\n";
@@ -49,7 +49,7 @@
 				$strError .= "<li><a href=\"#suggestion\">Enter a suggestion</a></li>\n";
 			}
 
-			if (strlen($strOptional) > 0 && !preg_match("/^[\w-\.\']{1,}\@([\da-zA-Z-]{1,}\.){1,}[\da-zA-Z-]{2,}$/", $strOptional))
+			if (strlen($strOptional) > 0 && !preg_match("/^[\w\-\.\']{1,}\@([\da-zA-Z\-]{1,}\.){1,}[\da-zA-Z\-]{2,}$/", $strOptional))
 			{
 				$iErrorCount++;
 				$strError .= "<li><a href=\"#optemail\">Please enter your email address (optional)</a></li>\n";

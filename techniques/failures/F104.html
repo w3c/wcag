@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<title>Failure of Success Criterion 1.4.12 due to clipped or overlapped content when text spacing is adjusted</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css"/>
+	</head>
+	<body>
+		<h1>Failure of Success Criterion 1.4.12 due to clipped or overlapped content when text spacing is adjusted</h1>
+		<section id="meta">
+			<h2>Metadata</h2>
+
+			<p id="sc">Success Criterion 1.4.12</p>
+			<p id="type">Failure</p>
+		</section>
+		<section id="applicability">
+			<h2>Applicability</h2>
+			<p>This techniques applies to text content created in markup languages that support text style properties.</p>
+		</section>
+		<section id="description">
+			<h2>Description</h2>
+			<p>The purpose of this technique is to identify and test a failure condition where part of the content clips and is unreadable when the user overrides the spacing of the text within the boundaries set out in the Text Spacing success criterion. In general, this failure occurs when text is presented in a size-constrained block which does not expand if the size of the content increases. Some of the ways in which this can occur include:</p>
+			<ul>
+			  <li>
+			   Setting the overflow property of the enclosing element to hidden
+		      </li>
+			  <li>
+			   Using absolutely positioned content
+		      </li>
+			  <li>
+			    Creating borders that are not large enough for the content when using the new font spacing
+		      </li>
+		  </ul>
+		</section>
+		<section id="examples">
+			<h2>Examples</h2>
+			
+			<section class="example">
+				<h3>Text inside a box overflows and overlaps text below it when text spacing is implemented.</h3>
+				<p>The code below is what is implemented in the DOM <em><strong>before</strong></em> the user implements any CSS test spacing overrides. The text renders correctly in the box and doesn't interfere with the next paragraph.</p>
+				<p><code>&lt;div style=&quot;font-size:100%; width:130px; height:95px; border: thin solid gray;&quot;&gt;
+			    Now is the time for all good men to come to the aid of their country.
+  &lt;/div&gt;
+  &lt;p&gt;Now is the time for all good men to come to the aid of their country.&lt;/p&gt;</code></p>
+				<p><div style="font-size:100%; width:130px; height:95px; border: thin solid gray;"> 
+  Now is the time for all good men to come to the aid of their country. 
+				</div></p>
+<p>Now is the time for all good men to come to the aid of their country.</p> 
+				<p>Here is the  view AFTER the text spacing has been overridden by the user with the text spacing in the success criterion. The text overlaps the paragraph below it.</p>
+        <p><div style="font-size:100%; width:130px; height:95px;  border: thin solid gray; line-height: 1.5; margin-bottom: 2em; letter-spacing: 0.12em; word-spacing: 0.16em;">
+				Now is the time for all good men to come to the aid of their country. 
+</div></p>
+<p>Now is the time for all good men to come to the aid of their country.</p>
+
+</section>
+			
+			<section class="example">
+				<h3>Text inside a box is clipped when text spacing is implemented.</h3>
+				<p>The code below is what is implemented in the DOM <em><strong>before</strong></em> the user implements any CSS test spacing overrides. The text renders correctly in the box and doesn't interfere with the next paragraph.</p>
+				<p><code>&lt;div style="font-size:100%; width:130px; height:95px; overflow: hidden; border: thin solid gray;"&gt;  Now is the time for all good men to come to the aid of their country.  &lt;/div&gt; &lt;p&gt;Now is the time for all good men to come to the aid of their country.&lt;/p&gt;</code></p>
+				<p>Here is the default view before the text spacing has been overridden by the user, The text renders properly in the box</p>
+				<p><div style="font-size:100%; width:130px; height:95px; overflow: hidden; border: thin solid gray;">
+ Now is the time for all good men to come to the aid of their country. 
+				</div></p>
+<p>Now is the time for all good men to come to the aid of their country.</p>
+<p>Here is the  view AFTER the text spacing has been overridden by the user with the maximum text spacing in the success criterion,  the text is clipped.</p>
+<p><div style="font-size:100%; width:130px; height:95px; overflow: hidden; border: thin solid gray; line-height: 1.5; margin-bottom: 2em; letter-spacing: 0.12em; word-spacing: 0.16em;">
+ Now is the time for all good men to come to the aid of their country. 
+				</div></p>
+<p>Now is the time for all good men to come to the aid of their country.</p>
+			
+	</section>
+</section>
+		<section id="tests">
+		  <h2>Tests</h2>
+			<section class="test-procedure">
+				<h3>Procedure</h3>
+				<ol>
+					<li>Open the page and review the available content.</li>
+          <li>Override the CSS on the page using a user stylesheet, bookmarklet, extension, or application with the values listed in the success criterion:
+		  			<ol type="a">
+              <li>Line height to at least 1.5 times the font size;</li>
+		  	  		<li>Spacing following paragraphs to at least 2 times the font size;</li>
+		  		  	<li>Letter spacing (tracking) to at least 0.12 times the font size;</li>
+		  			  <li>Word spacing to  0.16 times the font size.</li>
+					  </ol>
+          </li>
+					<li>Check if any content is clipped, obscured, or lost due to the new text spacing.</li>
+				</ol>
+			</section>
+			<section class="test-results">
+			  <h3>Expected Results</h3>
+			  <ul>
+			    <li>If check #3 is true, then the failure condition applies and the content fails the Success Criterion</li>
+		      </ul>
+		  </section>
+	</section>
+		<section id="related">
+		  <h2>Related Techniques</h2>
+			<ul>
+        <li><a href="../failures/F69">F69</a></li>
+			</ul>
+		</section>
+		<section id="resources">
+			<h2>Resources</h2>
+			<ul>
+				<li><a href="https://chrome.google.com/webstore/detail/stylus/clngdbkpkpeebahjckkjfobafhncgmne?hl=en">Stylus Extension for Chrome</a></li>
+				<li><a href="https://addons.mozilla.org/en-US/firefox/addon/styl-us/">Stylus Extension for Firefox</a></li>
+			</ul>
+		</section>
+	</body>
+</html>
