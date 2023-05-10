@@ -23,7 +23,9 @@
 	</xsl:template>
 	
 	<xsl:template name="content">
-		<content><xsl:copy-of select="*[not(name() = 'h1' or name() = 'h2' or name() = 'h3' or name() = 'h4' or name() = 'h5' or name() = 'h6' or name() = 'section' or @class = 'conformance-level' or @class = 'change')]"></xsl:copy-of></content>
+		<xsl:variable name="content"><xsl:copy-of select="*[not(name() = 'h1' or name() = 'h2' or name() = 'h3' or name() = 'h4' or name() = 'h5' or name() = 'h6' or name() = 'section' or @class = 'conformance-level' or @class = 'change')]"></xsl:copy-of></xsl:variable>
+		<content><xsl:copy-of select="$content"/></content>
+		<contenttext><xsl:value-of select="serialize($content)"/></contenttext>
 	</xsl:template>
 	
 	<xsl:template match="html:html">
