@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
    <head>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <title>G68: Providing a short text alternative that describes the purpose of live
-         audio-only and live video-only content | WAI | W3C
+      <title>F109: Failure of Success Criterion 3.3.8 and 3.3.9 due to preventing password re-entry in
+         the same format | WAI | W3C
       </title>
       <link rel="stylesheet" href="https://w3.org/WAI/assets/css/style.css" />
       <link rel="stylesheet" href="../base.css" />
@@ -41,7 +41,6 @@
                         <li><a href="#applicability">Applicability</a></li>
                         <li><a href="#description">Description</a></li>
                         <li><a href="#examples">Examples</a></li>
-                        <li><a href="#related">Related Techniques</a></li>
                         <li><a href="#tests">Tests</a></li>
                      </ul>
                   </nav>
@@ -49,8 +48,8 @@
             </nav>
          </aside>
          <main id="main" class="standalone-resource__main">
-            <h1><span>Technique G68:</span>Providing a short text alternative that describes the purpose of live
-               audio-only and live video-only content
+            <h1><span>Technique F109:</span>Failure of Success Criterion 3.3.8 and 3.3.9 due to preventing password re-entry in
+               the same format
             </h1>
             <aside class="box">
                <header class="box-h  box-h-icon">
@@ -58,57 +57,59 @@
                   				
                </header>
                <div class="box-i">
-                  <p>This technique is <span><strong>Sufficient</strong> to meet <a href="https://w3c.github.io/wcag/understanding/non-text-content">1.1.1: Non-text Content</a></span>.
+                  <p>This technique is
+                     
+                     						a <strong>Failure</strong> of <a href="https://w3c.github.io/wcag/understanding/accessible-authentication-minimum">3.3.8: Accessible Authentication (Minimum)</a> and a <strong>Failure</strong> of <a href="https://w3c.github.io/wcag/understanding/accessible-authentication-enhanced">3.3.9: Accessible Authentication (Enhanced)</a>
+                     					.
                   </p>
                </div>
             </aside>
             <div class="excol-all"></div>
             <section id="applicability">
                <h2 id="applicability">Applicability</h2>
-               <p>Applies to all technologies</p>
-               <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/non-text-content">1.1.1: Non-text Content</a> (Sufficient)</span>.
-               </p>
+               <p>All technologies that require authentication.</p>
+               <p>This technique relates to:</p>
+               <ul>
+                  <li><a href="https://w3c.github.io/wcag/understanding/accessible-authentication-minimum">3.3.8: Accessible Authentication (Minimum)</a> (Failure)
+                  </li>
+                  <li><a href="https://w3c.github.io/wcag/understanding/accessible-authentication-enhanced">3.3.9: Accessible Authentication (Enhanced)</a> (Failure)
+                  </li>
+               </ul>
             </section>
             <section id="description">
                <h2>Description</h2>
-               <p>This technique provides a short text alternative for Live audio-only and live video-only
-                  content. This text may be used in combination with a full text alternative for time-based
-                  media (for audio or video), or in combination with audio description (for video).
-                  Those alternatives, however, are not part of this technique. The purpose of
-                  this technique is to ensure that the user can determine what the non-text
-                  content is, even if they cannot access it. NOTE: Even if full alternatives
-                  are also available, it is important that users be able to identify the
-                  non-text content when they encounter it so that they are not confused, and
-                  so that they can associate it with the full alternative when they encounter
-                  it.
+               <p>Requiring users to authenticate by entering a password or passcode in a different
+                  format from which it was originally created is a failure to meet Success Criteria
+                  3.3.8 and 3.3.9 (unless alternative authentication methods are available). A password
+                  in this context could be a password, passcode, passphrase or any string of characters
+                  the user has to remember or record to authenticate.
+               </p>
+               <p>If a user is required to enter individual password characters across multiple fields,
+                  in a way that prevents pasting the password in a single action, it prevents use of
+                  a password manager or pasting from local copy of the password. This means users cannot
+                  avoid transcription, resulting in a <a href="../../understanding/22/accessible-authentication.html#dfn-cognitive-function-test">cognitive function test</a>. This applies irrespective of whether users are required to enter all characters
+                  in the string, or just a subset.
                </p>
             </section>
             <section id="examples">
                <h2>Examples</h2>
-               <section class="example" id="example-1">
-                  <h3>Example 1</h3>
-                  <ul>
-                     
-                     <li>A live video feed of the east coast highway has the
-                        following descriptive label "Live video picture of East
-                        Coast Highway just south of the I-81 interchange showing
-                        current traffic conditions."
-                     </li>
-                     
-                     <li>A live audio feed of the Mississippi House of
-                        Representatives has the following descriptive label "Live
-                        audio from the microphones in the Mississippi House of
-                        Representatives."
-                     </li>
-                     
-                  </ul>
-               </section>
-            </section>
-            <section id="related">
-               <h2>Related Techniques</h2>
+               <p>These examples would prevent a user from entering a password in the same format in
+                  which the password was originally created:
+               </p>
                <ul>
                   
-                  <li><a href="../general/G100">G100</a></li>
+                  <li>A fieldset that prompts a user to "Enter the 2nd, 6th and last characters of your
+                     password", with separate input fields for each character.
+                  </li>
+                  
+                  <li>A fieldset that prompts a user to enter each digit of a password in a separate input
+                     (unless the user can paste the entire password in the first input, and the remaining
+                     inputs are populated automatically).
+                  </li>
+                  
+                  <li>A password input fieldset composed of <code class="el">&lt;select&gt;</code> elements that requires a user to select each character of a fixed-length password
+                     from individual dropdown fields.
+                  </li>
                   
                </ul>
             </section>
@@ -117,13 +118,18 @@
                <section class="procedure" id="procedure">
                   <h3>Procedure</h3>
                   
+                  <p>For each form field which accepts password entry:</p>
+                  
                   <ol>
                      
-                     <li>Remove, hide, or mask the non-text content.</li>
+                     <li>Check if the structure of the input field(s) prevents the user from pasting or auto-filling
+                        the entire password in the format in which it was originally created.
+                     </li>
                      
-                     <li>Display the short text alternative(s).</li>
-                     
-                     <li>Check that the purpose of the non-text content is clear, even if content is lost.</li>
+                     <li>Confirm that no other acceptable authentication methods are present that satisfy Success
+                        Criteria 3.3.8 or 3.3.9 (such as an authentication method that does not rely on a
+                        cognitive function test).
+                     </li>
                      
                   </ol>
                   
@@ -133,7 +139,9 @@
                   
                   <ul>
                      
-                     <li>#3 is true.</li>
+                     <li>If steps #1 and #2 are true, then this failure condition applies and content fails
+                        the Success Criterion.
+                     </li>
                      
                   </ul>
                   
