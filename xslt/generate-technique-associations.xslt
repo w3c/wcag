@@ -101,5 +101,9 @@
 	</xsl:template>
 	
 	<xsl:template match="html:a"/>
+
+	<xsl:template match="html:ol | html:ul">
+		<xsl:apply-templates/>
+	</xsl:template>
 	
 </xsl:stylesheet>
