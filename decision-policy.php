@@ -18,7 +18,7 @@
 			<p><strong>For mature (ready to go to wide review) content:</strong>The Working Group will follow the W3C consensus process. In the course of establishing consensus it is critical that all participants have the opportunity to express their views for consideration so that all relevant information can be used in arriving at the conclusion.</p>
 			<p><a href="https://www.w3.org/Consortium/Process/#Consensus">Consensus</a> is not a vote. Consensus indicates that a substantial number of individuals in the group support a proposal. The exact number of working group participants supporting a Call for Consensus and any objections are not the only factors in the decision. Although significant support from the active membership is always desirable, consensus means working through objections until they are resolved either through amending the decision or in rare cases overriding the objection as laid out in <a href="https://www.w3.org/Consortium/Process/#managing-dissent">Managing Dissent</a>. Objections must have a clear rationale based on the technical merit or with reference to the agreed scope of the work. Moving on usually means a careful approach is taken.</p>
 			<p>During discussion on a topic for mature content, participants are encouraged to raise concerns freely to help ensure that all
-		available information can be considered and contribute to the best possible decision. When the Chairs issue a Call for Consensus, objections should not be raised unless the individual has strong technical reasons that the decision is the wrong one in spite of discussion, and the individual cannot accept the decision. Compromise on points that the individual considers suboptimal but can accept is an essential part of group decisions that must meet various requirements.</p>
+		available information can be considered and contribute to the best possible decision. When the Chairs issue a Call for Consensus, objections should be raised only when the individual has strong technical reasons that the decision is the wrong one in spite of discussion, and the individual cannot accept the decision. Compromise on points that the individual considers suboptimal but can accept is an essential part of group decisions that must meet various requirements.</p>
 			<ol>
 				<li>
 					<p>Discussion on a topic proceeds until the Chairs believe that all points of view have been expressed and the group has considered the variety of information presented. Depending on the topic, this discussion may take a couple of days or a couple of weeks, or more.</p>
@@ -29,17 +29,12 @@
 					</ol>
 				</li>
 				<li>
-					<p>When the Chairs believe that the group is ready to come to a decision they will propose a resolution for a vote using the Call for Consensus process. Optionally, a “final call” email can be used to prepare the group for the upcoming CFC and capture any outstanding comments. After the CFC, the decision is recorded as a resolution.</p>
-					<ol>
-						<li>The Call must remain open for a minimum of 4 working days. If a CFC is re-started, it can be closed after 2 additional business days, or the original 4 working days (whichever is longer).</li>
-					</ol>
+					<p>When the Chairs believe that the group is ready to come to a decision they will propose a resolution for a vote using W3C consensus process.</p>
 				</li>
 				<li>
-					<p>If the decision affects mature normative text, Chairs will then announce a Call for Consensus by email to the Working Group's mailing list. The Call must remain open for a minimum of two working days.</p>
+					<p>Chairs will then announce a Call for Consensus by email to the Working Group's mailing list. The Call is open to responses from all group members.</p>
 					<ol>
-						<li>
-							<p>The Call is open to responses from all group members.</p>
-						</li>
+						<li>The Call must remain open for a minimum of 4 working days. If a CFC is re-started, it can be closed after 2 additional business days, or the original 4 working days (whichever is longer).</li>
 						<li>
 							<p>The Call will be for a single topic, will clearly indicate that it is a Call for Consensus, and will contain pointers to the relevant discussion. This may include links to GitHub issues or pull requests, AG surveys, email threads, or meeting minutes.</p>
 						</li>
@@ -49,6 +44,7 @@
 						<li>
 							<p>Issues that are regarded as editorial by the Chairs do not require a Working Group decision in order for the Chairs to address, and thus do not require a Call for Consensus. If there is disagreement by participants on whether something is editorial this can be brought to the attention of the Chairs either privately or in the context of the wider group.</p>
 						</li>
+						<li>After the CFC, the decision is recorded as a resolution.</li>
 					</ol>
 				</li>
 				<li>
