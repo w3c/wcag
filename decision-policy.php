@@ -34,7 +34,9 @@
 				<li>
 					<p>Chairs will then announce a Call for Consensus by email to the Working Group's mailing list. The Call is open to responses from all group members.</p>
 					<ol>
-						<li>The Call must remain open for a minimum of 4 working days. If a CFC is re-started, it can be closed after 2 additional business days, or the original 4 working days (whichever is longer).</li>
+						<li>
+							<p>The Call must remain open for a minimum of 4 working days. If a CFC is re-started, it can be closed after 2 additional business days, or the original 4 working days (whichever is longer).</p>
+						</li>
 						<li>
 							<p>The Call will be for a single topic, will clearly indicate that it is a Call for Consensus, and will contain pointers to the relevant discussion. This may include links to GitHub issues or pull requests, AG surveys, email threads, or meeting minutes.</p>
 						</li>
@@ -44,7 +46,9 @@
 						<li>
 							<p>Issues that are regarded as editorial by the Chairs do not require a Working Group decision in order for the Chairs to address, and thus do not require a Call for Consensus. If there is disagreement by participants on whether something is editorial this can be brought to the attention of the Chairs either privately or in the context of the wider group.</p>
 						</li>
-						<li>After the CFC, the decision is recorded as a resolution.</li>
+						<li>
+							<p>After the CFC, the decision is recorded as a resolution.</p>
+						</li>
 					</ol>
 				</li>
 				<li>
