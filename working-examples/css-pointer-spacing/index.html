@@ -25,7 +25,7 @@
 	}
 
 	.visually-hidden {
-		clip: rect(0, 0, 0, 0);
+	clip: rect(0, 0, 0, 0);
     -webkit-clip-path: inset(50%);
     clip-path: inset(50%);
     height: 1px;
@@ -66,7 +66,7 @@
 	.pagination-list--1 [aria-current=page]{
 		background: black;
 		color:white;
-	}         
+	}
 
 	.pagination-list--2{
 		display: flex;
@@ -118,12 +118,66 @@
 		display:inline-block;
 		line-height: 0;
 	}
-	
+
+	[hidden]{
+		display:none;
+	}
+
+	svg[role=img]{
+		height:20px;
+		width:20px;
+	}
+
+	.main-color{
+		fill:#000;
+	}
+
+	.second-color-stroke{
+		stroke:#fff;
+	}
+
+	.second-color-fill{
+		fill:#fff;
+	}
+
+	@media (forced-colors:active){
+		[class^=pagination-list--] [aria-current=page]{
+			background-color: selecteditem;
+			color:selecteditemtext;
+		}
+		
+		.main-color{
+			fill:linktext;
+		}
+
+		.second-color-stroke{
+			stroke:canvas;
+		}
+
+		.second-color-fill{
+			fill:canvas;
+		}
+	}
 	</style>
 	
 </head>
 
 <body>
+
+	<svg hidden>
+		<symbol id="back-arrow" width="20" height="20" viewbox="0 0 20 20">
+			<g fill="none" fill-rule="evenodd"><circle cx="10" cy="10" r="10" class="main-color"/><g class="second-color-stroke" stroke-linecap="round" stroke-width="1.3" transform="translate(4 5)"><path d="M1.55539739,1.48006744 L1.48706466,7.96265283 C1.48328082,8.32161798 1.77121216,8.61568413 2.13017731,8.61946798 C2.13474468,8.61951612 2.13931243,8.61951612 2.1438798,8.61946798 L8.6264652,8.55113525 L8.6264652,8.55113525" transform="rotate(45 5.053 5.053)"/><line x1=".839" x2="12" y1="5.053" y2="5.053"/></g></g>
+		</symbol>
+		<symbol id="forward-arrow" width="20" height="20" viewbox="0 0 20 20">
+			<g fill="none" fill-rule="evenodd"><circle cx="10" cy="10" r="10" class="main-color"/><g class="second-color-stroke" stroke-linecap="round" stroke-width="1.3" transform="matrix(-1 0 0 1 16 5)"><path d="M1.55539739,1.48006744 L1.48706466,7.96265283 C1.48328082,8.32161798 1.77121216,8.61568413 2.13017731,8.61946798 C2.13474468,8.61951612 2.13931243,8.61951612 2.1438798,8.61946798 L8.6264652,8.55113525 L8.6264652,8.55113525" transform="rotate(45 5.053 5.053)"/><line x1=".839" x2="12" y1="5.053" y2="5.053"/></g></g>
+		</symbol>
+		<symbol id="email" width="20" height="20" viewbox="0 0 20 20">
+			<defs><rect id="a" width="20" height="16" x="0" y="0" rx="3"/></defs><g fill="none" fill-rule="evenodd"><mask id="b" class="second-color-fill"><use xlink:href="#a"/></mask><use xlink:href="#a" class="main-color"/><polyline class="second-color-stroke" stroke-linecap="square" points="0 3.602 10 9.778 20 3.556" mask="url(#b)"/><g class="second-color-stroke" transform="translate(12.5 13.5)"><circle cx="3" cy="3" r="3" class="main-color"/><g stroke-linecap="square" transform="translate(2 1.5)"><line x1="1" x2="1" y1=".5" y2="2.5"/><line x1="2" y1="1.5" y2="1.5"/></g></g></g>
+		</symbol>
+		<symbol id="home" width="20" height="20" viewbox="0 0 20 20">
+			<g fill="none" fill-rule="evenodd"><rect width="2.222" height="5.556" x="16.111" y="2.778" class="main-color"/><polygon class="main-color" points="0 10 10 0 20 10 20 20 0 20"/><rect width="4.444" height="6.667" x="7.778" y="13.333" class="second-color-fill"/></g>
+		</symbol>	
+	</svg>
 	
 	<h1>Working examples of using CSS to ensure sufficient target spacing</h1>
 	
@@ -133,10 +187,10 @@
 	
 	<nav class="controls">
 		<ol class="navigation-controls">
-			<li><a href="/previous-page/"><img alt="Back" src="img/arrow-back.svg"></a></li>
-			<li><a href="/next-page/"><img alt="Forward" src="img/arrow-forward.svg"></a></li>
-			<li><a href="mailto:c42@example.com?subject=WCAG%20C42%20Technique"><img alt="Email" src="img/email.svg"></a></li>
-			<li><a href="/"><img alt="Home" src="img/home.svg"></a></li>
+			<li><a aria-label="back" href="/previous-page/"><svg role="img" aria-hidden="true"><use href="#back-arrow"></use></svg></a></li>
+			<li><a aria-label="forward" href="/next-page/"><svg role="img" aria-hidden="true"><use href="#forward-arrow"></use></svg></a></li>
+			<li><a aria-label="email" href="mailto:c42@example.com?subject=WCAG%20C42%20Technique"><svg role="img" aria-hidden="true"><use href="#email"></use></svg></a></li>
+			<li><a aria-label="home" href="/"><svg role="img" aria-hidden="true"><use href="#home"></use></svg></a></li>
 		</ol>
 	</nav>
 
