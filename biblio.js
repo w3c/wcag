@@ -26,26 +26,22 @@ respecConfig.localBiblio = {
       	},
     
     "ISO_9241-112": {
-        "uri": "https://www.iso.org/standard/64840.html",
+        "isoNumber": "9241-112",
+        "href": "https://www.iso.org/standard/64840.html",
         "title": "Ergonomics of human-system interaction -- Part 112: Principles for the presentation of information",
         "publisher": "International Standards Organization"
     },
       	
-      	"sRGB": {
-      		"authors": [
-      			"M. Stokes",
-      			"M. Anderson",
-      			"S. Chandrasekar",
-      			"R. Motta"
-      		],
-      		"date": "November 5, 1996",
-      		"href": "https://www.w3.org/Graphics/Color/sRGB.html",
-      		"title": "A Standard Default Color Space for the Internet - sRGB, Version 1.10"
-      	},
+    "ISO_9241-391": {
+        "isoNumber": "9241-391",
+        "href": "https://www.iso.org/standard/56350.html",
+        "title": "Ergonomics of human-system interaction—Part 391: Requirements, analysis and compliance test methods for the reduction of photosensitive seizures",
+        "publisher": "International Standards Organization"
+    },
       	
       	"UNESCO": {
-      		"date": "1997",
-      		"href": "http://www.unesco.org/education/information/nfsunesco/doc/isced_1997.htm",
+      		"date": "2011",
+      		"href": "https://unesdoc.unesco.org/ark:/48223/pf0000219109",
       		"title": "International Standard Classification of Education"
       	}
 	
