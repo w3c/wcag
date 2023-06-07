@@ -1,75 +1,94 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using redundant keyboard and mouse event handlers</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using redundant keyboard and mouse event handlers</h1><section class="meta"><p class="id">ID: SCR2</p><p class="technology">Technology: client-side-script</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
-      <p>HTML and XHTML with scripting support. </p>
-   </section><section id="description"><h2>Description</h2>
-      <p>The objective of this technique is to demonstrate using device independent events to change a decorative image in response to a mouse or focus event. Use the onmouseover and onmouseout events to change a decorative image when the mouse moves on top of or away from an element on the page. Also, use the onfocus and onblur events to change the image when the element receives and loses focus.</p>
-      <p>The example below has a decorative image in front of an anchor element. When the user mouses over the anchor tag, the decorative image in front of the anchor is changed. When the mouse moves off of the anchor, the image is changed back to its original version. The same image change effect occurs when the user gives keyboard focus to the anchor element. When focus is received the image changes, when focus is lost the image is changed back. This is accomplished by attaching onmouseover, onmouseout, onfocus and onblur event handlers to the anchor element. The event handler is a JavaScript function called updateImage(), which changes the src attribute of the image. The updateImage() is called in response to the onmouseover, onmouseout, onfocus, and onblur events.</p>
-      <p>Each image is given a unique id. This unique id is passed to updateImage() along with a boolean value indicating which image is to be used: updateImage(imgId, isOver);. The boolean value of true is passed when the mouse is over the anchor element or it has focus. A false value is passed when the mouse moves off of the anchor element or it loses focus. The updateImage() function uses the image id to load the image and then changes the src attribue based on the boolean value. Note that since the image is for decorative purposes, it has a null alt attribute. </p>
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <title>Using redundant keyboard and mouse event handlers</title>
+      <link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
+   </head>
+   <body>
+      <h1>Using redundant keyboard and mouse event handlers</h1>
+      <section class="meta">
+         <p class="id">ID: SCR2</p>
+         <p class="technology">Technology: client-side-script</p>
+         <p class="type">Type: Technique</p>
+      </section>
+      <section id="applicability">
+         <h2>When to Use</h2>
+         <p>HTML with scripting support.</p>
+      </section>
+      <section id="description">
+         <h2>Description</h2>
+         <p>The objective of this technique is to demonstrate using device independent events to change a decorative image in response to a mouse or focus event. Use the <code>onmouseover</code> and <code>onmouseout</code> events to change a decorative image when the mouse moves on top of or away from an element on the page. Also, use the <code>onfocus</code> and <code>onblur</code> events to change the image when the element receives and loses focus.</p>
+         <p>The example below has a decorative image in front of an anchor element. When the user mouses over the anchor tag, the decorative image in front of the anchor is changed. When the mouse moves off of the anchor, the image is changed back to its original version. The same image change effect occurs when the user gives keyboard focus to the anchor element. When focus is received the image changes, when focus is lost the image is changed back. This is accomplished by attaching <code>onmouseover</code>, <code>onmouseout</code>, <code>onfocus</code> and <code class="language-javascript">onblur</code> event handlers to the anchor element. The event handler is a JavaScript function called <code class="language-javascript">updateImage()</code>, which changes the <code class="language-html">src</code> attribute of the image. The <code class="language-javascript">updateImage()</code> is called in response to the <code class="language-javascript">onmouseover</code>, <code class="language-javascript">onmouseout</code>, <code class="language-javascript">onfocus</code>, and <code class="language-javascript">onblur</code> events.</p>
+         <p>Each image is given a unique <code class="language-html">id</code>. This unique <code class="language-html">id</code> is passed to <code>updateImage()</code> along with a boolean value indicating which image is to be used: <code>updateImage(imgId, isOver)</code>;. The boolean value of true is passed when the mouse is over the anchor element or it has focus. A false value is passed when the mouse moves off of the anchor element or it loses focus. The <code class="language-javascript">updateImage()</code> function uses the image <code class="language-html">id</code> to load the image and then changes the <code class="language-html">src</code> attribute based on the boolean value. Note that since the image is for decorative purposes, it has a null <code class="language-html">alt</code> attribute.</p>
       <div class="note">
-         <p>It is best to use images that are similar in size and to specify the height and width attributes on the image element. This will prevent any changes to the layout of the page when the image is updated. This example uses images which are identical in size. </p>
+         <p>It is best to use images that are similar in size and to specify the height and width attributes on the image element. This will prevent any changes to the layout of the page when the image is updated. This example uses images which are identical in size.</p>
       </div>
-   </section><section id="examples"><h2>Examples</h2>
+   </section>
+   <section id="examples">
+      <h2>Examples</h2>
       <section class="example">
-         <pre xml:space="preserve">
-&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "https://www.w3.org/TR/html4/loose.dtd"&gt;
- &lt;html lang="en"&gt;
- &lt;head&gt;
- &lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
- &lt;title&gt;Changing Image Source in a Device Independent Manner&lt;/title&gt;
- &lt;script type="text/javascript"&gt;
- /* This function will change the image src of an image element.
-  * param imgId - the id of the image object to change
-  * param isOver - true when mouse is over or object has focus,
-  *                false when mouse move out or focus is lost
- */
- function updateImage(imgId, isOver) {
-   var theImage = document.getElementById(imgId);
-   if (theImage != null) { //could use a try/catch block for user agents supporting at least JavaScript 1.4
-                           // These browsers support try/catch - NetScape 6, IE 5, Mozilla, Firefox
+<pre xml:space="preserve">&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;title&gt;Changing Image Source in a Device Independent Manner&lt;/title&gt;
+  &lt;script&gt;
+    /* This function will change the image src of an image element.
+     * param imgId - the id of the image object to change
+     * param isOver - true when mouse is over or object has focus,
+      false when mouse move out or focus is lost
+    */
+    function updateImage(imgId, isOver) {
+    var theImage = document.getElementById(imgId);
+    if (theImage != null) {
       if (isOver) {
         theImage.setAttribute("src","yellowplus.gif");
       }
       else {
         theImage.setAttribute("src","greyplus.gif");
       }
-   }
- }
- &lt;/script&gt;
+    }
+  }
+  &lt;/script&gt;
  &lt;/head&gt;
  &lt;body&gt;
  &lt;p&gt;Mouse over or tab to the links below and see the image change.&lt;/p&gt;
- &lt;a href="https://www.w3.org/wai" onmouseover="updateImage('wai', true);" onfocus="updateImage('wai', true);"
-   onmouseout="updateImage('wai',false);" onblur="updateImage('wai',false);"&gt;
- &lt;img src="greyplus.gif" border="0" alt="" id="wai"&gt;
-   W3C Web Accessibility Initiative&lt;/a&gt; &amp;
+ &lt;a href="https://www.w3.org/WAI/"
+    onmouseover="updateImage('wai', true);" onfocus="updateImage('wai', true);"
+    onmouseout="updateImage('wai',false);" onblur="updateImage('wai',false);"&gt;
+    &lt;img alt="" id="wai" src="greyplus.gif"&gt;
+    W3C Web Accessibility Initiative&lt;/a&gt; &amp;amp;
  &lt;a href="https://www.w3.org/International/" onmouseover="updateImage('i18n', true);" 
-   onfocus="updateImage('i18n',true);" onmouseout="updateImage('i18n',false);"
-   onblur="updateImage('i18n',false);"&gt;
-   &lt;img src="greyplus.gif" border="0" alt="" id="i18n"&gt;
-   W3C Internationalization&lt;/a&gt;
+    onfocus="updateImage('i18n',true);" onmouseout="updateImage('i18n',false);"
+    onblur="updateImage('i18n',false);"&gt;
+    &lt;img alt="" id="i18n" src="greyplus.gif"&gt;
+    W3C Internationalization&lt;/a&gt;
  &lt;/body&gt;
  &lt;/html&gt;
 </pre>
-      </section>
-   </section><section id="tests"><h2>Tests</h2>
+   </section>
+   </section>
+   <section id="tests">
+      <h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
          <p>Load the Web page and test the events using a mouse and via the keyboard. </p>
          <ol>
             <li>Check that the "standard" image is displayed as expected when the Web page is loaded. </li>
             <li>
-               <p>Using the Mouse </p>
+               <p>Using the Mouse</p>
                <ol>
                   <li>Move the mouse over the element containing the event handlers (in this example it is an anchor element). Check that the image changes to the expected image.</li>
-                  <li>Move the mouse off of the element. Check that the image changes back to the "standard" image. </li>
+                  <li>Move the mouse off of the element. Check that the image changes back to the "standard" image.</li>
                </ol>
             </li>
             <li>
-               <p>Using the Keyboard </p>
+               <p>Using the Keyboard</p>
                <ol>
                   <li>Use the keyboard to set focus to the element containing the event handlers. Check that the image changes to the expected image. </li>
                   <li>Use the keyboard to remove focus from the element (generally by moving focus to another element). Check that the image changes to the "standard" image.</li>
                </ol>
             </li>
-            <li>Verify that the layout of other elements on the page is not affected when the image is changed. </li>
+            <li>Verify that the layout of other elements on the page is not affected when the image is changed.</li>
          </ol>
       </section>
       <section class="results"><h3>Expected Results</h3>
@@ -77,4 +96,6 @@
             <li>All of the steps for the above checks are true. </li>
          </ul>
       </section>
-   </section></body></html>
+   </section>
+</body>
+</html>
