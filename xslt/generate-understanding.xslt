@@ -900,7 +900,7 @@
 								<aside class="box">
 									<header class="box-h  box-h-icon"> Success Criterion (SC)</header>
 									<div class="box-i">
-										<xsl:apply-templates select="$meta/content/html:*"/>
+										<xsl:apply-templates select="$meta/content/html:*" mode="wcag-include"/>
 									</div>
 								</aside>
 								<div class="excol-all"/>
@@ -1107,5 +1107,14 @@
 	</xsl:template>
 
 	<xsl:template match="html:*[@class = 'instructions']"/>
+	
+	<xsl:template match="html:a[func:starts-with(@href, '#')]" mode="wcag-include">
+		<xsl:variable name="href" select="@href"/>
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:attribute name="href"><xsl:value-of select="$loc.guidelines"/><xsl:value-of select="$href"/></xsl:attribute>
+			<xsl:apply-templates/>
+		</xsl:copy>
+	</xsl:template>
 
 </xsl:stylesheet>
