@@ -106,11 +106,11 @@
             <section id="size-solid-outline">
                 <h4>Using a solid outline</h4>
 
-                <p>The easiest and most common way to meet this requirement is to use a solid outline around the component. The outline must be at least 2px thick. The following illustration shows a <strong>minimally</strong> sized focus indicator, where some of the white pixels making up the page background have been altered to a mid-grey, which contrast 3:1 with the original white.</p>
+                <p>The easiest and most common way to meet this requirement is to use a solid outline around the component. The outline must be at least 2px thick. The following illustration shows a <strong>minimally</strong> thick focus indicator, where a 2px thick band of white pixels making up the page background around an example button have been altered to black.</p>
 
                 <figure id="focus-indicator-basic">
                     <img src="img/focus-indicator-basic.png" alt="2 blue buttons with a dark 2 pixel thick offset focus rectangle around the second" />
-                    <figcaption>Passes: A solid focus rectangle around the second of two buttons.</figcaption>
+                    <figcaption>Passes: The focus indicator is a solid 2px thick outline.</figcaption>
                 </figure>
 
                 <p>For non-rectangular components, the "perimeter" definition allows authors to use either of the following types of outline:</p>
@@ -122,39 +122,41 @@
                 
                 <p>For example, a star-shaped button may use either a focus indicator that follows the shape of the star or a focus indicator that follows the bounding box of the star. In the following examples, the same three stars have already been selected, and focus is on the third star. The first example uses a focus indicator which matches the star shape of the focused star. The second uses a rectangular indicator.</p>
 
-                <!-- TODO: Verify thickness -->
                 <figure id="focus-outline-solid">
                     <img src="img/focus-indicator-solid-outline.svg" alt="Three of 5 stars are selected with a solid-line focus indicator in the shape of a star outlining the third" />
                     <figcaption>Passes: a solid outline indicator surrounds the third of five stars.</figcaption>
-                </figure>  
+                </figure>
 
-                <!-- TODO: Verify thickness -->
                 <figure id="focus-border-solid">
                     <img src="img/focus-indicator-solid-border.svg" alt="3 of 5 stars are selected with a solid-line rectangular focus indicator around the third" />
                     <figcaption>Passes: a solidly bound focus rectangle encloses the third of five stars.</figcaption>
                 </figure>
 
-                <p>Most solid perimeter focus indicators appear outside the component, for example by using a CSS <code>outline</code> property. However, a 2 CSS pixel thick indicator that appears inside the component against its outer edge is still considered to be a perimeter and does meet the minimum size requirement. Indicators that are inset further within the component and not directly against the outer edge would need to be thicker than 2 CSS pixels to meet the minimum size requirement.</p>
+                <p>Most solid perimeter focus indicators appear outside the component, for example by using a CSS <code>outline</code> property. However, a 2 CSS pixel thick indicator that appears inside the component against its outer edge, for example by using a CSS <code>border</code> property, is still considered to be a perimeter and does meet the minimum size requirement. Indicators that are inset further within the component and not directly against the component's outer edge would need to be thicker than 2 CSS pixels to meet the minimum size requirement.</p>
                 
-                <!-- TODO: Create img -->
                 <figure id="focus-offsets">
-                    <img src="img/focus-indicator-offsets.svg" alt="5 example buttons side-by-side, with the same 2px thick focus indicator respectively offset outside the component, adjacent outside the component, overlapping the edge of the component, adjacent inside the component, and inset inside the component" />
-                    <figcaption>The first four of these focus indicators all meet the minimum size requirement. The last one does not; it needs to be thicker.</figcaption>
+                    <img src="img/focus-indicator-offset-types.png" alt="a button along with 4 examples of different 2px solid focus indicators for it: offset outside the component, an outline around the boundary of the component, a border inside the boundary of the component, and inset inside the component" />
+                    <figcaption>All four of these example focus indicators are 2px solid lines. The "outset", "outline", and "border" indicators pass. The "inset" indicator does not meet the minimum area requirement and fails; it would need to be thicker to pass.</figcaption>
                 </figure>
 
-                <p>Note that different color contrast requirements apply depending on whether the focus indicator is inside or outside the component. See the <a href="#contrast">Color Contrast</a> section below.</p>
+                <p>Note that different Non-text Contrast requirements apply depending on whether the focus indicator is inside or outside the component. See the <a href="#relationship-with-non-text-contrast">Relationship with Non-text Contrast</a> section below.</p>
             </section>
             <section id="size-dashed-dotted">
                 <h4>Using a dashed or dotted outline</h4>
 
-                <p>Outlines that are not solid lines, like dashed or dotted outlines, can be used to meet the size requirement but are not recommended.</p>
+                <p>Dashed and dotted outlines can meet the Success Criterion, but they may be difficult to assess because:</p>
+            
+                <ul>
+                    <li>Different user agents render them differently</li>
+                    <li>Most user agents render them using complicated anti-aliasing rules</li>
+                </ul>
 
-                <p>In order to meet the minimum size requirements consistently, a dashed or dotted outline must be much thicker than an equivalent solid outline would be.</p>
+                <p>In order to meet the minimum area requirement consistently, a dashed or dotted outline must be much thicker than an equivalent solid outline would be.</p>
 
                 <!-- TODO: update thickness of diagram -->
                 <figure id="focus-indicator-weak-dashed">
                     <img src="img/focus-indicator-weak-dashed-border.svg" alt="3 of 5 stars are selected with the whole third star outlined with a 2 pixel thick dashed line" />
-                    <figcaption>Fails: the dashed outline is only 2 CSS pixels thick and does not meet the size requirements of the focus area calculation.</figcaption>
+                    <figcaption>Fails: the dotted outline is specified as 5px thick, but it still contains fewer pixels than a 2px thick solid perimeter would.</figcaption>
                 </figure>
 
                 <p>Different user agents use different rules for rendering dotted and dashed outlines. A focus indicator which passes in one user agent might fail in a different user agent.</p>
