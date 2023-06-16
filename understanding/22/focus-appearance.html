@@ -53,9 +53,9 @@
             </dd>
             </dl>
         </blockquote>
-     </section>
+    </section>
    
-     <section id="brief">
+    <section id="brief">
         <h2>In brief</h2>
         <dl>
             <dt>Objective</dt><dd>Make it easier to spot the keyboard focus</dd>
@@ -75,9 +75,16 @@
             
         <p>A keyboard focus indicator can take different forms. This Success Criterion encourages the use of a solid outline around the focused user interface component, but allows other types of indicators that are at least as large.</p>
         
-        <p>This Understanding document will elaborate on the minimum area requirement, then address color contrast requirements, and finally explain the user agent exceptions.</p>
+        <p>This Understanding document will elaborate on:</p>
+        <ol>
+            <li>The minimum area requirement</li>
+            <li>The change of contrast requirement</li>
+            <li>Other contrast requirements imposed by related success criteria</li>
+            <li>Component keyboard focus</li>
+            <li>Exceptions to the criterion</li>
+        </ol>
 
-        <section id="size-of-indicator">
+        <section id="minimum-area">
             <h3>Minimum area</h3>
 
             <p>The first part of the Success Criterion specifies a minimum area for the focus indicator:</p>
@@ -201,36 +208,93 @@
             </section>
         </section>
 
-        <section id="contrast-pixels">
+        <section id="change-of-contrast">
 
-            <h3>Indicator contrasts between its focused and unfocused states</h3>
+            <h3>Change of contrast</h3>
 
-            <p>The second of the focus indicator bullets states that the indicator "has a contrast ratio of at least 3:1 between its pixels in the focused and unfocused states." The following illustration shows a <strong>minimally</strong> contrasting focus indicator, where some of the white pixels making up the page background have been altered to a mid-grey, which contrast 3:1 with the original white. Authors are encouraged to exceed the minimum focus appearance. For instance, the dark blue lines in the first two illustrations are much more visible.</p>
+            <p>The second part of the Success Criterion's indicator requirements states that an area of the indicator:
+                
+            <blockquote>
+                <ul>
+                    <li>has a contrast ratio of at least 3:1 between the same pixels in the focused and unfocused states</li>
+                </ul>
+            </blockquote>
+            
+            This requirement measures the change of contrast between the same pixels in different states. This is different from the Text Contrast and Non-text Contrast Success Criteria, which measure the contrast between different adjacent pixels in a single state at a time.
+
+            The greater the change of contrast between states, the easier it is for users to see it. Authors are encouraged to make the change of color contrast as great as possible.
+
+            The following illustration shows a <strong>minimally</strong> contrasting focus indicator, where some of the white pixels making up the page background have been altered to a mid-grey, which contrast 3:1 with the original white. Authors are encouraged to exceed the minimum focus appearance. For instance, the dark blue lines in the first two illustrations are much more visible.</p>
 
             <figure id="focus-indicator-star-with-light-focus">
                 <img src="img/focus-indicator-star-with-light-focus.svg" alt="Two orange-yellow five-pointed stars, one with a mid-gray focus rectangle" />
                 <figcaption> Passes: Two buttons in the shape of a star, with the second surrounded by a focus indicator whose pixels contrast 3:1 between focused (light grey) and unfocused (white) states.</figcaption>
             </figure>
 
-            <!-- TODO: add paragraph/example covering that only part of the indicator need meet change contrast, with a two-color indicator example -->
+            <p>When a component changes to include a focus indicator, that change can be measured as a change of color contrast. For example, if a yellow outline is added to a button on a blue background, the change of color is from blue to yellow. This change can be measured whether the focus indicator is on the background around the component, or the background within the component.</p>
+                        
+            <figure id="focus-indicator-innerline-2">
+                <img src="img/focus-indicator-innerline.png" alt="Three dark blue buttons on a white background. The middle button has a yellow inner border." width="284" />
+                <figcaption> Passes: adding a yellow outline to a link is a change of color from blue to yellow. That change has a contrast ratio of 12:1.</figcaption>
+            </figure>
+
+            <p>If a control receiving focus changes its background (fill color) to a color that contrasts less than 3:1 with the original background, that would not pass the change of contrast.</p>
+
+            <figure id="focus-indicator-background">
+                <img src="img/focus-indicator-background.png" alt="Three black buttons with a dark background. The middle button has a dark grey background." width="250" />
+                <figcaption> Fails: the second link has a dark-grey (#555) which <strong>fails</strong> this Success Criterion because the change from black-background to dark-grey background does not meet 3:1.</figcaption>
+            </figure>
+            <p>If the background change is sufficient, it is a method of passing the criterion.</p>
+            <figure id="focus-indicator-background-passing">
+                <img src="img/focus-indicator-background-passing.png" alt="Three black buttons with a dark border and two have a dark background. The middle button has a white background." width="250" />
+                <figcaption> Passes: the second link has a white background (#fff) which <strong>passes</strong> this Success Criterion because the change from black-background to white-background meets 3:1.</figcaption>
+            </figure>
+
+            <p>It is not necessary for the entire focus indicator to have a 3:1 change of contrast. It is sufficient for just a part of the indicator to meet the change of contrast requirement, so long as the contrasting part of the indicator meets the minimum area requirement.</p>
+
+            <!-- TODO: add figure -->
+            <figure id="focus-indicator-two-color-thick">
+                <img src="img/focus-indicator-two-color-pass.png" alt="A button whose focus indicator is two nested outlines: an inner 2px thick black outline with high contrast against the background, and an outer 2px thick light gray outline with low contrast" />
+                <figcaption>Passes: The inner part of the indicator meets the minimum area and change of contrast requirements on its own, so it is not necessary for the outer part of the indicator to have a 3:1 change of contrast.</figcaption>
+            </figure>
+
+            <!-- TODO: add figure -->
+            <figure id="focus-indicator-two-color-thick">
+                <img src="img/focus-indicator-two-color-fail.png" alt="A button whose focus indicator is two nested outlines: an inner 1px thick black outline with high contrast against the background, and an outer 1px thick light gray outline with low contrast" />
+                <figcaption>Fails: The inner part of the indicator has sufficient change of contrast, but the outer part does not. Only the inner part can be considered, and it does not meet the minimum area requirement on its own because it is only 1px thick.</figcaption>
+            </figure>
+
+            <p>It is possible to use visual patterns such as strips switching places to disguise a change of focus indicator. This is not considered a visible indicator.</p>
         </section>
 
-        <section id="contrast-adjacent">
+        <section id="relationship-with-non-text-contrast">
             <h3>Relationship with Non-text Contrast</h3>
 
-            <p>Focus indicators are visual information required to identify a state of a user interface component. That means that they are subject to <a>1.4.11 Non-text Contrast</a>. The focus indicator <em>must</em> have sufficient contrast against the adjacent background when the component is focused, except where the appearance of the component is determined by the user agent and not modified by the author.</p>
+            <p>Focus indicators are visual information required to identify a state of a user interface component. That means that they are subject to <a>1.4.11 Non-text Contrast</a>, in addition to 2.4.13 Focus Appearance.</p>
 
-            <p>Focus indicators which are drawn <em>outside</em> the boundary of the unfocused component, for example using a CSS <code>outline</code> property, do not need to meet 3:1 contrast with the component itself, but do need to meet 3:1 contrast with any background colors or other components adjacent to the focus indicator.</p>
+            <p>In combination with <a href="focus-visible">2.4.7 Focus Visible</a>, <a href="non-text-contrast" class="sc">1.4.11 Non-text Contrast</a> requires that the visual focus indicator for a component must have sufficient contrast against the adjacent colors when the component is focused, except where the appearance of the component is determined by the user agent and not modified by the author.</p>
+                    
+            <p>The difference between the contrast requirements in Focus Appearance and Non-text Contrast is:</p>
 
-            <!-- TODO: add example figure, maybe reuse from non-text contrast understanding -->
+            <ul>
+                <li>Focus Appearance requires that focus indicators have a <em>change of contrast</em> between focused and non-focused states.</li>
+                <li>Non-text Contrast requires that focus indicators have <em>adjacent contrast</em> between the indicator (in the focused state) and adjacent non-indicator colors.</li>
+            </ul>
             
-            <p>Focus indicators which are drawn entirely or partially <em>within</em> the boundary of the unfocused component, for example using a CSS <code>border</code> property, must have 3:1 contrast contrast with <em>both</em> the adjacent pixels of the focused component itself <em>and</em> any adjacent background colors or different components.</p>
+            <!-- TODO: make both of these figures -->
+            <figure id="non-text-contrast-fail-focus-apperance-pass">
+                <img src="img/non-text-contrast-fail-focus-apperance-pass.png" alt="A light blue button with a 2px thick border. The border is black in the unfocused state and light gray in the focused state." width="400" />
+                <figcaption>This example passes Focus Appearance but fails Non-text Contrast; there is insufficient <em>adjacent contrast</em> between the focus indicator and the adjacent colors.</figcaption>
+            </figure>
 
-            <!-- TODO: add example figure, maybe reuse from non-text contrast understanding -->
+            <figure id="non-text-contrast-pass-focus-apperance-fail">
+                <img src="img/non-text-contrast-pass-focus-apperance-fail.png" alt="A light blue button with a 2px thick border. The border is black in the unfocused state and dark gray in the focused state." width="400" />
+                <figcaption>This example passes Non-text Contrast but fails Focus Appearance; there is insufficient <em>change of contrast</em> between the focused and unfocused states.</figcaption>
+            </figure>
+
+            <p>Additionally, Non-text Contrast does not establish any size requirement and has slightly different rules for when exceptions are allowed.</p>
 
             <p>See the Relationship with Focus Visible section of <a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html">Understanding 1.4.11 Non-text Contrast</a> for more details and examples.</p>
-
-            <!-- TODO: delete img/focus-indicator-star-with-abutted-line.svg -->
         </section>
 
         <section id="keyboard-focus">
@@ -298,103 +362,7 @@
 
             <p>Some non-operable elements can take focus (such as a heading element that is the target of a skip link). However, the preamble of this SC refers to user interface components; it is only when the element with focus is operable by keyboard that this Success Criterion applies.</p>
         </section>
-        <section id="area">
-            <h3>Area of focus indicator</h3>
-            <p>In addition to achieving a minimum keyboard focus appearance using the three primary means described above to assess the entire focus indicator, an author can also meet this SC's requirements by assessing an area of the focus indicator for sufficient size and contrast.</p>
 
-            <section id="change-of-contrast">
-                <h4>Change of contrast</h4>
-
-                <blockquote>
-                    <ul>
-                        <li>has a contrast ratio of at least 3:1 against the same pixels in the unfocused state</li>
-                    </ul>
-                </blockquote>
-
-                <p>The second of the Area bullets matches the second of the primary considerations about a visual difference between a component with and without focus. The greater the change of contrast between states, the easier it is for users to see it. Authors are encouraged to make the change of color contrast as great as possible.</p>
-
-                <p>When a component changes to include a focus indicator, that change can be measured as a change of color contrast. For example, if a yellow outline is added to a button on a blue background, the change of color is from blue to yellow. This change can be measured whether the focus indicator is on the background around the component, or the background within the component.</p>
-                        
-                <figure id="focus-indicator-innerline-2">
-                    <img src="img/focus-indicator-innerline.png" alt="Three dark blue buttons on a white background. The middle button has a yellow inner border." width="284" />
-                    <figcaption> Passes: adding a yellow outline to a link is a change of color from blue to yellow. That change has a contrast ratio of 12:1.</figcaption>
-                </figure>        
-
-                        
-                <p>Text and non-text contrast measures use adjacent colors; this Success Criterion measures the <em>change</em> in color between non-focused and focused states.</p>
-
-                <figure id="focus-indicator-non-contrast">
-                    <img src="img/focus-indicator-non-contrast.png" alt="Three buttons with light background and dark border on a white background. The middle button has a light grey outline." width="250" />
-                    <figcaption> Fails: the second link has a light-grey (#ccc) focus outline which <strong>fails</strong> this Success Criterion because the change from white-background to light-grey outline does not meet 3:1.</figcaption>
-                </figure>
-                <p class="note">Color contrast measurements in WCAG are based on luminance (brightness) regardless of the hue.</p>
-
-                <p>If a control receiving focus changes its background (fill color) to a color that contrasts less than 3:1 with the original background, that would not pass the change of contrast.</p>
-
-                <figure id="focus-indicator-background">
-                    <img src="img/focus-indicator-background.png" alt="Three black buttons with a dark background. The middle button has a dark grey background." width="250" />
-                    <figcaption> Fails: the second link has a dark-grey (#555) which <strong>fails</strong> this Success Criterion because the change from black-background to dark-grey background does not meet 3:1.</figcaption>
-                </figure>
-                <p>If the background change is sufficient, it is a method of passing the criterion.</p>
-                <figure id="focus-indicator-background-passing">
-                    <img src="img/focus-indicator-background-passing.png" alt="Three black buttons with a dark border and two have a dark background. The middle button has a white background." width="250" />
-                    <figcaption> Passes: the second link has a white background (#fff) which <strong>passes</strong> this Success Criterion because the change from black-background to white-background meets 3:1.</figcaption>
-                </figure>
-
-                <p>It is possible to use visual patterns such as strips switching places to disguise a change of focus indicator. This is not considered a visible indicator.</p>
-            </section>
-            <section id="contrast-thickness">
-                <h3>Adjacent non-focus-indicator contrast</h3>
-
-                <blockquote>
-                    <ul>
-                        <li>Has a contrast ratio of at least 3:1 against adjacent non-focus-indicator colors, or is no thinner than 2 CSS pixels.</li>
-                    </ul>
-                </blockquote>
-
-                <p>The third of these Area bullets is similar to the third primary consideration -- the focus indicator must contrast with whatever it is next to <strong>or</strong> it must be thick enough that it is easier to see. Where a control is a solid color, and you add a border or outline of a very similar color, it is difficult to perceive the change to the control.</p>
-
-                <figure id="focus-indicator-thin-non-contrast">
-                    <img src="img/focus-indicator-thin-non-contrast.png" alt="Three dark buttons, the middle one appears very slightly larger due to a thin dark outline." width="255" />
-                    <figcaption> Fails: adding a 1px dark outline around a dark button does not differentiate it. This example <strong>fails</strong> the Success Criterion.</figcaption>
-                </figure>
-                        
-                <p>The requirement is to have an indicator that has a 3:1 contrast ratio with the adjacent colors of the component, or to be separated from the component, or to be at least 2px thick.</p>
-
-                <figure id="focus-indicator-thick-non-contrast">
-                    <img src="img/focus-indicator-thick-non-contrast.png" alt="Three dark buttons, the middle one appears larger due to a thick dark outline." width="255" />
-                    <figcaption> Passes: adding a 2px border around the button helps to differentiate which one is focused.</figcaption>
-                </figure>
-
-                <figure id="focus-indicator-outerline">
-                    <img src="img/focus-indicator-outerline.png" alt="Three dark buttons, the middle one has a outline slightly offset away from the component, so there is a gap between the component's background and the outline." width="250" />
-                    <figcaption> Adding an outline that is separated from the button helps to differentiate which one is focused.</figcaption>
-                </figure>
-
-                <p>If the focus indicator uses several colors, any color which does not contrast 3:1 against adjacent colors can be ignored as long as there is a 2 CSS pixel-thick part of the focus indicator whose pixels all change at least 3:1 between their focused and non-focused states. Practically, this means 3D drop-shadows and other stylings on a focus indicator can likely be ignored when assessing focus appearance.</p>
-
-                <figure id="focus-indicator-extra-outline">
-                    <img src="img/focus-indicator-extra-outline.png" alt="Two dark blue buttons on a white background. The second one has a dark outline, then a light grey outline on the outside." width="250" />
-                    <figcaption> Passes: the 3px thick dark outline also meets the size and change of contrast requirements. The light grey outline can be ignored.</figcaption>
-                </figure>
-                <p>Where a focus indicator is defined in code as a certain size (e.g. 2px thickness) or color, anti-aliasing can be ignored for the purposes of calculation. Dotted or dashed outlines have various levels of gaps depending on the browser, screen density, and thickness. For example, in most browsers a "dotted" line will have roughly half the number of pixels due to gaps. However, in some sizes or browsers it might be slightly less than half, so increasing the thickness may be required.</p>
-            </section>
-
-            <!-- TODO: consolidate this with new same-named section above -->
-            <section id="relation-non-text-color-contrast">
-                <h3>Relationship to Non-text Contrast</h3>
-                <p>In combination with <a href="focus-visible">2.4.7 Focus Visible</a>, <a href="non-text-contrast" class="sc">1.4.11 Non-text Contrast</a> requires that the visual focus indicator for a component must have sufficient contrast against the adjacent colors when the component is focused, except where the appearance of the component is determined by the user agent and not modified by the author.</p>
-                    
-                <p>However, Non-text Contrast differs in what it assesses. Unlike the current Success Criterion, it does not require that the focus indicator has a change of contrast <em>between</em> the focused and non-focused states. Additionally, there is no size requirement and no exception for user agent default indicators.</p>
-                
-                <figure id="focus-indicator-ntc-comparison1">
-                    <img src="img/focus-indicator-ntc-comparison1.png" alt="Three dark blue buttons, the center button also has a thin dark line around it." width="400" />
-                    <figcaption> A 1px dark outline around a dark button would pass 1.4.11 Non-text Contrast, but fails this Success Criterion.</figcaption>
-
-            </figure>
-
-            </section>
-        </section>
         <section id="exceptions">
             <h3>Exceptions</h3>
                 <p>There are two situations where the focus appearance does not need to be assessed:</p>
@@ -402,38 +370,37 @@
                 <li>the focus indicator cannot be adjusted by the author</li>
                 <li>the author has not modified the effects of the user agent default</li>
             </ul>
+        
+            <section id="exception-cannot-adjust">
+                <h4>First exception: the focus indicator cannot be adjusted by the author</h4>
+
+                <blockquote><p>The focus indicator is determined by the user agent and cannot be adjusted by the author</p></blockquote>
+                <p>Some components or technologies may not allow the author to adjust the focus indicator. This is the case with HTML <code>select</code> elements (both single and multi-select), where the visual treatments for selection and focus cannot be adjusted by the author. In this case the Success Criterion does not apply.</p>
+                <figure id="country-select">
+                    <img src="img/focus-indicator-select.png" alt="A country select element with Afghanistan selected and Albani with focus" />
+                    <figcaption>Passes: The user agent's default <code>select</code> element presentation cannot be modified by the author, so it passes regardless of the quality of the focus indicator</figcaption>
+                </figure>  
+            
+            </section>
+            <section id="exception-default">
+                <h4>Second exception: the default indicator and background are not modified</h4>
+                <blockquote><p>The focus indicator and the indicator's background color are not modified by the author</p></blockquote>
+                <p>If the focus indicator and the background behind the focus indicator are not modified by the author, the Success Criterion does not apply.</p>
+                <p>The intent of this exception is to reduce burden on authors by allowing them to rely on the default indicators provided by user agents (browsers). If all user agents provided good focus indicators, authors would be able to concentrate efforts on other accessibility considerations. Unfortunately, browser default focus indicators vary by component, browser, and across devices and operating systems, and the default focus indicators in some browsers can be difficult to see (such as a 1px dotted outline). For this reason, most authors override browser defaults in order to overcome these deficiencies and create a more uniform user experience, regardless of browser.</p>
+                <p>Some browser makers are improving their default focus indicators to make them more visible. As more browsers adopt defaults that meet the primary bullets of this SC, authors will be able to achieve improved focus indicators without customization.</p>
+
+                <h4>Modifying the focus indicator background</h4>
+                <p>Browser default focus indicators can be made <em>more</em> difficult to see if the author modifies the pixels directly adjacent to the indicator (commonly referred to as its background), such as by positioning a component on top of an image or gradient background, or altering the page's default white background color, for instance using a blue background in combination with a browser's blue default indicator. For this reason, where the author alters the pixels directly adjacent to the default focus indicator, the user agent exception does not apply, and the author will need to verify they meet the size and contrast requirements of this Success Criterion.</p>
+                <p class="note">Altering the <code>body</code> element's <code>background-color</code> attribute <em>is</em> one way of altering the pixels directly adjacent to the indicator in most implementations. However, specifying a value of white (<code>#FFFFFF</code>) does not nullify this exception since, as established in the third note of the <a href="https://www.w3.org/TR/WCAG22/#dfn-contrast-ratio">contrast ratio definition</a>, the default ("unspecified") color is assumed to be white.</p>
+                
+                    <p>[Future image set: a button with a default light blue focus indicator on a white page; the same button and focus indicator on a light blue page background]</p>
+
+                <p>As well, if the browser provides an indicator <em>within</em> a component by default, then authors can potentially reduce the visibility by changing the component color (which in such a scenario is the background color for the focus indicator). For example, if the default indicator on a button is a bright yellow inner focus rectangle, the authors can negatively affect the focus appearance by making the button yellow or orange. For this reason, this user agent exception can only be met if the author both does not modify the default focus indicator <em>and</em> does not modify its background.</p>
+
+                
+                <p>[Future image set: a button with a default internal focus indicator; the same button, now with a colour similar to the default internal focus indicator]</p>
+            </section>
         </section>
-
-
-    <section id="cannot-adjust">
-        <h3>First exception: the focus indicator cannot be adjusted by the author</h3>
-
-        <blockquote><p>The focus indicator is determined by the user agent and cannot be adjusted by the author</p></blockquote>
-        <p>Some components or technologies may not allow the author to adjust the focus indicator. This is the case with HTML <code>select</code> elements (both single and multi-select), where the visual treatments for selection and focus cannot be adjusted by the author. In this case the Success Criterion does not apply.</p>
-        <figure id="country-select">
-            <img src="img/focus-indicator-select.png" alt="A country select element with Afghanistan selected and Albani with focus" />
-            <figcaption>Passes: The user agent's default <code>select</code> element presentation cannot be modified by the author, so it passes regardless of the quality of the focus indicator</figcaption>
-        </figure>  
-    
-    </section>
-    <section id="default">
-        <h3>Second exception: the default indicator and background are not modified</h3>
-        <blockquote><p>The focus indicator and the indicator's background color are not modified by the author</p></blockquote>
-        <p>If the focus indicator and the background behind the focus indicator are not modified by the author, the Success Criterion does not apply.</p>
-        <p>The intent of this exception is to reduce burden on authors by allowing them to rely on the default indicators provided by user agents (browsers). If all user agents provided good focus indicators, authors would be able to concentrate efforts on other accessibility considerations. Unfortunately, browser default focus indicators vary by component, browser, and across devices and operating systems, and the default focus indicators in some browsers can be difficult to see (such as a 1px dotted outline). For this reason, most authors override browser defaults in order to overcome these deficiencies and create a more uniform user experience, regardless of browser.</p>
-        <p>Some browser makers are improving their default focus indicators to make them more visible. As more browsers adopt defaults that meet the primary bullets of this SC, authors will be able to achieve improved focus indicators without customization.</p>
-
-        <h4>Modifying the focus indicator background</h4>
-        <p>Browser default focus indicators can be made <em>more</em> difficult to see if the author modifies the pixels directly adjacent to the indicator (commonly referred to as its background), such as by positioning a component on top of an image or gradient background, or altering the page's default white background color, for instance using a blue background in combination with a browser's blue default indicator. For this reason, where the author alters the pixels directly adjacent to the default focus indicator, the user agent exception does not apply, and the author will need to verify they meet the size and contrast requirements of this Success Criterion.</p>
-        <p class="note">Altering the <code>body</code> element's <code>background-color</code> attribute <em>is</em> one way of altering the pixels directly adjacent to the indicator in most implementations. However, specifying a value of white (<code>#FFFFFF</code>) does not nullify this exception since, as established in the third note of the <a href="https://www.w3.org/TR/WCAG22/#dfn-contrast-ratio">contrast ratio definition</a>, the default ("unspecified") color is assumed to be white.</p>
-        
-            <p>[Future image set: a button with a default light blue focus indicator on a white page; the same button and focus indicator on a light blue page background]</p>
-
-        <p>As well, if the browser provides an indicator <em>within</em> a component by default, then authors can potentially reduce the visibility by changing the component color (which in such a scenario is the background color for the focus indicator). For example, if the default indicator on a button is a bright yellow inner focus rectangle, the authors can negatively affect the focus appearance by making the button yellow or orange. For this reason, this user agent exception can only be met if the author both does not modify the default focus indicator <em>and</em> does not modify its background.</p>
-
-        
-        <p>[Future image set: a button with a default internal focus indicator; the same button, now with a colour similar to the default internal focus indicator]</p>
-    </section>
     </section>
 
     <section id="benefits">
