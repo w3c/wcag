@@ -94,6 +94,7 @@
 			<xsl:when test="$id = 'related'"><xsl:value-of select="$section and $section//html:li//html:a[@href]"/></xsl:when>
 			<xsl:when test="$id = 'tests'"><xsl:value-of select="$section and $section//html:section[@class = 'test-procedure' or @class = 'procedure']//html:li and $section//html:section[@class = 'test-results' or @class = 'results']"/></xsl:when>
 			<xsl:when test="$id = 'sufficient' or $id = 'advisory' or $id = 'gladvisory' or $id = 'failure'"><xsl:value-of select="$section and ($section/html:*[not(@class = 'instructions')]//html:li)"/></xsl:when>
+			<xsl:when test="$id = 'brief'"><xsl:value-of select="exists($section)"/></xsl:when>
 		</xsl:choose>
 	</xsl:function>
 	
@@ -374,18 +375,17 @@
 					</ul>
 				</div>
 				<div dir="auto" translate="no" lang="en">
-					<p>Copyright © <xsl:value-of select="format-date(current-date(), '[Y]')"/> W3C <sup>®</sup> (<a href="https://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="https://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="https://www.keio.ac.jp/">Keio</a>, <a href="https://ev.buaa.edu.cn">Beihang</a>) <a href="/about/using-wai-material/">Permission to Use WAI Material</a>.</p>
+					<p>Copyright © <xsl:value-of select="format-date(current-date(), '[Y]')"/> World Wide Web Consortium (<a href="https://www.w3.org/">W3C</a><sup>®</sup>). See <a href="/WAI/about/using-wai-material/">Permission to Use WAI Material</a>.</p>
 				</div>
 			</div>
 			<div dir="auto" translate="no" class="q4-start q4-end" lang="en">
 				<ul style="margin-bottom:0">
-					<li><a href="/about/contacting/">Contact WAI</a></li>
-					<li><a href="/sitemap/">Site Map</a></li>
-					<li><a href="/news/">News</a></li>
-					<li><a href="/sitemap/#archive">Archive</a></li>
-					<li><a href="/about/accessibility-statement/">Accessibility Statement</a></li>
-					<li><a href="/translations/"> Translations</a></li>
-					<li><a href="/roles/">Resources for Roles</a></li>
+					<li><a href="/WAI/about/contacting/">Contact WAI</a></li>
+					<li><a href="/WAI/sitemap/">Site Map</a></li>
+					<li><a href="/WAI/news/">News</a></li>
+					<li><a href="/WAI/about/accessibility-statement/">Accessibility Statement</a></li>
+					<li><a href="/WAI/translations/"> Translations</a></li>
+					<li><a href="/WAI/roles/">Resources for Roles</a></li>
 				</ul>
 			</div>
 		</footer>
