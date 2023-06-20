@@ -663,6 +663,11 @@
 		<xsl:param name="meta" tunnel="yes"/>
 			<ul>
 				<xsl:if test="name($meta) = 'success-criterion'">
+					<xsl:if test="wcag:section-meaningfully-exists('brief', //html:section[@id = 'brief'])">
+						<li>
+							<a href="#brief">In brief</a>
+						</li>
+					</xsl:if>
 					<li>
 						<a href="#intent">Intent</a>
 					</li>
@@ -905,6 +910,7 @@
 								</aside>
 								<div class="excol-all"/>
 								<xsl:apply-templates select="//html:section[@id = 'status']"/>
+								<xsl:apply-templates select="//html:section[@id = 'brief']"/>
 								<xsl:apply-templates select="//html:section[@id = 'intent']"/>
 								<xsl:apply-templates select="//html:section[@id = 'benefits']"/>
 								<xsl:apply-templates select="//html:section[@id = 'examples']"/>
@@ -982,6 +988,14 @@
 		<xsl:value-of select="$meta/name"/>
 	</xsl:template>
 
+	<xsl:template match="html:section[@id = 'brief']">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<h2>In brief</h2>
+			<xsl:apply-templates select="html:*[not(wcag:isheading(.) or @id = 'brief')]"/>
+		</xsl:copy>
+	</xsl:template>
+	
 	<xsl:template match="html:section[@id = 'intent']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
