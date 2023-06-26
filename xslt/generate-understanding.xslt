@@ -10,8 +10,8 @@
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:variable name="type">
 			<xsl:choose>
-				<xsl:when test="name($meta) = 'guideline'">Guideline</xsl:when>
-				<xsl:when test="name($meta) = 'success-criterion'">Success Criterion</xsl:when>
+				<xsl:when test="name($meta) = 'guideline'">Guideline </xsl:when>
+				<xsl:when test="name($meta) = 'success-criterion'">Success Criterion </xsl:when>
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:if test="$type != ''">
@@ -903,9 +903,13 @@
 						<xsl:choose>
 							<xsl:when test="name($meta) = 'guideline' or name($meta) = 'success-criterion'">
 								<aside class="box">
-									<header class="box-h  box-h-icon"> Success Criterion (SC)</header>
+									<header class="box-h  box-h-icon"> 
+										<xsl:choose>
+											<xsl:when test="name($meta) = 'guideline'">Guideline </xsl:when>
+											<xsl:when test="name($meta) = 'success-criterion'">Success Criterion (SC) </xsl:when>
+										</xsl:choose></header>
 									<div class="box-i">
-										<xsl:apply-templates select="$meta/content/html:*"/>
+										<xsl:apply-templates select="$meta/content/html:*" mode="wcag-include"/>
 									</div>
 								</aside>
 								<div class="excol-all"/>
@@ -983,7 +987,12 @@
 	<xsl:template match="html:h1">
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:if test="name($meta) != 'understanding'">
-			<span class="standalone-resource__type-of-guidance">Understanding SC <xsl:value-of select="$meta/num"/>:</span>
+			<span class="standalone-resource__type-of-guidance">Understanding 
+				<xsl:choose>
+					<xsl:when test="name($meta) = 'guideline'">Guideline </xsl:when>
+					<xsl:when test="name($meta) = 'success-criterion'">SC </xsl:when>
+				</xsl:choose>
+				<xsl:value-of select="$meta/num"/>:</span>
 		</xsl:if>
 		<xsl:value-of select="$meta/name"/>
 	</xsl:template>
@@ -1121,5 +1130,14 @@
 	</xsl:template>
 
 	<xsl:template match="html:*[@class = 'instructions']"/>
+	
+	<xsl:template match="html:a[func:starts-with(@href, '#')]" mode="wcag-include">
+		<xsl:variable name="href" select="@href"/>
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:attribute name="href"><xsl:value-of select="$loc.guidelines"/><xsl:value-of select="$href"/></xsl:attribute>
+			<xsl:apply-templates/>
+		</xsl:copy>
+	</xsl:template>
 
 </xsl:stylesheet>
