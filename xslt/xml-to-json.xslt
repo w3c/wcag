@@ -59,6 +59,7 @@
 			"versions": <xsl:call-template name="versions"/>,
 			"handle": "<xsl:value-of select="normalize-space(name)"/>",
 			"title": "<xsl:value-of select="normalize-space(content/html:p[1])"/>",
+			<xsl:call-template name="htmlcontent"><xsl:with-param name="content" select="content"></xsl:with-param></xsl:call-template>,
 			"guidelines": [
 				<xsl:apply-templates select="guideline"/>
 			]
@@ -73,6 +74,7 @@
 			"versions": <xsl:call-template name="versions"/>,
 			"handle": "<xsl:value-of select="normalize-space(name)"/>",
 			"title": "<xsl:value-of select="normalize-space(content/html:p[1])"/>",
+			<xsl:call-template name="htmlcontent"><xsl:with-param name="content" select="content"></xsl:with-param></xsl:call-template>,
 			"successcriteria": [
 				<xsl:apply-templates select="success-criterion"/>
 			],
@@ -103,9 +105,20 @@
 		<xsl:if test="content/html:*[not(@class = 'note')]">
 			<xsl:message>Still gotta process more "details" thingys</xsl:message>
 		</xsl:if>
+			<xsl:call-template name="htmlcontent"><xsl:with-param name="content" select="content"></xsl:with-param></xsl:call-template>,
 			"techniques": [<xsl:apply-templates select="$associations//success-criterion[@id = current()/@id]" mode="techniques"/>]
 		}<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
+	
+	<xsl:template name="htmlcontent">
+		<xsl:param name="content"/>
+		<xsl:text>"content": "</xsl:text><xsl:value-of select="wcag:htmltojson($content/*[not(name() = 'h1' or name() = 'h2' or name() = 'h3' or name() = 'h4' or name() = 'h5' or name() = 'h6' or name() = 'section' or @class = 'conformance-level' or @class = 'change')])"/><xsl:text>"</xsl:text>
+	</xsl:template>
+	
+	<xsl:function name="wcag:htmltojson">
+		<xsl:param name="content"/>
+		<xsl:value-of select="replace(replace(serialize($content), '&quot;', '\\&quot;'), '\n', '')"/>
+	</xsl:function>
 	
 	<xsl:template match="guideline | success-criterion" mode="techniques">
 		<xsl:apply-templates select="sufficient | advisory | failure"/>
