@@ -46,10 +46,18 @@
 	<xsl:template match="/">
 		<xsl:message>Process sufficientNotes whatever they are</xsl:message>
 		{
-			"principles": [
-			<xsl:apply-templates select="//principle"/>
-			]
-		}
+			"guidelines": [
+			{
+				"principles": [
+				<xsl:apply-templates select="//principle"/>
+				]
+			},
+			{
+				"terms": [
+				<xsl:apply-templates select="//term"/>
+				]
+			}
+		]}
 	</xsl:template>
 	
 	<xsl:template match="principle">
@@ -182,6 +190,14 @@
 		"using": [
 		<xsl:apply-templates select="technique | ./and"/>
 		]
+	</xsl:template>
+	
+	<xsl:template match="term">
+		{
+			"id": "<xsl:value-of select="id"/>",
+			"name": "<xsl:value-of select="name"/>",
+			"definition": "<xsl:value-of select="wcag:htmltojson(definition/html:*)"/>"
+		}<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
 </xsl:stylesheet>
