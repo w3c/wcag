@@ -8,37 +8,49 @@
 	<xsl:output method="xhtml" indent="yes" omit-xml-declaration="yes" encoding="UTF-8"/>
 	
 	<xsl:template match="guidelines">
-		<xsl:result-document href="toc.html" method="xhtml">
-			<nav id="toc">
-				<h2 class="introductory" id="understanding-pages">
-					Understanding Pages
-					<!-- <span class="permalink"><a href="#toc" aria-label="Permalink for Understanding Pages" title="Permalink for Understanding Pages"><span>§</span></a></span> -->
-				</h2>
-				<ol class="toc">
-					<xsl:apply-templates select="principle | understanding | guideline | success-criterion"/>
-				</ol>
-			</nav>
+		<xsl:result-document href="toc.html" method="xhtml" omit-xml-declaration="yes">
+				<xsl:apply-templates select="principle | guideline | success-criterion"/>
+			<section id="other">
+				<h2>Other Understanding documents</h2>
+				<ul class="toc-wcag-docs">
+				<xsl:apply-templates select="understanding"/>
+				</ul>
+			</section>
 		</xsl:result-document>
 	</xsl:template>
+
+	<xsl:template match="principle">
+		<section id="{@id}">
+			<h2><xsl:value-of select="name"/></h2>
+			<xsl:apply-templates select="guideline"/>
+		</section>
+	</xsl:template>
 	
-	<xsl:template match="principle | understanding | guideline | success-criterion">
-		<li class="tocline">
-			<xsl:choose>
-				<xsl:when test="name() != 'principle'">
-					<a href="{file/@href}" class="tocxref">
-						<span class="secno"><xsl:value-of select="num"/><xsl:text> </xsl:text></span>
-						<xsl:value-of select="name"/></a>
-				</xsl:when>
-				<xsl:otherwise>
+	<xsl:template match="guideline">
+		<section id="{@id}">
+			<h3>
+				<a href="{file/@href}">
+					<span class="secno"><xsl:value-of select="num"/><xsl:text> </xsl:text></span>
 					<xsl:value-of select="name"/>
-				</xsl:otherwise>				
-			</xsl:choose>
-			<xsl:if test="understanding | guideline | success-criterion">
-				<ol class="toc">
-					<xsl:apply-templates select="understanding | guideline | success-criterion"/>
-				</ol>
-			</xsl:if>
+				</a>
+			</h3>
+			<ul>
+			<xsl:apply-templates select="success-criterion"/>
+			</ul>
+		</section>
+	</xsl:template>
+	
+	<xsl:template match="success-criterion">
+		<li>
+			<a href="{file/@href}">
+				<span class="secno"><xsl:value-of select="num"/><xsl:text> </xsl:text></span>
+				<xsl:value-of select="name"/>
+			</a>
 		</li>
 	</xsl:template>
-		
+	
+	<xsl:template match="understanding">
+		<li><a href="{file/@href}"><xsl:value-of select="name"/></a></li>
+	</xsl:template>
+	
 </xsl:stylesheet>
