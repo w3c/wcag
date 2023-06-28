@@ -199,9 +199,14 @@
 	<xsl:template match="term">
 		{
 			"id": "<xsl:value-of select="id"/>",
-			"name": "<xsl:value-of select="name"/>",
+			"name": [<xsl:apply-templates select="name"/>],
 			"definition": "<xsl:value-of select="wcag:htmltojson(definition/html:*)"/>"
 		}<xsl:if test="position() != last()">,</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="name">
+		<xsl:text>"</xsl:text><xsl:value-of select="."/><xsl:text>"</xsl:text>
+		<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
 	<xsl:template name="intent">
