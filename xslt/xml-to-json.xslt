@@ -48,18 +48,13 @@
 	<xsl:template match="/">
 		<xsl:message>Process sufficientNotes whatever they are</xsl:message>
 		{
-			"guidelines": [
-			{
-				"principles": [
-				<xsl:apply-templates select="//principle"/>
-				]
-			},
-			{
-				"terms": [
-				<xsl:apply-templates select="//term"/>
-				]
-			}
-		]}
+			"principles": [
+			<xsl:apply-templates select="//principle"/>
+			],
+			"terms": [
+			<xsl:apply-templates select="//term"/>
+			]
+		}
 	</xsl:template>
 	
 	<xsl:template match="principle">
