@@ -83,10 +83,13 @@ function termTitles() {
 	});	
 }
 
+// number notes if there are multiple per section
 function numberNotes() {
 	var sectionsWithNotes = new Array();
 	document.querySelectorAll(".note").forEach(function(note) {
-		sectionsWithNotes.push(note.closest("section, dd"));
+		var container = note.closest("dd");
+		if (container == null) container = note.closest("section");
+		sectionsWithNotes.push(container);
 	});
 	
 	sectionsWithNotes.forEach(function(sec) {
@@ -109,11 +112,12 @@ function numberNotes() {
 	});
 }
 
+// change the numbering of examples to remove number from lone examples in a section, and restart numbering for multiple in each section
 function renumberExamples() {
 	var sectionsWithExamples = new Array();
 	document.querySelectorAll(".example").forEach(function(example) {
-		var container = example.closest("dd");
-		if (container == null) container = example.closest("section");
+		var container = example.closest("dd"); // use dd container if present
+		if (container == null) container = example.closest("section"); // otherwise section
 		sectionsWithExamples.push(container);
 	});
 	
@@ -130,9 +134,7 @@ function renumberExamples() {
 			sec.querySelectorAll(".example").forEach(function(example) {
 				var marker = example.querySelector(".marker");
 				if (rmOrAdd == "rm") marker.textContent = "Example";
-				else {
-					marker.textContent = "Example " + count;
-				}
+				else marker.textContent = "Example " + count;
 				count++;
 			});
 		}
