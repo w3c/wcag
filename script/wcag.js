@@ -83,10 +83,41 @@ function termTitles() {
 	});	
 }
 
+function numberNotes() {
+	var sectionsWithNotes = new Array();
+	document.querySelectorAll(".note").forEach(function(note) {
+		sectionsWithNotes.push(note.parentNode);
+	});
+	
+	sectionsWithNotes.forEach(function(sec) {
+		if (sec.processed) return;
+		var notes = sec.querySelectorAll('.note');
+		// no notes, shouldn't happen
+		if (notes.length == 0) return;
+		// one note, leave alone
+		if (notes.length == 1) return;
+		// more than one note, number them
+		if (notes.length > 1) {
+			var count = 1;
+			sec.querySelectorAll(".note").forEach(function(note) {
+				var span = note.querySelector(".note-title span");
+				span.textContent = "Note " + count;
+				count++;
+			});
+		}
+		sec.processed = true;
+	});
+}
+
+function renumberExamples() {
+	
+}
+
 // scripts after Respec has run
 function postRespec() {
 	addTextSemantics();
 	swapInDefinitions();
 	termTitles();
 	linkUnderstanding();
+	numberNotes();
 }
