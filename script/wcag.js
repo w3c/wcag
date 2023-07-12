@@ -86,11 +86,11 @@ function termTitles() {
 function numberNotes() {
 	var sectionsWithNotes = new Array();
 	document.querySelectorAll(".note").forEach(function(note) {
-		sectionsWithNotes.push(note.parentNode);
+		sectionsWithNotes.push(note.closest("section, dd"));
 	});
 	
 	sectionsWithNotes.forEach(function(sec) {
-		if (sec.processed) return;
+		if (sec.noteprocessed) return;
 		var notes = sec.querySelectorAll('.note');
 		// no notes, shouldn't happen
 		if (notes.length == 0) return;
@@ -105,12 +105,39 @@ function numberNotes() {
 				count++;
 			});
 		}
-		sec.processed = true;
+		sec.noteprocessed = true;
 	});
 }
 
 function renumberExamples() {
+	var sectionsWithExamples = new Array();
+	document.querySelectorAll(".example").forEach(function(example) {
+		var container = example.closest("dd");
+		if (container == null) container = example.closest("section");
+		sectionsWithExamples.push(container);
+	});
 	
+	sectionsWithExamples.forEach(function(sec) {
+		if (sec.exprocessed) return;
+		var examples = sec.querySelectorAll(".example");
+		// no examples, shouldn't happen
+		if (examples.length == 0) return;
+		// one example, remove the numbering
+		// more than one example, number them
+		else {
+			var count = 1;
+			var rmOrAdd = examples.length == 1 ? "rm" : "add";
+			sec.querySelectorAll(".example").forEach(function(example) {
+				var marker = example.querySelector(".marker");
+				if (rmOrAdd == "rm") marker.textContent = "Example";
+				else {
+					marker.textContent = "Example " + count;
+				}
+				count++;
+			});
+		}
+		sec.exprocessed = true;
+	});
 }
 
 // scripts after Respec has run
@@ -120,4 +147,5 @@ function postRespec() {
 	termTitles();
 	linkUnderstanding();
 	numberNotes();
+	renumberExamples();
 }
