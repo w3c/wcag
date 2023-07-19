@@ -94,12 +94,13 @@
 			<xsl:when test="$id = 'related'"><xsl:value-of select="$section and $section//html:li//html:a[@href]"/></xsl:when>
 			<xsl:when test="$id = 'tests'"><xsl:value-of select="$section and $section//html:section[@class = 'test-procedure' or @class = 'procedure']//html:li and $section//html:section[@class = 'test-results' or @class = 'results']"/></xsl:when>
 			<xsl:when test="$id = 'sufficient' or $id = 'advisory' or $id = 'gladvisory' or $id = 'failure'"><xsl:value-of select="$section and ($section/html:*[not(@class = 'instructions')]//html:li)"/></xsl:when>
+			<xsl:when test="$id = 'brief'"><xsl:value-of select="exists($section)"/></xsl:when>
 		</xsl:choose>
 	</xsl:function>
 	
 	<xsl:template match="node()|@*" mode="#all" priority="-1">
 		<xsl:copy>
-			<xsl:apply-templates select="node()|@*"/>
+			<xsl:apply-templates select="node()|@*" mode="#current"/>
 		</xsl:copy>
 	</xsl:template>
 	
