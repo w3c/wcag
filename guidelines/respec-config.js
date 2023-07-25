@@ -65,16 +65,8 @@ var respecConfig = {
 			company: "W3C",
 			companyURI: "https://www.w3.org",
 			w3cid: 34017
-		},
-		{
-			name: "Andrew Kirkpatrick",
-			mailto: "akirkpat@adobe.com",
-			company: "Adobe",
-			companyURI: "http://www.adobe.com/",
-			w3cid: 39770
 		}
 	],
-	/* 
 	formerEditors: [
 		{
 			name: "Ben Caldwell",
@@ -110,9 +102,14 @@ var respecConfig = {
 			name: "Joshue O Connor",
 			company: "Invited Expert, InterAccess",
 			w3cid: 41218
+		},
+		{
+			name: "Andrew Kirkpatrick",
+			company: "Adobe",
+			companyURI: "http://www.adobe.com/",
+			w3cid: 39770
 		}
 	],
-	*/
 	
 	// authors, add as many as you like.
 	// This is optional, uncomment if you have authors as well as editors.
