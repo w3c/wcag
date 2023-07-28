@@ -164,6 +164,7 @@
 			</xsl:call-template>
 			</xsl:if>
 		</xsl:if>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="/techniques">
@@ -486,8 +487,10 @@
 		<xsl:choose>
 			<xsl:when test="wcag:section-meaningfully-exists('description', $description)">
 				<section id="description">
-					<h2>Description</h2>
+					<details open="open">
+						<summary><h2>Description</h2></summary>
 					<xsl:apply-templates select="$description/html:*[not(wcag:isheading(.))]"/>
+					</details>
 				</section>
 			</xsl:when>
 			<xsl:otherwise>
@@ -501,8 +504,10 @@
 		<xsl:variable name="examples" select="//html:section[@id = 'examples']"/>
 		<xsl:if test="wcag:section-meaningfully-exists('examples', $examples)">
 			<section id="examples">
-				<h2>Examples</h2>
+				<details>
+				<summary><h2>Examples</h2></summary>
 				<xsl:apply-templates select="$examples/html:*[not(wcag:isheading(.))]"/>
+				</details>
 			</section>
 		</xsl:if>
 	</xsl:template>
@@ -525,10 +530,8 @@
 		<xsl:variable name="related" select="//html:section[@id = 'related']"/>
 		<!-- put in related techniques section if present and not template -->
 		<xsl:if test="wcag:section-meaningfully-exists('related', $related)">
-			<section id="related">
-				<h2>Related Techniques</h2>
-				<xsl:apply-templates select="$related/html:*[not(wcag:isheading(.))]"/>
-			</section>
+			<dt>Related Techniques</dt>
+			<dd><xsl:apply-templates select="$related/html:*[not(wcag:isheading(.))]"/></dd>
 		</xsl:if>
 	</xsl:template>
 	
@@ -538,8 +541,10 @@
 		<xsl:choose>
 			<xsl:when test="wcag:section-meaningfully-exists('tests', $tests)">
 				<section id="tests">
-					<h2>Tests</h2>
+					<details>
+					<summary><h2>Tests</h2></summary>
 					<xsl:apply-templates select="$tests/html:*[not(wcag:isheading(.))]"/>
+					</details>
 				</section>
 			</xsl:when>
 			<xsl:otherwise>
