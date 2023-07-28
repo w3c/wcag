@@ -12,17 +12,7 @@
 	
 	
 	<xsl:template match="techniques">
-		<xsl:result-document href="toc.html" method="xhtml">
-			<h1 class="introductory" id="techniques-pages">
-				All Techniques
-			</h1>
-			<aside class="box">
-					<header class="box-h ">Summary</header>
-					<div class="box-i">
-							<p><em>Techniques</em> are examples of ways to meet a WCAG criterion. Most Techniques relate to meeting specific WCAG success criteria, some offer general advice. <a href="about">About Techniques</a> provides further
-								background, and <a href="/WAI/standards-guidelines/wcag/">All WCAG 2 Guidance</a> provides an overview on related guidance.</p>
-					</div>
-			</aside>
+		<xsl:result-document href="toc.html" method="xhtml" omit-xml-declaration="yes">
 			<xsl:apply-templates select="technology">
 				<xsl:sort select="@name"/>
 			</xsl:apply-templates>

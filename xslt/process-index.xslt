@@ -8,22 +8,26 @@
 	exclude-result-prefixes="#all"
 	version="2.0">
 	
-	<xsl:include href="base.xslt"/>
+	<xsl:import href="base.xslt"/>
 	
-	<xsl:param name="documentset.name" required="yes"/>
 	<xsl:param name="navigation.current" required="yes"/>
 	
+	<xsl:output method="xhtml" exclude-result-prefixes="#all" omit-xml-declaration="yes" indent="yes"/>
+	
 	<xsl:template match="/"><xsl:apply-templates/></xsl:template>
+	
+	<xsl:template match="html:html">
+		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE html>
+]]></xsl:text>
+		<xsl:copy><xsl:apply-templates select="node()|@*"/></xsl:copy>
+	</xsl:template>
 	
 	<xsl:template match="html:body">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<xsl:call-template name="header">
-				<xsl:with-param name="documentset.name" select="$documentset.name"/>
-			</xsl:call-template>
+			<xsl:call-template name="header"/>
 			<xsl:call-template name="navigation">
 				<xsl:with-param name="navigation.current" select="$navigation.current"/>
-				<xsl:with-param name="documentset.name" select="$documentset.name"/>
 			</xsl:call-template>
 			<xsl:apply-templates/>
 			<xsl:call-template name="wai-site-footer"/>
