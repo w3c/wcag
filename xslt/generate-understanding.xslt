@@ -909,7 +909,7 @@
 											<xsl:when test="name($meta) = 'success-criterion'">Success Criterion (SC) </xsl:when>
 										</xsl:choose></header>
 									<div class="box-i">
-										<xsl:apply-templates select="$meta/content/html:*" mode="wcag-include"/>
+										<xsl:apply-templates select="$meta/content/html:*" />
 									</div>
 								</aside>
 								<div class="excol-all"/>
