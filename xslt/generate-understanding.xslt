@@ -778,6 +778,13 @@
 		<xsl:text>: </xsl:text>
 	</xsl:template>
 
+	<xsl:template match="html:p[@class = 'note'] | html:div[@class = 'note']">
+		<div class="note">
+			<p class="note-title marker">Note</p>
+			<xsl:copy><xsl:apply-templates select="@*[not(name() = 'class')]|node()"/></xsl:copy>
+		</div>
+	</xsl:template>
+
 	<xsl:template match="html:p" mode="sc-info">
 		<xsl:param name="sc-info"/>
 		<p>
