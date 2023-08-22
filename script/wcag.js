@@ -23,6 +23,7 @@ function linkUnderstanding() {
 	document.querySelectorAll('.sc,.guideline').forEach(function(node){
 		var heading = textNoDescendant(findHeading(node));
 		var pathFrag = titleToPathFrag(heading);
+		if (node.id == "parsing") pathFrag = "parsing"; // special case parsing
 		var el = document.createElement("div");
 		el.setAttribute("class", "doclinks");
 		el.innerHTML = "<a href=\"" + understandingBaseURI + pathFrag + ".html\">Understanding " + heading + "</a> <span class=\"screenreader\">|</span> <br /><a href=\"https://www.w3.org/WAI/WCAG" + version + "/quickref/#" + pathFrag + "\">How to Meet " + heading + "</a>";
@@ -82,10 +83,71 @@ function termTitles() {
 	});	
 }
 
+// number notes if there are multiple per section
+function numberNotes() {
+	var sectionsWithNotes = new Array();
+	document.querySelectorAll(".note").forEach(function(note) {
+		var container = note.closest("dd");
+		if (container == null) container = note.closest("section");
+		sectionsWithNotes.push(container);
+	});
+	
+	sectionsWithNotes.forEach(function(sec) {
+		if (sec.noteprocessed) return;
+		var notes = sec.querySelectorAll('.note');
+		// no notes, shouldn't happen
+		if (notes.length == 0) return;
+		// one note, leave alone
+		if (notes.length == 1) return;
+		// more than one note, number them
+		if (notes.length > 1) {
+			var count = 1;
+			sec.querySelectorAll(".note").forEach(function(note) {
+				var span = note.querySelector(".note-title span");
+				span.textContent = "Note " + count;
+				count++;
+			});
+		}
+		sec.noteprocessed = true;
+	});
+}
+
+// change the numbering of examples to remove number from lone examples in a section, and restart numbering for multiple in each section
+function renumberExamples() {
+	var sectionsWithExamples = new Array();
+	document.querySelectorAll(".example").forEach(function(example) {
+		var container = example.closest("dd"); // use dd container if present
+		if (container == null) container = example.closest("section"); // otherwise section
+		sectionsWithExamples.push(container);
+	});
+	
+	sectionsWithExamples.forEach(function(sec) {
+		if (sec.exprocessed) return;
+		var examples = sec.querySelectorAll(".example");
+		// no examples, shouldn't happen
+		if (examples.length == 0) return;
+		// one example, remove the numbering
+		// more than one example, number them
+		else {
+			var count = 1;
+			var rmOrAdd = examples.length == 1 ? "rm" : "add";
+			sec.querySelectorAll(".example").forEach(function(example) {
+				var marker = example.querySelector(".marker");
+				if (rmOrAdd == "rm") marker.textContent = "Example";
+				else marker.textContent = "Example " + count;
+				count++;
+			});
+		}
+		sec.exprocessed = true;
+	});
+}
+
 // scripts after Respec has run
 function postRespec() {
 	addTextSemantics();
 	swapInDefinitions();
 	termTitles();
 	linkUnderstanding();
+	numberNotes();
+	renumberExamples();
 }

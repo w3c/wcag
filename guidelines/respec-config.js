@@ -15,7 +15,7 @@ var respecConfig = {
 	diffTool:             "http://www.aptest.com/standards/htmldiff/htmldiff.pl",
 	
 	// the specifications short name, as in https://www.w3.org/TR/short-name/
-	shortName:            "WCAG22",
+	shortName:            "WCAG21",
 	
 	
 	// if you wish the publication date to be other than today, set this
@@ -31,7 +31,7 @@ var respecConfig = {
 	//previousDiffURI: "https://www.w3.org/TR/2014/REC-wai-aria-20140320/",
 	
 	// if there a publicly available Editors Draft, this is the link
-	edDraftURI: "https://w3c.github.io/wcag/guidelines/22/",
+	edDraftURI: "https://w3c.github.io/wcag/guidelines/",
 	
 	// if this is a LCWD, uncomment and set the end of its review period
 	// lcEnd: "2012-02-21",
@@ -40,45 +40,46 @@ var respecConfig = {
 	// only "name" is required
 	editors: [
 		{
-			name: "Chuck Adams",
-			url: "https://www.oracle.com/",
-			mailto: "charles.adams@oracle.com",
-			company: "Oracle",
-			companyURI: "https://www.oracle.com/",
-			w3cid: 104852
+			name: "Andrew Kirkpatrick",
+			mailto: "akirkpat@adobe.com",
+			company: "Adobe",
+			companyURI: "http://www.adobe.com/",
+			w3cid: 39770
+		},
+		{
+			name: "Joshue O Connor",
+			mailto: "josh@interaccess.ie",
+			company: "Invited Expert, InterAccess",
+			w3cid: 41218
 		},
 		{
 			name: "Alastair Campbell",
-			url: "https://www.nomensa.com/",
 			mailto: "acampbell@nomensa.com",
 			company: "Nomensa",
 			companyURI: "https://www.nomensa.com/",
 			w3cid: 44689
 		},
 		{
-			name: "Rachael Montgomery",
-			mailto: "rachael@accessiblecommunity.org",
-			company: "Invited Expert",
-			w3cid: 90310
-		},
-		{
 			name: "Michael Cooper",
-			url: 'https://www.w3.org',
 			mailto: "cooper@w3.org",
 			company: "W3C",
 			companyURI: "https://www.w3.org",
 			w3cid: 34017
 		},
 		{
-			name: "Andrew Kirkpatrick",
-			url: "http://www.adobe.com/",
-			mailto: "akirkpat@adobe.com",
-			company: "Adobe",
-			companyURI: "http://www.adobe.com/",
-			w3cid: 39770
+			name: "Chuck Adams",
+			mailto: "charles.adams@oracle.com",
+			company: "Oracle",
+			companyURI: "https://www.oracle.com/",
+			w3cid: 104852
+		},
+		{
+			name: "Rachael Montgomery",
+			mailto: "rachael@accessiblecommunity.org",
+			company: "Invited Expert",
+			w3cid: 90310
 		}
 	],
-	/* 
 	formerEditors: [
 		{
 			name: "Ben Caldwell",
@@ -109,14 +110,8 @@ var respecConfig = {
 			name: "Jason White",
 			company: "University of Melbourne",
 			w3cid: 74028
-		},
-		{
-			name: "Joshue O Connor",
-			company: "Invited Expert, InterAccess",
-			w3cid: 41218
 		}
 	],
-	*/
 	
 	// authors, add as many as you like.
 	// This is optional, uncomment if you have authors as well as editors.
@@ -138,20 +133,9 @@ var respecConfig = {
 	// errata: 'https://www.w3.org/2010/02/rdfa/errata.html',
 	
 	// name of the WG
-	wg:           "Accessibility Guidelines Working Group",
-	
-	// URI of the public WG page
-	wgURI:        "https://www.w3.org/WAI/GL/",
-	
-	// name (with the @w3c.org) of the public mailing to which comments are due
-	wgPublicList: "public-agwg-comments",
-	
-	// URI of the patent status for this WG, for Rec-track documents
-	// !!!! IMPORTANT !!!!
-	// This is important for Rec-track documents, do not copy a patent URI from a random
-	// document unless you know what you're doing. If in doubt ask your friendly neighbourhood
-	// Team Contact.
-	wgPatentURI:  "https://www.w3.org/2004/01/pp-impl/35422/status",
+	group:           "ag",
+	github: "w3c/wcag",
+
 	maxTocLevel: 4,
 	
 	postProcess: [postRespec]
