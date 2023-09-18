@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
    <head>
       <title>Allowing for text-spacing without wrapping</title>
-      <link rel="stylesheet" type="text/css" href="https://rawgit.com/w3c/wcag21/master/css/sources.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
    </head>
 <body>
       <h1>Allowing for text spacing without wrapping</h1>
@@ -20,44 +20,48 @@
          <p>The objective of this technique is to allow a user to override text spacing via user stylesheet, bookmarklet, extension, or application. Increased spacing between paragraphs, lines, words, and characters benefits people with low vision or some cognitive disabilities. Content needs to allow spacing changes without loss of content or functionality by allowing the elements containing the text to expand as needed.</p>
          <p><strong>Where text is not intended to wrap</strong>, authors should either:</p>
          <ul>
-               <li>size containers to a have a value greater than the default width of the text, or</li>
-               <li>allow the containers to expand in the direction of text.</li>
+					<li>size containers to a have a value greater than the default width of the text, or</li>
+					<li>allow the containers to expand in the direction of text.</li>
          </ul>
          <p>There is some variability in the width that words or phrases will grow to when setting the letter and word spacing. If elements must use a fixed width, a safe value is 20% wider than the default maximum width. For example, if a small text-container allows for 20 characters, allowing enough width for 24 characters should allow enough space for text-spacing to be applied.</p>
-         <p>For boxes which can expand with the text, authors can take advantage of the inline-block value of the CSS display property and not set negative margins to allow for text-spacing overrides.</p>
+         <p>For boxes which can expand with the text, authors can take advantage of the <code class="language-css">inline-block</code> value of the <abbr title="Cascading Style Sheets">CSS</abbr> <code class="language-css">display</code> property and not set negative margins to allow for text-spacing overrides.</p>
       </section>
    <section id="examples">
       <h2>Examples</h2>
       <p>When a user adapts the page to increase the text spacing, text fits within the bounds of its containing box.</p>
-      <p class="note">The <code>ex</code> unit has been used as as the closest available unit for character width, <code>ex </code>&quot;Represents the x-height of the element's font.&quot; (<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">MDN page for CSS units</a>). It is not perfect, different characters have different default widths.</p>
+      <p class="note">The <code class="language-css">ex</code> unit has been used as as the closest available unit for character width, <code class="language-css">ex</code> <q>Represents the x-height of the element's font.</q> (<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">MDN page for CSS units</a>). It is not perfect, different characters have different default widths.</p>
       <section class="example">
          <h3>A box sized with space to allow for expansion</h3>
          <p>The containers are sized to a value greater than the default width of the text.</p>
-         <pre xml:space="preserve"><code>/* Links are less than 8ex wide, so 10ex width of each li allows for expanded letter and word width*/
- nav li { width: 10em; }
-
-&lt;!-- HTML --&gt;
- &lt;nav&gt;
+				 <h4>The CSS</h4>
+<pre xml:space="preserve"><code class="language-css">&lt;style&gt;
+/* Links are less than 8ex wide,
+so 10ex width of each li allows for expanded letter and word width */
+nav li { width: 10em; }
+&lt;/style&gt;</code></pre>
+<h4>The <abbr title="HyperText Markup Language">HTML</abbr></h4>
+<pre xml:space="preserve"><code class="language-html">&lt;nav&gt;
   &lt;ul&gt;
-   &lt;li&gt;&lt;a href=&quot;/&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
-   &lt;li&gt;&lt;a href=&quot;/contact/&quot;&gt;Contact&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/contact/"&gt;Contact&lt;/a&gt;&lt;/li&gt;
   &lt;ul&gt;
- &lt;/nav&gt;</code>
-</pre>
+&lt;/nav&gt;</code></pre>
 <p>If the navigation element used fix-width containers of the same size, the width would need to allow for text 20% larger than the longest word.</p>
       </section>
       <section class="example">
          <h3>A box which expands with the text size</h3>
-         <pre xml:space="preserve"><code>/* CSS containers are given a display of inline-block. No negative margins set. */
+				 <h4>The CSS</h4>
+<pre xml:space="preserve"><code class="language-css">&lt;style&gt;
+/* CSS containers are given a display of inline-block. No negative margins set. */
  nav li { display: inline-block; }
-
-&lt;!-- HTML --&gt;
- &lt;nav&gt;
+ &lt;/style&gt;</code></pre>
+ <h4>The HTML</h4>
+<pre xml:space="preserve"><code class="language-html">&lt;nav&gt;
   &lt;ul&gt;
-   &lt;li&gt;&lt;a href=&quot;/&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
-   &lt;li&gt;&lt;a href=&quot;/contact/&quot;&gt;Contact&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/contact/"&gt;Contact&lt;/a&gt;&lt;/li&gt;
   &lt;ul&gt;
- &lt;/nav&gt;</code>
+&lt;/nav&gt;</code>
 </pre>
 <p>In the case of variable-width text containers for each item, the parent item may need to allow for wrapping of the items.</p>
 <p class="working-example"><a href="../../working-examples/css-text-spacing/">Working examples of #1 and #2</a> are available.</p>
