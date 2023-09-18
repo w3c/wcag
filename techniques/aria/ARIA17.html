@@ -1,69 +1,67 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using grouping roles to identify related form controls</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using grouping roles to identify related form controls</h1><section class="meta"><p class="id">ID: ARIA17</p><p class="technology">Technology: aria</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using grouping roles to identify related form controls</title><link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link></head><body><h1>Using grouping roles to identify related form controls</h1><section class="meta"><p class="id">ID: ARIA17</p><p class="technology">Technology: aria</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <p>Technologies that support <a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</a>. </p>
    </section><section id="description"><h2>Description</h2>
-      <p>The objective of this technique is to mark up a set of related controls within a form  as a group. Any label associated with the group also serves as a common label or qualifier for individual controls in the group. Assistive technologies can indicate the start and end of the group and the group’s label as one navigates into and out of the group.  This is a viable alternative for grouping form controls programmatically when the user interface’s design makes it difficult to employ the fieldset-legend technique (<a href="H71">H71</a>).</p>
-      <p>For a group of radio buttons, one could also use role="radiogroup" instead of role="group".</p>
-      <p>The group can be labeled using <code class="att">aria-labelledby</code>.</p>
-      <p>This technique is not meant for wrapping  all controls on a form within a single container with role="group".</p>
+      <p>The objective of this technique is to mark up a set of related controls within a form  as a group. Any label associated with the group also serves as a common label or qualifier for individual controls in the group. Assistive technologies can indicate the start and end of the group and the group's label as one navigates into and out of the group. This is a viable alternative for grouping form controls programmatically when the user interface's design makes it difficult to employ the <code class="language-html">fieldset</code> / <code class="language-html">legend</code> technique (<a href="H71">H71</a>).</p>
+      <p>For a group of radio buttons, one should use <code class="language-html">role="radiogroup"</code> instead of <code class="language-html">role="group"</code>.</p>
+      <p>The group can be labeled using <code class="language-html">aria-labelledby</code>.</p>
+      <p>This technique is not meant for wrapping  all controls on a form within a single container with <code class="language-html">role="group"</code>.</p>
    </section><section id="examples"><h2>Examples</h2>
       <section class="example">
          <h3>Social Security Number</h3>
          
-            <p>Social security number fields which are 9 digits long and broken up into 3 segments can be grouped using role="group".</p>
-            <pre xml:space="preserve">&lt;div role="group" aria-labelledby="ssn1"&gt;
-   &lt;span id="ssn1"&gt;Social Security#&lt;/span&gt; 
-   &lt;span style="color: #D90D0D;"&gt; * &lt;/span&gt;
-   &lt;input size="3" type="text" aria-required="true" title="First 3 digits" /&gt;-
-   &lt;input size="2" type="text" aria-required="true" title="Next 2 digits" /&gt;-
-   &lt;input size="4" type="text" aria-required="true" title="Last 4 digits" /&gt;
-&lt;/div&gt;</pre>
+            <p>Social security number fields which are nine digits long and broken up into three segments can be grouped using <code class="language-html">role="group"</code>.</p>
+<pre xml:space="preserve"><code class="language-html">&lt;div role="group" aria-labelledby="ssn1"&gt;
+  &lt;span id="ssn1"&gt;Social Security Number&lt;/span&gt; 
+  &lt;span style="color: #D90D0D;"&gt; (required)&lt;/span&gt;
+  &lt;input size="3" type="text" aria-required="true" title="First 3 digits"&gt;-
+  &lt;input size="2" type="text" aria-required="true" title="Next 2 digits"&gt;-
+  &lt;input size="4" type="text" aria-required="true" title="Last 4 digits"&gt;
+&lt;/div&gt;</code></pre>
             <p class="working-example">Working example: <a href="../../working-examples/aria-grouping-multipart-fields-ssn/">Multiple part field groups</a>.</p>
          
       </section>
       <section class="example">
          <h3>Identifying radio groups</h3>
          
-            <p>This example demonstrates use role=radiogroup. Note also that the radio buttons are custom controls with role=radio. (But the script to make the span actually work like radio buttons is not included in this example. ) One may optionally employ CSS to place a border around groups of such fields to visually reinforce the group relationship. The CSS properties are available below the form.</p>
-            <pre xml:space="preserve">&lt;h3&gt;Set Alerts for your Account&lt;/h3&gt;
-  &lt;div role="radiogroup" aria-labelledby="alert1"&gt;
-    &lt;p id="alert1"&gt;Send an alert when balance exceeds $ 3,000&lt;/p&gt;
-    &lt;div&gt;
-      &lt;span role="radio" aria-labelledby="a1r1" name="a1radio"&gt;&lt;/span&gt;
-      &lt;span id="a1r1"&gt;Yes&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;div&gt;
-      &lt;span role="radio" aria-labelledby="a1r2" name="a1radio"&gt;&lt;/span&gt;
-      &lt;span id="a1r2"&gt;No&lt;/span&gt;
-    &lt;/div&gt;
+            <p>This example demonstrates use <code class="language-html">role=radiogroup</code>. Note also that the radio buttons are custom controls with <code class="language-html">role=radio</code>. (But the script to make the span actually work like radio buttons is not included in this example.) One may optionally employ CSS to place a border around groups of such fields to visually reinforce the group relationship. The CSS properties are available below the form.</p>
+<pre xml:space="preserve"><code class="language-html">&lt;h3&gt;Set Alerts for your Account&lt;/h3&gt;
+&lt;div role="radiogroup" aria-labelledby="alert1"&gt;
+  &lt;p id="alert1"&gt;Send an alert when balance exceeds $ 3,000&lt;/p&gt;
+  &lt;div&gt;
+    &lt;span role="radio" aria-labelledby="a1r1" name="a1radio"&gt;&lt;/span&gt;
+    &lt;span id="a1r1"&gt;Yes&lt;/span&gt;
   &lt;/div&gt;
-  &lt;div role="radiogroup" aria-labelledby="alert2"&gt;
-    &lt;p id="alert2"&gt;Send an alert when a charge exceeds $ 250&lt;/p&gt;
-    &lt;div&gt;
-      &lt;span role="radio" aria-labelledby="a2r1" name="a2radio"&gt;&lt;/span&gt;
-      &lt;span id="a2r1"&gt;Yes&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;div&gt;
-      &lt;span role="radio" aria-labelledby="a2r2" name="a2radio"&gt;&lt;/span&gt;
-      &lt;span id="a2r2"&gt;No&lt;/span&gt;
-    &lt;/div&gt;
+  &lt;div&gt;
+    &lt;span role="radio" aria-labelledby="a1r2" name="a1radio"&gt;&lt;/span&gt;
+    &lt;span id="a1r2"&gt;No&lt;/span&gt;
   &lt;/div&gt;
-  &lt;p&gt;&lt;input type="submit" value="Continue" id="continue_btn" name="continue_btn" /&gt;&lt;/p&gt;</pre>
-            <p>Related CSS Style Definition to place a border around the group of fields :</p>
-            <pre xml:space="preserve">div[role=radiogroup] {
+&lt;/div&gt;
+&lt;div role="radiogroup" aria-labelledby="alert2"&gt;
+  &lt;p id="alert2"&gt;Send an alert when a charge exceeds $ 250&lt;/p&gt;
+  &lt;div&gt;
+    &lt;span role="radio" aria-labelledby="a2r1" name="a2radio"&gt;&lt;/span&gt;
+    &lt;span id="a2r1"&gt;Yes&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;span role="radio" aria-labelledby="a2r2" name="a2radio"&gt;&lt;/span&gt;
+    &lt;span id="a2r2"&gt;No&lt;/span&gt;
+   &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;input type="submit" value="Continue" id="continue_btn" name="continue_btn"&gt;&lt;/p&gt;</code></pre>
+
+<p>Related CSS Style Definition to place a border around the group of fields:</p>
+<pre xml:space="preserve"><code class="language-css">div[role=radiogroup] {
   border: black thin solid;
-} </pre>
+}</code></pre>
             <p class="working-example">Working example: <a href="../../working-examples/aria-grouping-related-fields/">using grouping roles to identify related form controls</a>.</p>
          
       </section>
    </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
-         <p>For groups of related controls where the individual labels for each control do not provide a sufficient description, and an additional group level description is needed:
-</p>
+         <p>For groups of related controls where the individual labels for each control do not provide a sufficient description, and an additional group level description is needed:</p>
          <ol>
-            <li> Check that the group of logically related input or select elements are contained within an element with role=group. 
-</li>
-            <li> Check that this group has an accessible name defined using <code class="att">aria-label</code> or <code class="att">aria-labelledby</code>.
-</li>
+            <li> Check that the group of logically related input or select elements are contained within an element with <code class="language-html">role=group</code>.</li>
+            <li> Check that this group has an accessible name defined using <code class="language-html">aria-label</code> or <code class="language-html">aria-labelledby</code>.</li>
          </ol>
       </section>
       <section class="results"><h3>Expected Results</h3>
@@ -80,5 +78,5 @@
                   <a href="https://www.w3.org/TR/wai-aria/#group">Accessible Rich Internet Applications (WAI-ARIA), The Roles Model</a>
                </li>
          </ul>
-      
-   </section></body></html>
+      </section>
+</body></html>

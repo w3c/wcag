@@ -1,113 +1,157 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Creating Custom Dialogs in a Device Independent Way</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Creating Custom Dialogs in a Device Independent Way</h1><section class="meta"><p class="id">ID: SCR37</p><p class="technology">Technology: client-side-script</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
-      <p>HTML and XHTML used with script.</p>
-   </section><section id="description"><h2>Description</h2>
-      <p>Site designers often want to create dialogs that do not use the pop-up windows supplied by the browser. This is typically accomplished by enclosing the dialog contents in a <code class="el">div</code> and placing the <code class="el">div</code> above the page content using z-order and absolute positioning in CSS. </p>
-      <p>To be accessible, these dialogs must follow a few simple rules. </p>
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Creating Custom Dialogs</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
+	</head>
+	<body>
+		<h1>Creating Custom Dialogs</h1>
+		<section class="meta">
+			<p class="id">ID: SCR37</p>
+			<p class="technology">Technology: client-side-script</p>
+			<p class="type">Type: Technique</p>
+		</section>
+		<section id="applicability">
+			<h2>When to Use</h2>
+      <p><abbr title="HyperText Markup Language">HTML</abbr> used with script.</p>
+		</section>
+		<section id="description"><h2>Description</h2>
+      <p>Site designers often want to create dialogs that do not use the pop-up windows supplied by the browser. This is typically accomplished by enclosing the dialog contents in a <code class="language-html">div</code> and placing the <code class="language-html">div</code> above the page content using <code class="language-css">z-index</code> and positioning in <abbr title="Cascading Style Sheets">CSS</abbr>.</p>
+      <p>To be accessible, these dialogs must follow a few simple rules.</p>
       <ol>
-         <li>Trigger the script that launches the dialog from the onclick event of a link or button.</li>
-         <li>Place the dialog <code class="el">div</code> into the Document Object Model (DOM) immediately after the element that triggered it. The triggering element will maintain focus, and inserting the dialog content after that element will make the content inside the dialog next in the screen-reader reading order and next in the tab order. The dialog can still be absolutely positioned to be elsewhere on the page visually. This can be done either by creating the dialog in the HTML and hiding it with CSS, as in the example below, or by inserting it immediately after the triggering element with script. </li>
-         <li>Ensure that the HTML inside the dialog div meets the same accessibility standard as other content.</li>
+				<li>Trigger the script that launches the dialog from the onclick event of a link or button.</li>
+        <li>Place the dialog <code class="language-html">div</code> into the Document Object Model (DOM) immediately after the element that triggered it. The triggering element will maintain focus, and inserting the dialog content after that element will make the content inside the dialog next in the screen-reader reading order and next in the tab order. The dialog can still be absolutely positioned to be elsewhere on the page visually. This can be done either by creating the dialog in the HTML and hiding it with CSS, as in the example below, or by inserting it immediately after the triggering element with script.</li>
+        <li>Ensure that the HTML inside the dialog <code class="language-html">div</code> meets the same accessibility standard as other content.</li>
       </ol>
       <p>It is also nice, but not always necessary, to make the launching link toggle the dialog open and closed, and to close the dialog when the keyboard focus leaves it. </p>
-   </section><section id="examples"><h2>Examples</h2>
-      <section class="example">
-         <h3>An options button that opens a dialog</h3>
+   </section>
+	 <section id="examples">
+		<h2>Examples</h2>
+		<section class="example">
+			<h3>An options button that opens a dialog</h3>
+			<p>The HTML for this example includes a triggering element, in this case a <code class="language-html">button</code>, and a <code class="language-html">div</code> that acts as the frame for the dialog. </p>
+      <p>The triggering element is a <code class="language-html">button</code> and the script is triggered from the <code class="language-javascript">onclick</code> event. This sends the appropriate events to the operating system so that assistive technology is aware of the change in the DOM.</p>
+      <p>In this example, the Submit and Reset buttons inside the dialog simply hide the <code class="language-html">div</code>.</p>
+			<h4>The HTML</h4>
          
-            <p>The HTML for this example includes a triggering Element, in this case a button, and a div that acts as the frame for the dialog. </p>
-            <p>The triggering element is a button and the script is triggered from the onclick event. This sends the appropriate events to the operating system so that assistive technology is aware of the change in the DOM. </p>
-            <p>In this example, the Submit and Reset buttons inside the dialog simply hide the <code class="el">div</code>. </p>
-         
-         <pre xml:space="preserve">...
-&lt;button onclick="TogglePopup(event,true)"
-	name="pop0001"&gt;Options&lt;/button&gt;
+<pre xml:space="preserve"><code class="language-html">&lt;button onclick="TogglePopup(event,true)" name="pop0001"&gt;Options&lt;/button&gt;
 
 &lt;div class="popover" id="pop0001"&gt;
   &lt;h3&gt;Edit Sort Information&lt;/h3&gt;
-  &lt;form action="default.htm" onsubmit="this.parentNode.style.display='none'; return false;" onreset="this.parentNode.style.display='none'; return false;"&gt;
+  &lt;form action="default.htm" onsubmit="this.parentNode.style.display='none';
+   return false;" onreset="this.parentNode.style.display='none'; return false;"&gt;
     &lt;fieldset&gt;
       &lt;legend&gt;Sort Order&lt;/legend&gt; 
-      &lt;input type="radio" name="order" id="order_alpha" /&gt;&lt;label for="order_alpha"&gt;Alphabetical&lt;/label&gt;
-      &lt;input type="radio" name="order" id="order_default" checked="true" /&gt;&lt;label for="order_default"&gt;Default&lt;/label&gt;
+      &lt;input type="radio" name="order" id="order_alpha"&gt;
+      &lt;label for="order_alpha"&gt;Alphabetical&lt;/label&gt;
+      &lt;input type="radio" name="order" id="order_default" checked="true"&gt;
+      &lt;label for="order_default"&gt;Default&lt;/label&gt;
     &lt;/fieldset&gt;
-&lt;div class="buttons"&gt;
-  &lt;input type="submit" value="OK" /&gt;
-  &lt;input type="reset" value="Cancel" /&gt;
+    &lt;div class="buttons"&gt;
+      &lt;input type="submit" value="OK"&gt;
+      &lt;input type="reset" value="Cancel"&gt;
+    &lt;/div&gt;
+  &lt;/form&gt;
 &lt;/div&gt;
-&lt;/form&gt;
+...</code></pre>
 
-&lt;/div&gt;
-...
-</pre>
-         
-            <p>The <code class="el">div</code>, heading and <code class="el">form</code> elements are styled with CSS to look like a dialog. </p>
-         
-         <pre xml:space="preserve">...
-a { color:blue; }
-a.clickPopup img { border:none; width:0; }
+<h4>The CSS</h4>
+<p>The <code class="language-html">div</code>, heading and <code class="language-html">form</code> elements are styled with CSS to look like a dialog. </p>
 
-div.popover { position:absolute; display:none; border:1px outset; background-color:beige; font-size:80%; background-color:#eeeeee; color:black; }
-div.popover h3 { margin:0; padding:0.1em 0.5em; background-color:navy; color:white; }
-#pop0001 { width:20em; }
-#pop0001 form { margin:0; padding:0.5em; }
-#pop0001 fieldset { margin-bottom:0.3em; padding-bottom:0.5em; }
-#pop0001 input, #pop0001 label { vertical-align:middle; }
-#pop0001 div.buttons { text-align:right; }
-#pop0001 div.buttons input { width:6em; }
-...
-</pre>
-         
-            <p>The script toggles the display of the popup <code class="el">div</code>, showing it and hiding it. </p>
-         
-         <pre xml:space="preserve">...
-function TogglePopup(evt,show)
-{
-	HarmonizeEvent(evt);
-	var src = evt.target;
-	if ("click" == evt.type)
-	{
-		evt.returnValue = false;
-	}
-	var popID = src.getAttribute("name");
-	if (popID)
-	{
-		var popup = document.getElementById(popID);
-		if (popup)
-		{
-			if (true == show)
-			{
-				popup.style.display = "block";
-			}
-			else if (false == show)
-			{
-				popup.style.display = "none";
-			}
-			else
-			{
-				popup.style.display = "block" == popup.style.display ? "none" : "block";
-			}
-			if ("block" == popup.style.display)
-			{
-				//window.alert(document.documentElement.scrollHeight);
-				popup.style.top = ((document.documentElement.offsetHeight - popup.offsetHeight) / 2 ) + 'px';
-				popup.style.left = ((document.documentElement.offsetWidth - popup.offsetWidth) / 2) + 'px';
-			}
-		}
-	}
+<pre xml:space="preserve"><code class="language-css">...
+a {
+  color:blue;
 }
 
-function SubmitForm(elem)
-{ 
-	elem.parentNode.style.display='none'; 
-	return false;
+a.clickPopup img {
+  border:none; width:0;
+}
+	
+div.popover {
+  position:absolute;
+  display:none;
+  border:1px outset;
+  background-color:beige;
+  font-size:80%;
+  background-color:#eeeeee;
+  color:black;
 }
 
-function ResetForm(elem)
-{ 
-	elem.parentNode.style.display='none'; 
-	return false;
+div.popover h3 {
+  margin:0;
+  padding:0.1em 0.5em;
+  background-color:navy;
+  color:white;
 }
-...
-</pre>
+
+#pop0001 {
+  width:20em;
+}
+
+#pop0001 form {
+  margin:0;
+  padding:0.5em;
+}
+
+#pop0001 fieldset {
+  margin-bottom:0.3em;
+  padding-bottom:0.5em;
+}
+
+#pop0001 input, #pop0001 label {
+  vertical-align:middle;
+}
+
+#pop0001 div.buttons {
+  text-align:right;
+}
+
+#pop0001 div.buttons input {
+  width:6em;
+}
+...</code></pre>
+
+	<h4>The JavaScript</h4>
+	<p>The script toggles the display of the popup <code class="language-html">div</code>, showing it and hiding it. </p>
+         
+<pre xml:space="preserve"><code class="language-javascript">...
+function TogglePopup(evt,show) {
+  HarmonizeEvent(evt);
+  var src = evt.target;
+  if ("click" == evt.type) {
+    evt.returnValue = false;
+  }
+  var popID = src.getAttribute("name");
+  if (popID) {
+    var popup = document.getElementById(popID);
+    if (popup) {
+      if (true == show) {
+        popup.style.display = "block";
+      }
+      else if (false == show) {
+        popup.style.display = "none";
+      }
+      else {
+        popup.style.display = "block" == popup.style.display ? "none" : "block";
+      }
+      if ("block" == popup.style.display) {
+        popup.style.top = ((document.documentElement.offsetHeight - popup.offsetHeight) / 2 ) + 'px';
+        popup.style.left = ((document.documentElement.offsetWidth - popup.offsetWidth) / 2) + 'px';
+      }
+    }
+  }
+}
+
+function SubmitForm(elem) { 
+  elem.parentNode.style.display='none'; 
+  return false;
+}
+	
+function ResetForm(elem) { 
+  elem.parentNode.style.display='none'; 
+  return false;
+}
+...</code></pre>
          
             <p class="working-example">A working example, <a href="../../working-examples/script-options-button-dialog/">an options button that opens a dialog</a>, is available. </p>
          
@@ -115,14 +159,15 @@ function ResetForm(elem)
    </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
          <ol>
-            <li>Find all areas of the page that trigger dialogs that are not pop-up windows. </li>
-            <li>Check that the dialogs can be opened by tabbing to the area and hitting enter. </li>
-            <li>Check that, once opened, the dialog is next in the tab order. </li>
-            <li>Check that the dialogs are triggered from the click event of a button or a link. </li>
-            <li>Using a tool that allows you to inspect the DOM generated by script, check that the dialog is next in the DOM. </li>
+            <li>Find all areas of the page that trigger dialogs that are not pop-up windows.</li>
+            <li>Check that the dialogs can be opened by tabbing to the area and hitting enter.</li>
+            <li>Check that, once opened, the dialog is next in the tab order.</li>
+            <li>Check that the dialogs are triggered from the click event of a button or a link.</li>
+            <li>Using a tool that allows you to inspect the DOM generated by script, check that the dialog is next in the DOM.</li>
          </ol>
       </section>
-      <section class="results"><h3>Expected Results</h3>
+      <section class="results">
+				<h3>Expected Results</h3>
          <ul>
             <li>Checks #2, #3, #4 and #5 are true. </li>
          </ul>
@@ -134,19 +179,9 @@ function ResetForm(elem)
    </ul></section><section id="resources"><h2>Resources</h2>
       
          <ul>
-            <li>Microsoft Developer Network Whitepaper:<a href="http://download.microsoft.com/download/0/f/5/0f5e941c-c495-401a-9031-eab8315da35e/writing_accessible_web_applications.doc"> Writing Accessible Web Applications</a> by Cynthia C. Shelly and George Young. (Microsoft Word Format)</li>
-            <li>
-                  <a href="https://msdn.microsoft.com/en-us/library/ms695716.aspx">Microsoft Active Accessibility 2.0 SDK</a>. Includes Inspect32.exe and other MSAA tools.</li>
-            <li>
-                  <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd318521(v=vs.85).aspx">Instructions for the Inspect tool</a>
-               </li>
-            <li>
-                  <a href="http://www.eramp.com/david/name-role-value-using-inspect.htm">Using the Inspect tool to find name Name, Role and Value for Javascript</a>
-               </li>
-            <li>
-                  <a href="http://www.microsoft.com/en-us/download/details.aspx?id=18359">Microsoft Internet Explorer Developer Toolbar.</a>. Allows examination of script-generated DOM in Microsoft Internet Explorer</li>
-            <li>
-                  <a href="http://getfirebug.com/">Firebug</a>. Allows examination of script-generated DOM in Firefox. </li>
+            <li><a href="https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/">ARIA Authoring Practices Guide - Dialog (Modal)</a>.</li>
+            <li><a href="https://html.spec.whatwg.org/multipage/interactive-elements.html#the-dialog-element">HTML - the <code class="language-html">dialog</code> element</a>.</li>
          </ul>
       
-   </section></body></html>
+   </section>
+</body></html>
