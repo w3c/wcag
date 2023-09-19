@@ -30,12 +30,6 @@ respecConfig.localBiblio = {
         "title": "Ergonomics of human-system interaction -- Part 112: Principles for the presentation of information",
         "publisher": "International Standards Organization"
     },
-
-	"HTML-Living": {
-        "uri": "https://html.spec.whatwg.org/multipage/",
-        "title": "HTML Living Standard",
-        "publisher": "The Web Hypertext Application Technology Working Group (WHATWG)"
-    },
       	
       	"UNESCO": {
       		"date": "1997",
