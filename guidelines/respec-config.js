@@ -47,11 +47,18 @@ var respecConfig = {
 	// only "name" is required
 	editors: [
 		{
-			name: "Chuck Adams",
-			mailto: "charles.adams@oracle.com",
-			company: "Oracle",
-			companyURI: "https://www.oracle.com/",
-			w3cid: 104852
+			name: "Andrew Kirkpatrick",
+			mailto: "akirkpat@adobe.com",
+			company: "Adobe",
+			companyURI: "http://www.adobe.com/",
+			w3cid: 39770
+		},
+		{
+			name: "Joshue O Connor",
+			mailto: "josh@interaccess.ie",
+			company: "Invited Expert, InterAccess",
+			companyURI: "https://interaccess.org/",
+			w3cid: 41218
 		},
 		{
 			name: "Alastair Campbell",
@@ -61,24 +68,11 @@ var respecConfig = {
 			w3cid: 44689
 		},
 		{
-			name: "Rachael Montgomery",
-			mailto: "rachael@accessiblecommunity.org",
-			company: "Invited Expert",
-			w3cid: 90310
-		},
-		{
 			name: "Michael Cooper",
 			mailto: "cooper@w3.org",
 			company: "W3C",
 			companyURI: "https://www.w3.org",
 			w3cid: 34017
-		},
-		{
-			name: "Andrew Kirkpatrick",
-			mailto: "akirkpat@adobe.com",
-			company: "Adobe",
-			companyURI: "http://www.adobe.com/",
-			w3cid: 39770
 		}
 	],
 	/* 
