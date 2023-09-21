@@ -395,11 +395,10 @@
 		<link rel="stylesheet" href="../a11y-light.css" />
 		<script src="../highlight.min.js" />
 		<script>
-			document.addEventListener('DOMContentLoaded', (event) => {
-			document.querySelectorAll('pre').forEach((el) => {
-			hljs.highlightElement(el);
-			});
-			});
+      hljs.configure({
+        cssSelector: 'pre'
+      });
+      hljs.highlightAll();
 			var translationStrings = {}; /* fix WAI JS */
 		</script>
 		<script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
