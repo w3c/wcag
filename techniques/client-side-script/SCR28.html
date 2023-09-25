@@ -82,7 +82,7 @@
                </p>
                <div class="note">
                   
-                  <p>Similiar approaches can be implemented using server-side scripting and reloading a
+                  <p>Similar approaches can be implemented using server-side scripting and reloading a
                      modified version of the Web page.
                   </p>
                   
@@ -90,61 +90,43 @@
             </section>
             <section id="examples">
                <h2>Examples</h2>
-               <section class="example" id="example-1">
-                  <h3>Example 1</h3>
-                  <p>The navigation links at top of a Web page are all entries in a menu implemented using
-                     HTML, CSS, and Javascript. When the navigation bar is expanded, the navigation links
-                     are available to the user. When the navigation bar is collapsed, the links are not
-                     available.
-                  </p><pre xml:space="preserve">
-...
-
-  &lt;script type="text/javascript"&gt;
-  function toggle(id){
-    var n = document.getElementById(id);
-    n.style.display =  (n.style.display != 'none' ? 'none' : '' );
-  }
-  &lt;/script&gt;
-
-...
-
-  &lt;a href="#" onclick="toggle('navbar')"&gt;Toggle Navigation Bar&lt;/a&gt;
-
-  &lt;ul id="navbar"&gt;
-  &lt;li&gt;&lt;a href="http://target1.html"&gt;Link 1&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="http://target2.html"&gt;Link 2&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="http://target3.html"&gt;Link 3&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="http://target4.html"&gt;Link 4&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-
-...
-</pre><p class="working-example">Working example of this code: <a href="../../working-examples/script-toggle-navbar-link/">Toggle navigation bar with a link</a>.
-                  </p>
-               </section>
-               <section class="example" id="example-2">
-                  <h3>Example 2</h3>
+               <section class="example" id="example-1-toggling-a-table-of-contents">
+                  <h3>Example 1: Toggling a table of contents</h3>
                   <p>The table of contents for a set of Web pages is repeated near the beginning of each
                      Web page. A button at the beginning of the table of contents lets the user remove
                      or restore it on the page.
-                  </p><pre xml:space="preserve">
-...
+                  </p><pre xml:space="preserve"><code class="language-html">...
+&lt;script&gt;
+let tocToggle = document.querySelector(".toc-toggle");
+let toc = document.querySelector("#toc");
+tocToggle.addEventListener("click", toggle, false);
 
-   &lt;script type="text/javascript"&gt;
-  function toggle(id){
-    var n = document.getElementById(id);
-    n.style.display =  (n.style.display != 'none' ? 'none' : '' );
+function toggle(e){
+  let elm = e.currentTarget;
+  if(elm.getAttribute("aria-expanded") === "false"){
+    elm.setAttribute("aria-expanded", "true");
   }
-  &lt;/script&gt;
-
-  ...
-
-  &lt;button onclick="return toggle('toc');"&gt;Toggle Table of Contents&lt;/button&gt;
-  &lt;div id="toc"&gt;
-    ...
-  &lt;/div&gt;
+  else{
+    elm.setAttribute("aria-expanded", "false");
+  }
+}
+&lt;/script&gt;
 
 ...
-</pre><p class="working-example">Working example of this code: <a href="../../working-examples/script-toggle-toc-button/">Toggle table of contents with a button</a>.
+
+&lt;button aria-controls="toc" aria-expanded="true" class="toc-toggle" type="button"&gt;
+  Toggle Table Of Contents
+&lt;/button&gt;
+&lt;nav aria-labelledby="toc-header" id="toc"&gt;
+  &lt;h2 id="toc-header"&gt;Table of Contents&lt;/h2&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href="#sec1"&gt;Section 1&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#sec2"&gt;Section 2&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#sec3"&gt;Section 3&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#sec4"&gt;Section 4&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+...</code></pre><p class="working-example">Working example of this code: <a href="../../working-examples/script-toggle-toc-button/">Toggle table of contents with a button</a>.
                   </p>
                </section>
             </section>
@@ -154,12 +136,7 @@
                <ul>
                   
                   <li>
-                     <a href="http://www.bobbyvandersluis.com/articles/unobtrusive-show-hide/">Unobtrusive show/hide behavior reloaded</a>
-                     
-                  </li>
-                  
-                  <li>
-                     <a href="http://www.dustindiaz.com/seven-togglers/">Seven ways to toggle an element with JavaScript</a>
+                     <a href="https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/">ARIA - Disclosure (Show/Hide) pattern.</a>
                      
                   </li>
                   
@@ -173,8 +150,7 @@
                   
                   <li><a href="../html/H50">H50</a></li>
                   
-                  <li><a href="../html/H70">H70</a></li>
-                  
+                  <li><a href="../html/H70">H70</a></li>  
                   
                </ul>
             </section>
@@ -243,7 +219,7 @@
       </div>
       <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
          <div class="inner" style="grid-column: 2 / 8">
-            <p><strong>Date:</strong> Updated 30 August 2023.
+            <p><strong>Date:</strong> Updated 25 September 2023.
             </p>
             <p><strong>Developed by</strong> <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a> (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff
                Contact: Michael Cooper).

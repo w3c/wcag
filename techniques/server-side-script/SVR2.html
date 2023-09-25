@@ -78,8 +78,7 @@
                   is provided in a format that does not conform to WCAG, the site as a whole can still
                   conform if alternate versions of the inaccessible content are provided. Conformance
                   Requirement 4 requires that alternate versions can be derived from the nonconforming
-                  content or from its URI. 
-                  
+                  content or from its <code class="Uniform Resource Identifier">URI</code>.
                </p>
                <p>Since it is not always possible to provide an accessible link from within non-conforming
                   content, this technique describes how authors can use Apache's Module "mod_access"
@@ -90,50 +89,47 @@
             </section>
             <section id="examples">
                <h2>Examples</h2>
-               <section class="example" id="example-1">
-                  <h3>Example 1</h3>
-                  <p>The following .htaccess file uses Apache's mod_redirect module to redirect requests
-                     for "inaccessible.html" to "accessible.html" unless the request comes from "accessible.html".
-                  </p><pre xml:space="preserve">
-# If the request for inaccessible content comes from a file 
+               <section class="example" id="example-1-using-apache's-mod_redirect-module-to-redirect-requests">
+                  <h3>Example 1: Using Apache's <code class="language-apache">mod_redirect</code> module to redirect requests
+                  </h3>
+                  <p>The following .htaccess file uses Apache's <code class="language-apache">mod_redirect</code> module to redirect requests for "inaccessible.html" to "accessible.html" unless the
+                     request comes from "accessible.html".
+                  </p><pre xml:space="preserve"><code class="language-apache"># If the request for inaccessible content comes from a file 
 # called accessible.html, then set an environment variable that 
 # allows the inaccessible version to be displayed.
 SetEnvIf Referer .*(accessible.html)$ let_me_in
 &lt;FilesMatch ^(inaccessible.html)$&gt;
-    Order Deny,Allow
-    Deny from all
-    Allow from env=let_me_in
+  Order Deny,Allow
+  Deny from all
+  Allow from env=let_me_in
 &lt;/FilesMatch&gt;
 
 # If the request comes from anyplace but accessible.html, then 
 # redirect the error condition to a location where the accessible 
 # version resides
-ErrorDocument 403 /example_directory/accessible.html
-</pre></section>
-               <section class="example" id="example-2">
-                  <h3>Example 2</h3>
+ErrorDocument 403 /example_directory/accessible.html</code></pre></section>
+               <section class="example" id="example-2-redirecting-direct-requests-for-files">
+                  <h3>Example 2: Redirecting direct requests for files</h3>
                   <p>This example assumes a directory structure where documents are available in multiple
                      formats. One of the formats does not meet WCAG at the level claimed and uses the file
                      extension "jna" (Just Not Accessible). All of these files are stored in a folder called
                      "jna" with an .htaccess file which ensures that any direct request for a file with
                      the .jna extension from pages where inaccessible versions are not already available
                      is redirected to an index page that lists all of the available formats.
-                  </p><pre xml:space="preserve">
-# If the request for inaccessible content comes from a file at 
-# http://example.com/documents/index.html, then set an environment 
+                  </p><pre xml:space="preserve"><code class="language-apache"># If the request for inaccessible content comes from a file at 
+# https://example.com/documents/index.html, then set an environment 
 # variable that allows the inaccessible version to be displayed.
-SetEnvIf Referer ^http://example.com/documents/index.html$ let_me_in
+SetEnvIf Referer ^https://example.com/documents/index.html$ let_me_in
 &lt;FilesMatch ^(.*\.jna)$&gt;
-    Order Deny,Allow
-    Deny from all
-    Allow from env=let_me_in
+  Order Deny,Allow
+  Deny from all
+  Allow from env=let_me_in
 &lt;/FilesMatch&gt;
 
-# If the request comes from anyplace but http://example.com/documents/index.html, then 
+# If the request comes from anyplace but https://example.com/documents/index.html, then 
 # redirect the error condition to a location where a link the accessible 
 # version resides
-ErrorDocument 403 http://example.com/documents/index.html
-</pre></section>
+ErrorDocument 403 https://example.com/documents/index.html</code></pre></section>
             </section>
             <section id="resources">
                <h3 style="margin-bottom: 0;">Other sources</h3>
@@ -141,17 +137,17 @@ ErrorDocument 403 http://example.com/documents/index.html
                <ul>
                   
                   <li> 
-                     <a href="http://httpd.apache.org/docs/2.4/mod/mod_env.html">Apache Module mod_env</a> 
+                     <a href="https://httpd.apache.org/docs/2.4/mod/mod_env.html">Apache Module mod_env</a> 
                      
                   </li>
                   
                   <li> 
-                     <a href="http://httpd.apache.org/docs/2.4/howto/auth.html">Authentication, Authorization and Access Control</a> 
+                     <a href="https://httpd.apache.org/docs/2.4/howto/auth.html">Authentication, Authorization and Access Control</a> 
                      
                   </li>
                   
                   <li> 
-                     <a href="http://httpd.apache.org/docs/2.4/howto/htaccess.html">Apache Tutorial: .htaccess files</a> 
+                     <a href="https://httpd.apache.org/docs/2.4/howto/htaccess.html">Apache Tutorial: .htaccess files</a> 
                      
                   </li>
                   
@@ -210,12 +206,13 @@ ErrorDocument 403 http://example.com/documents/index.html
                   
                </section>
                <section class="results" id="expected-results">
+                  	
                   <h3>Expected Results</h3>
-                  
+                  	
                   <ul>
-                     
+                     		
                      <li>Check #3.1 or #3.2 is true.</li>
-                     
+                     	
                   </ul>
                   
                </section>
@@ -241,7 +238,7 @@ ErrorDocument 403 http://example.com/documents/index.html
       </div>
       <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
          <div class="inner" style="grid-column: 2 / 8">
-            <p><strong>Date:</strong> Updated 30 August 2023.
+            <p><strong>Date:</strong> Updated 25 September 2023.
             </p>
             <p><strong>Developed by</strong> <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a> (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff
                Contact: Michael Cooper).

@@ -39,7 +39,6 @@
                         <li><a href="#applicability">Applicability</a></li>
                         <li><a href="#description">Description</a></li>
                         <li><a href="#examples">Examples</a></li>
-                        <li><a href="#resources">Related Resources</a></li>
                         <li><a href="#related">Related Techniques</a></li>
                         <li><a href="#tests">Tests</a></li>
                      </ul>
@@ -66,7 +65,7 @@
             <div class="excol-all"></div>
             <section id="applicability">
                <h2 id="applicability">Applicability</h2>
-               <p>Technologies that support script-controlled scrolling of content. </p>
+               <p>Technologies that support script-controlled scrolling of content.</p>
                <p>This technique relates to:</p>
                <ul>
                   <li><a href="https://w3c.github.io/wcag/understanding/timing-adjustable">2.2.1: Timing Adjustable</a> (Sufficient)
@@ -81,97 +80,104 @@
                   when the scrolling is created by a script. Scrolling content can be difficult or impossible
                   to read by users with low vision or with cognitive disabilities. The movement can
                   also be distracting for some people making it difficult for them to concentrate on
-                  other parts of the Web page. 
+                  other parts of the Web page.
                </p>
             </section>
             <section id="examples">
                <h2>Examples</h2>
-               <section class="example" id="example-1">
-                  <h3>Example 1</h3>
-                  <p>In this example CSS and Javascript are used to visually present some text in a scrolling
-                     format. A link is included to pause the scrolling movement. 
+               <section class="example" id="example-1-the-html-component">
+                  <h3>Example 1: The HTML component</h3>
+                  <p>In this example <abbr title="Cascading Style Sheets">CSS</abbr> and JavaScript are used to visually present some text in a scrolling format. A link
+                     is included to pause the scrolling movement.
                   </p>
-                  <p>This implementation will display the full text and omit the link when Javascript or
-                     CSS are unsupported or inactive. 
-                  </p>
-                  <p>The following code is an amended version of webSemantic's Accessible Scroller (as
-                     at July 2008). 
-                  </p>
-                  <p>The XHTML component: </p><pre xml:space="preserve">
-...
+                  <p>This implementation will display the full text and omit the link when JavaScript or
+                     CSS are unsupported or inactive.
+                  </p><pre xml:space="preserve"><code class="language-html">...
 &lt;div id="scroller"&gt;
-&lt;p id="tag"&gt;This text will scroll and a Pause/Scroll link will be present 
-when Javascript and CSS are supported and active.&lt;/p&gt;
+  &lt;p id="tag"&gt;This text will scroll and a Pause/Scroll link will be present 
+  when JavaScript and CSS are supported and active.&lt;/p&gt;
 &lt;/div&gt;
-...
-</pre><p>The CSS component: </p><pre xml:space="preserve">
-...
-body {font:1em verdana,sans-serif; color:#000; margin:0}
+...</code></pre><pre xml:space="preserve"><code class="language-css">...
+body {
+  font:1em verdana,sans-serif;
+  color:#000;
+  margin:0
+}
 
-/* position:relative and overflow:hidden are required */
-#scroller { position:relative; overflow:hidden; width:15em; border:1px solid #008080; }
+#scroller {
+  position:relative;
+  overflow:hidden;
+  width:15em;
+  border:1px solid #008080;
+}
+  
+#tag {
+  margin:2px 0;
+}
 
-/* add formatting for the scrolling text */
-#tag { margin:2px 0; }
+#testP {
+  visibility:hidden;
+  position:absolute;
+  white-space:nowrap;
+} 
 
-/* #testP must also contain all text-sizing properties of #tag  */
-#testP { visibility:hidden; position:absolute; white-space:nowrap; } 
-
-/* used as a page top marker and to limit width */
-#top { width:350px; margin:auto; }
-...
-</pre><p>The JavaScript component: </p><pre xml:space="preserve">
-var speed=50        // speed of scroller
+ #top {
+  width:350px;
+  margin:auto;
+}
+...</code></pre><pre xml:space="preserve"><code class="language-javascript">var speed=50        // speed of scroller
 var step=3          // smoothness of movement
 var StartActionText= "Scroll"  // Text for start link
 var StopActionText = "Pause"   // Text for stop link
-
+ 
 var x, scroll, divW, sText=""
-
+ 
 function onclickIE(idAttr,handler,call){
   if ((document.all)&amp;&amp;(document.getElementById)){idAttr[handler]="Javascript:"+call}
 }
-
+ 
 function addLink(id,call,txt){
-  var e=document.createElement('a')
-  e.setAttribute('href',call)
-  var linktext=document.createTextNode(txt)
-  e.appendChild(linktext)
-  document.getElementById(id).appendChild(e)
+  var e=document.createElement('a');
+  e.setAttribute('href',call);
+  var linktext=document.createTextNode(txt);
+  e.appendChild(linktext);
+  document.getElementById(id).appendChild(e);
 }
-
+ 
 function getElementStyle() {
-    var elem = document.getElementById('scroller');
-    if (elem.currentStyle) {
-        return elem.currentStyle.overflow;
-    } else if (window.getComputedStyle) {
-        var compStyle = window.getComputedStyle(elem, '');
-        return compStyle.getPropertyValue("overflow");
-    }
-    return "";
+  var elem = document.getElementById('scroller');
+  if (elem.currentStyle) {
+    return elem.currentStyle.overflow;
+  }
+  else if (window.getComputedStyle) {
+    var compStyle = window.getComputedStyle(elem, '');
+    return compStyle.getPropertyValue("overflow");
+  }
+  return "";
 }
 
 function addControls(){
-// test for CSS support first 
-// test for the overlow property value set in style element or external file
-if (getElementStyle()=="hidden") {
-  var f=document.createElement('div');
-  f.setAttribute('id','controls');
-  document.getElementById('scroller').parentNode.appendChild(f);
-  addLink('controls','Javascript:clickAction(0)',StopActionText);
-  onclickIE(document.getElementById('controls').childNodes[0],"href",'clickAction(0)');
-  document.getElementById('controls').style.display='block';
+  
+  // test for CSS support first 
+  // test for the overlow property value set in style element or external file
+  if (getElementStyle()=="hidden") {
+    var f=document.createElement('div');
+    f.setAttribute('id','controls');
+    document.getElementById('scroller').parentNode.appendChild(f);
+    addLink('controls','Javascript:clickAction(0)',StopActionText);
+    onclickIE(document.getElementById('controls').childNodes[0],"href",'clickAction(0)');
+    document.getElementById('controls').style.display='block';
   }
 }
-
+ 
 function stopScroller(){clearTimeout(scroll)}
-
+  
 function setAction(callvalue,txt){
   var c=document.getElementById('controls')
   c.childNodes[0].setAttribute('href','Javascript:clickAction('+callvalue+')')
-  onclickIE(document.getElementById('controls').childNodes[0],"href",'clickAction
+    onclickIE(document.getElementById('controls').childNodes[0],"href",'clickAction
 
-('+callvalue+')')
+  ('+callvalue+')')
   c.childNodes[0].firstChild.nodeValue=txt
 }
 
@@ -195,16 +201,16 @@ function startScroller(){
   x-=step
   if (document.getElementById('tag').className) p.className=document.getElementById
 
-('tag').className
-  p.appendChild(document.createTextNode(sText))
-  document.body.appendChild(p)
-  pw=p.offsetWidth
-  document.body.removeChild(p)
-  if (x&lt;(pw*4)*-1){x=divW}
-  document.getElementById('tag').style.left=x+'px'
-  scroll=setTimeout('startScroller()',speed)
+  ('tag').className
+    p.appendChild(document.createTextNode(sText))
+    document.body.appendChild(p)
+    pw=p.offsetWidth
+    document.body.removeChild(p)
+    if (x&lt;(pw*4)*-1){x=divW}
+    document.getElementById('tag').style.left=x+'px'
+    scroll=setTimeout('startScroller()',speed)
 }
-
+  
 function initScroller(){
   if (document.getElementById &amp;&amp; document.createElement &amp;&amp; document.body.appendChild) {
     addControls();
@@ -217,7 +223,7 @@ function initScroller(){
     scroll=setTimeout('startScroller()',speed);
   }
 }
-
+  
 function addLoadEvent(func) {
   if (!document.getElementById | !document.getElementsByTagName) return
   var oldonload = window.onload
@@ -230,23 +236,10 @@ function addLoadEvent(func) {
     }
   }
 }
-
-addLoadEvent(initScroller)
-</pre><p class="working-example">A working example of this code, <a href="../../working-examples/script-scroll-pause/">Example of using script to scroll content and providing a mechanism to pause it</a>, is available.
+  
+addLoadEvent(initScroller)</code></pre><p class="working-example">A working example of this code, <a href="../../working-examples/script-scroll-pause/">Example of using script to scroll content and providing a mechanism to pause it</a>, is available.
                   </p>
                </section>
-            </section>
-            <section id="resources">
-               <h3 style="margin-bottom: 0;">Other sources</h3>
-               <p style="margin-bottom: 1.5em;"><em><small>No endorsement implied.</small></em></p>
-               <ul>
-                  
-                  <li>
-                     <a href="http://www.websemantics.co.uk/tutorials/accessible_scroller/">webSemantics Accessible Scroller</a>
-                     
-                  </li>
-                  
-               </ul>
             </section>
             <section id="related">
                <h2>Related Techniques</h2>
@@ -310,7 +303,7 @@ addLoadEvent(initScroller)
       </div>
       <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
          <div class="inner" style="grid-column: 2 / 8">
-            <p><strong>Date:</strong> Updated 30 August 2023.
+            <p><strong>Date:</strong> Updated 25 September 2023.
             </p>
             <p><strong>Developed by</strong> <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a> (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff
                Contact: Michael Cooper).

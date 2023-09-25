@@ -50,8 +50,7 @@
             </nav>
          </aside>
          <main id="main" class="standalone-resource__main">
-            <h1><span>Technique C30:</span>Using CSS to replace text with images of text and providing user interface controls
-               to switch
+            <h1><span>Technique C30:</span>Using <abbr title="Cascading Style Sheets">CSS</abbr> to replace text with images of text and providing user interface controls to switch
             </h1>
             <aside class="box">
                <header class="box-h  box-h-icon">
@@ -69,7 +68,7 @@
             <div class="excol-all"></div>
             <section id="applicability">
                <h2 id="applicability">Applicability</h2>
-               <p>Any technology that supports CSS. </p>
+               <p>CSS.</p>
                <p>This technique relates to:</p>
                <ul>
                   <li><a href="https://w3c.github.io/wcag/understanding/images-of-text">1.4.5: Images of Text</a> (Sufficient)
@@ -81,21 +80,21 @@
             <section id="description">
                <h2>Description</h2>
                <p>The objective of this technique is to demonstrate how CSS can be used to replace structured
-                  HTML text with images of text in a way that makes it possible for users to view content
+                  <abbr title="HyperText Markup Language">HTML</abbr> text with images of text in a way that makes it possible for users to view content
                   according to their preferences. To use this technique, an author starts by creating
                   an HTML page that uses semantic elements to mark up the structure of the page. The
                   author then designs two or more stylesheets for that page. One stylesheet presents
                   the HTML text as text and the second uses CSS features to replace some of the HTML
                   text with images of text. Finally, through the use of server-side or client-side scripting,
                   the author provides a control that allows the user to switch between the available
-                  views. 
+                  views.
                </p>
                <p>This technique can be used to meet Success Criterion 1.4.5 or 1.4.9 if a presentation
                   that does not include images of text is available and as long as the user interface
                   control that is provided to allow users to switch to an alternate presentation meets
                   the relevant criteria. Where possible, authors should deliver the presentation that
                   does not include images of text as the default presentation. In addition, the control
-                  used to switch should be located near the beginning of the page. 
+                  used to switch should be located near the beginning of the page.
                </p>
                <p>A variety of "image replacement" techniques have been developed to address a variety
                   of user agent, configuration and compatibility with assistive technology issues (See
@@ -105,10 +104,9 @@
                   of these) are turned off. Since it can be difficult to find a single solution that
                   works in all cases, this technique recommends the use of a control that allows users
                   to switch to a presentation that does not include an image replacement technique.
-                  
                </p>
                <div class="note">
-                  
+                  				
                   <p>This technique can be used in combination with a style switching technique to present
                      a page that is a <a href="https://w3c.github.io/wcag/guidelines/#dfn-conforming-alternate-version" target="terms">conforming alternate version</a> for non-conforming content. Refer to <a href="../css/C29">C29</a> and <a href="https://www.w3.org/WAI/WCAG21/Understanding/conformance#conforming-alt-versions">Understanding Conforming Alternate Versions</a> for more information.
                   </p>
@@ -117,132 +115,145 @@
             </section>
             <section id="examples">
                <h2>Examples</h2>
-               <section class="example" id="example-1">
-                  <h3>Example 1</h3>
+               <section class="example" id="example-1-replacing-heading-text-with-images-of-text">
+                  <h3>Example 1: Replacing heading text with images of text</h3>
                   <p>A design studio site uses a style switcher to allow users to view two presentations
                      of their home page. For the default version, the heading text is replaced with images
                      of text. A control on the page allows users to switch to a version that presents the
-                     headings as text. 
+                     headings as text.
                   </p>
-                  <p>The CSS component: </p><pre xml:space="preserve">...
-&lt;div id="Header"&gt; 
+                  <section id="the-html">
+                     					
+                     <h4>The HTML component</h4>
+                     <pre xml:space="preserve"><code class="language-html">&lt;div id="Header"&gt; 
   &lt;h1&gt;&lt;span&gt;Pufferfish Design Studio&lt;/span&gt;&lt;/h1&gt; 
   &lt;h2&gt;&lt;span&gt;Surprising Identity and Design Solutions&lt;/span&gt;&lt;/h2&gt; 
-  &lt;/div&gt; 
-...
-</pre><p>The CSS for the presentation that includes images of text follows. Note that the CSS
-                     uses positioning to place the contents of the heading elements offscreen so that the
-                     text remains available to screen reader users.
-                  </p><pre xml:space="preserve">...
-#Header h1 {
-	background-image: url(pufferfish-logo.png);
-	height: 195px;
-	width: 290px;
-	background-repeat: no-repeat;
-	margin-top: 0;
-	position: absolute;
-	}
+&lt;/div&gt;</code></pre>
+                     				</section>
+                  <section id="the-css-images">
+                     					
+                     <h4>The CSS for the presentation that includes images of text</h4>
+                     					
+                     <p>Note that the CSS uses positioning to place the contents of the heading elements offscreen
+                        so that the text remains available to screen reader users.
+                     </p>
+                     
+                     <pre xml:space="preserve"><code class="language-css">#Header h1 {
+  background-image: url(pufferfish-logo.png);
+  height: 195px;
+  width: 290px;
+  background-repeat: no-repeat;
+  margin-top: 0;
+  position: absolute;
+}
 #Header h1 span {
-	position: absolute;
-        left: -999em;
-	}
+  position: absolute;
+  left: -999em;
+}
 #Header h2 {
-	background-image: url(beauty.png);
-	background-repeat: no-repeat;
-	height: 234px;
-	width: 33px;
-	margin-left: 8px;
-	position: absolute;
-	margin-top: 250px;
-	}
+  background-image: url(beauty.png);
+  background-repeat: no-repeat;
+  height: 234px;
+  width: 33px;
+  margin-left: 8px;
+  position: absolute;
+  margin-top: 250px;
+}
 #Header h2 span {
-	position: absolute;
-        left: -999em;
-	}
-	</pre><p>The CSS for the presentation that does not include images of text. </p><pre xml:space="preserve">...
-#Header h1 {
-	font: normal 200%/100% Garamond, "Times New Roman", serif;
-	margin-bottom: 0;
-	color: #000099;
-	background: #ffffff;
-	}
-
+  position: absolute;
+  left: -999em;
+}</code></pre>
+                     				</section>
+                  <section id="the-css-non-images">
+                     
+                     					
+                     <h4>The CSS for the presentation that does not include images of text</h4>
+                     
+                     <pre xml:space="preserve"><code class="language-css">#Header h1 {
+  font: normal 200%/100% Garamond, "Times New Roman", serif;
+  margin-bottom: 0;
+  color: #000099;
+  background: #ffffff;
+}
 #Header h2 {
-	font: normal 160%/100% Garamond, "Times New Roman", serif;
-	margin-bottom: 0;
-	color: #336600;
-	background: #ffffff;
-	}
-</pre></section>
+  font: normal 160%/100% Garamond, "Times New Roman", serif;
+  margin-bottom: 0;
+  color: #336600;
+  background: #ffffff;
+}</code></pre>
+                     				</section>
+               </section>
             </section>
             <section id="resources">
                <h3 style="margin-bottom: 0;">Other sources</h3>
                <p style="margin-bottom: 1.5em;"><em><small>No endorsement implied.</small></em></p>
                <ul>
-                  
+                  				
                   <li>
-                     <a href="http://wellstyled.com/css-replace-text-by-image.html">Replacing Text By An Image</a>
-                     
+                     					<a href="https://wellstyled.com/css-replace-text-by-image.html">Replacing Text By An Image</a>
+                     				
+                  </li>
+                  				
+                  <li>
+                     					<a href="https://alistapart.com/article/fir">Facts and Opinion About Fahrner Image Replacement</a>
+                     				
+                  </li>
+                  				
+                  <li>
+                     					<a href="https://www.digital-web.com/articles/in_defense_of_fahrner_image_replacement/">In Defense of Fahrner Image Replacement</a>
+                     				
+                  </li>
+                  				
+                  <li>
+                     					<a href="https://en.wikipedia.org/wiki/Fahrner_Image_Replacement">Fahrner Image Replacement</a>
+                     				
                   </li>
                   
                   <li>
-                     <a href="http://alistapart.com/article/fir">Facts and Opinion About Fahrner Image Replacement</a>
-                     
-                  </li>
-                  
-                  <li>
-                     <a href="http://www.digital-web.com/articles/in_defense_of_fahrner_image_replacement/">In Defense of Fahrner Image Replacement</a>
-                     
-                  </li>
-                  
-                  <li>
-                     <a href="https://en.wikipedia.org/wiki/Fahrner_Image_Replacement">Fahrner Image Replacement</a>
-                     
-                  </li>
-                  
-                  <li>
-                     <a href="https://www.w3.org/TR/CSS2/colors.html#background-properties">CSS2: 14.2.1 Background properties: 'background-color', 'background-image', 'background-repeat',
+                     					<a href="https://www.w3.org/TR/CSS2/colors.html#background-properties">CSS2: 14.2.1 Background properties: 'background-color', 'background-image', 'background-repeat',
                         'background-attachment', 'background-position', and 'background'</a>
-                     
+                     				
                   </li>
-                  
+                  			
                </ul>
             </section>
             <section id="related">
                <h2>Related Techniques</h2>
                <ul>
-                  
+                  				
                   <li><a href="../css/C29">C29</a></li>
-                  
+                  				
                   <li><a href="../failures/F3">F3</a></li>
-                  
+                  			
                </ul>
             </section>
             <section id="tests">
                <h2>Tests</h2>
                <section class="procedure" id="procedure">
+                  				
                   <h3>Procedure</h3>
-                  
+                  				
                   <ol>
-                     
+                     					
                      <li>Check that the Web page includes a control that allows users to select an alternate
-                        presentation. 
+                        presentation.
                      </li>
-                     
+                     					
                      <li>Check that when the control is activated the resulting page includes text (programmatically
-                        determined text) wherever images of text had been used. 
+                        determined text) wherever images of text had been used.
                      </li>
                      
                   </ol>
                   
                </section>
                <section class="results" id="expected-results">
+                  				
                   <h3>Expected Results</h3>
-                  
+                  				
                   <ul>
-                     
-                     <li> All of the above checks are true. </li>
-                     
+                     					
+                     <li>All of the above checks are true </li>
+                     				
                   </ul>
                   
                </section>
@@ -268,7 +279,7 @@
       </div>
       <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
          <div class="inner" style="grid-column: 2 / 8">
-            <p><strong>Date:</strong> Updated 30 August 2023.
+            <p><strong>Date:</strong> Updated 25 September 2023.
             </p>
             <p><strong>Developed by</strong> <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a> (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff
                Contact: Michael Cooper).

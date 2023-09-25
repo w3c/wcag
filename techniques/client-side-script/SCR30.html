@@ -65,7 +65,7 @@
             <div class="excol-all"></div>
             <section id="applicability">
                <h2 id="applicability">Applicability</h2>
-               <p>Client-side scripting used with HTML and XHTML</p>
+               <p>Client-side scripting used with <abbr title="HyperText Markup Language">HTML</abbr></p>
                <p>This technique relates to:</p>
                <ul>
                   <li><a href="https://w3c.github.io/wcag/understanding/link-purpose-in-context">2.4.4: Link Purpose (In Context)</a> (Sufficient when used with Allowing the user to choose short or long link text using
@@ -95,7 +95,7 @@
                </p>
                <p>This technique expands the links only for the current page view. It is also possible,
                   and in some cases would be advisable, to save this preference in a cookie or server-side
-                  user profile, so that users would only have to make the selection once per site. 
+                  user profile, so that users would only have to make the selection once per site.
                </p>
             </section>
             <section id="examples">
@@ -106,72 +106,75 @@
                      a link. The link class is used to determine which additional text to add. When the
                      "Expand Links" link is activated, each link on the page is tested to see whether additional
                      text should be added.
-                  </p><pre xml:space="preserve">
-...
-&lt;script type="text/javascript"&gt;
-var expanded = false;
-var linkContext = {
-	"hist":" version of The History of the Web",
-	"cook":" version of Cooking for Nerds"
-};
-
-function doExpand() {
-	var links = document.links;
+                  </p><pre xml:space="preserve"><code class="language-html">...
+&lt;script&gt;
+  var expanded = false;
+  var linkContext = {
+    "hist":" version of The History of the Web",
+    "cook":" version of Cooking for Nerds"
+  };
 	
-	for (var i=0; i&lt;links.length; i++) {
-		var link = links[i];
-		var cn = link.className;
-		if (linkContext[cn]) {
-			span = link.appendChild(document.createElement("span"));
-			span.setAttribute("class", "linkexpansion");
-			span.appendChild(document.createTextNode(linkContext[cn]));
-		}
-	}
-	objUpdate = document.getElementById('expand');
-	if (objUpdate)
-	{
-		objUpdate.childNodes[0].nodeValue = "Collapse links";
-	}
-	expanded = true;
-}
-
-function doCollapse() {
-	objUpdate = document.getElementById('expand');
-	var spans = document.getElementsByTagName("span");
-	var span;
-
-	// go backwards through the set as removing from the front changes indices
-	// and messes up the process
-	for (i = spans.length - 1; i &gt;= 0; i--) {
-		span = spans[i];
-		if (span.getAttribute("class") == "linkexpansion")
-			span.parentNode.removeChild(span);
-	}
-	if (objUpdate)
-	{
-		objUpdate.childNodes[0].nodeValue = "Expand links";
-	}
-	expanded = false;
-}
-
-function toggle() {
-	if (expanded) doCollapse();
-	else doExpand();
-}
+  function doExpand() {
+    var links = document.links;
+		
+    for (var i=0; i&lt;links.length; i++) {
+      var link = links[i];
+      var cn = link.className;
+      if (linkContext[cn]) {
+        span = link.appendChild(document.createElement("span"));
+        span.setAttribute("class", "linkexpansion");
+        span.appendChild(document.createTextNode(linkContext[cn]));
+      }
+    }
+    objUpdate = document.getElementById('expand');
+    if (objUpdate) {
+      objUpdate.childNodes[0].nodeValue = "Collapse links";
+    }
+    expanded = true;
+  }
+	
+  function doCollapse() {
+    objUpdate = document.getElementById('expand');
+    var spans = document.getElementsByTagName("span");
+    var span;
+	
+    // go backwards through the set as removing from the front changes indices
+    // and messes up the process
+    for (i = spans.length - 1; i &gt;= 0; i--) {
+      span = spans[i];
+      if (span.getAttribute("class") == "linkexpansion")
+        span.parentNode.removeChild(span);
+      }
+      if (objUpdate) {
+      objUpdate.childNodes[0].nodeValue = "Expand links";
+    }
+    expanded = false;
+  }
+	
+  function toggle() {
+    if (expanded) doCollapse();
+    else doExpand();
+  }
 &lt;/script&gt;
 
 ...
-
+	
 &lt;h1&gt;Books for download&lt;/h1&gt;
-&lt;p&gt;&lt;button id="expand" onclick="toggle();"&gt;Expand Links&lt;/button&gt;&lt;/p&gt;
+&lt;p&gt;&lt;button id="expand" onclick="toggle(); type="button"&gt;Expand Links&lt;/button&gt;&lt;/p&gt;
 &lt;ul&gt;
-	&lt;li&gt;The History of the Web: &lt;a href="history.docx" class="hist"&gt;Word&lt;/a&gt;, &lt;a href="history.pdf" class="hist"&gt;PDF&lt;/a&gt;, &lt;a href="history.html" class="hist"&gt;HTML&lt;/a&gt; &lt;/li&gt;
-
-	&lt;li&gt;Cooking for Nerds: &lt;a href="history.docx" class="cook"&gt;Word&lt;/a&gt;, &lt;a href="history.pdf" class="cook"&gt;PDF&lt;/a&gt;, &lt;a href="history.html" class="cook"&gt;HTML&lt;/a&gt; &lt;/li&gt;
+  &lt;li&gt;The History of the Web:
+    &lt;a href="history.docx" class="hist"&gt;Word&lt;/a&gt;, 
+    &lt;a href="history.pdf" class="hist"&gt;PDF&lt;/a&gt;, 
+    &lt;a href="history.html" class="hist"&gt;HTML&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Cooking for Nerds: 
+    &lt;a href="history.docx" class="cook"&gt;Word&lt;/a&gt;, 
+    &lt;a href="history.pdf" class="cook"&gt;PDF&lt;/a&gt;, 
+    &lt;a href="history.html" class="cook"&gt;HTML&lt;/a&gt;
+  &lt;/li&gt;
 &lt;/ul&gt;
 
-...
-</pre><p class="working-example">Working example of this code: <a href="../../working-examples/script-expand-links/">Providing link expansions on demand</a>.
+...</code></pre><p class="working-example">Working example of this code: <a href="../../working-examples/script-expand-links/">Providing link expansions on demand</a>.
                   </p>
                </section>
             </section>
@@ -243,7 +246,7 @@ function toggle() {
       </div>
       <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
          <div class="inner" style="grid-column: 2 / 8">
-            <p><strong>Date:</strong> Updated 30 August 2023.
+            <p><strong>Date:</strong> Updated 25 September 2023.
             </p>
             <p><strong>Developed by</strong> <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a> (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff
                Contact: Michael Cooper).

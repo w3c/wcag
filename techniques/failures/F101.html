@@ -79,7 +79,7 @@
                   <li>It is not essential for the functionality to execute and complete on the down-event.</li>
                   				
                </ol>
-               <p>Rather than taking advantage of the <code>click</code> event, authors may use down-events such as <code>mousedown</code>, <code>touchstart</code> or <code>pointerdown</code>. As a result, functionality will be executed as soon as a mouse button is pressed
+               <p>Rather than taking advantage of the <code class="language-javascript">click</code> event, authors may use down-events such as <code class="language-javascript">mousedown</code>, <code class="language-javascript">touchstart</code> or <code class="language-javascript">pointerdown</code>. As a result, functionality will be executed as soon as a mouse button is pressed
                   (but not released yet), or a finger or stylus makes contact with a touchscreen.
                </p>
                <p>It is possible to use the down event and mitigate potential issues to avoid failing
@@ -92,7 +92,7 @@
                   required), in which case they would not fail this Success Criterion.
                </p>
                <p class="note">The test procedure outlined below could be supplemented with automated or semi-automated
-                  tests to scan for JavaScript that registers event listeners such as <code>mousedown</code>, <code>touchstart</code>, or <code>pointerdown</code>. The automated test would not be sufficient to make a pass/fail determination, but
+                  tests to scan for JavaScript that registers event listeners such as <code class="language-javascript">mousedown</code>, <code class="language-javascript">touchstart</code>, or <code class="language-javascript">pointerdown</code>. The automated test would not be sufficient to make a pass/fail determination, but
                   it can help narrow down the number of potentially problematic controls.
                </p>
             </section>
@@ -103,17 +103,13 @@
                   <p>A modal dialog contains a lengthy form that a user needs to complete. The modal provides
                      a simple "Close" control that closes the dialog and loses all information the user
                      may already have entered in the form. However, instead of simply listening to the
-                     <code>click</code> event - which in most user agents is triggered on the up-event - the author decided
+                     <code class="language-javascript">click</code> event - which in most user agents is triggered on the up-event - the author decided
                      to close the dialog on the down-event. This may lead to the user accidentally closing
                      the dialog and losing all the data they entered into the form up to that point.
-                  </p><pre><code>
-
-                        <!-- modal dialog with a form -->
+                  </p><pre><code class="language-html">&lt;!-- modal dialog with a form --&gt;
 ...
-&lt;button id="close"&gt;Close&lt;/button&gt;
-...
-</code></pre><pre><code>
-const trigger = document.getElementById("close");
+&lt;button id="close" type="button"&gt;Close&lt;/button&gt;
+...</code></pre><pre><code class="language-javascript">const trigger = document.getElementById("close");
 
 function closeDialog() {
   /* close the modal dialog */
@@ -122,8 +118,7 @@ function closeDialog() {
 
 trigger.addEventListener('mousedown', closeDialog);
 trigger.addEventListener('touchstart', closeDialog);
-trigger.addEventListener('pointerdown', closeDialog);
-</code></pre></section>
+trigger.addEventListener('pointerdown', closeDialog);</code></pre></section>
             </section>
             <section id="tests">
                <h2>Tests</h2>
@@ -140,7 +135,7 @@ trigger.addEventListener('pointerdown', closeDialog);
                      </li>
                      
                      <li>If functionality was executed on the down-event, check if triggering the up-event
-                        (releasing the pressed mouse button, or lifing the finger or stylus from the touchscreen)
+                        (releasing the pressed mouse button, or lifting the finger or stylus from the touchscreen)
                         reverses the outcome
                      </li>
                      
@@ -180,7 +175,7 @@ trigger.addEventListener('pointerdown', closeDialog);
       </div>
       <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
          <div class="inner" style="grid-column: 2 / 8">
-            <p><strong>Date:</strong> Updated 30 August 2023.
+            <p><strong>Date:</strong> Updated 25 September 2023.
             </p>
             <p><strong>Developed by</strong> <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a> (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff
                Contact: Michael Cooper).

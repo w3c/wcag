@@ -62,7 +62,8 @@
             <div class="excol-all"></div>
             <section id="applicability">
                <h2 id="applicability">Applicability</h2>
-               <p>HTML with scripting.</p>
+               <p><abbr title="HyperText Markup Language">HTML</abbr> with scripting.
+               </p>
                <p>This technique is not referenced from any Understanding document.</p>
             </section>
             <section id="description">
@@ -105,8 +106,8 @@
                </p>
                <div class="note">
                   <p>This technique removes all scripts, styles, and plugins, but it is important to state
-                     that this is not required for conformance with WCAG 2.0. An author could use a similar
-                     technique, but retain a reduced set of styles and scripts in the “pre-enhanced” version.
+                     that this is not required for conformance with WCAG 2.x. An author could use a similar
+                     technique, but retain a reduced set of styles and scripts in the "pre-enhanced" version.
                   </p>
                </div>
                <p>While this technique offers a way to base conformance claims on a single version,
@@ -128,131 +129,111 @@
                   </p>
                   <p>The script in the acctoggle.js file stores the pre-enhanced version - assigning the
                      version the url postfix #accessible. Clicking the "WCAG 2.0 conforming alternate version"
-                     link (inserted as the first child of the <code class="el">body</code> element in any enhanced versions) changes the url to include the postfix "#accessible"
-                     which then resets the html located in the <code class="el">body</code> element and the <code class="el">head</code> element to pre-enhanced code. The pre-enhanced state can be reached from the link,
+                     link (inserted as the first child of the <code class="language-html">body</code> element in any enhanced versions) changes the url to include the postfix "#accessible"
+                     which then resets the html located in the <code class="language-html">body</code> element and the <code class="language-html">head</code> element to pre-enhanced code. The pre-enhanced state can be reached from the link,
                      or directly from a url typed into the browser. In addition, a link is inserted into
                      the pre-enhanced "Conforming Alternate Version" which allows the user to re-enhance
                      the web page (something which can also be done using the web browser's back button).
                   </p>
-                  <p>acctoggle.js source code:</p><pre xml:space="preserve">window.onload = function(event) {
+                  <section id="the-javscript">
+                     				
+                     <h4>acctoggle.js JavaScript:</h4>
+                     <pre xml:space="preserve"><code class="language-javascript">window.onload = function(event) {
 
-    // store pre-enhanced element content
-    var initialHead = document.head.innerHTML;
-    var initialBody = document.body.innerHTML;
-    var initialURL = location.href;
-    
-    var runOnce = function() {
-        // payload you want to run per page call - e.g. Google Analytics code
-    }
-    
-    var setup = function() {
-        // create conforming alternate version link
-
-        var toggleEnhanced = document.querySelector("#toggle_enhanced");
-        if (toggleEnhanced) {
-            toggleEnhanced.outerHTML = "";
-        }
-        
-        var nel = document.createElement("a");
-        nel.id = "acctoggle";
-        nel.setAttribute("href", "#accessible");
-        nel.innerHTML = "WCAG 2.0 conforming alternate version";
-        document.body.insertBefore(nel, document.body.firstChild);
-        
-        // payload
-        var s = document.createElement("SCRIPT");
-        s.setAttribute("src", "sayhello.js");
-        document.querySelector("HEAD").appendChild(s);   
-       }
-    
-    setup();
-    runOnce();
-    
-    window.onpopstate = function(event) {
-        if (location.href.indexOf("#accessible") != -1) {
-            // revert element contents to pre-enhanced version
-            document.head.innerHTML = initialHead;
-            document.body.innerHTML = initialBody;
-            
-            // create enhanced version link
-            var el = document.createElement("a");
-            el.id = "toggle_enhanced";
-            el.setAttribute("href", "");
-            el.innerHTML = "Enhanced version";
-            var back = function(e) {
-                 e.preventDefault();
-                 window.history.back();
-            }
-            el.addEventListener("click", back, false);
-            document.body.insertBefore(el, document.body.firstChild);
-        }
-        if (location.href == initialURL) {
-            setup();
-        }
-    };
+// store pre-enhanced element content
+var initialHead = document.head.innerHTML;
+var initialBody = document.body.innerHTML;
+var initialURL = location.href;
+				
+var runOnce = function() {
+  // payload you want to run per page call - e.g. analytics code
 }
-		 </pre><p>HTML web page source code:</p><pre xml:space="preserve">&lt;!DOCTYPE html&gt;
-  &lt;html lang="en"&gt;
-    &lt;head&gt;
-        &lt;title&gt;Evaluera Ltd&lt;/title&gt;
-        &lt;meta charset="UTF-8" /&gt;
-        &lt;script src="accSwitch.js"&gt;&lt;/script&gt;
-    &lt;/head&gt;
-    &lt;body&gt; 
-        &lt;h1&gt;Test Page&lt;/h1&gt;
-        &lt;p&gt;Say: &lt;span id="change"&gt;Goodbye&lt;/span&gt;&lt;/p&gt;
-    &lt;/body&gt;
-&lt;/html&gt;			
-		 </pre><p>sayhello.js source code</p><pre xml:space="preserve">var change = document.querySelector("#change");
-         change.innerText = "Hello";			
-		 </pre></section>
-               <section class="example" id="example-2-using-enhancejs---a-javascript-framework-designed-to-improve-the-application-of-progressive-enhancement">
-                  <h3>Example 2: Using EnhanceJS - A Javascript framework designed to improve the application
-                     of Progressive Enhancement
-                  </h3>
-                  <p><a href="https://code.google.com/p/enhancejs/">EnhanceJS</a> is an open source JavaScript framework "designed to improve the application of Progressive
-                     Enhancement by first testing browser capabilities for key Javascript and CSS support
-                     before applying advanced styles and scripts to the page". In addition, the default
-                     EnhanceJS script automatically creates a toggle link in any post-enhanced versions
-                     of the page which allows a user to return the web page to its pre-enhanced state (in
-                     EnhanceJS with default settings this is called the "low bandwidth version"). The setting
-                     have been changed in EnhanceJS to indicate that the pre-enhanced state is to be considered
-                     the "WCAG 2.0 conforming alternate version", rather than the "low bandwidth version".
-                  </p>
-                  <p>HTML Component:</p><pre xml:space="preserve">&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-    &lt;head&gt;
-    &lt;script type="text/javascript" src="enhance.js"&gt;&lt;/script&gt;
-    &lt;script type="text/javascript"&gt;
-        // Run capabilities test
-        enhance({
-            loadStyles: [
-                "example.css"
-            ], 
-            loadScripts: [
-                "example.js"
-            ],
-            // text shown in enhanced mode
-            forceFailText: "WCAG 2.0 conforming alternate version",
-            // text shown in accessible mode
-            forcePassText: "Enhanced version"
-        });
-    &lt;/script&gt;
-    &lt;/head&gt;
-    ....
 
-</pre></section>
+var setup = function() {
+  // create conforming alternate version link
+
+  var toggleEnhanced = document.querySelector("#toggle_enhanced");
+  if (toggleEnhanced) {
+    toggleEnhanced.outerHTML = "";
+  }
+
+  var nel = document.createElement("a");
+  nel.id = "acctoggle";
+  nel.setAttribute("href", "#accessible");
+  nel.innerHTML = "WCAG 2.0 conforming alternate version";
+  document.body.insertBefore(nel, document.body.firstChild);
+
+  // payload
+  var s = document.createElement("SCRIPT");
+  s.setAttribute("src", "sayhello.js");
+  document.querySelector("HEAD").appendChild(s);   
+}
+					
+setup();
+runOnce();
+
+window.onpopstate = function(event) {
+  if (location.href.indexOf("#accessible") != -1) {
+  
+  // revert element contents to pre-enhanced version
+  document.head.innerHTML = initialHead;
+  document.body.innerHTML = initialBody;
+
+  // create enhanced version link
+  var el = document.createElement("a");
+  el.id = "toggle_enhanced";
+  el.setAttribute("href", "");
+  el.innerHTML = "Enhanced version";
+  var back = function(e) {
+    e.preventDefault();
+    window.history.back();
+  }
+  el.addEventListener("click", back, false);
+  document.body.insertBefore(el, document.body.firstChild);
+}
+
+if (location.href == initialURL) {
+  setup();
+}
+};
+}</code></pre>
+                     </section>
+                  <section id="the-html">
+                     
+                     <h4>HTML web page source code:</h4>
+                     <pre xml:space="preserve"><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;title&gt;Evaluera Ltd&lt;/title&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;script src="accSwitch.js"&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt; 
+    &lt;h1&gt;Test Page&lt;/h1&gt;
+    &lt;p&gt;Say: &lt;span id="change"&gt;Goodbye&lt;/span&gt;&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                     
+                     <h4>sayhello.js source code</h4>
+                     <pre xml:space="preserve"><code class="language-javascript">var change = document.querySelector("#change");
+change.innerText = "Hello";</code></pre>    
+                     </section>
+               </section>
             </section>
             <section id="resources">
                <h3 style="margin-bottom: 0;">Other sources</h3>
                <p style="margin-bottom: 1.5em;"><em><small>No endorsement implied.</small></em></p>
                <ul>
-                  
+                  			
                   <li>
-                     <a href="https://www.w3.org/WAI/WCAG21/Techniques/css/C29#C29-sa1">Using Cookies</a></li>
-                  
-                  <li><a href="https://www.w3.org/WAI/WCAG21/Techniques/css/C29#C29-sa2">Progressive Enhancement and Unobtrusive JavaScript</a></li>
-                  
+                     				<a href="https://www.w3.org/WAI/WCAG21/Techniques/css/C29#C29-sa1">Using Cookies</a>
+                     			
+                  </li>
+                  			
+                  <li><a href="https://www.w3.org/WAI/WCAG21/Techniques/css/C29#C29-sa2">Progressive Enhancement and Unobtrusive JavaScript</a>
+                     			
+                  </li>
+                  		
                </ul>
             </section>
             <section id="related">
@@ -270,28 +251,30 @@
             <section id="tests">
                <h2>Tests</h2>
                <section class="procedure" id="procedure">
+                  			
                   <h3>Procedure</h3>
-                  
+                  			
                   <ol>
-                     
+                     				
                      <li>Check enhanced versions of the web page contain a link to the "Conforming Alternate
                         Version".
                      </li>
-                     
+                     				
                      <li>Check that the alternate version is a <a href="https://w3c.github.io/wcag/guidelines/#dfn-conforming-alternate-version" target="terms">conforming alternate version</a> of the original page and that it conforms to WCAG 2.0 at the claimed conformance
                         level.
                      </li>
-                     
+                     			
                   </ol>
                   
                </section>
                <section class="results" id="expected-results">
+                  			
                   <h3>Expected Results</h3>
-                  
+                  			
                   <ul>
-                     
-                     <li>Checks #1 and #2 are true. </li>
-                     
+                     				
+                     <li>Checks #1 and #2 are true.</li>
+                     			
                   </ul>
                   
                </section>
@@ -317,7 +300,7 @@
       </div>
       <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
          <div class="inner" style="grid-column: 2 / 8">
-            <p><strong>Date:</strong> Updated 30 August 2023.
+            <p><strong>Date:</strong> Updated 25 September 2023.
             </p>
             <p><strong>Developed by</strong> <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a> (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff
                Contact: Michael Cooper).

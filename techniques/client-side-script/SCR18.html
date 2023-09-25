@@ -89,19 +89,17 @@
                <h2>Examples</h2>
                <section class="example" id="example-1-checking-a-single-control-with-an-event-handler">
                   <h3>Example 1: Checking a single control with an event handler</h3>
-                  <p>The following script will check that a valid date has been entered in the form control.</p><pre xml:space="preserve">
-&lt;label for="date"&gt;Date:&lt;/label&gt;
+                  <p>The following script will check that a valid date has been entered in the form control.</p><pre xml:space="preserve"><code class="language-html">&lt;label for="date"&gt;Date:&lt;/label&gt;
 &lt;input type="text" name="date" id="date" 
-onchange="if(isNaN(Date.parse(this.value))) 
-alert('This control is not a valid date. 
-Please re-enter the value.');" /&gt;
-</pre></section>
+  onchange="if(isNaN(Date.parse(this.value))) 
+  alert('This control is not a valid date. 
+  Please re-enter the value.');"&gt;</code></pre></section>
                <section class="example" id="example-2-checking-multiple-controls-when-the-user-submits-the-form">
                   <h3>Example 2: Checking multiple controls when the user submits the form</h3>
-                  <p>The following sample shows multiple controls in a form. The <code class="el">form</code> element uses the <code class="att">onsubmit</code> attribute which creates an event handler to execute the validation script when the
+                  <p>The following sample shows multiple controls in a form. The <code class="language-html">form</code> element uses the <code class="language-html">onsubmit</code> attribute which creates an event handler to execute the validation script when the
                      user attempts to submit the form. If the validation is successful, the event returns
-                     <code class="propval">true</code> and the form submission proceeds; if the validation finds errors, it displays an
-                     error message and returns <code class="propval">false</code> to cancel the submit attempt so the user can fix the problems.
+                     <code class="javascript">true</code> and the form submission proceeds; if the validation finds errors, it displays an
+                     error message and returns <code class="javascript">false</code> to cancel the submit attempt so the user can fix the problems.
                   </p>
                   <div class="note">
                      				
@@ -111,46 +109,50 @@ Please re-enter the value.');" /&gt;
                         data fixes.
                      </p>
                      				
-                     <p>Although this example uses an <code class="att">onsubmit</code> attribute on the <code class="el">form</code> element for brevity, normal practice is to create a submit event listener when the
+                     <p>Although this example uses an <code class="language-javascript">onsubmit</code> attribute on the <code class="language-html">form</code> element for brevity, normal practice is to create a submit event listener when the
                         page is loaded.
                      </p>
                      			
                   </div>
-                  <p>Script code:</p><pre xml:space="preserve">
-function validate() {
-	// initialize error message
-	var msg = "";
+                  <p>Script code:</p><pre xml:space="preserve"><code class="language-javascript">function validate() {
+  // initialize error message
+  var msg = "";
 	
-	//validate name
-	var pattern = /^[a-zA-Z\s]+$/;
-	var el = document.getElementById("name");
-	if (!pattern.test(el.value))  msg += "Name can only have letters and spaces. ";
+  //validate name
+  var pattern = /^[a-zA-Z\s]+$/;
+  var el = document.getElementById("name");
+  
+  if (!pattern.test(el.value)) {
+    msg += "Name can only have letters and spaces. ";
+  }
 	
-	// validate number
-	var pattern = /^[\d\-+\.\s]+$/;
-	var el = document.getElementById("tel");
-	if (!pattern.test(el.value))  msg += "Telephone number can only have digits and separators. ";
+  // validate number
+  var pattern = /^[\d\-+\.\s]+$/;
+  var el = document.getElementById("tel");
+
+  if (!pattern.test(el.value)) {
+    msg += "Telephone number can only have digits and separators. ";
+  }
 	
-	if (msg != "") {
-		alert(msg);
-		return false;
-	} else return true;
-}
-</pre><p>Form code:</p><pre xml:space="preserve">
-&lt;form action="multiple-controls.html" onsubmit="return validate()"&gt;
-	&lt;p&gt;
-		&lt;label for="name"&gt;Name: &lt;/label&gt;
-		&lt;input type="text" name="name" id="name" /&gt;
-	&lt;/p&gt;
-	&lt;p&gt;
-		&lt;label for="tel"&gt;Telephone number: &lt;/label&gt;
-		&lt;input type="text" name="tel" id="tel" /&gt;				
-	&lt;/p&gt;
-	&lt;p&gt;
-		&lt;input type="submit" /&gt;
-	&lt;/p&gt;
-&lt;/form&gt;
-</pre><p class="working-example">This is demonstrated in the <a href="../../working-examples/script-check-multiple-controls/">working example of checking multiple controls when the user submits the form</a>.
+  if (msg != "") {
+    alert(msg);
+    return false;
+  }
+  else {
+  return true;
+  }</code></pre><p>Form code:</p><pre xml:space="preserve"><code class="language-html">&lt;form action="multiple-controls.html" onsubmit="return validate()"&gt;
+  &lt;div&gt;
+    &lt;label for="name"&gt;Name:&lt;/label&gt;
+    &lt;input autocomplete="name" id="name" name="name" type="text"&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;label for="tel"&gt;Telephone number:&lt;/label&gt;
+    &lt;input autocomplete="tel" id="tel" name="tel" type="tel"&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;input type="submit"&gt;
+  &lt;/div&gt;
+&lt;/form&gt;</code></pre><p class="working-example">This is demonstrated in the <a href="../../working-examples/script-check-multiple-controls/">working example of checking multiple controls when the user submits the form</a>.
                   </p>
                </section>
             </section>
@@ -210,7 +212,7 @@ function validate() {
       </div>
       <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
          <div class="inner" style="grid-column: 2 / 8">
-            <p><strong>Date:</strong> Updated 30 August 2023.
+            <p><strong>Date:</strong> Updated 25 September 2023.
             </p>
             <p><strong>Developed by</strong> <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a> (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff
                Contact: Michael Cooper).
