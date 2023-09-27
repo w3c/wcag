@@ -8,7 +8,7 @@ var respecConfig = {
 	permalinkHide:     false,
 	tocIntroductory: true,
 	// specification status (e.g., WD, LC, NOTE, etc.). If in doubt use ED.
-	specStatus:           "ED",
+	specStatus:           "REC",
 	//crEnd:                "2012-04-30",
 	//perEnd:               "2013-07-23",
 	//publishDate:          "2013-08-22",
@@ -136,10 +136,10 @@ var respecConfig = {
 	],
 	*/
 	
-	// errata: 'https://www.w3.org/2010/02/rdfa/errata.html',
+	errata: 'https://www.w3.org/WAI/WCAG22/errata/',
 	
 	// name of the WG
-	group:           "ag",
+	group:  "ag",
 	github: "w3c/wcag",
 
 	maxTocLevel: 4,
