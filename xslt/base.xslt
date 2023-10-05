@@ -394,6 +394,13 @@
 	<xsl:template name="waiscript">
 		<link rel="stylesheet" href="../a11y-light.css" />
 		<script src="../highlight.min.js" />
+		<script>
+      hljs.configure({
+        cssSelector: 'pre'
+      });
+      hljs.highlightAll();
+			var translationStrings = {}; /* fix WAI JS */
+		</script>
 		<script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
     <!-- Matomo -->
     <script>
