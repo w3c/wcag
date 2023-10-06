@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Failure of Success Criterion 2.2.1 due to using server-side techniques to automatically
-                    redirect pages after a time-out</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Failure of Success Criterion 2.2.1 due to using server-side techniques to automatically
+                    redirect pages after a time-out</title><link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link></head><body><h1>Failure of Success Criterion 2.2.1 due to using server-side techniques to automatically
                     redirect pages after a time-out</h1><section class="meta"><p class="id">ID: F58</p><p class="technology">Technology: failures</p><p class="type">Type: Failure</p></section><section id="applicability"><h2>When to Use</h2>
       <ul>
          <li> Any server-side scripting language </li>
@@ -25,36 +25,17 @@
                                 redirect is implemented in Java Servlets or JavaServer Pages
                             (JSP).</p>
          
-         <pre xml:space="preserve">
-public void doGet (HttpServletRequest request, HttpServletResponse response)
-      throws IOException, ServletException {
-        response.setContentType("text/html");
-	PrintWriter out = response.getWriter();
-	response.setHeader("Refresh", "10; URL=TargetPage.html");
-	out.println("&lt;!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
-	 \"https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"&gt;");
-	out.println("&lt;html&gt;&lt;head&gt;&lt;title&gt;Redirect&lt;/title&gt;&lt;/head&gt;&lt;body&gt;");
-	out.println("&lt;p&gt;This page will redirect you in 10 seconds.&lt;/p&gt;");
-	out.println("&lt;/body&gt;&lt;/html&gt;");
-  }
-</pre>
-      </section>
-      <section class="example">
-         
-            <p>The following example is a failure because a timed server-side
-                                redirect is implemented in Active Server Pages (ASP) with VBScript.</p>
-         
-         <pre xml:space="preserve">
- &lt;% @Language = "VBScript" %&gt;
- &lt;% option explicit 
- Response.Clear
- Response.AddHeader "Refresh", "5; URL=TargetPage.htm"
- %&gt;&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
- "https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
- &lt;html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"&gt;
- …
- &lt;!--HTML code for content that is shown before the redirect is triggered--&gt;
- </pre>
+<pre xml:space="preserve"><code class="language-java">public void doGet (HttpServletRequest request, HttpServletResponse response)
+   throws IOException, ServletException {
+      response.setContentType("text/html");
+PrintWriter out = response.getWriter();
+response.setHeader("Refresh", "10; URL=TargetPage.html");
+out.println("&lt;!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
+   \"https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"&gt;");
+out.println("&lt;html&gt;&lt;head&gt;&lt;title&gt;Redirect&lt;/title&gt;&lt;/head&gt;&lt;body&gt;");
+out.println("&lt;p&gt;This page will redirect you in 10 seconds.&lt;/p&gt;");
+out.println("&lt;/body&gt;&lt;/html&gt;");
+}</code></pre>
       </section>
    </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
@@ -86,4 +67,5 @@ public void doGet (HttpServletRequest request, HttpServletResponse response)
             
          </ul>
       
-   </section></body></html>
+   </section>
+</body></html>
