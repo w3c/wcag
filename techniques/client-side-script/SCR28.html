@@ -1,65 +1,48 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using an expandable and collapsible menu to bypass block of content</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using an expandable and collapsible menu to bypass block of content</h1><section class="meta"><p class="id">ID: SCR28</p><p class="technology">Technology: client-side-script</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using an expandable and collapsible menu to bypass block of content</title><link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link></head><body><h1>Using an expandable and collapsible menu to bypass block of content</h1><section class="meta"><p class="id">ID: SCR28</p><p class="technology">Technology: client-side-script</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <p>Technologies that provide client side scripting.</p>
    </section><section id="description"><h2>Description</h2>
       <p>This technique allows users to skip repeated material by placing that material in a menu that can be expanded or collapsed under user control. The user can skip the repeated material by collapsing the menu. The user invokes a user interface control to hide or remove the elements of the menu. The resources section lists several techniques for menus, toolbars and trees, any of which can be used to provide a mechanism for skipping navigation.</p>
       <div class="note">
-         <p>Similiar approaches can be implemented using server-side scripting and reloading a modified version of the Web page.</p>
+         <p>Similar approaches can be implemented using server-side scripting and reloading a modified version of the Web page.</p>
       </div>
    </section><section id="examples"><h2>Examples</h2>
       <section class="example">
+         <h3>Toggling a table of contents</h3>
          
-            <p>The navigation links at top of a Web page are all entries in a menu implemented using HTML, CSS, and Javascript. When the navigation bar is expanded, the navigation links are available to the user. When the navigation bar is collapsed, the links are not available.</p>
+         <p>The table of contents for a set of Web pages is repeated near the beginning of each Web page. A button at the beginning of the table of contents lets the user remove or restore it on the page.</p>
          
-         <pre xml:space="preserve">
-...
+<pre xml:space="preserve"><code class="language-html">...
+&lt;script&gt;
+let tocToggle = document.querySelector(".toc-toggle");
+let toc = document.querySelector("#toc");
+tocToggle.addEventListener("click", toggle, false);
 
-  &lt;script type="text/javascript"&gt;
-  function toggle(id){
-    var n = document.getElementById(id);
-    n.style.display =  (n.style.display != 'none' ? 'none' : '' );
+function toggle(e){
+  let elm = e.currentTarget;
+  if(elm.getAttribute("aria-expanded") === "false"){
+    elm.setAttribute("aria-expanded", "true");
   }
-  &lt;/script&gt;
+  else{
+    elm.setAttribute("aria-expanded", "false");
+  }
+}
+&lt;/script&gt;
 
 ...
 
-  &lt;a href="#" onclick="toggle('navbar')"&gt;Toggle Navigation Bar&lt;/a&gt;
-
-  &lt;ul id="navbar"&gt;
-  &lt;li&gt;&lt;a href="http://target1.html"&gt;Link 1&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="http://target2.html"&gt;Link 2&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="http://target3.html"&gt;Link 3&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="http://target4.html"&gt;Link 4&lt;/a&gt;&lt;/li&gt;
+&lt;button aria-controls="toc" aria-expanded="true" class="toc-toggle" type="button"&gt;
+  Toggle Table Of Contents
+&lt;/button&gt;
+&lt;nav aria-labelledby="toc-header" id="toc"&gt;
+  &lt;h2 id=&quot;toc-header&quot;&gt;Table of Contents&lt;/h2&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href="#sec1"&gt;Section 1&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#sec2"&gt;Section 2&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#sec3"&gt;Section 3&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#sec4"&gt;Section 4&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
-
-...
-</pre>
-         
-            <p class="working-example">Working example of this code: <a href="../../working-examples/script-toggle-navbar-link/">Toggle navigation bar with a link</a>.</p>
-         
-      </section>
-      <section class="example">
-         
-            <p>The table of contents for a set of Web pages is repeated near the beginning of each Web page. A button at the beginning of the table of contents lets the user remove or restore it on the page.</p>
-         
-         <pre xml:space="preserve">
-...
-
-   &lt;script type="text/javascript"&gt;
-  function toggle(id){
-    var n = document.getElementById(id);
-    n.style.display =  (n.style.display != 'none' ? 'none' : '' );
-  }
-  &lt;/script&gt;
-
-  ...
-
-  &lt;button onclick="return toggle('toc');"&gt;Toggle Table of Contents&lt;/button&gt;
-  &lt;div id="toc"&gt;
-    ...
-  &lt;/div&gt;
-
-...
-</pre>
+&lt;/nav&gt;
+...</code></pre>
          
             <p class="working-example">Working example of this code: <a href="../../working-examples/script-toggle-toc-button/">Toggle table of contents with a button</a>.</p>
          
@@ -80,17 +63,14 @@
    </section><section id="related"><h2>Related Techniques</h2><ul>
       <li><a href="../html/H69">H69</a></li>
       <li><a href="../html/H50">H50</a></li>
-      <li><a href="../html/H70">H70</a></li>
-      
+      <li><a href="../html/H70">H70</a></li>  
    </ul></section><section id="resources"><h2>Resources</h2>
       
          <ul>
             <li>
-                  <a href="http://www.bobbyvandersluis.com/articles/unobtrusive-show-hide/">Unobtrusive show/hide behavior reloaded</a>
-               </li>
-            <li>
-                  <a href="http://www.dustindiaz.com/seven-togglers/">Seven ways to toggle an element with JavaScript</a>
+                  <a href="https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/">ARIA - Disclosure (Show/Hide) pattern.</a>
                </li>
          </ul>
       
-   </section></body></html>
+   </section>
+</body></html>
