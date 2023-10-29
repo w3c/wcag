@@ -339,9 +339,9 @@
 				<h2> Help improve this page </h2>
 			</header>
 			<div class="box-i">
-    		<p>Please share your ideas, suggestions, or comments via e-mail to the publicly-archived list <a href="mailto:group-ag-chairs@w3.org@w3.org?subject=Techniques">group-ag-chairs@w3.org</a> or via GitHub</p>
+    		<p>Please share your ideas, suggestions, or comments via e-mail to the publicly-archived list <a href="mailto:group-ag-chairs@w3.org?subject=Techniques">group-ag-chairs@w3.org</a> or via GitHub</p>
 				<div class="button-group">
-					<a href="mailto:group-ag-chairs@w3.org@w3.org?subject=WCAG%20documents&amp;body=[put%20comment%20here...]"
+					<a href="mailto:group-ag-chairs@w3.org?subject=WCAG%20documents&amp;body=[put%20comment%20here...]"
 						class="button"><span>E-mail</span></a>
 					<a href="https://github.com/w3c/wcag/issues/" class="button"><span>Fork &amp; Edit on GitHub</span></a>
 					<a href="https://github.com/w3c/wcag/issues/new" class="button"><span>New GitHub Issue</span></a>
@@ -395,11 +395,10 @@
 		<link rel="stylesheet" href="../a11y-light.css" />
 		<script src="../highlight.min.js" />
 		<script>
-			document.addEventListener('DOMContentLoaded', (event) => {
-			document.querySelectorAll('pre').forEach((el) => {
-			hljs.highlightElement(el);
-			});
-			});
+      hljs.configure({
+        cssSelector: 'pre'
+      });
+      hljs.highlightAll();
 			var translationStrings = {}; /* fix WAI JS */
 		</script>
 		<script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
