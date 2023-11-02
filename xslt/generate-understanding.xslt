@@ -665,7 +665,7 @@
 				<xsl:if test="name($meta) = 'success-criterion'">
 					<xsl:if test="wcag:section-meaningfully-exists('brief', //html:section[@id = 'brief'])">
 						<li>
-							<a href="#brief">In brief</a>
+							<a href="#brief">In Brief</a>
 						</li>
 					</xsl:if>
 					<li>
@@ -1000,7 +1000,7 @@
 	<xsl:template match="html:section[@id = 'brief']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>In brief</h2>
+			<h2>In Brief</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.) or @id = 'brief')]"/>
 		</xsl:copy>
 	</xsl:template>
