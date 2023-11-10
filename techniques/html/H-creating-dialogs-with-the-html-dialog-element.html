@@ -64,7 +64,9 @@
         &lt;/div&gt;
         &lt;button class=&quot;sign-up&quot; type=&quot;submit&quot;&gt;Sign up&lt;/button&gt;
       &lt;/form&gt;
-      &lt;button aria-label=&quot;close&quot; class=&quot;close-modal&quot; type=&quot;button&quot;&gt;&amp;times;&lt;/button&gt;
+     &lt;form method=&quot;dialog&quot;&gt;
+        &lt;button aria-label=&quot;close&quot; class=&quot;close-modal&quot;&gt;&amp;times;&lt;/button&gt;
+      &lt;/form&gt;
     &lt;/dialog&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
@@ -81,7 +83,7 @@ body {
   font:1rem/1.5 system-ui, Helvetica, Roboto, sans-serif;
 }
 
-*:focus-visible{
+*:focus-visible {
   outline:1px solid #0054AE;
   outline-offset:1px;
 }
@@ -104,7 +106,7 @@ dialog::backdrop {
   position:absolute;
 }
 
-.sign-up{
+.sign-up {
   background:#000;
   color:#fff;
   padding:0.25em;
@@ -117,13 +119,13 @@ dialog h1 {
   max-inline-size:95%;
 }
 
-form{
+form {
   display:grid;
   grid-gap:20px;
   grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
 }
 
-.req-note, .sign-up{
+.req-note, .sign-up {
   grid-column:1 / -1;
 }
  
@@ -137,7 +139,7 @@ input {
   inline-size:calc(100% - 4px);
 }
 
-button{
+button {
   background:#fff;
   border:1px solid hsl(0, 0%, 50%);
   border-radius:3px;
@@ -147,31 +149,28 @@ button{
 }</code></pre>
      
 		<h4>The JavaScript</h4>
-		<p>The script toggles the display of the <code class="language-html">dialog</code>. The HTML <code class="language-html">dialog</code> element can be opened using two different commands: <code class="language-javascript">show()</code> (for non-modal <code class="language-html">dialog</code>s), and  <code class="language-javascript">showModal()</code> (for modal <code class="language-html">dialog</code>s).</p>
+		<p>The script is necessary to display the <code class="language-html">dialog</code> when invoked. The HTML <code class="language-html">dialog</code> element can be opened using two different commands: <code class="language-javascript">show()</code> (for non-modal <code class="language-html">dialog</code>s), and  <code class="language-javascript">showModal()</code> (for modal <code class="language-html">dialog</code>s) - used in this example.</p>
+		 <p><strong>Note:</strong> instead of writing a function to close the <code class="language-html">dialog</code>, the close button is nested within a separate <code class="language-html">form</code> element with a <code class="language-html">method="dialog"</code> attribute. This method allows the dialog to be closed when activating this button, and the browser will handle returning keyboard focus to the invoking element, </p>
          
 <pre xml:space="preserve"><code class="language-javascript">document.addEventListener("DOMContentLoaded", function(e){
   const d = document.querySelector("dialog");
   const btnOpen = document.querySelector(".open-modal");
-  const btnClose = document.querySelector(".close-modal");
 
   btnOpen.addEventListener("click", function(){
     d.showModal();
   }, false);
 
-  btnClose.addEventListener("click", function(){
-    d.close();
-  }, false);
 });</code></pre>
          
       </section>
    </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
          <ol>
-            <li>Find the components on the page that trigger modal <code class="language-html">dialog</code> elements.</li>
-            <li>Check that each <code class="language-html">dialog</code> can be opened using the keyboard to activate the triggering element (for example, activate a <code class="language-html">button</code> by pressing the <kbd>Enter</kbd> key or <kbd>Spacebar</kbd>.</li>
-            <li>When the <code class="language-html">dialog</code> is opened, check that focus is placed inside it.</li>
-            <li>While the <code class="language-html">dialog</code> is open, check that keyboard focus cannot move to elements of the primary document.</li>
-						<li>When the <code class="language-html">dialog</code> is closed, check that focus is placed back onto the triggering element, if that is still on the page.</li>
+            <li>Find the components on the page that invoke modal <code class="language-html">dialog</code> elements.</li>
+            <li>Check that each <code class="language-html">dialog</code> can be opened using the keyboard to activate the invoking element (for example, activate a <code class="language-html">button</code> by pressing the <kbd>Enter</kbd> key or <kbd>Spacebar</kbd>.</li>
+            <li>When the modal <code class="language-html">dialog</code> is opened, check that focus has moved to it / one of its focusable descendants.</li>
+            <li>While the modal <code class="language-html">dialog</code> is open, check that keyboard focus cannot move to elements of the primary document.</li>
+						<li>When the modal <code class="language-html">dialog</code> is closed, check that focus is placed back onto the invoking element, if the element still exists on the page.</li>
          </ol>
       </section>
       <section class="results"><h3>Expected Results</h3>
