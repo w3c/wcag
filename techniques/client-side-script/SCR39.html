@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-
 <head>
   <title>Making content on focus or hover hoverable, dismissible, and persistent</title>
   <link rel="stylesheet" type="text/css" href="../../css/editors.css" />
 </head>
-
 <body>
   <h1>Making content on focus or hover hoverable, dismissible, and persistent</h1>
   <section id="meta">
@@ -35,65 +33,67 @@
     <section class="example">
 		<h3>Content preview for links</h3>
 		<p>When hovering over or focusing on a link, a content preview for the link appears just above or below that link.
-			Users can move the pointer over the additional content (pop-up) so that they can fully read the additional content. Pressing the Esc
+			Users can move the pointer over the additional content (pop-up) so that they can fully read the additional content. Pressing the <kbd>Esc</kbd>
 			key dismisses (closes) the additional content.</p>
 		<section>
 			<h4>HTML of example 1</h4>
-			<pre><code>&lt;p&gt;This is the &lt;a class=&quot;a-and-tooltip&quot; id=&quot;parent&quot; href=&quot;index.html&quot;&gt;trigger
-&lt;span id=&quot;popup&quot; role=&quot;tooltip&quot;&gt;And this additional text 
-gives additional context on the trigger term&lt;/span&gt;&lt;/a&gt;.
-Text and popup are &lt;strong&gt;in one link (a)&lt;/strong&gt; element.&lt;/p&gt;</code></pre>
-<hr />
+<pre><code class="language-html">&lt;p&gt;This is the 
+   &lt;a class=&quot;a-and-tooltip&quot; id=&quot;parent&quot; href=&quot;index.html&quot;&gt;trigger
+   &lt;span id=&quot;popup&quot; role=&quot;tooltip&quot;&gt;And this additional text 
+    gives additional context on the trigger term
+   &lt;/span&gt;
+  &lt;/a&gt;.
+   Text and popup are &lt;strong&gt;in one link (a)&lt;/strong&gt; element.
+&lt;/p&gt;</code></pre>
 		</section>
 		<section>
 			<h4>CSS of example 1</h4>
-			<pre><code>[role=&quot;tooltip&quot;] {
-    display: none;
-    padding: 0.5em;
-    background:white;
-    color: black;
-    border:solid black 2px;
-    width:10em;
+<pre><code class="language-css">[role=&quot;tooltip&quot;] {
+  display: none;
+  padding: 0.5em;
+  background:white;
+  color: black;
+  border:solid black 2px;
+  width:10em;
 }
 
 .a-and-tooltip {
   position: relative;
 }
 
-[role=&quot;tooltip&quot;] {
-    position: absolute;
-    left:0;
-    top:1em;
+[role="tooltip"] {
+  position: absolute;
+  left:0;
+  top:1em;
 }</code></pre>
-			<hr />
 		</section>
 		<section>
 			<h4>JavaScript of example 1</h4>
-			<pre><code>// trigger and popup inside the same link
+			<pre><code class="language-javascript">// trigger and popup inside the same link
 
-var parent = document.getElementById(&apos;parent&apos;);
+var parent = document.getElementById("parent");
 
 parent.onmouseover = function() {
-    document.getElementById(&apos;popup&apos;).style.display = &apos;block&apos;;
+  document.getElementById("popup").style.display = "block";
 }
 
 parent.onmouseout = function() {
-    document.getElementById(&apos;popup&apos;).style.display = &apos;none&apos;;
+  document.getElementById("popup").style.display = "none";
 }
 
 parent.onfocus = function() {
-    document.getElementById(&apos;popup&apos;).style.display = &apos;block&apos;;
+  document.getElementById("popup").style.display = "block";
 }
 
 parent.onblur = function() {
-    document.getElementById(&apos;popup&apos;).style.display = &apos;none&apos;;
+  document.getElementById("popup").style.display = "none";
 }
 
 // hide when ESC is pressed
 
-document.addEventListener(&apos;keydown&apos;, (e) =&gt; {
+document.addEventListener("keydown", (e) =&gt; {
   if ((e.keyCode || e.which) === 27)
-       document.getElementById(&apos;popup&apos;).style.display = &apos;none&apos;;
+    document.getElementById("popup").style.display = "none";
 });</code></pre>
 		</section>
 
@@ -138,5 +138,4 @@ document.addEventListener(&apos;keydown&apos;, (e) =&gt; {
     </ul>
   </section>
 </body>
-
 </html>
