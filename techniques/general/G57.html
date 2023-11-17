@@ -1,72 +1,98 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Ordering the content in a meaningful sequence</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Ordering the content in a meaningful sequence</h1><section class="meta"><p class="id">ID: G57</p><p class="technology">Technology: general</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
-      <p>All technologies.</p>
-   </section><section id="description"><h2>Description</h2>
-      <p>The objective of this technique is to ensure that the order of content presented to assistive technologies allows the user to make sense of the content. Some techniques permit the content to be rendered visually in a meaningful sequence even if this is different from the order in which the content is encoded in the underlying source file.</p>
-      <p>For example, when mixing languages with different directionality in HTML, the bidirectional algorithm may position punctuation in the wrong location in the visual rendering. The visual rendering problem could be corrected by moving the punctuation in the content stream so that the bidirectional algorithm positions it as desired, but this would expose the incorrect content order to assistive technology. The content is both rendered in the correct order visually and exposed to assistive technology in the correct order by using markup to override the bidirectional algorithm.</p>
-      <p>When rendered visually, white space characters such as space or tab may not appear to be part of the content. However, when inserted into the content to control visual formatting, they may interfere with the meaning of the content.</p>
-      <p>At a larger granularity, controlling the placement of blocks of content in an HTML document using layout tables may produce a rendering in which related information is positioned together visually, but separated in the content stream. Since layout tables are read row by row, if the caption of an illustration is placed in the row following the illustration, it may be impossible to associate the caption with the image.</p>
-   </section><section id="examples"><h2>Examples</h2>
-      <section class="example">
-         
-            <p>A Web page from a museum exhibition contains a navigation bar containing a long list of links. The page also contains an image of one of the pictures from the exhibition, a heading for the picture, and a detailed description of the picture. The links in the navigation bar form a meaningful sequence. The heading, image, and text of the description also form a meaningful sequence. CSS is used to position the elements on the page.</p>
-            <p>Markup:</p>
-         
-         <pre xml:space="preserve">
-  &lt;h1&gt;My Museum Page&lt;/h1&gt;
-  &lt;ul id="nav"&gt;
-    &lt;li&gt;&lt;a href="#"&gt;Link 1&lt;/a&gt;&lt;/li&gt;
-    ...
-    &lt;li&gt;&lt;a href="#"&gt;Link 10&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-  &lt;div id="description"&gt;
-    &lt;h2&gt;Mona Lisa&lt;/h2&gt;
-    &lt;p&gt;
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Ordering the content in a meaningful sequence</title>
+	<link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
+</head>
+<body>
+	<h1>Ordering the content in a meaningful sequence</h1>
+	<section class="meta">
+		<p class="id">ID: G57</p>
+		<p class="technology">Technology: general</p>
+		<p class="type">Type: Technique</p>
+	</section>
+	<section id="applicability">
+		<h2>When to Use</h2>
+		<p>All technologies.</p>
+	</section>
+	<section id="description">
+		<h2>Description</h2>
+		<p>The objective of this technique is to ensure that the order of content presented to assistive technologies allows the user to make sense of the content. Some techniques permit the content to be rendered visually in a meaningful sequence even if this is different from the order in which the content is encoded in the underlying source file.</p>
+		<p>For example, when mixing languages with different directionality in <abbr title="HyperText Markup Language">HTML</abbr>, the bidirectional algorithm may position punctuation in the wrong location in the visual rendering. The visual rendering problem could be corrected by moving the punctuation in the content stream so that the bidirectional algorithm positions it as desired, but this would expose the incorrect content order to assistive technology. The content is both rendered in the correct order visually and exposed to assistive technology in the correct order by using markup to override the bidirectional algorithm.</p>
+		<p>When rendered visually, white space characters such as space or tab may not appear to be part of the content. However, when inserted into the content to control visual formatting, they may interfere with the meaning of the content.</p>
+		<p>At a larger granularity, controlling the placement of blocks of content in an HTML document using layout tables may produce a rendering in which related information is positioned together visually, but separated in the content stream. Since layout tables are read row by row, if the caption of an illustration is placed in the row following the illustration, it may be impossible to associate the caption with the image.</p>
+	</section>
+	<section id="examples">
+		<h2>Examples</h2>
+		<section class="example">     
+			<p>A Web page from a museum exhibition contains a navigation bar containing a long list of links. The page also contains an image of one of the pictures from the exhibition, a heading for the picture, and a detailed description of the picture. The links in the navigation bar form a meaningful sequence. The heading, image, and text of the description also form a meaningful sequence. CSS is used to position the elements on the page.</p>
+			<h4>HTML</h4>
+<pre xml:space="preserve"><code class="language-html">&lt;h1&gt;My Museum Page&lt;/h1&gt;
+&lt;ul id="nav"&gt;
+  &lt;li&gt;&lt;a href="#"&gt;Link 1&lt;/a&gt;&lt;/li&gt;
+  ...
+  &lt;li&gt;&lt;a href="#"&gt;Link 10&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div id="description"&gt;
+  &lt;h2&gt;Mona Lisa&lt;/h2&gt;
+  &lt;div&gt;
     &lt;img src="img.png" alt="Mona Lisa"&gt;
-    &lt;/p&gt;
-    &lt;p&gt;...detailed description of the picture...&lt;/p&gt;
   &lt;/div&gt;
-          </pre>
-          
-            <p>CSS:</p>
-           
-          <pre xml:space="preserve">
-  ul#nav {
-    float: left;
-    width: 9em;
-    list-style-type: none;
-    margin: 0;
-    padding: 0.5em;
-    color: #fff;
-    background-color: #063;
-  }
-  ul#nav a {
-   display: block;
-    width: 100%;
-    text-decoration: none;
-    color: #fff;
-    background-color: #063;
-  }
-  div#description {
-    margin-left: 11em;
-  }
-        </pre>
-      </section>
-   </section><section id="tests"><h2>Tests</h2>
-      <section class="procedure"><h3>Procedure</h3>
-         <ol>
-            <li>Linearize content using a standard approach for the technology (e.g., removing layout styles or running a linearization tool)</li>
-            <li>Check to see if the order of content yields the same meaning as the original</li>
-         </ol>
-      </section>
-      <section class="results"><h3>Expected Results</h3>
-         <ul>
-            <li>Check #2 is true.</li>
-         </ul>
-      </section>
-   </section><section id="related"><h2>Related Techniques</h2><ul>
-      <li><a href="../general/G59">G59</a></li>
-      <li><a href="../css/C6">C6</a></li>
-      <li><a href="../css/C27">C27</a></li>
-      <li><a href="../failures/F1">F1</a></li>
-      <li><a href="../failures/F49">F49</a></li>
-   </ul></section><section id="resources"><h2>Resources</h2></section></body></html>
+  &lt;p&gt;...detailed description of the picture...&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+			
+			<h4><abbr title="Cascading Style Sheets">CSS</abbr></h4>
+			
+<pre xml:space="preserve"><code class="language-css">ul#nav {
+  float: left;
+  width: 9em;
+  list-style-type: none;
+  margin: 0;
+  padding: 0.5em;
+  color: #fff;
+  background-color: #063;
+}
+
+ul#nav a {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  color: #fff;
+  background-color: #063;
+}
+div#description {
+  margin-left: 11em;
+}</code></pre>
+		</section>
+	</section>
+	<section id="tests">
+		<h2>Tests</h2>
+		<section class="procedure">
+			<h3>Procedure</h3>
+			<ol>
+				<li>Linearize content using a standard approach for the technology (e.g., removing layout styles or running a linearization tool)</li>
+				<li>Check to see if the order of content yields the same meaning as the original</li>
+			</ol>
+		</section>
+		<section class="results">
+			<h3>Expected Results</h3>
+			<ul>
+				<li>Check #2 is true.</li>
+			</ul>
+		</section>
+	</section>
+	<section id="related">
+		<h2>Related Techniques</h2>
+		<ul>
+			<li><a href="../general/G59">G59</a></li>
+			<li><a href="../css/C6">C6</a></li>
+			<li><a href="../css/C27">C27</a></li>
+			<li><a href="../failures/F1">F1</a></li>
+			<li><a href="../failures/F49">F49</a></li>
+		</ul>
+	</section>
+	<section id="resources">
+		<h2>Resources</h2>
+	</section>
+</body>
+</html>
