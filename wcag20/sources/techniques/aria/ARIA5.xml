@@ -24,64 +24,60 @@
          <head>A toggle button</head>
          <description>
             <p>A widget with role <att>button</att> acts as a toggle button when it implements the attribute <att>aria-pressed</att>. When <att>aria-pressed</att> is true, the button is in a "pressed" state. When <att>aria-pressed</att> is false, it is not pressed. If the attribute is not present, the button is a simple command button.</p>
-            <p>The following snippet from The Open Ajax Accessibility Examples, Example 38, shows WAI-ARIA mark-up for a toggle button that selects bold text:</p>
+            <p>The following snippet from the <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="https://www.w3.org/WAI/ARIA/apg/example-index/button/button.html">ARIA Authoring Practices Guide (APG) examples for button</loc> shows WAI-ARIA mark-up for a toggle button to mute/unmute audio:</p>
             <codeblock xml:space="preserve"><![CDATA[
-  <li id="bold1"  
-    class="toggleButton"
-    role="button"
-    tabindex="0"
-    aria-pressed="false"
-    aria-labelledby="bold_label"
-    aria-controls="text1">
-    <img src="http://www.oaa-accessibility.org/media/examples/images/button-bold.png" alt="bold text" align="middle">
-</li>
+<a tabindex="0"
+   role="button"
+   id="toggle"
+   aria-pressed="false">
+  Mute
+  …
+</a>
 ]]></codeblock>
-            <p>The <el>li</el> element has a role of "button" and an "aria-pressed" attribute. The following excerpt from the Javascript for this example updates the value of the "aria-pressed" attribute:</p>
+            <p>The <el>a</el> element has a <att>role="button"</att> and an <att>aria-pressed</att> attribute. The following excerpt from the Javascript for this example updates the value of the <att>aria-pressed</att> attribute:</p>
             <codeblock xml:space="preserve"><![CDATA[                   
-                             /**
-   * togglePressed() toggles the aria-pressed atribute between true or false
-   *
-   * @param ( id object) button to be operated on
-   *
-   * @return N/A
-   */
-  function togglePressed(id) {
-  
-    // reverse the aria-pressed state
-    if ($(id).attr('aria-pressed') == 'true') {
-      $(id).attr('aria-pressed', 'false');
-    }
-    else {
-      $(id).attr('aria-pressed', 'true');
-    }
-  }
-                            ]]></codeblock>
-            <p>This button is available as part of the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
-                    href="http://www.oaa-accessibility.org/examplep/toolbar1/">working example of Example 38 - Toolbar using inline images for visual state</loc>, on the OpenAjax Alliance site.</p>
+/**
+ * Toggles the toggle button’s state between *pressed* and *not pressed*.
+ *
+ * @param {HTMLElement} button
+ */
+function toggleButtonState(button) {
+  var isAriaPressed = button.getAttribute('aria-pressed') === 'true';
+
+  button.setAttribute('aria-pressed', isAriaPressed ? 'false' : 'true');
+
+  …
+}
+]]></codeblock>
          </description>
       </eg-group>
       <eg-group>
          <head>A slider</head>
          <description>
             <p>A widget with role <att>slider</att> lets a user select a value from within a given range. The slider represents the current value and the range of possible values via the size of the slider and the position of the handle. These properties of the slider are represented by the attributes <att>aria-valuemin</att>, <att>aria-valuemax</att>, and <att>aria-valuenow</att>.</p>
-            <p>The following snippet from The Open Ajax Accessibility Examples, Example 32, shows WAI-ARIA mark-up for a slider created in Javascript. Note that the javascript sets the attributes aria-valuemin, aria-valuemax, and aria-valuenow:</p>
-            <codeblock xml:space="preserve"><![CDATA[   var handle = '<img id="' + id + '" class="' + (this.vert == true ? 'v':'h') +'sliderHandle" ' +
-    'src="http://www.oaa-accessibility.org/media/examples/images/slider_' + (this.vert == true ? 'v':'h') + '.png" ' + 'role="slider" ' +
-    'aria-valuemin="' + this.min +
-    '" aria-valuemax="' + this.max +
-    '" aria-valuenow="' + (val == undefined ? this.min : val) +
-           '" aria-labelledby="' + label +
-           '" aria-controls="' + controls + '" tabindex="0"></img>';]]></codeblock>
-            <p>The following excerpt from the Javascript for this example updates the value of the "aria-valuenow" attribute when the value of the slider handle is changed:</p>
-            <codeblock xml:space="preserve"><![CDATA[ slider.prototype.positionHandle = function($handle, val) {
-    ...
-   // Set the aria-valuenow position of the handle
-  $handle.attr('aria-valuenow', val);
-   ...
-  }
+            <p>The following snippet from the <loc xmlns:xlink="http://www.w3.org/1999/xlink" href="https://www.w3.org/WAI/ARIA/apg/example-index/slider/slider-color-viewer.html">ARIA Authoring Practices Guide (APG) color viewer slider example</loc> shows WAI-ARIA mark-up for one of the sliders:</p>
+            <codeblock xml:space="preserve"><![CDATA[
+<div id="id-red" class="color-slider-label">
+   Red
+</div>
+<div class="color-slider red"
+      role="slider"
+      tabindex="0"
+      aria-valuemin="0"
+      aria-valuenow="128"
+      aria-valuemax="255"
+      aria-labelledby="id-red">
+   …
+</div>
 ]]></codeblock>
-            <p>This slider is available as part of the <loc xmlns:xlink="http://www.w3.org/1999/xlink"
-                    href="http://oaa-accessibility.org/example/32/">working example of Example 32 - Slider</loc>, on the OpenAjax Alliance site.</p>
+            <p>The following excerpt from the Javascript for this example updates the value of the <att>>aria-valuenow</att> attribute when the value of the slider handle is changed:</p>
+            <codeblock xml:space="preserve"><![CDATA[
+moveSliderTo(slider, value) {
+  …
+  slider.sliderNode.setAttribute('aria-valuenow', value);
+  …
+}
+]]></codeblock>
          </description>
       </eg-group>
    </examples>
@@ -115,7 +111,7 @@
             <item>
                <p>
                   <loc xmlns:xlink="http://www.w3.org/1999/xlink"
-                       href="http://www.w3.org/TR/wai-aria-practices/">WAI-ARIA Authoring Practices 1.1</loc>
+                       href="https://www.w3.org/WAI/ARIA/apg/">WAI-ARIA Authoring Practices Guide</loc>
                </p>
             </item>
             <item>
