@@ -687,11 +687,6 @@
 					<li>
 						<a href="#techniques">Techniques</a>
 					</li>
-					<xsl:if test="$act.doc//func:array[@key = 'successCriteria'][func:string = $meta/@id]">
-						<li>
-							<a href="#test-rules">Test Rules</a>
-						</li>
-					</xsl:if>
 				</xsl:if>
 				<xsl:if test="name($meta) = 'guideline'">
 					<li>
