@@ -8,7 +8,7 @@
 		<h1>Failure due to interactions being limited to touch-only on touchscreen devices</h1>
 		<section id="meta">
 			<h2>Metadata</h2>
-			<p id="id">F97</p>
+			<p id="id">F98</p>
 			<p id="technology">general</p>
 			<p id="type">failure</p>
 		</section>
@@ -30,8 +30,8 @@
       
       <section class="example">
 				<h3>Only using touch-specific JavaScript event listeners when a touchscreen is detected</h3>
-				<p>These types of approaches have historically been popular for "mobile" specific development, to ensure that touchscreen interactions are more responsive and immediate (due to the way that touch interactions used to add a delay of approximately 300ms between a "tap" interaction and the generic <code>click</code> event being fired).</p>
-				<pre><code>
+				<p>These types of approaches have historically been popular for "mobile" specific development, to ensure that touchscreen interactions are more responsive and immediate (due to the way that touch interactions used to add a delay of approximately 300ms between a "tap" interaction and the generic click event being fired).</p>
+				<pre><code class="language-javascript">
 /* inferring the presence of a touchscreen based on
    support for the Touch Events API */
 
@@ -39,13 +39,13 @@ if (window.TouchEvent || ('ontouchstart' in window)) {
   /* set up event listeners for touch */
   target.addEventListener('touchend', ...);
   ...
-} else {
+}
+else {
   /* set up event listeners for mouse/keyboard */
   target.addEventListener('click', ...);
   ...
-}
-				</code></pre>
-				<pre><code>
+}</code></pre>
+<pre><code class="language-javascript">
 /* inferring the presence of a touchscreen based on
    the CSS Media Queries 4 Interaction Media Features
    match for a "coarse" primary input mechanism */
@@ -54,16 +54,16 @@ if (window.matchMedia &amp;&amp; window.matchMedia("(pointer:coarse)").matches) 
   /* set up event listeners for touch */
   target.addEventListener('touchend', ...);
   ...
-} else {
+}
+else {
   /* set up event listeners for mouse/keyboard */
   target.addEventListener('click', ...);
   ...
-}
-				</code></pre>
+}</code></pre>
 			
 				<p>Similarly, web content that omits relevant/necessary keyboard event listeners (e.g. for the correct keyboard interaction with a complex widget, such as a tab interface) when a touchscreen is detected - under the assumption that on a touch device, keyboard support won't be necessary.</p>
 
-				<pre><code>
+<pre><code class="language-javascript">
 /* inferring the presence of a touchscreen based on
    the navigator.maxTouchPoints property defined in
    the Pointer Events API */
@@ -72,12 +72,12 @@ if (window.PointerEvent &amp;&amp; ('maxTouchPoints' in navigator) &amp;&amp;
     (navigator.maxTouchPoints > 0)) {
 	/* no need to listen to keyboard - there's a touchscreen... */
 	...
-} else {
+}
+else {
 	/* set up event listeners for keyboard interactions */
   target.addEventListener('keyup', ...);
   ...
-}
-				</code></pre>
+}</code></pre>
 			
 				<p class="note">Generally, these approaches will <em>also</em> result in a failure of Success Criterion 2.1.1 Keyboard - but only in situations where a touchscreen interface was also detected.</p>
 
@@ -86,15 +86,13 @@ if (window.PointerEvent &amp;&amp; ('maxTouchPoints' in navigator) &amp;&amp;
       <section class="example">
 				<h3>Hiding/omitting controls for mouse and keyboard users when a touchscreen is detected</h3>
 				<p>Web content containing interactive widgets such as content carousels, with visible buttons to operate the widget (such as previous/next buttons, or a visible scrollbar/slider). These visible controls are hidden/omitted when a touchscreen is detected, under the assumption that users will simply use touch gestures to operate the widgets, and no other alternatives are then provided for keyboard or mouse users.</p>
-        <pre><code>
-/* using CSS Media Queries 4 Interaction Media Features
+<pre><code class="language-css">/* using CSS Media Queries 4 Interaction Media Features
    to hide particular elements in the page (such as a container
    with visible controls) when a "coarse" primary input is present */
 
 @media (pointer: coarse) {
   #widget .controls { display: none; }
-}
-				</code></pre>
+}</code></pre>
 				<p>Depending on the specific implementation, authors may allow mouse interactions with widgets that mirror touch gestures - for instance, allowing mouse users to also drag/swipe carousels, rather than just relying on clickable previous/next controls or scrollbars. In these cases, hiding controls when a touchscreen is detected will still allow users to operate the widget with the mouse (unless this interaction has also been suppressed/omitted when the touchscreen was detected, as per the previous example). However, if the only keyboard-operable controls for the widget were hidden, and no alternative for keyboard users was provided (such as allowing cursor key operation), this situation would still fail Success Criterion 2.5.6.</p>
 				<p class="note">Generally, these approaches will <em>also</em> result in a failure of Success Criterion 2.1.1 Keyboard <em>and</em> (depending on the touch gesture that the user is expected to perform) Success Criterion 2.5.1 Pointer Gestures.</p>
 

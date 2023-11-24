@@ -1,188 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Working example - Using min-height and min-width to ensure sufficient target spacing</title>	
+	<meta charset="UTF-8">
+	<title>Working example - Using min-height and min-width to ensure sufficient target spacing</title>	
 
-<style>
-    
+	<style>
+		
 /* =============== Shared pagination styles =============== */
 
-nav, ol, li, h4 {
-   margin: 0;
+body{
+	background:#fff;
+	color:#000;
+	font: 1rem/1.5 system-ui, "Segoe UI", Roboto, Helvetica, sans-serif;
 }
 
-nav.pag {
-   color: black;
-   background-color: pink;
+nav, ol, li, h4 {
+	margin: 0;
 }
 
 .dis {
-   color:grey;
-   background:white
-   }
-
-h4 {
-   color: black;
-   background-color: #fdf; /* just to indicate the heading area adjacent to the pagination menu above */
+	color:grey;
+	background:white
 }
-    
+
 ol.pagination-1,
 ol.pagination-2 {
-    list-style-type: none;
+	list-style-type: none;
+	margin-bottom:1.5rem;
 }
-    
+
 ol.results p {
-   margin: 0 0 1em 0;
+	margin: 0 0 1em 0;
 }  
 
-ol.pagination-1 li span,
-ol.pagination-2 li span  {
-   color:grey;
-}     
+a.previous  {
+	color:#666;
+}    
+
+a[aria-current=page] {
+	color: white;
+	background-color: black;
+}
+
+a.previous:hover, a[aria-current=page]:hover{
+	outline:none;
+}
 
 /* =============== Example 1 pagination styles =============== */
 
 ol.pagination-1 li {
-   display: inline-block; 
-   min-width: 44px;
-   min-height: 44px;
-   text-align: center;
-   color:black;
-   background-color:#fed; /* just to indicate the target spacing area adjacent to the heading below  */
+	display: inline-block; 
+	min-width: 44px;
+	min-height: 44px;
+	text-align: center;
+	color:black;
+	background-color:#fed; /* just to indicate the target spacing area adjacent to the heading below  */
 }
 
-ol.pagination-1 li + li a {
-  border-left: 1px solid #bbb;
-}
-
-ol.pagination-1 li a,
-ol.pagination-1 li strong,
-ol.pagination-1 li span  {
-   display: block;
-   margin: 12px;
-   padding:4px 8px;
-}
-
-ol.pagination-1 li span  {
-   padding:4px 0;
-}
-
-ol.pagination-1 li strong {
-   color: white;
-   background-color: black;
+ol.pagination-1 li a  {
+	display: block;
+	margin: 12px;
+	padding:4px 8px;
 }
 
 a:hover, 
 a:focus {
-   outline: 3px solid #c04;
+	outline: 3px solid #c04;
 }
 
 /* =============== Example 2 pagination styles =============== */
 
 ol.pagination-2 {
-display:flex;
-flex-wrap: wrap;
+	display:flex;
+	flex-wrap: wrap;
 }
 
-ol.pagination-2 a,
-ol.pagination-2 strong,
-ol.pagination-2 span {
-   display: block;
-   line-height:44px;
-   border: 2px solid #fff;
-   text-align: center; 
-   min-height:44px;
-   min-width: 44px;
-   padding: 0 0.2em;
+ol.pagination-2 a{
+	display: block;
+	line-height:44px;
+	text-align: center; 
+	min-height:44px;
+	min-width: 44px;
+	padding: 0 0.2em;
 }
 
 ol.pagination-2 li {
-   color:black;
-   background-color:#fed; /* just to indicate the target spacing area adjacent to the heading below */
+	color:black;
+	background-color:#fed;
+	margin:0.1rem;
 }
-
-ol.pagination-2 strong {
-   border-top: 3px solid black;
-}
-
-ol.pagination-2 a:hover, 
-ol.pagination-2 a:focus {
-   outline:none;
-   border: 2px solid #c04;
-}
-
 
 </style>
-	
+
 </head>
 
 <body>
 
-<h1>Working example of using min-height and min-width to ensure sufficient target spacing</h1>
+	<h1>Working example of using min-height and min-width to ensure sufficient target spacing</h1>
 
-<p>This example relates to technique <a href="../../techniques/css/target-padding.html">C42</a>.</p>
+	<p>This example relates to technique <a href="../../techniques/css/C42.html">C42</a>.</p>
 
-<h2>Example 1 (display: inline-block, min-height: 44px and min-width: 44px set on list items inside pagination menu)</h2>
-<p>The first example shows a situation where the targets (in this case, the linked numbers in th pagination menu) are smaller than 44 x 44 CSS pixels. However, the list items that contain them have a minimum height and width of 44 px set, so that sufficient target spacing is assured.</p>
-<h3>Search results (invented):</h3>
-<nav class="pag" aria-label="pagination menu">
-  <ol class="pagination-1">
-    <li><span>previous</span></li>
-	<li><strong>1</strong></li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-    <li><a href="#">next</a></li>
-  </ol>
-</nav>
+	<h2>Example 1 (display: <code class="language-css">inline-block</code>, <code class="language-css">min-height:44px</code> and <code class="language-css">min-width:44px</code> set on list items inside pagination menu)</h2>
+	<p>The first example shows a situation where the targets (in this case, the linked numbers in the pagination menu) are smaller than 44 &#215; 44 CSS pixels. However, the list items that contain them have a minimum height and width of 44px, so that sufficient target spacing is assured.</p>
+	<h3>Search results (invented):</h3>
+	<nav class="pag" aria-label="pagination">
+		<ol class="pagination-1">
+			<li><a class="previous">previous</a></li>
+			<li><a aria-current="page">1</a></li>
+			<li><a href="#">2</a></li>
+			<li><a href="#">3</a></li>
+			<li><a href="#">4</a></li>
+			<li><a href="#">5</a></li>
+			<li><a href="#">next</a></li>
+		</ol>
+	</nav>
 
-<ol class="results">
-<li>
-<h4><a href="#">Garbage Delight by Dennis Lee (2014-05-06) (NoDust) by | HC | Good</a></h4>
-<p>HarperCollins, 1800. Condition: Good.</p>
-</li>
-<li>
-<h4><a href="#">Frederick S Perls: In and out the garbage pail by Frederick S Perls (1969-05-03)</a></h4>
-<p>Real People Press, 1804. Shows some signs of wear, and may have some markings on the inside.</p>
-</li>
-<li>
-<h4><a href="#">Lila Karp: The Queen Is in the Garbage (Classic Feminist Writers) by Lila Karp (2007-05-01) </a></h4>
-<p>1838. Condition: Very Good. Published by Belmont Books, 1969.</p>
-</li>
-</ol>
+	<ol class="results">
+		<li>
+			<h4><a href="#">Garbage Delight by Dennis Lee (2014-05-06) (NoDust) by | HC | Good</a></h4>
+			<p>HarperCollins, 1800. Condition: Good.</p>
+		</li>
+		<li>
+			<h4><a href="#">Frederick S Perls: In and out the garbage pail by Frederick S Perls (1969-05-03)</a></h4>
+			<p>Real People Press, 1804. Shows some signs of wear, and may have some markings on the inside.</p>
+		</li>
+		<li>
+			<h4><a href="#">Lila Karp: The Queen Is in the Garbage (Classic Feminist Writers) by Lila Karp (2007-05-01) </a></h4>
+			<p>1838. Condition: Very Good. Published by Belmont Books, 1969.</p>
+		</li>
+	</ol>
 
 
-<h2>Example 2 (display: flex, min-height: 44px and min-width: 44px set on links inside pagination menu)</h2>
-<p>The second example uses min-width and min-height on the targets (the linked numbers in the pagination menu) and not on the parent container, thereby meeting this target spacing Success Criterion <em>and</em> the AAA Success Criterion 2.5.5 Target Size.</p>
-<h3>Search results (invented):</h3>
-<nav class="pag" aria-label="pagination menu">
-  <ol class="pagination-2">
-    <li><span>previous</span></li>
-	<li><strong>1</strong></li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-    <li><a href="#">next</a></li>
-  </ol>
-</nav>
+	<h2>Example 2 (<code class="language-css">display: flex</code>, <code class="language-css">min-height:44px</code> and <code class="language-css">min-width:44px</code> set on links inside pagination menu)</h2>
+	<p>The second example uses <code class="language-css">min-width</code> and <code class="language-css">min-height</code> on the targets (the linked numbers in the pagination menu) and not on the parent container, thereby meeting this target spacing Success Criterion <em>and</em> the AAA Success Criterion 2.5.5 Target Size.</p>
+	<h3>Search results (invented):</h3>
+	<nav class="pag" aria-label="pagination">
+		<ol class="pagination-2">
+			<li><a class="previous">previous</a></li>
+			<li><a aria-current="page">1</a></li>
+			<li><a href="#">2</a></li>
+			<li><a href="#">3</a></li>
+			<li><a href="#">4</a></li>
+			<li><a href="#">5</a></li>
+			<li><a href="#">next</a></li>
+		</ol>
+	</nav>
 
-<ol class="results">
-<li>
-<h4><a href="#">Garbage Delight by Dennis Lee (2014-05-06) (NoDust) by | HC | Good</a></h4>
-<p>HarperCollins, 1800. Condition: Good.</p>
-</li>
-<li>
-<h4><a href="#">Frederick S Perls: In and out the garbage pail by Frederick S Perls (1969-05-03)</a></h4>
-<p>Real People Press, 1804. Shows some signs of wear, and may have some markings on the inside.</p>
-</li>
-<li>
-<h4><a href="#">Lila Karp: The Queen Is in the Garbage (Classic Feminist Writers) by Lila Karp (2007-05-01) </a></h4>
-<p>1838. Condition: Very Good. Published by Belmont Books, 1969.</p>
-</li>
-</ol>
+	<ol class="results">
+		<li>
+			<h4><a href="#">Garbage Delight by Dennis Lee (2014-05-06) (NoDust) by | HC | Good</a></h4>
+			<p>HarperCollins, 1800. Condition: Good.</p>
+		</li>
+		<li>
+			<h4><a href="#">Frederick S Perls: In and out the garbage pail by Frederick S Perls (1969-05-03)</a></h4>
+			<p>Real People Press, 1804. Shows some signs of wear, and may have some markings on the inside.</p>
+		</li>
+		<li>
+			<h4><a href="#">Lila Karp: The Queen Is in the Garbage (Classic Feminist Writers) by Lila Karp (2007-05-01) </a></h4>
+			<p>1838. Condition: Very Good. Published by Belmont Books, 1969.</p>
+		</li>
+	</ol>
 
 </body>
 </html>
