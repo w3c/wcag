@@ -1,156 +1,133 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Implementing automatic redirects on the server side instead of on the
-                    client side</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Implementing automatic redirects on the server side instead of on the
-                    client side</h1><section class="meta"><p class="id">ID: SVR1</p><p class="technology">Technology: server-side-script</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
-      <p> Server-side technologies, including server-side scripting languages and
-                        server configuration files with URLs or URL patterns for redirects. </p>
-   </section><section id="description"><h2>Description</h2>
-      <p> The objective of this technique is to avoid confusion that may be caused
-                        when two new pages are loaded in quick succession because one page (the one
-                        requested by the user) redirects to another. Some user agents support the
-                        use of the HTML meta element to redirect the user to another page
-                        after a specified number of seconds. This makes a page inaccessible to some
-                        users, especially users with screen readers. Server-side technologies
-                        provide methods to implement redirects in a way that does not confuse users.
-                        A server-side script or configuration file can cause the server to send an
-                        appropriate HTTP response with a status code in the 3xx range and a Location
-                        header with another URL. When the browser receives this response, the location
-                        bar changes and the browser makes a request with the new URL. </p>
-   </section><section id="examples"><h2>Examples</h2>
-      <section class="example">
-         <h3>JSP/Servlets</h3>
-         
-            <p> In Java Servlets or JavaServer Pages (JSP), developers can use
-                                    HttpServletResponse.sendRedirect(String url). </p>
-         
-         <pre xml:space="preserve">
-…
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Implementing automatic redirects on the server side instead of on the
+	client side</title>
+	<link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
+</head>
+<body>
+	<h1>Implementing automatic redirects on the server side instead of on the
+	client side</h1>
+	<section class="meta"><p class="id">ID: SVR1</p>
+		<p class="technology">Technology: server-side-script</p>
+		<p class="type">Type: Technique</p>
+	</section>
+	<section id="applicability">
+		<h2>When to Use</h2>
+		<p>Server-side technologies, including server-side scripting languages and
+		server configuration files with URLs or URL patterns for redirects.</p>
+	</section>
+	<section id="description">
+		<h2>Description</h2>
+		<p>The objective of this technique is to avoid confusion that may be caused when two new pages are loaded in quick succession because one page (the one requested by the user) redirects to another. Some user agents support the use of the <abbr title="HyperText Markup Language">HTML</abbr> meta element to redirect the user to another page after a specified number of seconds. This makes a page inaccessible to some users, especially users with screen readers. Server-side technologies provide methods to implement redirects in a way that does not confuse users. A server-side script or configuration file can cause the server to send an appropriate <abbr title="HyperText Transfer Proto">HTTP</abbr> response with a status code in the 3xx range and a Location header with another <abbr title="Uniform Resource Locator">URL</abbr>. When the browser receives this response, the location bar changes and the browser makes a request with the new URL.</p>
+	</section>
+	<section id="examples">
+		<h2>Examples</h2>
+		<section class="example">
+			<h3>JSP/Servlets</h3>
+			<p>In Java Servlets or JavaServer Pages (JSP), developers can use
+				<code class="language-java">HttpServletResponse.sendRedirect(String url)</code>. </p>
+<pre xml:space="preserve"><code class="language-java">...
 public void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-…
+throws ServletException, IOException {
+  ...
   response.sendRedirect("/newUserLogin.do");
-}</pre>
-         
-            <p> This sends a response with a 302 status code ("Found") and a
-                                Location header with the new URL to the user agent. It is also
-                                possible to set another status code with
-                                    response.sendError(int code, String message) with
-                                one of the constants defined in the interface
-                                javax.servlet.http.HttpServletResponse as status code. </p>
-         
-         <pre xml:space="preserve">
-…
+}</code></pre>
+			
+			<p>This sends a response with a <code>302</code> status code ("Found") and a <code>Location</code> header with the new URL to the user agent. It is also possible to set another status code with <code class="language-java">response.sendError(int code, String message)</code> with one of the constants defined in the interface <code class="language-java">javax.servlet.http.HttpServletResponse</code> as status code.</p>
+			
+<pre xml:space="preserve"><code class="language-java">...
 public void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-…
+throws ServletException, IOException {
+  ...
   response.sendError(response.SC_MOVED_PERMANENTLY, "/newUserLogin.do");
-}</pre>
-         
-            <p> If an application uses HttpServletResponse.encodeURL(String
-                                    url) for URL rewriting because the application depends on
-                                sessions, the method
-                                    HttpServletResponse.encodeRedirectURL(String url)
-                                should be used instead of
-                                    HttpServletResponse.sendRedirect(String url). It is
-                                also possible to rewrite a URL with
-                                    HttpServletResponse.encodeURL(String url) and then
-                                pass this URL to HttpServletResponse.sendRedirect(String
-                                url). </p>
-         
-      </section>
-      <section class="example">
-         <h3>ASP</h3>
-         
-            <p> In Active Server Page (ASP) with VBScript, developers can use
-                                    Response.Redirect. </p>
-         
-         <pre xml:space="preserve">
-  Response.Redirect "newUserLogin.asp"</pre>
-         
-            <p> or </p>
-         
-         <pre xml:space="preserve">
-Response.Redirect("newUserLogin.asp")</pre>
-         
-            <p> The code below is a more complete example with a specific HTTP
-                                status code. </p>
-         
-         <pre xml:space="preserve">
-Response.Clear
+}</code></pre>
+				
+				<p> If an application uses <code class="language-java">HttpServletResponse.encodeURL(String
+					url)</code> for URL rewriting because the application depends on
+					sessions, the method <code class="language-java">HttpServletResponse.encodeRedirectURL(String url)</code> should be used instead of
+					<code class="language-java">HttpServletResponse.sendRedirect(String url)</code>. It is
+					also possible to rewrite a URL with <code class="language-java">HttpServletResponse.encodeURL(String url)</code> and then pass this URL to <code class="language-java">HttpServletResponse.sendRedirect(String url)</code>. </p>
+			</section>
+			<section class="example">
+			 <h3><abbr title="Active Server Pages">ASP</abbr></h3>
+			 
+			 <p>In Active Server Page (ASP) with VBScript, developers can use <code class="language-vbnet">Response.Redirect</code>.</p>
+			 
+<pre xml:space="preserve"><code class="language-vbnet">Response.Redirect "newUserLogin.asp"</code></pre>
+			 
+			 <p>or</p>
+<pre xml:space="preserve"><code class="language-vbnet">Response.Redirect("newUserLogin.asp")</code></pre>
+			 
+			 <p>The code below is a more complete example with a specific HTTP status code.</p>
+			 
+<pre xml:space="preserve"><code class="language-vbnet">Response.Clear
 Response.Status = 301
 Response.AddHeader "Location", "newUserLogin.asp"
 Response.Flush
-Response.End</pre>
-      </section>
-      <section class="example">
-         <h3>PHP</h3>
-         
-            <p> In PHP, developers can send a raw HTTP header with the
-                                header method. The code below sends a 301 status code
-                                and a new location. If the status is not explicitly set, the
-                                redirect response sends an HTTP status code 302. </p>
-         
-         <pre xml:space="preserve">
- &lt;?php
-header("HTTP/1.1 301 Moved Permanently);
-header("Location: http://www.example.com/newUserLogin.php");
-?&gt;</pre>
-      </section>
-      <section class="example">
-         <h3>Apache</h3>
-         
-            <p> Developers can configure the Apache Web server to handle redirects,
-                                as in the following example. </p>
-         
-         <pre xml:space="preserve">
-redirect 301 /oldUserLogin.jsp http://www.example.com/newUserLogin.do</pre>
-      </section>
-   </section><section id="tests"><h2>Tests</h2>
-      <section class="procedure"><h3>Procedure</h3>
-         <ol>
-            <li> Find each link or programmatic reference to another page or
-                                    Web page. </li>
-            <li> For each link or programmatic reference to a URI in the set of
-                                    Web pages being evaluated, check if the referenced
-                                    Web page contains code (e.g., meta element or script) that
-                                    causes a client-side redirect. </li>
-            <li> For each link or programmatic reference to a URI in the set of
-                                    Web pages being evaluated, check if the referenced URI
-                                    does not cause a redirect OR causes a server-side redirect
-                                    without a time-out. </li>
-         </ol>
-      </section>
-      <section class="results"><h3>Expected Results</h3>
-         <ul>
-            <li> Step 2 is false AND step 3 is true. </li>
-         </ul>
-      </section>
-   </section><section id="related"><h2>Related Techniques</h2></section><section id="resources"><h2>Resources</h2>
-      
-         <ul>
-            <li> 
-                  <a href="https://www.w3.org/QA/Tips/reback">Use standard
-                                        redirects: do not break the back button!</a> (W3C QA Tip).
-                                </li>
-            <li> 
-                  <a href="https://tools.ietf.org/html/rfc7231#section-6.4">HTTP/1.1 Status Code Definitions: Redirection 3xx</a>.
-                                </li>
-            <li> 
-                  <a href="http://www.somacon.com/p145.php">HTTP 301 Permanent
-                                        Redirection Techniques</a> by Shailesh N. Humbad. </li>
-            <li> 
-                  <a href="http://docs.oracle.com/cd/E17802_01/products/products/servlet/2.3/javadoc/javax/servlet/http/HttpServletResponse.html">Interface javax.servlet.http.HttpServletResponse</a> in
-                                    the Java Servlets 2.3 API documentation. </li>
-            <li> 
-                  <a href="http://php.net/manual/en/function.header.php">header</a> in the PHP
-                                    Manual. </li>
-            <li> 
-                  <a href="http://httpd.apache.org/docs/2.2/mod/mod_alias.html">Apache Module mod_alias</a> in the <a href="http://httpd.apache.org/docs/2.2/">Apache HTTP Server
-                                        Version 2.2 Documentation</a> describes how redirects can
-                                    be specified in Apache 2.2. </li>
-            <li> 
-                  <a href="http://httpd.apache.org/docs/1.3/mod/mod_alias.html">Module mod_alias</a> in the <a href="http://httpd.apache.org/docs/1.3/">Apache HTTP Server
-                                        Version 1.3 Documentation</a> describes how redirects can
-                                    be specified in Apache 1.3. </li>
-         </ul>
-      
-   </section></body></html>
+Response.End</code></pre>
+		</section>
+		<section class="example">
+		 <h3><abbr title="PHP: Hypertext Preprocessor">PHP</abbr></h3>
+		 
+		 <p>In PHP, developers can send a raw HTTP header with the header method. The code below sends a 301 status code and a new location. If the status is not explicitly set, the redirect response sends an HTTP status code <code>302</code>.</p>
+		
+<pre xml:space="preserve"><code class="language-php">&lt;?php
+header("HTTP/1.1 301 Moved Permanently");
+header("Location: https://www.example.com/newUserLogin.php");
+?&gt;</code></pre>
+	</section>
+	<section class="example">
+	 <h3>Apache</h3>
+	 
+	 <p>Developers can configure the Apache Web server to handle redirects, as in the following example.</p>
+	 
+<pre xml:space="preserve"><code class="language-apache">redirect 301 /oldUserLogin.jsp http://www.example.com/newUserLogin.do</code></pre>
+	</section>
+	</section>
+	<section id="tests">
+		<h2>Tests</h2>
+		<section class="procedure">
+			<h3>Procedure</h3>
+			<ol>
+				<li>Find each link or programmatic reference to another page or Web page.</li>
+				<li>For each link or programmatic reference to a URI in the set of Web pages being evaluated, check if the referenced Web page contains code (e.g., meta element or script) that causes a client-side redirect.</li>
+				<li>For each link or programmatic reference to a URI in the set of Web pages being evaluated, check if the referenced <code class="Uniform Resource Identifier">URI</code> does not cause a redirect OR causes a server-side redirect without a time-out.</li>
+			</ol>
+		</section>
+		<section class="results">
+			<h3>Expected Results</h3>
+			<ul>
+				<li>Step 2 is false AND step 3 is true.</li>
+			</ul>
+		</section>
+	</section>
+	<section id="related">
+		<h2>Related Techniques</h2>
+	</section>
+	<section id="resources">
+		<h2>Resources</h2>
+		<ul>
+			<li> 
+				<a href="https://www.w3.org/QA/Tips/reback">Use standard redirects: do not break the back button!</a> (W3C QA Tip).
+			</li>
+		<li> 
+			<a href="https://tools.ietf.org/html/rfc7231#section-6.4">HTTP/1.1 Status Code Definitions: Redirection 3xx</a>.
+		</li>
+		<li> 
+			<a href="http://docs.oracle.com/cd/E17802_01/products/products/servlet/2.3/javadoc/javax/servlet/http/HttpServletResponse.html">Interface javax.servlet.http.HttpServletResponse</a> in
+			the Java Servlets 2.3 API documentation.</li>
+			<li> 
+				<a href="http://php.net/manual/en/function.header.php">PHP header</a>.</li>
+			<li> 
+				<a href="http://httpd.apache.org/docs/2.2/mod/mod_alias.html">Apache Module mod_alias</a> in the <a href="http://httpd.apache.org/docs/2.2/">Apache HTTP Server
+				Version 2.2 Documentation</a> describes how redirects can
+			be specified in Apache 2.2. </li>
+			<li> 
+				<a href="http://httpd.apache.org/docs/1.3/mod/mod_alias.html">Module mod_alias</a> in the <a href="http://httpd.apache.org/docs/1.3/">Apache HTTP Server
+				Version 1.3 Documentation</a> describes how redirects can
+			be specified in Apache 1.3. </li>
+		</ul>
+	</section>
+	</body>
+	</html>

@@ -1,45 +1,75 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Making the DOM order match the visual order</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Making the DOM order match the visual order</h1><section class="meta"><p class="id">ID: C27</p><p class="technology">Technology: css</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
-      <p>CSS used with HTML and XHTML</p>
-   </section><section id="description"><h2>Description</h2>
-      <p>The objective of this technique is to ensure that the order of content in the source code is the same as the visual presentation of the content. The order of content in the source code can be changed by the author to any number of visual presentations with CSS. Each order may be meaningful in itself but may cause confusion for assistive technology users. This could be due to the user switching off the author-specified presentation, by accessing the content directly from the source code (such as with a screen reader), or by interacting with the content with a keyboard. If a blind user, who reads the page with a screen reader that follows the source order, is working with a sighted user who reads the page in visual order, they may be confused when they encounter information in different orders. A user with low vision who uses a screen magnifier in combination with a screen reader may be confused when the reading order appears to skip around on the screen. A keyboard user may have trouble predicting where focus will go next when the source order does not match the visual order. </p>
-      <p>There may also be situations where the visually presented order is necessary to the overall understanding of the page, and if the source order is presented differently, it may be much more difficult to understand. </p>
-      <p>When the source order matches the visual order, everyone will read the content and interact with it in the same (correct) order. </p>
-      <div class="note">
-         <p>The <code class="att">tabindex</code> attribute in HTML has two functions. One is to make an element focusable and the other is to assign the element a position in the focus order. A <code class="att">tabindex</code> of 0 makes an element focusable, but adds it to the focus order in the order of source elements. The focus order will follow positive values of tabindex in ascending order. Setting <code class="att">tabindex</code> values that result in an order different from the order of elements in the Document Object Model (DOM) can mean the order is incorrect for users of assistive technologies. This is largely because the tabindex property is specified in the HTML or XHTML and not the CSS. This may change in future specifications. It may also differ from the visual presentation order. </p>
-      </div>
-   </section><section id="examples"><h2>Examples</h2>
-      <ul>
-         <li>An online newspaper has placed a navigation bar visually in the top left corner of the page directly below its initial logo. In the source code, the navigation elements appear after the elements encoding the logo. </li>
-      </ul>
-   </section><section id="tests"><h2>Tests</h2>
-      <section class="procedure"><h3>Procedure</h3>
-         <ol>
-            <li>Visually examine the order of the content in the Web page as it is presented to the end user.</li>
-            <li>Examine the elements in the DOM using a tool that allows you to see the DOM. </li>
-            <li>Ensure that the order of the content in the source code sections match the visual presentation of the content in the Web page. (e.g., for an English language page the order is from top to bottom and from left to right.) " </li>
-         </ol>
-      </section>
-      <section class="results"><h3>Expected Results</h3>
-         <ul>
-            <li>Step #3 is true. </li>
-         </ul>
-      </section>
-   </section><section id="related"><h2>Related Techniques</h2><ul>
-      <li><a href="../general/G57">G57</a></li>
-      <li><a href="../general/G59">G59</a></li>
-   </ul></section><section id="resources"><h2>Resources</h2>
-      
-         <ul>
-         <li><a href="https://accessibility.blog.gov.uk/2017/03/27/how-users-change-colours-on-websites/">How users change colours on websites (gov.uk)</a></li>
-           <li>Most browsers offer developer tools to inspect the source code. These tools can usually  be called up by pressing F12 or via the browser settings.      
-            <ul>
-            <li>
-                  <a href="https://chrome.google.com/webstore/detail/web-developer/bfbameneiokkgbdmiekhjnmfkcnldhhm">Web Developer Toolbar (Chrome)</a>. Allows examination of the source code with CSS turned off in Chrome. This can be helpful in determining whether reading order and source code order match.</li>
-            <li>
-                  <a href="https://addons.mozilla.org/de/firefox/addon/web-developer/">The Web Developer Toolbar (Firefox)</a>. Allows examination of the source code with CSS turned off in Firefox. This can be helpful in determining whether reading order and source code order match.</li>
-                  </ul>
-                  </li>
-        
-        </ul>
-      
-   </section></body></html>
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Making the DOM order match the visual order</title>
+	<link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link>
+</head>
+<body>
+	<h1>Making the <abbr title="Document Object Model">DOM</abbr> order match the visual order</h1>
+	<section class="meta">
+		<p class="id">ID: C27</p>
+		<p class="technology">Technology: css</p>
+		<p class="type">Type: Technique</p>
+	</section>
+	<section id="applicability">
+		<h2>When to Use</h2>
+		<p><abbr title="Cascading Style Sheets">CSS</abbr> used with <abbr title="HyperText Markup Language">HTML</abbr></p>
+	</section>
+	<section id="description">
+		<h2>Description</h2>
+		<p>The objective of this technique is to ensure that the order of content in the source code is the same as the visual presentation of the content. The order of content in the source code can be changed by the author to any number of visual presentations with CSS. Each order may be meaningful in itself but may cause confusion for assistive technology users. This could be due to the user switching off the author-specified presentation, by accessing the content directly from the source code (such as with a screen reader), or by interacting with the content with a keyboard. If a blind user, who reads the page with a screen reader that follows the source order, is working with a sighted user who reads the page in visual order, they may be confused when they encounter information in different orders. A user with low vision who uses a screen magnifier in combination with a screen reader may be confused when the reading order appears to skip around on the screen. A keyboard user may have trouble predicting where focus will go next when the source order does not match the visual order. </p>
+		<p>There may also be situations where the visually presented order is necessary to the overall understanding of the page, and if the source order is presented differently, it may be much more difficult to understand. </p>
+		<p>When the source order matches the visual order, everyone will read the content and interact with it in the same (correct) order. </p>
+		<div class="note">
+			<p>The <code class="language-html">tabindex</code> attribute in HTML has two functions. One is to make an element focusable and the other is to assign the element a position in the focus order. A <code class="language-html">tabindex</code> of 0 makes an element focusable, but adds it to the focus order in the order of source elements. The focus order will follow positive values of tabindex in ascending order. Setting <code class="language-html">tabindex</code> values that result in an order different from the order of elements in the Document Object Model (DOM) can mean the order is incorrect for users of assistive technologies. This is largely because the tabindex property is specified in the HTML or XHTML and not the CSS. This may change in future specifications. It may also differ from the visual presentation order. </p>
+		</div>
+	</section>
+	<section id="examples">
+		<h2>Examples</h2>
+		<ul>
+			<li>An online newspaper has placed a navigation bar visually in the top left corner of the page directly below its initial logo. In the source code, the navigation elements appear after the elements encoding the logo. </li>
+		</ul>
+	</section>
+	<section id="tests">
+		<h2>Tests</h2>
+		<section class="procedure">
+			<h3>Procedure</h3>
+			<ol>
+				<li>Visually examine the order of the content in the Web page as it is presented to the end user.</li>
+				<li>Examine the elements in the DOM using a tool that allows you to see the DOM. </li>
+				<li>Ensure that the order of the content in the source code sections match the visual presentation of the content in the Web page. (e.g., for an English language page the order is from top to bottom and from left to right.) " </li>
+			</ol>
+		</section>
+		<section class="results">
+			<h3>Expected Results</h3>
+			<ul>
+				<li>Step #3 is true. </li>
+			</ul>
+		</section>
+	</section>
+	<section id="related">
+		<h2>Related Techniques</h2>
+		<ul>
+			<li><a href="../general/G57">G57</a></li>
+			<li><a href="../general/G59">G59</a></li>
+		</ul>
+	</section>
+	<section id="resources">
+		<h2>Resources</h2>
+		<ul>
+			<li><a href="https://accessibility.blog.gov.uk/2017/03/27/how-users-change-colours-on-websites/">How users change colours on websites (gov.uk)</a>
+			</li>
+			<li>Most browsers offer developer tools to inspect the source code. These tools can usually  be called up by pressing F12 or via the browser settings.      
+				<ul>
+               <li>
+                  <a href="https://addons.mozilla.org/en/firefox/addon/web-developer/">The Web Developer Toolbar (Firefox)</a>. Allows examination of the source code with CSS turned off in Firefox. This can be helpful in determining whether reading order and source code order match.
+               </li>
+					<li>
+						<a href="https://chrome.google.com/webstore/detail/web-developer/bfbameneiokkgbdmiekhjnmfkcnldhhm">Web Developer Toolbar (Chrome)</a>. Allows examination of the source code with CSS turned off in Chrome. This can be helpful in determining whether reading order and source code order match.
+					</li>
+				</ul>
+			</li>
+		</ul>			
+	</section>
+</body>
+</html>

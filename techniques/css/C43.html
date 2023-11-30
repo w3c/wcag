@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 	<head>
-		<title>Using CSS margin and scroll-margin to un-obscure content</title>
+		<title>Using CSS scroll-padding to un-obscure content</title>
 		<link rel="stylesheet" type="text/css" href="../../css/editors.css"/>
 	</head>
 	<body>
-		<h1>Using <abbr title="Cascading Style Sheets">CSS</abbr> <code class="language-css">margin</code> and <code class="language-css">scroll-margin</code> to un-obscure content</h1>
+		<h1>Using <abbr title="Cascading Style Sheets">CSS</abbr> <code class="language-css">scroll-padding</code> to un-obscure content</h1>
 		<section id="meta">
 			<h2>Metadata</h2>
 			<p id="id"></p>
@@ -18,33 +18,39 @@
 		</section>
 		<section id="description">
 			<h2>Description</h2>
-			<p>The objective of this technique is to ensure that user interface components (for example: links, buttons, and form fields) that are initially completely obscured by a fixed-position component can still be accessed by users. In this example, this is achieved using the CSS <code class="language-css">margin</code> and <code class="language-css">scroll-margin</code> properties to create space underneath the site footer and allow the link in the footer to scroll into view when it is focused with a keyboard.</p>
+			<p>The objective of this technique is to ensure that user interface components (for example: links, buttons, and form fields) that are initially completely obscured by a fixed-position component can still be accessed by users. In this example, this is achieved using CSS <code class="language-css">padding</code> and <code class="language-css">scroll-padding</code> properties to create space underneath the site footer and allow the link in the footer to scroll into view when it is focused with a keyboard.</p>
 		</section>
 		<section id="examples">
 			<h2>Examples</h2>
 
 			<section class="example">
-				<h3>Using CSS margin and scroll-margin to un-obscure content</h3>
+				<h3>Using CSS <code class="language-css">scroll-padding</code> to un-obscure content</h3>
 				<p>This example shows a situation where there is a fixed-position banner at the bottom of the screen that is covering up the site footer, which contains a link. This type of fixed-position banner is a common design for cookie-consent banners.</p>
         <aside class="note">
-          <p>This example demonstrates a technique to un-obscure content underneath a fixed-position banner. To prevent the page becoming unusable at smaller screen sizes, the banner becomes un-fixed. To observe the scroll-margin effect you will need to use a viewport over 1120px wide.</p>
+          <p>This example demonstrates a technique to un-obscure content underneath a fixed-position banner. To prevent the page becoming unusable at smaller screen sizes, the banner becomes un-fixed. To observe the <code class="language-css">scroll-padding</code> effect you will need to use a viewport over 800px wide.</p>
         </aside>
-				<p>Working example: <a href="../../working-examples/css-margin-focus-not-obscured/">Using CSS <code class="language-css">margin</code> and <code class="language-css">scroll-margin</code> to un-obscure content</a>.</p>
+				<p>Working example: <a href="../../working-examples/css-padding-focus-not-obscured/">Using CSS <code class="language-css">scroll-padding</code> to un-obscure content</a>.</p>
 <pre><code>&lt;!doctype html&gt;
 &lt;html lang="en"&gt;
 &lt;head&gt;
   &lt;meta charset="utf-8"&gt;
   &lt;meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"&gt;
-  &lt;title&gt;Using CSS margin and scroll-margin to un-obscure content&lt;/title&gt;
+  &lt;title&gt;Using CSS scroll-padding to un-obscure content&lt;/title&gt;
   &lt;style&gt;
     ...
+
+    :root{
+      --height-dialog: 400px;
+      --breathing-room: 20px;
+      --scroll-padding: calc(var(--height-dialog) + var(--breathing-room));      
+    }
 
     .wrapper {
       display:grid;
       gap:1rem;
       grid-template-columns:repeat(9, 1fr);
       grid-template-rows:8rem auto minmax(10rem, max-content);
-      height:100vh;
+      min-block-size: 100vh;
     }
 
     .wrapper &gt; * {
@@ -69,7 +75,7 @@
       grid-column:1 / -1;
     }
 
-    @media (max-width:70rem) {
+    @media (max-width:50rem) {
       main {
        grid-column:1 / -1;
       }
@@ -82,28 +88,25 @@
     .fixed-position-banner {
       background:var(--banner-background);
       border:3px solid var(--banner-border);
-      height:12rem;
-      inset-block-end:0;      
-      margin-block-end:1rem;
-      padding:1rem;
+      margin-block-end:0.5rem;
+      padding:1rem 1rem 5rem;
       position:relative;
       width:calc(100vw - 1rem);
     }
 
-    @media (min-width:70rem), (min-height:60rem) {
-      .fixed-position-banner {
+    @media (min-width: 50rem) {
+      html {
+        padding-bottom:var(--height-dialog);
+        scroll-padding-bottom:var(--scroll-padding);
+      }
+
+     .fixed-position-banner {
         margin-block-end:0;
-        position:fixed; 
+        position:fixed;
+        inset:auto 0 0 0;
       }
-
-      .banner-open {
-        margin-block-end:14rem;
-      }
-
-      .banner-open footer a {
-        scroll-margin-block-end:15.5rem;
-      }
-    }
+    } 
+    ...
   &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -122,6 +125,7 @@
     &lt;/main&gt;
     &lt;aside&gt;
       &lt;h2&gt;Sidebar Content&lt;/h2&gt;
+      &lt;p&gt;&lt;a href="https://example.com"&gt;Here's an example link in the sidebar&lt;/a&gt;.&lt;/p&gt;
     &lt;/aside&gt;
     &lt;footer&gt;
       &lt;h2&gt;Footer Content&lt;/h2&gt;
@@ -129,20 +133,23 @@
     &lt;/footer&gt;
   &lt;/div&gt;
   &lt;script&gt;
-    document.addEventListener(&quot;DOMContentLoaded&quot;, function(e){
-      const cookieBanner = document.querySelector(&quot;.fixed-position-banner&quot;);
-      const closeBannerBtn = document.querySelector(&quot;.close-banner&quot;);
-      const pageBody = document.querySelector(&quot;body&quot;);
+    window.addEventListener('DOMContentLoaded', () => {
+      const elFixedBanner = document.querySelector('dialog');
+      const elCloseBannerBtn = document.querySelector(".close-banner");
 
-      cookieBanner.show();
+      elFixedBanner.show();
 
-      if(cookieBanner.hasAttribute(&quot;open&quot;)){
-        pageBody.classList.add(&quot;banner-open&quot;);
+      const getDialogHeight = () => {
+        const height = elFixedBanner.offsetHeight;
+        document.documentElement.style.setProperty('--height-dialog', `${height}px`);
+        document.documentElement.style.setProperty('--breathing-room', `${height ? 20 : 0}px`);
       }
 
-      closeBannerBtn.addEventListener(&quot;click&quot;, function(e){
-        cookieBanner.close();
-        pageBody.classList.remove(&quot;banner-open&quot;);
+      const observer = new ResizeObserver(getDialogHeight);
+      observer.observe(elFixedBanner);
+
+      elCloseBannerBtn.addEventListener("click", function(e){
+        elFixedBanner.close();
       }, false);
     });
   &lt;/script&gt;	
@@ -172,17 +179,16 @@
 		<section id="related">
 			<h2>Related Techniques</h2>
 			<ol>
-				<li><a href="C32">C32</a></li>
-				<li><a href="C34">C34</a></li>
+				<li><a href="C32.html">C32</a></li>
+				<li><a href="C34.html">C34</a></li>
 			</ol>
 
 		</section>
 		<section id="resources">
 			<h2>Resources</h2>
 			<ol>
-				<li><a href="https://www.w3.org/TR/css-box/#margins"><abbr title="World Wide Web Consortium">W3C</abbr> - CSS margins</a>.</li>
-				<li><a href="https://www.w3.org/TR/css-scroll-snap/#scroll-margin">W3C - CSS the <code class="language-css">scroll-margin</code> property</a>.</li>
-				<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:has"><abbr title="Mozilla Developer Network">MDN</abbr> - <code class="language-css">:has()</code> property</a>.</li>
+				<li><a href="https://www.w3.org/TR/css-box/#padding"><abbr title="World Wide Web Consortium">W3C</abbr> - CSS padding</a>.</li>
+				<li><a href="https://www.w3.org/TR/css-scroll-snap/#scroll-padding">W3C - CSS the <code class="language-css">scroll-padding</code> property</a>.</li>
 			</ol>
 
 		</section>

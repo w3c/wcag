@@ -1,43 +1,41 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Failure of Success Criterion 1.3.1 for incorrectly associating table headers and content via the headers and id attributes</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Failure of Success Criterion 1.3.1 for incorrectly associating table headers and content via the headers and id attributes</h1><section class="meta"><p class="id">ID: F90</p><p class="technology">Technology: failures</p><p class="type">Type: Failure</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Failure of Success Criterion 1.3.1 for incorrectly associating table headers and content via the headers and id attributes</title><link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></link></head><body><h1>Failure of Success Criterion 1.3.1 for incorrectly associating table headers and content via the headers and id attributes</h1><section class="meta"><p class="id">ID: F90</p><p class="technology">Technology: failures</p><p class="type">Type: Failure</p></section><section id="applicability"><h2>When to Use</h2>
       <p>HTML and XHTML.</p>
    </section><section id="description"><h2>Description</h2>
       <p>One way for authors to explicitly associate header cells to data cells is by using the id and headers attributes. These allow the author to associate multiple header cells to a particular data cell, which can be necessary when complex data tables with more than one level of heading are used. </p>
-      <p>The failure occurs when the relationship between data cells and corresponding header cells cannot be programmatically determined correctly because the association of <code class="att">id</code> and <code class="att">headers</code> attributes is faulty. This can happen, for example, when copying code within tables and forgetting to update the code.</p>
+      <p>The failure occurs when the relationship between data cells and corresponding header cells cannot be programmatically determined correctly because the association of <code class="language-html">id</code> and <code class="language-html">headers</code> attributes is faulty. This can happen, for example, when copying code within tables and forgetting to update the code.</p>
    </section><section id="examples"><h2>Examples</h2>
       <p>Note: The example below is based on the complex data table presented as example 1 of <a href="https://www.w3.org/WAI/WCAG21/Techniques/html/H43">Technique H43: Using id and headers attributes to associate data cells with header cells in data tables</a>.
 					</p>
       <section class="example">
          <h3>Table content not correctly associated to nested headers</h3>
          
-            <p>In this example, nested headers are used, but the content cells are incorrectly associated via the id and headers attributes. All cells reference top level header 'Exams' (id="e") - this isn't correct for the last three columns which should reference header 'Projects'. Also, the referencing of the second level column headers has been accidentally swapped even though in this example this makes no difference as the contents (1, 2, Final) are repeated.
+            <p>In this example, nested headers are used, but the content cells are incorrectly associated via the <code class="language-html">id</code> and <code class="language-html">headers</code> attributes. All cells reference top level header 'Exams' (<code class="language-html">id="e"</code>) - this isn't correct for the last three columns which should reference header 'Projects'. Also, the referencing of the second level column headers has been accidentally swapped even though in this example this makes no difference as the contents (1, 2, Final) are repeated.
 							</p>
             <p>Example Code:</p>
-            <pre xml:space="preserve">
-&lt;table&gt;
-   &lt;tr&gt;
-     &lt;th rowspan="2" id="h"&gt;Homework&lt;/th&gt;
-     &lt;th colspan="3" id="e"&gt;Exams&lt;/th&gt;
-     &lt;th colspan="3" id="p"&gt;Projects&lt;/th&gt;
-   &lt;/tr&gt;
-   &lt;tr&gt;
-     &lt;th id="e1" headers="e"&gt;1&lt;/th&gt;
-     &lt;th id="e2" headers="e"&gt;2&lt;/th&gt;
-     &lt;th id="ef" headers="e"&gt;Final&lt;/th&gt;
-     &lt;th id="p1" headers="p"&gt;1&lt;/th&gt;
-     &lt;th id="p2" headers="p"&gt;2&lt;/th&gt;
-     &lt;th id="pf" headers="p"&gt;Final&lt;/th&gt;
-   &lt;/tr&gt;
-   &lt;tr&gt;
-     &lt;td headers="h"&gt;15%&lt;/td&gt;       
-     &lt;td headers="e p1"&gt;15%&lt;/td&gt;  // should be "e e1"
-     &lt;td headers="e p2"&gt;15%&lt;/td&gt;  // should be "e e2"
-     &lt;td headers="e pf"&gt;20%&lt;/td&gt;  // should be "e ef"
-     &lt;td headers="e e1"&gt;10%&lt;/td&gt;  // should be "p p1"
-     &lt;td headers="e e2"&gt;10%&lt;/td&gt;  // should be "p p2"
-     &lt;td headers="e ef"&gt;15%&lt;/td&gt;  // should be "p pf"
-   &lt;/tr&gt;
-&lt;/table&gt;
-							</pre>
+<pre xml:space="preserve"><code class="language-html">&lt;table&gt;
+  &lt;tr&gt;
+    &lt;th rowspan="2" id="h"&gt;Homework&lt;/th&gt;
+    &lt;th colspan="3" id="e"&gt;Exams&lt;/th&gt;
+    &lt;th colspan="3" id="p"&gt;Projects&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th id="e1" headers="e"&gt;1&lt;/th&gt;
+    &lt;th id="e2" headers="e"&gt;2&lt;/th&gt;
+    &lt;th id="ef" headers="e"&gt;Final&lt;/th&gt;
+    &lt;th id="p1" headers="p"&gt;1&lt;/th&gt;
+    &lt;th id="p2" headers="p"&gt;2&lt;/th&gt;
+    &lt;th id="pf" headers="p"&gt;Final&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td headers="h"&gt;15%&lt;/td&gt;       
+    &lt;td headers="e p1"&gt;15%&lt;/td&gt;  &lt;!-- should be "e e1" --&gt;
+    &lt;td headers="e p2"&gt;15%&lt;/td&gt;  &lt;!-- should be "e e2" --&gt;
+    &lt;td headers="e pf"&gt;20%&lt;/td&gt;  &lt;!-- should be "e ef" --&gt;
+    &lt;td headers="e e1"&gt;10%&lt;/td&gt;  &lt;!-- should be "p p1" --&gt;
+    &lt;td headers="e e2"&gt;10%&lt;/td&gt;  &lt;!-- should be "p p2" --&gt;
+    &lt;td headers="e ef"&gt;15%&lt;/td&gt;  &lt;!-- should be "p pf" --&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;</code></pre>
             <p class="working-example">
                <a href="../../working-examples/failure-table-headers-incorrect-association/">Failure example of table incorrectly associating headers attributes in table content (td) to table headers (th)</a>.</p>
          
@@ -58,4 +56,5 @@
       <li><a href="../html/H43">H43</a></li>
       <li><a href="../failures/F46">F46</a></li>
       <li><a href="../general/G115">G115</a></li>
-   </ul></section></body></html>
+   </ul></section>
+</body></html>
