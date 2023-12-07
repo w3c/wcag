@@ -423,7 +423,9 @@
 				</xsl:choose>
 			</xsl:when>
 			<xsl:otherwise>
+        <!-- There is no 'Previous' content so leave this blank
 				<xsl:text>~Beginning of suite~</xsl:text>
+        -->
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -492,7 +494,9 @@
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>
+        <!-- There is no Next navigation content so leave it blank
 				<xsl:text>~End of suite~</xsl:text>
+        -->
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
