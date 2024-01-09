@@ -41,4 +41,13 @@ jobs:
           BRANCH: gh-pages
           LOCAL_DIR: output
           GITHUB_TOKEN: ${{ secrets.W3CGRUNTBOT_TOKEN }}
+      - name: update_21
+        run: |
+          ant clean
+          git reset --hard
+          git checkout WCAG-2.1
+          git checkout main guidelines/terms/20 guidelines/terms/21 understanding/20 understanding/21 techniques/*/*
+          git commit -m 'update from 2.2'
+        env:
+          GITHUB_TOKEN: ${{ secrets.W3CGRUNTBOT_TOKEN }}
 
