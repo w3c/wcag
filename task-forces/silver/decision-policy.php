@@ -8,7 +8,7 @@
 	
 	<body>
 		<?php include "../../_header.phi"; ?>
-		<h1>[DRAFT] Silver Task Force Decision Policy</h1>
+		<h1>Silver Task Force Decision Policy</h1>
 		<p>This document explains the decision process of the <a href="./">Silver Task Force of the AG Working Group</a>, and the <a href="https://www.w3.org/community/groups/silver/">Silver Community Group</a> when operating jointly with the Silver Task Force (collectively identified henceforth as the "Silver groups"). Decisions made according to this policy are to be recorded in the <a href="https://www.w3.org/WAI/GL/task-forces/silver/wiki/Decisions">Silver decisions wiki page</a>. The Silver groups follow the <a href="http://www.w3.org/Consortium/Process/#Consensus">W3C Process Document</a> regarding decisions. This document sets out procedures specific to the Silver groups to implement Process requirements and to facilitate later decisions by the Accessibility Guidelines Working Group. </p>
 		<section>
 			<h2>Goals</h2>
@@ -21,7 +21,7 @@
 				<li>For decisions being considered in task force meetings, objections should be raised immediately by participants in that meeting when there is a call for objections. Participants who miss meetings are expected to read the resolutions and raise objections to any decisions made within a week of the meeting. It is a best practice of the group to include a list of resolutions in the email of the minutes of the meeting. If participants will be out for more than a week, let the facilitators know so they can take this into account when considering objections. Facilitators can extend the timeline at their discretion, and will take into account factors such as worldwide public holidays and W3C moratoria.</li>
 				<li>When the facilitators believe that the group is ready to come to a decision, they indicate that a decision is imminent and call for objections. <ul>
 					<li>For decisions being considered in meetings, objections must be raised immediately by participants in that meeting when there is a call for objections. Participants who miss meetings are expected to read the minutes and raise objections to any decisions made within a week of the meeting. If participants will be out for more than a week, let the facilitators know so they can take this into account when considering objections.</li>
-					<li>For decisions being considered in asynchronous communication tools, or decisions made during a meeting at which the participant was not present, objections must be raised within two business days of the call for objections.</li>
+					<li>For decisions being considered in asynchronous communication tools, such as Calls for Consensus, objections must be raised by the deadline, which will be no shorter than 2 business days after the call for objections.</li>
 					<li>If an objection is received but the facilitators believe the objection has already been considered as far as is possible and reasonable, and the reviewer providing the objection can "live with” the decision, the decision is nonetheless ratified. </li>
 					<li>If an objection is received but the potential decision is supported by the vast majority of participants, the facilitators evaluate the majority view for bias with respect to the minority view. If bias is considered reasonably possible, the facilitators reopen the discussion. Otherwise the decision is ratified, with the objection recorded as part of the decision context.</li>
 				</ul></li>
@@ -48,12 +48,15 @@
 			<h2>Ratification</h2>
 			<ul>
 				<li>2020-09-01: <a href="https://www.w3.org/2020/09/01-silver-minutes.html#resolution01">Approved by Silver Task Force and Community Group</a></li>
-				<li>YYYY-MM-DD: Approved by Accessibility Guidelines Working Group</li>
+				<li>2021-01-16: <a href="https://lists.w3.org/Archives/Public/w3c-wai-gl/2021JanMar/0033.html">Approved by Accessibility Guidelines Working Group</a></li>
 			</ul>
 		</section>
 		<section>
 			<h2>History</h2>
-			<p>There have been no changes to this policy since its initial ratification.</p>
+			<ul>
+				<li>2020-12-18: Added information about participation in discussion and time frames for objections to proposed decisions.</li>
+				<li>2021-01-26: Clarified time frame for objections on email CfC.</li>
+			</ul>
 		</section>
 		<?php include "../../_footer.phi"; ?>
 	</body>
