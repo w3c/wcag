@@ -423,7 +423,9 @@
 				</xsl:choose>
 			</xsl:when>
 			<xsl:otherwise>
+        <!-- There is no 'Previous' content so leave this blank
 				<xsl:text>~Beginning of suite~</xsl:text>
+        -->
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -492,7 +494,9 @@
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>
+        <!-- There is no Next navigation content so leave it blank
 				<xsl:text>~End of suite~</xsl:text>
+        -->
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -687,11 +691,6 @@
 					<li>
 						<a href="#techniques">Techniques</a>
 					</li>
-					<xsl:if test="$act.doc//func:array[@key = 'successCriteria'][func:string = $meta/@id]">
-						<li>
-							<a href="#test-rules">Test Rules</a>
-						</li>
-					</xsl:if>
 				</xsl:if>
 				<xsl:if test="name($meta) = 'guideline'">
 					<li>
@@ -776,6 +775,13 @@
 		</a>
 		<xsl:if test="name($meta) = 'success-criterion'"> (Level <xsl:value-of select="$meta/level"/>)</xsl:if>
 		<xsl:text>: </xsl:text>
+	</xsl:template>
+
+	<xsl:template match="html:p[@class = 'note'] | html:div[@class = 'note']">
+		<div class="note">
+			<p class="note-title marker">Note</p>
+			<xsl:copy><xsl:apply-templates select="@*[not(name() = 'class')]|node()"/></xsl:copy>
+		</div>
 	</xsl:template>
 
 	<xsl:template match="html:p" mode="sc-info">
@@ -909,7 +915,7 @@
 											<xsl:when test="name($meta) = 'success-criterion'">Success Criterion (SC) </xsl:when>
 										</xsl:choose></header>
 									<div class="box-i">
-										<xsl:apply-templates select="$meta/content/html:*" mode="wcag-include"/>
+										<xsl:apply-templates select="$meta/content/html:*" />
 									</div>
 								</aside>
 								<div class="excol-all"/>
