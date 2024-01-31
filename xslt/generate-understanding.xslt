@@ -10,8 +10,8 @@
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:variable name="type">
 			<xsl:choose>
-				<xsl:when test="name($meta) = 'guideline'">Guideline</xsl:when>
-				<xsl:when test="name($meta) = 'success-criterion'">Success Criterion</xsl:when>
+				<xsl:when test="name($meta) = 'guideline'">Guideline </xsl:when>
+				<xsl:when test="name($meta) = 'success-criterion'">Success Criterion </xsl:when>
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:if test="$type != ''">
@@ -423,7 +423,9 @@
 				</xsl:choose>
 			</xsl:when>
 			<xsl:otherwise>
+        <!-- There is no 'Previous' content so leave this blank
 				<xsl:text>~Beginning of suite~</xsl:text>
+        -->
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -492,7 +494,9 @@
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>
+        <!-- There is no Next navigation content so leave it blank
 				<xsl:text>~End of suite~</xsl:text>
+        -->
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -663,6 +667,11 @@
 		<xsl:param name="meta" tunnel="yes"/>
 			<ul>
 				<xsl:if test="name($meta) = 'success-criterion'">
+					<xsl:if test="wcag:section-meaningfully-exists('brief', //html:section[@id = 'brief'])">
+						<li>
+							<a href="#brief">In Brief</a>
+						</li>
+					</xsl:if>
 					<li>
 						<a href="#intent">Intent</a>
 					</li>
@@ -682,11 +691,6 @@
 					<li>
 						<a href="#techniques">Techniques</a>
 					</li>
-					<xsl:if test="$act.doc//func:array[@key = 'successCriteria'][func:string = $meta/@id]">
-						<li>
-							<a href="#test-rules">Test Rules</a>
-						</li>
-					</xsl:if>
 				</xsl:if>
 				<xsl:if test="name($meta) = 'guideline'">
 					<li>
@@ -771,6 +775,13 @@
 		</a>
 		<xsl:if test="name($meta) = 'success-criterion'"> (Level <xsl:value-of select="$meta/level"/>)</xsl:if>
 		<xsl:text>: </xsl:text>
+	</xsl:template>
+
+	<xsl:template match="html:p[@class = 'note'] | html:div[@class = 'note']">
+		<div class="note">
+			<p class="note-title marker">Note</p>
+			<xsl:copy><xsl:apply-templates select="@*[not(name() = 'class')]|node()"/></xsl:copy>
+		</div>
 	</xsl:template>
 
 	<xsl:template match="html:p" mode="sc-info">
@@ -898,13 +909,18 @@
 						<xsl:choose>
 							<xsl:when test="name($meta) = 'guideline' or name($meta) = 'success-criterion'">
 								<aside class="box">
-									<header class="box-h  box-h-icon"> Success Criterion (SC)</header>
+									<header class="box-h  box-h-icon"> 
+										<xsl:choose>
+											<xsl:when test="name($meta) = 'guideline'">Guideline </xsl:when>
+											<xsl:when test="name($meta) = 'success-criterion'">Success Criterion (SC) </xsl:when>
+										</xsl:choose></header>
 									<div class="box-i">
-										<xsl:apply-templates select="$meta/content/html:*"/>
+										<xsl:apply-templates select="$meta/content/html:*" />
 									</div>
 								</aside>
 								<div class="excol-all"/>
 								<xsl:apply-templates select="//html:section[@id = 'status']"/>
+								<xsl:apply-templates select="//html:section[@id = 'brief']"/>
 								<xsl:apply-templates select="//html:section[@id = 'intent']"/>
 								<xsl:apply-templates select="//html:section[@id = 'benefits']"/>
 								<xsl:apply-templates select="//html:section[@id = 'examples']"/>
@@ -977,11 +993,24 @@
 	<xsl:template match="html:h1">
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:if test="name($meta) != 'understanding'">
-			<span class="standalone-resource__type-of-guidance">Understanding SC <xsl:value-of select="$meta/num"/>:</span>
+			<span class="standalone-resource__type-of-guidance">Understanding 
+				<xsl:choose>
+					<xsl:when test="name($meta) = 'guideline'">Guideline </xsl:when>
+					<xsl:when test="name($meta) = 'success-criterion'">SC </xsl:when>
+				</xsl:choose>
+				<xsl:value-of select="$meta/num"/>:</span>
 		</xsl:if>
 		<xsl:value-of select="$meta/name"/>
 	</xsl:template>
 
+	<xsl:template match="html:section[@id = 'brief']">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<h2>In Brief</h2>
+			<xsl:apply-templates select="html:*[not(wcag:isheading(.) or @id = 'brief')]"/>
+		</xsl:copy>
+	</xsl:template>
+	
 	<xsl:template match="html:section[@id = 'intent']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
@@ -1107,5 +1136,14 @@
 	</xsl:template>
 
 	<xsl:template match="html:*[@class = 'instructions']"/>
+	
+	<xsl:template match="html:a[func:starts-with(@href, '#')]" mode="wcag-include">
+		<xsl:variable name="href" select="@href"/>
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:attribute name="href"><xsl:value-of select="$loc.guidelines"/><xsl:value-of select="$href"/></xsl:attribute>
+			<xsl:apply-templates/>
+		</xsl:copy>
+	</xsl:template>
 
 </xsl:stylesheet>
