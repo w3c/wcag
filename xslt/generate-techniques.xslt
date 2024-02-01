@@ -347,7 +347,7 @@
 		<xsl:variable name="technology" select="$meta/parent::technology/@name"/>
 		<xsl:variable name="applicability" select="//html:section[@id = 'applicability']"/>
 		<section id="applicability">
-			<h2 id="applicability">Applicability</h2>
+			<h2>Applicability</h2>
 
 			<!-- Copy applicability if provided, otherwise put in a stock one for technology -->
 			<xsl:choose>
