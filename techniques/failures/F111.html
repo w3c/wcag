@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
    <head>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <title>F74: Failure of  Success Criterion 1.2.2 and 1.2.8 due to not labeling a synchronized media
-         alternative to text as an alternative | WAI | W3C
+      <title>F111: Failure of Success Criteria 1.3.1, 2.5.3, and 4.1.2 due to a control with visible
+         label text but no accessible name | WAI | W3C
       </title>
       <link rel="stylesheet" href="https://w3.org/WAI/assets/css/style.css" />
       <link rel="stylesheet" href="../base.css" />
@@ -41,6 +41,7 @@
                         <li><a href="#applicability">Applicability</a></li>
                         <li><a href="#description">Description</a></li>
                         <li><a href="#examples">Examples</a></li>
+                        <li><a href="#related">Related Techniques</a></li>
                         <li><a href="#tests">Tests</a></li>
                      </ul>
                   </nav>
@@ -48,8 +49,8 @@
             </nav>
          </aside>
          <main id="main" class="standalone-resource__main">
-            <h1><span>Technique F74:</span>Failure of  Success Criterion 1.2.2 and 1.2.8 due to not labeling a synchronized media
-               alternative to text as an alternative
+            <h1><span>Technique F111:</span>Failure of Success Criteria 1.3.1, 2.5.3, and 4.1.2 due to a control with visible
+               label text but no accessible name
             </h1>
             <aside class="box">
                <header class="box-h  box-h-icon">
@@ -57,78 +58,102 @@
                   				
                </header>
                <div class="box-i">
-                  <p>This technique is
-                     
-                     						a <strong>Failure</strong> of <a href="https://w3c.github.io/wcag/understanding/captions-prerecorded">1.2.2: Captions (Prerecorded)</a> and a <strong>Failure</strong> of <a href="https://w3c.github.io/wcag/understanding/media-alternative-prerecorded">1.2.8: Media Alternative (Prerecorded)</a>
-                     					.
+                  <p>This technique is <span>a <strong>Failure</strong> of <a href="https://w3c.github.io/wcag/understanding/label-in-name">2.5.3: Label in Name</a></span>.
                   </p>
                </div>
             </aside>
             <div class="excol-all"></div>
             <section id="applicability">
                <h2>Applicability</h2>
-               <p>Pages that provide synchronized media alternatives to text.</p>
-               <p>This technique relates to:</p>
-               <ul>
-                  <li><a href="https://w3c.github.io/wcag/understanding/captions-prerecorded">1.2.2: Captions (Prerecorded)</a> (Failure)
-                  </li>
-                  <li><a href="https://w3c.github.io/wcag/understanding/media-alternative-prerecorded">1.2.8: Media Alternative (Prerecorded)</a> (Failure)
-                  </li>
-               </ul>
+               <p>All technologies that include interactive controls (such as links or form inputs).</p>
+               <p>This technique relates to <span><a href="https://w3c.github.io/wcag/understanding/label-in-name">2.5.3: Label in Name</a> (Failure)</span>.
+               </p>
             </section>
             <section id="description">
                <h2>Description</h2>
-               <p>The objective of this failure is to avoid situations in which synchronized media alternatives
-                  are not labeled with the text for which they are alternatives. Synchronized media
-                  alternatives provide enhanced access to users for whom synchronized media is a more
-                  effective format than text. Since they are alternatives to text, they do not need
-                  themselves to have redundant text alternatives. However, they need to be clearly labeled
-                  with the text for which they substitute, so users can find them and so users who normally
-                  expect text alternatives to synchronized media know not to look for them.
+               <p>The objective of this Failure is to describe situations where speech input users cannot
+                  reliably speak the name of a control because although it has a visible label, it lacks
+                  an accessible name.
+               </p>
+               <p>When speech input users interact with a web page, they usually speak a command followed
+                  by the reference to some visible label (like the text in a button or a link, or the
+                  text labelling some input). If the control lacks an accessible name, speech users
+                  won't be able to activate the control using its visible label.
                </p>
             </section>
             <section id="examples">
                <h2>Examples</h2>
-               <section class="example" id="example-1-synchronized-media-alternatives-provided-elsewhere-on-page">
-                  <h3>Example 1: Synchronized media alternatives provided elsewhere on page</h3>
-                  <p>A page with instructions to complete a tax form provides a prose description of the
-                     fields to complete, data to provide, etc. Additionally, a synchronized media alternative
-                     provides spoken instructions, with video of a person completing the section being
-                     discussed in the audio. Although both versions are provided on the page, the synchronized
-                     media version is provided elsewhere on the page and is not clearly labeled with the
-                     part of the text for which it is a substitute. This makes it difficult for users encountering
-                     the text to find it, and users encountering the video do not know where its text alternative
-                     is.
-                  </p>
-               </section>
+               <section class="example" id="example-1-a-text-input-with-a-visible-label-but-without-an-accessible-name">
+                  <h3>Example 1: A text input with a visible label, but without an accessible name</h3>
+                  <p>The text input is preceded by a visible text label "Enter name", but the text is not
+                     marked up as a <code>&lt;label&gt;</code> for the input, and there is no alternative way (e.g., <code>aria-label</code>) to provide the input with an accessible name at all.
+                  </p><pre><code>
+					&lt;p&gt;Enter name&lt;/p&gt;
+					&lt;input type="text"&gt;
+        </code></pre></section>
+               <section class="example" id="example-2-a-text-input-with-a-visible-label-and-aria-labelledby-pointing-to-a-non-existent-id">
+                  <h3>Example 2: A text input with a visible label and aria-labelledby pointing to a non-existent
+                     id
+                  </h3>
+                  <p>The text input is preceded by a visible text label "Enter name". The text's container
+                     has an <code>id</code> of <code>nameEntry</code>, but the input has an <code>aria-labelledby</code> referencing a non-existent <code>name-entry</code> <code>id</code>. As a result, the input lacks an accessible name altogether.
+                  </p><pre><code>
+					&lt;p id="nameEntry"&gt;Enter name&lt;/p&gt;
+					&lt;input type="text" aria-labelledby="name-entry" &gt;
+        </code></pre></section>
+            </section>
+            <section id="related">
+               <h2>Related Techniques</h2>
+               <ul>
+                  				
+                  <li><a href="../../techniques/general/F96">F96</a></li>
+                  
+                  <li><a href="../../techniques/general/G131">G131</a></li>
+                  
+                  <li><a href="../../techniques/aria/ARIA7">ARIA7</a></li>
+                  
+                  <li><a href="../../techniques/aria/ARIA8">ARIA8</a></li>
+                  
+                  <li><a href="../../techniques/aria/ARIA9">ARIA9</a></li>
+                  				
+                  <li><a href="../../techniques/aria/ARIA14">ARIA14</a></li>
+                  
+                  <li><a href="../../techniques/aria/ARIA16">ARIA16</a></li>
+                  
+                  <li><a href="../../techniques/client-side-script/SCR30">SCR30</a></li>
+                  			
+               </ul>
             </section>
             <section id="tests">
                <h2>Tests</h2>
-               <section class="procedure" id="procedure">
+               <section class="test-procedure">
                   <h3>Procedure</h3>
-                  
+                  <p>For all controls with a visible label (e.g., link text, button text, programmatically
+                     linked label, images in links or buttons with text, etc.), check that:
+                  </p>
                   <ol>
+                     					
+                     <li>The control has a visible text label.</li>
+                     					
+                     <li>The control has an accessible name.</li>
                      
-                     <li>Check pages that provide synchronized media alternatives to text.</li>
-                     
-                     <li>Check that synchronized media is clearly labeled with the text for which it is an
-                        alternative.
-                     </li>
-                     
+                     <li>The accessible name contains the text that appears as the visible label.</li>
+                     				
                   </ol>
-                  
                </section>
-               <section class="results" id="expected-results">
+               <section class="test-results">
                   <h3>Expected Results</h3>
-                  
                   <ul>
-                     
-                     <li>If check #2 is false, then this failure condition applies and the content fails these
-                        Success Criteria.
+                     					
+                     <li>If check #1 is false, the Success Criterion does not apply.</li>
+                     					
+                     <li>If check #1 is true, but checks #2 and/or #3 are false, the content fails the Success
+                        Criterion.
                      </li>
-                     
+                     					
+                     <li>If all checks are true, the content passes the Success Criterion.</li>
+                     				
                   </ul>
-                  
                </section>
             </section><a class="button button-backtotop" href="#top"><span>
                   <svg focusable="false" aria-hidden="true" class="icon-arrow-up " viewBox="0 0 26 28">
