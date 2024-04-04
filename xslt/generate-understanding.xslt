@@ -780,7 +780,9 @@
 	<xsl:template match="html:p[@class = 'note'] | html:div[@class = 'note']">
 		<div class="note">
 			<p class="note-title marker">Note</p>
-			<xsl:copy><xsl:apply-templates select="@*[not(name() = 'class')]|node()"/></xsl:copy>
+			<xsl:copy>
+  			<xsl:apply-templates mode="sc-info"/>
+      </xsl:copy>
 		</div>
 	</xsl:template>
 
@@ -1137,13 +1139,13 @@
 
 	<xsl:template match="html:*[@class = 'instructions']"/>
 	
-	<xsl:template match="html:a[func:starts-with(@href, '#')]" mode="wcag-include">
-		<xsl:variable name="href" select="@href"/>
-		<xsl:copy>
-			<xsl:apply-templates select="@*"/>
-			<xsl:attribute name="href"><xsl:value-of select="$loc.guidelines"/><xsl:value-of select="$href"/></xsl:attribute>
-			<xsl:apply-templates/>
-		</xsl:copy>
+	<xsl:template match="html:a[func:starts-with(@href, '#')]">
+    <xsl:variable name="href" select="@href"/>
+    <xsl:copy>
+      <xsl:apply-templates select="@*"/>
+      <xsl:attribute name="href"><xsl:value-of select="$loc.guidelines"/><xsl:value-of select="$href"/></xsl:attribute>
+      <xsl:apply-templates/>
+    </xsl:copy>
 	</xsl:template>
 
 </xsl:stylesheet>
