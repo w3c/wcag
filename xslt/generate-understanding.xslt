@@ -669,7 +669,7 @@
 				<xsl:if test="name($meta) = 'success-criterion'">
 					<xsl:if test="wcag:section-meaningfully-exists('brief', //html:section[@id = 'brief'])">
 						<li>
-							<a href="#brief">In brief</a>
+							<a href="#brief">In Brief</a>
 						</li>
 					</xsl:if>
 					<li>
@@ -775,6 +775,15 @@
 		</a>
 		<xsl:if test="name($meta) = 'success-criterion'"> (Level <xsl:value-of select="$meta/level"/>)</xsl:if>
 		<xsl:text>: </xsl:text>
+	</xsl:template>
+
+	<xsl:template match="html:p[@class = 'note'] | html:div[@class = 'note']">
+		<div class="note">
+			<p class="note-title marker">Note</p>
+			<xsl:copy>
+  			<xsl:apply-templates mode="sc-info"/>
+      </xsl:copy>
+		</div>
 	</xsl:template>
 
 	<xsl:template match="html:p" mode="sc-info">
@@ -908,7 +917,7 @@
 											<xsl:when test="name($meta) = 'success-criterion'">Success Criterion (SC) </xsl:when>
 										</xsl:choose></header>
 									<div class="box-i">
-										<xsl:apply-templates select="$meta/content/html:*" mode="wcag-include"/>
+										<xsl:apply-templates select="$meta/content/html:*" />
 									</div>
 								</aside>
 								<div class="excol-all"/>
@@ -999,7 +1008,7 @@
 	<xsl:template match="html:section[@id = 'brief']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<h2>In brief</h2>
+			<h2>In Brief</h2>
 			<xsl:apply-templates select="html:*[not(wcag:isheading(.) or @id = 'brief')]"/>
 		</xsl:copy>
 	</xsl:template>
@@ -1130,13 +1139,13 @@
 
 	<xsl:template match="html:*[@class = 'instructions']"/>
 	
-	<xsl:template match="html:a[func:starts-with(@href, '#')]" mode="wcag-include">
-		<xsl:variable name="href" select="@href"/>
-		<xsl:copy>
-			<xsl:apply-templates select="@*"/>
-			<xsl:attribute name="href"><xsl:value-of select="$loc.guidelines"/><xsl:value-of select="$href"/></xsl:attribute>
-			<xsl:apply-templates/>
-		</xsl:copy>
+	<xsl:template match="html:a[func:starts-with(@href, '#')]">
+    <xsl:variable name="href" select="@href"/>
+    <xsl:copy>
+      <xsl:apply-templates select="@*"/>
+      <xsl:attribute name="href"><xsl:value-of select="$loc.guidelines"/><xsl:value-of select="$href"/></xsl:attribute>
+      <xsl:apply-templates/>
+    </xsl:copy>
 	</xsl:template>
 
 </xsl:stylesheet>
