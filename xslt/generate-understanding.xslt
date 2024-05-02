@@ -996,11 +996,12 @@
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:if test="name($meta) != 'understanding'">
 			<span class="standalone-resource__type-of-guidance">Understanding 
-				<xsl:choose>
+				<a href="https://w3.org/TR/WCAG{$guidelines.version}#{$meta/file/@href}">
+        <xsl:choose>
 					<xsl:when test="name($meta) = 'guideline'">Guideline </xsl:when>
 					<xsl:when test="name($meta) = 'success-criterion'">SC </xsl:when>
 				</xsl:choose>
-				<xsl:value-of select="$meta/num"/>:</span>
+				<xsl:value-of select="$meta/num"/></a>:</span>
 		</xsl:if>
 		<xsl:value-of select="$meta/name"/>
 	</xsl:template>
