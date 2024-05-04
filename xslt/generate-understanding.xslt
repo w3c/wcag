@@ -780,7 +780,9 @@
 	<xsl:template match="html:p[@class = 'note'] | html:div[@class = 'note']">
 		<div class="note">
 			<p class="note-title marker">Note</p>
-			<xsl:copy><xsl:apply-templates select="@*[not(name() = 'class')]|node()"/></xsl:copy>
+			<xsl:copy>
+  			<xsl:apply-templates mode="sc-info"/>
+      </xsl:copy>
 		</div>
 	</xsl:template>
 
@@ -994,11 +996,12 @@
 		<xsl:param name="meta" tunnel="yes"/>
 		<xsl:if test="name($meta) != 'understanding'">
 			<span class="standalone-resource__type-of-guidance">Understanding 
-				<xsl:choose>
+				<a href="https://w3.org/TR/WCAG{$guidelines.version}#{$meta/file/@href}">
+        <xsl:choose>
 					<xsl:when test="name($meta) = 'guideline'">Guideline </xsl:when>
 					<xsl:when test="name($meta) = 'success-criterion'">SC </xsl:when>
 				</xsl:choose>
-				<xsl:value-of select="$meta/num"/>:</span>
+				<xsl:value-of select="$meta/num"/></a>:</span>
 		</xsl:if>
 		<xsl:value-of select="$meta/name"/>
 	</xsl:template>
@@ -1137,13 +1140,13 @@
 
 	<xsl:template match="html:*[@class = 'instructions']"/>
 	
-	<xsl:template match="html:a[func:starts-with(@href, '#')]" mode="wcag-include">
-		<xsl:variable name="href" select="@href"/>
-		<xsl:copy>
-			<xsl:apply-templates select="@*"/>
-			<xsl:attribute name="href"><xsl:value-of select="$loc.guidelines"/><xsl:value-of select="$href"/></xsl:attribute>
-			<xsl:apply-templates/>
-		</xsl:copy>
+	<xsl:template match="html:a[func:starts-with(@href, '#')]">
+    <xsl:variable name="href" select="@href"/>
+    <xsl:copy>
+      <xsl:apply-templates select="@*"/>
+      <xsl:attribute name="href"><xsl:value-of select="$loc.guidelines"/><xsl:value-of select="$href"/></xsl:attribute>
+      <xsl:apply-templates/>
+    </xsl:copy>
 	</xsl:template>
 
 </xsl:stylesheet>
