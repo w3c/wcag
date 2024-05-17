@@ -910,6 +910,7 @@
 						</h1>
 						<xsl:choose>
 							<xsl:when test="name($meta) = 'guideline' or name($meta) = 'success-criterion'">
+  							<xsl:apply-templates select="//html:section[@id = 'brief']"/>
 								<aside class="box">
 									<header class="box-h  box-h-icon"> 
 										<xsl:choose>
@@ -922,7 +923,6 @@
 								</aside>
 								<div class="excol-all"/>
 								<xsl:apply-templates select="//html:section[@id = 'status']"/>
-								<xsl:apply-templates select="//html:section[@id = 'brief']"/>
 								<xsl:apply-templates select="//html:section[@id = 'intent']"/>
 								<xsl:apply-templates select="//html:section[@id = 'benefits']"/>
 								<xsl:apply-templates select="//html:section[@id = 'examples']"/>
