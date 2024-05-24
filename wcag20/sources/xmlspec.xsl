@@ -1571,7 +1571,7 @@
 	<!-- sequence: -->
 	<!-- IDL stuff isn't handled yet -->
 	<!-- sitem: simple list item -->
-	<!-- just make one paragraph with <br>s between items -->
+	<!-- just make one paragraph with <br/>s between items -->
 	<xsl:template match="sitem">
 		<xsl:apply-templates/>
 	</xsl:template>
