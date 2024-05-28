@@ -1,11 +1,7 @@
-/** @fileoverview Common functions used by multiple Eleventy configurations */
-
-import { readFileSync } from "fs";
-import { readFile, writeFile } from "fs/promises";
 import { glob } from "glob";
-import { basename, dirname, resolve } from "path";
+import { basename } from "path";
 
-import { load } from "./cheerio";
+import { flattenDomFromFile } from "./cheerio";
 
 type WcagVersion = "20" | "21" | "22";
 function assertIsWcagVersion(v: string): asserts v is WcagVersion {
@@ -18,11 +14,11 @@ function assertIsWcagVersion(v: string): asserts v is WcagVersion {
  * (Functionally equivalent to "guidelines-versions" target in build.xml)
  **/
 export async function getGuidelinesVersions() {
-	const files = await glob("understanding/*/*.html");
+	const paths = await glob("*/*.html", { cwd: "understanding" });
 	const versions: Record<WcagVersion, string[]> = {"20": [], "21": [], "22": []};
 	
-	for (const path of files) {
-		const [, version, filename] = path.split("/");
+	for (const path of paths) {
+		const [version, filename] = path.split("/");
 		assertIsWcagVersion(version);
 		versions[version].push(basename(filename, ".html"));
 	}
@@ -46,31 +42,6 @@ export async function getInvertedGuidelinesVersions() {
 		}
 	}
 	return invertedVersions;
-}
-
-/**
- * Resolves data-include directives in the given file, a la flatten-document.xslt
- * @param inputPath Path (relative to repo root) to file to flatten
- * @param outputPath Path to write output to
- * @returns Cheerio instance containing "flattened" DOM
- */
-export async function flattenDomFromFile(inputPath: string) {
-	const $ = load(await readFile(inputPath, "utf8"));
-
-	$("[data-include]").each((i, el) => {
-		const replacement = readFileSync(resolve(dirname(inputPath), el.attribs["data-include"]), "utf8");
-		// Replace entire element or children, depending on data-include-replace
-		if (el.attribs["data-include-replace"]) $(el).replaceWith(replacement);
-		else $(el).html(replacement);
-	});
-
-	return $;
-}
-
-/** Generates an ID for heading permalinks. Equivalent to wcag:generate-id. */
-export function generateId(title: string) {
-	if (title === "Parsing (Obsolete and removed)") return "parsing";
-	return title.replace(/\s+/g, "-").replace(/[,\():]+/g, "").toLowerCase();
 }
 
 interface GuidelinesNode {
