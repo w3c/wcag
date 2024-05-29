@@ -2,8 +2,8 @@ import { glob } from "glob";
 import { basename } from "path";
 import { loadFromFile } from "./cheerio";
 
-/** Maps technology to its title for the table of contents */
-const technologyTitles = {
+/** Maps each technology to its title for the table of contents */
+export const technologyTitles = {
 	"aria": "ARIA Techniques",
 	"client-side-script": "Client-Side Script Techniques",
 	"css": "CSS Techniques",
@@ -18,7 +18,7 @@ const technologyTitles = {
 	"text": "Plain-Text Techniques",
 };
 type Technology = keyof typeof technologyTitles;
-const technologies = Object.keys(technologyTitles) as Technology[];
+export const technologies = Object.keys(technologyTitles) as Technology[];
 
 interface Technique {
 	/** Letter(s)-then-number technique code; corresponds to source HTML filename */
