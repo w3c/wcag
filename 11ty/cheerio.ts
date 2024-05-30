@@ -34,12 +34,13 @@ export async function loadFromFile(
  * @returns 
  */
 function readInclude(includePath: string, inputPath: string) {
-	try {
+	if (includePath.startsWith(".."))
 		return readFileSync(resolve(dirname(inputPath), includePath), "utf8")
+
+	try {
+		return readFileSync(resolve("_includes", includePath), "utf8");
 	} catch (error) {
-		if (!includePath.startsWith(".."))
-			return readFileSync(resolve("_includes", includePath), "utf8");
-		throw error;
+		return readFileSync(resolve(dirname(inputPath), includePath), "utf8")
 	}
 }
 
@@ -54,9 +55,9 @@ function readInclude(includePath: string, inputPath: string) {
  * @returns Cheerio instance containing "flattened" DOM
  */
 export function flattenDom(content: string, inputPath: string) {
-	const $ = load(content, null, false);
+	const $ = load(content);
 
-	$("[data-include]").each((i, el) => {
+	$("body [data-include]").each((i, el) => {
 		const replacement = readInclude(el.attribs["data-include"], inputPath);
 		// Replace entire element or children, depending on data-include-replace
 		if (el.attribs["data-include-replace"]) $(el).replaceWith(replacement);
@@ -70,5 +71,5 @@ export function flattenDom(content: string, inputPath: string) {
  * Convenience version of flattenDom that requires only inputPath to be passed.
  * @see flattenDom
  */
-export const flattenDomFromFile = async (inputPath: string) => 
+export const flattenDomFromFile = async (inputPath: string) =>
 	flattenDom(await readFile(inputPath, "utf8"), inputPath);

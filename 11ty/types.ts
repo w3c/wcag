@@ -10,18 +10,22 @@ interface EleventyPage {
 	url: string;
 }
 
+interface EleventyDirectories {
+	data: string;
+	includes: string;
+	input: string;
+	layouts?: string;
+	output: string;
+}
+
+type EleventyRunMode = "build" | "serve" | "watch";
+
 interface EleventyMeta {
-	directories: {
-		data: string;
-		includes: string;
-		input: string;
-		layouts?: string;
-		output: string;
-	};
+	directories: EleventyDirectories;
 	env: {
 		config: string;
 		root: string;
-		runMode: "build" | "serve" | "watch";
+		runMode: EleventyRunMode;
 		source: "cli" | "script";
 	};
 	generator: string;
@@ -33,4 +37,10 @@ export interface EleventyData {
 	eleventy: EleventyMeta;
 	page: EleventyPage;
 	[index: string]: any; // Allow access to data cascade
+}
+
+export interface EleventyEvent {
+	dir: EleventyDirectories;
+	outputMode: "fs" | "json" | "ndjson";
+	runMode: EleventyRunMode;
 }

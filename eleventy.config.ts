@@ -1,6 +1,8 @@
+import { copyFile } from "fs/promises";
+
 import { CustomLiquid } from "11ty/CustomLiquid";
-import { getTechniques, technologies } from "11ty/techniques";
-import type { EleventyData } from "11ty/types";
+import { getTechniques, technologies, technologyTitles } from "11ty/techniques";
+import type { EleventyData, EleventyEvent } from "11ty/types";
 
 // Inputs to eventually expose e.g. via environment variables
 /** Takes the place of editors vs. publication distinction */
@@ -10,7 +12,7 @@ const version = "22";
 
 export default function (eleventyConfig: any) {
 	eleventyConfig.addGlobalData("version", version);
-	eleventyConfig.addGlobalData("versionDecimal", version.split("."));
+	eleventyConfig.addGlobalData("versionDecimal", version.split("").join("."));
 
 	eleventyConfig.addGlobalData("eleventyComputed", {
 		// Preserve existing structure: write to x.html instead of x/index.html
@@ -19,18 +21,19 @@ export default function (eleventyConfig: any) {
 
 	eleventyConfig.addGlobalData("techniques", getTechniques);
 	eleventyConfig.addGlobalData("technologies", technologies);
+	eleventyConfig.addGlobalData("technologyTitles", technologyTitles);
 	eleventyConfig.addGlobalData(
 		"techniquesUrl",
 		isEditors
-			? "https://w3c.github.io/wcag/techniques"
-			: `https://www.w3.org/WAI/WCAG/${version}/Techniques`
+			? "https://w3c.github.io/wcag/techniques/"
+			: `https://www.w3.org/WAI/WCAG/${version}/Techniques/`
 	);
 
 	eleventyConfig.addGlobalData(
 		"understandingUrl",
 		isEditors
-			? "https://w3c.github.io/wcag/understanding"
-			: `https://www.w3.org/WAI/WCAG/${version}/Understanding`
+			? "https://w3c.github.io/wcag/understanding/"
+			: `https://www.w3.org/WAI/WCAG/${version}/Understanding/`
 	);
 	// If you're looking for other high-level data, check /_data and *.11tydata.js
 
@@ -39,16 +42,21 @@ export default function (eleventyConfig: any) {
 	eleventyConfig.addPassthroughCopy({
 		"css/base.css": "techniques/base.css",
 		"css/a11y-light.css": "techniques/a11y-light.css",
-		"script/highlight.min.css": "techniques/highlight.min.css",
+		"script/highlight.min.js": "techniques/highlight.min.js",
 	});
 
 	eleventyConfig.addPassthroughCopy("understanding/*.css");
 	eleventyConfig.addPassthroughCopy({
-		"css/base.css": "understanding/base.css",
 		"guidelines/relative-luminance.html": "understanding/relative-luminance.html",
 		"understanding/*/img/*": "understanding/img", // Intentionally flatten
 	});
 	eleventyConfig.addPassthroughCopy("working-examples/**");
+
+	eleventyConfig.on("eleventy.after", async ({ dir }: EleventyEvent) => {
+		// addPassthroughCopy can only map each file once,
+		// but base.css needs to be copied to a 2nd destination
+		await copyFile(`${dir.output}/techniques/base.css`, `${dir.output}/understanding/base.css`);
+	});
 
 	const dir = {
 		// output: "output", // output to the same place as build.xml
