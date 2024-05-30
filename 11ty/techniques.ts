@@ -8,12 +8,10 @@ export const technologyTitles = {
 	"client-side-script": "Client-Side Script Techniques",
 	"css": "CSS Techniques",
 	"failures": "Common Failures",
-	"flash": "Flash Techniques",
 	"general": "General Techniques",
 	"html": "HTML Techniques",
 	"pdf": "PDF Techniques",
 	"server-side-script": "Server-Side Script Techniques",
-	"silverlight": "Silverlight Techniques",
 	"smil": "SMIL Techniques",
 	"text": "Plain-Text Techniques",
 };
@@ -23,8 +21,8 @@ export const technologies = Object.keys(technologyTitles) as Technology[];
 interface Technique {
 	/** Letter(s)-then-number technique code; corresponds to source HTML filename */
 	id: string;
-	/** Title derived from h1 element in each technique page; may contain HTML */
-	titleHtml: string;
+	/** Title derived from each technique page */
+	title: string;
 }
 
 function assertIsTechnology(technology: string): asserts technology is keyof typeof technologyTitles {
@@ -48,15 +46,15 @@ export async function getTechniques() {
 		assertIsTechnology(technology);
 		techniques[technology].push({
 			id: basename(filename, ".html"),
-			titleHtml:
-				(await loadFromFile(`techniques/${path}`))("h1").html()!.replace(/\s\s+/, " ")
+			title:
+				(await loadFromFile(`techniques/${path}`))("h1").text()!.replace(/\s\s+/, " ")
 		});
 	}
 
 	for (const technology of technologies) {
 		techniques[technology].sort((a, b) => {
-			const aId = a.id.replace(/[^\d]/g, "");
-			const bId = b.id.replace(/[^\d]/g, "");
+			const aId = +a.id.replace(/[^\d]/g, "");
+			const bId = +b.id.replace(/[^\d]/g, "");
 			if (aId < bId) return -1;
 			if (aId > bId) return 1;
 			return 0;

@@ -1,7 +1,7 @@
 export default function (data) {
 	return {
 		headerLabel: "Understanding Docs", // i.e. documentset.name
-		headerUrl: data.understandingUrl,
+		headerUrl: "/understanding/",
 		isUnderstanding: true,
 		eleventyComputed: {
 			permalink: (data) => {
