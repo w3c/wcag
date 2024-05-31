@@ -13,8 +13,10 @@ First, run `npm i` in the root directory of the repository to install dependenci
 
 Common tasks:
 
-- `build` runs a one-time build
-- `serve` runs a local server with hot-reloading to preview changes
+- `npm run build` runs a one-time build
+- `npm start` runs a local server with hot-reloading to preview changes as you make them:
+  - http://localhost:8080/techniques
+  - http://localhost:8080/understanding
 
 ## Other points of interest
 
@@ -22,3 +24,5 @@ Common tasks:
 - Build commands are defined in top-level `package.json` under `scripts`,
   and can be run via `npm run <name>`
 - If you see files named `*.11tydata.js`, these contribute data to the Eleventy build
+  (see Template and Directory Data files under
+  [Sources of Data](https://www.11ty.dev/docs/data/#sources-of-data))
