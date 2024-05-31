@@ -2,6 +2,7 @@ import { glob } from "glob";
 import { basename } from "path";
 
 import { flattenDomFromFile } from "./cheerio";
+import { resolveDecimalVersion } from "./common";
 
 type WcagVersion = "20" | "21" | "22";
 function assertIsWcagVersion(v: string): asserts v is WcagVersion {
@@ -15,14 +16,14 @@ function assertIsWcagVersion(v: string): asserts v is WcagVersion {
  **/
 export async function getGuidelinesVersions() {
 	const paths = await glob("*/*.html", { cwd: "understanding" });
-	const versions: Record<WcagVersion, string[]> = {"20": [], "21": [], "22": []};
-	
+	const versions: Record<WcagVersion, string[]> = { "20": [], "21": [], "22": [] };
+
 	for (const path of paths) {
 		const [version, filename] = path.split("/");
 		assertIsWcagVersion(version);
 		versions[version].push(basename(filename, ".html"));
 	}
-	
+
 	for (const version of Object.keys(versions)) {
 		assertIsWcagVersion(version);
 		versions[version].sort();
@@ -74,10 +75,10 @@ interface SuccessCriterion extends GuidelinesNode {
  * comparable to the principles section of wcag.xml from the guidelines-xml Ant task.
  * NOTE: Currently does not cover content and contenttext
  */
-export async function resolvePrinciples() {
+export async function getPrinciples() {
 	const versions = await getInvertedGuidelinesVersions();
 	const $ = await flattenDomFromFile("guidelines/index.html");
-	
+
 	const principles: Principle[] = [];
 	$(".principle").each((i, el) => {
 		const guidelines: Guideline[] = [];
@@ -113,4 +114,44 @@ export async function resolvePrinciples() {
 			guidelines,
 		})
 	});
+
+	return principles;
+}
+
+/**
+ * Resolves information from guidelines/index.html for top-level understanding pages;
+ * ported from generate-structure-xml.xslt
+ */
+export async function getUnderstandingDocs(version: WcagVersion) {
+	const decimalVersion = resolveDecimalVersion(version);
+	return [
+		{
+			name: `Introduction to Understanding WCAG ${decimalVersion}`,
+			slug: "intro"
+		},
+		{
+			name: "Understanding Techniques for WCAG Success Criteria",
+			slug: "understanding-techniques"
+		},
+		{
+			name: "Understanding Test Rules for WCAG Success Criteria",
+			slug: "understanding-act-rules"
+		},
+		{
+			name: "Understanding Conformance",
+			slug: "conformance"
+		},
+		{
+			name: `How to Refer to WCAG ${decimalVersion} from Other Documents`,
+			slug: "refer-to-wcag"
+		},
+		{
+			name: "Documenting Accessibility Support for Uses of a Web Technology",
+			slug: "documenting-accessibility-support"
+		},
+		{
+			name: "Understanding Metadata",
+			slug: "understanding-metadata"
+		},
+	]
 }
