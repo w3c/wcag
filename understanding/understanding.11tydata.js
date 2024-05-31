@@ -4,6 +4,7 @@ export default function (data) {
 		headerUrl: "/understanding/",
 		isUnderstanding: true,
 		eleventyComputed: {
+			nav: (data) => data.understandingNav[data.page.fileSlug],
 			permalink: (data) => {
 				// understanding-metadata.html exists in 2 places; top-level wins
 				if (/\/20\/understanding-metadata/.test(data.page.inputPath)) return false;

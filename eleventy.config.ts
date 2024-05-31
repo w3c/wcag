@@ -3,7 +3,7 @@ import { copyFile } from "fs/promises";
 import { CustomLiquid } from "11ty/CustomLiquid";
 import { getTechniques, technologies, technologyTitles } from "11ty/techniques";
 import type { EleventyData, EleventyEvent } from "11ty/types";
-import { getPrinciples, getUnderstandingDocs } from "11ty/guidelines";
+import { generateUnderstandingNavMap, getPrinciples, getUnderstandingDocs } from "11ty/guidelines";
 
 // Inputs to eventually expose e.g. via environment variables
 /** Takes the place of editors vs. publication distinction */
@@ -20,18 +20,21 @@ export default function (eleventyConfig: any) {
 		permalink: ({ page }: EleventyData) => page.inputPath,
 	});
 
-	eleventyConfig.addGlobalData("principles", getPrinciples);
-	eleventyConfig.addGlobalData("understandingDocs", async () => getUnderstandingDocs(version));
 	eleventyConfig.addGlobalData("techniques", getTechniques);
 	eleventyConfig.addGlobalData("technologies", technologies);
 	eleventyConfig.addGlobalData("technologyTitles", technologyTitles);
+
+	eleventyConfig.addGlobalData("principles", getPrinciples);
+	eleventyConfig.addGlobalData("understandingDocs", async () => getUnderstandingDocs(version));
+	eleventyConfig.addGlobalData("understandingNav", async () => generateUnderstandingNavMap(version));
+
+	// Note: These were ported from build.xml but it's unclear whether they'll really be needed
 	eleventyConfig.addGlobalData(
 		"techniquesUrl",
 		isEditors
 			? "https://w3c.github.io/wcag/techniques/"
 			: `https://www.w3.org/WAI/WCAG/${version}/Techniques/`
 	);
-
 	eleventyConfig.addGlobalData(
 		"understandingUrl",
 		isEditors
