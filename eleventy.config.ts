@@ -1,9 +1,11 @@
 import { copyFile } from "fs/promises";
 
 import { CustomLiquid } from "11ty/CustomLiquid";
+import { loadFromFile } from "11ty/cheerio";
 import { getTechniques, technologies, technologyTitles } from "11ty/techniques";
-import type { EleventyData, EleventyEvent } from "11ty/types";
-import { generateUnderstandingNavMap, getPrinciples, getUnderstandingDocs } from "11ty/guidelines";
+import { getPrinciples } from "11ty/guidelines";
+import { generateUnderstandingNavMap, getUnderstandingDocs } from "11ty/understanding";
+import type { EleventyData, EleventyEvent, TocLink } from "11ty/types";
 
 // Inputs to eventually expose e.g. via environment variables
 /** Takes the place of editors vs. publication distinction */
@@ -18,6 +20,19 @@ export default function (eleventyConfig: any) {
 	eleventyConfig.addGlobalData("eleventyComputed", {
 		// Preserve existing structure: write to x.html instead of x/index.html
 		permalink: ({ page }: EleventyData) => page.inputPath,
+		tocLinks: async ({ page, isTechniques, isUnderstanding }: EleventyData) => {
+			const links: TocLink[] = [];
+			const $ = (await loadFromFile(page.inputPath));
+			const childSelector = "> h2:first-child";
+			$(`section[id]:has(${childSelector})`).each((_, el) => {
+				const $el = $(el);
+				links.push({
+					href: `#${el.attribs.id}`,
+					label: $el.find(childSelector).text()
+				});
+			});
+			return links;
+		}
 	});
 
 	eleventyConfig.addGlobalData("techniques", getTechniques);

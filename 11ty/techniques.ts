@@ -33,7 +33,7 @@ function assertIsTechnology(technology: string): asserts technology is keyof typ
  * Returns an object with keys for each technology,
  * each mapping to an array of Techniques.
  * (Functionally equivalent to "techniques-list" target in build.xml)
- **/
+ */
 export async function getTechniques() {
 	const paths = await glob("*/*.html", { cwd: "techniques" });
 	const techniques = technologies.reduce((map, technology) => ({

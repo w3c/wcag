@@ -44,3 +44,12 @@ export interface EleventyEvent {
 	outputMode: "fs" | "json" | "ndjson";
 	runMode: EleventyRunMode;
 }
+
+/**
+ * Common interface used for table of contents data
+ * under both techniques and understanding
+ */
+export interface TocLink {
+	href: string;
+	label: string;
+}
