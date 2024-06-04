@@ -2,12 +2,17 @@ import { glob } from "glob";
 import { basename } from "path";
 
 import { flattenDomFromFile } from "./cheerio";
-import { resolveDecimalVersion } from "./common";
+import { readFile } from "fs/promises";
+import type { ActMapping } from "./types";
 
 export type WcagVersion = "20" | "21" | "22";
 function assertIsWcagVersion(v: string): asserts v is WcagVersion {
 	if (!/^2[012]$/.test(v)) throw new Error(`Unexpected version found: ${v}`);
 }
+
+/** Data used for test-rules sections, from act-mapping.json */
+export const actRules =
+	(JSON.parse(await readFile("guidelines/act-mapping.json", "utf8")) as ActMapping)["act-rules"];
 
 /**
  * Returns an object with keys for each existing WCAG 2 version,

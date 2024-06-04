@@ -46,6 +46,22 @@ export interface EleventyEvent {
 }
 
 /**
+ * Interface describing format of entries in guidelines/act-mapping.json
+ */
+interface ActRule {
+	deprecated: boolean;
+	permalink: string;
+	proposed: boolean;
+	successCriteria: string[];
+	title: string;
+	wcagTechniques: string[];
+}
+
+export type ActMapping = {
+	"act-rules": ActRule[];
+}
+
+/**
  * Common interface used for table of contents data
  * under both techniques and understanding
  */

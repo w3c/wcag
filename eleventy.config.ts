@@ -1,9 +1,8 @@
 import { copyFile } from "fs/promises";
 
 import { CustomLiquid } from "11ty/CustomLiquid";
-import { loadFromFile } from "11ty/cheerio";
 import { getTechniques, technologies, technologyTitles } from "11ty/techniques";
-import { getPrinciples } from "11ty/guidelines";
+import { actRules, getPrinciples } from "11ty/guidelines";
 import { generateUnderstandingNavMap, getUnderstandingDocs } from "11ty/understanding";
 import type { EleventyData, EleventyEvent, TocLink } from "11ty/types";
 
@@ -20,19 +19,12 @@ export default function (eleventyConfig: any) {
 	eleventyConfig.addGlobalData("eleventyComputed", {
 		// Preserve existing structure: write to x.html instead of x/index.html
 		permalink: ({ page }: EleventyData) => page.inputPath,
-		tocLinks: async ({ page, isTechniques, isUnderstanding }: EleventyData) => {
-			const links: TocLink[] = [];
-			const $ = (await loadFromFile(page.inputPath));
-			const childSelector = "> h2:first-child";
-			$(`section[id]:has(${childSelector})`).each((_, el) => {
-				const $el = $(el);
-				links.push({
-					href: `#${el.attribs.id}`,
-					label: $el.find(childSelector).text()
-				});
-			});
-			return links;
-		}
+		testRules: ({ page, isTechniques, isUnderstanding }: EleventyData) => {
+			if (isTechniques)
+				return actRules.filter(({ wcagTechniques }) => wcagTechniques.includes(page.fileSlug));
+			if (isUnderstanding)
+				return actRules.filter(({ successCriteria }) => successCriteria.includes(page.fileSlug));
+		},
 	});
 
 	eleventyConfig.addGlobalData("techniques", getTechniques);
