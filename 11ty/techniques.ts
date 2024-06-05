@@ -1,6 +1,8 @@
 import { glob } from "glob";
+import { readFile } from "fs/promises";
 import { basename } from "path";
-import { loadFromFile } from "./cheerio";
+
+import { load } from "./cheerio";
 
 /** Maps each technology to its title for the table of contents */
 export const technologyTitles = {
@@ -44,10 +46,14 @@ export async function getTechniques() {
 	for (const path of paths) {
 		const [technology, filename] = path.split("/");
 		assertIsTechnology(technology);
+
+		// Isolate h1 from each file before feeding into Cheerio to save ~300ms total
+		const match = (await readFile(`techniques/${path}`, "utf8")).match(/<h1[^>]*>([\s\S]+?)<\/h1>/);
+		if (!match || !match[1]) throw new Error(`No h1 found in techniques/${path}`);
+
 		techniques[technology].push({
 			id: basename(filename, ".html"),
-			title:
-				(await loadFromFile(`techniques/${path}`))("h1").text()!.replace(/\s\s+/, " ")
+			title: load(match[1], null, false).text(),
 		});
 	}
 
