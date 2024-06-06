@@ -673,6 +673,9 @@
 						</li>
 					</xsl:if>
 					<li>
+						<a href="#success-criterion">Success Criterion</a>
+					</li>
+					<li>
 						<a href="#intent">Intent</a>
 					</li>
 					<li>
@@ -911,16 +914,16 @@
 						<xsl:choose>
 							<xsl:when test="name($meta) = 'guideline' or name($meta) = 'success-criterion'">
   							<xsl:apply-templates select="//html:section[@id = 'brief']"/>
-								<aside class="box">
-									<header class="box-h  box-h-icon"> 
+								<section id="{name($meta)}" class="box">
+									<h2 class="box-h box-h-icon"> 
 										<xsl:choose>
 											<xsl:when test="name($meta) = 'guideline'">Guideline </xsl:when>
 											<xsl:when test="name($meta) = 'success-criterion'">Success Criterion (SC) </xsl:when>
-										</xsl:choose></header>
+										</xsl:choose></h2>
 									<div class="box-i">
 										<xsl:apply-templates select="$meta/content/html:*" />
 									</div>
-								</aside>
+                </section>
 								<div class="excol-all"/>
 								<xsl:apply-templates select="//html:section[@id = 'status']"/>
 								<xsl:apply-templates select="//html:section[@id = 'intent']"/>

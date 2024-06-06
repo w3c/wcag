@@ -94,6 +94,7 @@
 		<nav class="navtoc">
 			<ul id="navbar">
 				<!-- <li><a href="#important-information">Important Information about Techniques</a></li> -->
+				<li><a href="#technique">About this Technique</a></li>
 				<li><a href="#applicability">Applicability</a></li>
 				<li><a href="#description">Description</a></li>
 				<xsl:if test="wcag:section-meaningfully-exists('examples', //html:section[@id = 'examples'])"><li><a href="#examples">Examples</a></li></xsl:if>
@@ -246,10 +247,10 @@
 	</xsl:template>
 
 	<xsl:template name="most-important-meta">
-		<aside class="box">
-				<header class="box-h  box-h-icon">
+		<aside id="technique" class="box">
+				<h2 class="box-h  box-h-icon">
 					About this Technique
-				</header>
+				</h2>
 				<div class="box-i">
 						<xsl:call-template name="about-this-technique"/>
 				</div>
