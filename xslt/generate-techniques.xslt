@@ -91,8 +91,8 @@
 
 	<xsl:template name="navtoc">
 		<xsl:param name="meta" tunnel="yes"/>
-		<nav class="navtoc">
-			<ul id="navbar">
+		<nav aria-label="page contents" class="navtoc">
+			<ul>
 				<!-- <li><a href="#important-information">Important Information about Techniques</a></li> -->
 				<li><a href="#technique">About this Technique</a></li>
 				<li><a href="#applicability">Applicability</a></li>
@@ -272,12 +272,10 @@
 	
 	<xsl:template name="sidebar">
 		<aside class="box nav-hack sidebar standalone-resource__sidebar" aria-labelledby="page-contents">
-			<nav>
-				<header class="box-h" id="page-contents">Page Contents</header>
-				<div class="box-i">
-					<xsl:call-template name="navtoc"/>
-				</div>
-			</nav>
+			<header class="box-h" id="page-contents">Page Contents</header>
+			<div class="box-i">
+				<xsl:call-template name="navtoc"/>
+			</div>
 		</aside>
 	</xsl:template>
 

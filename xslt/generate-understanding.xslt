@@ -665,6 +665,7 @@
 
 	<xsl:template name="navtoc">
 		<xsl:param name="meta" tunnel="yes"/>
+		<nav aria-label="page contents" class="navtoc">
 			<ul>
 				<xsl:if test="name($meta) = 'success-criterion'">
 					<xsl:if test="wcag:section-meaningfully-exists('brief', //html:section[@id = 'brief'])">
@@ -732,6 +733,7 @@
 					<li><a href="#test-rules">Test Rules</a></li>
 				</xsl:if>
 			</ul>
+    </nav>
 	</xsl:template>
 
 
@@ -965,27 +967,10 @@
 	<xsl:template name="sidebar">
 		<xsl:param name="meta" tunnel="yes"/>
 		<aside class="box nav-hack sidebar standalone-resource__sidebar ">
-			<!--
-			<nav>
-				<h2 style="margin-top: 0; margin-bottom: 0; padding-bottom: 0; font-size: 1rem" id="about-this-page">Navigation</h2>
-				<ul>
-					<xsl:call-template name="prevnext">
-						<xsl:with-param name="which">side</xsl:with-param>
-					</xsl:call-template>
-				</ul>
-			</nav>
-			-->
-			<nav>
-				<header class="box-h ">Page Contents</header>
-				<div class="box-i">
-					<xsl:call-template name="navtoc"/>
-				</div>
-			</nav>
-			<!-- 
-			<p>
-				<em>This Understanding document is not normative, which means it is <a href="about"> not required to meet WCAG</a>.</em>
-			</p>
-			-->
+			<header class="box-h ">Page Contents</header>
+			<div class="box-i">
+				<xsl:call-template name="navtoc"/>
+			</div>
 		</aside>
 	</xsl:template>
 
