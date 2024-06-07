@@ -3,6 +3,7 @@ import type { RenderOptions } from "liquidjs/dist/liquid-options";
 
 import { flattenDom, load } from "./cheerio";
 import type { TocLink } from "./types";
+import { getTermsMap } from "./guidelines";
 
 /** Generates {% include "foo.html" %} directives from 1 or more basenames */
 const generateIncludes = (...basenames: string[]) =>
@@ -21,7 +22,7 @@ const techniqueTocSections = [
 
 const understandingTocSections = [
 	// For SCs:
-	"brief",
+	"brief", // TODO: SC box will ultimately go below this
 	"intent", // Common with guidelines
 	"benefits",
 	"examples",
@@ -33,6 +34,8 @@ const understandingTocSections = [
 
 const techniquesPattern = /\btechniques\//;
 const understandingPattern = /\bunderstanding\//;
+
+const termsMap = await getTermsMap();
 
 /**
  * Determines whether a given string is actually HTML,
@@ -64,7 +67,7 @@ export class CustomLiquid extends Liquid {
 	public parse(html: string, filepath?: string) {
 		// Filter out Liquid calls for computed data and includes themselves
 		if (filepath && !filepath.includes("_includes/") && isHtmlFileContent(html)) {
-			/** Matches paths that originally went through process-index.xslt */
+			/** Matches paths that would go through process-index.xslt in previous process */
 			const isIndex = /(techniques|understanding)\/(index|about)\.html$/.test(filepath);
 			const isTechniques = techniquesPattern.test(filepath);
 			const isUnderstanding = understandingPattern.test(filepath);
@@ -90,10 +93,12 @@ export class CustomLiquid extends Liquid {
 				$("head").append(generateIncludes("head"));
 
 				// Rearrange h2-level sections (any that don't exist will no-op)
-				if (isTechniques)
+				if (isTechniques) {
 					techniqueTocSections.forEach((id) => $("body").append("\n", $(`body > section#${id}`)));
-				else if (isUnderstanding)
+					$("section#applicability").append(generateIncludes("techniques/applicability"));
+				} else if (isUnderstanding) {
 					understandingTocSections.forEach((id) => $("body").append("\n", $(`body > section#${id}`)));
+				}
 
 				// Fix incorrect heading levels in both directions
 				$("body > section section h2").each((_, el) => {
@@ -123,7 +128,7 @@ export class CustomLiquid extends Liquid {
 					.wrapInner(`<div class="default-grid with-gap leftcol"></div>`)
 
 				// TODO: reformat h1, add aside as appropriate for techniques and understanding
-				$("h1 + section").after(`<div class="excol-all"></div>`)
+				// Note: excol-all div did nothing in techniques & understanding in 2.1 and 2.2
 
 				appendedIncludes.push("waiscript");
 			}
@@ -138,10 +143,25 @@ export class CustomLiquid extends Liquid {
 	}
 
 	public async render(templates: Template[], scope?: any, options?: RenderOptions) {
+		// html contains markup after Liquid tags/includes have been processed
 		const html = (await super.render(templates, scope, options)).toString();
-		if (!isHtmlFileContent(html)) return html;
-
+		if (!isHtmlFileContent(html) || !scope) return html;
 		const $ = load(html);
+
+		// Process definitions within render where we have access to global data
+		if (scope.isTechniques && scope.guidelinesUrl) {
+			$("a:not([href])").each((_, el) => {
+				const $el = $(el);
+				const termName = $el.text().trim().toLowerCase();
+				const term = termsMap[termName];
+				if (!term) throw new Error(`Term not found: ${termName}`);
+				$el.attr("href", `${scope.guidelinesUrl}#${term.id}`)
+					.attr("target", "terms");
+			});
+		} else if (scope.isUnderstanding) {
+			// TODO
+		}
+
 		const $tocList = $(".sidebar nav ul");
 
 		// Generate table of contents after parsing and rendering,

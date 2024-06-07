@@ -1,8 +1,11 @@
+import type { Cheerio, Element } from "cheerio";
 import { glob } from "glob";
+
+import { readFile } from "fs/promises";
 import { basename } from "path";
 
-import { flattenDomFromFile } from "./cheerio";
-import { readFile } from "fs/promises";
+import { flattenDomFromFile, load } from "./cheerio";
+import { generateId } from "./common";
 import type { ActMapping } from "./types";
 
 export type WcagVersion = "20" | "21" | "22";
@@ -58,27 +61,44 @@ export interface DocNode {
 }
 
 export interface Principle extends DocNode {
+	content: string;
 	num: `${number}`; // typed as string for consistency with guidelines/SC
 	version: "WCAG20";
 	guidelines: Guideline[];
 }
 
 export interface Guideline extends DocNode {
+	content: string;
 	num: `${Principle["num"]}.${number}`;
 	version: `WCAG${"20" | "21"}`;
 	successCriteria: SuccessCriterion[];
 }
 
 export interface SuccessCriterion extends DocNode {
+	content: string;
 	num: `${Guideline["num"]}.${number}`;
 	level: "A" | "AA" | "AAA";
 	version: `WCAG${WcagVersion}`;
 }
 
+export function isSuccessCriterion(criterion: any): criterion is SuccessCriterion {
+	return !!(criterion?.type === "SC" && /^A{1,3}$/.test(criterion.level));
+}
+
+/**
+ * Returns HTML content used for Understanding guideline/SC boxes.
+ * @param $el Cheerio element of the full section from flattened guidelines/index.html
+ */
+const getContentHtml = ($el: Cheerio<Element>) => {
+	// Load HTML into a new instance, remove elements we don't want, then return the remainder
+	const $ = load($el.html()!, null, false);
+	$("h1, h2, h3, h4, h5, h6, section, .change, .conformance-level").remove();
+	return $.html();
+}
+
 /**
  * Resolves information from guidelines/index.html;
  * comparable to the principles section of wcag.xml from the guidelines-xml Ant task.
- * NOTE: Currently does not cover content and contenttext
  */
 export async function getPrinciples() {
 	const versions = await getInvertedGuidelinesVersions();
@@ -94,6 +114,7 @@ export async function getPrinciples() {
 				assertIsWcagVersion(resolvedVersion);
 
 				successCriteria.push({
+					content: getContentHtml($(scEl)),
 					id: scEl.attribs.id,
 					name: $("h4", scEl).text().trim(),
 					num: `${i + 1}.${j + 1}.${k + 1}`,
@@ -104,6 +125,7 @@ export async function getPrinciples() {
 			});
 
 			guidelines.push({
+				content: getContentHtml($(guidelineEl)),
 				id: guidelineEl.attribs.id,
 				name: $("h3", guidelineEl).text().trim(),
 				num: `${i + 1}.${j + 1}`,
@@ -114,6 +136,7 @@ export async function getPrinciples() {
 		});
 
 		principles.push({
+			content: getContentHtml($(el)),
 			id: el.attribs.id,
 			name: $("h2", el).text().trim(),
 			num: `${i + 1}`,
@@ -124,4 +147,52 @@ export async function getPrinciples() {
 	});
 
 	return principles;
+}
+
+/**
+ * Returns an object mapping shortcodes to each principle/guideline/SC.
+ */
+export function getFlatGuidelines(principles: Principle[]) {
+	const map: Record<string, Principle | Guideline | SuccessCriterion> = {};
+	for (const principle of principles) {
+		map[principle.id] = principle;
+		for (const guideline of principle.guidelines) {
+			map[guideline.id] = guideline;
+			for (const criterion of guideline.successCriteria) {
+				map[criterion.id] = criterion;
+			}
+		}
+	}
+	return map;
+}
+export type FlatGuidelinesMap = ReturnType<typeof getFlatGuidelines>;
+
+interface Term {
+	definition: string;
+	id: string;
+}
+
+/**
+ * Resolves term definitions from guidelines/index.html organized for lookup by name;
+ * comparable to the term elements in wcag.xml from the guidelines-xml Ant task.
+ */
+export async function getTermsMap() {
+	const $ = await flattenDomFromFile("guidelines/index.html");
+	const terms: Record<string, Term> = {};
+
+	$("dfn").each((_, el) => {
+		const $el = $(el);
+		const term: Term = {
+			// Note: All applicable <dfn>s seem to have explicit id attributes,
+			// but the XSLT process generates id from the element's text which is not always the same
+			id: `dfn-${generateId($el.text())}`,
+			definition: $el.parent().find("dd").html()!
+		}
+
+		const names = [$el.text().toLowerCase()]
+			.concat((el.attribs["data-lt"] || "").toLowerCase().split("|"));
+		for (const name of names) terms[name] = term;
+	});
+
+	return terms;
 }

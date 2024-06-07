@@ -1,10 +1,10 @@
 import { copyFile } from "fs/promises";
 
 import { CustomLiquid } from "11ty/CustomLiquid";
-import { getTechniques, technologies, technologyTitles } from "11ty/techniques";
-import { actRules, getPrinciples } from "11ty/guidelines";
+import { getFlatTechniques, getTechniqueAssociations, getTechniquesByTechnology, technologies, technologyTitles } from "11ty/techniques";
+import { actRules, getFlatGuidelines, getPrinciples } from "11ty/guidelines";
 import { generateUnderstandingNavMap, getUnderstandingDocs } from "11ty/understanding";
-import type { EleventyData, EleventyEvent, TocLink } from "11ty/types";
+import type { EleventyContext, EleventyData, EleventyEvent, TocLink } from "11ty/types";
 
 // Inputs to eventually expose e.g. via environment variables
 /** Takes the place of editors vs. publication distinction */
@@ -12,29 +12,37 @@ const isEditors = false;
 /** Version of WCAG to build */
 const version = "22";
 
+const principles = await getPrinciples();
+const flatGuidelines = getFlatGuidelines(principles);
+const techniques = await getTechniquesByTechnology();
+const flatTechniques = getFlatTechniques(techniques);
+const techniqueAssociations = await getTechniqueAssociations(flatGuidelines);
+const understandingNav = await generateUnderstandingNavMap(version);
+
+// Declare static global data up-front so we can build typings from it
+const globalData = {
+	version,
+	versionDecimal: version.split("").join("."),
+	techniques, // Used for techniques/index.html
+	technologies, // Used for techniques/index.html
+	technologyTitles, // Used for techniques/index.html
+	principles, // Used for understanding/index.html
+	understandingDocs: await getUnderstandingDocs(version), // Used for understanding/index.html
+};
+type GlobalData = EleventyData & typeof globalData;
+
+
 export default function (eleventyConfig: any) {
-	eleventyConfig.addGlobalData("version", version);
-	eleventyConfig.addGlobalData("versionDecimal", version.split("").join("."));
-
-	eleventyConfig.addGlobalData("eleventyComputed", {
-		// Preserve existing structure: write to x.html instead of x/index.html
-		permalink: ({ page }: EleventyData) => page.inputPath,
-		testRules: ({ page, isTechniques, isUnderstanding }: EleventyData) => {
-			if (isTechniques)
-				return actRules.filter(({ wcagTechniques }) => wcagTechniques.includes(page.fileSlug));
-			if (isUnderstanding)
-				return actRules.filter(({ successCriteria }) => successCriteria.includes(page.fileSlug));
-		},
-	});
-
-	eleventyConfig.addGlobalData("techniques", getTechniques);
-	eleventyConfig.addGlobalData("technologies", technologies);
-	eleventyConfig.addGlobalData("technologyTitles", technologyTitles);
-
-	eleventyConfig.addGlobalData("principles", getPrinciples);
-	eleventyConfig.addGlobalData("understandingDocs", async () => getUnderstandingDocs(version));
-	eleventyConfig.addGlobalData("understandingNav", async () => generateUnderstandingNavMap(version));
-
+	for (const [name, value] of Object.entries(globalData)) {
+		eleventyConfig.addGlobalData(name, value);
+	}
+	
+	eleventyConfig.addGlobalData(
+		"guidelinesUrl",
+		isEditors
+			? "https://w3c.github.io/wcag/guidelines/"
+			: `https://www.w3.org/TR/WCAG${version}/`
+	);
 	// Note: These were ported from build.xml but it's unclear whether they'll really be needed
 	eleventyConfig.addGlobalData(
 		"techniquesUrl",
@@ -48,7 +56,35 @@ export default function (eleventyConfig: any) {
 			? "https://w3c.github.io/wcag/understanding/"
 			: `https://www.w3.org/WAI/WCAG/${version}/Understanding/`
 	);
-	// If you're looking for other high-level data, check /_data and *.11tydata.js
+
+	// eleventyComputed data is assigned here rather than in 11tydata files;
+	// we have access to typings here, and can keep the latter fully static.
+	eleventyConfig.addGlobalData("eleventyComputed", {
+		permalink: ({ page, isUnderstanding }: GlobalData) => {
+			if (isUnderstanding) {
+				// understanding-metadata.html exists in 2 places; top-level wins
+				if (/\/20\/understanding-metadata/.test(page.inputPath)) return false;
+				// Flatten pages into top-level directory, out of version subdirectories
+				return page.inputPath.replace(/\/2\d\//, "/");
+			}
+			// Preserve existing structure: write to x.html instead of x/index.html
+			return page.inputPath;
+		},
+		nav: ({ page, isUnderstanding }: GlobalData) => 
+			isUnderstanding ? understandingNav[page.fileSlug] : null,
+		testRules: ({ page, isTechniques, isUnderstanding }: GlobalData) => {
+			if (isTechniques)
+				return actRules.filter(({ wcagTechniques }) => wcagTechniques.includes(page.fileSlug));
+			if (isUnderstanding)
+				return actRules.filter(({ successCriteria }) => successCriteria.includes(page.fileSlug));
+		},
+		// Data for individual technique pages
+		technique: ({ page, isTechniques }: GlobalData) =>
+			isTechniques ? flatTechniques[page.fileSlug] : null,
+		techniqueAssociations: ({ page, isTechniques }: GlobalData) =>
+			isTechniques ? techniqueAssociations[page.fileSlug] : null,
+		// TODO: Data for individual understanding pages
+	});
 
 	eleventyConfig.addPassthroughCopy("techniques/*.css");
 	eleventyConfig.addPassthroughCopy("techniques/*/img/*");
@@ -80,6 +116,32 @@ export default function (eleventyConfig: any) {
 		root: ["_includes", "."],
 		strictFilters: true,
 	}));
+
+	// Filter that transforms a technique ID (or list of them) into links to their pages.
+	eleventyConfig.addFilter("linkTechniques", function (this: EleventyContext, ids: string | string[]) {
+		return (Array.isArray(ids) ? ids : [ids])
+			.map((id) => {
+				const technique = flatTechniques[id];
+				if (!technique) throw new Error(`Could not resolve technique from id: ${id}`);
+				const urlBase =
+					this.page.filePathStem.startsWith("/techniques/") ? "../" : "/techniques/";
+				const label = `${id}: ${technique.title}`;
+				return `<a href="${urlBase}${technique.technology}/${id}">${label}</a>`;
+			}).join("\nand\n");
+	});
+
+	// Filter that transforms a guideline or SC shortname (or list of them) into links to their pages.
+	eleventyConfig.addFilter("linkUnderstanding", function (this: EleventyContext, ids: string | string[]) {
+		return (Array.isArray(ids) ? ids : [ids])
+			.map((id) => {
+				const guideline = flatGuidelines[id];
+				if (!guideline) throw new Error(`Could not resolve guideline from shortname: ${id}`);
+				const urlBase =
+					this.page.filePathStem.startsWith("/understanding/") ? "" : "/understanding/";
+				const label = `${guideline.num}: ${guideline.name}`;
+				return `<a href="${urlBase}${id}">${label}</a>`;
+			}).join("\nand\n");
+	});
 
 	return { dir };
 }

@@ -32,11 +32,21 @@ interface EleventyMeta {
 	version: string;
 }
 
-export interface EleventyData {
-	content: string;
+/** Limited 11ty data available when defining filters and shortcodes. */
+export interface EleventyContext {
 	eleventy: EleventyMeta;
 	page: EleventyPage;
-	[index: string]: any; // Allow access to data cascade
+}
+
+export interface EleventyData extends EleventyContext {
+	content: string;
+	// Expected data cascade properties from *.11tydata.json
+	headerLabel?: string; // akin to documentset.name in build.xml
+	headerUrl?: string;
+	isTechniques?: boolean;
+	isUnderstanding?: boolean;
+	// Allow access to anything else in data cascade
+	[index: string]: any;
 }
 
 export interface EleventyEvent {
