@@ -8,6 +8,7 @@ import { basename } from "path";
 
 import { load, loadFromFile } from "./cheerio";
 import { isSuccessCriterion, type FlatGuidelinesMap, type SuccessCriterion } from "./guidelines";
+import { wcagSort } from "./common";
 
 /** Maps each technology to its title for the table of contents */
 export const technologyTitles = {
@@ -63,7 +64,6 @@ export async function getTechniqueAssociations(guidelines: FlatGuidelinesMap) {
 	const techniqueLinkSelector = "a[href*='../Techniques/' i]";
 
 	const paths = await glob("understanding/*/*.html");
-	// TODO: sort paths based on criteria numbering
 	for (const path of paths) {
 		const criterion = guidelines[basename(path, ".html")];
 		if (!isSuccessCriterion(criterion)) continue;
@@ -102,7 +102,9 @@ export async function getTechniqueAssociations(guidelines: FlatGuidelinesMap) {
 
 	// Perform a pass over associations to remove duplicates
 	for (const [key, list] of Object.entries(associations))
-		associations[key] = uniqBy(list, (v) => JSON.stringify(v));
+		associations[key] =
+			uniqBy(list, (v) => JSON.stringify(v))
+				.sort((a, b) => wcagSort(a.criterion, b.criterion));
 
 	return associations;
 }
