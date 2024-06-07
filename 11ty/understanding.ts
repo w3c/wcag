@@ -1,5 +1,5 @@
 import { resolveDecimalVersion } from "./common";
-import { getPrinciples, type DocNode, type WcagVersion } from "./guidelines";
+import type { DocNode, Principle, WcagVersion } from "./guidelines";
 
 /**
  * Resolves information for top-level understanding pages;
@@ -49,11 +49,9 @@ interface NavData {
  * Generates mappings from guideline/SC/understanding doc IDs to next/previous/parent information,
  * for efficient lookup when rendering navigation banner
  */
-export async function generateUnderstandingNavMap(version: WcagVersion) {
-	const principles = await getPrinciples();
+export function generateUnderstandingNavMap(version: WcagVersion, principles: Principle[], understandingDocs: DocNode[]) {
 	const allGuidelines =
 		Object.values(principles).flatMap(({ guidelines }) => guidelines);
-	const understandingDocs = await getUnderstandingDocs(version);
 	const map: Record<string, NavData> = {};
 
 	// Guideline navigation wraps across principles, so iterate over flattened list

@@ -17,7 +17,8 @@ const flatGuidelines = getFlatGuidelines(principles);
 const techniques = await getTechniquesByTechnology();
 const flatTechniques = getFlatTechniques(techniques);
 const techniqueAssociations = await getTechniqueAssociations(flatGuidelines);
-const understandingNav = await generateUnderstandingNavMap(version);
+const understandingDocs = await getUnderstandingDocs(version);
+const understandingNav = await generateUnderstandingNavMap(version, principles, understandingDocs);
 
 // Declare static global data up-front so we can build typings from it
 const globalData = {
@@ -27,7 +28,7 @@ const globalData = {
 	technologies, // Used for techniques/index.html
 	technologyTitles, // Used for techniques/index.html
 	principles, // Used for understanding/index.html
-	understandingDocs: await getUnderstandingDocs(version), // Used for understanding/index.html
+	understandingDocs, // Used for understanding/index.html
 };
 type GlobalData = EleventyData & typeof globalData;
 
