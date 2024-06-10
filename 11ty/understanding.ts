@@ -49,7 +49,7 @@ interface NavData {
  * Generates mappings from guideline/SC/understanding doc IDs to next/previous/parent information,
  * for efficient lookup when rendering navigation banner
  */
-export function generateUnderstandingNavMap(version: WcagVersion, principles: Principle[], understandingDocs: DocNode[]) {
+export function generateUnderstandingNavMap(principles: Principle[], understandingDocs: DocNode[]) {
 	const allGuidelines =
 		Object.values(principles).flatMap(({ guidelines }) => guidelines);
 	const map: Record<string, NavData> = {};

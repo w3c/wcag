@@ -5,10 +5,6 @@ import { flattenDom, load } from "./cheerio";
 import type { EleventyData } from "./types";
 import { getTermsMap } from "./guidelines";
 
-/** Generates {% include "foo.html" %} directives from 1 or more basenames */
-const generateIncludes = (...basenames: string[]) =>
-	`\n${basenames.map(basename => `{% include "${basename}.html" %}`).join("\n")}\n`;
-
 const titleSuffix = " | WAI | W3C";
 
 const indexPattern = /(techniques|understanding)\/(index|about)\.html$/;
@@ -16,6 +12,10 @@ const techniquesPattern = /\btechniques\//;
 const understandingPattern = /\bunderstanding\//;
 
 const termsMap = await getTermsMap();
+
+/** Generates {% include "foo.html" %} directives from 1 or more basenames */
+const generateIncludes = (...basenames: string[]) =>
+	`\n${basenames.map(basename => `{% include "${basename}.html" %}`).join("\n")}\n`;
 
 /**
  * Determines whether a given string is actually HTML,
@@ -28,8 +28,7 @@ const isHtmlFileContent = (html: string) =>
  * Performs common cleanup of in-page table of contents links for final output.
  */
 const normalizeTocLabel = (label: string) =>
-	label.replace(/^When to Use$/, "Applicability")
-		.replace(/In brief/, "In Brief")
+	label.replace(/In brief/, "In Brief")
 		.replace(/^(\S+) (of|for) .*$/, "$1")
 		.replace(/^Resources$/, "Related Resources");
 
@@ -54,8 +53,11 @@ export class CustomLiquid extends Liquid {
 
 			const $ = flattenDom(html, filepath);
 
-			// Clean out elements to be removed (e.g. editors.css & sources.css)
-			$(".remove").remove();
+			// Clean out elements to be removed
+			// (e.g. editors.css & sources.css, and leftover template paragraphs)
+			// NOTE: some paragraphs with the "instructions" class actually have custom content,
+			// but for now this remains consistent with the XSLT process by stripping all of them.
+			$(".remove, p.instructions, section#meta, section.meta").remove();
 
 			// Ensure suffix is at end of all titles
 			// (this was done in XSLT for non-index/about pages in the previous build process)
@@ -71,13 +73,7 @@ export class CustomLiquid extends Liquid {
 
 			if (!isIndex) {
 				$("head").append(generateIncludes("head"));
-
-				if (isTechniques) {
-					// XSLT orders related and tests sections last, but they are not last in source files
-					$("body").append("\n", $(`body > section#related`));
-					$("body").append("\n", $(`body > section#tests`));
-					$("section#applicability").append(generateIncludes("techniques/applicability"));
-				}
+				appendedIncludes.push("waiscript");
 
 				// Fix incorrect heading levels in both directions
 				$("body > section section h2").each((_, el) => {
@@ -86,6 +82,37 @@ export class CustomLiquid extends Liquid {
 				$("body > section > h3").each((_, el) => {
 					el.tagName = "h2";
 				})
+
+				if (isTechniques) {
+					// XSLT orders related and tests sections last, but they are not last in source files
+					$("body")
+						.append("\n", $(`body > section#related`))
+						.append("\n", $(`body > section#tests`));
+					$("h1")
+						.after(generateIncludes("techniques/about"))
+						.replaceWith(generateIncludes("techniques/h1"));
+					$("section#resources h2")
+						.after(generateIncludes("techniques/intro/resources"));
+					$("section#examples section.example h3").each((i, el) => {
+						$(el).prepend(`Example ${i + 1}: `);
+					});
+				} else if (isUnderstanding) {
+					$("h1").replaceWith(generateIncludes("understanding/h1"));
+					$("section#brief").after(generateIncludes("understanding/about"));
+					$("section#techniques h2")
+						.after(generateIncludes("understanding/intro/techniques"));
+					if ($("section#sufficient .situation").length) {
+						$("section#sufficient h3").
+							after(generateIncludes("understanding/intro/sufficient-situation"));
+					}
+					$("section#advisory h3")
+						.after(generateIncludes("understanding/intro/advisory"));
+					$("section#failure h3")
+						.after(generateIncludes("understanding/intro/failure"));
+					$("section#resources h2")
+						.after(generateIncludes("understanding/intro/resources"));
+				}
+
 				// Remove h2-level sections with no content other than heading
 				$("body > section:not(:has(:not(h2)))").remove();
 
@@ -104,12 +131,7 @@ export class CustomLiquid extends Liquid {
 					.append(generateIncludes("help-improve"))
 					// index/about pages already include this wrapping; others do not, and need it.
 					// This wraps around table of contents & help improve, but not other includes
-					.wrapInner(`<div class="default-grid with-gap leftcol"></div>`)
-
-				// TODO: reformat h1, add aside as appropriate for techniques and understanding
-				// Note: excol-all div did nothing in techniques & understanding in 2.1 and 2.2
-
-				appendedIncludes.push("waiscript");
+					.wrapInner(`<div class="default-grid with-gap leftcol"></div>`);
 			}
 
 			$("body")
@@ -127,8 +149,16 @@ export class CustomLiquid extends Liquid {
 		if (!isHtmlFileContent(html) || !scope) return html;
 		const $ = load(html);
 
-		// Process definitions within render where we have access to global data
-		if (scope.isTechniques && scope.guidelinesUrl) {
+		if (scope.isTechniques) {
+			// Check for custom applicability paragraph before removing the section
+			const customApplicability = $("section#applicability p").html();
+			if (customApplicability) {
+				$("section#technique p:last-child").html("This technique applies to " +
+					customApplicability[0].toLowerCase() + customApplicability.slice(1));
+			}
+			$("section#applicability").remove();
+
+			// Process definitions within render where we have access to global data
 			$("a:not([href])").each((_, el) => {
 				const $el = $(el);
 				const termName = $el.text().trim().toLowerCase();
@@ -138,7 +168,7 @@ export class CustomLiquid extends Liquid {
 					.attr("target", "terms");
 			});
 		} else if (scope.isUnderstanding) {
-			// TODO
+			// TODO: Key Terms
 		}
 
 		if (!indexPattern.test(scope.page.inputPath)) {

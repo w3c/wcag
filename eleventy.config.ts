@@ -18,7 +18,7 @@ const techniques = await getTechniquesByTechnology();
 const flatTechniques = getFlatTechniques(techniques);
 const techniqueAssociations = await getTechniqueAssociations(flatGuidelines);
 const understandingDocs = await getUnderstandingDocs(version);
-const understandingNav = await generateUnderstandingNavMap(version, principles, understandingDocs);
+const understandingNav = await generateUnderstandingNavMap(principles, understandingDocs);
 
 // Declare static global data up-front so we can build typings from it
 const globalData = {
@@ -84,8 +84,13 @@ export default function (eleventyConfig: any) {
 			isTechniques ? flatTechniques[page.fileSlug] : null,
 		techniqueAssociations: ({ page, isTechniques }: GlobalData) =>
 			isTechniques ? techniqueAssociations[page.fileSlug] : null,
-		// TODO: Data for individual understanding pages
+		// Data for individual understanding pages
+		guideline: ({ page, isUnderstanding }: GlobalData) =>
+			isUnderstanding ? flatGuidelines[page.fileSlug] : null,
 	});
+
+	// https://www.11ty.dev/docs/copy/#emulate-passthrough-copy-during-serve
+	eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
 
 	eleventyConfig.addPassthroughCopy("techniques/*.css");
 	eleventyConfig.addPassthroughCopy("techniques/*/img/*");
@@ -105,7 +110,7 @@ export default function (eleventyConfig: any) {
 	eleventyConfig.on("eleventy.after", async ({ dir }: EleventyEvent) => {
 		// addPassthroughCopy can only map each file once,
 		// but base.css needs to be copied to a 2nd destination
-		await copyFile(`${dir.output}/techniques/base.css`, `${dir.output}/understanding/base.css`);
+		await copyFile(`${dir.input}/css/base.css`, `${dir.output}/understanding/base.css`);
 	});
 
 	const dir = {

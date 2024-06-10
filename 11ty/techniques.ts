@@ -116,6 +116,8 @@ interface Technique {
 	technology: Technology;
 	/** Title derived from each technique page */
 	title: string;
+	/** Title derived from each technique page, with HTML preserved */
+	titleHtml: string;
 }
 
 /**
@@ -137,10 +139,12 @@ export async function getTechniquesByTechnology() {
 		// Isolate h1 from each file before feeding into Cheerio to save ~300ms total
 		const match = (await readFile(`techniques/${path}`, "utf8")).match(/<h1[^>]*>([\s\S]+?)<\/h1>/);
 		if (!match || !match[1]) throw new Error(`No h1 found in techniques/${path}`);
+		const $h1 = load(match[1], null, false);
 
 		techniques[technology].push({
 			id: basename(filename, ".html"),
-			title: load(match[1], null, false).text(),
+			title: $h1.text(),
+			titleHtml: $h1.html(),
 			technology,
 		});
 	}

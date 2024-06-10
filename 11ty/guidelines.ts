@@ -77,12 +77,13 @@ export interface Guideline extends DocNode {
 export interface SuccessCriterion extends DocNode {
 	content: string;
 	num: `${Guideline["num"]}.${number}`;
-	level: "A" | "AA" | "AAA";
+	/** Level may be empty for obsolete criteria */
+	level: "A" | "AA" | "AAA" | "";
 	version: `WCAG${WcagVersion}`;
 }
 
 export function isSuccessCriterion(criterion: any): criterion is SuccessCriterion {
-	return !!(criterion?.type === "SC" && /^A{1,3}$/.test(criterion.level));
+	return !!(criterion?.type === "SC" && "level" in criterion);
 }
 
 /**
