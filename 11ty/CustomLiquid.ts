@@ -2,7 +2,7 @@ import { Liquid, type Template } from "liquidjs";
 import type { RenderOptions } from "liquidjs/dist/liquid-options";
 
 import { flattenDom, load } from "./cheerio";
-import type { TocLink } from "./types";
+import type { EleventyData } from "./types";
 import { getTermsMap } from "./guidelines";
 
 /** Generates {% include "foo.html" %} directives from 1 or more basenames */
@@ -11,6 +11,7 @@ const generateIncludes = (...basenames: string[]) =>
 
 const titleSuffix = " | WAI | W3C";
 
+const indexPattern = /(techniques|understanding)\/(index|about)\.html$/;
 const techniquesPattern = /\btechniques\//;
 const understandingPattern = /\bunderstanding\//;
 
@@ -47,7 +48,7 @@ export class CustomLiquid extends Liquid {
 		// Filter out Liquid calls for computed data and includes themselves
 		if (filepath && !filepath.includes("_includes/") && isHtmlFileContent(html)) {
 			/** Matches paths that would go through process-index.xslt in previous process */
-			const isIndex = /(techniques|understanding)\/(index|about)\.html$/.test(filepath);
+			const isIndex = indexPattern.test(filepath);
 			const isTechniques = techniquesPattern.test(filepath);
 			const isUnderstanding = understandingPattern.test(filepath);
 
@@ -120,7 +121,7 @@ export class CustomLiquid extends Liquid {
 		return super.parse(html);
 	}
 
-	public async render(templates: Template[], scope?: any, options?: RenderOptions) {
+	public async render(templates: Template[], scope: EleventyData, options?: RenderOptions) {
 		// html contains markup after Liquid tags/includes have been processed
 		const html = (await super.render(templates, scope, options)).toString();
 		if (!isHtmlFileContent(html) || !scope) return html;
@@ -140,19 +141,20 @@ export class CustomLiquid extends Liquid {
 			// TODO
 		}
 
-		const $tocList = $(".sidebar nav ul");
-
-		// Generate table of contents after parsing and rendering,
-		// when we have sections already reordered and sidebar skeleton rendered
-		const childSelector = "> h2:first-child";
-		$(`section[id]:has(${childSelector})`).each((_, el) => {
-			$("<a></a>")
-				.attr("href", `#${el.attribs.id}`)
-				.text(normalizeTocLabel($(el).find(childSelector).text()))
-				.appendTo($tocList)
-				.wrap("<li></li>");
-			$tocList.append("\n");
-		});
+		if (!indexPattern.test(scope.page.inputPath)) {
+			const $tocList = $(".sidebar nav ul");
+			// Generate table of contents after parsing and rendering,
+			// when we have sections already reordered and sidebar skeleton rendered
+			const childSelector = "> h2:first-child";
+			$(`section[id]:has(${childSelector})`).each((_, el) => {
+				$("<a></a>")
+					.attr("href", `#${el.attribs.id}`)
+					.text(normalizeTocLabel($(el).find(childSelector).text()))
+					.appendTo($tocList)
+					.wrap("<li></li>");
+				$tocList.append("\n");
+			});
+		}
 
 		// Return new html with comments removed
 		return $.html().replace(/<!--[\s\S]*?-->/g, "");
