@@ -11,27 +11,6 @@ const generateIncludes = (...basenames: string[]) =>
 
 const titleSuffix = " | WAI | W3C";
 
-const techniqueTocSections = [
-	"applicability",
-	"description",
-	"examples",
-	"resources",
-	"related",
-	"tests",
-];
-
-const understandingTocSections = [
-	// For SCs:
-	"brief", // TODO: SC box will ultimately go below this
-	"intent", // Common with guidelines
-	"benefits",
-	"examples",
-	"resources",
-	"techniques",
-	// For guidelines:
-	"success-criteria",
-];
-
 const techniquesPattern = /\btechniques\//;
 const understandingPattern = /\bunderstanding\//;
 
@@ -92,12 +71,11 @@ export class CustomLiquid extends Liquid {
 			if (!isIndex) {
 				$("head").append(generateIncludes("head"));
 
-				// Rearrange h2-level sections (any that don't exist will no-op)
 				if (isTechniques) {
-					techniqueTocSections.forEach((id) => $("body").append("\n", $(`body > section#${id}`)));
+					// XSLT orders related and tests sections last, but they are not last in source files
+					$("body").append("\n", $(`body > section#related`));
+					$("body").append("\n", $(`body > section#tests`));
 					$("section#applicability").append(generateIncludes("techniques/applicability"));
-				} else if (isUnderstanding) {
-					understandingTocSections.forEach((id) => $("body").append("\n", $(`body > section#${id}`)));
 				}
 
 				// Fix incorrect heading levels in both directions
