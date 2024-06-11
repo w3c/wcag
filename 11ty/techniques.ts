@@ -114,10 +114,16 @@ interface Technique {
 	id: string;
 	/** Technology this technique is filed under */
 	technology: Technology;
-	/** Title derived from each technique page */
+	/** Title derived from each technique page's h1 */
 	title: string;
-	/** Title derived from each technique page, with HTML preserved */
+	/** Title derived from each technique page's h1, with HTML preserved */
 	titleHtml: string;
+	/**
+	 * Like title, but preserving the XSLT process behavior of truncating
+	 * text on intermediate lines between the first and last for long headings.
+	 * (This was probably accidental, but helps avoid long link text.)
+	 */
+	truncatedTitle: string;
 }
 
 /**
@@ -141,11 +147,13 @@ export async function getTechniquesByTechnology() {
 		if (!match || !match[1]) throw new Error(`No h1 found in techniques/${path}`);
 		const $h1 = load(match[1], null, false);
 
+		const title = $h1.text();
 		techniques[technology].push({
 			id: basename(filename, ".html"),
-			title: $h1.text(),
-			titleHtml: $h1.html(),
 			technology,
+			title,
+			titleHtml: $h1.html(),
+			truncatedTitle: title.replace(/\s*\n[\s\S]*\n\s*/, " … "),
 		});
 	}
 

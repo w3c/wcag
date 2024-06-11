@@ -141,7 +141,7 @@ export default function (eleventyConfig: any) {
 				const urlBase = /^\/techniques\/.*\//.test(this.page.filePathStem)
 					? "../"
 					: this.page.filePathStem.startsWith("/techniques") ? "" : "/techniques/";
-				const label = `${id}: ${technique.title}`;
+				const label = `${id}: ${technique.truncatedTitle}`;
 				return `<a href="${urlBase}${technique.technology}/${id}">${label}</a>`;
 			});
 			return compact(links).join("\nand\n");
