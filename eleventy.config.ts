@@ -1,8 +1,10 @@
+import compact from "lodash-es/compact";
+
 import { copyFile } from "fs/promises";
 
 import { CustomLiquid } from "11ty/CustomLiquid";
-import { getFlatTechniques, getTechniqueAssociations, getTechniquesByTechnology, technologies, technologyTitles } from "11ty/techniques";
 import { actRules, getFlatGuidelines, getPrinciples } from "11ty/guidelines";
+import { getFlatTechniques, getTechniqueAssociations, getTechniquesByTechnology, technologies, technologyTitles } from "11ty/techniques";
 import { generateUnderstandingNavMap, getUnderstandingDocs } from "11ty/understanding";
 import type { EleventyContext, EleventyData, EleventyEvent, TocLink } from "11ty/types";
 
@@ -125,23 +127,36 @@ export default function (eleventyConfig: any) {
 
 	// Filter that transforms a technique ID (or list of them) into links to their pages.
 	eleventyConfig.addFilter("linkTechniques", function (this: EleventyContext, ids: string | string[]) {
-		return (Array.isArray(ids) ? ids : [ids])
+		const links = (Array.isArray(ids) ? ids : [ids])
 			.map((id) => {
+				if (typeof id !== "string") throw new Error(`linkTechniques: invalid id ${id}`);
 				const technique = flatTechniques[id];
-				if (!technique) throw new Error(`Could not resolve technique from id: ${id}`);
-				const urlBase =
-					this.page.filePathStem.startsWith("/techniques/") ? "../" : "/techniques/";
+				if (!technique) {
+					console.warn(`linkTechniques in ${this.page.inputPath}: ` +
+						`skipping unresolvable technique id ${id}`);
+					return;
+				}
+				// Support relative technique links from other techniques or from techniques/index.html,
+				// otherwise path-absolute when cross-linked from understanding/*
+				const urlBase = /^\/techniques\/.*\//.test(this.page.filePathStem)
+					? "../"
+					: this.page.filePathStem.startsWith("/techniques") ? "" : "/techniques/";
 				const label = `${id}: ${technique.title}`;
 				return `<a href="${urlBase}${technique.technology}/${id}">${label}</a>`;
-			}).join("\nand\n");
+			});
+			return compact(links).join("\nand\n");
 	});
 
 	// Filter that transforms a guideline or SC shortname (or list of them) into links to their pages.
 	eleventyConfig.addFilter("linkUnderstanding", function (this: EleventyContext, ids: string | string[]) {
 		return (Array.isArray(ids) ? ids : [ids])
 			.map((id) => {
+				if (typeof id !== "string") throw new Error("linkUnderstanding: invalid id passed");
 				const guideline = flatGuidelines[id];
-				if (!guideline) throw new Error(`Could not resolve guideline from shortname: ${id}`);
+				if (!guideline) {
+					console.warn(`linkUnderstanding in ${this.page.inputPath}: ` +
+						`skipping unresolvable guideline shortname ${id}`);
+				}
 				const urlBase =
 					this.page.filePathStem.startsWith("/understanding/") ? "" : "/understanding/";
 				const label = `${guideline.num}: ${guideline.name}`;
@@ -149,5 +164,6 @@ export default function (eleventyConfig: any) {
 			}).join("\nand\n");
 	});
 
+	eleventyConfig.setQuietMode(true);
 	return { dir };
 }

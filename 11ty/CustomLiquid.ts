@@ -1,6 +1,8 @@
 import { Liquid, type Template } from "liquidjs";
 import type { RenderOptions } from "liquidjs/dist/liquid-options";
 
+import { basename } from "path";
+
 import { flattenDom, load } from "./cheerio";
 import type { EleventyData } from "./types";
 import { getTermsMap } from "./guidelines";
@@ -71,7 +73,14 @@ export class CustomLiquid extends Liquid {
 				prependedIncludes.push(
 					isIndex ? "understanding/navigation-index" : "understanding/navigation");
 
-			if (!isIndex) {
+			if (isIndex) {
+				if (isTechniques) {
+					$("section#changelog li a").each((_, el) => {
+						const id = basename(el.attribs.href, ".html");
+						$(el).replaceWith(`{{ "${id}" | linkTechniques }}`);
+					});
+				}
+			} else {
 				$("head").append(generateIncludes("head"));
 				appendedIncludes.push("waiscript");
 
@@ -94,7 +103,17 @@ export class CustomLiquid extends Liquid {
 					$("section#resources h2")
 						.after(generateIncludes("techniques/intro/resources"));
 					$("section#examples section.example h3").each((i, el) => {
-						$(el).prepend(`Example ${i + 1}: `);
+						const $el = $(el);
+						const exampleText = `Example ${i + 1}`;
+						// Prepend "Example N: " only if it won't be redundant (e.g. F83)
+						if (!$el.text().toLowerCase().endsWith(exampleText.toLowerCase()))
+							$(el).prepend(`${exampleText}: `);
+					});
+					$("section#related li a[href^='../']").each((_, el) => {
+						// Expand relative technique links to include full title
+						// (the XSLT process didn't handle this in this particular context)
+						const id = basename(el.attribs.href, ".html");
+						$(el).replaceWith(`{{ "${id}" | linkTechniques }}`);
 					});
 				} else if (isUnderstanding) {
 					$("h1").replaceWith(generateIncludes("understanding/h1"));
@@ -172,6 +191,11 @@ export class CustomLiquid extends Liquid {
 		}
 
 		if (!indexPattern.test(scope.page.inputPath)) {
+			if (scope.isTechniques) {
+				// Remove any related list items that failed id lookups in #parse (e.g. removed/deprecated)
+				$("section#related li:empty").remove();
+			}
+
 			const $tocList = $(".sidebar nav ul");
 			// Generate table of contents after parsing and rendering,
 			// when we have sections already reordered and sidebar skeleton rendered
