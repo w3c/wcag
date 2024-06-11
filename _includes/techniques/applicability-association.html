@@ -1,12 +1,15 @@
+{% # See getTechniqueAssociations in 11ty/techniques.ts for typings %}
 {{ association.criterion.id | linkUnderstanding }}
 ({{ association.type }}
 {%- if association.with.length > 0 -%}
-    , together with {{ association.with | linkTechniques }}
+	, together with {{ association.with | linkTechniques }}
 {%- endif -%}
 {%- if association.hasUsageChildren %}
-    using a more specific technique
+	using a more specific technique
 {%- endif -%}
-{%- if association.usageParents.length > 0 %}
-    when used with {{ association.usageParents | linkTechniques }}
+{%- if association.usageParentIds.length > 0 %}
+	when used with {{ association.usageParentIds | linkTechniques }}
+{%- elsif association.usageParentDescription != "" %}
+	when used for {{ association.usageParentDescription }}
 {%- endif -%}
 )

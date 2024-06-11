@@ -39,10 +39,15 @@ interface TechniqueAssociation {
 	/** Indicates this technique must be paired with specific "child" techniques to fulfill SC */
 	hasUsageChildren: boolean;
 	/**
-	 * Technique ID or description of "parent" technique(s) this is paired with to fulfill SC.
+	 * Technique ID of "parent" technique(s) this is paired with to fulfill SC.
 	 * This is typically 0 or 1 technique, but may be multiple in rare cases.
 	 */
-	usageParents: string[];
+	usageParentIds: string[];
+	/**
+	 * Text description of "parent" association, if it does not reference a specific technique;
+	 * only populated if usageParentIds is empty.
+	 */
+	usageParentDescription: string;
 	/** Technique IDs this technique must be implemented with to fulfill SC, if any */
 	with: string[];
 }
@@ -52,7 +57,7 @@ function assertIsAssociationType(type?: string): asserts type is AssociationType
 		throw new Error(`Association processed for unexpected section ${type}`);
 }
 
-const techniqueLinkHrefToId = (href: string) => basename(href, ".html");
+export const techniqueLinkHrefToId = (href: string) => basename(href, ".html");
 
 /**
  * Returns object mapping technique IDs to SCs that reference it;
@@ -77,18 +82,26 @@ export async function getTechniqueAssociations(guidelines: FlatGuidelinesMap) {
 				$liEl.closest(associationTypes.map((type) => `section#${type}`).join(", ")).attr("id");
 			assertIsAssociationType(associationType);
 
-			/** Finds technique links only within the given list item (not under child lists) */
-			const queryImmediateChildLinks = ($el: Cheerio<any>) =>
-				$el.find(techniqueLinkSelector).filter((_, aEl) => $(aEl).closest("li")[0] === $el[0]);
+			/** Finds matches only within the given list item (not under child lists) */
+			const queryNonNestedChildren = ($el: Cheerio<any>, selector: string) =>
+				$el.find(selector).filter((_, aEl) => $(aEl).closest("li")[0] === $el[0]);
 
-			const $techniqueLinks = queryImmediateChildLinks($liEl);
+			const $techniqueLinks = queryNonNestedChildren($liEl, techniqueLinkSelector);
 			$techniqueLinks.each((_, aEl) => {
+				const parentIds = queryNonNestedChildren($parentListItem, techniqueLinkSelector).toArray()
+					.map((el) => techniqueLinkHrefToId(el.attribs.href));
+				const parentDescription = parentIds.length ? "" :
+					queryNonNestedChildren($parentListItem, "p").html()
+						?.replace(/,? (by )?using\s+(one (or more )?of )?the\s+following techniques:\s*$/, "");
+				
 				const association: TechniqueAssociation = {
 					criterion,
 					type: capitalize(associationType) as Capitalize<AssociationType>,
 					hasUsageChildren: !!$liEl.find("ul, ol").length,
-					usageParents: queryImmediateChildLinks($parentListItem).toArray()
-						.map((el) => techniqueLinkHrefToId(el.attribs.href)),
+					usageParentIds: parentIds,
+					usageParentDescription: parentDescription
+						? parentDescription[0].toLowerCase() + parentDescription.slice(1)
+						: "",
 					with: $techniqueLinks.toArray().filter((el) => el !== aEl)
 						.map((el) => techniqueLinkHrefToId(el.attribs.href)),
 				};

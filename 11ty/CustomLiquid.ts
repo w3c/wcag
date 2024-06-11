@@ -1,11 +1,10 @@
 import { Liquid, type Template } from "liquidjs";
 import type { RenderOptions } from "liquidjs/dist/liquid-options";
 
-import { basename } from "path";
-
 import { flattenDom, load } from "./cheerio";
-import type { EleventyData } from "./types";
 import { getTermsMap } from "./guidelines";
+import { techniqueLinkHrefToId } from "./techniques";
+import type { EleventyData } from "./types";
 
 const titleSuffix = " | WAI | W3C";
 
@@ -76,7 +75,7 @@ export class CustomLiquid extends Liquid {
 			if (isIndex) {
 				if (isTechniques) {
 					$("section#changelog li a").each((_, el) => {
-						const id = basename(el.attribs.href, ".html");
+						const id = techniqueLinkHrefToId(el.attribs.href);
 						$(el).replaceWith(`{{ "${id}" | linkTechniques }}`);
 					});
 				}
@@ -112,7 +111,7 @@ export class CustomLiquid extends Liquid {
 					$("section#related li a[href^='../']").each((_, el) => {
 						// Expand relative technique links to include full title
 						// (the XSLT process didn't handle this in this particular context)
-						const id = basename(el.attribs.href, ".html");
+						const id = techniqueLinkHrefToId(el.attribs.href);
 						$(el).replaceWith(`{{ "${id}" | linkTechniques }}`);
 					});
 				} else if (isUnderstanding) {
@@ -170,10 +169,15 @@ export class CustomLiquid extends Liquid {
 
 		if (scope.isTechniques) {
 			// Check for custom applicability paragraph before removing the section
-			const customApplicability = $("section#applicability p").html();
+			const customApplicability = $("section#applicability p").html()?.trim();
 			if (customApplicability) {
-				$("section#technique p:last-child").html("This technique applies to " +
-					customApplicability[0].toLowerCase() + customApplicability.slice(1));
+				$("section#technique p:last-child").html(
+					`This technique ${/^applies to/i.test(customApplicability) ? "" : "applies to "}` +
+					// Uncapitalize original sentence, except for all-caps abbreviations
+					(/^[A-Z]{2,}/.test(customApplicability)
+						? customApplicability
+						: customApplicability[0].toLowerCase() + customApplicability.slice(1)) +
+					(customApplicability.endsWith(".") ? "" : "."));
 			}
 			$("section#applicability").remove();
 
