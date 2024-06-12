@@ -179,7 +179,11 @@ export class CustomLiquid extends Liquid {
 			// Check for custom applicability paragraph before removing the section
 			const customApplicability = $("section#applicability p").html()?.trim();
 			if (customApplicability) {
-				$("section#technique p:last-child").html(
+				// Failure pages have no default applicability paragraph, so append one first
+				if (scope.technique.technology === "failures")
+					$("section#technique .box-i").append("<p></p>");
+
+				$("section#technique .box-i p:last-child").html(
 					`This technique ${/^applies to/i.test(customApplicability) ? "" : "applies to "}` +
 					// Uncapitalize original sentence, except for all-caps abbreviations
 					(/^[A-Z]{2,}/.test(customApplicability)
