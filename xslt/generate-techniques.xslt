@@ -247,14 +247,14 @@
 	</xsl:template>
 
 	<xsl:template name="most-important-meta">
-		<aside id="technique" class="box">
+		<section id="technique" class="box">
 				<h2 class="box-h  box-h-icon">
 					About this Technique
 				</h2>
 				<div class="box-i">
 						<xsl:call-template name="about-this-technique"/>
 				</div>
-		</aside>
+		</section>
 	</xsl:template>
 
 
