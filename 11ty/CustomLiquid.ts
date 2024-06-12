@@ -83,13 +83,14 @@ export class CustomLiquid extends Liquid {
 				$("head").append(generateIncludes("head"));
 				appendedIncludes.push("waiscript");
 
-				// Fix incorrect heading levels in both directions
+				// Fix incorrect level-2 headings and first-child level 3 headings
 				$("body > section section h2").each((_, el) => {
 					el.tagName = "h3";
-				})
-				$("body > section > h3").each((_, el) => {
+				});
+				$("body > section > h3:first-child").each((_, el) => {
 					el.tagName = "h2";
-				})
+				});
+				
 
 				if (isTechniques) {
 					// XSLT orders related and tests sections last, but they are not last in source files
@@ -99,6 +100,10 @@ export class CustomLiquid extends Liquid {
 					$("h1")
 						.after(generateIncludes("techniques/about"))
 						.replaceWith(generateIncludes("techniques/h1"));
+					$("body > section[id]").each((_, el) => {
+						// Fix non-lowercase top-level section IDs (e.g. H99)
+						el.attribs.id = el.attribs.id.toLowerCase();
+					});
 					$("section#resources h2")
 						.after(generateIncludes("techniques/intro/resources"));
 					$("section#examples section.example h3").each((i, el) => {
@@ -168,6 +173,8 @@ export class CustomLiquid extends Liquid {
 		const $ = load(html);
 
 		if (scope.isTechniques) {
+			// Strip applicability paragraphs with metadata IDs (e.g. H99)
+			$("section#applicability").find("p#id, p#technology, p#type").remove();
 			// Check for custom applicability paragraph before removing the section
 			const customApplicability = $("section#applicability p").html()?.trim();
 			if (customApplicability) {
