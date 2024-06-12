@@ -116,7 +116,7 @@ export class CustomLiquid extends Liquid {
 					});
 				} else if (isUnderstanding) {
 					$("h1").replaceWith(generateIncludes("understanding/h1"));
-					$("section#brief").after(generateIncludes("understanding/about"));
+					$("section#intent").before(generateIncludes("understanding/about"));
 					$("section#techniques h2")
 						.after(generateIncludes("understanding/intro/techniques"));
 					if ($("section#sufficient .situation").length) {
