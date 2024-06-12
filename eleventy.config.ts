@@ -122,6 +122,7 @@ export default function (eleventyConfig: any) {
 	eleventyConfig.setLibrary("liquid", new CustomLiquid({
 		// See https://www.11ty.dev/docs/languages/liquid/#liquid-options
 		root: ["_includes", "."],
+		jsTruthy: true,
 		strictFilters: true,
 	}));
 

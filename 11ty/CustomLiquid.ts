@@ -90,7 +90,6 @@ export class CustomLiquid extends Liquid {
 				$("body > section > h3:first-child").each((_, el) => {
 					el.tagName = "h2";
 				});
-				
 
 				if (isTechniques) {
 					// XSLT orders related and tests sections last, but they are not last in source files
@@ -120,7 +119,9 @@ export class CustomLiquid extends Liquid {
 						$(el).replaceWith(`{{ "${id}" | linkTechniques }}`);
 					});
 				} else if (isUnderstanding) {
-					$("h1").replaceWith(generateIncludes("understanding/h1"));
+					// Expand top-level heading for guideline/SC pages
+					if ($("section#intent").length)
+						$("h1").replaceWith(generateIncludes("understanding/h1"));
 					$("section#intent").before(generateIncludes("understanding/about"));
 					$("section#techniques h2")
 						.after(generateIncludes("understanding/intro/techniques"));
