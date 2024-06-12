@@ -208,9 +208,32 @@ export class CustomLiquid extends Liquid {
 				$("section#related li:empty").remove();
 			}
 
-			const $tocList = $(".sidebar nav ul");
+			// Prepend guidelines base URL to anchor links in guidelines content
+			$("#guideline, #success-criterion").find("a[href^='#']").each((_, el) => {
+				el.attribs.href = scope.guidelinesUrl + el.attribs.href;
+			});
+
+			// Expand note paragraphs after parsing and rendering,
+			// after Guideline/SC content for Understanding pages is rendered
+			$("div.note").each((_, el) => {
+				const $el = $(el);
+				$el.replaceWith(`<div class="note">
+					<p class="note-title marker">Note</p>
+					<div>${$el.html()}</div>
+				</div>`);
+			});
+			// Handle p variant after div (the reverse would double-process)
+			$("p.note").each((_, el) => {
+				const $el = $(el);
+				$el.replaceWith(`<div class="note">
+					<p class="note-title marker">Note</p>
+					<p>${$el.html()}</p>
+				</div>`);
+			});
+
 			// Generate table of contents after parsing and rendering,
 			// when we have sections already reordered and sidebar skeleton rendered
+			const $tocList = $(".sidebar nav ul");
 			const childSelector = "> h2:first-child";
 			$(`section[id]:has(${childSelector})`).each((_, el) => {
 				$("<a></a>")
