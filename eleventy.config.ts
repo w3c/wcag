@@ -164,6 +164,13 @@ export default function (eleventyConfig: any) {
 			}).join("\nand\n");
 	});
 
+	eleventyConfig.addPairedShortcode("sectionbox", (content: string, id: string, title: string) => `
+<section id="${id}" class="box">
+	<h2 class="box-h box-h-icon">${title}</h2>
+	<div class="box-i">${content}</div>
+</section>
+	`);
+
 	eleventyConfig.setQuietMode(true);
 	return { dir };
 }
