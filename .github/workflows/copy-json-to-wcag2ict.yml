@@ -1,0 +1,74 @@
+name: Copy-rules-to-WCAG
+
+# Commit any change to the wcag-mapping.json file to the wcag repo as act-mapping.json
+#
+# Notes:
+# - parameters can be set in the env section 
+# - the source filename needs to be set in two places below
+#  - in the on: trigger definition
+#  - in env
+# - A Personal Access Token (PAT) stored as a secret is required for the push to work
+#   - Suggest this is set in a specific W3C account, rather a user account, so not accidently deleted
+# - GitHub shows in the commit message a linkto the ACT repo commit
+
+on: 
+  push:
+    branches:
+      - main
+    paths:
+      - wcag-mapping.json
+
+jobs:
+  generate-json:
+    name: Generate JSON
+    runs-on: ubuntu-20.04
+    env:
+      GH_REF: github.com/w3c/wcag.git
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+        with: 
+          path: this
+      - name: Setup Java
+        # see https://github.com/actions/setup-java#supported-distributions
+        # note that this also deploys ant
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      - name: before_install
+        run: |
+          tar -xzvf lib/apache-ant-1.10.6-bin.tar.gz
+          export PATH=`pwd`/apache-ant-1.10.6/bin:$PATH
+      - name: script
+        run: ant json
+  copy-rules:
+    name: Copy rules
+    runs-on: ubuntu-latest
+    env:
+      SOURCE_FILENAME: guidelines/wcag.json
+      DESTINATION_REPO: w3c/wcag2ict
+      DESTINATION_BRANCH: main
+      DESTINATION_FILENAME: wcag.json
+      COMMIT_MESSAGE: WCAG JSON update from https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+    steps:
+      - name: Clone ${{ env.DESTINATION_REPO }} and copy ${{ env.SOURCE_FILENAME }}
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.W3CGRUNTBOT_TOKEN }} # add as PAT (https://github.com/settings/tokens) as a secret
+        run: |
+          echo "Cloning $DESTINATION_REPO git repository"
+          git clone --single-branch --branch $DESTINATION_BRANCH "https://$API_TOKEN_GITHUB@github.com/$DESTINATION_REPO.git" wcag
+          cp "this/$SOURCE_FILENAME" "wcag/$DESTINATION_FILENAME"
+       
+      - name: Commit and push
+        run: |
+          echo "Commit"
+          cd wcag
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          # check for changes with git diff-index to stop error
+          git diff-index --quiet HEAD || git commit -m "$COMMIT_MESSAGE"
+          
+          echo "Push"
+          git push origin --set-upstream "$DESTINATION_BRANCH"
