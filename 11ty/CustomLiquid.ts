@@ -27,12 +27,18 @@ const isHtmlFileContent = (html: string) =>
 	!html.startsWith("(((11ty") && !html.endsWith(".html");
 
 /**
- * Performs common cleanup of in-page table of contents links for final output.
+ * Performs common cleanup of in-page table of contents links and headings for final output.
  */
-const normalizeTocLabel = (label: string) =>
-	label.replace(/In brief/, "In Brief")
+function normalizeTocLabel(label: string, isHeading: boolean) {
+	// Common replacements
+	const replacedLabel = label.replace(/In brief/, "In Brief")
 		.replace(/^(\S+) (of|for) .*$/, "$1")
 		.replace(/^Resources$/, "Related Resources");
+	// Additionoal replacements specific to headings vs. ToC links
+	return isHeading
+		? replacedLabel
+		: replacedLabel.replace(/ for this Guideline$/, "");
+}
 
 /**
  * Replaces a link with a technique URL with a Liquid tag which will
@@ -137,6 +143,10 @@ export class CustomLiquid extends Liquid {
 						$("section#sufficient h3").
 							after(generateIncludes("understanding/intro/sufficient-situation"));
 					}
+					// success-criteria section should be auto-generated;
+					// remove any handwritten ones (e.g. Input Modalities)
+					$("section#success-criteria").remove();
+					$("body").append(generateIncludes("understanding/success-criteria"));
 
 					// Remove unpopulated sections
 					for (const id of ["sufficient", "advisory", "failures"]) {
@@ -167,7 +177,7 @@ export class CustomLiquid extends Liquid {
 				// (this is also done for table of contents links in #render)
 				$("h2").each((_, el) => {
 					const $el = $(el);
-					$el.text(normalizeTocLabel($el.text()));
+					$el.text(normalizeTocLabel($el.text(), true));
 				})
 
 				$("body")
@@ -270,7 +280,7 @@ export class CustomLiquid extends Liquid {
 			$(`section[id]:has(${childSelector})`).each((_, el) => {
 				$("<a></a>")
 					.attr("href", `#${el.attribs.id}`)
-					.text(normalizeTocLabel($(el).find(childSelector).text()))
+					.text(normalizeTocLabel($(el).find(childSelector).text(), false))
 					.appendTo($tocList)
 					.wrap("<li></li>");
 				$tocList.append("\n");
