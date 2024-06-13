@@ -60,13 +60,18 @@ function assertIsAssociationType(type?: string): asserts type is AssociationType
 export const techniqueLinkHrefToId = (href: string) => basename(href, ".html");
 
 /**
+ * Selector that can detect relative technique links from understanding docs;
+ * these vary between ../Techniques/... and ../../techniques/...
+ */
+export const understandingTechniqueLinkSelector = "a[href*='../Techniques/' i]";
+
+/**
  * Returns object mapping technique IDs to SCs that reference it;
  * comparable to technique-associations.xml but in a more ergonomic format.
  */
 export async function getTechniqueAssociations(guidelines: FlatGuidelinesMap) {
 	const associations: Record<string, TechniqueAssociation[]> = {};
 	const itemSelector = associationTypes.map((type) => `section#${type} li`).join(", ");
-	const techniqueLinkSelector = "a[href*='../Techniques/' i]";
 
 	const paths = await glob("understanding/*/*.html");
 	for (const path of paths) {
@@ -86,9 +91,10 @@ export async function getTechniqueAssociations(guidelines: FlatGuidelinesMap) {
 			const queryNonNestedChildren = ($el: Cheerio<any>, selector: string) =>
 				$el.find(selector).filter((_, aEl) => $(aEl).closest("li")[0] === $el[0]);
 
-			const $techniqueLinks = queryNonNestedChildren($liEl, techniqueLinkSelector);
+			const $techniqueLinks = queryNonNestedChildren($liEl, understandingTechniqueLinkSelector);
 			$techniqueLinks.each((_, aEl) => {
-				const parentIds = queryNonNestedChildren($parentListItem, techniqueLinkSelector).toArray()
+				const parentIds = queryNonNestedChildren($parentListItem, understandingTechniqueLinkSelector)
+					.toArray()
 					.map((el) => techniqueLinkHrefToId(el.attribs.href));
 				const parentDescription = parentIds.length ? "" :
 					queryNonNestedChildren($parentListItem, "p").html()

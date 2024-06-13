@@ -1,9 +1,10 @@
+import type { Cheerio, Element } from "cheerio";
 import { Liquid, type Template } from "liquidjs";
 import type { RenderOptions } from "liquidjs/dist/liquid-options";
 
 import { flattenDom, load } from "./cheerio";
 import { getTermsMap } from "./guidelines";
-import { techniqueLinkHrefToId } from "./techniques";
+import { techniqueLinkHrefToId, understandingTechniqueLinkSelector } from "./techniques";
 import type { EleventyData } from "./types";
 
 const titleSuffix = " | WAI | W3C";
@@ -32,6 +33,19 @@ const normalizeTocLabel = (label: string) =>
 	label.replace(/In brief/, "In Brief")
 		.replace(/^(\S+) (of|for) .*$/, "$1")
 		.replace(/^Resources$/, "Related Resources");
+
+/**
+ * Replaces a link with a technique URL with a Liquid tag which will
+ * expand to a link with the full technique ID and title.
+ * @param $el a $()-wrapped link element
+ */
+const expandTechniqueLink = ($el: Cheerio<Element>) => {
+	const href = $el.attr("href");
+	if (!href) throw new Error("expandTechniqueLink: non-link element encountered");
+	const id = techniqueLinkHrefToId(href);
+	if (!id) throw new Error(`expandTechniqueLink: Couldn't resolve id from ${href}`);
+	$el.replaceWith(`{{ "${id}" | linkTechniques }}`);
+}
 
 // Dev note: Eleventy doesn't expose typings for its template engines for us to neatly extend.
 // Fortunately, it passes both the content string and the file path through to Liquid#parse:
@@ -73,12 +87,8 @@ export class CustomLiquid extends Liquid {
 					isIndex ? "understanding/navigation-index" : "understanding/navigation");
 
 			if (isIndex) {
-				if (isTechniques) {
-					$("section#changelog li a").each((_, el) => {
-						const id = techniqueLinkHrefToId(el.attribs.href);
-						$(el).replaceWith(`{{ "${id}" | linkTechniques }}`);
-					});
-				}
+				if (isTechniques)
+					$("section#changelog li a").each((_, el) => expandTechniqueLink($(el)));
 			} else {
 				$("head").append(generateIncludes("head"));
 				appendedIncludes.push("waiscript");
@@ -112,12 +122,10 @@ export class CustomLiquid extends Liquid {
 						if (!$el.text().toLowerCase().endsWith(exampleText.toLowerCase()))
 							$(el).prepend(`${exampleText}: `);
 					});
-					$("section#related li a[href^='../']").each((_, el) => {
-						// Expand relative technique links to include full title
-						// (the XSLT process didn't handle this in this particular context)
-						const id = techniqueLinkHrefToId(el.attribs.href);
-						$(el).replaceWith(`{{ "${id}" | linkTechniques }}`);
-					});
+					// Expand related technique links to include full title
+					// (the XSLT process didn't handle this in this particular context)
+					$("section#related li a[href^='../']")
+						.each((_, el) => expandTechniqueLink($(el)));
 				} else if (isUnderstanding) {
 					// Expand top-level heading for guideline/SC pages
 					if ($("section#intent").length)
@@ -129,12 +137,27 @@ export class CustomLiquid extends Liquid {
 						$("section#sufficient h3").
 							after(generateIncludes("understanding/intro/sufficient-situation"));
 					}
+
+					// Remove unpopulated sections
+					for (const id of ["sufficient", "advisory", "failures"]) {
+						$(`section#${id}:not(:has(:not(h3)))`).remove();
+					}
+
+					// Normalize subsection names
+					$("section#sufficient h3").text("Sufficient Techniques");
+					$("section#advisory h3").text("Advisory Techniques");
+					$("section#failure h3").text("Failures");
+
+					// Add intro prose to populated sections
 					$("section#advisory h3")
 						.after(generateIncludes("understanding/intro/advisory"));
 					$("section#failure h3")
 						.after(generateIncludes("understanding/intro/failure"));
 					$("section#resources h2")
 						.after(generateIncludes("understanding/intro/resources"));
+
+					$(`section#techniques li ${understandingTechniqueLinkSelector}`)
+						.each((_, el) => expandTechniqueLink($(el)));
 				}
 
 				// Remove h2-level sections with no content other than heading
@@ -207,9 +230,14 @@ export class CustomLiquid extends Liquid {
 		}
 
 		if (!indexPattern.test(scope.page.inputPath)) {
+			// Remove items that end up empty due to invalid technique IDs during #parse
+			// (e.g. removed/deprecated)
 			if (scope.isTechniques) {
-				// Remove any related list items that failed id lookups in #parse (e.g. removed/deprecated)
 				$("section#related li:empty").remove();
+			} else if (scope.isUnderstanding) {
+				// :empty doesn't work here since there may be whitespace
+				// (can't trim whitespace in the liquid tag since some links have more text after)
+				$(`section#techniques li`).filter((_, el) => !$(el).text().trim()).remove();
 			}
 
 			// Prepend guidelines base URL to anchor links in guidelines content
