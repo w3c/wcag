@@ -36,10 +36,11 @@ function normalizeTocLabel(label: string, isHeading: boolean) {
 	const replacedLabel = label.replace(/In brief/, "In Brief")
 		.replace(/^(\S+) (of|for) .*$/, "$1")
 		.replace(/^Resources$/, "Related Resources");
-	// Additionoal replacements specific to headings vs. ToC links
+	// Additional replacements specific to headings vs. ToC links
 	return isHeading
 		? replacedLabel
-		: replacedLabel.replace(/ for this Guideline$/, "");
+		: replacedLabel.replace(/ for this Guideline$/, "")
+			.replace(/ \(SC\)$/, "");
 }
 
 /**
