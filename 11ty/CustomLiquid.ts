@@ -86,11 +86,6 @@ export class CustomLiquid extends Liquid {
 			// but for now this remains consistent with the XSLT process by stripping all of them.
 			$(".remove, p.instructions, section#meta, section.meta").remove();
 
-			// Ensure suffix is at end of all titles
-			// (this was done in XSLT for non-index/about pages in the previous build process)
-			const $title = $("title");
-			if (!$title.text().endsWith(titleSuffix)) $title.append(titleSuffix);
-
 			const prependedIncludes = ["header"];
 			const appendedIncludes = ["wai-site-footer", "site-footer"];
 
@@ -220,6 +215,7 @@ export class CustomLiquid extends Liquid {
 		const $ = load(html);
 
 		if (scope.isTechniques) {
+			$("title").text(`${scope.technique.id}: ${scope.technique.title}${titleSuffix}`);
 			// Strip applicability paragraphs with metadata IDs (e.g. H99)
 			$("section#applicability").find("p#id, p#technology, p#type").remove();
 			// Check for custom applicability paragraph before removing the section
@@ -238,6 +234,17 @@ export class CustomLiquid extends Liquid {
 					(customApplicability.endsWith(".") ? "" : "."));
 			}
 			$("section#applicability").remove();
+		} else if (scope.isUnderstanding) {
+			const $title = $("title");
+			if (scope.guideline) {
+				const type = scope.guideline.type === "SC" ? "Success Criterion" : scope.guideline.type;
+				$title.text(
+					`Understanding ${type} ${scope.guideline.num}: ${scope.guideline.name}${titleSuffix}`
+				);
+			}
+			else $title.text(
+				$title.text().replace(/WCAG 2\b/, `WCAG ${scope.versionDecimal}`) + titleSuffix
+			);
 		}
 
 		// Process defined terms within #render,
