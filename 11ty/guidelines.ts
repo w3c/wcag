@@ -171,6 +171,7 @@ export type FlatGuidelinesMap = ReturnType<typeof getFlatGuidelines>;
 interface Term {
 	definition: string;
 	id: string;
+	name: string;
 }
 
 /**
@@ -187,12 +188,15 @@ export async function getTermsMap() {
 			// Note: All applicable <dfn>s seem to have explicit id attributes,
 			// but the XSLT process generates id from the element's text which is not always the same
 			id: `dfn-${generateId($el.text())}`,
-			definition: $el.parent().find("dd").html()!
+			definition: $el.parent().next().html()!,
+			name: $el.text().toLowerCase(),
 		}
 
-		const names = [$el.text().toLowerCase()]
+		const names = [term.name]
 			.concat((el.attribs["data-lt"] || "").toLowerCase().split("|"));
 		for (const name of names) terms[name] = term;
+		// Workaround for bug in label-in-name guideline until input is fixed
+		if (term.name === "name") terms["accessible name"] = term;
 	});
 
 	return terms;

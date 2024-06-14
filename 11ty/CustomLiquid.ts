@@ -1,6 +1,7 @@
 import type { Cheerio, Element } from "cheerio";
 import { Liquid, type Template } from "liquidjs";
 import type { RenderOptions } from "liquidjs/dist/liquid-options";
+import uniq from "lodash-es/uniq";
 
 import { flattenDom, load } from "./cheerio";
 import { getTermsMap } from "./guidelines";
@@ -14,6 +15,7 @@ const techniquesPattern = /\btechniques\//;
 const understandingPattern = /\bunderstanding\//;
 
 const termsMap = await getTermsMap();
+const termLinkSelector = "a:not([href])";
 
 /** Generates {% include "foo.html" %} directives from 1 or more basenames */
 const generateIncludes = (...basenames: string[]) =>
@@ -53,6 +55,8 @@ const expandTechniqueLink = ($el: Cheerio<Element>) => {
 	$el.replaceWith(`{{ "${id}" | linkTechniques }}`);
 }
 
+const stripHtmlComments = (html: string) => html.replace(/<!--[\s\S]*?-->/g, "");
+
 // Dev note: Eleventy doesn't expose typings for its template engines for us to neatly extend.
 // Fortunately, it passes both the content string and the file path through to Liquid#parse:
 // https://github.com/11ty/eleventy/blob/9c3a7619/src/Engines/Liquid.js#L253
@@ -62,6 +66,7 @@ const expandTechniqueLink = ($el: Cheerio<Element>) => {
  * - flattening data-include directives
  * - inserting header/footer content within the body of pages
  *   prior to parsing Liquid tags (permitting Liquid even inside data-included files)
+ * - generating/expanding sections with auto-generated content
  */
 export class CustomLiquid extends Liquid {
 	public parse(html: string, filepath?: string) {
@@ -146,13 +151,13 @@ export class CustomLiquid extends Liquid {
 					// success-criteria section should be auto-generated;
 					// remove any handwritten ones (e.g. Input Modalities)
 					$("section#success-criteria").remove();
+					// success-criteria template only renders content for guideline (not SC) pages
 					$("body").append(generateIncludes("understanding/success-criteria"));
 
-					// Remove unpopulated sections
+					// Remove unpopulated techniques subsections
 					for (const id of ["sufficient", "advisory", "failures"]) {
 						$(`section#${id}:not(:has(:not(h3)))`).remove();
 					}
-
 					// Normalize subsection names
 					$("section#sufficient h3").text("Sufficient Techniques");
 					$("section#advisory h3").text("Advisory Techniques");
@@ -166,8 +171,12 @@ export class CustomLiquid extends Liquid {
 					$("section#resources h2")
 						.after(generateIncludes("understanding/intro/resources"));
 
+					// Expand techniques links to always include title
 					$(`section#techniques li ${understandingTechniqueLinkSelector}`)
 						.each((_, el) => expandTechniqueLink($(el)));
+
+					// Add key terms by default, to be removed in #parse if there are no terms
+					$("body").append(generateIncludes("understanding/key-terms"));
 				}
 
 				// Remove h2-level sections with no content other than heading
@@ -204,6 +213,9 @@ export class CustomLiquid extends Liquid {
 		// html contains markup after Liquid tags/includes have been processed
 		const html = (await super.render(templates, scope, options)).toString();
 		if (!isHtmlFileContent(html) || !scope) return html;
+		// We don't need to do any processing for index/about pages other than stripping comments
+		if (indexPattern.test(scope.page.inputPath)) return stripHtmlComments(html);
+
 		const $ = load(html);
 
 		if (scope.isTechniques) {
@@ -225,69 +237,115 @@ export class CustomLiquid extends Liquid {
 					(customApplicability.endsWith(".") ? "" : "."));
 			}
 			$("section#applicability").remove();
+		}
 
-			// Process definitions within render where we have access to global data
-			$("a:not([href])").each((_, el) => {
+		// Process defined terms within #render,
+		// where we have access to global data and the about box's HTML
+		const $termLinks = $(termLinkSelector);
+		const extractTermName = ($el: Cheerio<Element>) => {
+			const name = $el.text().trim().toLowerCase();
+			const term = termsMap[name];
+			if (!term)
+				throw new Error(`${scope.page.inputPath}: Term not found: ${name}`);
+			// Return standardized name for Key Terms definition lists
+			return term.name;
+		}
+
+		if (scope.isTechniques) {
+			$termLinks.each((_, el) => {
 				const $el = $(el);
-				const termName = $el.text().trim().toLowerCase();
+				const termName = extractTermName($el);
 				const term = termsMap[termName];
-				if (!term) throw new Error(`Term not found: ${termName}`);
 				$el.attr("href", `${scope.guidelinesUrl}#${term.id}`)
 					.attr("target", "terms");
 			});
 		} else if (scope.isUnderstanding) {
-			// TODO: Key Terms
-		}
+			const $termsList = $("section#key-terms dl");
+			const extractTermNames = ($links: Cheerio<Element>) =>
+				uniq($links.toArray().map((el) => extractTermName($(el))));
 
-		if (!indexPattern.test(scope.page.inputPath)) {
-			// Remove items that end up empty due to invalid technique IDs during #parse
-			// (e.g. removed/deprecated)
-			if (scope.isTechniques) {
-				$("section#related li:empty").remove();
-			} else if (scope.isUnderstanding) {
-				// :empty doesn't work here since there may be whitespace
-				// (can't trim whitespace in the liquid tag since some links have more text after)
-				$(`section#techniques li`).filter((_, el) => !$(el).text().trim()).remove();
+			if ($termLinks.length) {
+				let termNames = extractTermNames($termLinks);
+				// This is one loop but effectively multiple passes,
+				// since terms may reference other terms in their own definitions.
+				// Each iteration may append to termNames.
+				for (let i = 0; i < termNames.length; i++) {
+					const term = termsMap[termNames[i]];
+					if (!term)
+						throw new Error(`${scope.page.inputPath}: Term not found: ${termNames[i]}`);
+					const $definition = load(term.definition);
+					const $definitionTermLinks = $definition(termLinkSelector);
+					if ($definitionTermLinks.length) {
+						termNames = uniq(termNames.concat(extractTermNames($definitionTermLinks)));
+					}
+				}
+
+				// Iterate over sorted names to populate alphabetized Key Terms definition list
+				termNames.sort();
+				for (const name of termNames) {
+					const term = termsMap[name]; // Already verified existence in the earlier loop
+					$termsList.append(
+						`<dt id="${term.id}">${term.name}</dt>` +
+						`<dd><definition>${term.definition}</definition></dd>`
+					);
+				}
+
+				// Iterate over non-href links once more in now-expanded document to add hrefs
+				$(termLinkSelector).each((_, el) => {
+					el.attribs.href = `#${termsMap[extractTermName($(el))].id}`;
+				});
+			} else {
+				// No terms: remove skeleton that was placed in #parse
+				$("section#key-terms").remove();
 			}
-
-			// Prepend guidelines base URL to anchor links in guidelines content
-			$("#guideline, #success-criterion").find("a[href^='#']").each((_, el) => {
-				el.attribs.href = scope.guidelinesUrl + el.attribs.href;
-			});
-
-			// Expand note paragraphs after parsing and rendering,
-			// after Guideline/SC content for Understanding pages is rendered
-			$("div.note").each((_, el) => {
-				const $el = $(el);
-				$el.replaceWith(`<div class="note">
-					<p class="note-title marker">Note</p>
-					<div>${$el.html()}</div>
-				</div>`);
-			});
-			// Handle p variant after div (the reverse would double-process)
-			$("p.note").each((_, el) => {
-				const $el = $(el);
-				$el.replaceWith(`<div class="note">
-					<p class="note-title marker">Note</p>
-					<p>${$el.html()}</p>
-				</div>`);
-			});
-
-			// Generate table of contents after parsing and rendering,
-			// when we have sections already reordered and sidebar skeleton rendered
-			const $tocList = $(".sidebar nav ul");
-			const childSelector = "> h2:first-child";
-			$(`section[id]:has(${childSelector})`).each((_, el) => {
-				$("<a></a>")
-					.attr("href", `#${el.attribs.id}`)
-					.text(normalizeTocLabel($(el).find(childSelector).text(), false))
-					.appendTo($tocList)
-					.wrap("<li></li>");
-				$tocList.append("\n");
-			});
 		}
 
-		// Return new html with comments removed
-		return $.html().replace(/<!--[\s\S]*?-->/g, "");
+		// Remove items that end up empty due to invalid technique IDs during #parse
+		// (e.g. removed/deprecated)
+		if (scope.isTechniques) {
+			$("section#related li:empty").remove();
+		} else if (scope.isUnderstanding) {
+			// :empty doesn't work here since there may be whitespace
+			// (can't trim whitespace in the liquid tag since some links have more text after)
+			$(`section#techniques li`).filter((_, el) => !$(el).text().trim()).remove();
+		}
+
+		// Prepend guidelines base URL to anchor links in guidelines content
+		$("#guideline, #success-criterion").find("a[href^='#']").each((_, el) => {
+			el.attribs.href = scope.guidelinesUrl + el.attribs.href;
+		});
+
+		// Expand note paragraphs after parsing and rendering,
+		// after Guideline/SC content for Understanding pages is rendered
+		$("div.note").each((_, el) => {
+			const $el = $(el);
+			$el.replaceWith(`<div class="note">
+				<p class="note-title marker">Note</p>
+				<div>${$el.html()}</div>
+			</div>`);
+		});
+		// Handle p variant after div (the reverse would double-process)
+		$("p.note").each((_, el) => {
+			const $el = $(el);
+			$el.replaceWith(`<div class="note">
+				<p class="note-title marker">Note</p>
+				<p>${$el.html()}</p>
+			</div>`);
+		});
+
+		// Generate table of contents after parsing and rendering,
+		// when we have sections already reordered and sidebar skeleton rendered
+		const $tocList = $(".sidebar nav ul");
+		const childSelector = "h2:first-child";
+		$(`section[id]:has(${childSelector})`).each((_, el) => {
+			$("<a></a>")
+				.attr("href", `#${el.attribs.id}`)
+				.text(normalizeTocLabel($(el).find(childSelector).text(), false))
+				.appendTo($tocList)
+				.wrap("<li></li>");
+			$tocList.append("\n");
+		});
+
+		return stripHtmlComments($.html());
 	}
 }
