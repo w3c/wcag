@@ -1,20 +1,9 @@
-import { load as cheerioLoad, type CheerioAPI, type CheerioOptions } from "cheerio";
+import { load, type CheerioOptions } from "cheerio";
 import { readFileSync } from "fs";
 import { readFile } from "fs/promises";
 import { dirname, resolve } from "path";
 
-interface ExtendedCheerioAPI {
-}
-
-const extendedApi: ExtendedCheerioAPI = {
-};
-
-/** Extension of Cheerio's load function that adds extra query plugins. */
-export const load: CheerioAPI["load"] = (content, options, isDocument) => {
-	const $ = cheerioLoad(content, options, isDocument);
-	Object.assign($.fn, extendedApi);
-	return $ as CheerioAPI & ExtendedCheerioAPI;
-}
+export { load } from "cheerio";
 
 /** Convenience function that combines readFile and load. */
 export async function loadFromFile(
