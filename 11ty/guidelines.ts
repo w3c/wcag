@@ -195,8 +195,6 @@ export async function getTermsMap() {
 		const names = [term.name]
 			.concat((el.attribs["data-lt"] || "").toLowerCase().split("|"));
 		for (const name of names) terms[name] = term;
-		// Workaround for bug in label-in-name guideline until input is fixed
-		if (term.name === "name") terms["accessible name"] = term;
 	});
 
 	return terms;

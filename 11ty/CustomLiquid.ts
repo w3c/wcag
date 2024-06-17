@@ -1,6 +1,7 @@
 import type { Cheerio, Element } from "cheerio";
 import { Liquid, type Template } from "liquidjs";
 import type { RenderOptions } from "liquidjs/dist/liquid-options";
+import compact from "lodash-es/compact";
 import uniq from "lodash-es/uniq";
 
 import { flattenDom, load } from "./cheerio";
@@ -253,8 +254,10 @@ export class CustomLiquid extends Liquid {
 		const extractTermName = ($el: Cheerio<Element>) => {
 			const name = $el.text().trim().toLowerCase();
 			const term = termsMap[name];
-			if (!term)
-				throw new Error(`${scope.page.inputPath}: Term not found: ${name}`);
+			if (!term) {
+				console.warn(`${scope.page.inputPath}: Term not found: ${name}`);
+				return;
+			}
 			// Return standardized name for Key Terms definition lists
 			return term.name;
 		}
@@ -263,14 +266,13 @@ export class CustomLiquid extends Liquid {
 			$termLinks.each((_, el) => {
 				const $el = $(el);
 				const termName = extractTermName($el);
-				const term = termsMap[termName];
-				$el.attr("href", `${scope.guidelinesUrl}#${term.id}`)
+				$el.attr("href", `${scope.guidelinesUrl}#${termName ? termsMap[termName].id : ""}`)
 					.attr("target", "terms");
 			});
 		} else if (scope.isUnderstanding) {
 			const $termsList = $("section#key-terms dl");
 			const extractTermNames = ($links: Cheerio<Element>) =>
-				uniq($links.toArray().map((el) => extractTermName($(el))));
+				compact(uniq($links.toArray().map((el) => extractTermName($(el)))));
 
 			if ($termLinks.length) {
 				let termNames = extractTermNames($termLinks);
@@ -279,8 +281,8 @@ export class CustomLiquid extends Liquid {
 				// Each iteration may append to termNames.
 				for (let i = 0; i < termNames.length; i++) {
 					const term = termsMap[termNames[i]];
-					if (!term)
-						throw new Error(`${scope.page.inputPath}: Term not found: ${termNames[i]}`);
+					if (!term) continue; // This will already warn via extractTermNames
+
 					const $definition = load(term.definition);
 					const $definitionTermLinks = $definition(termLinkSelector);
 					if ($definitionTermLinks.length) {
@@ -300,7 +302,8 @@ export class CustomLiquid extends Liquid {
 
 				// Iterate over non-href links once more in now-expanded document to add hrefs
 				$(termLinkSelector).each((_, el) => {
-					el.attribs.href = `#${termsMap[extractTermName($(el))].id}`;
+					const name = extractTermName($(el));
+					el.attribs.href = `#${name ? termsMap[name].id : ""}`;
 				});
 			} else {
 				// No terms: remove skeleton that was placed in #parse
