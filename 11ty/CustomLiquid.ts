@@ -111,7 +111,14 @@ export class CustomLiquid extends Liquid {
 				});
 
 				if (isTechniques) {
-					// XSLT orders related and tests sections last, but they are not last in source files
+					// Remove any link-less related techniques section (left over from template)
+					$("section#related:not(:has(a))").remove();
+					// Expand related technique links to include full title
+					// (the XSLT process didn't handle this in this particular context)
+					$("section#related li a[href^='../']")
+						.each((_, el) => expandTechniqueLink($(el)));
+
+					// XSLT orders related and tests last, but they are not last in source files
 					$("body")
 						.append("\n", $(`body > section#related`))
 						.append("\n", $(`body > section#tests`));
@@ -131,11 +138,12 @@ export class CustomLiquid extends Liquid {
 						if (!$el.text().toLowerCase().endsWith(exampleText.toLowerCase()))
 							$(el).prepend(`${exampleText}: `);
 					});
-					// Expand related technique links to include full title
-					// (the XSLT process didn't handle this in this particular context)
-					$("section#related li a[href^='../']")
-						.each((_, el) => expandTechniqueLink($(el)));
 				} else if (isUnderstanding) {
+					// XSLT orders resources then techniques last, opposite of source files
+					$("body")
+						.append("\n", $(`body > section#resources`))
+						.append("\n", $(`body > section#techniques`));
+					
 					// Expand top-level heading for guideline/SC pages
 					if ($("section#intent").length)
 						$("h1").replaceWith(generateIncludes("understanding/h1"));
