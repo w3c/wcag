@@ -63,7 +63,7 @@ export const techniqueLinkHrefToId = (href: string) => basename(href, ".html");
  * Selector that can detect relative technique links from understanding docs;
  * these vary between ../Techniques/... and ../../techniques/...
  */
-export const understandingTechniqueLinkSelector = "a[href*='../Techniques/' i]";
+export const understandingTechniqueLinkSelector = "a[href*='/Techniques/' i]";
 
 /**
  * Returns object mapping technique IDs to SCs that reference it;
