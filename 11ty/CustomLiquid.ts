@@ -5,6 +5,7 @@ import compact from "lodash-es/compact";
 import uniq from "lodash-es/uniq";
 
 import { flattenDom, load } from "./cheerio";
+import { generateId } from "./common";
 import { getTermsMap } from "./guidelines";
 import { techniqueLinkHrefToId, understandingTechniqueLinkSelector } from "./techniques";
 import type { EleventyData } from "./types";
@@ -347,8 +348,12 @@ export class CustomLiquid extends Liquid {
 		// Generate table of contents after parsing and rendering,
 		// when we have sections already reordered and sidebar skeleton rendered
 		const $tocList = $(".sidebar nav ul");
+		// Allow autogenerating missing top-level section IDs in understanding docs,
+		// but don't pick up incorrectly-nested sections in some techniques pages (e.g. H91)
+		const sectionSelector = scope.isUnderstanding ? "section" : "section[id]";
 		const childSelector = "h2:first-child";
-		$(`section[id]:has(${childSelector})`).each((_, el) => {
+		$(`${sectionSelector}:has(${childSelector})`).each((_, el) => {
+			if (!el.attribs.id) el.attribs.id = generateId($(el).find(childSelector).text());
 			$("<a></a>")
 				.attr("href", `#${el.attribs.id}`)
 				.text(normalizeTocLabel($(el).find(childSelector).text(), false))
