@@ -328,12 +328,14 @@ export class CustomLiquid extends Liquid {
 			// :empty doesn't work here since there may be whitespace
 			// (can't trim whitespace in the liquid tag since some links have more text after)
 			$(`section#techniques li`).filter((_, el) => !$(el).text().trim()).remove();
-		}
 
-		// Prepend guidelines base URL to anchor links in guidelines content
-		$("#guideline, #success-criterion").find("a[href^='#']").each((_, el) => {
-			el.attribs.href = scope.guidelinesUrl + el.attribs.href;
-		});
+			// Prepend guidelines base URL to non-dfn anchor links in guidelines-derived content
+			// (including both the guideline/SC box at the top and Key Terms at the bottom)
+			$("#guideline, #success-criterion, #key-terms")
+				.find("a[href^='#']:not([href^='#dfn-'])").each((_, el) => {
+					el.attribs.href = scope.guidelinesUrl + el.attribs.href;
+				});
+		}
 
 		// Expand note paragraphs after parsing and rendering,
 		// after Guideline/SC content for Understanding pages is rendered
