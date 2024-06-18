@@ -31,19 +31,21 @@ const isHtmlFileContent = (html: string) =>
 	!html.startsWith("(((11ty") && !html.endsWith(".html");
 
 /**
- * Performs common cleanup of in-page table of contents links and headings for final output.
+ * Performs common cleanup of in-page headings, and by extension, table of contents links,
+ * for final output.
  */
-function normalizeTocLabel(label: string, isHeading: boolean) {
-	// Common replacements
-	const replacedLabel = label.replace(/In brief/, "In Brief")
+const normalizeHeading = (label: string) =>
+	label.replace(/In brief/, "In Brief")
 		.replace(/^(\S+) (of|for) .*$/, "$1")
 		.replace(/^Resources$/, "Related Resources");
-	// Additional replacements specific to headings vs. ToC links
-	return isHeading
-		? replacedLabel
-		: replacedLabel.replace(/ for this Guideline$/, "")
-			.replace(/ \(SC\)$/, "");
-}
+
+/**
+ * Performs additional common cleanup for table of contents links for final output.
+ * This is expected to piggyback off of normalizeHeading, which should be called on
+ * headings prior to processing the table of contents from them.
+ */
+const normalizeTocLabel = (label: string) => 
+	label.replace(/ for this Guideline$/, "").replace(/ \(SC\)$/, "");
 
 /**
  * Replaces a link with a technique URL with a Liquid tag which will
@@ -111,13 +113,14 @@ export class CustomLiquid extends Liquid {
 				});
 
 				if (isTechniques) {
-					// Remove any link-less related techniques section (left over from template)
+					// Remove any effectively-empty techniques/resources sections (from template)
 					$("section#related:not(:has(a))").remove();
+					$("section#resources:not(:has(a, li))").remove();
 					// Expand related technique links to include full title
 					// (the XSLT process didn't handle this in this particular context)
 					$("section#related li a[href^='../']")
 						.each((_, el) => expandTechniqueLink($(el)));
-
+					
 					// XSLT orders related and tests last, but they are not last in source files
 					$("body")
 						.append("\n", $(`body > section#related`))
@@ -125,18 +128,57 @@ export class CustomLiquid extends Liquid {
 					$("h1")
 						.after(generateIncludes("techniques/about"))
 						.replaceWith(generateIncludes("techniques/h1"));
+					
+					const sectionCounts: Record<string, number> = {};
+					let hasDuplicates = false;
 					$("body > section[id]").each((_, el) => {
+						const id = el.attribs.id.toLowerCase();
 						// Fix non-lowercase top-level section IDs (e.g. H99)
-						el.attribs.id = el.attribs.id.toLowerCase();
+						el.attribs.id = id;
+						// Track duplicate sections, to be processed next
+						if (id in sectionCounts) {
+							hasDuplicates = true;
+							sectionCounts[id]++;
+						} else {
+							sectionCounts[id] = 1;
+						}
 					});
+					if (hasDuplicates) { // Avoid loop altogether in majority of (correct) cases
+						for (const [id, count] of Object.entries(sectionCounts)) {
+							if (count === 1) continue;
+							console.log(`${filepath}: Merging duplicate ${id} sections; please fix this in the source file.`)
+							const $sections = $(`section[id='${id}']`);
+							const $first = $sections.first();
+							$sections.each((i, el) => {
+								if (i === 0) return;
+								const $el = $(el);
+								$el.find("> h2:first-child").remove();
+								$first.append($el.contents());
+								$el.remove();
+							})
+						}
+					}
+
 					$("section#resources h2")
 						.after(generateIncludes("techniques/intro/resources"));
-					$("section#examples section.example h3").each((i, el) => {
+					$("section#examples section.example").each((i, el) => {
 						const $el = $(el);
 						const exampleText = `Example ${i + 1}`;
-						// Prepend "Example N: " only if it won't be redundant (e.g. F83)
-						if (!$el.text().toLowerCase().endsWith(exampleText.toLowerCase()))
-							$(el).prepend(`${exampleText}: `);
+						// Check for multiple h3 under one example, which should be h4 (e.g. SCR33)
+						$el.find("h3:not(:only-of-type)").each((_, el) => {
+							el.tagName = "h4";
+						});
+
+						const $h3 = $el.find("h3");
+						if ($h3.length) {
+							// Some examples really have an empty h3...
+							if (!$h3.text()) $h3.text(exampleText);
+							// Only prepend "Example N: " if it won't be redundant (e.g. F83)
+							else if (!$h3.text().toLowerCase().endsWith(exampleText.toLowerCase()))
+								$h3.prepend(`${exampleText}: `);
+						} else {
+							$el.prepend(`<h3>${exampleText}</h3>`);
+						}
 					});
 				} else if (isUnderstanding) {
 					// XSLT orders resources then techniques last, opposite of source files
@@ -161,9 +203,14 @@ export class CustomLiquid extends Liquid {
 					$("body").append(generateIncludes("understanding/success-criteria"));
 
 					// Remove unpopulated techniques subsections
-					for (const id of ["sufficient", "advisory", "failures"]) {
+					for (const id of ["sufficient", "advisory", "failure"]) {
 						$(`section#${id}:not(:has(:not(h3)))`).remove();
 					}
+					// Remove resources subsection if it only has a placeholder item
+					const $resourcesOnlyItem = $("section#resources li:only-child");
+					if ($resourcesOnlyItem.length && $resourcesOnlyItem.text() === "Resource")
+						$("section#resources").remove();
+
 					// Normalize subsection names
 					$("section#sufficient h3").text("Sufficient Techniques");
 					$("section#advisory h3").text("Advisory Techniques");
@@ -187,13 +234,6 @@ export class CustomLiquid extends Liquid {
 
 				// Remove h2-level sections with no content other than heading
 				$("body > section:not(:has(:not(h2)))").remove();
-
-				// Fix inconsistent heading labels
-				// (this is also done for table of contents links in #render)
-				$("h2").each((_, el) => {
-					const $el = $(el);
-					$el.text(normalizeTocLabel($el.text(), true));
-				})
 
 				$("body")
 					.attr("dir", "ltr") // Already included in index/about pages
@@ -355,22 +395,43 @@ export class CustomLiquid extends Liquid {
 			</div>`);
 		});
 
+		if (!scope.isUnderstanding || scope.guideline) {
+			// Fix inconsistent heading labels
+			// (this is also done for table of contents links below)
+			$("h2").each((_, el) => {
+				const $el = $(el);
+				$el.text(normalizeHeading($el.text()));
+			});
+		}
+
 		// Generate table of contents after parsing and rendering,
 		// when we have sections already reordered and sidebar skeleton rendered
 		const $tocList = $(".sidebar nav ul");
 		// Allow autogenerating missing top-level section IDs in understanding docs,
 		// but don't pick up incorrectly-nested sections in some techniques pages (e.g. H91)
 		const sectionSelector = scope.isUnderstanding ? "section" : "section[id]";
-		const childSelector = "h2:first-child";
-		$(`${sectionSelector}:has(${childSelector})`).each((_, el) => {
-			if (!el.attribs.id) el.attribs.id = generateId($(el).find(childSelector).text());
+		const sectionH2Selector = "h2:first-child";
+		$(`${sectionSelector}:has(${sectionH2Selector})`).each((_, el) => {
+			if (!el.attribs.id) el.attribs.id = generateId($(el).find(sectionH2Selector).text());
 			$("<a></a>")
 				.attr("href", `#${el.attribs.id}`)
-				.text(normalizeTocLabel($(el).find(childSelector).text(), false))
+				.text(normalizeTocLabel($(el).find(sectionH2Selector).text()))
 				.appendTo($tocList)
 				.wrap("<li></li>");
 			$tocList.append("\n");
 		});
+
+		// Autogenerate remaining IDs after constructing table of contents.
+		// NOTE: This may overwrite some IDs set in HTML (for techniques examples),
+		// and may result in duplicates; this is consistent with the XSLT process.
+		const sectionHeadingSelector =
+			["h3", "h4", "h5"].map((tag) => `> ${tag}:first-child`).join(", ");
+		const autoIdSectionSelectors = ["section:not([id])"];
+		if (scope.isTechniques) autoIdSectionSelectors.push("section.example");
+		$(autoIdSectionSelectors.join(", "))
+			.filter(`:has(${sectionHeadingSelector})`).each((_, el) => {
+				el.attribs.id = generateId($(el).find(sectionHeadingSelector).text());
+			});
 
 		return stripHtmlComments($.html());
 	}
