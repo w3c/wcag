@@ -35,9 +35,13 @@ const isHtmlFileContent = (html: string) =>
  * for final output.
  */
 const normalizeHeading = (label: string) =>
-	label.replace(/In brief/, "In Brief")
+	label.trim()
+		.replace(/In brief/, "In Brief")
 		.replace(/^(\S+) (of|for) .*$/, "$1")
-		.replace(/^Resources$/, "Related Resources");
+		.replace(/^Techniques and Failures .*$/, "Techniques")
+		.replace(/^Specific Benefits .*$/, "Benefits")
+		.replace(/^.* Examples$/, "Examples")
+		.replace(/^(Related )?Resources$/i, "Related Resources");
 
 /**
  * Performs additional common cleanup for table of contents links for final output.
