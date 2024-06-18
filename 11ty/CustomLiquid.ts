@@ -181,6 +181,16 @@ export class CustomLiquid extends Liquid {
 						}
 					});
 				} else if (isUnderstanding) {
+					// Remove spurious copy-pasted content in 2.5.3 that doesn't belong there
+					if ($("section#benefits").length > 1) $("section#benefits").first().remove();
+					// Some pages nest Benefits inside Intent; XSLT always pulls it back out
+					$("section#intent section#benefits")
+						.insertAfter("section#intent")
+						.find("h3:first-child")
+						.each((_, el) => {
+							el.tagName = "h2";
+						});
+
 					// XSLT orders resources then techniques last, opposite of source files
 					$("body")
 						.append("\n", $(`body > section#resources`))
@@ -211,13 +221,13 @@ export class CustomLiquid extends Liquid {
 					if ($resourcesOnlyItem.length && $resourcesOnlyItem.text() === "Resource")
 						$("section#resources").remove();
 
-					// Normalize subsection names
+					// Normalize subsection names for Guidelines (h2) and/or SC (h3)
 					$("section#sufficient h3").text("Sufficient Techniques");
-					$("section#advisory h3").text("Advisory Techniques");
+					$("section#advisory").find("h2, h3").text("Advisory Techniques");
 					$("section#failure h3").text("Failures");
 
 					// Add intro prose to populated sections
-					$("section#advisory h3")
+					$("section#advisory").find("h2, h3")
 						.after(generateIncludes("understanding/intro/advisory"));
 					$("section#failure h3")
 						.after(generateIncludes("understanding/intro/failure"));
