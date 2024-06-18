@@ -225,7 +225,7 @@ export class CustomLiquid extends Liquid {
 						.after(generateIncludes("understanding/intro/resources"));
 
 					// Expand techniques links to always include title
-					$(`section#techniques li ${understandingTechniqueLinkSelector}`)
+					$(`section[id$=techniques] li ${understandingTechniqueLinkSelector}`)
 						.each((_, el) => expandTechniqueLink($(el)));
 
 					// Add key terms by default, to be removed in #parse if there are no terms
