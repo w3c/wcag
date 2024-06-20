@@ -4,6 +4,8 @@ import type { RenderOptions } from "liquidjs/dist/liquid-options";
 import compact from "lodash-es/compact";
 import uniq from "lodash-es/uniq";
 
+import { basename } from "path";
+
 import { flattenDom, load } from "./cheerio";
 import { generateId } from "./common";
 import { getTermsMap } from "./guidelines";
@@ -108,6 +110,14 @@ export class CustomLiquid extends Liquid {
 				$("head").append(generateIncludes("head"));
 				appendedIncludes.push("waiscript");
 
+				// Remove resources section if it only has a placeholder item
+				const $resourcesOnlyItem = $("section#resources li:only-child");
+				if (
+					$resourcesOnlyItem.length &&
+					($resourcesOnlyItem.text() === "Resource" || $resourcesOnlyItem.text() === "Link")
+				)
+					$("section#resources").remove();
+
 				// Fix incorrect level-2 headings and first-child level 3 headings
 				$("body > section section h2").each((_, el) => {
 					el.tagName = "h3";
@@ -122,7 +132,8 @@ export class CustomLiquid extends Liquid {
 					$("section#resources:not(:has(a, li))").remove();
 					// Expand related technique links to include full title
 					// (the XSLT process didn't handle this in this particular context)
-					$("section#related li a[href^='../']")
+					const siblingCode = basename(filepath).replace(/^([A-Z]+).*$/, "$1");
+					$("section#related li").find(`a[href^='../'], a[href^=${siblingCode}]`)
 						.each((_, el) => expandTechniqueLink($(el)));
 					
 					// XSLT orders related and tests last, but they are not last in source files
@@ -175,10 +186,11 @@ export class CustomLiquid extends Liquid {
 
 						const $h3 = $el.find("h3");
 						if ($h3.length) {
+							const h3Text = $h3.text(); // Used for comparisons below
 							// Some examples really have an empty h3...
-							if (!$h3.text()) $h3.text(exampleText);
-							// Only prepend "Example N: " if it won't be redundant (e.g. F83)
-							else if (!$h3.text().toLowerCase().endsWith(exampleText.toLowerCase()))
+							if (!h3Text) $h3.text(exampleText);
+							// Only prepend "Example N: " if it won't be redundant (e.g. C31, F83)
+							else if (!/example \d+$/i.test(h3Text) && !/^example \d+/i.test(h3Text))
 								$h3.prepend(`${exampleText}: `);
 						} else {
 							$el.prepend(`<h3>${exampleText}</h3>`);
@@ -220,10 +232,6 @@ export class CustomLiquid extends Liquid {
 					for (const id of ["sufficient", "advisory", "failure"]) {
 						$(`section#${id}:not(:has(:not(h3)))`).remove();
 					}
-					// Remove resources subsection if it only has a placeholder item
-					const $resourcesOnlyItem = $("section#resources li:only-child");
-					if ($resourcesOnlyItem.length && $resourcesOnlyItem.text() === "Resource")
-						$("section#resources").remove();
 
 					// Normalize subsection names for Guidelines (h2) and/or SC (h3)
 					$("section#sufficient h3").text("Sufficient Techniques");
@@ -273,126 +281,127 @@ export class CustomLiquid extends Liquid {
 		// html contains markup after Liquid tags/includes have been processed
 		const html = (await super.render(templates, scope, options)).toString();
 		if (!isHtmlFileContent(html) || !scope) return html;
-		// We don't need to do any processing for index/about pages other than stripping comments
-		if (indexPattern.test(scope.page.inputPath)) return stripHtmlComments(html);
 
 		const $ = load(html);
 
-		if (scope.isTechniques) {
-			$("title").text(`${scope.technique.id}: ${scope.technique.title}${titleSuffix}`);
-			// Strip applicability paragraphs with metadata IDs (e.g. H99)
-			$("section#applicability").find("p#id, p#technology, p#type").remove();
-			// Check for custom applicability paragraph before removing the section
-			const customApplicability = $("section#applicability p").html()?.trim();
-			if (customApplicability) {
-				// Failure pages have no default applicability paragraph, so append one first
-				if (scope.technique.technology === "failures")
-					$("section#technique .box-i").append("<p></p>");
+		if (!indexPattern.test(scope.page.inputPath)) {
+			if (scope.isTechniques) {
+				$("title").text(`${scope.technique.id}: ${scope.technique.title}${titleSuffix}`);
+				// Strip applicability paragraphs with metadata IDs (e.g. H99)
+				$("section#applicability").find("p#id, p#technology, p#type").remove();
+				// Check for custom applicability paragraph before removing the section
+				const customApplicability = $("section#applicability p").html()?.trim();
+				if (customApplicability) {
+					// Failure pages have no default applicability paragraph, so append one first
+					if (scope.technique.technology === "failures")
+						$("section#technique .box-i").append("<p></p>");
 
-				$("section#technique .box-i p:last-child").html(
-					`This technique ${/^applies to/i.test(customApplicability) ? "" : "applies to "}` +
-					// Uncapitalize original sentence, except for all-caps abbreviations
-					(/^[A-Z]{2,}/.test(customApplicability)
-						? customApplicability
-						: customApplicability[0].toLowerCase() + customApplicability.slice(1)) +
-					(customApplicability.endsWith(".") ? "" : "."));
-			}
-			$("section#applicability").remove();
-		} else if (scope.isUnderstanding) {
-			const $title = $("title");
-			if (scope.guideline) {
-				const type = scope.guideline.type === "SC" ? "Success Criterion" : scope.guideline.type;
-				$title.text(
-					`Understanding ${type} ${scope.guideline.num}: ${scope.guideline.name}${titleSuffix}`
-				);
-			}
-			else $title.text(
-				$title.text().replace(/WCAG 2\b/, `WCAG ${scope.versionDecimal}`) + titleSuffix
-			);
-		}
-
-		// Process defined terms within #render,
-		// where we have access to global data and the about box's HTML
-		const $termLinks = $(termLinkSelector);
-		const extractTermName = ($el: Cheerio<Element>) => {
-			const name = $el.text().trim().toLowerCase();
-			const term = termsMap[name];
-			if (!term) {
-				console.warn(`${scope.page.inputPath}: Term not found: ${name}`);
-				return;
-			}
-			// Return standardized name for Key Terms definition lists
-			return term.name;
-		}
-
-		if (scope.isTechniques) {
-			$termLinks.each((_, el) => {
-				const $el = $(el);
-				const termName = extractTermName($el);
-				$el.attr("href", `${scope.guidelinesUrl}#${termName ? termsMap[termName].id : ""}`)
-					.attr("target", "terms");
-			});
-		} else if (scope.isUnderstanding) {
-			const $termsList = $("section#key-terms dl");
-			const extractTermNames = ($links: Cheerio<Element>) =>
-				compact(uniq($links.toArray().map((el) => extractTermName($(el)))));
-
-			if ($termLinks.length) {
-				let termNames = extractTermNames($termLinks);
-				// This is one loop but effectively multiple passes,
-				// since terms may reference other terms in their own definitions.
-				// Each iteration may append to termNames.
-				for (let i = 0; i < termNames.length; i++) {
-					const term = termsMap[termNames[i]];
-					if (!term) continue; // This will already warn via extractTermNames
-
-					const $definition = load(term.definition);
-					const $definitionTermLinks = $definition(termLinkSelector);
-					if ($definitionTermLinks.length) {
-						termNames = uniq(termNames.concat(extractTermNames($definitionTermLinks)));
-					}
+					$("section#technique .box-i p:last-child").html(
+						`This technique ${/^applies to/i.test(customApplicability) ? "" : "applies to "}` +
+						// Uncapitalize original sentence, except for all-caps abbreviations
+						(/^[A-Z]{2,}/.test(customApplicability)
+							? customApplicability
+							: customApplicability[0].toLowerCase() + customApplicability.slice(1)) +
+						(customApplicability.endsWith(".") ? "" : "."));
 				}
-
-				// Iterate over sorted names to populate alphabetized Key Terms definition list
-				termNames.sort();
-				for (const name of termNames) {
-					const term = termsMap[name]; // Already verified existence in the earlier loop
-					$termsList.append(
-						`<dt id="${term.id}">${term.name}</dt>` +
-						`<dd><definition>${term.definition}</definition></dd>`
+				$("section#applicability").remove();
+			} else if (scope.isUnderstanding) {
+				const $title = $("title");
+				if (scope.guideline) {
+					const type = scope.guideline.type === "SC" ? "Success Criterion" : scope.guideline.type;
+					$title.text(
+						`Understanding ${type} ${scope.guideline.num}: ${scope.guideline.name}${titleSuffix}`
 					);
 				}
-
-				// Iterate over non-href links once more in now-expanded document to add hrefs
-				$(termLinkSelector).each((_, el) => {
-					const name = extractTermName($(el));
-					el.attribs.href = `#${name ? termsMap[name].id : ""}`;
-				});
-			} else {
-				// No terms: remove skeleton that was placed in #parse
-				$("section#key-terms").remove();
+				else $title.text(
+					$title.text().replace(/WCAG 2\b/, `WCAG ${scope.versionDecimal}`) + titleSuffix
+				);
 			}
-		}
 
-		// Remove items that end up empty due to invalid technique IDs during #parse
-		// (e.g. removed/deprecated)
-		if (scope.isTechniques) {
-			$("section#related li:empty").remove();
-		} else if (scope.isUnderstanding) {
-			// :empty doesn't work here since there may be whitespace
-			// (can't trim whitespace in the liquid tag since some links have more text after)
-			$(`section#techniques li`).filter((_, el) => !$(el).text().trim()).remove();
+			// Process defined terms within #render,
+			// where we have access to global data and the about box's HTML
+			const $termLinks = $(termLinkSelector);
+			const extractTermName = ($el: Cheerio<Element>) => {
+				const name = $el.text().trim().toLowerCase();
+				const term = termsMap[name];
+				if (!term) {
+					console.warn(`${scope.page.inputPath}: Term not found: ${name}`);
+					return;
+				}
+				// Return standardized name for Key Terms definition lists
+				return term.name;
+			}
 
-			// Prepend guidelines base URL to non-dfn anchor links in guidelines-derived content
-			// (including both the guideline/SC box at the top and Key Terms at the bottom)
-			$("#guideline, #success-criterion, #key-terms")
-				.find("a[href^='#']:not([href^='#dfn-'])").each((_, el) => {
-					el.attribs.href = scope.guidelinesUrl + el.attribs.href;
+			if (scope.isTechniques) {
+				$termLinks.each((_, el) => {
+					const $el = $(el);
+					const termName = extractTermName($el);
+					$el.attr("href", `${scope.guidelinesUrl}#${termName ? termsMap[termName].id : ""}`)
+						.attr("target", "terms");
 				});
+			} else if (scope.isUnderstanding) {
+				const $termsList = $("section#key-terms dl");
+				const extractTermNames = ($links: Cheerio<Element>) =>
+					compact(uniq($links.toArray().map((el) => extractTermName($(el)))));
+
+				if ($termLinks.length) {
+					let termNames = extractTermNames($termLinks);
+					// This is one loop but effectively multiple passes,
+					// since terms may reference other terms in their own definitions.
+					// Each iteration may append to termNames.
+					for (let i = 0; i < termNames.length; i++) {
+						const term = termsMap[termNames[i]];
+						if (!term) continue; // This will already warn via extractTermNames
+
+						const $definition = load(term.definition);
+						const $definitionTermLinks = $definition(termLinkSelector);
+						if ($definitionTermLinks.length) {
+							termNames = uniq(termNames.concat(extractTermNames($definitionTermLinks)));
+						}
+					}
+
+					// Iterate over sorted names to populate alphabetized Key Terms definition list
+					termNames.sort();
+					for (const name of termNames) {
+						const term = termsMap[name]; // Already verified existence in the earlier loop
+						$termsList.append(
+							`<dt id="${term.id}">${term.name}</dt>` +
+							`<dd><definition>${term.definition}</definition></dd>`
+						);
+					}
+
+					// Iterate over non-href links once more in now-expanded document to add hrefs
+					$(termLinkSelector).each((_, el) => {
+						const name = extractTermName($(el));
+						el.attribs.href = `#${name ? termsMap[name].id : ""}`;
+					});
+				} else {
+					// No terms: remove skeleton that was placed in #parse
+					$("section#key-terms").remove();
+				}
+			}
+
+			// Remove items that end up empty due to invalid technique IDs during #parse
+			// (e.g. removed/deprecated)
+			if (scope.isTechniques) {
+				$("section#related li:empty").remove();
+			} else if (scope.isUnderstanding) {
+				// :empty doesn't work here since there may be whitespace
+				// (can't trim whitespace in the liquid tag since some links have more text after)
+				$(`section#techniques li`).filter((_, el) => !$(el).text().trim()).remove();
+
+				// Prepend guidelines base URL to non-dfn anchor links in guidelines-derived content
+				// (including both the guideline/SC box at the top and Key Terms at the bottom)
+				$("#guideline, #success-criterion, #key-terms")
+					.find("a[href^='#']:not([href^='#dfn-'])").each((_, el) => {
+						el.attribs.href = scope.guidelinesUrl + el.attribs.href;
+					});
+			}
 		}
 
 		// Expand note paragraphs after parsing and rendering,
-		// after Guideline/SC content for Understanding pages is rendered
+		// after Guideline/SC content for Understanding pages is rendered.
+		// (This is also needed for techniques/about)
 		$("div.note").each((_, el) => {
 			const $el = $(el);
 			$el.replaceWith(`<div class="note">
@@ -408,6 +417,9 @@ export class CustomLiquid extends Liquid {
 				<p>${$el.html()}</p>
 			</div>`);
 		});
+
+		// We don't need to do any more processing for index/about pages other than stripping comments
+		if (indexPattern.test(scope.page.inputPath)) return stripHtmlComments($.html());
 
 		if (!scope.isUnderstanding || scope.guideline) {
 			// Fix inconsistent heading labels
