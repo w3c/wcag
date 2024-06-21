@@ -11,7 +11,7 @@ var respecConfig = {
 	specStatus:           "ED",
 	//crEnd:                "2012-04-30",
 	//perEnd:               "2013-07-23",
-	//publishDate:          "2013-08-22",
+	publishDate:          "2023-10-05",
 	diffTool:             "http://www.aptest.com/standards/htmldiff/htmldiff.pl",
 	
 	// the specifications short name, as in https://www.w3.org/TR/short-name/
@@ -27,7 +27,7 @@ var respecConfig = {
 	// and its maturity status
 	//previousPublishDate:  "2014-06-12",
 	//previousMaturity:  "WD",
-	prevRecURI: "https://www.w3.org/TR/WCAG/",
+	prevRecURI: "https://www.w3.org/TR/WCAG21/",
 	//previousDiffURI: "https://www.w3.org/TR/2014/REC-wai-aria-20140320/",
 	
 	// if there a publicly available Editors Draft, this is the link
@@ -40,14 +40,6 @@ var respecConfig = {
 	// only "name" is required
 	editors: [
 		{
-			name: "Chuck Adams",
-			//url: "https://www.oracle.com/",
-			mailto: "charles.adams@oracle.com",
-			company: "Oracle",
-			companyURI: "https://www.oracle.com/",
-			w3cid: 104852
-		},
-		{
 			name: "Alastair Campbell",
 			//url: "https://www.nomensa.com/",
 			mailto: "acampbell@nomensa.com",
@@ -56,9 +48,18 @@ var respecConfig = {
 			w3cid: 44689
 		},
 		{
-			name: "Rachael Montgomery",
+			name: "Chuck Adams",
+			//url: "https://www.oracle.com/",
+			mailto: "charles.adams@oracle.com",
+			company: "Oracle",
+			companyURI: "https://www.oracle.com/",
+			w3cid: 104852
+		},
+		{
+			name: "Rachael Bradley Montgomery",
 			mailto: "rachael@accessiblecommunity.org",
-			company: "Invited Expert",
+			company: "Library of Congress",
+			companyURI: "https://loc.gov/",
 			w3cid: 90310
 		},
 		{
@@ -135,14 +136,15 @@ var respecConfig = {
 	],
 	*/
 	
-	// errata: 'https://www.w3.org/2010/02/rdfa/errata.html',
+	errata: 'https://www.w3.org/WAI/WCAG22/errata/',
+  implementationReportURI: 'https://www.w3.org/WAI/WCAG22/implementation-report/',
 	
 	// name of the WG
-	group:           "ag",
+	group:  "ag",
 	github: "w3c/wcag",
 
 	maxTocLevel: 4,
 	
-	postProcess: [addTextSemantics, swapInDefinitions, linkUnderstanding]
+	postProcess: [postRespec]
 	
 };

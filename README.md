@@ -1,7 +1,7 @@
-WCAG (Web Content Accessibility Guidelines)
+WCAG (Web Content Accessibility Guidelines) - Branch for production of August 2016 review versions
 ===
 
-Please do not submit any new pull requests against this branch - please look in the list of branches for the most current Working Branch and use that one.
+Please use this branch as the target for pull requests until July 10, 2016.
 
 This repository is used to develop content for WCAG 2, as well as associated understanding documents and techniques.
 
@@ -179,10 +179,10 @@ To create a working example:
 
 ## Translations
 
-WCAG 2.1 is ready for translation. WCAG 2.2 is still under development so should not be translated yet. To translate WCAG 2.1, ensure you are set up to use [GitHub](https://github.com/), then:
+WCAG 2.2 is ready for translation. To translate WCAG 2.2, ensure you are set up to use [GitHub](https://github.com/), then:
 
 * [Fork](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo) the w3c/wcag repository.
-* Change to the [branch](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/about-branches) "WCAG-2.1".
+* Change to the [branch](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/about-branches) "WCAG-2.2".
 * Create a new branch from this branch.
 * Translate all user-oriented content in the "guidelines" folder, including the sub-folders. User-oriented content includes text in elements, and attributes such as "title" and "alt" that provide content to users. **Leave other markup as is.**
 * Load the index.html document in a modern browser and allow the script to compile the content and format it.
