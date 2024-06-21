@@ -32,8 +32,7 @@ const globalData = {
 	principles, // Used for understanding/index.html
 	understandingDocs, // Used for understanding/index.html
 };
-type GlobalData = EleventyData & typeof globalData;
-
+export type GlobalData = EleventyData & typeof globalData;
 
 export default function (eleventyConfig: any) {
 	for (const [name, value] of Object.entries(globalData)) {

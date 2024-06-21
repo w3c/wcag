@@ -6,11 +6,12 @@ import uniq from "lodash-es/uniq";
 
 import { basename } from "path";
 
+import type { GlobalData } from "eleventy.config";
+
 import { flattenDom, load } from "./cheerio";
 import { generateId } from "./common";
 import { getTermsMap } from "./guidelines";
 import { techniqueLinkHrefToId, understandingTechniqueLinkSelector } from "./techniques";
-import type { EleventyData } from "./types";
 
 const titleSuffix = " | WAI | W3C";
 
@@ -62,8 +63,8 @@ const expandTechniqueLink = ($el: Cheerio<Element>) => {
 	const href = $el.attr("href");
 	if (!href) throw new Error("expandTechniqueLink: non-link element encountered");
 	const id = techniqueLinkHrefToId(href);
-	if (!id) throw new Error(`expandTechniqueLink: Couldn't resolve id from ${href}`);
-	$el.replaceWith(`{{ "${id}" | linkTechniques }}`);
+	// id will be empty string for links to index, which we don't need to modify
+	if (id) $el.replaceWith(`{{ "${id}" | linkTechniques }}`);
 }
 
 const stripHtmlComments = (html: string) => html.replace(/<!--[\s\S]*?-->/g, "");
@@ -118,7 +119,8 @@ export class CustomLiquid extends Liquid {
 				)
 					$("section#resources").remove();
 
-				// Fix incorrect level-2 headings and first-child level 3 headings
+				// Fix incorrect level-2 and first-child level 3 headings
+				// (avoid changing h3s that are appropriate but aren't nested within a subsection)
 				$("body > section section h2").each((_, el) => {
 					el.tagName = "h3";
 				});
@@ -161,7 +163,7 @@ export class CustomLiquid extends Liquid {
 					if (hasDuplicates) { // Avoid loop altogether in majority of (correct) cases
 						for (const [id, count] of Object.entries(sectionCounts)) {
 							if (count === 1) continue;
-							console.log(`${filepath}: Merging duplicate ${id} sections; please fix this in the source file.`)
+							console.warn(`${filepath}: Merging duplicate ${id} sections; please fix this in the source file.`)
 							const $sections = $(`section[id='${id}']`);
 							const $first = $sections.first();
 							$sections.each((i, el) => {
@@ -197,6 +199,13 @@ export class CustomLiquid extends Liquid {
 						}
 					});
 				} else if (isUnderstanding) {
+					// Add numbers to figcaptions
+					$("figcaption").each((i, el) => {
+						const $el = $(el);
+						if (!$el.find("p").length) $el.wrapInner("<p></p>");
+						$el.prepend(`Figure ${i + 1}`);
+					});
+
 					// Remove spurious copy-pasted content in 2.5.3 that doesn't belong there
 					if ($("section#benefits").length > 1) $("section#benefits").first().remove();
 					// Some pages nest Benefits inside Intent; XSLT always pulls it back out
@@ -224,7 +233,12 @@ export class CustomLiquid extends Liquid {
 					}
 					// success-criteria section should be auto-generated;
 					// remove any handwritten ones (e.g. Input Modalities)
-					$("section#success-criteria").remove();
+					const $successCriteria = $("section#success-criteria");
+					if ($successCriteria.length) {
+						console.warn(`${filepath}: success-criteria section will be replaced with ` +
+							"generated version; please remove this from the source file.");
+						$successCriteria.remove();
+					}
 					// success-criteria template only renders content for guideline (not SC) pages
 					$("body").append(generateIncludes("understanding/success-criteria"));
 
@@ -247,7 +261,7 @@ export class CustomLiquid extends Liquid {
 						.after(generateIncludes("understanding/intro/resources"));
 
 					// Expand techniques links to always include title
-					$(`section[id$=techniques] li ${understandingTechniqueLinkSelector}`)
+					$(understandingTechniqueLinkSelector)
 						.each((_, el) => expandTechniqueLink($(el)));
 
 					// Add key terms by default, to be removed in #parse if there are no terms
@@ -277,7 +291,7 @@ export class CustomLiquid extends Liquid {
 		return super.parse(html);
 	}
 
-	public async render(templates: Template[], scope: EleventyData, options?: RenderOptions) {
+	public async render(templates: Template[], scope: GlobalData, options?: RenderOptions) {
 		// html contains markup after Liquid tags/includes have been processed
 		const html = (await super.render(templates, scope, options)).toString();
 		if (!isHtmlFileContent(html) || !scope) return html;
@@ -420,6 +434,21 @@ export class CustomLiquid extends Liquid {
 
 		// We don't need to do any more processing for index/about pages other than stripping comments
 		if (indexPattern.test(scope.page.inputPath)) return stripHtmlComments($.html());
+
+		// Handle new-in-version content
+		$("[class^='wcag']").each((_, el) => {
+			// Just like the XSLT process, this naively assumes that version numbers are the same length
+			const classVersion = +el.attribs.class.replace(/^wcag/, "");
+			const buildVersion = +scope.version;
+			if (isNaN(classVersion))
+				throw new Error(`Invalid wcagXY class found: ${el.attribs.class}`);
+			if (classVersion > buildVersion) {
+				$(el).remove();
+			} else if (classVersion === buildVersion) {
+				$(el).prepend(`<span class="new-version">New in WCAG ${scope.versionDecimal}: </span>`);
+			}
+			// Output as-is if content pertains to a version older than what's being built
+		});
 
 		if (!scope.isUnderstanding || scope.guideline) {
 			// Fix inconsistent heading labels

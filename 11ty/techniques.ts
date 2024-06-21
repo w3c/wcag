@@ -57,13 +57,18 @@ function assertIsAssociationType(type?: string): asserts type is AssociationType
 		throw new Error(`Association processed for unexpected section ${type}`);
 }
 
-export const techniqueLinkHrefToId = (href: string) => basename(href, ".html");
+export const techniqueLinkHrefToId = (href: string) =>
+	href.replace(/^.*\//, "").replace(/\.html$/, "");
 
 /**
  * Selector that can detect relative technique links from understanding docs;
  * these vary between ../Techniques/... and ../../techniques/...
  */
-export const understandingTechniqueLinkSelector = "a[href*='/Techniques/' i]";
+export const understandingTechniqueLinkSelector = [
+	"[href^='../Techniques/' i]",
+	"[href^='../../techniques/' i]",
+	"[href^='https://www.w3.org/WAI/WCAG' i][href*='/Techniques/' i]",
+].map((value) => `a${value}`).join(", ") as "a";
 
 /**
  * Returns object mapping technique IDs to SCs that reference it;

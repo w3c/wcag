@@ -188,7 +188,7 @@ export async function getTermsMap() {
 			// Note: All applicable <dfn>s seem to have explicit id attributes,
 			// but the XSLT process generates id from the element's text which is not always the same
 			id: `dfn-${generateId($el.text())}`,
-			definition: $el.parent().next().html()!,
+			definition: getContentHtml($el.parent().next()),
 			name: $el.text().toLowerCase(),
 		}
 
