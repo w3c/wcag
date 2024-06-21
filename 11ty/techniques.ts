@@ -61,8 +61,7 @@ export const techniqueLinkHrefToId = (href: string) =>
 	href.replace(/^.*\//, "").replace(/\.html$/, "");
 
 /**
- * Selector that can detect relative technique links from understanding docs;
- * these vary between ../Techniques/... and ../../techniques/...
+ * Selector that can detect relative and absolute technique links from understanding docs
  */
 export const understandingTechniqueLinkSelector = [
 	"[href^='../Techniques/' i]",
@@ -82,7 +81,7 @@ export async function getTechniqueAssociations(guidelines: FlatGuidelinesMap) {
 	for (const path of paths) {
 		const criterion = guidelines[basename(path, ".html")];
 		if (!isSuccessCriterion(criterion)) continue;
-		
+
 		const $ = await loadFromFile(path);
 		$(itemSelector).each((_, liEl) => {
 			const $liEl = $(liEl);
@@ -98,21 +97,33 @@ export async function getTechniqueAssociations(guidelines: FlatGuidelinesMap) {
 
 			const $techniqueLinks = queryNonNestedChildren($liEl, understandingTechniqueLinkSelector);
 			$techniqueLinks.each((_, aEl) => {
-				const parentIds = queryNonNestedChildren($parentListItem, understandingTechniqueLinkSelector)
+				const usageParentIds = queryNonNestedChildren($parentListItem, understandingTechniqueLinkSelector)
 					.toArray()
 					.map((el) => techniqueLinkHrefToId(el.attribs.href));
-				const parentDescription = parentIds.length ? "" :
-					queryNonNestedChildren($parentListItem, "p").html()
-						?.replace(/,? (by )?using\s+(one (or more )?of )?the\s+following techniques:\s*$/, "");
-				
+
+				// Capture the "X" in "X or more" phrasing, to include a phrase about
+				// combining with other techniques if more than one is required.
+				const descriptionDependencyPattern =
+					/(?:^|,?\s+)(?:by )?using\s+(?:(\w+) (?:or more )?of )?the\s+(?:following )?techniques(?: below)?(?::|\.)?\s*$/i;
+				const parentHtml = usageParentIds.length
+					? null
+					: queryNonNestedChildren($parentListItem, "p").html();
+				const match = parentHtml && descriptionDependencyPattern.exec(parentHtml);
+				const parentDescription = parentHtml
+					? parentHtml.replace(descriptionDependencyPattern,
+						(!match?.[1] || match?.[1] === "one") ? "" : "when combined with other techniques")
+					: "";
+				const usageParentDescription = parentDescription &&
+					(parentDescription.startsWith("when")
+						? parentDescription
+						: `when used for ${parentDescription[0].toLowerCase()}${parentDescription.slice(1)}`);
+
 				const association: TechniqueAssociation = {
 					criterion,
 					type: capitalize(associationType) as Capitalize<AssociationType>,
 					hasUsageChildren: !!$liEl.find("ul, ol").length,
-					usageParentIds: parentIds,
-					usageParentDescription: parentDescription
-						? parentDescription[0].toLowerCase() + parentDescription.slice(1)
-						: "",
+					usageParentIds,
+					usageParentDescription,
 					with: $techniqueLinks.toArray().filter((el) => el !== aEl)
 						.map((el) => techniqueLinkHrefToId(el.attribs.href)),
 				};

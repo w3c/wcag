@@ -304,19 +304,46 @@ export class CustomLiquid extends Liquid {
 				// Strip applicability paragraphs with metadata IDs (e.g. H99)
 				$("section#applicability").find("p#id, p#technology, p#type").remove();
 				// Check for custom applicability paragraph before removing the section
-				const customApplicability = $("section#applicability p").html()?.trim();
+				const customApplicability =
+					$("section#applicability p").html()?.trim()
+						.replace(/^th(e|is) (technique|failure)s? (is )?/i, "")
+						.replace(/^general( technique|ly applicable)?(\.|$).*$/i, "all technologies")
+						.replace(/^appropriate to use for /i, "")
+						.replace(/^use this technique on /i, "")
+						// Work around redundant sentences (e.g. F105)
+						.replace(/\.\s+This technique relates to Success Criterion [\d\.]+\d[^\.]+\.$/, "");
 				if (customApplicability) {
+					const appliesPattern = /^(?:appli(?:es|cable)|relates) (to|when(?:ever)?)\s*/i;
+					const rephrasedApplicability = customApplicability.replace(appliesPattern, "");
+
 					// Failure pages have no default applicability paragraph, so append one first
 					if (scope.technique.technology === "failures")
 						$("section#technique .box-i").append("<p></p>");
 
+					const noun = scope.technique.technology === "failures" ? "failure" : "technique";
+					const appliesMatch = appliesPattern.exec(customApplicability);
+					const connector =
+						/^not/.test(customApplicability)
+							? "is"
+							: appliesMatch ? `applies ${appliesMatch[1]}` : "applies to";
 					$("section#technique .box-i p:last-child").html(
-						`This technique ${/^applies to/i.test(customApplicability) ? "" : "applies to "}` +
-						// Uncapitalize original sentence, except for all-caps abbreviations
-						(/^[A-Z]{2,}/.test(customApplicability)
-							? customApplicability
-							: customApplicability[0].toLowerCase() + customApplicability.slice(1)) +
-						(customApplicability.endsWith(".") ? "" : "."));
+						`This ${noun} ${connector} ` +
+						// Uncapitalize original sentence, except for all-caps abbreviations or titles
+						(/^[A-Z]{2,}/.test(rephrasedApplicability) || /^([A-Z][a-z]+(\s+|\.?$))+(\/|$)/.test(rephrasedApplicability)
+							? rephrasedApplicability
+							: rephrasedApplicability[0].toLowerCase() + rephrasedApplicability.slice(1)) +
+						(/(\.|:)$/.test(rephrasedApplicability) ? "" : "."));
+					
+					// Append any relevant subsequent paragraphs or lists from applicability section
+					const $additionalApplicability =
+						$("section#applicability").find("p:not(:first-of-type), ul, ol");
+					const additionalApplicabilityText = $additionalApplicability.text();
+					const excludes = [
+						"None listed.", // Template filler
+						"This technique relates to:", // Redundant of auto-generated content
+					];
+					if (excludes.every((exclude) => !additionalApplicabilityText.includes(exclude)))
+						$additionalApplicability.appendTo("section#technique .box-i");
 				}
 				$("section#applicability").remove();
 			} else if (scope.isUnderstanding) {
