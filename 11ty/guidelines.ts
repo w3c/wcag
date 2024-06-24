@@ -6,12 +6,27 @@ import { basename } from "path";
 
 import { flattenDomFromFile, load } from "./cheerio";
 import { generateId } from "./common";
-import type { ActMapping } from "./types";
 
 export type WcagVersion = "20" | "21" | "22";
 function assertIsWcagVersion(v: string): asserts v is WcagVersion {
 	if (!/^2[012]$/.test(v)) throw new Error(`Unexpected version found: ${v}`);
 }
+
+/**
+ * Interface describing format of entries in guidelines/act-mapping.json
+ */
+interface ActRule {
+	deprecated: boolean;
+	permalink: string;
+	proposed: boolean;
+	successCriteria: string[];
+	title: string;
+	wcagTechniques: string[];
+}
+
+type ActMapping = {
+	"act-rules": ActRule[];
+};
 
 /** Data used for test-rules sections, from act-mapping.json */
 export const actRules = (
@@ -152,7 +167,7 @@ export async function getPrinciples() {
 }
 
 /**
- * Returns an object mapping shortcodes to each principle/guideline/SC.
+ * Returns a flattened object hash, mapping shortcodes to each principle/guideline/SC.
  */
 export function getFlatGuidelines(principles: Principle[]) {
 	const map: Record<string, Principle | Guideline | SuccessCriterion> = {};

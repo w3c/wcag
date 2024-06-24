@@ -2,7 +2,7 @@
 
 import type { Guideline, Principle, SuccessCriterion } from "./guidelines";
 
-/** Generates an ID for heading permalinks. Equivalent to wcag:generate-id. */
+/** Generates an ID for heading permalinks. Equivalent to wcag:generate-id in base.xslt. */
 export function generateId(title: string) {
 	if (title === "Parsing (Obsolete and removed)") return "parsing";
 	return title

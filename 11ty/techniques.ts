@@ -10,7 +10,7 @@ import { load, loadFromFile } from "./cheerio";
 import { isSuccessCriterion, type FlatGuidelinesMap, type SuccessCriterion } from "./guidelines";
 import { wcagSort } from "./common";
 
-/** Maps each technology to its title for the table of contents */
+/** Maps each technology to its title for index.html */
 export const technologyTitles = {
 	aria: "ARIA Techniques",
 	"client-side-script": "Client-Side Script Techniques",
@@ -59,7 +59,11 @@ function assertIsAssociationType(type?: string): asserts type is AssociationType
 		throw new Error(`Association processed for unexpected section ${type}`);
 }
 
-export const techniqueLinkHrefToId = (href: string) =>
+/**
+ * Pulls the basename out of a technique link href.
+ * This intentionally returns empty string (falsy) if a directory link happens to be passed.
+ */
+export const resolveTechniqueIdFromHref = (href: string) =>
 	href.replace(/^.*\//, "").replace(/\.html$/, "");
 
 /**
@@ -107,7 +111,7 @@ export async function getTechniqueAssociations(guidelines: FlatGuidelinesMap) {
 					understandingTechniqueLinkSelector
 				)
 					.toArray()
-					.map((el) => techniqueLinkHrefToId(el.attribs.href));
+					.map((el) => resolveTechniqueIdFromHref(el.attribs.href));
 
 				// Capture the "X" in "X or more" phrasing, to include a phrase about
 				// combining with other techniques if more than one is required.
@@ -138,17 +142,17 @@ export async function getTechniqueAssociations(guidelines: FlatGuidelinesMap) {
 					with: $techniqueLinks
 						.toArray()
 						.filter((el) => el !== aEl)
-						.map((el) => techniqueLinkHrefToId(el.attribs.href)),
+						.map((el) => resolveTechniqueIdFromHref(el.attribs.href)),
 				};
 
-				const id = techniqueLinkHrefToId(aEl.attribs.href);
+				const id = resolveTechniqueIdFromHref(aEl.attribs.href);
 				if (!(id in associations)) associations[id] = [association];
 				else associations[id].push(association);
 			});
 		});
 	}
 
-	// Perform a pass over associations to remove duplicates
+	// Remove duplicates (due to similar shape across understanding docs) and sort by SC number
 	for (const [key, list] of Object.entries(associations))
 		associations[key] = uniqBy(list, (v) => JSON.stringify(v)).sort((a, b) =>
 			wcagSort(a.criterion, b.criterion)
@@ -210,8 +214,8 @@ export async function getTechniquesByTechnology() {
 
 	for (const technology of technologies) {
 		techniques[technology].sort((a, b) => {
-			const aId = +a.id.replace(/[^\d]/g, "");
-			const bId = +b.id.replace(/[^\d]/g, "");
+			const aId = +a.id.replace(/\D/g, "");
+			const bId = +b.id.replace(/\D/g, "");
 			if (aId < bId) return -1;
 			if (aId > bId) return 1;
 			return 0;
@@ -222,7 +226,7 @@ export async function getTechniquesByTechnology() {
 }
 
 /**
- * Returns an object mapping each technique ID to its data.
+ * Returns a flattened object hash, mapping each technique ID directly to its data.
  */
 export const getFlatTechniques = (
 	techniques: Awaited<ReturnType<typeof getTechniquesByTechnology>>

@@ -12,7 +12,7 @@ import {
 	technologyTitles,
 } from "11ty/techniques";
 import { generateUnderstandingNavMap, getUnderstandingDocs } from "11ty/understanding";
-import type { EleventyContext, EleventyData, EleventyEvent, TocLink } from "11ty/types";
+import type { EleventyContext, EleventyData, EleventyEvent } from "11ty/types";
 
 // Inputs to eventually expose e.g. via environment variables
 /** Takes the place of editors vs. publication distinction */
@@ -38,18 +38,27 @@ const globalData = {
 	principles, // Used for understanding/index.html
 	understandingDocs, // Used for understanding/index.html
 };
-export type GlobalData = EleventyData & typeof globalData;
+
+export type GlobalData = EleventyData &
+	typeof globalData & {
+		// Expected data cascade properties from *.11tydata.json
+		headerLabel?: string; // akin to documentset.name in build.xml
+		headerUrl?: string;
+		isTechniques?: boolean;
+		isUnderstanding?: boolean;
+	};
 
 export default function (eleventyConfig: any) {
-	for (const [name, value] of Object.entries(globalData)) {
-		eleventyConfig.addGlobalData(name, value);
-	}
+	for (const [name, value] of Object.entries(globalData)) eleventyConfig.addGlobalData(name, value);
 
 	eleventyConfig.addGlobalData(
 		"guidelinesUrl",
 		isEditors ? "https://w3c.github.io/wcag/guidelines/" : `https://www.w3.org/TR/WCAG${version}/`
 	);
-	// Note: These were ported from build.xml but it's unclear whether they'll really be needed
+
+	// Note: These were ported from build.xml but are currently unused.
+	// They _could_ be used in the linkTechniques / linkUnderstanding filters,
+	// but the XSLT process seemed to produce path-absolute URLs only.
 	eleventyConfig.addGlobalData(
 		"techniquesUrl",
 		isEditors
@@ -66,9 +75,10 @@ export default function (eleventyConfig: any) {
 	// eleventyComputed data is assigned here rather than in 11tydata files;
 	// we have access to typings here, and can keep the latter fully static.
 	eleventyConfig.addGlobalData("eleventyComputed", {
+		// permalink determines output structure; see https://www.11ty.dev/docs/permalinks/
 		permalink: ({ page, isUnderstanding }: GlobalData) => {
 			if (isUnderstanding) {
-				// understanding-metadata.html exists in 2 places; top-level wins
+				// understanding-metadata.html exists in 2 places; top-level wins in XSLT process
 				if (/\/20\/understanding-metadata/.test(page.inputPath)) return false;
 				// Flatten pages into top-level directory, out of version subdirectories
 				return page.inputPath.replace(/\/2\d\//, "/");
@@ -76,6 +86,7 @@ export default function (eleventyConfig: any) {
 			// Preserve existing structure: write to x.html instead of x/index.html
 			return page.inputPath;
 		},
+
 		nav: ({ page, isUnderstanding }: GlobalData) =>
 			isUnderstanding ? understandingNav[page.fileSlug] : null,
 		testRules: ({ page, isTechniques, isUnderstanding }: GlobalData) => {
@@ -84,17 +95,19 @@ export default function (eleventyConfig: any) {
 			if (isUnderstanding)
 				return actRules.filter(({ successCriteria }) => successCriteria.includes(page.fileSlug));
 		},
+
 		// Data for individual technique pages
 		technique: ({ page, isTechniques }: GlobalData) =>
 			isTechniques ? flatTechniques[page.fileSlug] : null,
 		techniqueAssociations: ({ page, isTechniques }: GlobalData) =>
 			isTechniques ? techniqueAssociations[page.fileSlug] : null,
+
 		// Data for individual understanding pages
 		guideline: ({ page, isUnderstanding }: GlobalData) =>
 			isUnderstanding ? flatGuidelines[page.fileSlug] : null,
 	});
 
-	// https://www.11ty.dev/docs/copy/#emulate-passthrough-copy-during-serve
+	// See https://www.11ty.dev/docs/copy/#emulate-passthrough-copy-during-serve
 	eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
 
 	eleventyConfig.addPassthroughCopy("techniques/*.css");
@@ -110,6 +123,7 @@ export default function (eleventyConfig: any) {
 		"guidelines/relative-luminance.html": "understanding/relative-luminance.html",
 		"understanding/*/img/*": "understanding/img", // Intentionally flatten
 	});
+
 	eleventyConfig.addPassthroughCopy("working-examples/**");
 
 	eleventyConfig.on("eleventy.after", async ({ dir }: EleventyEvent) => {
@@ -119,7 +133,8 @@ export default function (eleventyConfig: any) {
 	});
 
 	const dir = {
-		// output: "output", // output to the same place as build.xml
+		// TODO: uncomment when we're ready to output to the same place as build.xml
+		// output: "output",
 	};
 
 	eleventyConfig.setLibrary(
@@ -184,6 +199,7 @@ export default function (eleventyConfig: any) {
 		}
 	);
 
+	// Renders a section box (used for About this Technique and Guideline / SC)
 	eleventyConfig.addPairedShortcode(
 		"sectionbox",
 		(content: string, id: string, title: string) => `
@@ -194,6 +210,8 @@ export default function (eleventyConfig: any) {
 	`
 	);
 
+	// Suppress default build output that prints every path, to make our own output clearly visible
 	eleventyConfig.setQuietMode(true);
+
 	return { dir };
 }

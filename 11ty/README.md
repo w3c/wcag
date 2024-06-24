@@ -18,6 +18,11 @@ Common tasks:
   - http://localhost:8080/techniques
   - http://localhost:8080/understanding
 
+Maintenance tasks (for working with Eleventy config and supporting files under this subdirectory):
+
+- `npm run check` checks for TypeScript errors
+- `npm run fmt` formats all TypeScript files
+
 ## Other points of interest
 
 - The main configuration can be found in top-level `eleventy.config.ts`

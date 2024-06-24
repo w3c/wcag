@@ -1,3 +1,5 @@
+/** @fileoverview Typings for common Eleventy entities */
+
 interface EleventyPage {
 	date: Date;
 	filePathStem: string;
@@ -38,44 +40,16 @@ export interface EleventyContext {
 	page: EleventyPage;
 }
 
+/** Eleventy-supplied data available to templates. */
 export interface EleventyData extends EleventyContext {
 	content: string;
-	// Expected data cascade properties from *.11tydata.json
-	headerLabel?: string; // akin to documentset.name in build.xml
-	headerUrl?: string;
-	isTechniques?: boolean;
-	isUnderstanding?: boolean;
 	// Allow access to anything else in data cascade
 	[index: string]: any;
 }
 
+/** Properties available in Eleventy event callbacks (eleventyConfig.on(...)) */
 export interface EleventyEvent {
 	dir: EleventyDirectories;
 	outputMode: "fs" | "json" | "ndjson";
 	runMode: EleventyRunMode;
-}
-
-/**
- * Interface describing format of entries in guidelines/act-mapping.json
- */
-interface ActRule {
-	deprecated: boolean;
-	permalink: string;
-	proposed: boolean;
-	successCriteria: string[];
-	title: string;
-	wcagTechniques: string[];
-}
-
-export type ActMapping = {
-	"act-rules": ActRule[];
-};
-
-/**
- * Common interface used for table of contents data
- * under both techniques and understanding
- */
-export interface TocLink {
-	href: string;
-	label: string;
 }

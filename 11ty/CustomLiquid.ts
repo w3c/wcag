@@ -11,7 +11,7 @@ import type { GlobalData } from "eleventy.config";
 import { flattenDom, load } from "./cheerio";
 import { generateId } from "./common";
 import { getTermsMap } from "./guidelines";
-import { techniqueLinkHrefToId, understandingTechniqueLinkSelector } from "./techniques";
+import { resolveTechniqueIdFromHref, understandingTechniqueLinkSelector } from "./techniques";
 
 const titleSuffix = " | WAI | W3C";
 
@@ -62,7 +62,7 @@ const normalizeTocLabel = (label: string) =>
 function expandTechniqueLink($el: Cheerio<Element>) {
 	const href = $el.attr("href");
 	if (!href) throw new Error("expandTechniqueLink: non-link element encountered");
-	const id = techniqueLinkHrefToId(href);
+	const id = resolveTechniqueIdFromHref(href);
 	// id will be empty string for links to index, which we don't need to modify
 	if (id) $el.replaceWith(`{{ "${id}" | linkTechniques }}`);
 }
@@ -115,11 +115,11 @@ export class CustomLiquid extends Liquid {
 				const $resourcesOnlyItem = $("section#resources li:only-child");
 				if (
 					$resourcesOnlyItem.length &&
-					($resourcesOnlyItem.text() === "Resource" || $resourcesOnlyItem.text() === "Link")
+					($resourcesOnlyItem.html() === "Resource" || $resourcesOnlyItem.html() === "Link")
 				)
 					$("section#resources").remove();
 
-				// Fix incorrect level-2 and first-child level 3 headings
+				// Fix incorrect level-2 and first-child level-3 headings
 				// (avoid changing h3s that are appropriate but aren't nested within a subsection)
 				$("body > section section h2").each((_, el) => {
 					el.tagName = "h3";
@@ -143,6 +143,7 @@ export class CustomLiquid extends Liquid {
 					$("body")
 						.append("\n", $(`body > section#related`))
 						.append("\n", $(`body > section#tests`));
+
 					$("h1")
 						.after(generateIncludes("techniques/about"))
 						.replaceWith(generateIncludes("techniques/h1"));
@@ -225,9 +226,10 @@ export class CustomLiquid extends Liquid {
 						.append("\n", $(`body > section#resources`))
 						.append("\n", $(`body > section#techniques`));
 
-					// Expand top-level heading for guideline/SC pages
+					// Expand top-level heading and add box for guideline/SC pages
 					if ($("section#intent").length) $("h1").replaceWith(generateIncludes("understanding/h1"));
 					$("section#intent").before(generateIncludes("understanding/about"));
+
 					$("section#techniques h2").after(generateIncludes("understanding/intro/techniques"));
 					if ($("section#sufficient .situation").length) {
 						$("section#sufficient h3").after(
@@ -489,7 +491,7 @@ export class CustomLiquid extends Liquid {
 
 		if (!scope.isUnderstanding || scope.guideline) {
 			// Fix inconsistent heading labels
-			// (this is also done for table of contents links below)
+			// (another pass is done on top of this for table of contents links below)
 			$("h2").each((_, el) => {
 				const $el = $(el);
 				$el.text(normalizeHeading($el.text()));
@@ -497,7 +499,7 @@ export class CustomLiquid extends Liquid {
 		}
 
 		// Generate table of contents after parsing and rendering,
-		// when we have sections already reordered and sidebar skeleton rendered
+		// when we have sections and sidebar skeleton already reordered
 		const $tocList = $(".sidebar nav ul");
 		// Allow autogenerating missing top-level section IDs in understanding docs,
 		// but don't pick up incorrectly-nested sections in some techniques pages (e.g. H91)
