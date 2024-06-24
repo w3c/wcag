@@ -12,26 +12,28 @@ import { wcagSort } from "./common";
 
 /** Maps each technology to its title for the table of contents */
 export const technologyTitles = {
-	"aria": "ARIA Techniques",
+	aria: "ARIA Techniques",
 	"client-side-script": "Client-Side Script Techniques",
-	"css": "CSS Techniques",
-	"failures": "Common Failures",
-	"general": "General Techniques",
-	"html": "HTML Techniques",
-	"pdf": "PDF Techniques",
+	css: "CSS Techniques",
+	failures: "Common Failures",
+	general: "General Techniques",
+	html: "HTML Techniques",
+	pdf: "PDF Techniques",
 	"server-side-script": "Server-Side Script Techniques",
-	"smil": "SMIL Techniques",
-	"text": "Plain-Text Techniques",
+	smil: "SMIL Techniques",
+	text: "Plain-Text Techniques",
 };
 type Technology = keyof typeof technologyTitles;
 export const technologies = Object.keys(technologyTitles) as Technology[];
 
-function assertIsTechnology(technology: string): asserts technology is keyof typeof technologyTitles {
-	if (!(technology in technologyTitles)) throw new Error(`Invalid technology name: ${technology}`)
+function assertIsTechnology(
+	technology: string
+): asserts technology is keyof typeof technologyTitles {
+	if (!(technology in technologyTitles)) throw new Error(`Invalid technology name: ${technology}`);
 }
 
 const associationTypes = ["sufficient", "advisory", "failure"] as const;
-type AssociationType = typeof associationTypes[number];
+type AssociationType = (typeof associationTypes)[number];
 
 interface TechniqueAssociation {
 	criterion: SuccessCriterion;
@@ -67,7 +69,9 @@ export const understandingTechniqueLinkSelector = [
 	"[href^='../Techniques/' i]",
 	"[href^='../../techniques/' i]",
 	"[href^='https://www.w3.org/WAI/WCAG' i][href*='/Techniques/' i]",
-].map((value) => `a${value}`).join(", ") as "a";
+]
+	.map((value) => `a${value}`)
+	.join(", ") as "a";
 
 /**
  * Returns object mapping technique IDs to SCs that reference it;
@@ -87,8 +91,9 @@ export async function getTechniqueAssociations(guidelines: FlatGuidelinesMap) {
 			const $liEl = $(liEl);
 			const $parentListItem = $liEl.closest("ul, ol").closest("li");
 			// Identify which expected section the list was found under
-			const associationType =
-				$liEl.closest(associationTypes.map((type) => `section#${type}`).join(", ")).attr("id");
+			const associationType = $liEl
+				.closest(associationTypes.map((type) => `section#${type}`).join(", "))
+				.attr("id");
 			assertIsAssociationType(associationType);
 
 			/** Finds matches only within the given list item (not under child lists) */
@@ -97,7 +102,10 @@ export async function getTechniqueAssociations(guidelines: FlatGuidelinesMap) {
 
 			const $techniqueLinks = queryNonNestedChildren($liEl, understandingTechniqueLinkSelector);
 			$techniqueLinks.each((_, aEl) => {
-				const usageParentIds = queryNonNestedChildren($parentListItem, understandingTechniqueLinkSelector)
+				const usageParentIds = queryNonNestedChildren(
+					$parentListItem,
+					understandingTechniqueLinkSelector
+				)
 					.toArray()
 					.map((el) => techniqueLinkHrefToId(el.attribs.href));
 
@@ -110,10 +118,13 @@ export async function getTechniqueAssociations(guidelines: FlatGuidelinesMap) {
 					: queryNonNestedChildren($parentListItem, "p").html();
 				const match = parentHtml && descriptionDependencyPattern.exec(parentHtml);
 				const parentDescription = parentHtml
-					? parentHtml.replace(descriptionDependencyPattern,
-						(!match?.[1] || match?.[1] === "one") ? "" : "when combined with other techniques")
+					? parentHtml.replace(
+							descriptionDependencyPattern,
+							!match?.[1] || match?.[1] === "one" ? "" : "when combined with other techniques"
+						)
 					: "";
-				const usageParentDescription = parentDescription &&
+				const usageParentDescription =
+					parentDescription &&
 					(parentDescription.startsWith("when")
 						? parentDescription
 						: `when used for ${parentDescription[0].toLowerCase()}${parentDescription.slice(1)}`);
@@ -124,7 +135,9 @@ export async function getTechniqueAssociations(guidelines: FlatGuidelinesMap) {
 					hasUsageChildren: !!$liEl.find("ul, ol").length,
 					usageParentIds,
 					usageParentDescription,
-					with: $techniqueLinks.toArray().filter((el) => el !== aEl)
+					with: $techniqueLinks
+						.toArray()
+						.filter((el) => el !== aEl)
 						.map((el) => techniqueLinkHrefToId(el.attribs.href)),
 				};
 
@@ -137,9 +150,9 @@ export async function getTechniqueAssociations(guidelines: FlatGuidelinesMap) {
 
 	// Perform a pass over associations to remove duplicates
 	for (const [key, list] of Object.entries(associations))
-		associations[key] =
-			uniqBy(list, (v) => JSON.stringify(v))
-				.sort((a, b) => wcagSort(a.criterion, b.criterion));
+		associations[key] = uniqBy(list, (v) => JSON.stringify(v)).sort((a, b) =>
+			wcagSort(a.criterion, b.criterion)
+		);
 
 	return associations;
 }
@@ -168,10 +181,13 @@ interface Technique {
  */
 export async function getTechniquesByTechnology() {
 	const paths = await glob("*/*.html", { cwd: "techniques" });
-	const techniques = technologies.reduce((map, technology) => ({
-		...map,
-		[technology]: [] as string[],
-	}), {}) as Record<Technology, Technique[]>;
+	const techniques = technologies.reduce(
+		(map, technology) => ({
+			...map,
+			[technology]: [] as string[],
+		}),
+		{} as Record<Technology, Technique[]>
+	);
 
 	for (const path of paths) {
 		const [technology, filename] = path.split("/");
@@ -199,7 +215,7 @@ export async function getTechniquesByTechnology() {
 			if (aId < bId) return -1;
 			if (aId > bId) return 1;
 			return 0;
-		})
+		});
 	}
 
 	return techniques;
@@ -208,9 +224,15 @@ export async function getTechniquesByTechnology() {
 /**
  * Returns an object mapping each technique ID to its data.
  */
-export const getFlatTechniques =
-	(techniques: Awaited<ReturnType<typeof getTechniquesByTechnology>>) =>
-		Object.values(techniques).flat().reduce((map, technique) => {
-			map[technique.id] = technique;
-			return map;
-		}, {} as Record<string, Technique>);
+export const getFlatTechniques = (
+	techniques: Awaited<ReturnType<typeof getTechniquesByTechnology>>
+) =>
+	Object.values(techniques)
+		.flat()
+		.reduce(
+			(map, technique) => {
+				map[technique.id] = technique;
+				return map;
+			},
+			{} as Record<string, Technique>
+		);

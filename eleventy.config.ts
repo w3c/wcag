@@ -4,7 +4,13 @@ import { copyFile } from "fs/promises";
 
 import { CustomLiquid } from "11ty/CustomLiquid";
 import { actRules, getFlatGuidelines, getPrinciples } from "11ty/guidelines";
-import { getFlatTechniques, getTechniqueAssociations, getTechniquesByTechnology, technologies, technologyTitles } from "11ty/techniques";
+import {
+	getFlatTechniques,
+	getTechniqueAssociations,
+	getTechniquesByTechnology,
+	technologies,
+	technologyTitles,
+} from "11ty/techniques";
 import { generateUnderstandingNavMap, getUnderstandingDocs } from "11ty/understanding";
 import type { EleventyContext, EleventyData, EleventyEvent, TocLink } from "11ty/types";
 
@@ -38,12 +44,10 @@ export default function (eleventyConfig: any) {
 	for (const [name, value] of Object.entries(globalData)) {
 		eleventyConfig.addGlobalData(name, value);
 	}
-	
+
 	eleventyConfig.addGlobalData(
 		"guidelinesUrl",
-		isEditors
-			? "https://w3c.github.io/wcag/guidelines/"
-			: `https://www.w3.org/TR/WCAG${version}/`
+		isEditors ? "https://w3c.github.io/wcag/guidelines/" : `https://www.w3.org/TR/WCAG${version}/`
 	);
 	// Note: These were ported from build.xml but it's unclear whether they'll really be needed
 	eleventyConfig.addGlobalData(
@@ -72,7 +76,7 @@ export default function (eleventyConfig: any) {
 			// Preserve existing structure: write to x.html instead of x/index.html
 			return page.inputPath;
 		},
-		nav: ({ page, isUnderstanding }: GlobalData) => 
+		nav: ({ page, isUnderstanding }: GlobalData) =>
 			isUnderstanding ? understandingNav[page.fileSlug] : null,
 		testRules: ({ page, isTechniques, isUnderstanding }: GlobalData) => {
 			if (isTechniques)
@@ -118,58 +122,77 @@ export default function (eleventyConfig: any) {
 		// output: "output", // output to the same place as build.xml
 	};
 
-	eleventyConfig.setLibrary("liquid", new CustomLiquid({
-		// See https://www.11ty.dev/docs/languages/liquid/#liquid-options
-		root: ["_includes", "."],
-		jsTruthy: true,
-		strictFilters: true,
-	}));
+	eleventyConfig.setLibrary(
+		"liquid",
+		new CustomLiquid({
+			// See https://www.11ty.dev/docs/languages/liquid/#liquid-options
+			root: ["_includes", "."],
+			jsTruthy: true,
+			strictFilters: true,
+		})
+	);
 
 	// Filter that transforms a technique ID (or list of them) into links to their pages.
-	eleventyConfig.addFilter("linkTechniques", function (this: EleventyContext, ids: string | string[]) {
-		const links = (Array.isArray(ids) ? ids : [ids])
-			.map((id) => {
+	eleventyConfig.addFilter(
+		"linkTechniques",
+		function (this: EleventyContext, ids: string | string[]) {
+			const links = (Array.isArray(ids) ? ids : [ids]).map((id) => {
 				if (typeof id !== "string") throw new Error(`linkTechniques: invalid id ${id}`);
 				const technique = flatTechniques[id];
 				if (!technique) {
-					console.warn(`linkTechniques in ${this.page.inputPath}: ` +
-						`skipping unresolvable technique id ${id}`);
+					console.warn(
+						`linkTechniques in ${this.page.inputPath}: ` +
+							`skipping unresolvable technique id ${id}`
+					);
 					return;
 				}
 				// Support relative technique links from other techniques or from techniques/index.html,
 				// otherwise path-absolute when cross-linked from understanding/*
 				const urlBase = /^\/techniques\/.*\//.test(this.page.filePathStem)
 					? "../"
-					: this.page.filePathStem.startsWith("/techniques") ? "" : "/techniques/";
+					: this.page.filePathStem.startsWith("/techniques")
+						? ""
+						: "/techniques/";
 				const label = `${id}: ${technique.truncatedTitle}`;
 				return `<a href="${urlBase}${technique.technology}/${id}">${label}</a>`;
 			});
 			return compact(links).join("\nand\n");
-	});
+		}
+	);
 
 	// Filter that transforms a guideline or SC shortname (or list of them) into links to their pages.
-	eleventyConfig.addFilter("linkUnderstanding", function (this: EleventyContext, ids: string | string[]) {
-		return (Array.isArray(ids) ? ids : [ids])
-			.map((id) => {
-				if (typeof id !== "string") throw new Error("linkUnderstanding: invalid id passed");
-				const guideline = flatGuidelines[id];
-				if (!guideline) {
-					console.warn(`linkUnderstanding in ${this.page.inputPath}: ` +
-						`skipping unresolvable guideline shortname ${id}`);
-				}
-				const urlBase =
-					this.page.filePathStem.startsWith("/understanding/") ? "" : "/understanding/";
-				const label = `${guideline.num}: ${guideline.name}`;
-				return `<a href="${urlBase}${id}">${label}</a>`;
-			}).join("\nand\n");
-	});
+	eleventyConfig.addFilter(
+		"linkUnderstanding",
+		function (this: EleventyContext, ids: string | string[]) {
+			return (Array.isArray(ids) ? ids : [ids])
+				.map((id) => {
+					if (typeof id !== "string") throw new Error("linkUnderstanding: invalid id passed");
+					const guideline = flatGuidelines[id];
+					if (!guideline) {
+						console.warn(
+							`linkUnderstanding in ${this.page.inputPath}: ` +
+								`skipping unresolvable guideline shortname ${id}`
+						);
+					}
+					const urlBase = this.page.filePathStem.startsWith("/understanding/")
+						? ""
+						: "/understanding/";
+					const label = `${guideline.num}: ${guideline.name}`;
+					return `<a href="${urlBase}${id}">${label}</a>`;
+				})
+				.join("\nand\n");
+		}
+	);
 
-	eleventyConfig.addPairedShortcode("sectionbox", (content: string, id: string, title: string) => `
+	eleventyConfig.addPairedShortcode(
+		"sectionbox",
+		(content: string, id: string, title: string) => `
 <section id="${id}" class="box">
 	<h2 class="box-h box-h-icon">${title}</h2>
 	<div class="box-i">${content}</div>
 </section>
-	`);
+	`
+	);
 
 	eleventyConfig.setQuietMode(true);
 	return { dir };

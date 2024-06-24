@@ -24,21 +24,21 @@ const termLinkSelector = "a:not([href])";
 
 /** Generates {% include "foo.html" %} directives from 1 or more basenames */
 const generateIncludes = (...basenames: string[]) =>
-	`\n${basenames.map(basename => `{% include "${basename}.html" %}`).join("\n")}\n`;
+	`\n${basenames.map((basename) => `{% include "${basename}.html" %}`).join("\n")}\n`;
 
 /**
  * Determines whether a given string is actually HTML,
  * not e.g. a data value Eleventy sent to the templating engine.
  */
-const isHtmlFileContent = (html: string) =>
-	!html.startsWith("(((11ty") && !html.endsWith(".html");
+const isHtmlFileContent = (html: string) => !html.startsWith("(((11ty") && !html.endsWith(".html");
 
 /**
  * Performs common cleanup of in-page headings, and by extension, table of contents links,
  * for final output.
  */
 const normalizeHeading = (label: string) =>
-	label.trim()
+	label
+		.trim()
 		.replace(/In brief/, "In Brief")
 		.replace(/^(\S+) (of|for) .*$/, "$1")
 		.replace(/^Techniques and Failures .*$/, "Techniques")
@@ -51,7 +51,7 @@ const normalizeHeading = (label: string) =>
  * This is expected to piggyback off of normalizeHeading, which should be called on
  * headings prior to processing the table of contents from them.
  */
-const normalizeTocLabel = (label: string) => 
+const normalizeTocLabel = (label: string) =>
 	label.replace(/ for this Guideline$/, "").replace(/ \(SC\)$/, "");
 
 /**
@@ -59,7 +59,7 @@ const normalizeTocLabel = (label: string) =>
  * expand to a link with the full technique ID and title.
  * @param $el a $()-wrapped link element
  */
-const expandTechniqueLink = ($el: Cheerio<Element>) => {
+function expandTechniqueLink($el: Cheerio<Element>) {
 	const href = $el.attr("href");
 	if (!href) throw new Error("expandTechniqueLink: non-link element encountered");
 	const id = techniqueLinkHrefToId(href);
@@ -75,9 +75,9 @@ const stripHtmlComments = (html: string) => html.replace(/<!--[\s\S]*?-->/g, "")
 
 /**
  * Liquid class extension that adds support for parts of the existing build process:
- * - flattening data-include directives
+ * - flattening data-include directives prior to parsing Liquid tags
+ *   (permitting Liquid even inside data-included files)
  * - inserting header/footer content within the body of pages
- *   prior to parsing Liquid tags (permitting Liquid even inside data-included files)
  * - generating/expanding sections with auto-generated content
  */
 export class CustomLiquid extends Liquid {
@@ -102,11 +102,11 @@ export class CustomLiquid extends Liquid {
 
 			if (isUnderstanding)
 				prependedIncludes.push(
-					isIndex ? "understanding/navigation-index" : "understanding/navigation");
+					isIndex ? "understanding/navigation-index" : "understanding/navigation"
+				);
 
 			if (isIndex) {
-				if (isTechniques)
-					$("section#changelog li a").each((_, el) => expandTechniqueLink($(el)));
+				if (isTechniques) $("section#changelog li a").each((_, el) => expandTechniqueLink($(el)));
 			} else {
 				$("head").append(generateIncludes("head"));
 				appendedIncludes.push("waiscript");
@@ -135,9 +135,10 @@ export class CustomLiquid extends Liquid {
 					// Expand related technique links to include full title
 					// (the XSLT process didn't handle this in this particular context)
 					const siblingCode = basename(filepath).replace(/^([A-Z]+).*$/, "$1");
-					$("section#related li").find(`a[href^='../'], a[href^=${siblingCode}]`)
+					$("section#related li")
+						.find(`a[href^='../'], a[href^=${siblingCode}]`)
 						.each((_, el) => expandTechniqueLink($(el)));
-					
+
 					// XSLT orders related and tests last, but they are not last in source files
 					$("body")
 						.append("\n", $(`body > section#related`))
@@ -145,7 +146,7 @@ export class CustomLiquid extends Liquid {
 					$("h1")
 						.after(generateIncludes("techniques/about"))
 						.replaceWith(generateIncludes("techniques/h1"));
-					
+
 					const sectionCounts: Record<string, number> = {};
 					let hasDuplicates = false;
 					$("body > section[id]").each((_, el) => {
@@ -160,10 +161,14 @@ export class CustomLiquid extends Liquid {
 							sectionCounts[id] = 1;
 						}
 					});
-					if (hasDuplicates) { // Avoid loop altogether in majority of (correct) cases
+
+					// Avoid loop altogether in majority of (correct) cases
+					if (hasDuplicates) {
 						for (const [id, count] of Object.entries(sectionCounts)) {
 							if (count === 1) continue;
-							console.warn(`${filepath}: Merging duplicate ${id} sections; please fix this in the source file.`)
+							console.warn(
+								`${filepath}: Merging duplicate ${id} sections; please fix this in the source file.`
+							);
 							const $sections = $(`section[id='${id}']`);
 							const $first = $sections.first();
 							$sections.each((i, el) => {
@@ -172,12 +177,11 @@ export class CustomLiquid extends Liquid {
 								$el.find("> h2:first-child").remove();
 								$first.append($el.contents());
 								$el.remove();
-							})
+							});
 						}
 					}
 
-					$("section#resources h2")
-						.after(generateIncludes("techniques/intro/resources"));
+					$("section#resources h2").after(generateIncludes("techniques/intro/resources"));
 					$("section#examples section.example").each((i, el) => {
 						const $el = $(el);
 						const exampleText = `Example ${i + 1}`;
@@ -220,23 +224,24 @@ export class CustomLiquid extends Liquid {
 					$("body")
 						.append("\n", $(`body > section#resources`))
 						.append("\n", $(`body > section#techniques`));
-					
+
 					// Expand top-level heading for guideline/SC pages
-					if ($("section#intent").length)
-						$("h1").replaceWith(generateIncludes("understanding/h1"));
+					if ($("section#intent").length) $("h1").replaceWith(generateIncludes("understanding/h1"));
 					$("section#intent").before(generateIncludes("understanding/about"));
-					$("section#techniques h2")
-						.after(generateIncludes("understanding/intro/techniques"));
+					$("section#techniques h2").after(generateIncludes("understanding/intro/techniques"));
 					if ($("section#sufficient .situation").length) {
-						$("section#sufficient h3").
-							after(generateIncludes("understanding/intro/sufficient-situation"));
+						$("section#sufficient h3").after(
+							generateIncludes("understanding/intro/sufficient-situation")
+						);
 					}
 					// success-criteria section should be auto-generated;
 					// remove any handwritten ones (e.g. Input Modalities)
 					const $successCriteria = $("section#success-criteria");
 					if ($successCriteria.length) {
-						console.warn(`${filepath}: success-criteria section will be replaced with ` +
-							"generated version; please remove this from the source file.");
+						console.warn(
+							`${filepath}: success-criteria section will be replaced with ` +
+								"generated version; please remove this from the source file."
+						);
 						$successCriteria.remove();
 					}
 					// success-criteria template only renders content for guideline (not SC) pages
@@ -253,16 +258,14 @@ export class CustomLiquid extends Liquid {
 					$("section#failure h3").text("Failures");
 
 					// Add intro prose to populated sections
-					$("section#advisory").find("h2, h3")
+					$("section#advisory")
+						.find("h2, h3")
 						.after(generateIncludes("understanding/intro/advisory"));
-					$("section#failure h3")
-						.after(generateIncludes("understanding/intro/failure"));
-					$("section#resources h2")
-						.after(generateIncludes("understanding/intro/resources"));
+					$("section#failure h3").after(generateIncludes("understanding/intro/failure"));
+					$("section#resources h2").after(generateIncludes("understanding/intro/resources"));
 
 					// Expand techniques links to always include title
-					$(understandingTechniqueLinkSelector)
-						.each((_, el) => expandTechniqueLink($(el)));
+					$(understandingTechniqueLinkSelector).each((_, el) => expandTechniqueLink($(el)));
 
 					// Add key terms by default, to be removed in #parse if there are no terms
 					$("body").append(generateIncludes("understanding/key-terms"));
@@ -284,7 +287,7 @@ export class CustomLiquid extends Liquid {
 
 			$("body")
 				.prepend(generateIncludes(...prependedIncludes))
-				.append(generateIncludes(...appendedIncludes))
+				.append(generateIncludes(...appendedIncludes));
 
 			return super.parse($.html(), filepath);
 		}
@@ -304,14 +307,15 @@ export class CustomLiquid extends Liquid {
 				// Strip applicability paragraphs with metadata IDs (e.g. H99)
 				$("section#applicability").find("p#id, p#technology, p#type").remove();
 				// Check for custom applicability paragraph before removing the section
-				const customApplicability =
-					$("section#applicability p").html()?.trim()
-						.replace(/^th(e|is) (technique|failure)s? (is )?/i, "")
-						.replace(/^general( technique|ly applicable)?(\.|$).*$/i, "all technologies")
-						.replace(/^appropriate to use for /i, "")
-						.replace(/^use this technique on /i, "")
-						// Work around redundant sentences (e.g. F105)
-						.replace(/\.\s+This technique relates to Success Criterion [\d\.]+\d[^\.]+\.$/, "");
+				const customApplicability = $("section#applicability p")
+					.html()
+					?.trim()
+					.replace(/^th(e|is) (technique|failure)s? (is )?/i, "")
+					.replace(/^general( technique|ly applicable)?(\.|$).*$/i, "all technologies")
+					.replace(/^appropriate to use for /i, "")
+					.replace(/^use this technique on /i, "")
+					// Work around redundant sentences (e.g. F105)
+					.replace(/\.\s+This technique relates to Success Criterion [\d\.]+\d[^\.]+\.$/, "");
 				if (customApplicability) {
 					const appliesPattern = /^(?:appli(?:es|cable)|relates) (to|when(?:ever)?)\s*/i;
 					const rephrasedApplicability = customApplicability.replace(appliesPattern, "");
@@ -322,21 +326,23 @@ export class CustomLiquid extends Liquid {
 
 					const noun = scope.technique.technology === "failures" ? "failure" : "technique";
 					const appliesMatch = appliesPattern.exec(customApplicability);
-					const connector =
-						/^not/.test(customApplicability)
-							? "is"
-							: appliesMatch ? `applies ${appliesMatch[1]}` : "applies to";
+					const connector = /^not/.test(customApplicability)
+						? "is"
+						: `applies ${appliesMatch?.[1] || "to"}`;
 					$("section#technique .box-i p:last-child").html(
 						`This ${noun} ${connector} ` +
-						// Uncapitalize original sentence, except for all-caps abbreviations or titles
-						(/^[A-Z]{2,}/.test(rephrasedApplicability) || /^([A-Z][a-z]+(\s+|\.?$))+(\/|$)/.test(rephrasedApplicability)
-							? rephrasedApplicability
-							: rephrasedApplicability[0].toLowerCase() + rephrasedApplicability.slice(1)) +
-						(/(\.|:)$/.test(rephrasedApplicability) ? "" : "."));
-					
+							// Uncapitalize original sentence, except for all-caps abbreviations or titles
+							(/^[A-Z]{2,}/.test(rephrasedApplicability) ||
+							/^([A-Z][a-z]+(\s+|\.?$))+(\/|$)/.test(rephrasedApplicability)
+								? rephrasedApplicability
+								: rephrasedApplicability[0].toLowerCase() + rephrasedApplicability.slice(1)) +
+							(/(\.|:)$/.test(rephrasedApplicability) ? "" : ".")
+					);
+
 					// Append any relevant subsequent paragraphs or lists from applicability section
-					const $additionalApplicability =
-						$("section#applicability").find("p:not(:first-of-type), ul, ol");
+					const $additionalApplicability = $("section#applicability").find(
+						"p:not(:first-of-type), ul, ol"
+					);
 					const additionalApplicabilityText = $additionalApplicability.text();
 					const excludes = [
 						"None listed.", // Template filler
@@ -353,10 +359,11 @@ export class CustomLiquid extends Liquid {
 					$title.text(
 						`Understanding ${type} ${scope.guideline.num}: ${scope.guideline.name}${titleSuffix}`
 					);
+				} else {
+					$title.text(
+						$title.text().replace(/WCAG 2\b/, `WCAG ${scope.versionDecimal}`) + titleSuffix
+					);
 				}
-				else $title.text(
-					$title.text().replace(/WCAG 2\b/, `WCAG ${scope.versionDecimal}`) + titleSuffix
-				);
 			}
 
 			// Process defined terms within #render,
@@ -371,13 +378,14 @@ export class CustomLiquid extends Liquid {
 				}
 				// Return standardized name for Key Terms definition lists
 				return term.name;
-			}
+			};
 
 			if (scope.isTechniques) {
 				$termLinks.each((_, el) => {
 					const $el = $(el);
 					const termName = extractTermName($el);
-					$el.attr("href", `${scope.guidelinesUrl}#${termName ? termsMap[termName].id : ""}`)
+					$el
+						.attr("href", `${scope.guidelinesUrl}#${termName ? termsMap[termName].id : ""}`)
 						.attr("target", "terms");
 				});
 			} else if (scope.isUnderstanding) {
@@ -407,7 +415,7 @@ export class CustomLiquid extends Liquid {
 						const term = termsMap[name]; // Already verified existence in the earlier loop
 						$termsList.append(
 							`<dt id="${term.id}">${term.name}</dt>` +
-							`<dd><definition>${term.definition}</definition></dd>`
+								`<dd><definition>${term.definition}</definition></dd>`
 						);
 					}
 
@@ -429,12 +437,15 @@ export class CustomLiquid extends Liquid {
 			} else if (scope.isUnderstanding) {
 				// :empty doesn't work here since there may be whitespace
 				// (can't trim whitespace in the liquid tag since some links have more text after)
-				$(`section#techniques li`).filter((_, el) => !$(el).text().trim()).remove();
+				$(`section#techniques li`)
+					.filter((_, el) => !$(el).text().trim())
+					.remove();
 
 				// Prepend guidelines base URL to non-dfn anchor links in guidelines-derived content
 				// (including both the guideline/SC box at the top and Key Terms at the bottom)
 				$("#guideline, #success-criterion, #key-terms")
-					.find("a[href^='#']:not([href^='#dfn-'])").each((_, el) => {
+					.find("a[href^='#']:not([href^='#dfn-'])")
+					.each((_, el) => {
 						el.attribs.href = scope.guidelinesUrl + el.attribs.href;
 					});
 			}
@@ -467,8 +478,7 @@ export class CustomLiquid extends Liquid {
 			// Just like the XSLT process, this naively assumes that version numbers are the same length
 			const classVersion = +el.attribs.class.replace(/^wcag/, "");
 			const buildVersion = +scope.version;
-			if (isNaN(classVersion))
-				throw new Error(`Invalid wcagXY class found: ${el.attribs.class}`);
+			if (isNaN(classVersion)) throw new Error(`Invalid wcagXY class found: ${el.attribs.class}`);
 			if (classVersion > buildVersion) {
 				$(el).remove();
 			} else if (classVersion === buildVersion) {
@@ -506,12 +516,14 @@ export class CustomLiquid extends Liquid {
 		// Autogenerate remaining IDs after constructing table of contents.
 		// NOTE: This may overwrite some IDs set in HTML (for techniques examples),
 		// and may result in duplicates; this is consistent with the XSLT process.
-		const sectionHeadingSelector =
-			["h3", "h4", "h5"].map((tag) => `> ${tag}:first-child`).join(", ");
+		const sectionHeadingSelector = ["h3", "h4", "h5"]
+			.map((tag) => `> ${tag}:first-child`)
+			.join(", ");
 		const autoIdSectionSelectors = ["section:not([id])"];
 		if (scope.isTechniques) autoIdSectionSelectors.push("section.example");
 		$(autoIdSectionSelectors.join(", "))
-			.filter(`:has(${sectionHeadingSelector})`).each((_, el) => {
+			.filter(`:has(${sectionHeadingSelector})`)
+			.each((_, el) => {
 				el.attribs.id = generateId($(el).find(sectionHeadingSelector).text());
 			});
 

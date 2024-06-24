@@ -14,8 +14,9 @@ function assertIsWcagVersion(v: string): asserts v is WcagVersion {
 }
 
 /** Data used for test-rules sections, from act-mapping.json */
-export const actRules =
-	(JSON.parse(await readFile("guidelines/act-mapping.json", "utf8")) as ActMapping)["act-rules"];
+export const actRules = (
+	JSON.parse(await readFile("guidelines/act-mapping.json", "utf8")) as ActMapping
+)["act-rules"];
 
 /**
  * Returns an object with keys for each existing WCAG 2 version,
@@ -95,7 +96,7 @@ const getContentHtml = ($el: Cheerio<Element>) => {
 	const $ = load($el.html()!, null, false);
 	$("h1, h2, h3, h4, h5, h6, section, .change, .conformance-level").remove();
 	return $.html();
-}
+};
 
 /**
  * Resolves information from guidelines/index.html;
@@ -144,7 +145,7 @@ export async function getPrinciples() {
 			type: "Principle",
 			version: "WCAG20",
 			guidelines,
-		})
+		});
 	});
 
 	return principles;
@@ -190,10 +191,9 @@ export async function getTermsMap() {
 			id: `dfn-${generateId($el.text())}`,
 			definition: getContentHtml($el.parent().next()),
 			name: $el.text().toLowerCase(),
-		}
+		};
 
-		const names = [term.name]
-			.concat((el.attribs["data-lt"] || "").toLowerCase().split("|"));
+		const names = [term.name].concat((el.attribs["data-lt"] || "").toLowerCase().split("|"));
 		for (const name of names) terms[name] = term;
 	});
 

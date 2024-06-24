@@ -69,7 +69,7 @@ interface ActRule {
 
 export type ActMapping = {
 	"act-rules": ActRule[];
-}
+};
 
 /**
  * Common interface used for table of contents data

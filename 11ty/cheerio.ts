@@ -17,19 +17,19 @@ export async function loadFromFile(
 /**
  * Retrieves content for a data-include, either from _includes,
  * or relative to the input file.
- * 
+ *
  * @param includePath A data-include attribute value
  * @param inputPath Path (relative to repo root) to file containing the directive
- * @returns 
+ * @returns
  */
 function readInclude(includePath: string, inputPath: string) {
 	if (includePath.startsWith(".."))
-		return readFileSync(resolve(dirname(inputPath), includePath), "utf8")
+		return readFileSync(resolve(dirname(inputPath), includePath), "utf8");
 
 	try {
 		return readFileSync(resolve("_includes", includePath), "utf8");
 	} catch (error) {
-		return readFileSync(resolve(dirname(inputPath), includePath), "utf8")
+		return readFileSync(resolve(dirname(inputPath), includePath), "utf8");
 	}
 }
 
