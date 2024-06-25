@@ -12,51 +12,51 @@ import { wcagSort } from "./common";
 
 /** Maps each technology to its title for index.html */
 export const technologyTitles = {
-	aria: "ARIA Techniques",
-	"client-side-script": "Client-Side Script Techniques",
-	css: "CSS Techniques",
-	failures: "Common Failures",
-	general: "General Techniques",
-	html: "HTML Techniques",
-	pdf: "PDF Techniques",
-	"server-side-script": "Server-Side Script Techniques",
-	smil: "SMIL Techniques",
-	text: "Plain-Text Techniques",
+  aria: "ARIA Techniques",
+  "client-side-script": "Client-Side Script Techniques",
+  css: "CSS Techniques",
+  failures: "Common Failures",
+  general: "General Techniques",
+  html: "HTML Techniques",
+  pdf: "PDF Techniques",
+  "server-side-script": "Server-Side Script Techniques",
+  smil: "SMIL Techniques",
+  text: "Plain-Text Techniques",
 };
 type Technology = keyof typeof technologyTitles;
 export const technologies = Object.keys(technologyTitles) as Technology[];
 
 function assertIsTechnology(
-	technology: string
+  technology: string
 ): asserts technology is keyof typeof technologyTitles {
-	if (!(technology in technologyTitles)) throw new Error(`Invalid technology name: ${technology}`);
+  if (!(technology in technologyTitles)) throw new Error(`Invalid technology name: ${technology}`);
 }
 
 const associationTypes = ["sufficient", "advisory", "failure"] as const;
 type AssociationType = (typeof associationTypes)[number];
 
 interface TechniqueAssociation {
-	criterion: SuccessCriterion;
-	type: Capitalize<AssociationType>;
-	/** Indicates this technique must be paired with specific "child" techniques to fulfill SC */
-	hasUsageChildren: boolean;
-	/**
-	 * Technique ID of "parent" technique(s) this is paired with to fulfill SC.
-	 * This is typically 0 or 1 technique, but may be multiple in rare cases.
-	 */
-	usageParentIds: string[];
-	/**
-	 * Text description of "parent" association, if it does not reference a specific technique;
-	 * only populated if usageParentIds is empty.
-	 */
-	usageParentDescription: string;
-	/** Technique IDs this technique must be implemented with to fulfill SC, if any */
-	with: string[];
+  criterion: SuccessCriterion;
+  type: Capitalize<AssociationType>;
+  /** Indicates this technique must be paired with specific "child" techniques to fulfill SC */
+  hasUsageChildren: boolean;
+  /**
+   * Technique ID of "parent" technique(s) this is paired with to fulfill SC.
+   * This is typically 0 or 1 technique, but may be multiple in rare cases.
+   */
+  usageParentIds: string[];
+  /**
+   * Text description of "parent" association, if it does not reference a specific technique;
+   * only populated if usageParentIds is empty.
+   */
+  usageParentDescription: string;
+  /** Technique IDs this technique must be implemented with to fulfill SC, if any */
+  with: string[];
 }
 
 function assertIsAssociationType(type?: string): asserts type is AssociationType {
-	if (!associationTypes.includes(type as AssociationType))
-		throw new Error(`Association processed for unexpected section ${type}`);
+  if (!associationTypes.includes(type as AssociationType))
+    throw new Error(`Association processed for unexpected section ${type}`);
 }
 
 /**
@@ -64,118 +64,118 @@ function assertIsAssociationType(type?: string): asserts type is AssociationType
  * This intentionally returns empty string (falsy) if a directory link happens to be passed.
  */
 export const resolveTechniqueIdFromHref = (href: string) =>
-	href.replace(/^.*\//, "").replace(/\.html$/, "");
+  href.replace(/^.*\//, "").replace(/\.html$/, "");
 
 /**
  * Selector that can detect relative and absolute technique links from understanding docs
  */
 export const understandingTechniqueLinkSelector = [
-	"[href^='../Techniques/' i]",
-	"[href^='../../techniques/' i]",
-	"[href^='https://www.w3.org/WAI/WCAG' i][href*='/Techniques/' i]",
+  "[href^='../Techniques/' i]",
+  "[href^='../../techniques/' i]",
+  "[href^='https://www.w3.org/WAI/WCAG' i][href*='/Techniques/' i]",
 ]
-	.map((value) => `a${value}`)
-	.join(", ") as "a";
+  .map((value) => `a${value}`)
+  .join(", ") as "a";
 
 /**
  * Returns object mapping technique IDs to SCs that reference it;
  * comparable to technique-associations.xml but in a more ergonomic format.
  */
 export async function getTechniqueAssociations(guidelines: FlatGuidelinesMap) {
-	const associations: Record<string, TechniqueAssociation[]> = {};
-	const itemSelector = associationTypes.map((type) => `section#${type} li`).join(", ");
+  const associations: Record<string, TechniqueAssociation[]> = {};
+  const itemSelector = associationTypes.map((type) => `section#${type} li`).join(", ");
 
-	const paths = await glob("understanding/*/*.html");
-	for (const path of paths) {
-		const criterion = guidelines[basename(path, ".html")];
-		if (!isSuccessCriterion(criterion)) continue;
+  const paths = await glob("understanding/*/*.html");
+  for (const path of paths) {
+    const criterion = guidelines[basename(path, ".html")];
+    if (!isSuccessCriterion(criterion)) continue;
 
-		const $ = await loadFromFile(path);
-		$(itemSelector).each((_, liEl) => {
-			const $liEl = $(liEl);
-			const $parentListItem = $liEl.closest("ul, ol").closest("li");
-			// Identify which expected section the list was found under
-			const associationType = $liEl
-				.closest(associationTypes.map((type) => `section#${type}`).join(", "))
-				.attr("id");
-			assertIsAssociationType(associationType);
+    const $ = await loadFromFile(path);
+    $(itemSelector).each((_, liEl) => {
+      const $liEl = $(liEl);
+      const $parentListItem = $liEl.closest("ul, ol").closest("li");
+      // Identify which expected section the list was found under
+      const associationType = $liEl
+        .closest(associationTypes.map((type) => `section#${type}`).join(", "))
+        .attr("id");
+      assertIsAssociationType(associationType);
 
-			/** Finds matches only within the given list item (not under child lists) */
-			const queryNonNestedChildren = ($el: Cheerio<any>, selector: string) =>
-				$el.find(selector).filter((_, aEl) => $(aEl).closest("li")[0] === $el[0]);
+      /** Finds matches only within the given list item (not under child lists) */
+      const queryNonNestedChildren = ($el: Cheerio<any>, selector: string) =>
+        $el.find(selector).filter((_, aEl) => $(aEl).closest("li")[0] === $el[0]);
 
-			const $techniqueLinks = queryNonNestedChildren($liEl, understandingTechniqueLinkSelector);
-			$techniqueLinks.each((_, aEl) => {
-				const usageParentIds = queryNonNestedChildren(
-					$parentListItem,
-					understandingTechniqueLinkSelector
-				)
-					.toArray()
-					.map((el) => resolveTechniqueIdFromHref(el.attribs.href));
+      const $techniqueLinks = queryNonNestedChildren($liEl, understandingTechniqueLinkSelector);
+      $techniqueLinks.each((_, aEl) => {
+        const usageParentIds = queryNonNestedChildren(
+          $parentListItem,
+          understandingTechniqueLinkSelector
+        )
+          .toArray()
+          .map((el) => resolveTechniqueIdFromHref(el.attribs.href));
 
-				// Capture the "X" in "X or more" phrasing, to include a phrase about
-				// combining with other techniques if more than one is required.
-				const descriptionDependencyPattern =
-					/(?:^|,?\s+)(?:by )?using\s+(?:(\w+) (?:or more )?of )?the\s+(?:following )?techniques(?: below)?(?::|\.)?\s*$/i;
-				const parentHtml = usageParentIds.length
-					? null
-					: queryNonNestedChildren($parentListItem, "p").html();
-				const match = parentHtml && descriptionDependencyPattern.exec(parentHtml);
-				const parentDescription = parentHtml
-					? parentHtml.replace(
-							descriptionDependencyPattern,
-							!match?.[1] || match?.[1] === "one" ? "" : "when combined with other techniques"
-						)
-					: "";
-				const usageParentDescription =
-					parentDescription &&
-					(parentDescription.startsWith("when")
-						? parentDescription
-						: `when used for ${parentDescription[0].toLowerCase()}${parentDescription.slice(1)}`);
+        // Capture the "X" in "X or more" phrasing, to include a phrase about
+        // combining with other techniques if more than one is required.
+        const descriptionDependencyPattern =
+          /(?:^|,?\s+)(?:by )?using\s+(?:(\w+) (?:or more )?of )?the\s+(?:following )?techniques(?: below)?(?::|\.)?\s*$/i;
+        const parentHtml = usageParentIds.length
+          ? null
+          : queryNonNestedChildren($parentListItem, "p").html();
+        const match = parentHtml && descriptionDependencyPattern.exec(parentHtml);
+        const parentDescription = parentHtml
+          ? parentHtml.replace(
+              descriptionDependencyPattern,
+              !match?.[1] || match?.[1] === "one" ? "" : "when combined with other techniques"
+            )
+          : "";
+        const usageParentDescription =
+          parentDescription &&
+          (parentDescription.startsWith("when")
+            ? parentDescription
+            : `when used for ${parentDescription[0].toLowerCase()}${parentDescription.slice(1)}`);
 
-				const association: TechniqueAssociation = {
-					criterion,
-					type: capitalize(associationType) as Capitalize<AssociationType>,
-					hasUsageChildren: !!$liEl.find("ul, ol").length,
-					usageParentIds,
-					usageParentDescription,
-					with: $techniqueLinks
-						.toArray()
-						.filter((el) => el !== aEl)
-						.map((el) => resolveTechniqueIdFromHref(el.attribs.href)),
-				};
+        const association: TechniqueAssociation = {
+          criterion,
+          type: capitalize(associationType) as Capitalize<AssociationType>,
+          hasUsageChildren: !!$liEl.find("ul, ol").length,
+          usageParentIds,
+          usageParentDescription,
+          with: $techniqueLinks
+            .toArray()
+            .filter((el) => el !== aEl)
+            .map((el) => resolveTechniqueIdFromHref(el.attribs.href)),
+        };
 
-				const id = resolveTechniqueIdFromHref(aEl.attribs.href);
-				if (!(id in associations)) associations[id] = [association];
-				else associations[id].push(association);
-			});
-		});
-	}
+        const id = resolveTechniqueIdFromHref(aEl.attribs.href);
+        if (!(id in associations)) associations[id] = [association];
+        else associations[id].push(association);
+      });
+    });
+  }
 
-	// Remove duplicates (due to similar shape across understanding docs) and sort by SC number
-	for (const [key, list] of Object.entries(associations))
-		associations[key] = uniqBy(list, (v) => JSON.stringify(v)).sort((a, b) =>
-			wcagSort(a.criterion, b.criterion)
-		);
+  // Remove duplicates (due to similar shape across understanding docs) and sort by SC number
+  for (const [key, list] of Object.entries(associations))
+    associations[key] = uniqBy(list, (v) => JSON.stringify(v)).sort((a, b) =>
+      wcagSort(a.criterion, b.criterion)
+    );
 
-	return associations;
+  return associations;
 }
 
 interface Technique {
-	/** Letter(s)-then-number technique code; corresponds to source HTML filename */
-	id: string;
-	/** Technology this technique is filed under */
-	technology: Technology;
-	/** Title derived from each technique page's h1 */
-	title: string;
-	/** Title derived from each technique page's h1, with HTML preserved */
-	titleHtml: string;
-	/**
-	 * Like title, but preserving the XSLT process behavior of truncating
-	 * text on intermediate lines between the first and last for long headings.
-	 * (This was probably accidental, but helps avoid long link text.)
-	 */
-	truncatedTitle: string;
+  /** Letter(s)-then-number technique code; corresponds to source HTML filename */
+  id: string;
+  /** Technology this technique is filed under */
+  technology: Technology;
+  /** Title derived from each technique page's h1 */
+  title: string;
+  /** Title derived from each technique page's h1, with HTML preserved */
+  titleHtml: string;
+  /**
+   * Like title, but preserving the XSLT process behavior of truncating
+   * text on intermediate lines between the first and last for long headings.
+   * (This was probably accidental, but helps avoid long link text.)
+   */
+  truncatedTitle: string;
 }
 
 /**
@@ -184,59 +184,59 @@ interface Technique {
  * (Functionally equivalent to "techniques-list" target in build.xml)
  */
 export async function getTechniquesByTechnology() {
-	const paths = await glob("*/*.html", { cwd: "techniques" });
-	const techniques = technologies.reduce(
-		(map, technology) => ({
-			...map,
-			[technology]: [] as string[],
-		}),
-		{} as Record<Technology, Technique[]>
-	);
+  const paths = await glob("*/*.html", { cwd: "techniques" });
+  const techniques = technologies.reduce(
+    (map, technology) => ({
+      ...map,
+      [technology]: [] as string[],
+    }),
+    {} as Record<Technology, Technique[]>
+  );
 
-	for (const path of paths) {
-		const [technology, filename] = path.split("/");
-		assertIsTechnology(technology);
+  for (const path of paths) {
+    const [technology, filename] = path.split("/");
+    assertIsTechnology(technology);
 
-		// Isolate h1 from each file before feeding into Cheerio to save ~300ms total
-		const match = (await readFile(`techniques/${path}`, "utf8")).match(/<h1[^>]*>([\s\S]+?)<\/h1>/);
-		if (!match || !match[1]) throw new Error(`No h1 found in techniques/${path}`);
-		const $h1 = load(match[1], null, false);
+    // Isolate h1 from each file before feeding into Cheerio to save ~300ms total
+    const match = (await readFile(`techniques/${path}`, "utf8")).match(/<h1[^>]*>([\s\S]+?)<\/h1>/);
+    if (!match || !match[1]) throw new Error(`No h1 found in techniques/${path}`);
+    const $h1 = load(match[1], null, false);
 
-		const title = $h1.text();
-		techniques[technology].push({
-			id: basename(filename, ".html"),
-			technology,
-			title,
-			titleHtml: $h1.html(),
-			truncatedTitle: title.replace(/\s*\n[\s\S]*\n\s*/, " … "),
-		});
-	}
+    const title = $h1.text();
+    techniques[technology].push({
+      id: basename(filename, ".html"),
+      technology,
+      title,
+      titleHtml: $h1.html(),
+      truncatedTitle: title.replace(/\s*\n[\s\S]*\n\s*/, " … "),
+    });
+  }
 
-	for (const technology of technologies) {
-		techniques[technology].sort((a, b) => {
-			const aId = +a.id.replace(/\D/g, "");
-			const bId = +b.id.replace(/\D/g, "");
-			if (aId < bId) return -1;
-			if (aId > bId) return 1;
-			return 0;
-		});
-	}
+  for (const technology of technologies) {
+    techniques[technology].sort((a, b) => {
+      const aId = +a.id.replace(/\D/g, "");
+      const bId = +b.id.replace(/\D/g, "");
+      if (aId < bId) return -1;
+      if (aId > bId) return 1;
+      return 0;
+    });
+  }
 
-	return techniques;
+  return techniques;
 }
 
 /**
  * Returns a flattened object hash, mapping each technique ID directly to its data.
  */
 export const getFlatTechniques = (
-	techniques: Awaited<ReturnType<typeof getTechniquesByTechnology>>
+  techniques: Awaited<ReturnType<typeof getTechniquesByTechnology>>
 ) =>
-	Object.values(techniques)
-		.flat()
-		.reduce(
-			(map, technique) => {
-				map[technique.id] = technique;
-				return map;
-			},
-			{} as Record<string, Technique>
-		);
+  Object.values(techniques)
+    .flat()
+    .reduce(
+      (map, technique) => {
+        map[technique.id] = technique;
+        return map;
+      },
+      {} as Record<string, Technique>
+    );

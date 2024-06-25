@@ -7,9 +7,9 @@ export { load } from "cheerio";
 
 /** Convenience function that combines readFile and load. */
 export const loadFromFile = async (
-	inputPath: string,
-	options?: CheerioOptions | null,
-	isDocument?: boolean
+  inputPath: string,
+  options?: CheerioOptions | null,
+  isDocument?: boolean
 ) => load(await readFile(inputPath, "utf8"), options, isDocument);
 
 /**
@@ -22,15 +22,15 @@ export const loadFromFile = async (
  * @returns
  */
 function readInclude(includePath: string, inputPath: string) {
-	const relativePath = resolve(dirname(inputPath), includePath);
-	if (includePath.startsWith("..")) return readFileSync(relativePath, "utf8");
+  const relativePath = resolve(dirname(inputPath), includePath);
+  if (includePath.startsWith("..")) return readFileSync(relativePath, "utf8");
 
-	try {
-		// Prioritize any match under _includes (e.g. over local toc.html built via XSLT)
-		return readFileSync(resolve("_includes", includePath), "utf8");
-	} catch (error) {
-		return readFileSync(relativePath, "utf8");
-	}
+  try {
+    // Prioritize any match under _includes (e.g. over local toc.html built via XSLT)
+    return readFileSync(resolve("_includes", includePath), "utf8");
+  } catch (error) {
+    return readFileSync(relativePath, "utf8");
+  }
 }
 
 /**
@@ -44,16 +44,16 @@ function readInclude(includePath: string, inputPath: string) {
  * @returns Cheerio instance containing "flattened" DOM
  */
 export function flattenDom(content: string, inputPath: string) {
-	const $ = load(content);
+  const $ = load(content);
 
-	$("body [data-include]").each((_, el) => {
-		const replacement = readInclude(el.attribs["data-include"], inputPath);
-		// Replace entire element or children, depending on data-include-replace
-		if (el.attribs["data-include-replace"]) $(el).replaceWith(replacement);
-		else $(el).removeAttr("data-include").html(replacement);
-	});
+  $("body [data-include]").each((_, el) => {
+    const replacement = readInclude(el.attribs["data-include"], inputPath);
+    // Replace entire element or children, depending on data-include-replace
+    if (el.attribs["data-include-replace"]) $(el).replaceWith(replacement);
+    else $(el).removeAttr("data-include").html(replacement);
+  });
 
-	return $;
+  return $;
 }
 
 /**
@@ -61,4 +61,4 @@ export function flattenDom(content: string, inputPath: string) {
  * @see flattenDom
  */
 export const flattenDomFromFile = async (inputPath: string) =>
-	flattenDom(await readFile(inputPath, "utf8"), inputPath);
+  flattenDom(await readFile(inputPath, "utf8"), inputPath);
