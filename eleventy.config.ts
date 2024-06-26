@@ -14,9 +14,6 @@ import {
 import { generateUnderstandingNavMap, getUnderstandingDocs } from "11ty/understanding";
 import type { EleventyContext, EleventyData, EleventyEvent } from "11ty/types";
 
-// Inputs to eventually expose e.g. via environment variables
-/** Takes the place of editors vs. publication distinction */
-const isEditors = false;
 /** Version of WCAG to build */
 const version = "22";
 
@@ -41,36 +38,37 @@ const globalData = {
 
 export type GlobalData = EleventyData &
   typeof globalData & {
-    // Expected data cascade properties from *.11tydata.json
+    // Expected data cascade properties from *.11tydata.js
     headerLabel?: string; // akin to documentset.name in build.xml
     headerUrl?: string;
     isTechniques?: boolean;
     isUnderstanding?: boolean;
   };
 
+const baseUrls = {
+  guidelines: "/guidelines/",
+  techniques: "/techniques/",
+  understanding: "/understanding/",
+};
+
+if (process.env.WCAG_MODE === "editors") {
+  // For pushing to gh-pages
+  baseUrls.guidelines = "https://w3c.github.io/wcag/guidelines/";
+  baseUrls.techniques = "https://w3c.github.io/wcag/techniques/";
+  baseUrls.understanding = "https://w3c.github.io/wcag/understanding/";
+} else if (process.env.WCAG_MODE === "publication") {
+  // For pushing to W3C site
+  baseUrls.guidelines = `https://www.w3.org/TR/WCAG${version}/`;
+  baseUrls.techniques = `https://www.w3.org/WAI/WCAG${version}/Techniques/`;
+  baseUrls.understanding = `https://www.w3.org/WAI/WCAG${version}/Understanding/`;
+}
+
 export default function (eleventyConfig: any) {
   for (const [name, value] of Object.entries(globalData)) eleventyConfig.addGlobalData(name, value);
 
-  eleventyConfig.addGlobalData(
-    "guidelinesUrl",
-    isEditors ? "https://w3c.github.io/wcag/guidelines/" : `https://www.w3.org/TR/WCAG${version}/`
-  );
-
-  // Note: These were ported from build.xml but are currently unused.
-  // They _could_ be used in the linkTechniques / linkUnderstanding filters,
-  // but the XSLT process seemed to produce path-absolute URLs only.
-  eleventyConfig.addGlobalData(
-    "techniquesUrl",
-    isEditors
-      ? "https://w3c.github.io/wcag/techniques/"
-      : `https://www.w3.org/WAI/WCAG/${version}/Techniques/`
-  );
-  eleventyConfig.addGlobalData(
-    "understandingUrl",
-    isEditors
-      ? "https://w3c.github.io/wcag/understanding/"
-      : `https://www.w3.org/WAI/WCAG/${version}/Understanding/`
-  );
+  // Make baseUrls available to templates
+  for (const [name, value] of Object.entries(baseUrls))
+    eleventyConfig.addGlobalData(`${name}Url`, value);
 
   // eleventyComputed data is assigned here rather than in 11tydata files;
   // we have access to typings here, and can keep the latter fully static.
@@ -167,7 +165,7 @@ export default function (eleventyConfig: any) {
           ? "../"
           : this.page.filePathStem.startsWith("/techniques")
             ? ""
-            : "/techniques/";
+            : baseUrls.techniques;
         const label = `${id}: ${technique.truncatedTitle}`;
         return `<a href="${urlBase}${technique.technology}/${id}">${label}</a>`;
       });
@@ -191,7 +189,7 @@ export default function (eleventyConfig: any) {
           }
           const urlBase = this.page.filePathStem.startsWith("/understanding/")
             ? ""
-            : "/understanding/";
+            : baseUrls.understanding;
           const label = `${guideline.num}: ${guideline.name}`;
           return `<a href="${urlBase}${id}">${label}</a>`;
         })
