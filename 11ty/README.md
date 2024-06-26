@@ -54,6 +54,9 @@ Influences base URLs for links to guidelines, techniques, and understanding page
 Influences base URLs for links to guidelines, techniques, and understanding pages.
 Typically set by specific npm scripts or CI processes.
 
+Note that setting `WCAG_MODE` to any non-empty value (even one not listed below) will also result
+in page footers referencing last modified times based on git, rather than the local filesystem.
+
 Possible values:
 
 - Unset **(default)** - Sets base URLs appropriate for local testing
