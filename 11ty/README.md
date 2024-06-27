@@ -5,9 +5,14 @@ XSLT-based build process using Eleventy.
 
 ## Usage
 
-Make sure you have Node.js v20 installed. You can download an installer
-from [https://nodejs.org/en](nodejs.org), or use a tool like
-[https://github.com/Schniz/fnm](fnm) which allows installing multiple versions locally.
+Make sure you have Node.js installed. This has primarily been tested with v20,
+the current LTS at time of writing.
+
+If you use [fnm](https://github.com/Schniz/fnm) or [nvm](https://github.com/nvm-sh/nvm) to manage multiple Node.js versions,
+you can switch to the recommended version by typing `fnm use` or `nvm use`
+(with no additional arguments) while in the repository directory.
+
+Otherwise, you can download an installer from [nodejs.org](https://nodejs.org/).
 
 First, run `npm i` in the root directory of the repository to install dependencies.
 
