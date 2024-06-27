@@ -8,7 +8,7 @@ import { flattenDomFromFile, load } from "./cheerio";
 import { generateId } from "./common";
 
 export type WcagVersion = "20" | "21" | "22";
-function assertIsWcagVersion(v: string): asserts v is WcagVersion {
+export function assertIsWcagVersion(v: string): asserts v is WcagVersion {
   if (!/^2[012]$/.test(v)) throw new Error(`Unexpected version found: ${v}`);
 }
 

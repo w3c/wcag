@@ -3,7 +3,7 @@ import compact from "lodash-es/compact";
 import { copyFile } from "fs/promises";
 
 import { CustomLiquid } from "11ty/CustomLiquid";
-import { actRules, getFlatGuidelines, getPrinciples } from "11ty/guidelines";
+import { actRules, assertIsWcagVersion, getFlatGuidelines, getPrinciples } from "11ty/guidelines";
 import {
   getFlatTechniques,
   getTechniqueAssociations,
@@ -15,7 +15,8 @@ import { generateUnderstandingNavMap, getUnderstandingDocs } from "11ty/understa
 import type { EleventyContext, EleventyData, EleventyEvent } from "11ty/types";
 
 /** Version of WCAG to build */
-const version = "22";
+const version = process.env.WCAG_VERSION || "22";
+assertIsWcagVersion(version);
 
 const principles = await getPrinciples();
 const flatGuidelines = getFlatGuidelines(principles);
@@ -45,6 +46,8 @@ export type GlobalData = EleventyData &
     isUnderstanding?: boolean;
   };
 
+const [GH_ORG, GH_REPO] = (process.env.GITHUB_REPOSITORY || "w3c/wcag").split("/");
+
 const baseUrls = {
   guidelines: `https://www.w3.org/TR/WCAG${version}/`,
   techniques: "/techniques/",
@@ -53,9 +56,11 @@ const baseUrls = {
 
 if (process.env.WCAG_MODE === "editors") {
   // For pushing to gh-pages
-  baseUrls.guidelines = "https://w3c.github.io/wcag/guidelines/";
-  baseUrls.techniques = "https://w3c.github.io/wcag/techniques/";
-  baseUrls.understanding = "https://w3c.github.io/wcag/understanding/";
+  baseUrls.guidelines = `https://${GH_ORG}.github.io/${GH_REPO}/guidelines/${
+    version === "21" ? "" : `${version}/`
+  }`;
+  baseUrls.techniques = `https://${GH_ORG}.github.io/${GH_REPO}/techniques/`;
+  baseUrls.understanding = `https://${GH_ORG}.github.io/${GH_REPO}/understanding/`;
 } else if (process.env.WCAG_MODE === "publication") {
   // For pushing to W3C site
   baseUrls.guidelines = `https://www.w3.org/TR/WCAG${version}/`;
