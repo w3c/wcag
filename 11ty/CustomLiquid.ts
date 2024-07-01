@@ -387,7 +387,7 @@ export class CustomLiquid extends Liquid {
           const $el = $(el);
           const termName = extractTermName($el);
           $el
-            .attr("href", `${scope.guidelinesUrl}#${termName ? termsMap[termName].id : ""}`)
+            .attr("href", `${scope.guidelinesUrl}#${termName ? termsMap[termName].trId : ""}`)
             .attr("target", "terms");
         });
       } else if (scope.isUnderstanding) {

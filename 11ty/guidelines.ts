@@ -186,8 +186,11 @@ export type FlatGuidelinesMap = ReturnType<typeof getFlatGuidelines>;
 
 interface Term {
   definition: string;
+  /** generated id for use in Understanding pages */
   id: string;
   name: string;
+  /** id of dfn in TR, which matches original id in terms file */
+  trId: string;
 }
 
 /**
@@ -201,11 +204,12 @@ export async function getTermsMap() {
   $("dfn").each((_, el) => {
     const $el = $(el);
     const term: Term = {
-      // Note: All applicable <dfn>s seem to have explicit id attributes,
+      // Note: All applicable <dfn>s have explicit id attributes for TR,
       // but the XSLT process generates id from the element's text which is not always the same
       id: `dfn-${generateId($el.text())}`,
       definition: getContentHtml($el.parent().next()),
       name: $el.text().toLowerCase(),
+      trId: el.attribs.id,
     };
 
     const names = [term.name].concat((el.attribs["data-lt"] || "").toLowerCase().split("|"));
