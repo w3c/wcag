@@ -46,7 +46,7 @@ export type GlobalData = EleventyData &
   };
 
 const baseUrls = {
-  guidelines: "/guidelines/",
+  guidelines: `https://www.w3.org/TR/WCAG${version}/`,
   techniques: "/techniques/",
   understanding: "/understanding/",
 };
