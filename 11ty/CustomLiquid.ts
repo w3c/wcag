@@ -363,7 +363,7 @@ export class CustomLiquid extends Liquid {
           );
         } else {
           $title.text(
-            $title.text().replace(/WCAG 2\b/, `WCAG ${scope.versionDecimal}`) + titleSuffix
+            $title.text().replace(/WCAG 2( |$)/, `WCAG ${scope.versionDecimal}$1`) + titleSuffix
           );
         }
       }
