@@ -71,7 +71,7 @@ export const resolveTechniqueIdFromHref = (href: string) =>
 /**
  * Selector that can detect relative and absolute technique links from understanding docs
  */
-export const understandingTechniqueLinkSelector = [
+export const understandingToTechniqueLinkSelector = [
   "[href^='../Techniques/' i]",
   "[href^='../../techniques/' i]",
   "[href^='https://www.w3.org/WAI/WCAG' i][href*='/Techniques/' i]",
@@ -106,11 +106,11 @@ export async function getTechniqueAssociations(guidelines: FlatGuidelinesMap) {
       const queryNonNestedChildren = ($el: Cheerio<any>, selector: string) =>
         $el.find(selector).filter((_, aEl) => $(aEl).closest("li")[0] === $el[0]);
 
-      const $techniqueLinks = queryNonNestedChildren($liEl, understandingTechniqueLinkSelector);
+      const $techniqueLinks = queryNonNestedChildren($liEl, understandingToTechniqueLinkSelector);
       $techniqueLinks.each((_, aEl) => {
         const usageParentIds = queryNonNestedChildren(
           $parentListItem,
-          understandingTechniqueLinkSelector
+          understandingToTechniqueLinkSelector
         )
           .toArray()
           .map((el) => resolveTechniqueIdFromHref(el.attribs.href));

@@ -2,6 +2,16 @@ import { resolveDecimalVersion } from "./common";
 import type { DocNode, Principle, WcagVersion } from "./guidelines";
 
 /**
+ * Selector that can detect relative and absolute understanding links from techniques docs
+ */
+export const techniqueToUnderstandingLinkSelector = [
+  "[href^='../../Understanding/' i]",
+  "[href^='https://www.w3.org/WAI/WCAG' i][href*='/Understanding/' i]",
+]
+  .map((value) => `a${value}`)
+  .join(", ") as "a";
+
+/**
  * Resolves information for top-level understanding pages;
  * ported from generate-structure-xml.xslt
  */

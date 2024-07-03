@@ -11,7 +11,8 @@ import type { GlobalData } from "eleventy.config";
 import { flattenDom, load } from "./cheerio";
 import { generateId } from "./common";
 import { getTermsMap } from "./guidelines";
-import { resolveTechniqueIdFromHref, understandingTechniqueLinkSelector } from "./techniques";
+import { resolveTechniqueIdFromHref, understandingToTechniqueLinkSelector } from "./techniques";
+import { techniqueToUnderstandingLinkSelector } from "./understanding";
 
 const titleSuffix = " | WAI | W3C";
 
@@ -267,7 +268,7 @@ export class CustomLiquid extends Liquid {
           $("section#resources h2").after(generateIncludes("understanding/intro/resources"));
 
           // Expand techniques links to always include title
-          $(understandingTechniqueLinkSelector).each((_, el) => expandTechniqueLink($(el)));
+          $(understandingToTechniqueLinkSelector).each((_, el) => expandTechniqueLink($(el)));
 
           // Add key terms by default, to be removed in #parse if there are no terms
           $("body").append(generateIncludes("understanding/key-terms"));
@@ -368,6 +369,12 @@ export class CustomLiquid extends Liquid {
               "and authors are encouraged to use HTML for accessible web content.</em></p>"
           );
         }
+
+        // Update understanding links to always use base URL
+        // (mainly to avoid any case-sensitivity issues)
+        $(techniqueToUnderstandingLinkSelector).each((_, el) => {
+          el.attribs.href = el.attribs.href.replace(/^.*\//, scope.understandingUrl);
+        });
       } else if (scope.isUnderstanding) {
         const $title = $("title");
         if (scope.guideline) {
