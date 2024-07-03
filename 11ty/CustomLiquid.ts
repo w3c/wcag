@@ -306,6 +306,8 @@ export class CustomLiquid extends Liquid {
     if (!indexPattern.test(scope.page.inputPath)) {
       if (scope.isTechniques) {
         $("title").text(`${scope.technique.id}: ${scope.technique.title}${titleSuffix}`);
+        const aboutBoxSelector = "section#technique .box-i";
+
         // Strip applicability paragraphs with metadata IDs (e.g. H99)
         $("section#applicability").find("p#id, p#technology, p#type").remove();
         // Check for custom applicability paragraph before removing the section
@@ -351,9 +353,21 @@ export class CustomLiquid extends Liquid {
             "This technique relates to:", // Redundant of auto-generated content
           ];
           if (excludes.every((exclude) => !additionalApplicabilityText.includes(exclude)))
-            $additionalApplicability.appendTo("section#technique .box-i");
+            $additionalApplicability.appendTo(aboutBoxSelector);
         }
         $("section#applicability").remove();
+
+        if (scope.technique.technology === "flash") {
+          $(aboutBoxSelector).append(
+            "<p><em>Note: Adobe has plans to stop updating and distributing the Flash Player at the end of 2020, " +
+              "and encourages authors interested in creating accessible web content to use HTML.</em></p>"
+          );
+        } else if (scope.technique.technology === "silverlight") {
+          $(aboutBoxSelector).append(
+            "<p><em>Note: Microsoft has stopped updating and distributing Silverlight, " +
+              "and authors are encouraged to use HTML for accessible web content.</em></p>"
+          );
+        }
       } else if (scope.isUnderstanding) {
         const $title = $("title");
         if (scope.guideline) {

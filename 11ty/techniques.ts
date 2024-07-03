@@ -16,11 +16,13 @@ export const technologyTitles = {
   "client-side-script": "Client-Side Script Techniques",
   css: "CSS Techniques",
   failures: "Common Failures",
+  flash: "Flash Techniques", // Deprecated in 2020
   general: "General Techniques",
   html: "HTML Techniques",
   pdf: "PDF Techniques",
   "server-side-script": "Server-Side Script Techniques",
   smil: "SMIL Techniques",
+  silverlight: "Silverlight Techniques", // Deprecated in 2020
   text: "Plain-Text Techniques",
 };
 type Technology = keyof typeof technologyTitles;
