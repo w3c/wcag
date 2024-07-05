@@ -519,22 +519,28 @@ export class CustomLiquid extends Liquid {
       });
     }
 
-    // Generate table of contents after parsing and rendering,
-    // when we have sections and sidebar skeleton already reordered
-    const $tocList = $(".sidebar nav ul");
     // Allow autogenerating missing top-level section IDs in understanding docs,
     // but don't pick up incorrectly-nested sections in some techniques pages (e.g. H91)
     const sectionSelector = scope.isUnderstanding ? "section" : "section[id]";
     const sectionH2Selector = "h2:first-child";
-    $(`${sectionSelector}:has(${sectionH2Selector})`).each((_, el) => {
-      if (!el.attribs.id) el.attribs.id = generateId($(el).find(sectionH2Selector).text());
-      $("<a></a>")
-        .attr("href", `#${el.attribs.id}`)
-        .text(normalizeTocLabel($(el).find(sectionH2Selector).text()))
-        .appendTo($tocList)
-        .wrap("<li></li>");
-      $tocList.append("\n");
-    });
+    const $h2Sections = $(`${sectionSelector}:has(${sectionH2Selector})`);
+    if ($h2Sections.length) {
+      // Generate table of contents after parsing and rendering,
+      // when we have sections and sidebar skeleton already reordered
+      const $tocList = $(".sidebar nav ul");
+      $h2Sections.each((_, el) => {
+        if (!el.attribs.id) el.attribs.id = generateId($(el).find(sectionH2Selector).text());
+        $("<a></a>")
+          .attr("href", `#${el.attribs.id}`)
+          .text(normalizeTocLabel($(el).find(sectionH2Selector).text()))
+          .appendTo($tocList)
+          .wrap("<li></li>");
+        $tocList.append("\n");
+      });
+    } else {
+      // Remove ToC sidebar that was added in #parse if there's nothing to list in it
+      $(".sidebar").remove();
+    }
 
     // Autogenerate remaining IDs after constructing table of contents.
     // NOTE: This may overwrite some IDs set in HTML (for techniques examples),
