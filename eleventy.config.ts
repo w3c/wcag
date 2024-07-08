@@ -130,11 +130,6 @@ export default function (eleventyConfig: any) {
     await copyFile(`${dir.input}/css/base.css`, `${dir.output}/understanding/base.css`);
   });
 
-  const dir = {
-    // TODO: uncomment when we're ready to output to the same place as build.xml
-    // output: "output",
-  };
-
   eleventyConfig.setLibrary(
     "liquid",
     new CustomLiquid({
@@ -210,6 +205,4 @@ export default function (eleventyConfig: any) {
 
   // Suppress default build output that prints every path, to make our own output clearly visible
   eleventyConfig.setQuietMode(true);
-
-  return { dir };
 }
