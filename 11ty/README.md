@@ -28,6 +28,38 @@ Maintenance tasks (for working with Eleventy config and supporting files under t
 - `npm run check` checks for TypeScript errors
 - `npm run fmt` formats all TypeScript files
 
+## Environment Variables
+
+### `WCAG_CVSDIR`
+
+**Usage context:** `publish-w3c` script only
+
+Indicates top-level path of W3C CVS checkout, for WAI site updates (via `publish-w3c` script).
+
+**Default:** `../../../w3ccvs` (same as in Ant/XSLT build process)
+
+### `WCAG_VERSION`
+
+**Usage context:** `publish-w3c` script only;
+this should currently not be changed, pending future improvements to `21` support.
+
+Indicates WCAG version being built, in `XY` format (i.e. no `.`)
+
+**Default:** `22`
+
+### `WCAG_MODE`
+
+**Usage context:** should not need to be used manually except in specific testing scenarios
+
+Influences base URLs for links to guidelines, techniques, and understanding pages.
+Typically set by specific npm scripts or CI processes.
+
+Possible values:
+
+- Unset **(default)** - Sets base URLs appropriate for local testing
+- `editors` - Sets base URLs appropriate for `gh-pages` publishing; used by deploy action
+- `publication` - Sets base URLs appropriate for WAI site publishing; used by `publish-w3c` script
+
 ## Other points of interest
 
 - The main configuration can be found in top-level `eleventy.config.ts`
