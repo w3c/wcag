@@ -12,6 +12,9 @@ import {
   assertIsWcagVersion,
   getFlatGuidelines,
   getPrinciples,
+  getPrinciplesForVersion,
+  scOverrides,
+  type FlatGuidelinesMap,
   type Guideline,
   type Principle,
   type SuccessCriterion,
@@ -46,23 +49,51 @@ const isTechniqueObsolete = (technique: Technique | undefined) =>
 const isGuidelineObsolete = (guideline: Principle | Guideline | SuccessCriterion | undefined) =>
   guideline?.type === "SC" && guideline.level === "";
 
-const principles = await getPrinciples();
+/** Tree of Principles/Guidelines/SC across all versions (including later than selected) */
+const allPrinciples = await getPrinciples();
+/** Flattened Principles/Guidelines/SC across all versions (including later than selected) */
+const allFlatGuidelines = getFlatGuidelines(allPrinciples);
+
+/** Tree of Principles/Guidelines/SC relevant to selected version */
+const principles = getPrinciplesForVersion(allPrinciples, version);
+/** Flattened Principles/Guidelines/SC relevant to selected version */
 const flatGuidelines = getFlatGuidelines(principles);
+/** Flattened Principles/Guidelines/SC that only exist in later versions (to filter techniques) */
+const futureGuidelines: FlatGuidelinesMap = {};
+for (const [key, value] of Object.entries(allFlatGuidelines)) {
+  if (value.version > version) futureGuidelines[key] = value;
+}
+
 const techniques = await getTechniquesByTechnology();
 const flatTechniques = getFlatTechniques(techniques);
 
-for (const [technology, list] of Object.entries(techniques)) {
-  // Prune obsolete techniques from ToC
-  techniques[technology as Technology] = list.filter(
-    (technique) => !technique.obsoleteSince || technique.obsoleteSince > version
-  );
-}
-
+/** Maps technique IDs to SCs found in target version */
 const techniqueAssociations = await getTechniqueAssociations(flatGuidelines);
 for (const [id, associations] of Object.entries(techniqueAssociations)) {
   // Prune associations from non-obsolete techniques to obsolete SCs
   techniqueAssociations[id] = associations.filter(
     ({ criterion }) => criterion.level !== "" || isTechniqueObsolete(flatTechniques[id])
+  );
+}
+/** Maps technique IDs to SCs only found in later versions */
+const futureTechniqueAssociations = await getTechniqueAssociations(futureGuidelines);
+/** Subset of futureTechniqueAssociations not overlapping with techniqueAssociations */
+const futureExclusiveTechniqueAssociations: typeof techniqueAssociations = {};
+
+for (const [id, associations] of Object.entries(futureTechniqueAssociations)) {
+  if (!techniqueAssociations[id]) futureExclusiveTechniqueAssociations[id] = associations;
+}
+const skippedTechniques = Object.keys(futureExclusiveTechniqueAssociations).sort().join(", ");
+if (skippedTechniques)
+  console.log(`Skipping techniques that only reference later-version SCs: ${skippedTechniques}`);
+
+for (const [technology, list] of Object.entries(techniques)) {
+  // Prune techniques that are obsolete or associated with SCs from later versions
+  // (only prune hierarchical structure for ToC; keep all in flatTechniques for lookups)
+  techniques[technology as Technology] = list.filter(
+    (technique) =>
+      (!technique.obsoleteSince || technique.obsoleteSince > version) &&
+      !futureExclusiveTechniqueAssociations[technique.id]
   );
 }
 
@@ -111,6 +142,16 @@ if (process.env.WCAG_MODE === "editors") {
   baseUrls.understanding = `https://www.w3.org/WAI/WCAG${version}/Understanding/`;
 }
 
+/** Applies any overridden SC IDs to incoming Understanding fileSlugs */
+function resolveUnderstandingFileSlug(fileSlug: string) {
+  if (fileSlug in scOverrides) {
+    assertIsWcagVersion(version);
+    const { id } = scOverrides[fileSlug](version);
+    if (id) return id;
+  }
+  return fileSlug;
+}
+
 export default function (eleventyConfig: any) {
   for (const [name, value] of Object.entries(globalData)) eleventyConfig.addGlobalData(name, value);
 
@@ -127,13 +168,22 @@ export default function (eleventyConfig: any) {
   // we have access to typings here, and can keep the latter fully static.
   eleventyConfig.addGlobalData("eleventyComputed", {
     // permalink determines output structure; see https://www.11ty.dev/docs/permalinks/
-    permalink: ({ page, isUnderstanding }: GlobalData) => {
+    permalink: ({ page, isTechniques, isUnderstanding }: GlobalData) => {
       if (page.inputPath === "./index.html" && process.env.WCAG_MODE) return false;
-      if (isUnderstanding) {
+      if (isTechniques) {
+        if (futureExclusiveTechniqueAssociations[page.fileSlug]) return false;
+      } else if (isUnderstanding) {
         // understanding-metadata.html exists in 2 places; top-level wins in XSLT process
         if (/\/20\/understanding-metadata/.test(page.inputPath)) return false;
-        // Flatten pages into top-level directory, out of version subdirectories
-        return page.inputPath.replace(/\/2\d\//, "/");
+
+        // Exclude files from newer versions than what's being built
+        if (page.fileSlug in flatGuidelines && flatGuidelines[page.fileSlug].version > version)
+          return false;
+
+        // Flatten pages into top-level directory, out of version subdirectories.
+        // Revise any filename that differs between versions, reusing data from guidelines.ts
+        if (page.fileSlug in allFlatGuidelines)
+          return `understanding/${resolveUnderstandingFileSlug(page.fileSlug)}.html`;
       }
       // Preserve existing structure: write to x.html instead of x/index.html
       return page.inputPath;
@@ -150,13 +200,14 @@ export default function (eleventyConfig: any) {
 
     // Data for individual technique pages
     technique: ({ page, isTechniques }: GlobalData) =>
+      // Reference unfiltered map to avoid breaking non-emitted (but still processed) pages
       isTechniques ? flatTechniques[page.fileSlug] : null,
     techniqueAssociations: ({ page, isTechniques }: GlobalData) =>
       isTechniques ? techniqueAssociations[page.fileSlug] : null,
 
     // Data for individual understanding pages
     guideline: ({ page, isUnderstanding }: GlobalData) =>
-      isUnderstanding ? flatGuidelines[page.fileSlug] : null,
+      isUnderstanding ? flatGuidelines[resolveUnderstandingFileSlug(page.fileSlug)] : null,
   });
 
   // See https://www.11ty.dev/docs/copy/#emulate-passthrough-copy-during-serve

@@ -49,12 +49,14 @@ but may be useful if you're not seeing what you expect in the output files.
 
 ### `WCAG_VERSION`
 
-**Usage context:** currently this should not be changed, pending future improvements to `21` support
+**Usage context:** for building older versions of techniques and understanding docs
 
 Indicates WCAG version being built, in `XY` format (i.e. no `.`).
-Influences base URLs for links to guidelines, techniques, and understanding pages.
+Influences which pages get included, and a few details within pages
+(e.g. titles/URLs, "New in ..." sentences).
+Also influences base URLs for links to guidelines, techniques, and understanding pages.
 
-**Default:** `22`
+Possible values: `22` **(default)**, `21`
 
 ### `WCAG_MODE`
 
