@@ -52,8 +52,8 @@ but may be useful if you're not seeing what you expect in the output files.
 **Usage context:** for building older versions of techniques and understanding docs
 
 Indicates WCAG version being built, in `XY` format (i.e. no `.`).
-Influences which pages get included, and a few details within pages
-(e.g. titles/URLs, "New in ..." sentences).
+Influences which pages get included, guideline/SC content,
+and a few details within pages (e.g. titles/URLs, "New in ..." content).
 Also influences base URLs for links to guidelines, techniques, and understanding pages.
 
 Possible values: `22` **(default)**, `21`
@@ -88,6 +88,6 @@ when `WCAG_MODE=editors` is also set.
 - The main configuration can be found in top-level `eleventy.config.ts`
 - Build commands are defined in top-level `package.json` under `scripts`,
   and can be run via `npm run <name>`
-- If you see files named `*.11tydata.js`, these contribute data to the Eleventy build
+- If you see files named `*.11tydata.*`, these contribute data to the Eleventy build
   (see Template and Directory Data files under
   [Sources of Data](https://www.11ty.dev/docs/data/#sources-of-data))
