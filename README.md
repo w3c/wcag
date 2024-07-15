@@ -179,13 +179,4 @@ To create a working example:
 
 ## Translations
 
-WCAG 2.2 is ready for translation. To translate WCAG 2.2, ensure you are set up to use [GitHub](https://github.com/), then:
-
-* [Fork](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo) the w3c/wcag repository.
-* Change to the [branch](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/about-branches) "WCAG-2.2".
-* Create a new branch from this branch.
-* Translate all user-oriented content in the "guidelines" folder, including the sub-folders. User-oriented content includes text in elements, and attributes such as "title" and "alt" that provide content to users. **Leave other markup as is.**
-* Load the index.html document in a modern browser and allow the script to compile the content and format it.
-* Activate the "Respec" link in the top right corner, and choose "Export...", then the "HTML" option.
-* Edit the resulting file to translate text that was inserted by the script.
-* Edit the file to meet the requirements of the [W3C Authorized Translations](https://www.w3.org/2005/02/TranslationPolicy) process. 
+WCAG 2.2 is ready for translation. To translate WCAG 2.2, follow instructions at [How to Translate WCAG 2](https://www.w3.org/WAI/about/translating/wcag/).
