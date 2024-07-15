@@ -13,7 +13,7 @@ import {
   getFlatGuidelines,
   getPrinciples,
   getPrinciplesForVersion,
-  scOverrides,
+  scSlugOverrides,
   type FlatGuidelinesMap,
   type Guideline,
   type Principle,
@@ -55,7 +55,9 @@ const allPrinciples = await getPrinciples();
 const allFlatGuidelines = getFlatGuidelines(allPrinciples);
 
 /** Tree of Principles/Guidelines/SC relevant to selected version */
-const principles = getPrinciplesForVersion(allPrinciples, version);
+const principles = process.env.WCAG_VERSION
+  ? await getPrinciplesForVersion(version)
+  : allPrinciples;
 /** Flattened Principles/Guidelines/SC relevant to selected version */
 const flatGuidelines = getFlatGuidelines(principles);
 /** Flattened Principles/Guidelines/SC that only exist in later versions (to filter techniques) */
@@ -144,10 +146,9 @@ if (process.env.WCAG_MODE === "editors") {
 
 /** Applies any overridden SC IDs to incoming Understanding fileSlugs */
 function resolveUnderstandingFileSlug(fileSlug: string) {
-  if (fileSlug in scOverrides) {
+  if (fileSlug in scSlugOverrides) {
     assertIsWcagVersion(version);
-    const { id } = scOverrides[fileSlug](version);
-    if (id) return id;
+    return scSlugOverrides[fileSlug](version);
   }
   return fileSlug;
 }
@@ -176,14 +177,14 @@ export default function (eleventyConfig: any) {
         // understanding-metadata.html exists in 2 places; top-level wins in XSLT process
         if (/\/20\/understanding-metadata/.test(page.inputPath)) return false;
 
-        // Exclude files from newer versions than what's being built
-        if (page.fileSlug in flatGuidelines && flatGuidelines[page.fileSlug].version > version)
-          return false;
+        if (page.fileSlug in allFlatGuidelines) {
+          // Exclude files not present in the version being built
+          if (!flatGuidelines[page.fileSlug]) return false;
 
-        // Flatten pages into top-level directory, out of version subdirectories.
-        // Revise any filename that differs between versions, reusing data from guidelines.ts
-        if (page.fileSlug in allFlatGuidelines)
+          // Flatten pages into top-level directory, out of version subdirectories.
+          // Revise any filename that differs between versions, reusing data from guidelines.ts
           return `understanding/${resolveUnderstandingFileSlug(page.fileSlug)}.html`;
+        }
       }
       // Preserve existing structure: write to x.html instead of x/index.html
       return page.inputPath;

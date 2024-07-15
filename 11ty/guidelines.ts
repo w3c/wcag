@@ -1,4 +1,5 @@
-import type { Cheerio, Element } from "cheerio";
+import axios from "axios";
+import type { Cheerio, CheerioAPI, Element } from "cheerio";
 import { glob } from "glob";
 
 import { readFile } from "fs/promises";
@@ -34,10 +35,10 @@ export const actRules = (
 )["act-rules"];
 
 /**
- * Returns an object mapping each existing WCAG 2 SC slug to the earliest WCAG version it applies to.
- * (Functionally equivalent to "guidelines-versions" target in build.xml, structurally inverted)
+ * Flattened object hash, mapping each WCAG 2 SC slug to the earliest WCAG version it applies to.
+ * (Functionally equivalent to "guidelines-versions" target in build.xml; structurally inverted)
  */
-async function getSuccessCriteriaVersions() {
+const scVersions = await (async function () {
   const paths = await glob("*/*.html", { cwd: "understanding" });
   const map: Record<string, WcagVersion> = {};
 
@@ -48,7 +49,7 @@ async function getSuccessCriteriaVersions() {
   }
 
   return map;
-}
+})();
 
 export interface DocNode {
   id: string;
@@ -86,47 +87,55 @@ export function isSuccessCriterion(criterion: any): criterion is SuccessCriterio
   return !!(criterion?.type === "SC" && "level" in criterion);
 }
 
-/** Defines version-dependent partial overrides of SC metadata for older versions. */
-export const scOverrides: Record<string, (version: WcagVersion) => Partial<SuccessCriterion>> = {
-  parsing: (version) => (version < "22" ? { level: "A", name: "Parsing" } : {}),
-  "target-size-enhanced": (version) =>
-    version < "22" ? { id: "target-size", name: "Target Size" } : {},
+/** Version-dependent overrides of SC shortcodes for older versions */
+export const scSlugOverrides: Record<string, (version: WcagVersion) => string> = {
+  "target-size-enhanced": (version) => (version < "22" ? "target-size" : "target-size-enhanced"),
 };
 
+/** Selectors ignored when capturing content of each Principle / Guideline / SC */
+const contentIgnores = [
+  "h1, h2, h3, h4, h5, h6",
+  "section",
+  ".change",
+  ".conformance-level",
+  // Selectors below are specific to pre-published guidelines (for previous versions)
+  ".header-wrapper",
+  ".doclinks",
+];
+
 /**
- * Returns HTML content used for Understanding guideline/SC boxes.
+ * Returns HTML content used for Understanding guideline/SC boxes and term definitions.
  * @param $el Cheerio element of the full section from flattened guidelines/index.html
  */
 const getContentHtml = ($el: Cheerio<Element>) => {
   // Load HTML into a new instance, remove elements we don't want, then return the remainder
   const $ = load($el.html()!, null, false);
-  $("h1, h2, h3, h4, h5, h6, section, .change, .conformance-level").remove();
-  return $.html();
+  $(contentIgnores.join(", ")).remove();
+  return $.html().trim();
 };
 
-/**
- * Resolves information from guidelines/index.html;
- * comparable to the principles section of wcag.xml from the guidelines-xml Ant task.
- */
-export async function getPrinciples() {
-  const versions = await getSuccessCriteriaVersions();
-  const $ = await flattenDomFromFile("guidelines/index.html");
-
+/** Performs processing common across WCAG versions */
+function processPrinciples($: CheerioAPI) {
   const principles: Principle[] = [];
   $(".principle").each((i, el) => {
     const guidelines: Guideline[] = [];
-    $(".guideline", el).each((j, guidelineEl) => {
+    $("> .guideline", el).each((j, guidelineEl) => {
       const successCriteria: SuccessCriterion[] = [];
-      $(".sc", guidelineEl).each((k, scEl) => {
+      // Source uses sc class, published uses guideline class (again)
+      $("> .guideline, > .sc", guidelineEl).each((k, scEl) => {
         const scId = scEl.attribs.id;
         successCriteria.push({
           content: getContentHtml($(scEl)),
           id: scId,
           name: $("h4", scEl).text().trim(),
           num: `${i + 1}.${j + 1}.${k + 1}`,
-          level: $("p.conformance-level", scEl).text().trim() as SuccessCriterion["level"],
+          // conformance-level contains only letters in source, full (Level ...) in publish
+          level: $("p.conformance-level", scEl)
+            .text()
+            .trim()
+            .replace(/^\(Level (.*)\)$/, "$1") as SuccessCriterion["level"],
           type: "SC",
-          version: versions[scId],
+          version: scVersions[scId],
         });
       });
 
@@ -156,28 +165,39 @@ export async function getPrinciples() {
 }
 
 /**
- * Given an unfiltered principles array and a target WCAG version,
- * applies version-specific patches and filters out irrelevant Guidelines/SC.
- * @param allPrinciples Unfiltered principles array from getPrinciples
- * @param version WCAG version to filter and patch principles data for
- * @returns
+ * Resolves information from guidelines/index.html;
+ * comparable to the principles section of wcag.xml from the guidelines-xml Ant task.
  */
-export function getPrinciplesForVersion(allPrinciples: Principle[], version: WcagVersion) {
-  return allPrinciples.map((principle) => ({
-    ...principle,
-    guidelines: principle.guidelines
-      .filter((guideline) => guideline.version <= version)
-      .map((guideline) => ({
-        ...guideline,
-        successCriteria: guideline.successCriteria
-          .filter((sc) => sc.version <= version)
-          .map((sc) => ({
-            ...sc,
-            ...(sc.id in scOverrides && scOverrides[sc.id](version)),
-          })),
-      })),
-  }));
-}
+export const getPrinciples = async () =>
+  processPrinciples(await flattenDomFromFile("guidelines/index.html"));
+
+/**
+ * Retrieves and processes a pinned WCAG version using published guidelines.
+ */
+export const getPrinciplesForVersion = async (version: WcagVersion) => {
+  const $ = load(
+    (await axios.get(`https://www.w3.org/TR/WCAG${version}/`, { responseType: "text" })).data
+  );
+
+  // Re-collapse definition links and notes, to be processed by this build system
+  $(".guideline a.internalDFN").removeAttr("class data-link-type id href title");
+  $(".guideline [role='note'] .marker").remove();
+  $(".guideline [role='note']").find("> div, > p").addClass("note").unwrap();
+
+  // Bibliography references are not processed in Understanding SC boxes
+  $(".guideline cite:has(a.bibref:only-child)").each((_, el) => {
+    const $el = $(el);
+    const $parent = $el.parent();
+    $el.remove();
+    // Remove surrounding square brackets (which aren't in a dedicated element)
+    $parent.html($parent.html()!.replace(/ \[\]/g, ""));
+  });
+
+  // Remove extra markup from headings so they can be parsed for names
+  $("bdi").remove();
+
+  return processPrinciples($);
+};
 
 /**
  * Returns a flattened object hash, mapping shortcodes to each principle/guideline/SC.

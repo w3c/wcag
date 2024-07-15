@@ -52,8 +52,8 @@ but may be useful if you're not seeing what you expect in the output files.
 **Usage context:** for building older versions of techniques and understanding docs
 
 Indicates WCAG version being built, in `XY` format (i.e. no `.`).
-Influences which pages get included, and a few details within pages
-(e.g. titles/URLs, "New in ..." sentences).
+Influences which pages get included, guideline/SC content,
+and a few details within pages (e.g. titles/URLs, "New in ..." content).
 Also influences base URLs for links to guidelines, techniques, and understanding pages.
 
 Possible values: `22` **(default)**, `21`
