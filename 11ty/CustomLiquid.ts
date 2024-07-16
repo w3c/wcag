@@ -499,7 +499,8 @@ export class CustomLiquid extends Liquid {
     // (This is also needed for techniques/about)
     $("div.note").each((_, el) => {
       const $el = $(el);
-      $el.replaceWith(`<div class="note">
+      const classes = el.attribs.class;
+      $el.replaceWith(`<div class="${classes}">
 				<p class="note-title marker">Note</p>
 				<div>${$el.html()}</div>
 			</div>`);
@@ -507,7 +508,8 @@ export class CustomLiquid extends Liquid {
     // Handle p variant after div (the reverse would double-process)
     $("p.note").each((_, el) => {
       const $el = $(el);
-      $el.replaceWith(`<div class="note">
+      const classes = el.attribs.class;
+      $el.replaceWith(`<div class="${classes}">
 				<p class="note-title marker">Note</p>
 				<p>${$el.html()}</p>
 			</div>`);
@@ -525,13 +527,19 @@ export class CustomLiquid extends Liquid {
     // Handle new-in-version content
     $("[class^='wcag']").each((_, el) => {
       // Just like the XSLT process, this naively assumes that version numbers are the same length
-      const classVersion = +el.attribs.class.replace(/^wcag/, "");
-      const buildVersion = +scope.version;
+      const classMatch = el.attribs.class.match(/\bwcag(\d\d)\b/);
+      if (!classMatch) throw new Error(`Invalid wcagXY class found: ${el.attribs.class}`);
+      const classVersion = +classMatch[1];
       if (isNaN(classVersion)) throw new Error(`Invalid wcagXY class found: ${el.attribs.class}`);
+      const buildVersion = +scope.version;
+
       if (classVersion > buildVersion) {
         $(el).remove();
       } else if (classVersion === buildVersion) {
-        $(el).prepend(`<span class="new-version">New in WCAG ${scope.versionDecimal}: </span>`);
+        if (/\bnote\b/.test(el.attribs.class))
+          $(el).find(".marker").append(` (new in WCAG ${scope.versionDecimal})`);
+        else
+          $(el).prepend(`<span class="new-version">New in WCAG ${scope.versionDecimal}: </span>`);
       }
       // Output as-is if content pertains to a version older than what's being built
     });
