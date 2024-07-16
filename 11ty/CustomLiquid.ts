@@ -389,9 +389,12 @@ export class CustomLiquid extends Liquid {
             `Understanding ${type} ${scope.guideline.num}: ${scope.guideline.name}${titleSuffix}`
           );
         } else {
-          $title.text(
-            $title.text().replace(/WCAG 2( |$)/, `WCAG ${scope.versionDecimal}$1`) + titleSuffix
-          );
+          // Update WCAG version in title and top-level heading in other understanding docs
+          const wcagPattern = /WCAG 2(?:\.\d)?( |$)/;
+          const wcagReplacement = `WCAG ${scope.versionDecimal}$1`;
+          $title.text($title.text().replace(wcagPattern, wcagReplacement) + titleSuffix);
+          const $h1 = $("h1");
+          $h1.text($h1.text().replace(wcagPattern, wcagReplacement));
         }
 
         // Remove Techniques section from obsolete SCs (e.g. Parsing in 2.2)
