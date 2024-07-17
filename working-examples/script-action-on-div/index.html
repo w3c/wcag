@@ -3,7 +3,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
  <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
  <head>
- <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+ <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
  <title>Creating Divs with Actions using JavaScript</title>
 <style type="text/css" media="screen">
 #active {
@@ -28,8 +28,8 @@
    } else if (event) {
      key = event.keyCode;
    }
-   // Was the Enter key pressed?
-   if (key == 13) {
+   // Was the Enter or Space key pressed?
+   if (key == 13 || key == 32) {
      return doSomething(event);
    } 
    // The event has not been handled, so return true
@@ -42,9 +42,7 @@
    // get the div object
    var active=document.getElementById("active");
    // assign the onclick handler to the object.
-   // It is important to return false from the onclick handler to prevent the href attribute
-   // from being followed after the function returns.
-   active.onclick=doSomething;
+      active.onclick=doSomething;
    // assign the onkeyup handler to the object.
    active.onkeyup=doSomethingOnEnter;
  }
@@ -54,9 +52,11 @@
  <body onload="setUpActions();">
  <p>Here is the link to modify with a javascript action:</p>
  <div>
-  <span id="active" tabindex="0">Do Something</span>
+  <span id="active" tabindex="0" role="button">Do Something</span>
  </div>
-<br />
+<br/>
+ <div aria-live="polite"> 
  <div id="message" style="display:none">Hello, world!</div>
+ </div>
  </body>
  </html>
