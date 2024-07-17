@@ -40,16 +40,16 @@ Indicates top-level path of W3C CVS checkout, for WAI site updates (via `publish
 
 ### `WCAG_VERSION`
 
-**Usage context:** `publish-w3c` script only;
-this should currently not be changed, pending future improvements to `21` support.
+**Usage context:** currently this should not be changed, pending future improvements to `21` support
 
-Indicates WCAG version being built, in `XY` format (i.e. no `.`)
+Indicates WCAG version being built, in `XY` format (i.e. no `.`).
+Influences base URLs for links to guidelines, techniques, and understanding pages.
 
 **Default:** `22`
 
 ### `WCAG_MODE`
 
-**Usage context:** should not need to be used manually except in specific testing scenarios
+**Usage context:** should not need to be set manually except in specific testing scenarios
 
 Influences base URLs for links to guidelines, techniques, and understanding pages.
 Typically set by specific npm scripts or CI processes.
@@ -59,6 +59,15 @@ Possible values:
 - Unset **(default)** - Sets base URLs appropriate for local testing
 - `editors` - Sets base URLs appropriate for `gh-pages` publishing; used by deploy action
 - `publication` - Sets base URLs appropriate for WAI site publishing; used by `publish-w3c` script
+
+### `GITHUB_REPOSITORY`
+
+**Usage context:** Automatically set during GitHub workflows; should not need to be set manually
+
+Influences base URLs for links to guidelines, techniques, and understanding pages,
+when `WCAG_MODE=editors` is also set.
+
+**Default:** `w3c/wcag`
 
 ## Other points of interest
 
