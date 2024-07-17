@@ -81,6 +81,7 @@ export interface Principle extends DocNode {
   num: `${number}`; // typed as string for consistency with guidelines/SC
   version: "WCAG20";
   guidelines: Guideline[];
+  type: "Principle";
 }
 
 export interface Guideline extends DocNode {
@@ -88,6 +89,7 @@ export interface Guideline extends DocNode {
   num: `${Principle["num"]}.${number}`;
   version: `WCAG${"20" | "21"}`;
   successCriteria: SuccessCriterion[];
+  type: "Guideline";
 }
 
 export interface SuccessCriterion extends DocNode {
@@ -96,6 +98,7 @@ export interface SuccessCriterion extends DocNode {
   /** Level may be empty for obsolete criteria */
   level: "A" | "AA" | "AAA" | "";
   version: `WCAG${WcagVersion}`;
+  type: "SC";
 }
 
 export function isSuccessCriterion(criterion: any): criterion is SuccessCriterion {
