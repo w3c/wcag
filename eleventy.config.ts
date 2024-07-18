@@ -306,6 +306,21 @@ export default function (eleventyConfig: any) {
           }
           return;
         }
+        // Same for techniques only introduced in later WCAG versions
+        if (
+          technique.id in futureExclusiveTechniqueAssociations &&
+          !futureExclusiveTechniqueAssociations[this.page.fileSlug] &&
+          (!allFlatGuidelines[this.page.fileSlug] ||
+            allFlatGuidelines[this.page.fileSlug].version <= version)
+        ) {
+          if (process.env.WCAG_VERBOSE) {
+            console.warn(
+              `linkTechniques in ${this.page.inputPath}: ` +
+                `skipping future-version technique ${id}`
+            );
+          }
+          return;
+        }
 
         // Support relative technique links from other techniques or from techniques/index.html,
         // otherwise path-absolute when cross-linked from understanding/*
