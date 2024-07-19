@@ -11,11 +11,13 @@ This repository is used to develop content for WCAG 2, as well as associated und
 
 * Avoid use of RFC2119 terms such as "must", "shall", or "may" in non-normative content, to avoid confusion with normative role.
 
+See also: [WCAG 2 Style Guide](https://github.com/w3c/wcag/wiki/WCAG-2-style-guide)
+
 ## File Structure
 
 WCAG 2.0 was maintained in a different file structure than subsequent versions of WCAG. Source files for WCAG 2.0 are in the wcag20 folder and exists primarily for archival purposes. Do not edit content in that folder.
 
-Content for WCAG 2.1 and later is organized accordign to the file structure below. The WCAG repository contains source and auxiliary files for WCAG 2, Understanding WCAG 2, and eventually techniques. It also contains auxiliary files that support automated formatting of the document. To facilitate multi-party editing, each success criterion is in a separate file, consisting of a HTML fragment that can be included into the main guidelines. Key files include:
+Content for WCAG 2.1 and later is organized according to the file structure below. The WCAG repository contains source and auxiliary files for WCAG 2, Understanding WCAG 2, and eventually techniques. It also contains auxiliary files that support automated formatting of the document. To facilitate multi-party editing, each success criterion is in a separate file, consisting of a HTML fragment that can be included into the main guidelines. Key files include:
 
 * guidelines/index.html - the main guidelines file
 * guidelines/sc/<version>/*.html - files for each success criterion
@@ -79,14 +81,16 @@ Values you provide are described below. Refer to [Success Criterion 2.2.1](https
 
 ### Definitions
 
-If you providing term definitions along with your SC, include them in the glossary. Position them in the appropriate alphabetical order with the rest of the terms and use the following format:
+If you are providing term definitions along with your SC, include them in the respective `guidelines/terms/{version}` directory, one-per-file, using the following format:
 
 ```html
-<dt><dfn>{Term}</dfn></dt>
+<dt><dfn id="dfn-{shortname}">{Term}</dfn></dt>
 <dd>{Definition}</dd>
 ```
 
-The ```dfn``` element tells the script that this is a term and causes special styling and linking features. To link to a term, use an `<a>` element without an `href` attribute; if the link text is the same as the term, the link will be correctly generated. For example, if there is a term `<dfn>web page</dfn>` on the page, a link in the form of `<a>web page</a>` will result in a proper link. If the link text has a different form from the canonical term, e.g., "web pages" (note the plural), you can provide a hint on the term definition with the `data-lt` attribute. In this example, modify the term to be `<dfn data-lt="web pages">web page</dfn>`. Multiple alternate names for the term can be separated with pipe characters, with no leading or trailing space, e.g., `<dfn data-lt="web pages|page|pages">web page</dfn>`.
+The ```dfn``` element tells the script that this is a term and causes special styling and linking features. To link to a term, use an `<a>` element without an `href` attribute; if the link text is the same as the term, the link will be correctly generated. For example, if there is a term `<dfn>web page</dfn>` on the page, a link in the form of `<a>web page</a>` will result in a proper link.
+
+If the link text has a different form from the canonical term, e.g., "web pages" (note the plural), you can provide a hint on the term definition with the `data-lt` attribute. In this example, modify the term to be `<dfn data-lt="web pages">web page</dfn>`. Multiple alternate names for the term can be separated with pipe characters, with no leading or trailing space, e.g., `<dfn data-lt="web pages|page|pages">web page</dfn>`.
 
 ## Editing Draft Understanding Content
 
@@ -110,8 +114,6 @@ Techniques are in the techniques folder, and grouped by technology into sub-fold
 The [technique template](techniques/technique-template.html) shows the structure of techniques. Main sections are in top-level &lt;section> elements with specific IDs: meta, applicability, description, examples, tests, related, resources. The description and tests sections are required; the applicability and examples sections are recommended; the related and resources sections are optional. The meta section provides context for the technique during authoring but is removed for publication. The title of the technique is in the `<h1>` element. Elements with `class="instructions"` provide information about populating the template. They should be removed as the technique is developed but if not removed, will be ignored by the generator. **Do not copy `class="instructions"` on real content.**
 
 Techniques can use a temporary style sheet to facilitate review of drafts. This style sheet is replaced by other style sheets and structure for formal publication. To use this style sheet, add `<link rel="stylesheet" type="text/css" href="../../css/editors.css"/>` to the head of the technique.
-
-The generator used to publish techniques uses XML processing, so techniques must be well-formed XML. Techniques use HTML 5 structure so are actually [HTML Polyglot](https://www.w3.org/TR/html-polyglot/).  
 
 ### Images, Examples, Cross References for Techniques
 
@@ -155,9 +157,29 @@ Once a technique branch and file is set up, populate the content and request rev
 
 ### Formatting Techniques
 
-Techniques in the repository are plain HTML files with minimal formatting. For publication to the editors' draft and W3C location, techniques are formatted by an XSLT-based generator managed by Apache Ant running in Java. Most people do not need to worry about this, but relevant files are the [Ant build file](build.xml) and [XSLT files](xslt).
+Techniques in the repository are plain HTML files with minimal formatting. For publication to the editors' draft and W3C location, techniques are formatted by a build process based on Eleventy for templating and Cheerio for transformations. More details, including instructions for previewing locally, can be found in the [build process README](11ty/README.md).
 
 The generator compiles the techniques together as a suite with formatting and navigation. It enforces certain structures, such as ordering top-level sections described above and standardizing headings. It attempts to process cross reference links to make sure the URIs work upon publication. One of the most substantial roles is to populate the Applicability section with references to the guidelines or success criteria to which the technique relates. The information for this comes from the Understanding documents. Proper use of the technique template is important to enable this functionality, and mal-formed techniques may cause the generator to fail.
+
+### Obsolete Techniques
+
+Obsolete techniques should not be removed from the repository. Instead, they can be marked using YAML front-matter. For example:
+
+```yaml
+---
+obsoleteSince: 22
+obsoleteMessage: |
+  This failure relates to 4.1.1: Parsing, which was removed as of WCAG 2.2.
+---
+```
+
+* `obsoleteSince` indicates the earliest version of WCAG 2 when the technique became obsolete
+  (this may be set to `20` if it should effectively be obsolete for all versions, e.g. for
+  techniques involving deprecated HTML elements)
+* `obsoleteMessage` indicates a message to be displayed within the About this Technique section
+
+In cases where entire technologies are obsolete (e.g. Flash and Silverlight), these properties may also be specified at the technique subdirectory level, e.g. via `techniques/flash/flash.11tydata.json`.
+Note that this case specifically requires JSON format, as this is consumed by both Eleventy and additional code in the build process used to assemble techniques data.
 
 ## Working Examples
 
