@@ -361,9 +361,9 @@ export class CustomLiquid extends Liquid {
         if (scope.technique.obsoleteSince && scope.technique.obsoleteSince <= scope.version) {
           $(aboutBoxSelector).append(
             "\n",
-            scope.technique.obsoleteMessage
-              ? `<p><em><strong>Obsolete:</strong> ${scope.technique.obsoleteMessage}</em></p>`
-              : "<p><em><strong>Obsolete</strong></em></p>"
+            `<section class="obsolete"><h3>Obsolete</h3>${
+              scope.technique.obsoleteMessage || ""
+            }</section>`
           );
         }
 
