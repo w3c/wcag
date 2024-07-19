@@ -4,6 +4,7 @@ import { rimraf } from "rimraf";
 import { copyFile } from "fs/promises";
 
 import { CustomLiquid } from "11ty/CustomLiquid";
+import { resolveDecimalVersion } from "11ty/common";
 import {
   actRules,
   assertIsWcagVersion,
@@ -102,7 +103,7 @@ const understandingNav = await generateUnderstandingNavMap(principles, understan
 // Declare static global data up-front so we can build typings from it
 const globalData = {
   version,
-  versionDecimal: version.split("").join("."),
+  versionDecimal: resolveDecimalVersion(version),
   techniques, // Used for techniques/index.html
   technologies, // Used for techniques/index.html
   technologyTitles, // Used for techniques/index.html
@@ -271,7 +272,7 @@ export default function (eleventyConfig: any) {
           !isGuidelineObsolete(flatGuidelines[this.page.fileSlug])
         ) {
           if (process.env.WCAG_VERBOSE) {
-            const since = technique.obsoleteSince!.split("").join(".");
+            const since = resolveDecimalVersion(technique.obsoleteSince!);
             console.warn(
               `linkTechniques in ${this.page.inputPath}: ` +
                 `skipping obsolete technique ${id} (as of ${since})`
