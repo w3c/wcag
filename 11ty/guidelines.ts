@@ -208,11 +208,15 @@ export async function getTermsMap() {
       // but the XSLT process generates id from the element's text which is not always the same
       id: `dfn-${generateId($el.text())}`,
       definition: getContentHtml($el.parent().next()),
-      name: $el.text().toLowerCase(),
+      name: $el.text(),
       trId: el.attribs.id,
     };
 
-    const names = [term.name].concat((el.attribs["data-lt"] || "").toLowerCase().split("|"));
+    // Include both original and all-lowercase version to simplify lookups
+    // (since most synonyms are lowercase) while preserving case in name
+    const names = [term.name, term.name.toLowerCase()].concat(
+      (el.attribs["data-lt"] || "").toLowerCase().split("|")
+    );
     for (const name of names) terms[name] = term;
   });
 

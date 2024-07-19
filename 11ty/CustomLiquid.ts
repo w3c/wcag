@@ -393,7 +393,7 @@ export class CustomLiquid extends Liquid {
       // where we have access to global data and the about box's HTML
       const $termLinks = $(termLinkSelector);
       const extractTermName = ($el: Cheerio<Element>) => {
-        const name = $el.text().trim().toLowerCase();
+        const name = $el.text().toLowerCase().trim().replace(/\s*\n+\s*/, " ");
         const term = termsMap[name];
         if (!term) {
           console.warn(`${scope.page.inputPath}: Term not found: ${name}`);
@@ -433,7 +433,11 @@ export class CustomLiquid extends Liquid {
           }
 
           // Iterate over sorted names to populate alphabetized Key Terms definition list
-          termNames.sort();
+          termNames.sort((a, b) => {
+            if (a.toLowerCase() < b.toLowerCase()) return -1;
+            if (a.toLowerCase() > b.toLowerCase()) return 1;
+            return 0;
+          });
           for (const name of termNames) {
             const term = termsMap[name]; // Already verified existence in the earlier loop
             $termsList.append(
