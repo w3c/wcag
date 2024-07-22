@@ -305,12 +305,16 @@ export class CustomLiquid extends Liquid {
       // Remove empty list items due to obsolete technique link removal
       if (scope.isTechniques) $("ul.toc-wcag-docs li:empty").remove();
     } else {
+      const $title = $("title");
+
       if (scope.isTechniques) {
         const isObsolete =
           scope.technique.obsoleteSince && scope.technique.obsoleteSince <= scope.version;
         if (isObsolete) $("body").addClass("obsolete");
-        $("title").text(
-          `${isObsolete ? "[Obsolete] " : ""}${scope.technique.id}: ${scope.technique.title}${titleSuffix}`
+
+        $title.text(
+          (isObsolete ? "[Obsolete] " : "") +
+            `${scope.technique.id}: ${scope.technique.title}${titleSuffix}`
         );
 
         const aboutBoxSelector = "section#technique .box-i";
@@ -375,7 +379,6 @@ export class CustomLiquid extends Liquid {
           el.attribs.href = el.attribs.href.replace(/^.*\//, scope.understandingUrl);
         });
       } else if (scope.isUnderstanding) {
-        const $title = $("title");
         if (scope.guideline) {
           const type = scope.guideline.type === "SC" ? "Success Criterion" : scope.guideline.type;
           $title.text(
@@ -395,7 +398,11 @@ export class CustomLiquid extends Liquid {
       // where we have access to global data and the about box's HTML
       const $termLinks = $(termLinkSelector);
       const extractTermName = ($el: Cheerio<Element>) => {
-        const name = $el.text().toLowerCase().trim().replace(/\s*\n+\s*/, " ");
+        const name = $el
+          .text()
+          .toLowerCase()
+          .trim()
+          .replace(/\s*\n+\s*/, " ");
         const term = termsMap[name];
         if (!term) {
           console.warn(`${scope.page.inputPath}: Term not found: ${name}`);
