@@ -364,15 +364,6 @@ export class CustomLiquid extends Liquid {
         }
         $("section#applicability").remove();
 
-        if (scope.technique.obsoleteSince && scope.technique.obsoleteSince <= scope.version) {
-          $(aboutBoxSelector).append(
-            "\n",
-            `<section class="obsolete"><h3>Obsolete</h3>${
-              scope.technique.obsoleteMessage || ""
-            }</section>`
-          );
-        }
-
         // Remove any effectively-empty techniques/resources sections,
         // due to template boilerplate or obsolete technique removal
         $("section#related:not(:has(a))").remove();
@@ -536,7 +527,7 @@ export class CustomLiquid extends Liquid {
 
     // Allow autogenerating missing top-level section IDs in understanding docs,
     // but don't pick up incorrectly-nested sections in some techniques pages (e.g. H91)
-    const sectionSelector = scope.isUnderstanding ? "section" : "section[id]";
+    const sectionSelector = scope.isUnderstanding ? "section" : "section[id]:not(.obsolete)";
     const sectionH2Selector = "h2:first-child";
     const $h2Sections = $(`${sectionSelector}:has(${sectionH2Selector})`);
     if ($h2Sections.length) {
