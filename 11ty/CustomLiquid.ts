@@ -306,7 +306,13 @@ export class CustomLiquid extends Liquid {
       if (scope.isTechniques) $("ul.toc-wcag-docs li:empty").remove();
     } else {
       if (scope.isTechniques) {
-        $("title").text(`${scope.technique.id}: ${scope.technique.title}${titleSuffix}`);
+        const isObsolete =
+          scope.technique.obsoleteSince && scope.technique.obsoleteSince <= scope.version;
+        if (isObsolete) $("body").addClass("obsolete");
+        $("title").text(
+          `${isObsolete ? "[Obsolete] " : ""}${scope.technique.id}: ${scope.technique.title}${titleSuffix}`
+        );
+
         const aboutBoxSelector = "section#technique .box-i";
 
         // Strip applicability paragraphs with metadata IDs (e.g. H99)
