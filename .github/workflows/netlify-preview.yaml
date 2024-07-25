@@ -1,0 +1,42 @@
+name: netlify-preview
+
+on:
+  pull_request:
+    branches:
+      - main
+      - kgf-preview-workflow
+permissions:
+  pull-requests: write
+
+jobs:
+  netlify:
+    name: Deploy Netlify Preview
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Netlify Branch Deploy
+        id: deploy
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        # The shell below gets a TTY, enabling use of tee to stream to stdout while storing variable
+        # (see https://github.com/actions/runner/issues/241#issuecomment-2019042651)
+        shell: 'script --return --quiet --log-out /dev/null --command "bash -e {0}"'
+        run: |
+          npm i
+          npm run build
+          OUTPUT=$(netlify deploy \
+            --alias pr-${{ github.event.pull_request.number }} \
+            --dir _site \
+            --message 'PR #${{ github.event.pull_request.number }}: ${{ github.event.pull_request.title }}' \
+            | tee /dev/tty)
+          echo preview_url=$(echo "$OUTPUT" | egrep -o 'https://\S+\.netlify\.app') >> "$GITHUB_OUTPUT"
+          echo preview_date=$(date -Ru) >> "$GITHUB_OUTPUT"
+      - uses: thollander/actions-comment-pull-request@v2
+        with:
+          comment_tag: pr-netlify
+          message: |
+            Preview available (last updated ${{ steps.deploy.outputs.preview_date }} via workflow run [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}))
+            
+            - [Techniques](${{ steps.deploy.outputs.preview_url }}/techniques)
+            - [Understanding](${{ steps.deploy.outputs.preview_url }}/understanding)
