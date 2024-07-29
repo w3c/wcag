@@ -75,6 +75,11 @@ export default function (eleventyConfig: any) {
   for (const [name, value] of Object.entries(baseUrls))
     eleventyConfig.addGlobalData(`${name}Url`, value);
 
+  // Use git modified time if building for gh-pages or W3C site;
+  // otherwise use local mtime to cut build time (~4s difference).
+  // See https://www.11ty.dev/docs/dates/#setting-a-content-date-in-front-matter
+  eleventyConfig.addGlobalData("date", `${process.env.WCAG_MODE ? "git " : ""}Last Modified`);
+
   // eleventyComputed data is assigned here rather than in 11tydata files;
   // we have access to typings here, and can keep the latter fully static.
   eleventyConfig.addGlobalData("eleventyComputed", {
