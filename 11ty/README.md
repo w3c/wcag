@@ -86,6 +86,6 @@ when `WCAG_MODE=editors` is also set.
 - The main configuration can be found in top-level `eleventy.config.ts`
 - Build commands are defined in top-level `package.json` under `scripts`,
   and can be run via `npm run <name>`
-- If you see files named `*.11tydata.js`, these contribute data to the Eleventy build
+- If you see files named `*.11tydata.*`, these contribute data to the Eleventy build
   (see Template and Directory Data files under
   [Sources of Data](https://www.11ty.dev/docs/data/#sources-of-data))

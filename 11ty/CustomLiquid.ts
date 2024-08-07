@@ -16,6 +16,7 @@ import { techniqueToUnderstandingLinkSelector } from "./understanding";
 
 const titleSuffix = " | WAI | W3C";
 
+/** Matches index and about pages, traditionally processed differently than individual pages */
 const indexPattern = /(techniques|understanding)\/(index|about)\.html$/;
 const techniquesPattern = /\btechniques\//;
 const understandingPattern = /\bunderstanding\//;
@@ -85,7 +86,6 @@ export class CustomLiquid extends Liquid {
   public parse(html: string, filepath?: string) {
     // Filter out Liquid calls for computed data and includes themselves
     if (filepath && !filepath.includes("_includes/") && isHtmlFileContent(html)) {
-      /** Matches paths that would go through process-index.xslt in previous process */
       const isIndex = indexPattern.test(filepath);
       const isTechniques = techniquesPattern.test(filepath);
       const isUnderstanding = understandingPattern.test(filepath);
