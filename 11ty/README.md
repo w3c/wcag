@@ -38,6 +38,15 @@ Indicates top-level path of W3C CVS checkout, for WAI site updates (via `publish
 
 **Default:** `../../../w3ccvs` (same as in Ant/XSLT build process)
 
+### `WCAG_VERBOSE`
+
+**Usage context:** Local development, debugging
+
+Prints more log messages that are typically noisy and uninteresting,
+but may be useful if you're not seeing what you expect in the output files.
+
+**Default:** Unset (set to any non-empty value to enable)
+
 ### `WCAG_VERSION`
 
 **Usage context:** currently this should not be changed, pending future improvements to `21` support

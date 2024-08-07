@@ -3,13 +3,23 @@ import compact from "lodash-es/compact";
 import { copyFile } from "fs/promises";
 
 import { CustomLiquid } from "11ty/CustomLiquid";
-import { actRules, assertIsWcagVersion, getFlatGuidelines, getPrinciples } from "11ty/guidelines";
+import {
+  actRules,
+  assertIsWcagVersion,
+  getFlatGuidelines,
+  getPrinciples,
+  type Guideline,
+  type Principle,
+  type SuccessCriterion,
+} from "11ty/guidelines";
 import {
   getFlatTechniques,
   getTechniqueAssociations,
   getTechniquesByTechnology,
   technologies,
   technologyTitles,
+  type Technique,
+  type Technology,
 } from "11ty/techniques";
 import { generateUnderstandingNavMap, getUnderstandingDocs } from "11ty/understanding";
 import type { EleventyContext, EleventyData, EleventyEvent } from "11ty/types";
@@ -18,11 +28,40 @@ import type { EleventyContext, EleventyData, EleventyEvent } from "11ty/types";
 const version = process.env.WCAG_VERSION || "22";
 assertIsWcagVersion(version);
 
+/**
+ * Returns boolean indicating whether a technique is obsolete for the given version.
+ * Tolerates undefined for use with hash lookups.
+ */
+const isTechniqueObsolete = (technique: Technique | undefined) =>
+  !!technique?.obsoleteSince && technique.obsoleteSince <= version;
+
+/**
+ * Returns boolean indicating whether an SC is obsolete for the given version.
+ * Tolerates other types for use with hash lookups.
+ */
+const isGuidelineObsolete = (guideline: Principle | Guideline | SuccessCriterion | undefined) =>
+  guideline?.type === "SC" && guideline.level === "";
+
 const principles = await getPrinciples();
 const flatGuidelines = getFlatGuidelines(principles);
 const techniques = await getTechniquesByTechnology();
 const flatTechniques = getFlatTechniques(techniques);
+
+for (const [technology, list] of Object.entries(techniques)) {
+  // Prune obsolete techniques from ToC
+  techniques[technology as Technology] = list.filter(
+    (technique) => !technique.obsoleteSince || technique.obsoleteSince > version
+  );
+}
+
 const techniqueAssociations = await getTechniqueAssociations(flatGuidelines);
+for (const [id, associations] of Object.entries(techniqueAssociations)) {
+  // Prune associations from non-obsolete techniques to obsolete SCs
+  techniqueAssociations[id] = associations.filter(
+    ({ criterion }) => criterion.level !== "" || isTechniqueObsolete(flatTechniques[id])
+  );
+}
+
 const understandingDocs = await getUnderstandingDocs(version);
 const understandingNav = await generateUnderstandingNavMap(principles, understandingDocs);
 
@@ -164,6 +203,23 @@ export default function (eleventyConfig: any) {
           );
           return;
         }
+
+        // Omit links to obsolete techniques, when not also linked from one
+        if (
+          isTechniqueObsolete(technique) &&
+          !isTechniqueObsolete(flatTechniques[this.page.fileSlug]) &&
+          !isGuidelineObsolete(flatGuidelines[this.page.fileSlug])
+        ) {
+          if (process.env.WCAG_VERBOSE) {
+            const since = technique.obsoleteSince!.split("").join(".");
+            console.warn(
+              `linkTechniques in ${this.page.inputPath}: ` +
+                `skipping obsolete technique ${id} (as of ${since})`
+            );
+          }
+          return;
+        }
+
         // Support relative technique links from other techniques or from techniques/index.html,
         // otherwise path-absolute when cross-linked from understanding/*
         const urlBase = /^\/techniques\/.*\//.test(this.page.filePathStem)
@@ -191,7 +247,24 @@ export default function (eleventyConfig: any) {
               `linkUnderstanding in ${this.page.inputPath}: ` +
                 `skipping unresolvable guideline shortname ${id}`
             );
+            return;
           }
+
+          // Warn of links to obsolete SCs, when not also linked from one.
+          // This is intentionally not behind WCAG_VERBOSE, and does not remove,
+          // as links to Understanding docs are more likely to be in the middle
+          // of prose requiring manual adjustments
+          if (
+            isGuidelineObsolete(guideline) &&
+            !isGuidelineObsolete(flatGuidelines[this.page.fileSlug]) &&
+            !isTechniqueObsolete(flatTechniques[this.page.fileSlug])
+          ) {
+            console.warn(
+              `linkUnderstanding in ${this.page.inputPath}: ` +
+                `reference to obsolete ${guideline.type} ${id}`
+            );
+          }
+
           const urlBase = this.page.filePathStem.startsWith("/understanding/")
             ? ""
             : baseUrls.understanding;

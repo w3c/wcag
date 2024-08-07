@@ -130,9 +130,6 @@ export class CustomLiquid extends Liquid {
         });
 
         if (isTechniques) {
-          // Remove any effectively-empty techniques/resources sections (from template)
-          $("section#related:not(:has(a))").remove();
-          $("section#resources:not(:has(a, li))").remove();
           // Expand related technique links to include full title
           // (the XSLT process didn't handle this in this particular context)
           const siblingCode = basename(filepath).replace(/^([A-Z]+).*$/, "$1");
@@ -304,9 +301,22 @@ export class CustomLiquid extends Liquid {
 
     const $ = load(html);
 
-    if (!indexPattern.test(scope.page.inputPath)) {
+    if (indexPattern.test(scope.page.inputPath)) {
+      // Remove empty list items due to obsolete technique link removal
+      if (scope.isTechniques) $("ul.toc-wcag-docs li:empty").remove();
+    } else {
+      const $title = $("title");
+
       if (scope.isTechniques) {
-        $("title").text(`${scope.technique.id}: ${scope.technique.title}${titleSuffix}`);
+        const isObsolete =
+          scope.technique.obsoleteSince && scope.technique.obsoleteSince <= scope.version;
+        if (isObsolete) $("body").addClass("obsolete");
+
+        $title.text(
+          (isObsolete ? "[Obsolete] " : "") +
+            `${scope.technique.id}: ${scope.technique.title}${titleSuffix}`
+        );
+
         const aboutBoxSelector = "section#technique .box-i";
 
         // Strip applicability paragraphs with metadata IDs (e.g. H99)
@@ -358,17 +368,10 @@ export class CustomLiquid extends Liquid {
         }
         $("section#applicability").remove();
 
-        if (scope.technique.technology === "flash") {
-          $(aboutBoxSelector).append(
-            "<p><em>Note: Adobe has plans to stop updating and distributing the Flash Player at the end of 2020, " +
-              "and encourages authors interested in creating accessible web content to use HTML.</em></p>"
-          );
-        } else if (scope.technique.technology === "silverlight") {
-          $(aboutBoxSelector).append(
-            "<p><em>Note: Microsoft has stopped updating and distributing Silverlight, " +
-              "and authors are encouraged to use HTML for accessible web content.</em></p>"
-          );
-        }
+        // Remove any effectively-empty techniques/resources sections,
+        // due to template boilerplate or obsolete technique removal
+        $("section#related:not(:has(a))").remove();
+        $("section#resources:not(:has(a, li))").remove();
 
         // Update understanding links to always use base URL
         // (mainly to avoid any case-sensitivity issues)
@@ -376,7 +379,6 @@ export class CustomLiquid extends Liquid {
           el.attribs.href = el.attribs.href.replace(/^.*\//, scope.understandingUrl);
         });
       } else if (scope.isUnderstanding) {
-        const $title = $("title");
         if (scope.guideline) {
           const type = scope.guideline.type === "SC" ? "Success Criterion" : scope.guideline.type;
           $title.text(
@@ -387,13 +389,20 @@ export class CustomLiquid extends Liquid {
             $title.text().replace(/WCAG 2( |$)/, `WCAG ${scope.versionDecimal}$1`) + titleSuffix
           );
         }
+
+        // Remove Techniques section from obsolete SCs (e.g. Parsing in 2.2)
+        if (scope.guideline?.level === "") $("section#techniques").remove();
       }
 
       // Process defined terms within #render,
       // where we have access to global data and the about box's HTML
       const $termLinks = $(termLinkSelector);
       const extractTermName = ($el: Cheerio<Element>) => {
-        const name = $el.text().toLowerCase().trim().replace(/\s*\n+\s*/, " ");
+        const name = $el
+          .text()
+          .toLowerCase()
+          .trim()
+          .replace(/\s*\n+\s*/, " ");
         const term = termsMap[name];
         if (!term) {
           console.warn(`${scope.page.inputPath}: Term not found: ${name}`);
@@ -525,7 +534,7 @@ export class CustomLiquid extends Liquid {
 
     // Allow autogenerating missing top-level section IDs in understanding docs,
     // but don't pick up incorrectly-nested sections in some techniques pages (e.g. H91)
-    const sectionSelector = scope.isUnderstanding ? "section" : "section[id]";
+    const sectionSelector = scope.isUnderstanding ? "section" : "section[id]:not(.obsolete)";
     const sectionH2Selector = "h2:first-child";
     const $h2Sections = $(`${sectionSelector}:has(${sectionH2Selector})`);
     if ($h2Sections.length) {
