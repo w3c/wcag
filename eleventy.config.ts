@@ -180,7 +180,7 @@ export default function (eleventyConfig: any) {
 
         if (page.fileSlug in allFlatGuidelines) {
           // Exclude files not present in the version being built
-          if (!flatGuidelines[page.fileSlug]) return false;
+          if (!flatGuidelines[resolveUnderstandingFileSlug(page.fileSlug)]) return false;
 
           // Flatten pages into top-level directory, out of version subdirectories.
           // Revise any filename that differs between versions, reusing data from guidelines.ts
