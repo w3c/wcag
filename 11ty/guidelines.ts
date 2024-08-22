@@ -172,34 +172,6 @@ export const getPrinciples = async () =>
   processPrinciples(await flattenDomFromFile("guidelines/index.html"));
 
 /**
- * Retrieves and processes a pinned WCAG version using published guidelines.
- */
-export const getPrinciplesForVersion = async (version: WcagVersion) => {
-  const $ = load(
-    (await axios.get(`https://www.w3.org/TR/WCAG${version}/`, { responseType: "text" })).data
-  );
-
-  // Re-collapse definition links and notes, to be processed by this build system
-  $(".guideline a.internalDFN").removeAttr("class data-link-type id href title");
-  $(".guideline [role='note'] .marker").remove();
-  $(".guideline [role='note']").find("> div, > p").addClass("note").unwrap();
-
-  // Bibliography references are not processed in Understanding SC boxes
-  $(".guideline cite:has(a.bibref:only-child)").each((_, el) => {
-    const $el = $(el);
-    const $parent = $el.parent();
-    $el.remove();
-    // Remove surrounding square brackets (which aren't in a dedicated element)
-    $parent.html($parent.html()!.replace(/ \[\]/g, ""));
-  });
-
-  // Remove extra markup from headings so they can be parsed for names
-  $("bdi").remove();
-
-  return processPrinciples($);
-};
-
-/**
  * Returns a flattened object hash, mapping shortcodes to each principle/guideline/SC.
  */
 export function getFlatGuidelines(principles: Principle[]) {
@@ -255,3 +227,62 @@ export async function getTermsMap() {
 
   return terms;
 }
+
+// Version-specific APIs
+
+const remoteGuidelines$: Partial<Record<WcagVersion, CheerioAPI>> = {};
+
+/** Loads guidelines from TR space for specific version, caching for future calls. */
+const loadRemoteGuidelines = async (version: WcagVersion) => {
+  if (!remoteGuidelines$[version]) {
+    const $ = load(
+      (await axios.get(`https://www.w3.org/TR/WCAG${version}/`, { responseType: "text" })).data
+    );
+
+    // Re-collapse definition links and notes, to be processed by this build system
+    $(".guideline a.internalDFN").removeAttr("class data-link-type id href title");
+    $(".guideline [role='note'] .marker").remove();
+    $(".guideline [role='note']").find("> div, > p").addClass("note").unwrap();
+
+    // Bibliography references are not processed in Understanding SC boxes
+    $(".guideline cite:has(a.bibref:only-child)").each((_, el) => {
+      const $el = $(el);
+      const $parent = $el.parent();
+      $el.remove();
+      // Remove surrounding square brackets (which aren't in a dedicated element)
+      $parent.html($parent.html()!.replace(/ \[\]/g, ""));
+    });
+
+    // Remove extra markup from headings so they can be parsed for names
+    $("bdi").remove();
+
+    // Remove abbr elements which exist only in TR, not in informative docs
+    $("#acknowledgements li abbr").each((_, abbrEl) => {
+      $(abbrEl).replaceWith($(abbrEl).text());
+    });
+
+    remoteGuidelines$[version] = $;
+  }
+  return remoteGuidelines$[version]!;
+};
+
+/**
+ * Retrieves heading and content information for acknowledgement subsections,
+ * for preserving the section in About pages for earlier versions.
+ */
+export const getAcknowledgementsForVersion = async (version: WcagVersion) => {
+  const $ = await loadRemoteGuidelines(version);
+  const subsections: Record<string, string> = {};
+
+  $("section#acknowledgements section").each((_, el) => {
+    subsections[el.attribs.id] = $(".header-wrapper + *", el).html()!;
+  });
+
+  return subsections;
+};
+
+/**
+ * Retrieves and processes a pinned WCAG version using published guidelines.
+ */
+export const getPrinciplesForVersion = async (version: WcagVersion) =>
+  processPrinciples(await loadRemoteGuidelines(version));
