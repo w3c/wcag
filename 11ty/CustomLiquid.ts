@@ -11,7 +11,7 @@ import type { GlobalData } from "eleventy.config";
 import { biblioPattern, getBiblio } from "./biblio";
 import { flattenDom, load } from "./cheerio";
 import { generateId } from "./common";
-import { getTermsMap } from "./guidelines";
+import { getAcknowledgementsForVersion, getTermsMap } from "./guidelines";
 import { resolveTechniqueIdFromHref, understandingToTechniqueLinkSelector } from "./techniques";
 import { techniqueToUnderstandingLinkSelector } from "./understanding";
 
@@ -308,6 +308,14 @@ export class CustomLiquid extends Liquid {
     if (indexPattern.test(scope.page.inputPath)) {
       // Remove empty list items due to obsolete technique link removal
       if (scope.isTechniques) $("ul.toc-wcag-docs li:empty").remove();
+
+      // Replace acknowledgements with pinned content for older versions
+      if (process.env.WCAG_VERSION && $("section#acknowledgements").length) {
+        const pinnedAcknowledgements = await getAcknowledgementsForVersion(scope.version);
+        for (const [id, content] of Object.entries(pinnedAcknowledgements)) {
+          $(`#${id} h3 +`).html(content);
+        }
+      }
     } else {
       const $title = $("title");
 
