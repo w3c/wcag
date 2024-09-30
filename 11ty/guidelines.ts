@@ -6,7 +6,7 @@ import { readFile } from "fs/promises";
 import { basename } from "path";
 
 import { flattenDomFromFile, load } from "./cheerio";
-import { generateId } from "./common";
+import { generateId, resolveDecimalVersion } from "./common";
 
 export type WcagVersion = "20" | "21" | "22";
 export function assertIsWcagVersion(v: string): asserts v is WcagVersion {
@@ -29,10 +29,9 @@ type ActMapping = {
   "act-rules": ActRule[];
 };
 
-/** Data used for test-rules sections, from act-mapping.json */
-export const actRules = (
-  JSON.parse(await readFile("guidelines/act-mapping.json", "utf8")) as ActMapping
-)["act-rules"];
+/** Retrieves act-mapping.json data for test-rules sections. */
+export const getActRules = async () =>
+  (JSON.parse(await readFile("guidelines/act-mapping.json", "utf8")) as ActMapping)["act-rules"];
 
 /**
  * Flattened object hash, mapping each WCAG 2 SC slug to the earliest WCAG version it applies to.
@@ -280,6 +279,16 @@ export const getAcknowledgementsForVersion = async (version: WcagVersion) => {
 
   return subsections;
 };
+
+/**
+ * Retrieves act-mapping.json data for test-rules sections, pinned to an earlier WCAG version.
+ */
+export const getActRulesForVersion = async (version: WcagVersion) =>
+  (
+    await axios.get<ActMapping>(
+      `https://raw.githubusercontent.com/w3c/wcag/refs/heads/WCAG-${resolveDecimalVersion(version)}/guidelines/act-mapping.json`
+    )
+  ).data["act-rules"];
 
 /**
  * Retrieves and processes a pinned WCAG version using published guidelines.

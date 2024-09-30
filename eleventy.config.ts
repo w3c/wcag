@@ -9,8 +9,9 @@ import { join } from "path";
 import { CustomLiquid } from "11ty/CustomLiquid";
 import { resolveDecimalVersion } from "11ty/common";
 import {
-  actRules,
   assertIsWcagVersion,
+  getActRules,
+  getActRulesForVersion,
   getFlatGuidelines,
   getPrinciples,
   getPrinciplesForVersion,
@@ -49,6 +50,10 @@ const isTechniqueObsolete = (technique: Technique | undefined) =>
  */
 const isGuidelineObsolete = (guideline: Principle | Guideline | SuccessCriterion | undefined) =>
   guideline?.type === "SC" && guideline.level === "";
+
+const actRules = process.env.WCAG_VERSION
+  ? await getActRulesForVersion(version)
+  : await getActRules();
 
 /** Tree of Principles/Guidelines/SC across all versions (including later than selected) */
 const allPrinciples = await getPrinciples();
