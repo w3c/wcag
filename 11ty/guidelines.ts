@@ -1,6 +1,7 @@
 import axios from "axios";
 import type { CheerioAPI } from "cheerio";
 import { glob } from "glob";
+import pick from "lodash-es/pick";
 
 import { readFile } from "fs/promises";
 import { basename, join } from "path";
@@ -82,6 +83,8 @@ export interface SuccessCriterion extends DocNode {
   version: WcagVersion;
   type: "SC";
 }
+
+export type WcagItem = Principle | Guideline | SuccessCriterion;
 
 export function isSuccessCriterion(criterion: any): criterion is SuccessCriterion {
   return !!(criterion?.type === "SC" && "level" in criterion);
@@ -175,7 +178,7 @@ export const getPrinciples = async (path = "guidelines/index.html") =>
  * Returns a flattened object hash, mapping shortcodes to each principle/guideline/SC.
  */
 export function getFlatGuidelines(principles: Principle[]) {
-  const map: Record<string, Principle | Guideline | SuccessCriterion> = {};
+  const map: Record<string, WcagItem> = {};
   for (const principle of principles) {
     map[principle.id] = principle;
     for (const guideline of principle.guidelines) {
@@ -300,8 +303,8 @@ export const getAcknowledgementsForVersion = async (version: WcagVersion) => {
 /**
  * Retrieves and processes a pinned WCAG version using published guidelines.
  */
-export const getPrinciplesForVersion = async (version: WcagVersion) =>
-  processPrinciples(await loadRemoteGuidelines(version));
+export const getPrinciplesForVersion = async (version: WcagVersion, stripRespec = true) =>
+  processPrinciples(await loadRemoteGuidelines(version, stripRespec));
 
 /**
  * Resolves term definitions from a WCAG 2.x publication,
