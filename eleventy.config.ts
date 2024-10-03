@@ -1,4 +1,5 @@
 import compact from "lodash-es/compact";
+import { rimraf } from "rimraf";
 
 import { copyFile } from "fs/promises";
 
@@ -124,6 +125,7 @@ export default function (eleventyConfig: any) {
   eleventyConfig.addGlobalData("eleventyComputed", {
     // permalink determines output structure; see https://www.11ty.dev/docs/permalinks/
     permalink: ({ page, isUnderstanding }: GlobalData) => {
+      if (page.inputPath === "./index.html" && process.env.WCAG_MODE) return false;
       if (isUnderstanding) {
         // understanding-metadata.html exists in 2 places; top-level wins in XSLT process
         if (/\/20\/understanding-metadata/.test(page.inputPath)) return false;
@@ -172,6 +174,12 @@ export default function (eleventyConfig: any) {
   });
 
   eleventyConfig.addPassthroughCopy("working-examples/**");
+
+  eleventyConfig.on("eleventy.before", async ({ runMode }: EleventyEvent) => {
+    // Clear the _site folder before builds intended for the W3C site,
+    // to avoid inheriting dev-only files from previous runs
+    if (runMode === "build" && process.env.WCAG_MODE === "publication") await rimraf("_site");
+  });
 
   eleventyConfig.on("eleventy.after", async ({ dir }: EleventyEvent) => {
     // addPassthroughCopy can only map each file once,
