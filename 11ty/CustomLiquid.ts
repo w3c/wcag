@@ -506,7 +506,7 @@ export class CustomLiquid extends Liquid {
 			</div>`);
     });
     
-    // Add header to example sections in Key Terms
+    // Add header to example sections in Key Terms (aside) and Conformance (div)
     $("aside.example, div.example").each((_, el) => {
       const $el = $(el);
       $el.prepend(`<p class="example-title marker">Example</p>`);
