@@ -507,6 +507,12 @@ export class CustomLiquid extends Liquid {
 				<p>${$el.html()}</p>
 			</div>`);
     });
+    
+    // Add header to example sections in Key Terms (aside) and Conformance (div)
+    $("aside.example, div.example").each((_, el) => {
+      const $el = $(el);
+      $el.prepend(`<p class="example-title marker">Example</p>`);
+    });
 
     // We don't need to do any more processing for index/about pages other than stripping comments
     if (indexPattern.test(scope.page.inputPath)) return stripHtmlComments($.html());
