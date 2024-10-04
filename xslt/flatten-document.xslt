@@ -10,8 +10,6 @@
 	
 	<xsl:output method="xhtml" indent="yes" encoding="UTF-8" include-content-type="no" omit-xml-declaration="yes"/>
 	
-	<xsl:include href="base.xslt"/>
-	
 	<xsl:template match="html:html">
 		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE html>
 ]]></xsl:text>
@@ -28,9 +26,9 @@
 	
 	<xsl:template match="element()[@data-include]">
 		<xsl:choose>
-			<xsl:when test="@data-include-replace = 'true'"><xsl:value-of select="unparsed-text(resolve-uri(@data-include, $base.dir))" disable-output-escaping="yes"/></xsl:when>
+			<xsl:when test="@data-include-replace = 'true'"><xsl:value-of select="unparsed-text(resolve-uri(@data-include, document-uri(ancestor::document-node())))" disable-output-escaping="yes"/></xsl:when>
 			<xsl:otherwise>
-				<xsl:copy><xsl:value-of select="unparsed-text(resolve-uri(@data-include, $base.dir))" disable-output-escaping="yes"/></xsl:copy>
+				<xsl:copy><xsl:apply-templates select="@*[not(name() = 'data-include')]"/><xsl:value-of select="unparsed-text(resolve-uri(@data-include, document-uri(ancestor::document-node())))" disable-output-escaping="yes"/></xsl:copy>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
