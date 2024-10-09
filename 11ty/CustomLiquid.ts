@@ -1,4 +1,3 @@
-import type { Cheerio, Element } from "cheerio";
 import { Liquid, type Template } from "liquidjs";
 import type { RenderOptions } from "liquidjs/dist/liquid-options";
 import compact from "lodash-es/compact";
@@ -9,7 +8,7 @@ import { basename } from "path";
 import type { GlobalData } from "eleventy.config";
 
 import { biblioPattern, getBiblio } from "./biblio";
-import { flattenDom, load } from "./cheerio";
+import { flattenDom, load, type CheerioAnyNode } from "./cheerio";
 import { generateId } from "./common";
 import { getAcknowledgementsForVersion, getTermsMap } from "./guidelines";
 import { resolveTechniqueIdFromHref, understandingToTechniqueLinkSelector } from "./techniques";
@@ -63,7 +62,7 @@ const normalizeTocLabel = (label: string) =>
  * expand to a link with the full technique ID and title.
  * @param $el a $()-wrapped link element
  */
-function expandTechniqueLink($el: Cheerio<Element>) {
+function expandTechniqueLink($el: CheerioAnyNode) {
   const href = $el.attr("href");
   if (!href) throw new Error("expandTechniqueLink: non-link element encountered");
   const id = resolveTechniqueIdFromHref(href);
@@ -409,7 +408,7 @@ export class CustomLiquid extends Liquid {
       // Process defined terms within #render,
       // where we have access to global data and the about box's HTML
       const $termLinks = $(termLinkSelector);
-      const extractTermName = ($el: Cheerio<Element>) => {
+      const extractTermName = ($el: CheerioAnyNode) => {
         const name = $el
           .text()
           .toLowerCase()
@@ -434,7 +433,7 @@ export class CustomLiquid extends Liquid {
         });
       } else if (scope.isUnderstanding) {
         const $termsList = $("section#key-terms dl");
-        const extractTermNames = ($links: Cheerio<Element>) =>
+        const extractTermNames = ($links: CheerioAnyNode) =>
           compact(uniq($links.toArray().map((el) => extractTermName($(el)))));
 
         if ($termLinks.length) {

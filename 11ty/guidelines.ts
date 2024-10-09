@@ -1,11 +1,11 @@
 import axios from "axios";
-import type { Cheerio, CheerioAPI, Element } from "cheerio";
+import type { CheerioAPI } from "cheerio";
 import { glob } from "glob";
 
 import { readFile } from "fs/promises";
 import { basename } from "path";
 
-import { flattenDomFromFile, load } from "./cheerio";
+import { flattenDomFromFile, load, type CheerioAnyNode } from "./cheerio";
 import { generateId } from "./common";
 
 export type WcagVersion = "20" | "21" | "22";
@@ -107,7 +107,7 @@ const contentIgnores = [
  * Returns HTML content used for Understanding guideline/SC boxes and term definitions.
  * @param $el Cheerio element of the full section from flattened guidelines/index.html
  */
-const getContentHtml = ($el: Cheerio<Element>) => {
+const getContentHtml = ($el: CheerioAnyNode) => {
   // Load HTML into a new instance, remove elements we don't want, then return the remainder
   const $ = load($el.html()!, null, false);
   $(contentIgnores.join(", ")).remove();
