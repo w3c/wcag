@@ -89,6 +89,8 @@ export class CustomLiquid extends Liquid {
       const isIndex = indexPattern.test(filepath);
       const isTechniques = techniquesPattern.test(filepath);
       const isUnderstanding = understandingPattern.test(filepath);
+      
+      if (!isTechniques && !isUnderstanding) return super.parse(html);
 
       const $ = flattenDom(html, filepath);
 
@@ -504,6 +506,12 @@ export class CustomLiquid extends Liquid {
 				<p class="note-title marker">Note</p>
 				<p>${$el.html()}</p>
 			</div>`);
+    });
+    
+    // Add header to example sections in Key Terms (aside) and Conformance (div)
+    $("aside.example, div.example").each((_, el) => {
+      const $el = $(el);
+      $el.prepend(`<p class="example-title marker">Example</p>`);
     });
 
     // We don't need to do any more processing for index/about pages other than stripping comments

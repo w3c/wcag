@@ -17,26 +17,39 @@
 	</section>
 	<section id="description">
 		<h2>Description</h2>
-		<p>A breadcrumb trail helps the user to visualize how content has been structured and how to navigate back to previous Web pages, and may identify the current location within a series of Web pages. A breadcrumb trail either displays locations in the path the user took to reach the Web page, or it displays the location of the current Web page within the organization of the site.</p>
-		<p>Breadcrumb trails are implemented using links to the Web pages that have been accessed in the process of navigating to the current Web page. They are placed in the same location within each Web page in the set.</p>
-		<p>It can be helpful to users to separate the items in the breadcrumb trailing with a visible separator. Examples of separators include "&gt;", "|", "/", and "→".</p>
+		<p>A breadcrumb trail (or 'breadcrumb navigation') helps the user to visualize how content has been structured and how to navigate back to previous web pages. Many even identify the current location in the series of web pages, commmonly as the last element in the trail and with a variation in its visual style. A breadcrumb trail either displays locations in the path the user took to reach the web page, or it displays the location of the current web page within the organization of the site.</p>
+		<p>Breadcrumb trails are implemented using links to the Web pages that have been accessed in the process of navigating to the current web page. They are placed in the same location within each web page in the set.</p>
+		<p>It can be helpful to users to separate the items in the breadcrumb trailing with a visible separator. Examples of separators include "&gt;", "|", "/", and "→". Alternatively, one could use decorative iconography or create separators with CSS.</p>
 	</section>
 	<section id="examples">
 		<h2>Examples</h2>
 		<section class="example">
 			<h3>Photographer's portfolio</h3>
-			<p>A photographer's portfolio Web site has been organized into different galleries and each gallery has further been divided into categories.   A user who navigates through the site to a Web page containing a photo of a Gentoo penguin would see the following breadcrumb trail at the top of the Web page:</p>
+			<p>A photographer's portfolio website has been organized into different galleries and each gallery has further been divided into categories. A user who navigates through the website to a particular page containing a photo of a Gentoo penguin would see the following breadcrumb trail at the top of the web page:</p>
 
 <pre xml:space="preserve">Home / Galleries / Antarctica / Penguins / Gentoo Penguin</pre>
 
-			<p>All of the text items except "Gentoo Penguin" are implemented as links. The current location, Gentoo Penguin, is included in the breadcrumb trail but it is not implemented as a link.</p>
+<p>The markup for this example implements all of the text items except "Gentoo Penguin" as links. To provide semantic structure to the breadcrumb trail, the links are contained within a list element, which is nested within a <code class="language-html">nav</code> element with an <code class="language-html">aria-label</code>. The current location, Gentoo Penguin, is included as the last item in the breadcrumb trail but it is not implemented as a link to visually and semantically differentiate it from the previous items in the trail.</p>
+<p>The <code class="language-html">aria-current</code> attribute is specified on the last list item in the trail to programmatically identify it as the item that reprsents the current web page. The markup would be styled using CSS to display the breadcrumb trail horizontally.</p>
+      
+<pre xml:space="preserve"><code class="language-html">&lt;nav aria-label="Breadcrumbs"&gt; 
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt; /&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/galleries"&gt;Galleries&lt;/a&gt; /&lt;/li&gt; 
+    &lt;li&gt;&lt;a href="/galleries/antarctica"&gt;Antarctica&lt;/a&gt; /&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/galleries/antarctica/penguins"&gt;Penguins&lt;/a&gt; /&lt;/li&gt;
+    &lt;li aria-current="page"&gt;Gentoo Penguin&lt;/li&gt;
+  &lt;/ul&gt; 
+&lt;/nav&gt;</code>
+</pre>
 
+      <p class="working-example">Working example: <a href="../../working-examples/breadcrumb-trail/">Breadcrumb example</a></p>
 		</section>
 		<section class="example">
 			<h3>E-commerce site</h3>
-			<p>The information architecture of an e-commerce Web site is categorized from general to increasingly more specific product subsections.</p>
+			<p>The information architecture of an e-commerce website is categorized from general to increasingly more specific product subsections.</p>
 			<p>You are here: Acme Company → Electronics → Computers → Laptops</p>
-			<p>The trail begins with "You are here" and ends with the current page. Items in the trail are clickable or tappable links with the exception of "You are here" and "Laptops." This example uses a right arrow symbol (→) as a separator.</p>
+			<p>The trail begins with "You are here" and ends with the current page. Items in the trail are clickable or tappable links with the exception of "You are here", which is a static heading. This example uses a right arrow symbol (→) as a separator.</p>
 			<p>In this example a <code class="language-html">h2</code> element, a <code class="language-html">nav</code> element with an <code class="language-html">aria-label</code> attribute, and an unordered list are used to provide semantics. The markup would be styled using CSS to display the breadcrumb trail horizontally.</p>
 			<section id="the-html">
 				<h4><abbr title="HyperText Markup Language">HTML</abbr></h4>
@@ -47,7 +60,7 @@
     &lt;li&gt;&lt;a href="/"&gt;Acme Company&lt;/a&gt; &amp;#8594;&lt;/li&gt; 
     &lt;li&gt;&lt;a href="/electronics/"&gt;Electronics&lt;/a&gt; &amp;#8594;&lt;/li&gt;
     &lt;li&gt;&lt;a href="/electronics/computers/"&gt;Computers&lt;/a&gt; &amp;#8594;&lt;/li&gt;
-    &lt;li&gt;&lt;a aria-current="page"&gt;Laptops&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/electronics/computers/laptops/" aria-current="page"&gt;Laptops&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt; 
 &lt;/nav&gt;</code>
 </pre>
@@ -57,7 +70,7 @@
 
 				<h4><abbr title="Cascading Style Sheets">CSS</abbr></h4>
 
-<pre xml:space="preserve"><code class="language-css">nav, h2, ul, ul li{ display: inline;}
+<pre xml:space="preserve"><code class="language-css">h2, ul, ul li{ display: inline;}
 nav &gt; h2{ font-size: 1em; } 
 ul { padding-left: 0em; }</code></pre>
 
@@ -71,9 +84,9 @@ ul { padding-left: 0em; }</code></pre>
 		<h2>Tests</h2>
 		<section class="procedure">
 			<h3>Procedure</h3>
-			<p>When breadcrumb trails have been implemented in a set of Web pages:</p>
+			<p>When breadcrumb trails have been implemented in a set of web pages:</p>
 			<ol>
-				<li>Navigate to a Web page.</li>
+				<li>Navigate to a web page.</li>
 				<li>Check that a breadcrumb trail is displayed.</li>
 				<li>Check that the breadcrumb trail displays the correct navigational sequence to reach the current location or the correct hierarchical path to the current location within the site structure.</li>
 				<li>
@@ -91,17 +104,24 @@ ul { padding-left: 0em; }</code></pre>
 						<li>Check that the current location is not implemented as a link.</li>
 					</ol>
 				</li>
-				<li>Check that all links navigate to the correct Web page as specified by the breadcrumb trail.</li>
+        <li>
+          <p>For a breadcrumb trail that does include the current location and it behaves as a link:</p>
+          <ol>
+						<li>Check that all elements are implemented as links.</li>
+						<li>Check that the current location is programmatically identified as such (e.g., using the <code class="language-html">aria-current</code> attribute).</li>
+					</ol>
+        </li>
+				<li>Check that all links navigate to the correct web page as specified by the breadcrumb trail.</li>
 			</ol>
 		</section>
 		<section class="results">
 			<h3>Expected Results</h3>
 			<ul>
 				<li>
-					<p>For all Web pages in the set using breadcrumb trails,</p>
+					<p>For all web pages in the set using breadcrumb trails,</p>
 					<ul>
-						<li>Checks #2, #3, and #6 are true.</li>
-						<li>Either check #4 or #5 is true.</li>
+						<li>Checks #2, #3, and #7 are true.</li>
+						<li>Either check #4, #5 or #6 is true.</li>
 					</ul>
 				</li>
 			</ul>
@@ -117,6 +137,9 @@ ul { padding-left: 0em; }</code></pre>
 	<section id="resources">
 		<h2>Resources</h2>
 		<ul>
+      <li>
+        <a href="https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/examples/breadcrumb/">ARIA Authoring Practices Guide - breadcrumb example</a>
+      </li>
 			<li>
 				<a href="https://html.spec.whatwg.org/multipage/semantics-other.html#rel-up">HTML - breadcrumb navigation</a>
 			</li>
