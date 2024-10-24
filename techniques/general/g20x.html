@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Adjusting indentation </title>
+    <link rel="stylesheet" href="../../css/sources.css" class="remove"/>
+  </head>
+  <body>
+    <h1>Providing options within the content to switch to a layout that does not require the user to scroll horizontally to read a line of text</h1>
+    <section class="meta"><p class="id">ID: G206</p><p class="technology">Technology: general</p><p class="type">Type: Technique</p></section>
+    <section id="applicability">
+      <h2>When to Use</h2>
+      <p>All technologies that support style switching</p>
+    </section>
+    
+    <section id="description">
+      <h2>Description</h2>
+      <p>There are instances where indentation of text or even nested lists provide meaningful information that would make content more difficult to understand if it were removed.</p>
+      TODO: longer explainer
+      </div>
+   </section>
+    
+    <section id="examples">
+      <h2>Examples</h2>
+      <section class="example">
+        <p>A website conveys information in a nested list format. The understandability of the list hierarchy is supported by the indentation of the list content. While it is important for the individual list item text to reflow, the list hierarchy would potentially suffer if flattened so that all content neatly fit within a 320 CSS pixel wide container.</p>  
+        <p>The following example list contains additional nested lists to provide more context for each of the primary list item's points. To maintain the visual hierarchy, the indentation of the lists is maintained, but reduced once a certain CSS breakpoint is met. The content of each list item is given a maximum width of 320 CSS pixels so that even though the list will require bi-dimensional scrolling to view all content, each list item in each nested list level will be able to be read without scrolling in two directions.</p>
+<pre>
+&lt;div class=example>
+	&lt;ul>
+		&lt;li>
+			&lt;p>Make a list using one of the HTML list elements, or even an ARIA <code>role=list</code> container.&lt;/p>
+			&lt;ul>
+				&lt;li>
+					&lt;p>There are three types of lists in HTML which can contain list items (<code>li</code> elements.&lt;/p>
+					&lt;ul>
+						&lt;li>&lt;p>the <code>ul</code> element&lt;/li>
+						&lt;li>&lt;p>the <code>ol</code> element&lt;/li>
+						&lt;li>&lt;p>the <code>menu</code> element&lt;/li>
+					&lt;/ul>
+				&lt;/li>
+				&lt;li>
+					&lt;p>Another type of list, description lists, exist as well - but they do not contain list items (<code>li</code> elements).&lt;/p>
+				&lt;/li>
+			&lt;/ul>
+		&lt;/li>
+		&lt;li>
+			&lt;p>Neither the start or end tags of any of the HTML list elements are omissible.&lt;/p>
+			&lt;ul>
+				&lt;li>&lt;p>The end tags of <code>li</code> elements can be omitted if the <code>li</code> element is immeditely followed by another <code>li</code> element or there is no more content in the parent list element.&lt;/p>
+				</li>
+				<li><p>The list marker for each <code>li</code> element is initially based on the parent list element used.</p>
+					<ul>
+						<li><p>The list maker can be modified by using CSS,</p></li>
+						<li><p>or the list marker can be modifed by using the <code>type</code> attribute, if the parent list element is an <code>ol</code> element.</p></li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<p>Validate your markup.</p>
+		</li>
+	</ul>
+</div>
+</pre>
+<pre>
+@media screen and (max-width: 640px) {
+	.example {
+		overflow: auto;
+		max-width: 640px;
+	}
+	ul {
+		padding-inline-start: 1em;
+	}
+	li p {
+		max-width: 320px;
+		margin: .5em 0;
+	}
+}
+</pre>
+      </section>
+      
+      <section class="example">
+        <p>A website providing code snippets needs to maintain line indentations, as the indentations are meaningful not only to the structure of the code, but in some cases such as with Python, are requirements when defining blocks of code.</p>
+        <p>As a user zooms in the web page, the CSS of the indentation can be adjusted to maintain this necessary structure, while also allowing more text to be legibale on a single line.</p>
+
+        <p>Whether providing a Python example where indentation is required for valid code,</p>
+<pre>
+myset = {"apple", "orange", "kiwi", "banana"}
+
+for x in myset:
+  print(x)
+</pre>
+        <p>Or needing to maintain and convey proper indentation of an HTML document:</p>
+<pre>
+&lt;html lang=en>
+	&lt;head>...&lt;/head>
+	&lt;body>
+		&lt;div>
+			&lt;!-- ... keep indenting as necessary  -->
+		&lt;/div>
+	&lt;/body>
+&lt;/html>
+</pre>     
+        <p>The indentation of code blocks like these could be adjusted at different viewport sizies, via a CSS Media Query.</p>
+<pre>
+@media screen and ( min-width: 320px ) {
+	pre {
+		tab-size: 8px;
+	}
+}
+
+@media screen and ( min-width: 640px ) {
+	pre {
+		tab-size: 16px;
+	}
+}
+
+@media screen and ( min-width: 1280px ) {
+	pre {
+		tab-size: 32px;
+	}
+}
+</pre>
+        </section>
+    </section>
+    
+    <section id="tests">
+      <h2>Tests</h2>
+      <section class="procedure"><h3>Procedure</h3>
+         <ol>
+            <li>Open the content that requires horizontal scrolling on a full screen window. </li>
+            <li>TODO, finish test checks
+         </ol>
+      </section>
+      <section class="results"><h3>Expected Results</h3>
+         <ul>
+            <li>Checks X are true.</li>
+         </ul>
+      </section>
+    </section>
+    <section id="related">
+      <h2>Related Techniques</h2>
+      <ul>
+      <li><a href="../css/C20">C20</a></li>
+      </ul>
+    </section>
+  </body>
+</html>
