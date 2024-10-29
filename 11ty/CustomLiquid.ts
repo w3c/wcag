@@ -8,6 +8,7 @@ import { basename } from "path";
 
 import type { GlobalData } from "eleventy.config";
 
+import { biblioPattern, getBiblio } from "./biblio";
 import { flattenDom, load } from "./cheerio";
 import { generateId } from "./common";
 import { getTermsMap } from "./guidelines";
@@ -21,6 +22,7 @@ const indexPattern = /(techniques|understanding)\/(index|about)\.html$/;
 const techniquesPattern = /\btechniques\//;
 const understandingPattern = /\bunderstanding\//;
 
+const biblio = await getBiblio();
 const termsMap = await getTermsMap();
 const termLinkSelector = "a:not([href])";
 
@@ -89,7 +91,7 @@ export class CustomLiquid extends Liquid {
       const isIndex = indexPattern.test(filepath);
       const isTechniques = techniquesPattern.test(filepath);
       const isUnderstanding = understandingPattern.test(filepath);
-      
+
       if (!isTechniques && !isUnderstanding) return super.parse(html);
 
       const $ = flattenDom(html, filepath);
@@ -507,7 +509,7 @@ export class CustomLiquid extends Liquid {
 				<p>${$el.html()}</p>
 			</div>`);
     });
-    
+
     // Add header to example sections in Key Terms (aside) and Conformance (div)
     $("aside.example, div.example").each((_, el) => {
       const $el = $(el);
@@ -537,6 +539,21 @@ export class CustomLiquid extends Liquid {
       $("h2").each((_, el) => {
         const $el = $(el);
         $el.text(normalizeHeading($el.text()));
+      });
+    }
+
+    // Link biblio references
+    if (scope.isUnderstanding) {
+      $("p").each((_, el) => {
+        const $el = $(el);
+        const html = $el.html();
+        if (html && biblioPattern.test(html)) {
+          $el.html(
+            html.replace(biblioPattern, (substring, code) =>
+              biblio[code]?.href ? `[<a href="${biblio[code].href}">${code}</a>]` : substring
+            )
+          );
+        }
       });
     }
 
