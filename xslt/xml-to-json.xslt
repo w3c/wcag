@@ -31,8 +31,11 @@
 	
 	<xsl:template name="versions">
 		<xsl:choose>
-			<xsl:when test="version = 'WCAG20'">["2.0", "2.1"]</xsl:when>
-			<xsl:when test="version = 'WCAG21'">["2.1"]</xsl:when>
+			<xsl:when test="@id='parsing'">["2.0", "2.1"]</xsl:when>
+			<xsl:when test="version = 'WCAG20'">["2.0", "2.1", "2.2"]</xsl:when>
+			<xsl:when test="version = 'WCAG21'">["2.1", "2.2"]</xsl:when>
+			<xsl:when test="version = 'WCAG22'">["2.2"]</xsl:when>
+			<xsl:otherwise>[]</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 	
@@ -41,6 +44,7 @@
 	</xsl:template>
 	
 	<xsl:template match="/">
+		<xsl:message>Process sufficientNotes whatever they are</xsl:message>
 		{
 			"principles": [
 			<xsl:apply-templates select="//principle"/>
@@ -53,7 +57,7 @@
 			"id": "WCAG2:<xsl:value-of select="@id"/>",
 			"num": "<xsl:value-of select="num"/>",
 			"versions": <xsl:call-template name="versions"/>,
-			"handle": "<xsl:value-of select="name"/>",
+			"handle": "<xsl:value-of select="normalize-space(name)"/>",
 			"title": "<xsl:value-of select="normalize-space(content/html:p[1])"/>",
 			"guidelines": [
 				<xsl:apply-templates select="guideline"/>
@@ -67,12 +71,12 @@
 			"alt_id": [<xsl:call-template name="altid"/>],
 			"num": "<xsl:value-of select="num"/>",
 			"versions": <xsl:call-template name="versions"/>,
-			"handle": "<xsl:value-of select="name"/>",
+			"handle": "<xsl:value-of select="normalize-space(name)"/>",
 			"title": "<xsl:value-of select="normalize-space(content/html:p[1])"/>",
 			"successcriteria": [
 				<xsl:apply-templates select="success-criterion"/>
 			],
-			"techniques": {<xsl:apply-templates select="$associations//guideline[@id = current()/@id]" mode="techniques"/>}
+			"techniques": [<xsl:apply-templates select="$associations//guideline[@id = current()/@id]" mode="techniques"/>]
 		}<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
@@ -83,7 +87,7 @@
 			"num": "<xsl:value-of select="num"/>",
 			"versions": <xsl:call-template name="versions"/>,
 			"level": "<xsl:value-of select="level"/>",
-			"handle": "<xsl:value-of select="name"/>",
+			"handle": "<xsl:value-of select="normalize-space(name)"/>",
 			"title": "<xsl:value-of select="wcag:json-string(content/html:p[1])"/>",
 		<xsl:if test="content/html:dl">
 			"details": [{
@@ -93,7 +97,13 @@
 				]
 			}],
 		</xsl:if>
-			"techniques": {<xsl:apply-templates select="$associations//success-criterion[@id = current()/@id]" mode="techniques"/>}
+		<xsl:if test="content/html:*[@class = 'note']">
+			<xsl:message>Still gotta process SC notes</xsl:message>
+		</xsl:if>
+		<xsl:if test="content/html:*[not(@class = 'note')]">
+			<xsl:message>Still gotta process more "details" thingys</xsl:message>
+		</xsl:if>
+			"techniques": [<xsl:apply-templates select="$associations//success-criterion[@id = current()/@id]" mode="techniques"/>]
 		}<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
@@ -109,7 +119,7 @@
 	</xsl:template>
 	
 	<xsl:template match="sufficient | advisory | failure">
-		"<xsl:value-of select="name()"/>": [
+		{"<xsl:value-of select="name()"/>": [
 		<xsl:if test="situation">
 			{"situations": [
 			<xsl:apply-templates select="situation"/>
@@ -118,7 +128,7 @@
 		<xsl:if test="technique or ./and">
 			<xsl:apply-templates select="technique | ./and"/>
 		</xsl:if>
-		]<xsl:if test="position() != last()">,</xsl:if>
+		]}<xsl:if test="position() != last()">,</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="situation">
@@ -132,7 +142,7 @@
 		{
 		"id":
 		<xsl:choose>
-			<xsl:when test="@id">"<xsl:value-of select="@id"/>"</xsl:when>
+			<xsl:when test="@id">"TECH:<xsl:value-of select="@id"/>"</xsl:when>
 			<xsl:otherwise>"TECH:future-<xsl:value-of select="ancestor::element()[name() = 'success-criterion' or name() = 'guideline'][1]/@id"/>-<xsl:value-of select="count(preceding::technique[ancestor::element()/@id = current()/@id]) + 1"/>"</xsl:otherwise>
 		</xsl:choose>
 		,
