@@ -67,7 +67,7 @@ for (const [key, value] of Object.entries(allFlatGuidelines)) {
   if (value.version > version) futureGuidelines[key] = value;
 }
 
-const techniques = await getTechniquesByTechnology();
+const techniques = await getTechniquesByTechnology(flatGuidelines);
 const flatTechniques = getFlatTechniques(techniques);
 
 /** Maps technique IDs to SCs found in target version */
