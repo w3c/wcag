@@ -1,3 +1,7 @@
+---js
+// Same condition used for copying guidelines assets in eleventy.config.ts
+const includeGuidelines = process.env.COMMIT_REF && !process.env.WCAG_MODE;
+---
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -7,6 +11,9 @@
 	<body>
 		<h1>Web Content Accessibility Guidelines {{ versionDecimal }}</h1>
 		<ul>
+      {% if includeGuidelines -%}
+        <li><a href="guidelines/">Guidelines</a></li>
+      {%- endif %}
 			<li><a href="techniques/">Techniques</a></li>
 			<li><a href="understanding/">Understanding Docs</a></li>
 		</ul>
