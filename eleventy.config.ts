@@ -11,6 +11,7 @@ import { resolveDecimalVersion } from "11ty/common";
 import {
   actRules,
   assertIsWcagVersion,
+  getErrataForVersion,
   getFlatGuidelines,
   getPrinciples,
   getPrinciplesForVersion,
@@ -110,6 +111,7 @@ const termsMap = process.env.WCAG_VERSION ? await getTermsMap(version) : await g
 const globalData = {
   version,
   versionDecimal: resolveDecimalVersion(version),
+  errata: process.env.WCAG_VERSION ? await getErrataForVersion(version) : {},
   techniques, // Used for techniques/index.html
   technologies, // Used for techniques/index.html
   technologyTitles, // Used for techniques/index.html
