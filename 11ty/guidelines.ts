@@ -3,9 +3,9 @@ import type { CheerioAPI } from "cheerio";
 import { glob } from "glob";
 
 import { readFile } from "fs/promises";
-import { basename } from "path";
+import { basename, join } from "path";
 
-import { flattenDomFromFile, load, type CheerioAnyNode } from "./cheerio";
+import { flattenDomFromFile, load, loadFromFile, type CheerioAnyNode } from "./cheerio";
 import { generateId } from "./common";
 
 export type WcagVersion = "20" | "21" | "22";
@@ -299,3 +299,24 @@ export const getAcknowledgementsForVersion = async (version: WcagVersion) => {
  */
 export const getPrinciplesForVersion = async (version: WcagVersion) =>
   processPrinciples(await loadRemoteGuidelines(version));
+
+/** Parses errata items from the errata document for the specified WCAG version. */
+export const getErrataForVersion = async (version: WcagVersion) => {
+  const $ = await loadFromFile(join("errata", `${version}.html`));
+  const aSelector = `a[href^='https://www.w3.org/TR/WCAG${version}/#']`;
+  const errata: Record<string, string[]> = {};
+
+  $(`li:has(${aSelector})`).each((_, el) => {
+    const $el = $(el);
+    const $aEl = $el.find(aSelector);
+    const hash = new URL($aEl.attr("href")!).hash.slice(1);
+    const erratumHtml = $el
+      .html()!
+      .replace(/^.*?<\/a>,?\s*/g, "")
+      .replace(/^(\w)/, (_, p1) => p1.toUpperCase());
+    if (hash in errata) errata[hash].push(erratumHtml);
+    else errata[hash] = [erratumHtml];
+  });
+
+  return errata;
+};
