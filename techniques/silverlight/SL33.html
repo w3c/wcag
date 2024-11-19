@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using Well-Formed XAML to Define a Silverlight User Interface</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using Well-Formed XAML to Define a Silverlight User Interface</h1><section class="meta"><p class="id">ID: SL33</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+      <ul id="silverlight.applicability.general">
+         <li> Microsoft Silverlight, versions 3 and greater </li>
+         <li> Silverlight managed programming model and Silverlight XAML </li>
+      </ul>
+   </section><section id="description"><h2>Description</h2>
+      <p>The objective of this technique is to use the characteristics of the
+    				XAML language to support basic parsing requirements that both applications
+    				and accessibility frameworks rely upon. This technique explains the
+    				role of XAML in the overall Silverlight development and application
+    				architecture, in particular for defining the elements that make up
+    				a Silverlight user interface. This technique also present some basic
+    				facts about XAML as a language; more information of this nature is
+    				also included in <a href="#silverlight_notes"></a>. </p>
+      <p>XAML is a markup language for object instantiation. XAML can be incorporated
+    				into a technology such as Silverlight. A specific XAML vocabulary can
+    				be defined by a technology such as Silverlight, and the vocabulary
+    				can be extended by anyone that provides suitable backing code. For
+    				example, a Silverlight application author can define a custom class,
+    				and the application author or potentially other Silverlight application
+    				authors can use XAML to instantiate instances of the custom class. </p>
+      <p>XAML has a <a href="http://go.microsoft.com/fwlink/?LinkId=114525">published
+    				language specification</a>. </p>
+      <p>XAML does not necessarily declare the entirety of the object tree
+    				that a Silverlight client runtime loads, but XAML typically declares
+    				the majority of the objects/elements that represent the Silverlight
+    				application's user interface. The objects and values that are used
+    				for accessibility scenarios are often closely related to the standard
+    				user interface, and thus accessibility-related properties are typically
+    				declared in XAML rather than in code, even though setting the values
+    				in code is technically possible. </p>
+      <p>For more information on XAML in Silverlight, see <a href="https://msdn.microsoft.com/en-us/library/cc189036(VS.95).aspx">Silverlight
+    			XAML Overview on MSDN</a>. </p>
+   	<section id="SL33_xaml-xml">
+         <h4> XAML and XML </h4>
+         <p>XAML is based on XML, and shares many of its language features. Some
+    					of the language features that are directly relevant to the stated intent
+    					of SC4.1.1 and to 4.1.1 related techniques include: </p>
+         <ul>
+            <li> Well-formedness: The definition of well-formed XAML is the same
+    					as the XML definition. XAML processors, including the Silverlight
+    					runtime XAML parser, will block loading XAML that is not well formed. </li>
+            <li> Duplicate attributes: Unless specially configured for scenarios
+    						such as design-time support, XAML processors will block loading XAML
+    						where elements contain duplicate attributes. </li>
+            <li> Quote matching: mismatched quote matching for attribute values
+    							in XAML constitutes XAML that is not well formed. </li>
+         </ul>
+         <p>Some XAML language features that are analogous to XML but have some
+    					technology-specific differences include: </p>
+         <ul>
+            <li> Identifiers: XAML defines a <code class="prop">Name</code> directive, which
+    					is analogous to <code class="att">xml:id</code> in that <code class="prop">Name</code> serves
+    					as the unique identifier of an element. However, XAML defines an
+    					additional concept of a XAML namescope, which permits a XAML document
+    					to contain multiple XAML namescopes as a factoring technique. Thus,
+    					identical <code class="prop">Name</code> values are permitted in a XAML document
+    					so long as each is defined in a separate XAML namescope. XAML namescopes
+    					are associated with elements, such that the extent of each XAML namescope
+    					is understood by XAML processors. </li>
+            <li> Schemas and vocabularies: A notable difference between XAML and
+    						XML is that a XAML vocabulary is not typically represented in existing
+    						XML schema definition formats such as XSD or DTD. XAML includes inheritance
+    						and reference features that cannot adequately be expressed in XSD
+    						or other existing XML schema representation formats. This affects
+    						the "elements are nested according to their specifications"   consideration
+    						of SC4.1.1. XAML definitely has the ability to enforce nesting restrictions
+    						as represented by a XAML vocabulary. However, XAML validity for a
+    						vocabulary is deliberately fluid, in order to support extension by
+    						user code. XAML validity is determined by a combination of a XAML
+    						processor, a XAML concept known as a XAML schema context, and the
+    						code that backs the XAML and defines any objects being instantiated
+    						as a parsing result. Typically, design time tools such as Microsoft
+    						Visual Studio can adequately duplicate the runtime validity characteristics
+    						of a XAML vocabulary. Using these tools, application authors can
+    						both verify XAML validity as well as receive design-time information
+    						for how to correct any XAML validity errors. </li>
+         </ul>
+   	</section>
+   	<section id="SL33_xaml-html">
+         <h4> XAML parsing and HTML parsing </h4>
+         <p>In the Silverlight implementation, XAML is like HTML in that it is
+    					loaded and parsed just-in-time. Silverlight XAML is not precompiled
+    					to binary or MSIL (the language-neutral CLR runtime format). Instead,Silverlight
+    					XAML is transmitted or stored as plain text, either loose or packaged
+    					as resources in a library. Thus Silverlight XAML is human readable
+    					as well as machine readable. </p>
+         <p>However, unlike HTML, Silverlight XAML is only intended to be loaded
+    					and interpreted by the Silverlight runtime, rather than multiple possible
+    					user agents that each implement an HTML engine. HTML is a language
+    					where the behavior is also specified. In contrast, XAML is a language
+    					for referencing constructs that are defined in runtime libraries, and
+    					the functional specification of the XAML language itself is minimal
+    					(intrinsics; language rules; primitive types). Layout, appearance,
+    					type-member sets, roles, etc. are all left up to specific frameworks
+    					and vocabularies that use XAML. Behavior associated with a given XAML
+    					construct is based on type definitions made in a runtime library. For
+    					Silverlight XAML, the types are from Silverlight core libraries, but
+    					often the definitions come from libraries that are available to the
+    					Silverlight runtime as part of an application's packaging for distribution. </p>
+         <p>XAML is generally speaking strict, and will raise parsing errors if
+    					XAML contains elements that are not recognized. Such parsing errors
+    					generally present the information in the XAML from resulting in any
+    					objects being created, which in turn prevents a Silverlight application
+    					from running. This is different from typical (non-xHTML) HTML, where
+    					implementations are permitted to contain nonrecognized elements or
+    					attributes and ignore them. </p>
+   	</section>
+   </section><section id="examples"><h2>Examples</h2>
+      <section class="example">
+         <h3>XAML in design tools for Silverlight</h3>
+         
+            <p>A developer utilizes features in their Silverlight XAML authoring
+    						tool to ensure that: </p>
+            <ul>
+               <li> XAML is well formed </li>
+               <li> XAML is valid according to Silverlight parser and all reference
+    					assemblies </li>
+               <li> XAML Names are unique in namescope </li>
+               <li> XAML has no duplicate attributes </li>
+            </ul>
+      	<section id="SL33_design-tools">
+               <h4> More about design tools and XAML </h4>
+               <p>Silverlight XAML is able to be loaded by design tools for Silverlight.
+    							In the design tool, the XAML is interpreted much like the runtime interprets
+    							it, in order to show the visual representation of the Silverlight application.
+    							In addition, the design tool might implement design surfaces in which
+    							the user interface can be changed, and typically provides a way to
+    							save any changes made in the tool back into the loaded XAML. </p>
+               <p>At design time, tools such as Microsoft Visual Studio or Microsoft
+    							Expression might provide opportunities to correct any XAML errors before
+    							the Silverlight application is compiled and packaged for deployment.
+    							This might be implemented by performing static analysis of the XAML,
+    							by forwarding the design tool's own parser errors as it renders the
+    							design surface, or by forwarding linking errors that are identified
+    							by a precompile step (for example, missing event handlers raise a XAML
+    							error from precompile). This behavior is sometimes identified as a <em>design
+    								mode</em> behavior in Microsoft documentation and other documentation
+    							about Visual Studio or specific tools. </p>
+               <p>Regardless of how a given XAML file behaves while being interacted
+    							with in a design mode, it is the Silverlight runtime XAML parser on
+    							each client installation that is the ultimate determinant of whether
+    							the XAML is valid or invalid. </p>
+      	</section>
+            
+      </section>
+      <section class="example">
+         <h3>Silverlight application consumer</h3>
+         
+            <p>A consumer views a Silverlight application that is hosted in an HTML
+    						page. If the Silverlight application has valid XAML, the Silverlight
+    						content loads, and the fact that the XAML-based UI loaded at all is
+    						assurance that: </p>
+            <ul>
+               <li> XAML is well formed </li>
+               <li> XAML is valid </li>
+               <li> XAML validity is partially based on correct type mapping of all
+    						elements referenced in XAML, according to Silverlight XAML parser
+    						and all reference assemblies included by that application </li>
+               <li> XAML Names are unique in namescope </li>
+               <li> XAML has no duplicate attributes </li>
+               <li> XAML-defined properties that are relevant for assistive technology
+    							(for example <code class="prop">AutomationProperties.Name</code> as described
+    							by other Silverlight techniques) are available </li>
+            </ul>
+         
+      </section>
+   </section><section id="tests"><h2>Tests</h2>
+   	<section class="test">
+      <h4>Pass case</h4>
+      <section class="procedure"><h3>Procedure</h3>
+         <ol>
+            <li> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. That
+    					application is known to consume Silverlight XAML. </li>
+            <li> Verify that the application runs correctly and displays user interface. </li>
+         </ol>
+      </section>
+      <section class="results"><h3>Expected Results</h3>
+         <p>#2 is true. </p>
+      </section>
+   </section><section class="test">
+      <h4>Fail case</h4>
+      <section class="procedure"><h3>Procedure</h3>
+         <ol>
+            <li> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. That
+    					application is known to consume Silverlight XAML, and the XAML is
+    					known to be deliberately invalid. </li>
+            <li> Verify that the application did not run. </li>
+         </ol>
+      </section>
+      <section class="results"><h3>Expected Results</h3>
+         <ol>
+            <li>#2 is true. </li>
+         </ol>
+         <p>Note that it is common that an error message is displayed to users
+    					in HTML, which is implemented by handling the JavaScript OnError event
+    					emitted by the Silverlight plugin. XAML parse errors are forwarded
+    					to JavaScript errors and can be handled in this way. However, it is
+    					also possible that the application is production-ready, and deliberately
+    					does not expose any JavaScript errors, whether Silverlight managed
+    					code errors or not. If seeing the specific error is important, the
+    					test might need to be run against a preproduction or debug version
+    					of the application. </p>
+      </section>
+   </section></section><section id="related"><h2>Related Techniques</h2><ul>
+      <li><a href="../general/G192">G192</a></li>
+   </ul></section><section id="resources"><h2>Resources</h2>
+      
+         <ul>
+            <li>
+                  <a href="https://msdn.microsoft.com/en-us/library/cc189036(VS.95).aspx">Silverlight
+    						XAML Overview on MSDN</a> 
+               </li>
+         </ul>
+      
+   </section></body></html>
