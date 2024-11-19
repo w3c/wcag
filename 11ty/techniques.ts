@@ -1,5 +1,6 @@
 import type { Cheerio } from "cheerio";
 import { glob } from "glob";
+import matter from "gray-matter";
 import capitalize from "lodash-es/capitalize";
 import uniqBy from "lodash-es/uniqBy";
 
@@ -7,7 +8,13 @@ import { readFile } from "fs/promises";
 import { basename } from "path";
 
 import { load, loadFromFile } from "./cheerio";
-import { isSuccessCriterion, type FlatGuidelinesMap, type SuccessCriterion } from "./guidelines";
+import {
+  assertIsWcagVersion,
+  isSuccessCriterion,
+  type FlatGuidelinesMap,
+  type SuccessCriterion,
+  type WcagVersion,
+} from "./guidelines";
 import { wcagSort } from "./common";
 
 /** Maps each technology to its title for index.html */
@@ -25,7 +32,7 @@ export const technologyTitles = {
   silverlight: "Silverlight Techniques", // Deprecated in 2020
   text: "Plain-Text Techniques",
 };
-type Technology = keyof typeof technologyTitles;
+export type Technology = keyof typeof technologyTitles;
 export const technologies = Object.keys(technologyTitles) as Technology[];
 
 function assertIsTechnology(
@@ -163,7 +170,14 @@ export async function getTechniqueAssociations(guidelines: FlatGuidelinesMap) {
   return associations;
 }
 
-interface Technique {
+interface TechniqueFrontMatter {
+  /** May be specified via front-matter; message to display RE a technique's obsolescence. */
+  obsoleteMessage?: string;
+  /** May be specified via front-matter to indicate a technique is obsolete as of this version. */
+  obsoleteSince?: WcagVersion;
+}
+
+export interface Technique extends TechniqueFrontMatter {
   /** Letter(s)-then-number technique code; corresponds to source HTML filename */
   id: string;
   /** Technology this technique is filed under */
@@ -195,17 +209,37 @@ export async function getTechniquesByTechnology() {
     {} as Record<Technology, Technique[]>
   );
 
+  // Check directory data files (we don't have direct access to 11ty's data cascade here)
+  const technologyData: Partial<Record<Technology, any>> = {};
+  for (const technology of technologies) {
+    try {
+      const data = JSON.parse(
+        await readFile(`techniques/${technology}/${technology}.11tydata.json`, "utf8")
+      );
+      if (data) technologyData[technology] = data;
+    } catch {}
+  }
+
   for (const path of paths) {
     const [technology, filename] = path.split("/");
     assertIsTechnology(technology);
+    // Support front-matter within HTML files
+    const { content, data: frontMatterData } = matter(await readFile(`techniques/${path}`, "utf8"));
+    const data = { ...technologyData[technology], ...frontMatterData };
+
+    if (data.obsoleteSince) {
+      data.obsoleteSince = "" + data.obsoleteSince;
+      assertIsWcagVersion(data.obsoleteSince);
+    }
 
     // Isolate h1 from each file before feeding into Cheerio to save ~300ms total
-    const match = (await readFile(`techniques/${path}`, "utf8")).match(/<h1[^>]*>([\s\S]+?)<\/h1>/);
-    if (!match || !match[1]) throw new Error(`No h1 found in techniques/${path}`);
-    const $h1 = load(match[1], null, false);
+    const h1Match = content.match(/<h1[^>]*>([\s\S]+?)<\/h1>/);
+    if (!h1Match || !h1Match[1]) throw new Error(`No h1 found in techniques/${path}`);
+    const $h1 = load(h1Match[1], null, false);
 
     const title = $h1.text();
     techniques[technology].push({
+      ...data, // Include front-matter
       id: basename(filename, ".html"),
       technology,
       title,

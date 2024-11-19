@@ -8,7 +8,7 @@ import { flattenDomFromFile, load } from "./cheerio";
 import { generateId } from "./common";
 
 export type WcagVersion = "20" | "21" | "22";
-function assertIsWcagVersion(v: string): asserts v is WcagVersion {
+export function assertIsWcagVersion(v: string): asserts v is WcagVersion {
   if (!/^2[012]$/.test(v)) throw new Error(`Unexpected version found: ${v}`);
 }
 
@@ -81,6 +81,7 @@ export interface Principle extends DocNode {
   num: `${number}`; // typed as string for consistency with guidelines/SC
   version: "WCAG20";
   guidelines: Guideline[];
+  type: "Principle";
 }
 
 export interface Guideline extends DocNode {
@@ -88,6 +89,7 @@ export interface Guideline extends DocNode {
   num: `${Principle["num"]}.${number}`;
   version: `WCAG${"20" | "21"}`;
   successCriteria: SuccessCriterion[];
+  type: "Guideline";
 }
 
 export interface SuccessCriterion extends DocNode {
@@ -96,6 +98,7 @@ export interface SuccessCriterion extends DocNode {
   /** Level may be empty for obsolete criteria */
   level: "A" | "AA" | "AAA" | "";
   version: `WCAG${WcagVersion}`;
+  type: "SC";
 }
 
 export function isSuccessCriterion(criterion: any): criterion is SuccessCriterion {
@@ -208,11 +211,15 @@ export async function getTermsMap() {
       // but the XSLT process generates id from the element's text which is not always the same
       id: `dfn-${generateId($el.text())}`,
       definition: getContentHtml($el.parent().next()),
-      name: $el.text().toLowerCase(),
+      name: $el.text(),
       trId: el.attribs.id,
     };
 
-    const names = [term.name].concat((el.attribs["data-lt"] || "").toLowerCase().split("|"));
+    // Include both original and all-lowercase version to simplify lookups
+    // (since most synonyms are lowercase) while preserving case in name
+    const names = [term.name, term.name.toLowerCase()].concat(
+      (el.attribs["data-lt"] || "").toLowerCase().split("|")
+    );
     for (const name of names) terms[name] = term;
   });
 
