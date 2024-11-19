@@ -1,0 +1,202 @@
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using Silverlight Font Properties to Control Text Presentation</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using Silverlight Font Properties to Control Text Presentation</h1><section class="meta"><p class="id">ID: SL31</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+      <ul id="silverlight.applicability.general">
+         <li> Microsoft Silverlight, versions 3 and greater </li>
+         <li> Silverlight managed programming model and Silverlight XAML </li>
+      </ul>
+   </section><section id="description"><h2>Description</h2>
+      <p>The objective of this technique is to change the presentation / visual
+    				appearance of text, by setting several of the font-specific properties
+    				in the Silverlight API. Changing such properties does not change the
+    				semantic meaning of the text, nor does it alter the representation
+    				of the text that is available to assistive technologies through the
+    				Silverlight support of the UIA accessibility framework. By using font
+    				properties, it is possible to introduce a wide variety of presentation
+    				changes to fonts that do not introduce semantic elements that interfere
+    				with an assistive technology's view of text in the Silverlight application.
+    				In particular, adjusting font properties will make it possible to avoid
+    				any need for use of images of text, yet still provide a wide range
+    				of choices for text presentation. </p>
+      <p>Silverlight font properties exist on all controls, as well as on other
+    				text elements that are not true controls. For controls, the font properties
+    				apply in any case where the control enables a presentation mode that
+    				has enclosed text areas in its layout. By setting Silverlight font
+    				properties, it is possible to adjust presentation of font features
+    				without changing the structural connotation of that control, or the
+    				value of any control-specific property that contains plain-text. For
+    				example, the <code class="prop">FontSize</code> property can be set on a <code class="obj">Paragraph</code> (not
+    				a control) or on a <code class="obj">Button</code> (a control, and in this
+    				case the font size changes apply to any text displayed in the button
+    				content area). Font properties are also inheriting properties, meaning
+    				that if applying a font property value to a container in a relationship,
+    				those font property values can apply to child elements in the relationship.
+    				For example, if a <code class="prop">FontSize</code> is applied to a <code class="obj">RichTextBox</code>,
+    				that <code class="prop">FontSize</code> value is used by default by all the <code class="obj">Paragraph</code> items
+    				displayed in the <code class="obj">RichTextBox</code>. </p>
+      <p>Similar to CSS, Silverlight font properties can be grouped as a <code class="obj">Style</code>.
+    				That <code class="obj">Style</code> can be applied to all instances of a text
+    				element type (for example to all cases of <code class="obj">Paragraph</code>)
+    				or specifically referenced as a resource that is only used by certain
+    				instances of a text element type. Either way, the <code class="obj">Style</code> feature
+    				enables the separation of presentation from semantics for text elements,
+    				and enables workflows where content authors supply the semantic text
+    				and design-oriented authors adjust the related Silverlight styles.
+    				For more information on the Silverlight concept of styles, see <a href="https://msdn.microsoft.com/en-us/library/cc278068(VS.95).aspx">Control
+    					Customization on MSDN</a>. </p>
+      <p>The following Silverlight font properties are useful to style text
+    				and avoid the need for text in images. Links in this list refer to
+    				the <code class="obj">Control</code> class version of these properties. </p>
+      <ul>
+         <li> The <a href="https://msdn.microsoft.com/en-us/library/system.windows.controls.control.fontfamily%28VS.95%29.aspx">FontFamily</a> property
+    				is used to display the code aspect in a monospace font family (specifically,
+    				FontFamily="Courier New"). </li>
+         <li> The <a href="https://msdn.microsoft.com/en-us/library/system.windows.controls.control.fontsize%28VS.95%29.aspx">FontSize</a> property
+    				is used to display the text in a larger size. </li>
+         <li> The <a href="https://msdn.microsoft.com/en-us/library/system.windows.controls.control.fontstyle%28VS.95%29.aspx">FontStyle</a> property
+    				is used to display text in italics. </li>
+         <li> The <a href="https://msdn.microsoft.com/en-us/library/system.windows.controls.control.fontweight(v=vs.110).aspx">FontWeight</a> property
+    				is used to set how thick or thin characters in text should be displayed. </li>
+         <li> The <a href="https://msdn.microsoft.com/en-us/library/system.windows.controls.control.fontstretch.aspx">FontStretch</a> property
+    				is used to control the spacing of letters in text. </li>
+         <li> The <a href="https://msdn.microsoft.com/en-us/library/system.windows.controls.control.foreground%28VS.95%29.aspx">Foreground</a> property
+    				is used to display the color of text or text containers. </li>
+         <li> The <a href="https://msdn.microsoft.com/en-us/library/system.windows.controls.control.background%28VS.95%29.aspx">Background</a> property
+    			can be used to display text on a non-text background. </li>
+      </ul>
+      <p>So long as images of text are avoided, the text within a Silverlight
+    				text element can be reported to the UI Automation accessibility framework
+    				that Silverlight supports. That text is reported using the same basic
+    				text content as is used for semantic text display in the UI. In other
+    				words, exposing that text to assistive technologies that use UIA as
+    				a framework does not require the Silverlight application author to
+    				resort to automation-specific override properties such as <code class="prop">AutomationProperties.HelpText</code>;
+    				the automation peers for text elements report all necessary text content
+    				to automation as a built-in behavior of the text element controls.
+    				For more information on UI Automation and text containers, see <a href="#SL32"></a>. </p>
+   	<section id="SL31_css">
+         <h4> CSS versus Silverlight font properties </h4>
+         <p>Related CSS techniques mention that users can override any page-declared
+    					CSS styling techniques, by invoking browser-specific features. For
+    					example, using Internet Explorer, a user can use Tools / Internet Options,
+    					Appearance / Accessibility to override certain classifications of CSS-controlled
+    					font properties when displaying HTML documents, or to use a user-specific
+    					style sheet for HTML documents. No browser-level equivalent feature
+    					exists for user alteration of Silverlight text properties in the Silverlight
+    					content area. Instead, application authors could supply controls that
+    					enable similar font-property changing behavior, and include those controls
+    					in the application-specific user interface. For more information on
+    					this technique, see <a href="#SL13"></a>. </p>
+   	</section>
+   	<section id="SL31_glyphs">
+         <h4> Glyphs </h4>
+         <p>Silverlight API includes a related text presentation API <code class="obj">Glyphs</code>. <code class="obj">Glyphs</code> is
+    					intended for specific decorative or niche language-support scenarios.
+    					The <code class="obj">Glyphs</code> API does not offer as much UIA exposure
+    					or the ability to programmatically change typical font properties;
+    					the main scenarios for <code class="obj">Glyphs</code> are to package migrated
+    					text content from document formats, or for purely decorative text in
+    					a font that is not commonly found on a user system and only the glyphs
+    					actually used in the Unicode string are subsetted into the <code class="obj">Glyphs</code> font
+    					payload. If addressing the WCAG criteria, authors should avoid using <code class="obj">Glyphs</code> API
+    					and instead use other text containers such as <code class="obj">TextBox</code>,
+    					along with a font that is supplied in the application package or known
+    					to exist on the end user system. </p>
+   	</section>
+   </section><section id="examples"><h2>Examples</h2>
+      <section class="example">
+         <h3>Run time applied font properties, style, and template</h3>
+         
+            <p>This example illustrates applying runtime changes to a font property. </p>
+            <p>This example has UI in XAML, and logic in C#. The following is the
+    					XAML. </p>
+            <pre xml:space="preserve">&lt;UserControl x:Class="DocumentStructure.MainPage"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+&gt;
+   &lt;UserControl.Resources&gt;
+       &lt;Style x:Key="NewStyle" TargetType="Control"&gt;
+           &lt;Setter Property="FontFamily" Value="Arial"/&gt;
+           &lt;Setter Property="FontSize" Value="30"/&gt;
+           &lt;Setter Property="Height" Value="40"/&gt;
+       &lt;/Style&gt;
+   &lt;/UserControl.Resources&gt;
+   &lt;StackPanel x:Name="LayoutRoot" Background="White"&gt;
+   &lt;RichTextBox IsReadOnly="True" Name="rtb" FontFamily="Algerian" FontSize="20"&gt;
+           &lt;Paragraph&gt;Call me Ishmael. Some years ago--never mind how long precisely--having little or no money in my purse, 
+           and nothing particular to interest me on shore, I thought I would sail about a little 
+and see the watery part of the world. It is a way I have of driving off the spleen and 
+regulating the circulation. Whenever I find myself growing grim about the mouth; whenever 
+it is a damp, drizzly November in my soul; whenever I find myself involuntarily pausing before 
+coffin warehouses, and bringing up the rear of every funeral I meet; and especially whenever my 
+&lt;Hyperlink NavigateUri="http://en.wiktionary.org/wiki/hypo"&gt;hypos&lt;/Hyperlink&gt;
+get such an upper hand of me, that it requires a strong moral principle to prevent me from deliberately stepping into 
+the street, and methodically knocking people's hats off--then, I account it high time to get to sea as soon as I can. 
+This is my substitute for pistol and ball. With a philosophical flourish Cato throws himself 
+upon his sword; I quietly take to the ship. There is nothing surprising in this. If they but knew it, 
+almost all men in their degree, some time or other, cherish very nearly the same 
+feelings towards the ocean with me.
+           &lt;/Paragraph&gt;
+           &lt;Paragraph&gt;There now is your
+               &lt;Hyperlink 
+               NavigateUri="https://en.wikipedia.org/wiki/New_York_Harbor"&gt;insular city of the Manhattoes&lt;/Hyperlink&gt;
+, belted round by wharves as Indian isles by coral reefs--commerce surrounds it 
+with her surf. Right and left, the streets take you waterward. Its extreme downtown is the 
+battery, where that noble mole is washed by waves, and cooled by breezes, which a few hours 
+previous were out of sight of land. Look at the crowds of water-gazers there.
+           &lt;/Paragraph&gt;
+           &lt;Paragraph&gt;Circumambulate the city of a dreamy Sabbath afternoon. 
+Go from Corlears Hook to Coenties Slip, and from thence, by Whitehall, northward. What do you see?
+--Posted like silent sentinels all around the town, stand thousands upon thousands of mortal men 
+fixed in ocean reveries. Some leaning against the spiles; some seated upon the pier-heads; 
+some looking over the bulwarks of ships from China; some high aloft in the rigging, as if striving 
+to get a still better seaward peep. But these are all landsmen; of week days pent up in lath 
+and plaster--tied to counters, nailed to benches, clinched to desks. How 
+then is this? Are the green fields gone? What do they here?
+           &lt;/Paragraph&gt;
+       &lt;/RichTextBox&gt;
+       &lt;Button Name="swapper" Click="swapper_Click" Width="220"&gt;Swap styles&lt;/Button&gt;
+   &lt;/StackPanel&gt;
+&lt;/UserControl&gt;
+</pre>
+            <p>The following is C# code: </p>
+            <pre xml:space="preserve">       private void swapper_Click(object sender, RoutedEventArgs e)
+       {
+           rtb.Style = this.Resources["NewStyle"] as Style;
+       }
+</pre>
+            <p class="working-example">This example is shown in operation in the <a href="../../working-examples/silverlight-document-structure/">working example of Document Structure</a>.</p>
+         
+      </section>
+   </section><section id="tests"><h2>Tests</h2>
+      <section class="procedure"><h3>Procedure</h3>
+         <ol>
+            <li> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. </li>
+            <li> Test that application of font properties as enabled in application
+    						UI changes presentation, but does not change semantic meaning of
+    						text. </li>
+            <li> Close the browser. Repeat the test with an accessibility framework
+    							test tool running. There should be no difference in the structure
+    							or relationships in the accessibility view beyond the presentation
+    							changes. </li>
+         </ol>
+      </section>
+      <section class="results"><h3>Expected Results</h3>
+         <p>#2 and #3 are true. </p>
+      </section>
+   </section><section id="related"><h2>Related Techniques</h2><ul>
+      <li><a href="../general/G140">G140</a></li>
+      <li><a href="../css/C22">C22</a></li>
+   </ul></section><section id="resources"><h2>Resources</h2>
+      
+         <ul>
+            <li>
+                  <a href="https://msdn.microsoft.com/en-us/library/ee681613%28VS.95%29.aspx">RichTextBox
+    					Overview</a> 
+               </li>
+            <li>
+                  <a href="https://msdn.microsoft.com/en-us/library/cc278068(VS.95).aspx">Control
+    						Customization</a> 
+               </li>
+         </ul>
+      
+   </section></body></html>
