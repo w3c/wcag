@@ -1,7 +1,10 @@
+import axios from "axios";
 import compact from "lodash-es/compact";
+import { mkdirp } from "mkdirp";
 import { rimraf } from "rimraf";
 
-import { copyFile } from "fs/promises";
+import { copyFile, writeFile } from "fs/promises";
+import { join } from "path";
 
 import { CustomLiquid } from "11ty/CustomLiquid";
 import {
@@ -184,7 +187,31 @@ export default function (eleventyConfig: any) {
   eleventyConfig.on("eleventy.after", async ({ dir }: EleventyEvent) => {
     // addPassthroughCopy can only map each file once,
     // but base.css needs to be copied to a 2nd destination
-    await copyFile(`${dir.input}/css/base.css`, `${dir.output}/understanding/base.css`);
+    await copyFile(
+      join(dir.input, "css", "base.css"),
+      join(dir.output, "understanding", "base.css")
+    );
+
+    // Output guidelines/index.html and dependencies for PR runs (not for GH Pages or W3C site)
+    const sha = process.env.COMMIT_REF; // Read environment variable exposed by Netlify
+    if (sha && !process.env.WCAG_MODE) {
+      await mkdirp(join(dir.output, "guidelines"));
+      await copyFile(
+        join(dir.input, "guidelines", "guidelines.css"),
+        join(dir.output, "guidelines", "guidelines.css")
+      );
+      await copyFile(
+        join(dir.input, "guidelines", "relative-luminance.html"),
+        join(dir.output, "guidelines", "relative-luminance.html")
+      );
+
+      const url = `https://raw.githack.com/${GH_ORG}/${GH_REPO}/${sha}/guidelines/index.html?isPreview=true`;
+      const { data: processedGuidelines } = await axios.get(
+        `https://labs.w3.org/spec-generator/?type=respec&url=${encodeURIComponent(url)}`,
+        { responseType: "text" }
+      );
+      await writeFile(`${dir.output}/guidelines/index.html`, processedGuidelines);
+    }
   });
 
   eleventyConfig.setLibrary(
