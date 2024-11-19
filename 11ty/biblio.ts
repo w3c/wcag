@@ -3,7 +3,7 @@ import { readFile } from "fs/promises";
 import { glob } from "glob";
 import uniq from "lodash-es/uniq";
 
-export const biblioPattern = /\[\[([\w-]+)\]\]/g;
+export const biblioPattern = /\[\[\??([\w-]+)\]\]/g;
 
 /** Compiles URLs from local biblio + specref for linking in Understanding documents. */
 export async function getBiblio() {
