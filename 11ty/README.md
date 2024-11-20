@@ -55,8 +55,11 @@ Indicates WCAG version being built, in `XY` format (i.e. no `.`).
 Influences which pages get included, guideline/SC content,
 and a few details within pages (e.g. titles/URLs, "New in ..." content).
 Also influences base URLs for links to guidelines, techniques, and understanding pages.
+Explicitly setting this causes the build to reference guidelines and acknowledgements
+published under `w3.org/TR/WCAG{version}`, rather than using the local checkout
+(which is effectively the 2.2 Editors' Draft).
 
-Possible values: `22` **(default)**, `21`
+Possible values: `22`, `21`
 
 ### `WCAG_MODE`
 
