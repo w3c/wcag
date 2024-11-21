@@ -1,4 +1,3 @@
-import type { Cheerio, Element } from "cheerio";
 import { Liquid, type Template } from "liquidjs";
 import type { RenderOptions } from "liquidjs/dist/liquid-options";
 import compact from "lodash-es/compact";
@@ -8,9 +7,10 @@ import { basename } from "path";
 
 import type { GlobalData } from "eleventy.config";
 
-import { flattenDom, load } from "./cheerio";
+import { biblioPattern, getBiblio } from "./biblio";
+import { flattenDom, load, type CheerioAnyNode } from "./cheerio";
 import { generateId } from "./common";
-import { getTermsMap } from "./guidelines";
+import { getAcknowledgementsForVersion, getTermsMap } from "./guidelines";
 import { resolveTechniqueIdFromHref, understandingToTechniqueLinkSelector } from "./techniques";
 import { techniqueToUnderstandingLinkSelector } from "./understanding";
 
@@ -21,6 +21,7 @@ const indexPattern = /(techniques|understanding)\/(index|about)\.html$/;
 const techniquesPattern = /\btechniques\//;
 const understandingPattern = /\bunderstanding\//;
 
+const biblio = await getBiblio();
 const termsMap = await getTermsMap();
 const termLinkSelector = "a:not([href])";
 
@@ -61,7 +62,7 @@ const normalizeTocLabel = (label: string) =>
  * expand to a link with the full technique ID and title.
  * @param $el a $()-wrapped link element
  */
-function expandTechniqueLink($el: Cheerio<Element>) {
+function expandTechniqueLink($el: CheerioAnyNode) {
   const href = $el.attr("href");
   if (!href) throw new Error("expandTechniqueLink: non-link element encountered");
   const id = resolveTechniqueIdFromHref(href);
@@ -89,6 +90,8 @@ export class CustomLiquid extends Liquid {
       const isIndex = indexPattern.test(filepath);
       const isTechniques = techniquesPattern.test(filepath);
       const isUnderstanding = understandingPattern.test(filepath);
+
+      if (!isTechniques && !isUnderstanding) return super.parse(html);
 
       const $ = flattenDom(html, filepath);
 
@@ -304,6 +307,14 @@ export class CustomLiquid extends Liquid {
     if (indexPattern.test(scope.page.inputPath)) {
       // Remove empty list items due to obsolete technique link removal
       if (scope.isTechniques) $("ul.toc-wcag-docs li:empty").remove();
+
+      // Replace acknowledgements with pinned content for older versions
+      if (process.env.WCAG_VERSION && $("section#acknowledgements").length) {
+        const pinnedAcknowledgements = await getAcknowledgementsForVersion(scope.version);
+        for (const [id, content] of Object.entries(pinnedAcknowledgements)) {
+          $(`#${id} h3 +`).html(content);
+        }
+      }
     } else {
       const $title = $("title");
 
@@ -397,7 +408,7 @@ export class CustomLiquid extends Liquid {
       // Process defined terms within #render,
       // where we have access to global data and the about box's HTML
       const $termLinks = $(termLinkSelector);
-      const extractTermName = ($el: Cheerio<Element>) => {
+      const extractTermName = ($el: CheerioAnyNode) => {
         const name = $el
           .text()
           .toLowerCase()
@@ -422,7 +433,7 @@ export class CustomLiquid extends Liquid {
         });
       } else if (scope.isUnderstanding) {
         const $termsList = $("section#key-terms dl");
-        const extractTermNames = ($links: Cheerio<Element>) =>
+        const extractTermNames = ($links: CheerioAnyNode) =>
           compact(uniq($links.toArray().map((el) => extractTermName($(el)))));
 
         if ($termLinks.length) {
@@ -492,7 +503,8 @@ export class CustomLiquid extends Liquid {
     // (This is also needed for techniques/about)
     $("div.note").each((_, el) => {
       const $el = $(el);
-      $el.replaceWith(`<div class="note">
+      const classes = el.attribs.class;
+      $el.replaceWith(`<div class="${classes}">
 				<p class="note-title marker">Note</p>
 				<div>${$el.html()}</div>
 			</div>`);
@@ -500,10 +512,17 @@ export class CustomLiquid extends Liquid {
     // Handle p variant after div (the reverse would double-process)
     $("p.note").each((_, el) => {
       const $el = $(el);
-      $el.replaceWith(`<div class="note">
+      const classes = el.attribs.class;
+      $el.replaceWith(`<div class="${classes}">
 				<p class="note-title marker">Note</p>
 				<p>${$el.html()}</p>
 			</div>`);
+    });
+
+    // Add header to example sections in Key Terms (aside) and Conformance (div)
+    $("aside.example, div.example").each((_, el) => {
+      const $el = $(el);
+      $el.prepend(`<p class="example-title marker">Example</p>`);
     });
 
     // We don't need to do any more processing for index/about pages other than stripping comments
@@ -512,13 +531,19 @@ export class CustomLiquid extends Liquid {
     // Handle new-in-version content
     $("[class^='wcag']").each((_, el) => {
       // Just like the XSLT process, this naively assumes that version numbers are the same length
-      const classVersion = +el.attribs.class.replace(/^wcag/, "");
-      const buildVersion = +scope.version;
+      const classMatch = el.attribs.class.match(/\bwcag(\d\d)\b/);
+      if (!classMatch) throw new Error(`Invalid wcagXY class found: ${el.attribs.class}`);
+      const classVersion = +classMatch[1];
       if (isNaN(classVersion)) throw new Error(`Invalid wcagXY class found: ${el.attribs.class}`);
+      const buildVersion = +scope.version;
+
       if (classVersion > buildVersion) {
         $(el).remove();
       } else if (classVersion === buildVersion) {
-        $(el).prepend(`<span class="new-version">New in WCAG ${scope.versionDecimal}: </span>`);
+        if (/\bnote\b/.test(el.attribs.class))
+          $(el).find(".marker").append(` (new in WCAG ${scope.versionDecimal})`);
+        else
+          $(el).prepend(`<span class="new-version">New in WCAG ${scope.versionDecimal}: </span>`);
       }
       // Output as-is if content pertains to a version older than what's being built
     });
@@ -529,6 +554,21 @@ export class CustomLiquid extends Liquid {
       $("h2").each((_, el) => {
         const $el = $(el);
         $el.text(normalizeHeading($el.text()));
+      });
+    }
+
+    // Link biblio references
+    if (scope.isUnderstanding) {
+      $("p").each((_, el) => {
+        const $el = $(el);
+        const html = $el.html();
+        if (html && biblioPattern.test(html)) {
+          $el.html(
+            html.replace(biblioPattern, (substring, code) =>
+              biblio[code]?.href ? `[<a href="${biblio[code].href}">${code}</a>]` : substring
+            )
+          );
+        }
       });
     }
 
