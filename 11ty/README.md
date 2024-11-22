@@ -38,21 +38,38 @@ Indicates top-level path of W3C CVS checkout, for WAI site updates (via `publish
 
 **Default:** `../../../w3ccvs` (same as in Ant/XSLT build process)
 
+### `WCAG_VERBOSE`
+
+**Usage context:** Local development, debugging
+
+Prints more log messages that are typically noisy and uninteresting,
+but may be useful if you're not seeing what you expect in the output files.
+
+**Default:** Unset (set to any non-empty value to enable)
+
 ### `WCAG_VERSION`
 
-**Usage context:** `publish-w3c` script only;
-this should currently not be changed, pending future improvements to `21` support.
+**Usage context:** for building older versions of techniques and understanding docs
 
-Indicates WCAG version being built, in `XY` format (i.e. no `.`)
+Indicates WCAG version being built, in `XY` format (i.e. no `.`).
+Influences which pages get included, guideline/SC content,
+and a few details within pages (e.g. titles/URLs, "New in ..." content).
+Also influences base URLs for links to guidelines, techniques, and understanding pages.
+Explicitly setting this causes the build to reference guidelines and acknowledgements
+published under `w3.org/TR/WCAG{version}`, rather than using the local checkout
+(which is effectively the 2.2 Editors' Draft).
 
-**Default:** `22`
+Possible values: `22`, `21`
 
 ### `WCAG_MODE`
 
-**Usage context:** should not need to be used manually except in specific testing scenarios
+**Usage context:** should not need to be set manually except in specific testing scenarios
 
 Influences base URLs for links to guidelines, techniques, and understanding pages.
 Typically set by specific npm scripts or CI processes.
+
+Note that setting `WCAG_MODE` to any non-empty value (even one not listed below) will also result
+in page footers referencing last modified times based on git, rather than the local filesystem.
 
 Possible values:
 
@@ -60,11 +77,20 @@ Possible values:
 - `editors` - Sets base URLs appropriate for `gh-pages` publishing; used by deploy action
 - `publication` - Sets base URLs appropriate for WAI site publishing; used by `publish-w3c` script
 
+### `GITHUB_REPOSITORY`
+
+**Usage context:** Automatically set during GitHub workflows; should not need to be set manually
+
+Influences base URLs for links to guidelines, techniques, and understanding pages,
+when `WCAG_MODE=editors` is also set.
+
+**Default:** `w3c/wcag`
+
 ## Other points of interest
 
 - The main configuration can be found in top-level `eleventy.config.ts`
 - Build commands are defined in top-level `package.json` under `scripts`,
   and can be run via `npm run <name>`
-- If you see files named `*.11tydata.js`, these contribute data to the Eleventy build
+- If you see files named `*.11tydata.*`, these contribute data to the Eleventy build
   (see Template and Directory Data files under
   [Sources of Data](https://www.11ty.dev/docs/data/#sources-of-data))
