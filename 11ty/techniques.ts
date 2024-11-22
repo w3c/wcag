@@ -199,7 +199,7 @@ export interface Technique extends TechniqueFrontMatter {
  * Used to generate index table of contents.
  * (Functionally equivalent to "techniques-list" target in build.xml)
  */
-export async function getTechniquesByTechnology() {
+export async function getTechniquesByTechnology(guidelines: FlatGuidelinesMap) {
   const paths = await glob("*/*.html", { cwd: "techniques" });
   const techniques = technologies.reduce(
     (map, technology) => ({
@@ -208,6 +208,9 @@ export async function getTechniquesByTechnology() {
     }),
     {} as Record<Technology, Technique[]>
   );
+  const scNumbers = Object.values(guidelines)
+    .filter((entry): entry is SuccessCriterion => entry.type === "SC")
+    .map(({ num }) => num);
 
   // Check directory data files (we don't have direct access to 11ty's data cascade here)
   const technologyData: Partial<Record<Technology, any>> = {};
@@ -237,13 +240,37 @@ export async function getTechniquesByTechnology() {
     if (!h1Match || !h1Match[1]) throw new Error(`No h1 found in techniques/${path}`);
     const $h1 = load(h1Match[1], null, false);
 
-    const title = $h1.text();
+    let title = $h1.text();
+    let titleHtml = $h1.html();
+    if (process.env.WCAG_VERSION) {
+      // Check for invalid SC references for the WCAG version being built
+      const multiScPattern = /(?:\d\.\d+\.\d+(,?) )+and \d\.\d+\.\d+/;
+      if (multiScPattern.test(title)) {
+        const scPattern = /\d\.\d+\.\d+/g;
+        const criteria: typeof scNumbers = [];
+        let match;
+        while ((match = scPattern.exec(title)))
+          criteria.push(match[0] as `${number}.${number}.${number}`);
+        const filteredCriteria = criteria.filter((sc) => scNumbers.includes(sc));
+        if (filteredCriteria.length) {
+          const finalSeparator =
+            filteredCriteria.length > 2 && multiScPattern.exec(title)?.[1] ? "," : "";
+          const replacement = `${filteredCriteria.slice(0, -1).join(", ")}${finalSeparator} and ${
+            filteredCriteria[filteredCriteria.length - 1]
+          }`;
+          title = title.replace(multiScPattern, replacement);
+          titleHtml = titleHtml.replace(multiScPattern, replacement);
+        }
+        // If all SCs were filtered out, do nothing - should be pruned when associations are checked
+      }
+    }
+
     techniques[technology].push({
       ...data, // Include front-matter
       id: basename(filename, ".html"),
       technology,
       title,
-      titleHtml: $h1.html(),
+      titleHtml,
       truncatedTitle: title.replace(/\s*\n[\s\S]*\n\s*/, " … "),
     });
   }
