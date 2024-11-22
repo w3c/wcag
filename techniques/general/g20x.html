@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>Adjusting indentation </title>
+    <title>Accounting for meaningful text indentation and Reflow</title>
     <link rel="stylesheet" href="../../css/sources.css" class="remove"/>
   </head>
   <body>
-    <h1>New technique title goes here</h1>
+    <h1>Accounting for meaningful text indentation and Reflow</h1>
     <section class="meta"><p class="id">ID: G206</p><p class="technology">Technology: general</p><p class="type">Type: Technique</p></section>
     <section id="applicability">
       <h2>When to Use</h2>
@@ -14,16 +14,16 @@
     
     <section id="description">
       <h2>Description</h2>
-      <p>There are instances where indentation of text or even nested lists provide meaningful information that would make content more difficult to understand if it were removed.</p>
-      TODO: longer explainer
+      <p>There are instances where indentation of text is considered important to the understandability of the text content. If the indentations were to be removed, then meaning or functionality could suffer. For instance, the nesting of unordered list hierarchies would become more difficult to notice if indentation were removed. Additionally, maintaining indentations can be important to help understand code patterns, if not even necessary for the code to function.</p>
+      <p>Maintaining indentation is important for these instances of text, and would be considered essential for two-dimensional scrolling if the text were enlarged and could not be fully presented within the available viewport. However, there are still styling modifications that could be made to help ensure the indentation was maintained, but as much text was made visible within the viewport as possible.</p>
       </div>
    </section>
     
     <section id="examples">
       <h2>Examples</h2>
       <section class="example">
-        <p>A website conveys information in a nested list format. The understandability of the list hierarchy is supported by the indentation of the list content. While it is important for the individual list item text to reflow, the list hierarchy would potentially suffer if flattened so that all content neatly fit within a 320 CSS pixel wide container.</p>  
-        <p>The following example list contains additional nested lists to provide more context for each of the primary list item's points. To maintain the visual hierarchy, the indentation of the lists is maintained, but reduced once a certain CSS breakpoint is met. The content of each list item is given a maximum width of 320 CSS pixels so that even though the list will require bi-dimensional scrolling to view all content, each list item in each nested list level will be able to be read without scrolling in two directions.</p>
+        <p>A website conveys information in a nested list format. The understandability of the list hierarchy is supported by the indentation of the list content. While it is important for the individual list item text to reflow, the list hierarchy would suffer if flattened so that all content would fit within a 320 CSS pixel wide container.</p>  
+        <p>The following example list contains additional nested lists to provide more context for each of the parent list item's text. To maintain the visual hierarchy, the indentation of the lists is maintained, but reduced once an author defined CSS breakpoint is met. The container of the text content of each list item is given a maximum width of 320 CSS pixels so that even though the list will require bi-dimensional scrolling to view all nested lists, each list item in each nested list level will be able to be read witout the need to scroll in two directions.</p>
 <pre>
 &lt;div class=example>
 	&lt;ul>
@@ -80,17 +80,32 @@
       </section>
       
       <section class="example">
-        <p>A website providing code snippets needs to maintain line indentations, as the indentations are meaningful not only to the structure of the code, but in some cases such as with Python, are requirements when defining blocks of code.</p>
-        <p>As a user zooms in the web page, the CSS of the indentation can be adjusted to maintain this necessary structure, while also allowing more text to be legibale on a single line.</p>
+        <p>A website providing code snippets needs to maintain line indentations, as the indentations are meaningful not only to the structure of the code, but in some languages - such as with Python, are requirements when defining blocks of code.</p>
+        <p>As a user zooms in the web page, the CSS of the indentation can be adjusted to maintain this necessary structure, while also allowing more text to be visible on a single line.</p>
 
-        <p>Whether providing a Python example where indentation is required for valid code,</p>
+        <p>The following represents a Python code example. The indentation of each line of text is necessary to create a group of statements that are executed as a block.</p>
 <pre>
-myset = {"apple", "orange", "kiwi", "banana"}
-
-for x in myset:
-  print(x)
+def complex_function(x):
+    if x > 0:
+        for i in range(x):
+            if i % 2 == 0:
+                print(f"{i} is even")
+                for a in range(i):
+                    if a % 5 == 0:
+                        print(f"  {a} can be divided by 5")
+                    else:
+                        print(f"  {a} cannot be divided by 5")
+            else:
+                print(f"{i} is odd")
+                for a in range(i):
+                    if a % 2 == 0:
+                        print(f"  {a} is even")
+                    else:
+                        print(f"  {a} is odd")
+    else:
+        print("x is not a positive number")
 </pre>
-        <p>Or needing to maintain and convey proper indentation of an HTML document:</p>
+        <p>The following code example demonstrates the use of indentation to convey the nesting of elements in an HTML document:</p>
 <pre>
 &lt;html lang=en>
 	&lt;head>...&lt;/head>
@@ -129,7 +144,7 @@ for x in myset:
       <section class="procedure"><h3>Procedure</h3>
          <ol>
             <li>Open the content that requires horizontal scrolling on a full screen window. </li>
-            <li>TODO, finish test checks
+            <li>Zoom in or resize the browser window so that the viewport 
          </ol>
       </section>
       <section class="results"><h3>Expected Results</h3>
