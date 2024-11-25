@@ -110,9 +110,9 @@ export async function generateWcagJson() {
     return {
       ...pick(item, "num", "content"),
       id: `WCAG2:${item.id}`,
-      alt_id: item.id in altIds ? [altIds[item.id]] : [],
+      ...(item.type !== "Principle" && { alt_id: item.id in altIds ? [altIds[item.id]] : [] }),
       handle: item.name,
-      title: content$("p").first().text().trim(),
+      title: content$("p").first().text().trim().replace(/\s+/g, " "),
       versions: expandVersions(item),
     };
   };
@@ -122,7 +122,7 @@ export async function generateWcagJson() {
       ...spreadCommonProps(principle),
       guidelines: principle.guidelines.map((guideline) => ({
         ...spreadCommonProps(guideline),
-        successCriteria: guideline.successCriteria.map((sc) => ({
+        successcriteria: guideline.successCriteria.map((sc) => ({
           ...spreadCommonProps(sc),
           level: sc.level,
           // TODO: details
