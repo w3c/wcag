@@ -197,14 +197,17 @@ interface Term {
   /** id of dfn in TR, which matches original id in terms file */
   trId: string;
 }
+export type TermsMap = Record<string, Term>;
 
 /**
  * Resolves term definitions from guidelines/index.html organized for lookup by name;
  * comparable to the term elements in wcag.xml from the guidelines-xml Ant task.
  */
-export async function getTermsMap() {
-  const $ = await flattenDomFromFile("guidelines/index.html");
-  const terms: Record<string, Term> = {};
+export async function getTermsMap(version?: WcagVersion) {
+  const $ = version
+    ? await loadRemoteGuidelines(version)
+    : await flattenDomFromFile("guidelines/index.html");
+  const terms: TermsMap = {};
 
   $("dfn").each((_, el) => {
     const $el = $(el);
@@ -240,24 +243,25 @@ const loadRemoteGuidelines = async (version: WcagVersion) => {
     );
 
     // Re-collapse definition links and notes, to be processed by this build system
-    $(".guideline a.internalDFN").removeAttr("class data-link-type id href title");
-    $(".guideline [role='note'] .marker").remove();
-    $(".guideline [role='note']").find("> div, > p").addClass("note").unwrap();
+    $("a.internalDFN").removeAttr("class data-link-type id href title");
+    $("[role='note'] .marker").remove();
+    $("[role='note']").find("> div, > p").addClass("note").unwrap();
 
-    // Bibliography references are not processed in Understanding SC boxes
-    $(".guideline cite:has(a.bibref:only-child)").each((_, el) => {
+    // Un-process bibliography references, to be processed by CustomLiquid
+    $("cite:has(a.bibref:only-child)").each((_, el) => {
       const $el = $(el);
-      const $parent = $el.parent();
-      $el.remove();
-      // Remove surrounding square brackets (which aren't in a dedicated element)
-      $parent.html($parent.html()!.replace(/ \[\]/g, ""));
+      $el.replaceWith(`[${$el.find("a.bibref").html()}]`);
     });
+
+    // Remove generated IDs and markers from examples
+    $(".example[id]").removeAttr("id");
+    $(".example .marker:has(.self-link)").remove();
 
     // Remove extra markup from headings so they can be parsed for names
     $("bdi").remove();
 
     // Remove abbr elements which exist only in TR, not in informative docs
-    $("#acknowledgements li abbr").each((_, abbrEl) => {
+    $("#acknowledgements li abbr, #glossary abbr").each((_, abbrEl) => {
       $(abbrEl).replaceWith($(abbrEl).text());
     });
 

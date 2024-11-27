@@ -14,6 +14,7 @@ import {
   getFlatGuidelines,
   getPrinciples,
   getPrinciplesForVersion,
+  getTermsMap,
   scSlugOverrides,
   type FlatGuidelinesMap,
   type Guideline,
@@ -102,6 +103,8 @@ for (const [technology, list] of Object.entries(techniques)) {
 
 const understandingDocs = await getUnderstandingDocs(version);
 const understandingNav = await generateUnderstandingNavMap(principles, understandingDocs);
+
+const termsMap = process.env.WCAG_VERSION ? await getTermsMap(version) : await getTermsMap();
 
 // Declare static global data up-front so we can build typings from it
 const globalData = {
@@ -274,6 +277,7 @@ export default function (eleventyConfig: any) {
       root: ["_includes", "."],
       jsTruthy: true,
       strictFilters: true,
+      termsMap,
     })
   );
 
