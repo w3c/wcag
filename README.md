@@ -182,6 +182,41 @@ obsoleteMessage: |
 In cases where entire technologies are obsolete (e.g. Flash and Silverlight), these properties may also be specified at the technique subdirectory level, e.g. via `techniques/flash/flash.11tydata.json`.
 Note that this case specifically requires JSON format, as this is consumed by both Eleventy and additional code in the build process used to assemble techniques data.
 
+## Version-specific Documentation
+
+Informative documents are generated from the same source files for both WCAG 2.2 and 2.1,
+as most of their content is consistent between them. (The guidelines themselves continue to be
+maintained on separate branches e.g. `WCAG-2.1`, for purposes of maintaining separate Editors' Drafts.)
+
+When building informative documents for older versions, the build system prunes success criteria that are
+specific to newer versions, and in turn any techniques that are exclusively related to those criteria.
+
+There are a few cases where content may need to cater to a specific version, explained in this section.
+
+### Specifying Precise Version Number within Informative Documents
+
+**Note:** This is _only_ applicable within `techniques` and `understanding` folders (_not_ `guidelines`).
+
+In cases where the precise version number should be displayed within informative documents,
+insert `{{ versionDecimal }}`. This will be replaced with the decimal-point-delimited version number,
+e.g. 2.1 or 2.2.
+
+### "New in {version}" Call-outs
+
+In cases where a document pertaining to multiple versions warrants a specific call-out about an update in
+a newer version, `class="wcagXY"` can be applied to an element surrounding the prose in question
+(e.g. `class="wcag22"` for WCAG 2.2). This will result in the prose being omitted from earlier versions,
+and displayed with the prefix "New in WCAG X.Y: " in applicable versions.
+
+This class can also be applied alongside the `note` class, in which case " (New in WCAG X.Y)" will be
+appended to the "Note" title in applicable versions, and the note will be hidden in earlier versions.
+
+### Techniques Change Log
+
+At the time of writing (November 2024), the Change Log in the Techniques index is identical between WCAG 2.1 and 2.2.
+These have been split out into separate version-specific includes under `_includes/techniques/changelog/*.html`
+for future-proofing in support of building multiple versions of informative documents from the same branch.
+
 ## Working Examples
 
 Examples in techniques should be brief easy-to-consume code samples of how the technique is used in content. Therefore examples should focus on the specific features the technique describes, and not include related content such as style, script, surrounding web content, etc.
