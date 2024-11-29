@@ -24,11 +24,11 @@ export async function getUnderstandingDocs(version: WcagVersion): Promise<DocNod
     },
     {
       id: "understanding-techniques",
-      name: "Understanding Techniques for WCAG Success Criteria",
+      name: `Understanding Techniques for WCAG ${decimalVersion} Success Criteria`,
     },
     {
       id: "understanding-act-rules",
-      name: "Understanding Test Rules for WCAG Success Criteria",
+      name: `Understanding Test Rules for WCAG ${decimalVersion} Success Criteria`,
     },
     {
       id: "conformance",
