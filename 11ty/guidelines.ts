@@ -233,50 +233,52 @@ export async function getTermsMap(version?: WcagVersion) {
 
 // Version-specific APIs
 
-const remoteGuidelines$: Partial<Record<WcagVersion, CheerioAPI>> = {};
+const guidelinesCache: Partial<Record<WcagVersion, string>> = {};
 
 /** Loads guidelines from TR space for specific version, caching for future calls. */
-const loadRemoteGuidelines = async (version: WcagVersion) => {
-  if (!remoteGuidelines$[version]) {
-    const $ = load(
-      (await axios.get(`https://www.w3.org/TR/WCAG${version}/`, { responseType: "text" })).data
-    );
+const loadRemoteGuidelines = async (version: WcagVersion, stripRespec = true) => {
+  const html =
+    guidelinesCache[version] ||
+    (guidelinesCache[version] = (
+      await axios.get(`https://www.w3.org/TR/WCAG${version}/`, { responseType: "text" })
+    ).data);
 
-    // Re-collapse definition links and notes, to be processed by this build system
-    $("a.internalDFN").removeAttr("class data-link-type id href title");
-    $("[role='note'] .marker").remove();
-    $("[role='note']").find("> div, > p").addClass("note").unwrap();
+  const $ = load(html);
+  if (!stripRespec) return $;
 
-    // Convert data-plurals (present in publications) to data-lt
-    $("dfn[data-plurals]").each((_, el) => {
-      el.attribs["data-lt"] = (el.attribs["data-lt"] || "")
-        .split("|")
-        .concat(el.attribs["data-plurals"].split("|"))
-        .join("|");
-      delete el.attribs["data-plurals"];
-    });
+  // Re-collapse definition links and notes, to be processed by this build system
+  $("a.internalDFN").removeAttr("class data-link-type id href title");
+  $("[role='note'] .marker").remove();
+  $("[role='note']").find("> div, > p").addClass("note").unwrap();
 
-    // Un-process bibliography references, to be processed by CustomLiquid
-    $("cite:has(a.bibref:only-child)").each((_, el) => {
-      const $el = $(el);
-      $el.replaceWith(`[${$el.find("a.bibref").html()}]`);
-    });
+  // Convert data-plurals (present in publications) to data-lt
+  $("dfn[data-plurals]").each((_, el) => {
+    el.attribs["data-lt"] = (el.attribs["data-lt"] || "")
+      .split("|")
+      .concat(el.attribs["data-plurals"].split("|"))
+      .join("|");
+    delete el.attribs["data-plurals"];
+  });
 
-    // Remove generated IDs and markers from examples
-    $(".example[id]").removeAttr("id");
-    $(".example > .marker").remove();
+  // Un-process bibliography references, to be processed by CustomLiquid
+  $("cite:has(a.bibref:only-child)").each((_, el) => {
+    const $el = $(el);
+    $el.replaceWith(`[${$el.find("a.bibref").html()}]`);
+  });
 
-    // Remove extra markup from headings so they can be parsed for names
-    $("bdi").remove();
+  // Remove generated IDs and markers from examples
+  $(".example[id]").removeAttr("id");
+  $(".example > .marker").remove();
 
-    // Remove abbr elements which exist only in TR, not in informative docs
-    $("#acknowledgements li abbr, #glossary abbr").each((_, abbrEl) => {
-      $(abbrEl).replaceWith($(abbrEl).text());
-    });
+  // Remove extra markup from headings so they can be parsed for names
+  $("bdi").remove();
 
-    remoteGuidelines$[version] = $;
-  }
-  return remoteGuidelines$[version]!;
+  // Remove abbr elements which exist only in TR, not in informative docs
+  $("#acknowledgements li abbr, #glossary abbr").each((_, abbrEl) => {
+    $(abbrEl).replaceWith($(abbrEl).text());
+  });
+
+  return $;
 };
 
 /**
@@ -303,20 +305,35 @@ export const getPrinciplesForVersion = async (version: WcagVersion) =>
 /** Parses errata items from the errata document for the specified WCAG version. */
 export const getErrataForVersion = async (version: WcagVersion) => {
   const $ = await loadFromFile(join("errata", `${version}.html`));
-  const aSelector = `a[href^='https://www.w3.org/TR/WCAG${version}/#']`;
+  const $guidelines = await loadRemoteGuidelines(version, false);
+  const aSelector = `a[href*='#']:first-of-type`;
   const errata: Record<string, string[]> = {};
 
-  $(`li:has(${aSelector})`).each((_, el) => {
-    const $el = $(el);
-    const $aEl = $el.find(aSelector);
-    const hash = new URL($aEl.attr("href")!).hash.slice(1);
-    const erratumHtml = $el
-      .html()!
-      .replace(/^.*?<\/a>,?\s*/g, "")
-      .replace(/^(\w)/, (_, p1) => p1.toUpperCase());
-    if (hash in errata) errata[hash].push(erratumHtml);
-    else errata[hash] = [erratumHtml];
-  });
+  $("main > section[id]")
+    .last()
+    .find(`li:has(${aSelector})`)
+    .each((_, el) => {
+      const $el = $(el);
+      const $aEl = $el.find(aSelector);
+      let hash: string | undefined = $aEl.attr("href")!.replace(/^.*#/, "");
+
+      // Check whether hash pertains to a guideline/SC section or term definition;
+      // if it doesn't, attempt to resolve it to one
+      const $hashEl = $guidelines(`#${hash}`);
+      if (!$hashEl.is("section.guideline, #terms dfn")) {
+        const $closest = $hashEl.closest("#terms dd, section.guideline");
+        if ($closest.is("#terms dd")) hash = $closest.prev().find("dfn[id]").attr("id");
+        else hash = $closest.attr("id");
+      }
+      if (!hash) return;
+
+      const erratumHtml = $el
+        .html()!
+        .replace(/^.*?<\/a>,?\s*/g, "")
+        .replace(/^(\w)/, (_, p1) => p1.toUpperCase());
+      if (hash in errata) errata[hash].push(erratumHtml);
+      else errata[hash] = [erratumHtml];
+    });
 
   return errata;
 };
