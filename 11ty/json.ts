@@ -7,12 +7,10 @@ import { join } from "path";
 
 import { resolveDecimalVersion } from "./common";
 import {
-  type Principle,
   type WcagVersion,
   type WcagItem,
-  getFlatGuidelines,
   getPrinciplesForVersion,
-  getPrinciples,
+  getTermsMapForVersion,
 } from "./guidelines";
 
 const altIds: Record<string, string> = {
@@ -105,11 +103,12 @@ function expandVersions(item: WcagItem) {
 
 export async function generateWcagJson() {
   const principles = await getPrinciplesForVersion("22", false);
+  const termsMap = await getTermsMapForVersion("22", { includeSynonyms: false, stripRespec: false });
+
   const spreadCommonProps = (item: WcagItem) => {
     const content$ = load(item.content, null, false);
     return {
-      ...pick(item, "num", "content"),
-      id: `WCAG2:${item.id}`,
+      ...pick(item, "id", "num", "content"),
       ...(item.type !== "Principle" && { alt_id: item.id in altIds ? [altIds[item.id]] : [] }),
       handle: item.name,
       title: content$("p").first().text().trim().replace(/\s+/g, " "),
@@ -129,13 +128,17 @@ export async function generateWcagJson() {
         })),
       })),
     })),
+    terms: Object.values(termsMap).map(({ definition, name, trId }) => ({
+      id: trId,
+      definition: definition,
+      name: name
+    }))
   };
   return JSON.stringify(data, null, "  ");
 }
 
 // Allow running directly, skipping Eleventy build
 if (import.meta.filename === process.argv[1]) {
-  const json = await generateWcagJson();
   await mkdirp("_site");
-  await writeFile(join("_site", "wcag.json"), json);
+  await writeFile(join("_site", "wcag.json"), await generateWcagJson());
 }
