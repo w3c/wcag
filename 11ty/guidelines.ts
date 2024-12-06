@@ -202,7 +202,7 @@ interface Term {
 }
 export type TermsMap = Record<string, Term>;
 
-function processTermsMap($: CheerioAPI) {
+function processTermsMap($: CheerioAPI, includeSynonyms = true) {
   const terms: TermsMap = {};
 
   $("dfn").each((_, el) => {
@@ -216,12 +216,16 @@ function processTermsMap($: CheerioAPI) {
       trId: el.attribs.id,
     };
 
-    // Include both original and all-lowercase version to simplify lookups
-    // (since most synonyms are lowercase) while preserving case in name
-    const names = [term.name, term.name.toLowerCase()].concat(
-      (el.attribs["data-lt"] || "").toLowerCase().split("|")
-    );
-    for (const name of names) terms[name] = term;
+    if (includeSynonyms) {
+      // Include both original and all-lowercase version to simplify lookups
+      // (since most synonyms are lowercase) while preserving case in name
+      const names = [term.name, term.name.toLowerCase()].concat(
+        (el.attribs["data-lt"] || "").toLowerCase().split("|")
+      );
+      for (const name of names) terms[name] = term;
+    } else {
+      terms[term.name] = term;
+    }
   });
 
   return terms;
@@ -233,7 +237,7 @@ function processTermsMap($: CheerioAPI) {
  * comparable to the term elements in wcag.xml from the guidelines-xml Ant task.
  */
 export const getTermsMap = async (path = "guidelines/index.html") =>
-  processTermsMap(await flattenDomFromFile(path));
+  processTermsMap(await flattenDomFromFile(path), true);
 
 // Version-specific APIs
 
@@ -248,6 +252,11 @@ const loadRemoteGuidelines = async (version: WcagVersion, stripRespec = true) =>
     ).data);
 
   const $ = load(html);
+
+  // Remove extra markup from headings, regardless of stripRespec setting,
+  // so that names parse consistently
+  $("bdi").remove();
+
   if (!stripRespec) return $;
 
   // Re-collapse definition links and notes, to be processed by this build system
@@ -273,9 +282,6 @@ const loadRemoteGuidelines = async (version: WcagVersion, stripRespec = true) =>
   // Remove generated IDs and markers from examples
   $(".example[id]").removeAttr("id");
   $(".example > .marker").remove();
-
-  // Remove extra markup from headings so they can be parsed for names
-  $("bdi").remove();
 
   // Remove abbr elements which exist only in TR, not in informative docs
   $("#acknowledgements li abbr, #glossary abbr").each((_, abbrEl) => {
@@ -303,15 +309,30 @@ export const getAcknowledgementsForVersion = async (version: WcagVersion) => {
 /**
  * Retrieves and processes a pinned WCAG version using published guidelines.
  */
-export const getPrinciplesForVersion = async (version: WcagVersion, stripRespec = true) =>
+export const getPrinciplesForVersion = async (version: WcagVersion, stripRespec?: boolean) =>
   processPrinciples(await loadRemoteGuidelines(version, stripRespec));
+
+interface GetTermsMapForVersionOptions {
+  /**
+   * Whether to populate additional map keys based on synonyms defined in data-lt;
+   * this should typically be true for informative docs, but may be false for other purposes
+   */
+  includeSynonyms?: boolean;
+  /**
+   * Whether to strip respec-generated content and attributes;
+   * this should typically be true for informative docs, but may be false for other purposes
+   */
+  stripRespec?: boolean;
+}
 
 /**
  * Resolves term definitions from a WCAG 2.x publication,
  * organized for lookup by name.
  */
-export const getTermsMapForVersion = async (version: WcagVersion) =>
-  processTermsMap(await loadRemoteGuidelines(version));
+export const getTermsMapForVersion = async (
+  version: WcagVersion,
+  { includeSynonyms, stripRespec }: GetTermsMapForVersionOptions = {}
+) => processTermsMap(await loadRemoteGuidelines(version, stripRespec), includeSynonyms);
 
 /** Parses errata items from the errata document for the specified WCAG version. */
 export const getErrataForVersion = async (version: WcagVersion) => {
