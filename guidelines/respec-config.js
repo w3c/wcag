@@ -19,19 +19,19 @@ var respecConfig = {
 	
 	
 	// if you wish the publication date to be other than today, set this
-	publishDate:  "2023-09-21",
+	publishDate:  "2024-12-12",
 	copyrightStart:  "2020",
 	license: "document",
 	
 	// if there is a previously published draft, uncomment this and set its YYYY-MM-DD date
 	// and its maturity status
-	previousPublishDate:  "2018-06-05",
+	previousPublishDate:  "2023-09-21",
 	previousMaturity:  "REC",
 	prevRecURI: "https://www.w3.org/TR/WCAG20/",
 	//previousDiffURI: "https://www.w3.org/TR/2014/REC-wai-aria-20140320/",
 	
 	// if there a publicly available Editors Draft, this is the link
-	edDraftURI: "https://w3c.github.io/wcag/guidelines/22/",
+	edDraftURI: "https://w3c.github.io/wcag/guidelines/",
   
   // Implementation report
   implementationReportURI: "https://www.w3.org/WAI/WCAG21/implementation-report/",
