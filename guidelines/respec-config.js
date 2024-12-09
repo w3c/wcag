@@ -11,7 +11,7 @@ var respecConfig = {
 	specStatus:           "REC",
 	//crEnd:                "2012-04-30",
 	//perEnd:               "2013-07-23",
-	//publishDate:          "2013-08-22",
+	publishDate:          "2024-12-12",
 	diffTool:             "http://www.aptest.com/standards/htmldiff/htmldiff.pl",
 	
 	// the specifications short name, as in https://www.w3.org/TR/short-name/
@@ -51,14 +51,17 @@ var respecConfig = {
 			mailto: "akirkpat@adobe.com",
 			company: "Adobe",
 			companyURI: "http://www.adobe.com/",
-			w3cid: 39770
+			w3cid: 39770,
+      retiredDate: "2020-03-04"
 		},
 		{
 			name: "Joshue O Connor",
 			mailto: "josh@interaccess.ie",
 			company: "Invited Expert, InterAccess",
 			companyURI: "https://interaccess.org/",
-			w3cid: 41218
+			w3cid: 41218,
+      retiredDate: "2018-09-30",
+
 		},
 		{
 			name: "Alastair Campbell",
@@ -69,51 +72,12 @@ var respecConfig = {
 		},
 		{
 			name: "Michael Cooper",
-			mailto: "cooper@w3.org",
 			company: "W3C",
 			companyURI: "https://www.w3.org",
-			w3cid: 34017
+			w3cid: 34017,
+      retiredDate: "2023-07-31"
 		}
 	],
-	/* 
-	formerEditors: [
-		{
-			name: "Ben Caldwell",
-			company: "Trace R&D Center, University of Wisconsin-Madison",
-			w3cid: 33602
-		},
-		{
-			name: "Loretta Guarino Reid",
-			company: "Google, Inc.",
-			w3cid: 35436
-		},
-		{
-			name: "Gregg Vanderheiden",
-			company: "Trace R&D Center, University of Wisconsin-Madison",
-			w3cid: 3442
-		},
-		{
-			name: "Wendy Chisholm",
-			company: "W3C",
-			w3cid: 4099
-		},
-		{
-			name: "John Slatin",
-			company: "Accessibility Institute, University of Texas at Austin",
-			w3cid: 35537
-		},
-		{
-			name: "Jason White",
-			company: "University of Melbourne",
-			w3cid: 74028
-		},
-		{
-			name: "Joshue O Connor",
-			company: "Invited Expert, InterAccess",
-			w3cid: 41218
-		}
-	],
-	*/
 	
 	// authors, add as many as you like.
 	// This is optional, uncomment if you have authors as well as editors.
