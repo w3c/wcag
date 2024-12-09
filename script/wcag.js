@@ -1,4 +1,4 @@
-var version="22";
+var version="21";
 
 function titleToPathFrag (title) {
 	return title.toLowerCase().replace(/[\s,]+/g, "-").replace(/[\(\)]/g, "");
