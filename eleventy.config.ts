@@ -279,6 +279,7 @@ export default function (eleventyConfig: any) {
       root: ["_includes", "."],
       jsTruthy: true,
       strictFilters: true,
+      timezoneOffset: 0, // Avoid off-by-one YYYY-MM-DD date stamp conversions
       termsMap,
     })
   );
