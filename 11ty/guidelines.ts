@@ -310,7 +310,7 @@ export const getErrataForVersion = async (version: WcagVersion) => {
   const errata: Record<string, string[]> = {};
 
   $("main > section[id]")
-    .last()
+    .first()
     .find(`li:has(${aSelector})`)
     .each((_, el) => {
       const $el = $(el);
