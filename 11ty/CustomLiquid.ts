@@ -7,7 +7,7 @@ import { basename } from "path";
 
 import type { GlobalData } from "eleventy.config";
 
-import { biblioPattern, getBiblio } from "./biblio";
+import { biblioPattern, getBiblio, getXmlBiblio } from "./biblio";
 import { flattenDom, load, type CheerioAnyNode } from "./cheerio";
 import { generateId } from "./common";
 import { getAcknowledgementsForVersion, type TermsMap } from "./guidelines";
@@ -22,11 +22,21 @@ const techniquesPattern = /\btechniques\//;
 const understandingPattern = /\bunderstanding\//;
 
 const biblio = await getBiblio();
+const xmlBiblio = await getXmlBiblio();
 const termLinkSelector = "a:not([href])";
 
 /** Generates {% include "foo.html" %} directives from 1 or more basenames */
 const generateIncludes = (...basenames: string[]) =>
   `\n${basenames.map((basename) => `{% include "${basename}.html" %}`).join("\n")}\n`;
+
+/** Version of generateIncludes for a single include with parameters */
+const generateIncludeWithParams = (basename: string, params: Record<string, string>) => {
+  const strParams = Object.entries(params).reduce(
+    (str, [key, value]) => `${str}, ${key}: ${JSON.stringify(value)}`,
+    ""
+  );
+  return `\n{% include "${basename}.html"${strParams} %}\n`;
+};
 
 /**
  * Determines whether a given string is actually HTML,
@@ -305,8 +315,9 @@ export class CustomLiquid extends Liquid {
           // Expand techniques links to always include title
           $(understandingToTechniqueLinkSelector).each((_, el) => expandTechniqueLink($(el)));
 
-          // Add key terms by default, to be removed in #parse if there are no terms
-          $("body").append(generateIncludes("understanding/key-terms"));
+          // Add key terms and references by default, to be removed in #parse if not needed
+          $("body").append(generateIncludeWithParams("dl-section", { title: "Key Terms" }));
+          $("body").append(generateIncludeWithParams("dl-section", { title: "References" }));
         }
 
         // Remove h2-level sections with no content other than heading
@@ -504,7 +515,7 @@ export class CustomLiquid extends Liquid {
                 <p><a href="https://www.w3.org/WAI/WCAG${scope.version}/errata/">View all errata</a></p>
               `;
             }
-            $termsList.append(`<dt id="${term.id}">${term.name}</dt><dd>${termBody}</dd>`);
+            $termsList.append(`\n      <dt id="${term.id}">${term.name}</dt><dd>${termBody}</dd>`);
           }
 
           // Iterate over non-href links once more in now-expanded document to add hrefs
@@ -600,17 +611,33 @@ export class CustomLiquid extends Liquid {
 
     // Link biblio references
     if (scope.isUnderstanding) {
+      const xmlBiblioReferences: string[] = [];
       $("p").each((_, el) => {
         const $el = $(el);
         const html = $el.html();
         if (html && biblioPattern.test(html)) {
           $el.html(
-            html.replace(biblioPattern, (substring, code) =>
-              biblio[code]?.href ? `[<a href="${biblio[code].href}">${code}</a>]` : substring
-            )
+            html.replace(biblioPattern, (substring, code) => {
+              if (biblio[code]?.href) return `[<a href="${biblio[code].href}">${code}</a>]`;
+              if (code in xmlBiblio) {
+                xmlBiblioReferences.push(code);
+                return `[<a href="#${code}">${code}</a>]`;
+              }
+              console.warn(`${scope.page.inputPath}: Unresolved biblio ref: ${code}`);
+              return substring;
+            })
           );
         }
       });
+
+      // Populate references section, or remove if unused
+      if (xmlBiblioReferences.length) {
+        for (const ref of uniq(xmlBiblioReferences).sort()) {
+          $("section#references dl").append(
+            `\n      <dt id="${ref}">${ref}</dt><dd>${xmlBiblio[ref]}</dd>`
+          );
+        }
+      } else $("section#references").remove();
     }
 
     // Allow autogenerating missing top-level section IDs in understanding docs,
