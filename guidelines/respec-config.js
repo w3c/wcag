@@ -8,7 +8,7 @@ var respecConfig = {
 	permalinkHide:     false,
 	tocIntroductory: true,
 	// specification status (e.g., WD, LC, NOTE, etc.). If in doubt use ED.
-	specStatus:           "REC",
+	specStatus:           "ED",
 	//crEnd:                "2012-04-30",
 	//perEnd:               "2013-07-23",
 	publishDate:          "2024-12-12",
@@ -48,7 +48,6 @@ var respecConfig = {
 	editors: [
 		{
 			name: "Andrew Kirkpatrick",
-			mailto: "akirkpat@adobe.com",
 			company: "Adobe",
 			companyURI: "http://www.adobe.com/",
 			w3cid: 39770,
