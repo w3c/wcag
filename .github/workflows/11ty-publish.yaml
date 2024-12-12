@@ -1,4 +1,4 @@
-name: CI
+name: Push to gh-pages branch
 
 # Reference documentation: https://docs.github.com/en/actions/reference
 
@@ -36,10 +36,13 @@ jobs:
           curl https://labs.w3.org/spec-generator/?type=respec"&"url=https://raw.githack.com/$GITHUB_REPOSITORY/main/requirements/22/index.html -o _site/requirements/22/index.html -f  --retry 3
           curl https://labs.w3.org/spec-generator/?type=respec"&"url=https://raw.githack.com/$GITHUB_REPOSITORY/main/conformance-challenges/index.html -o _site/conformance-challenges/index.html -f  --retry 3
       - name: Push
-        working-directory: _site
-        run: |
-          git config user.email 87540780+w3cgruntbot@users.noreply.github.com
-          git config user.name w3cgruntbot
-          git add -A .
-          git commit -m ":robot: Deploy to GitHub Pages: $GITHUB_SHA from branch $GITHUB_REF"
-          git push origin gh-pages
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          repository: _site
+          branch: gh-pages
+          commit_user_name: w3cgruntbot
+          commit_user_email: 87540780+w3cgruntbot@users.noreply.github.com
+          commit_author: "w3cgruntbot <87540780+w3cgruntbot@users.noreply.github.com>"
+          commit_message: ":robot: Deploy to GitHub Pages: ${{ github.sha }} from branch ${{ github.ref }}"
+          skip_fetch: true
+          skip_checkout: true
