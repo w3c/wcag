@@ -11,7 +11,7 @@ var respecConfig = {
 	specStatus:           "ED",
 	//crEnd:                "2012-04-30",
 	//perEnd:               "2013-07-23",
-	publishDate:          "2023-10-05",
+	publishDate:          "2024-12-12",
 	diffTool:             "http://www.aptest.com/standards/htmldiff/htmldiff.pl",
 	
 	// the specifications short name, as in https://www.w3.org/TR/short-name/
@@ -65,15 +65,12 @@ var respecConfig = {
 		{
 			name: "Michael Cooper",
 			url: 'https://www.w3.org/People/cooper',
-			//mailto: "cooper@w3.org",
 			company: "W3C",
 			companyURI: "https://www.w3.org",
 			w3cid: 34017
 		},
 		{
 			name: "Andrew Kirkpatrick",
-			//url: "http://www.adobe.com/",
-			mailto: "akirkpat@adobe.com",
 			company: "Adobe",
 			companyURI: "http://www.adobe.com/",
 			w3cid: 39770
