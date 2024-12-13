@@ -49,12 +49,17 @@ but may be useful if you're not seeing what you expect in the output files.
 
 ### `WCAG_VERSION`
 
-**Usage context:** currently this should not be changed, pending future improvements to `21` support
+**Usage context:** for building older versions of techniques and understanding docs
 
 Indicates WCAG version being built, in `XY` format (i.e. no `.`).
-Influences base URLs for links to guidelines, techniques, and understanding pages.
+Influences which pages get included, guideline/SC content,
+and a few details within pages (e.g. titles/URLs, "New in ..." content).
+Also influences base URLs for links to guidelines, techniques, and understanding pages.
+Explicitly setting this causes the build to reference guidelines and acknowledgements
+published under `w3.org/TR/WCAG{version}`, rather than using the local checkout
+(which is effectively the 2.2 Editors' Draft).
 
-**Default:** `22`
+Possible values: `22`, `21`
 
 ### `WCAG_MODE`
 
