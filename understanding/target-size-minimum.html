@@ -178,7 +178,7 @@
         <section id="size-requirement">
             <h3>Size requirement</h3>
 
-            <p>For a target to be "at least 24 by 24 CSS pixels", it must be possible to draw a solid 24 by 24 CSS pixel square, aligned to the horizontal and vertical axis such that the square is completely within the target (does not extend outside the target's area).</p>
+            <p>For a target to be "at least 24 by 24 CSS pixels", it must be conceptually possible to draw a solid 24 by 24 CSS pixel square, aligned to the horizontal and vertical axis such that the square is completely within the target (does not extend outside the target's area).</p>
 
             <figure id="target-size-basic">
                 <img src="img/target-size-basic.svg" width="180" height="75" alt="Three square boxes next to each other, each with a height and width of 24px">
@@ -219,7 +219,7 @@
 
             <p>When the minimum size for a target is not met, spacing can at least improve the user experience. There is less chance of accidentally activating a neighboring target if a target is not immediately adjacent to another. Touchscreen devices and user agents generally have internal heuristics to identify which link or control is closest to a user's touch interaction - this means that sufficient spacing between targets can work as effectively as a larger target size itself.</p>
 
-            <p>When a target is smaller than 24 by 24 CSS pixels, it is <em>undersized</em>. In this case, we check if it at least has sufficient <em>spacing</em> by drawing a 24 CSS pixel diameter circle over the undersized target, centered on the target's <a href="#dfn-minimum-bounding-box">bounding box</a>. For rectangular targets, the bounding box coincides with the target itself – thus, the circle is placed on the center of the target. If the target is <em>not</em> rectangular – for instance, if the target is clipped, has rounded corners, or if it's a more complex clickable SVG shape – we need to first determine the bounding box, and then find the box's center. Note that for concave shapes, the center of the bounding box may be outside of the target itself. Now, we center the circle on the center of the bounding box.</p>
+            <p>When a target is smaller than 24 by 24 CSS pixels, it is <em>undersized</em>. In this case, we check if it at least has sufficient <em>spacing</em> by drawing an imaginary 24 CSS pixel diameter circle over the undersized target, centered on the target's <a href="#dfn-minimum-bounding-box">bounding box</a>. For rectangular targets, the bounding box coincides with the target itself – thus, the circle is placed on the center of the target. If the target is <em>not</em> rectangular – for instance, if the target is clipped, has rounded corners, or if it's a more complex clickable SVG shape – we need to first determine the bounding box, and then find the box's center. Note that for concave shapes, the center of the bounding box may be outside of the target itself. Now, we center the circle on the center of the bounding box.</p>
 
             <figure id="target-size-bounding-boxes">
                 <img src="img/target-size-bounding-boxes.svg" width="395" height="100" alt="Three undersized targets - a square target, a convex target, and a concave target; the concave and convex targets have a bounding box around them; all three targets have a 24 CSS pixel circle centered on the center of their bounding box">
@@ -232,7 +232,7 @@
             <ul>
                 <li>In the top row, the dimensions of each target are 24 by 24 CSS pixels, passing this Success Criterion.</li>
                 <li>In the second row, the same targets are only 20 by 20 CSS pixels, but have a 4 CSS pixel space between them – as the target size is below 24 by 24 CSS pixels, these need to be evaluated against the Success Criterion's spacing exception, and they pass.</li>
-                <li>In the last row, the targets are again 20 by 20 CSS pixels, but have no space between them – these fail the spacing exception. This is because, when drawing the 24 CSS pixel diameter circles over the targets, the circles intersect.</li>
+                <li>In the last row, the targets are again 20 by 20 CSS pixels, but have no space between them – these fail the spacing exception. This is because the imaginary 24 CSS pixel diameter circles over the targets would intersect.</li>
             </ul>
 
             <figure id="target-spacing-toolbar">
@@ -256,14 +256,14 @@
             </figure>
 
             <p>The following example has one large target (an image that links to a new page related to that image) and a very small second target (a control with a magnifier icon to open a zoomed-in preview, possibly in a modal, of the image).</p>
-            <p>In the top row, the small target overlaps - or, to be more technically accurate, <em>clips</em> - the large target. The small target itself has a size of 24 by 24 CSS pixels, so passes. In the second row, we see that if the second target is any smaller – in this case 16 by 16 CSS pixels – it fails the criterion, as the circle with a 24 CSS pixel diameter we draw over the small target will intersect the large target itself.</p>
+            <p>In the top row, the small target overlaps - or, to be more technically accurate, <em>clips</em> - the large target. The small target itself has a size of 24 by 24 CSS pixels, so passes. In the second row, we see that if the second target is any smaller – in this case 16 by 16 CSS pixels – it fails the criterion, as the imaginary circle with a 24 CSS pixel diameter we draw over the small target will intersect the large target itself.</p>
 
             <figure id="target-large-small-clipping">
                 <img src="img/target-large-small-clipping.svg" width="460" height="320" alt="Two rows showing a small target clipping a large target">
                 <figcaption>Figure 9<p>The 24 by 24 CSS pixel small target passes, while the 16 by 16 CSS pixel small target fails, since the 24 CSS pixel diameter circle used for undersized targets intersect the large target (image shown to scale - <a href="img/target-large-small-clipping.svg">see the scalable original version</a>)</p></figcaption>
             </figure>
 
-            <p>In the following example, we have the same two targets – a large target and a small target. This time, the small target touches/abuts the large target. If the small target is smaller than 24 by 24 CSS pixels, the circle with a 24 CSS pixel diameter we draw over the small target will intersect the large target itself, failing the requirement. The undersized target must be spaced further away from the large target until its circle doesn't intersect the large target.</p>
+            <p>In the following example, we have the same two targets – a large target and a small target. This time, the small target touches/abuts the large target. If the small target is smaller than 24 by 24 CSS pixels, the imaginary circle with a 24 CSS pixel diameter we draw over the small target will intersect the large target itself, failing the requirement. The undersized target must be spaced further away from the large target until its circle doesn't intersect the large target.</p>
 
             <figure id="target-large-small-touching">
                 <img src="img/target-large-small-touching.svg" width="460" height="320" alt="Two rows showing a small target and a large target touching/abutting">
@@ -274,6 +274,15 @@
 				<p class="note-title marker">Note</p>
 				<p>Users with different disabilities have different needs for control sizes. It can be beneficial to provide an option to increase the active target area without increasing the visible target size. Another option is to provide a mechanism to control the density of layout and thereby change target size or spacing, or both. This can be beneficial for a wide range of users. For example, users with visual field loss may prefer a more condensed layout with smaller sized controls while users with other forms of low vision may prefer large controls.</p>
 			</div>
+        </section>
+
+        <section id="user-agent-control">
+            <h3>User agent control</h3>
+            <p>This Success Criterion has an exception for the size of targets determined by a user agent and not modified by the author. An example of this kind of target is a browser's scrollbars. If a scrollbar's dimensions have been modified by the author then there must be a passing amount of spacing between the scrollbar and the content of the page. The following example shows a passing and a failing design.</p>
+            <figure id="target-browser-scrollbars">
+                <img alt="A page's scrollbar has been modified to give it custom track and thumb colors. The track is less than 24px wide and the thumb is narrower. The page has a back-to-top link that is next to the scrollbar." height="100" src="img/target-custom-scrollbar-spacing.svg" width="300">
+                <figcaption>Figure 11<p>The passing example has enough space between the link and the scrollbar for a 24 CSS pixel diameter circle, placed over the scrollbar, to not overlap the link. The failing example has no space between the link and the scrollbar, which fails the criterion because the 24 CSS pixel diameter circle overlaps the link. (Image shown to scale - <a href="img/target-custom-scrollbar-spacing.svg">see the scalable original version</a>)</p></figcaption>
+            </figure>
         </section>
     </section>
 
