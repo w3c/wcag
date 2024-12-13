@@ -1,5 +1,5 @@
 import { Liquid, type Template } from "liquidjs";
-import type { RenderOptions } from "liquidjs/dist/liquid-options";
+import type { LiquidOptions, RenderOptions } from "liquidjs/dist/liquid-options";
 import compact from "lodash-es/compact";
 import uniq from "lodash-es/uniq";
 
@@ -10,7 +10,7 @@ import type { GlobalData } from "eleventy.config";
 import { biblioPattern, getBiblio } from "./biblio";
 import { flattenDom, load, type CheerioAnyNode } from "./cheerio";
 import { generateId } from "./common";
-import { getAcknowledgementsForVersion, getTermsMap } from "./guidelines";
+import { getAcknowledgementsForVersion, type TermsMap } from "./guidelines";
 import { resolveTechniqueIdFromHref, understandingToTechniqueLinkSelector } from "./techniques";
 import { techniqueToUnderstandingLinkSelector } from "./understanding";
 
@@ -22,7 +22,6 @@ const techniquesPattern = /\btechniques\//;
 const understandingPattern = /\bunderstanding\//;
 
 const biblio = await getBiblio();
-const termsMap = await getTermsMap();
 const termLinkSelector = "a:not([href])";
 
 /** Generates {% include "foo.html" %} directives from 1 or more basenames */
@@ -72,6 +71,10 @@ function expandTechniqueLink($el: CheerioAnyNode) {
 
 const stripHtmlComments = (html: string) => html.replace(/<!--[\s\S]*?-->/g, "");
 
+interface CustomLiquidOptions extends LiquidOptions {
+  termsMap: TermsMap;
+}
+
 // Dev note: Eleventy doesn't expose typings for its template engines for us to neatly extend.
 // Fortunately, it passes both the content string and the file path through to Liquid#parse:
 // https://github.com/11ty/eleventy/blob/9c3a7619/src/Engines/Liquid.js#L253
@@ -84,6 +87,11 @@ const stripHtmlComments = (html: string) => html.replace(/<!--[\s\S]*?-->/g, "")
  * - generating/expanding sections with auto-generated content
  */
 export class CustomLiquid extends Liquid {
+  termsMap: TermsMap;
+  constructor(options: CustomLiquidOptions) {
+    super(options);
+    this.termsMap = options.termsMap;
+  }
   public parse(html: string, filepath?: string) {
     // Filter out Liquid calls for computed data and includes themselves
     if (filepath && !filepath.includes("_includes/") && isHtmlFileContent(html)) {
@@ -300,7 +308,7 @@ export class CustomLiquid extends Liquid {
   public async render(templates: Template[], scope: GlobalData, options?: RenderOptions) {
     // html contains markup after Liquid tags/includes have been processed
     const html = (await super.render(templates, scope, options)).toString();
-    if (!isHtmlFileContent(html) || !scope) return html;
+    if (!isHtmlFileContent(html) || !scope || scope.page.url === false) return html;
 
     const $ = load(html);
 
@@ -414,7 +422,7 @@ export class CustomLiquid extends Liquid {
           .toLowerCase()
           .trim()
           .replace(/\s*\n+\s*/, " ");
-        const term = termsMap[name];
+        const term = this.termsMap[name];
         if (!term) {
           console.warn(`${scope.page.inputPath}: Term not found: ${name}`);
           return;
@@ -428,7 +436,7 @@ export class CustomLiquid extends Liquid {
           const $el = $(el);
           const termName = extractTermName($el);
           $el
-            .attr("href", `${scope.guidelinesUrl}#${termName ? termsMap[termName].trId : ""}`)
+            .attr("href", `${scope.guidelinesUrl}#${termName ? this.termsMap[termName].trId : ""}`)
             .attr("target", "terms");
         });
       } else if (scope.isUnderstanding) {
@@ -442,7 +450,7 @@ export class CustomLiquid extends Liquid {
           // since terms may reference other terms in their own definitions.
           // Each iteration may append to termNames.
           for (let i = 0; i < termNames.length; i++) {
-            const term = termsMap[termNames[i]];
+            const term = this.termsMap[termNames[i]];
             if (!term) continue; // This will already warn via extractTermNames
 
             const $definition = load(term.definition);
@@ -459,7 +467,7 @@ export class CustomLiquid extends Liquid {
             return 0;
           });
           for (const name of termNames) {
-            const term = termsMap[name]; // Already verified existence in the earlier loop
+            const term = this.termsMap[name]; // Already verified existence in the earlier loop
             $termsList.append(
               `<dt id="${term.id}">${term.name}</dt>` +
                 `<dd><definition>${term.definition}</definition></dd>`
@@ -469,7 +477,7 @@ export class CustomLiquid extends Liquid {
           // Iterate over non-href links once more in now-expanded document to add hrefs
           $(termLinkSelector).each((_, el) => {
             const name = extractTermName($(el));
-            el.attribs.href = `#${name ? termsMap[name].id : ""}`;
+            el.attribs.href = `#${name ? this.termsMap[name].id : ""}`;
           });
         } else {
           // No terms: remove skeleton that was placed in #parse

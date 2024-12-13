@@ -26,6 +26,11 @@ Content for WCAG 2.1 and later is organized according to the file structure belo
 
 Where `{version}` is "20", content came from WCAG 2.0. "21" is used for content introduced in WCAG 2.1, "22" for WCAG 2.2, etc.
 
+## Build System
+
+The Techniques and Understanding documents are processed through a build system based on Eleventy and Liquid for templating and Cheerio for transformations.
+More details, including instructions for previewing the output locally, can be found in the [build process README](11ty/README.md).
+
 ## Editing Draft Success Criteria
 
 [Success Criteria Managers](https://www.w3.org/WAI/GL/wiki/SC_Managers_Phase1) will prepare candidate success criteria, ready for inclusion in the guidelines document. To prepare success criteria, follow these steps:
@@ -158,7 +163,7 @@ Once a technique branch and file is set up, populate the content and request rev
 
 ### Formatting Techniques
 
-Techniques in the repository are plain HTML files with minimal formatting. For publication to the editors' draft and W3C location, techniques are formatted by a build process based on Eleventy for templating and Cheerio for transformations. More details, including instructions for previewing locally, can be found in the [build process README](11ty/README.md).
+Techniques in the repository are plain HTML files with minimal formatting. For publication to the editors' draft and W3C location, techniques are formatted by the Eleventy build process described above in the [Build System section](#build-system).
 
 The generator compiles the techniques together as a suite with formatting and navigation. It enforces certain structures, such as ordering top-level sections described above and standardizing headings. It attempts to process cross reference links to make sure the URIs work upon publication. One of the most substantial roles is to populate the Applicability section with references to the guidelines or success criteria to which the technique relates. The information for this comes from the Understanding documents. Proper use of the technique template is important to enable this functionality, and mal-formed techniques may cause the generator to fail.
 
