@@ -32,5 +32,14 @@ Each erratum should be in the following format
 <li>YYYY-MM-DD: In <a href="{{ trUrl }}#sectionid">Section Title</a>, details of what happened.</li>
 ```
 
-Adhering to this format is important, as any entries under the latest version will also be
+Adhering to this format is important, as any entries under the latest published version will also be
 parsed for inclusion within Guideline/SC boxes and Key Terms definitions within Understanding pages.
+
+`details of what happened` should be expressed in present progressive tense
+(e.g. "updating", "removing", "adding"), with the desired outcome listed first.
+For example:
+
+- updating the red threshold from ... to ...
+- removing one note and adding two new notes, including ...
+- removing a supernumary "Note" indicator from the first note.
+- correcting the word ... to ...
