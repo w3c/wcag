@@ -3,6 +3,8 @@
 Errata are listed in reverse-chronological order, first sectioned by publish date,
 then within each section based on when each erratum was added.
 
+## Sections
+
 The first top-level section under `<main>` corresponds to the latest version / unpinned URL;
 subsequent sections correspond to previous versions / date-stamped URLs.
 
@@ -14,7 +16,7 @@ For sections corresponding to previous versions, assignments should follow this 
 ```
 {%- assign trDate = "YYYY-MM-DD" -%}
 {%- capture trUrl -%}
-  https://www.w3.org/TR/{{ trDate | split: "-" | first }}/REC-WCAG21-{{ trDate | replace: "-", "" }}/
+  https://www.w3.org/TR/{{ trDate | split: "-" | first }}/REC-WCAG{{ page.fileSlug }}-{{ trDate | replace: "-", "" }}/
 {%- endcapture -%}
 ```
 
@@ -24,6 +26,8 @@ The level 2 heading in the top-level section for each previous version should us
 ```html
 <h2>Errata since <a href="{{ trUrl }}">{{ trDate | date: "%d %B %Y" }} Publication</a></h2>
 ```
+
+## Erratum format
 
 Each erratum should be in the following format
 (replacing `YYYY-MM-DD`, `Section Title`, and `details of what happened`):
