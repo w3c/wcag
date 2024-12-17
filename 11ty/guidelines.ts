@@ -306,7 +306,7 @@ export const getPrinciplesForVersion = async (version: WcagVersion) =>
 export const getErrataForVersion = async (version: WcagVersion) => {
   const $ = await loadFromFile(join("errata", `${version}.html`));
   const $guidelines = await loadRemoteGuidelines(version, false);
-  const aSelector = `a[href*='#']:first-of-type`;
+  const aSelector = `a[href*='}}#']:first-of-type`;
   const errata: Record<string, string[]> = {};
 
   $("main > section[id]")
@@ -314,25 +314,31 @@ export const getErrataForVersion = async (version: WcagVersion) => {
     .find(`li:has(${aSelector})`)
     .each((_, el) => {
       const $el = $(el);
-      const $aEl = $el.find(aSelector);
-      let hash: string | undefined = $aEl.attr("href")!.replace(/^.*#/, "");
-
-      // Check whether hash pertains to a guideline/SC section or term definition;
-      // if it doesn't, attempt to resolve it to one
-      const $hashEl = $guidelines(`#${hash}`);
-      if (!$hashEl.is("section.guideline, #terms dfn")) {
-        const $closest = $hashEl.closest("#terms dd, section.guideline");
-        if ($closest.is("#terms dd")) hash = $closest.prev().find("dfn[id]").attr("id");
-        else hash = $closest.attr("id");
-      }
-      if (!hash) return;
-
       const erratumHtml = $el
-        .html()!
-        .replace(/^.*?<\/a>,?\s*/g, "")
-        .replace(/^(\w)/, (_, p1) => p1.toUpperCase());
-      if (hash in errata) errata[hash].push(erratumHtml);
-      else errata[hash] = [erratumHtml];
+          .html()!
+          // Remove everything before and including the final TR link
+          .replace(/^[\s\S]*href="\{\{\s*\w+\s*\}\}#[\s\S]*?<\/a>,?\s*/, "")
+          // Remove parenthetical github references (still in Liquid syntax)
+          .replace(/\(\{%.*%\}\)\s*$/, "")
+          .replace(/^(\w)/, (_, p1) => p1.toUpperCase());
+      
+      $el.find(aSelector).each((_, aEl) => {
+        const $aEl = $(aEl);
+        let hash: string | undefined = $aEl.attr("href")!.replace(/^.*#/, "");
+
+        // Check whether hash pertains to a guideline/SC section or term definition;
+        // if it doesn't, attempt to resolve it to one
+        const $hashEl = $guidelines(`#${hash}`);
+        if (!$hashEl.is("section.guideline, #terms dfn")) {
+          const $closest = $hashEl.closest("#terms dd, section.guideline");
+          if ($closest.is("#terms dd")) hash = $closest.prev().find("dfn[id]").attr("id");
+          else hash = $closest.attr("id");
+        }
+        if (!hash) return;
+
+        if (hash in errata) errata[hash].push(erratumHtml);
+        else errata[hash] = [erratumHtml];
+      });
     });
 
   return errata;
