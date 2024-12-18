@@ -240,6 +240,14 @@ To create a working example:
 * Reference working examples from techniques using the rawgit URI to the example in its development branch, e.g., `https://rawgit.com/w3c/wcag/main/working-examples/alt-attribute/`. Editors will update links when examples are approved.
 * When the example is complete and functional, submit a pull request into the main branch.
 
+## Errata
+
+The errata documents for WCAG 2.1 and 2.2 are now maintained in this repository.
+See the [Errata README](errata/README.md) for authoring details.
+
+**Note:** The errata for both versions are maintained on the `main` branch for use in builds.
+Direct edits to the guidelines for WCAG 2.1 must be performed under `guidelines/` on the `WCAG-2.1` branch.
+
 ## Translations
 
 WCAG 2.2 is ready for translation. To translate WCAG 2.2, follow instructions at [How to Translate WCAG 2](https://www.w3.org/WAI/about/translating/wcag/).

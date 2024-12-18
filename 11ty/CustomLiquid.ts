@@ -92,9 +92,36 @@ export class CustomLiquid extends Liquid {
     super(options);
     this.termsMap = options.termsMap;
   }
+
+  private renderErrata(html: string) {
+    const $ = load(html);
+
+    const $tocList = $("#contents .toc");
+    let $childList: CheerioAnyNode | null = null;
+    $("main section[id]:has(h2:first-child, h3:first-child)").each((_, el) => {
+      const $el = $(el);
+      // Only one of the following queries will match for each section
+      $el.find("> h2:first-child").each((_, h2El) => {
+        $childList = null;
+        $tocList.append(`<li><a href="#${el.attribs.id}">${$(h2El).text()}</a></li>`);
+      });
+      $el.find("> h3:first-child").each((_, h3El) => {
+        if (!$childList) $childList = $(`<ol class="toc"></ol>`).appendTo($tocList);
+        $childList.append(`<li><a href="#${el.attribs.id}">${$(h3El).text()}</a></li>`);
+      });
+    });
+
+    return $.html();
+  }
+
   public parse(html: string, filepath?: string) {
     // Filter out Liquid calls for computed data and includes themselves
-    if (filepath && !filepath.includes("_includes/") && isHtmlFileContent(html)) {
+    if (
+      filepath &&
+      !filepath.includes("_includes/") &&
+      !filepath.includes("errata/") &&
+      isHtmlFileContent(html)
+    ) {
       const isIndex = indexPattern.test(filepath);
       const isTechniques = techniquesPattern.test(filepath);
       const isUnderstanding = understandingPattern.test(filepath);
@@ -309,6 +336,7 @@ export class CustomLiquid extends Liquid {
     // html contains markup after Liquid tags/includes have been processed
     const html = (await super.render(templates, scope, options)).toString();
     if (!isHtmlFileContent(html) || !scope || scope.page.url === false) return html;
+    if (scope.page.inputPath.includes("errata/")) return this.renderErrata(html);
 
     const $ = load(html);
 
@@ -468,10 +496,15 @@ export class CustomLiquid extends Liquid {
           });
           for (const name of termNames) {
             const term = this.termsMap[name]; // Already verified existence in the earlier loop
-            $termsList.append(
-              `<dt id="${term.id}">${term.name}</dt>` +
-                `<dd><definition>${term.definition}</definition></dd>`
-            );
+            let termBody = term.definition;
+            if (scope.errata[term.id]) {
+              termBody += `
+                <p><strong>Errata:</strong></p>
+                <ul>${scope.errata[term.id].map((erratum) => `<li>${erratum}</li>`)}</ul>
+                <p><a href="https://www.w3.org/WAI/WCAG${scope.version}/errata/">View all errata</a></p>
+              `;
+            }
+            $termsList.append(`<dt id="${term.id}">${term.name}</dt><dd>${termBody}</dd>`);
           }
 
           // Iterate over non-href links once more in now-expanded document to add hrefs
