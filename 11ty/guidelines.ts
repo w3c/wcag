@@ -247,6 +247,15 @@ const loadRemoteGuidelines = async (version: WcagVersion) => {
     $("[role='note'] .marker").remove();
     $("[role='note']").find("> div, > p").addClass("note").unwrap();
 
+    // Convert data-plurals (present in publications) to data-lt
+    $("dfn[data-plurals]").each((_, el) => {
+      el.attribs["data-lt"] = (el.attribs["data-lt"] || "")
+        .split("|")
+        .concat(el.attribs["data-plurals"].split("|"))
+        .join("|");
+      delete el.attribs["data-plurals"];
+    });
+
     // Un-process bibliography references, to be processed by CustomLiquid
     $("cite:has(a.bibref:only-child)").each((_, el) => {
       const $el = $(el);
@@ -255,7 +264,7 @@ const loadRemoteGuidelines = async (version: WcagVersion) => {
 
     // Remove generated IDs and markers from examples
     $(".example[id]").removeAttr("id");
-    $(".example .marker:has(.self-link)").remove();
+    $(".example > .marker").remove();
 
     // Remove extra markup from headings so they can be parsed for names
     $("bdi").remove();
