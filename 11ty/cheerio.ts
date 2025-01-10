@@ -5,6 +5,9 @@ import { dirname, resolve } from "path";
 
 export { load } from "cheerio";
 
+/** Superset of the type returned by any Cheerio $() call. */
+export type CheerioAnyNode = ReturnType<ReturnType<typeof load>>;
+
 /** Convenience function that combines readFile and load. */
 export const loadFromFile = async (
   inputPath: string,
