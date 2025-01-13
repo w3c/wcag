@@ -157,39 +157,19 @@ export class CustomLiquid extends Liquid {
             .after(generateIncludes("techniques/about"))
             .replaceWith(generateIncludes("techniques/h1"));
 
-          const sectionCounts: Record<string, number> = {};
-          let hasDuplicates = false;
+          const detectedSections: Record<string, true> = {};
           $("body > section[id]").each((_, el) => {
             const id = el.attribs.id.toLowerCase();
             // Fix non-lowercase top-level section IDs (e.g. H99)
             el.attribs.id = id;
-            // Track duplicate sections, to be processed next
-            if (id in sectionCounts) {
-              hasDuplicates = true;
-              sectionCounts[id]++;
+            // Fail on duplicate sections
+            if (id in detectedSections) {
+              console.error(`${filepath}: Multiple sections with id="${id}" found.`);
+              throw new Error("Please resolve duplicate section IDs.");
             } else {
-              sectionCounts[id] = 1;
+              detectedSections[id] = true;
             }
           });
-
-          // Avoid loop altogether in majority of (correct) cases
-          if (hasDuplicates) {
-            for (const [id, count] of Object.entries(sectionCounts)) {
-              if (count === 1) continue;
-              console.warn(
-                `${filepath}: Merging duplicate ${id} sections; please fix this in the source file.`
-              );
-              const $sections = $(`section[id='${id}']`);
-              const $first = $sections.first();
-              $sections.each((i, el) => {
-                if (i === 0) return;
-                const $el = $(el);
-                $el.find("> h2:first-child").remove();
-                $first.append($el.contents());
-                $el.remove();
-              });
-            }
-          }
 
           $("section#resources h2").after(generateIncludes("techniques/intro/resources"));
           $("section#examples section.example").each((i, el) => {
@@ -222,13 +202,11 @@ export class CustomLiquid extends Liquid {
 
           // Remove spurious copy-pasted content in 2.5.3 that doesn't belong there
           if ($("section#benefits").length > 1) $("section#benefits").first().remove();
-          // Some pages nest Benefits inside Intent; XSLT always pulls it back out
-          $("section#intent section#benefits")
-            .insertAfter("section#intent")
-            .find("h3:first-child")
-            .each((_, el) => {
-              el.tagName = "h2";
-            });
+          // Prevent pages from nesting Benefits inside Intent (old issue that has been fixed)
+          if ($("section#intent section#benefits").length) {
+            console.error(`${filepath}: Benefits section should not be nested inside Intent.`);
+            throw new Error("Incorrectly-nested Benefits section found: please resolve.");
+          }
 
           // XSLT orders resources then techniques last, opposite of source files
           $("body")
@@ -245,15 +223,14 @@ export class CustomLiquid extends Liquid {
               generateIncludes("understanding/intro/sufficient-situation")
             );
           }
-          // success-criteria section should be auto-generated;
-          // remove any handwritten ones (e.g. Input Modalities)
-          const $successCriteria = $("section#success-criteria");
-          if ($successCriteria.length) {
-            console.warn(
-              `${filepath}: success-criteria section will be replaced with ` +
-                "generated version; please remove this from the source file."
+
+          // Disallow handwritten success-criteria section (should be auto-generated)
+          if ($("section#success-criteria").length) {
+            console.error(
+              `${filepath}: success-criteria section will be auto-generated; ` +
+                "please remove this from the source file."
             );
-            $successCriteria.remove();
+            throw new Error("Please remove success-criteria section from guideline pages.");
           }
           // success-criteria template only renders content for guideline (not SC) pages
           $("body").append(generateIncludes("understanding/success-criteria"));
