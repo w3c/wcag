@@ -107,7 +107,16 @@ export class CustomLiquid extends Liquid {
       // (e.g. editors.css & sources.css, and leftover template paragraphs)
       // NOTE: some paragraphs with the "instructions" class actually have custom content,
       // but for now this remains consistent with the XSLT process by stripping all of them.
-      $(".remove, p.instructions, section#meta, section.meta").remove();
+      $(".remove, section#meta, section.meta").remove();
+
+      if ($("p.instructions").length > 0) {
+        console.error(`${filepath} contains a <p class="instructions"> element.\n` +
+          "  This suggests that a template was copied and not fully filled out.\n" +
+          "  If the paragraph has been modified and should be retained, remove the class.\n" +
+          "  Otherwise, if the corresponding section has been updated, remove the paragraph."
+        );
+        throw new Error("Instructions paragraph found; please resolve.")
+      }
 
       const prependedIncludes = ["header"];
       const appendedIncludes = ["wai-site-footer", "site-footer"];
