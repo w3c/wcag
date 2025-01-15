@@ -30,7 +30,7 @@ The level 2 heading in the top-level section for each previous version should us
 ## Erratum format
 
 Each erratum should be in the following format
-(replacing `YYYY-MM-DD`, `Section Title`, `details of changes`, and `#NNNN`):
+(replacing `YYYY-MM-DD`, `Section Title`, `sectionid`, `details of changes`, and `#NNNN`):
 
 ```html
 <li>

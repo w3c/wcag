@@ -385,7 +385,7 @@ export default function (eleventyConfig: any) {
     }
   );
 
-  // Renders a link to a GitHub commit or pull request, in parentheses
+  // Renders a link to a GitHub commit or pull request
   eleventyConfig.addShortcode("gh", (id: string) => {
     if (/^#\d+$/.test(id)) {
       const num = id.slice(1);
