@@ -7,7 +7,7 @@ import { basename } from "path";
 
 import type { GlobalData } from "eleventy.config";
 
-import { biblioPattern, getBiblio } from "./biblio";
+import { biblioPattern, getBiblio, getXmlBiblio } from "./biblio";
 import { flattenDom, load, type CheerioAnyNode } from "./cheerio";
 import { generateId } from "./common";
 import { getAcknowledgementsForVersion, type TermsMap } from "./guidelines";
@@ -22,11 +22,21 @@ const techniquesPattern = /\btechniques\//;
 const understandingPattern = /\bunderstanding\//;
 
 const biblio = await getBiblio();
+const xmlBiblio = await getXmlBiblio();
 const termLinkSelector = "a:not([href])";
 
 /** Generates {% include "foo.html" %} directives from 1 or more basenames */
 const generateIncludes = (...basenames: string[]) =>
   `\n${basenames.map((basename) => `{% include "${basename}.html" %}`).join("\n")}\n`;
+
+/** Version of generateIncludes for a single include with parameters */
+const generateIncludeWithParams = (basename: string, params: Record<string, string>) => {
+  const strParams = Object.entries(params).reduce(
+    (str, [key, value]) => `${str}, ${key}: ${JSON.stringify(value)}`,
+    ""
+  );
+  return `\n{% include "${basename}.html"${strParams} %}\n`;
+};
 
 /**
  * Determines whether a given string is actually HTML,
@@ -92,9 +102,36 @@ export class CustomLiquid extends Liquid {
     super(options);
     this.termsMap = options.termsMap;
   }
+
+  private renderErrata(html: string) {
+    const $ = load(html);
+
+    const $tocList = $("#contents .toc");
+    let $childList: CheerioAnyNode | null = null;
+    $("main section[id]:has(h2:first-child, h3:first-child)").each((_, el) => {
+      const $el = $(el);
+      // Only one of the following queries will match for each section
+      $el.find("> h2:first-child").each((_, h2El) => {
+        $childList = null;
+        $tocList.append(`<li><a href="#${el.attribs.id}">${$(h2El).text()}</a></li>`);
+      });
+      $el.find("> h3:first-child").each((_, h3El) => {
+        if (!$childList) $childList = $(`<ol class="toc"></ol>`).appendTo($tocList);
+        $childList.append(`<li><a href="#${el.attribs.id}">${$(h3El).text()}</a></li>`);
+      });
+    });
+
+    return $.html();
+  }
+
   public parse(html: string, filepath?: string) {
     // Filter out Liquid calls for computed data and includes themselves
-    if (filepath && !filepath.includes("_includes/") && isHtmlFileContent(html)) {
+    if (
+      filepath &&
+      !filepath.includes("_includes/") &&
+      !filepath.includes("errata/") &&
+      isHtmlFileContent(html)
+    ) {
       const isIndex = indexPattern.test(filepath);
       const isTechniques = techniquesPattern.test(filepath);
       const isUnderstanding = understandingPattern.test(filepath);
@@ -278,8 +315,9 @@ export class CustomLiquid extends Liquid {
           // Expand techniques links to always include title
           $(understandingToTechniqueLinkSelector).each((_, el) => expandTechniqueLink($(el)));
 
-          // Add key terms by default, to be removed in #parse if there are no terms
-          $("body").append(generateIncludes("understanding/key-terms"));
+          // Add key terms and references by default, to be removed in #parse if not needed
+          $("body").append(generateIncludeWithParams("dl-section", { title: "Key Terms" }));
+          $("body").append(generateIncludeWithParams("dl-section", { title: "References" }));
         }
 
         // Remove h2-level sections with no content other than heading
@@ -309,6 +347,7 @@ export class CustomLiquid extends Liquid {
     // html contains markup after Liquid tags/includes have been processed
     const html = (await super.render(templates, scope, options)).toString();
     if (!isHtmlFileContent(html) || !scope || scope.page.url === false) return html;
+    if (scope.page.inputPath.includes("errata/")) return this.renderErrata(html);
 
     const $ = load(html);
 
@@ -468,10 +507,15 @@ export class CustomLiquid extends Liquid {
           });
           for (const name of termNames) {
             const term = this.termsMap[name]; // Already verified existence in the earlier loop
-            $termsList.append(
-              `<dt id="${term.id}">${term.name}</dt>` +
-                `<dd><definition>${term.definition}</definition></dd>`
-            );
+            let termBody = term.definition;
+            if (scope.errata[term.id]) {
+              termBody += `
+                <p><strong>Errata:</strong></p>
+                <ul>${scope.errata[term.id].map((erratum) => `<li>${erratum}</li>`)}</ul>
+                <p><a href="https://www.w3.org/WAI/WCAG${scope.version}/errata/">View all errata</a></p>
+              `;
+            }
+            $termsList.append(`\n      <dt id="${term.id}">${term.name}</dt><dd>${termBody}</dd>`);
           }
 
           // Iterate over non-href links once more in now-expanded document to add hrefs
@@ -567,17 +611,33 @@ export class CustomLiquid extends Liquid {
 
     // Link biblio references
     if (scope.isUnderstanding) {
+      const xmlBiblioReferences: string[] = [];
       $("p").each((_, el) => {
         const $el = $(el);
         const html = $el.html();
         if (html && biblioPattern.test(html)) {
           $el.html(
-            html.replace(biblioPattern, (substring, code) =>
-              biblio[code]?.href ? `[<a href="${biblio[code].href}">${code}</a>]` : substring
-            )
+            html.replace(biblioPattern, (substring, code) => {
+              if (biblio[code]?.href) return `[<a href="${biblio[code].href}">${code}</a>]`;
+              if (code in xmlBiblio) {
+                xmlBiblioReferences.push(code);
+                return `[<a href="#${code}">${code}</a>]`;
+              }
+              console.warn(`${scope.page.inputPath}: Unresolved biblio ref: ${code}`);
+              return substring;
+            })
           );
         }
       });
+
+      // Populate references section, or remove if unused
+      if (xmlBiblioReferences.length) {
+        for (const ref of uniq(xmlBiblioReferences).sort()) {
+          $("section#references dl").append(
+            `\n      <dt id="${ref}">${ref}</dt><dd>${xmlBiblio[ref]}</dd>`
+          );
+        }
+      } else $("section#references").remove();
     }
 
     // Allow autogenerating missing top-level section IDs in understanding docs,
