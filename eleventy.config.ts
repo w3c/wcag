@@ -11,6 +11,7 @@ import { resolveDecimalVersion } from "11ty/common";
 import {
   actRules,
   assertIsWcagVersion,
+  getErrataForVersion,
   getFlatGuidelines,
   getPrinciples,
   getPrinciplesForVersion,
@@ -110,6 +111,7 @@ const termsMap = process.env.WCAG_VERSION ? await getTermsMap(version) : await g
 const globalData = {
   version,
   versionDecimal: resolveDecimalVersion(version),
+  errata: process.env.WCAG_VERSION ? await getErrataForVersion(version) : {},
   techniques, // Used for techniques/index.html
   technologies, // Used for techniques/index.html
   technologyTitles, // Used for techniques/index.html
@@ -277,6 +279,7 @@ export default function (eleventyConfig: any) {
       root: ["_includes", "."],
       jsTruthy: true,
       strictFilters: true,
+      timezoneOffset: 0, // Avoid off-by-one YYYY-MM-DD date stamp conversions
       termsMap,
     })
   );
@@ -381,6 +384,19 @@ export default function (eleventyConfig: any) {
         .join("\nand\n");
     }
   );
+
+  // Renders a link to a GitHub commit or pull request
+  eleventyConfig.addShortcode("gh", (id: string) => {
+    if (/^#\d+$/.test(id)) {
+      const num = id.slice(1);
+      return `<a href="https://github.com/${GH_ORG}/${GH_REPO}/pull/${num}" aria-label="pull request ${num}">${id}</a>`
+    }
+    else if (/^[0-9a-f]{7,}$/.test(id)) {
+      const sha = id.slice(0, 7); // Truncate in case full SHA was passed
+      return `<a href="https://github.com/${GH_ORG}/${GH_REPO}/commit/${sha}" aria-label="commit ${sha}">${sha}</a>`
+    }
+    else throw new Error(`Invalid SHA or PR ID passed to gh tag: ${id}`);
+  });
 
   // Renders a section box (used for About this Technique and Guideline / SC)
   eleventyConfig.addPairedShortcode(
