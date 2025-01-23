@@ -17,20 +17,15 @@
         <dt>Why it's important</dt><dd>People who need bigger text find it difficult if they must scroll to read long lines.</dd>
 			</dl>
 		</section>
-  
+
     <section id="intent">
         <h2>Intent of this Success Criterion</h2>
-        <p>The intent of this success criterion is to let users enlarge text and other related content without having to scroll in two dimensions to read. When lines of text extend beyond the edge of a <a href="https://www.w3.org/TR/WCAG22/#dfn-viewport">viewport</a>, users will be forced to scroll or pan their viewport back-and-forth to read line by line. This can cause them to lose their place and can significantly increase both physical and cognitive effort. Sections of content are expected to reflow within the appropriate sizing requirement defined by this success criterion, based on the text's intended direction of reading. Content that requires bi-directional layout for understanding or functionality, such as a table or map, has an exception to this success criterion. However, individual parts of bi-directional content, such as each cell within a table, would still need to meet this success criterion. Finally, authors can also benefit users by making efforts to reduce scrolling for excepted content.</p>
-
-        <!-- keeping the following paragraph and notes here for now, but likely going to reorder this some based on discussions of how we could restructure the document further / reorder this content into new sections --> 
-
-        <p>Reflow applies to both horizontally and vertically written languages. For pages where the primary written language expects vertical scrolling (such as English), users do not expect to scroll back-and-forth horizontally to read that content. Similarly, users reading content in a written language/direction that expects horizontal scrolling (such as traditional Chinese and Japanese) do not expect to scroll up-and-down vertically to read that content.</p>
-
-        <div class="note">
-          <p>Reflow does not prohibit web pages from presenting both horizontal and vertical scrollbars for individual sections of content. Nor does it disallow the use of bi-directional scrollbars at the page (viewport) level in order to support the viewing of excepted content, so long as the non-excepted content only needs scrolling in one direction.</p>
-          
-          <p>However, whenever possible it is in the best interest of the user to limit bi-directional scrolling only to the individual sections of content which necessitate such scrolling, rather than allowing the page at large to scroll in two directions. For instance, one might maintain a single scrollbar at page level and confine content which needs bi-directional scrolling (such as a table) into a scrollable container.</p>
-        </div>
+        <p>
+          The intent of this success criterion is to let users enlarge text and other related content without having to scroll in two dimensions to read. When lines of text extend beyond the edge of a <a href="https://www.w3.org/TR/WCAG22/#dfn-viewport">viewport</a>, users will be forced to scroll back-and-forth to read line by line. This can cause them to lose their place and can significantly increase both physical and cognitive effort. Therefore, most sections of content are expected to reflow within the appropriate sizing requirement defined by this success criterion.
+        </p>
+        <p>
+          A <a href="https://www.w3.org/TR/WCAG/#dfn-section">section of content</a> that requires bi-directional layout for understanding or functionality, such as a table or map, has an exception to this success criterion. However, sections of content within the bi-directional layout, such as each cell within a table, would still need to meet this success criterion. Finally, authors can also benefit users by making efforts to reduce scrolling for excepted content.
+        </p>
 
         <div class="note" id="note-2dlayout">
           <p>An important factor in being able to support Reflow is for the user agent to allow users to adjust the size of content within specific windows of content. For instance, the browser's viewport.</p>
@@ -38,6 +33,39 @@
           <p>Technologies such as HTML/CSS, PDF, and ePub have methods of reflowing content to adjust to the size of the viewport. When these technologies are appropriately authored, users can use zooming features provided by the user agent (browser) to enlarge the content within the viewport. Unless otherwise prevented by author styling, the content of the web page will reflow (wrap) to adjust to the size of the viewport. At the same time, the user agent and any UI provided directly by the user agent will remain scaled to the zoom level set by the operating system.</p>
         </div>
      </section>
+
+     <section>
+      <h2>Basic text reflow</h2>
+      <p>The most basic form of reflow occurs on a text-only page. By default, a long line of text will wrap to fit within the available viewport. For text written in left-to-right (LTR) and right-to-left (RTL) horizontal languages, it will wrap within the width of the viewport. For languages that are written vertically, the text will wrap within the height of the viewport.</p>
+
+      <figure>
+        [ simplified visual - ideally show horizontal text wrapping AND vertical text wrapping ]
+
+        <figcaption><p>For pages where the primary written language expects vertical scrolling (such as English), users do not expect to scroll back-and-forth horizontally to read that content. Similarly, users reading content in a written language/direction that expects horizontal scrolling (such as traditional Chinese and Japanese) do not expect to scroll up-and-down vertically to read that content.</p></figcaption>
+      </figure>
+      
+      <p>Users who need to enlarge (zoom) text to read it benefit significantly when it reflows. Regardless of the size of the text, the text continues to wrap within the visible viewport. A whole line of text is visible, making it easier for the eye to track from the end of one line to the start of the next. Users only need to scroll in the direction of reading (vertically for horizontal languages, and horizontally for vertical languages) read additional lines of text.</p>
+
+      <p>This criterion requires sections of content written in horizontal languages reflow when narrowed to a width equivalent to 320 CSS pixels. For Sections of content that are written in vertical languages (which are much less commonly used on the web and so will be used much less frequently in examples), they need to be able to reflow when rendered at a height equivalent to 256 CSS pixels.</p>
+
+      <figure>
+        [simplified movie showing the text reflowing as it enlarges and showing text reflowing as viewport width is decreased]
+
+        <figcaption>TODO</figcaption>
+      </figure>
+     </section>
+
+
+     <P>TODO: a new segue between the prior content and what follows is being created.</P>
+
+     <!-- 
+        TODO: 
+     <section>
+      <h2>Reflowing websites and web applications</h2>
+
+      <p>Commonly web pages are more complex that simply presenting static text, but content other than text can also adapt to reflow. Two-dimensional content like images can scale down so that they also fit within the breadth of the viewport. In horizontal languages, sections of content can stack on top of each other in a logical reading order. The user only needs to scroll vertically to read all content, which is presented in a single column.</p>
+
+     </section> -->
   
       <section>
         <h3>Vertically and horizontally scrolling content</h3>
@@ -205,6 +233,11 @@
         </div>
 
         <p>When we read, the size of the print is not as important as the image it projects on the retina of our eye. Phones are designed for close viewing while desktops are designed for viewing farther away. As a consequence, 16px print on a phone is physically smaller than 16px print on a desktop. This is generally not a problem because both print sizes cast the same image on our retina if they are viewed at their intended distance. The CSS reference pixel, the px unit used on the web, reflects this. The CSS reference unit is an angular measurement (1.278 arc minutes), not a length measurement.  Most older people, and some people with low vision hold their phone closer than is typical, but again, by using the CSS reference pixel, developers (and designers and content authors) have stable metrics for their design choices.</p>
+
+        <h4>Acknowledging viewport vs resolution discrepancies</h4>
+        <p>
+          TODO: https://github.com/w3c/wcag/pull/4055#issuecomment-2555772330
+        </p>
       </section>
 
       <section>
@@ -218,7 +251,7 @@
 
       <section>
         <h3>Overlap with other success criteria</h3>
-        <p>When reviewing a web page for Reflow, issues related to other WCAG success criteria might be discovered. The following are some examples of potential overlaps with such criteria.</p>
+        <p>When reviewing a web page for Reflow, issues related to other WCAG success criteria might be discovered. The following are examples of potential overlaps with other success criteria, though not all overlapping success criteria are mentioned.</p>
 
         <h4>Resize Text</h4>
         <p>The focus of the Reflow success criterion is to ensure that users are not prevented from zooming into web pages, and when doing so text within sections of content will wrap so that the text can be read without having to scroll in two directions. <a href="resize-text">Success criterion 1.4.4 Resize Text</a> overlaps with this goal, as it should be possible to increase the size of all text to at least 200% while simultaneously meeting the reflow requirement. For many web pages, the text of the page is expected to continue to enlarge as the browser magnification increases, so that users can magnify text up to (and beyond) 400%. In an implementation where text does not consistently increase its size as people zoom in (such as when it is transformed based on a media query to adapt to small-screen usage), it must still be possible to get to 200% enlargement to satisfy the Resize Text criterion. It is important to note that the intent of Reflow will commonly result in the enlargement of text, there Reflow does not specifically require any text size enlargement be reached. There may even be instances where one needs to prevent some text from becoming too large, and thus requiring unwanted bi-directional scrolling.</p>
@@ -228,7 +261,7 @@
         <h4>Focus Not Obscured (Minimum)</h4>
         <p>When sections of content have been designed to be fixed position or “sticky” at larger viewport sizes, authors need to ensure such sticky content does not fully obscure the element which has user keyboard focus, or in the case author created content does obscure content, there is a way for a user to dismiss the obscuring content without requiring the advancement of keyboard focus. Such sticky or fixed content can pose significant issues for those who would benefit from Reflow, as aside from obscuring keyboard focus, such sticky or fixed content can make reading content difficult if not impossible.</p>
         
-        <p>For example, a website's content properly reflows to fit within a 320 CSS pixel wide viewport, but the website presents fixed-position ads. The ads are often displayed in the lower corner of the browser when the page is rendered in larger viewports - but when attempting to zoom in the page, the ads do not become static. They obscure not only the focusable elements of the page, providing no way to dismiss the ad without finding / keyboard navigating to its close button, but significantly reduce the available space for reading.</p>
+        <p>For example, a website's content properly reflows to fit within a 320 CSS pixel wide viewport. The website also displays fixed-position ads. The ads are often presented in a lower corner of the web page when rendered in larger viewports. However, when attempting to zoom in the page, the ads remain in their fixed position. They obscure not only the focusable elements of the page, providing no way to dismiss the ad without finding / keyboard navigating to its close button, but significantly reduce the available space for reading.</p>
         
         <figure>
           <img src="img/reflow-sticky-ad.png" width="550" alt="a music history website's section on the Medieval period of history. A fixed-position ad obstructs the majority of the content.">
@@ -270,7 +303,7 @@
             </li>
             <li>
               <strong>Alternative presentations to truncating content</strong>
-              <p>A web page presents long strings of text which are truncated to save space. E.g., user generated content that does not fit into the space allocated for the interface’s design, or authentication keys which do not wrap, etc.. The content is presented as truncated, but a link is provided to a web page where the content is fully visible without truncation, or a mechanism is provided on the web page to reveal the truncated content.</p>
+              <p>A web page presents long strings of text which are truncated to save space. E.g., user generated content that does not fit into the space allocated for the interface's design, or authentication keys which do not wrap, etc.. The content is presented as truncated, but a link is provided to a web page where the content is fully visible without truncation, or a mechanism is provided on the web page to reveal the truncated content.</p>
             </li>
             <li>
               <strong>Preformatted text conveys meaning</strong>
