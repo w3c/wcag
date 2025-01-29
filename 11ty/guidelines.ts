@@ -165,11 +165,11 @@ function processPrinciples($: CheerioAPI) {
 }
 
 /**
- * Resolves information from guidelines/index.html;
+ * Resolves information from a local guidelines/index.html source file;
  * comparable to the principles section of wcag.xml from the guidelines-xml Ant task.
  */
-export const getPrinciples = async () =>
-  processPrinciples(await flattenDomFromFile("guidelines/index.html"));
+export const getPrinciples = async (path = "guidelines/index.html") =>
+  processPrinciples(await flattenDomFromFile(path));
 
 /**
  * Returns a flattened object hash, mapping shortcodes to each principle/guideline/SC.
@@ -199,14 +199,7 @@ interface Term {
 }
 export type TermsMap = Record<string, Term>;
 
-/**
- * Resolves term definitions from guidelines/index.html organized for lookup by name;
- * comparable to the term elements in wcag.xml from the guidelines-xml Ant task.
- */
-export async function getTermsMap(version?: WcagVersion) {
-  const $ = version
-    ? await loadRemoteGuidelines(version)
-    : await flattenDomFromFile("guidelines/index.html");
+function processTermsMap($: CheerioAPI) {
   const terms: TermsMap = {};
 
   $("dfn").each((_, el) => {
@@ -230,6 +223,14 @@ export async function getTermsMap(version?: WcagVersion) {
 
   return terms;
 }
+
+/**
+ * Resolves term definitions from guidelines/index.html (or a specified alternate path)
+ * organized for lookup by name;
+ * comparable to the term elements in wcag.xml from the guidelines-xml Ant task.
+ */
+export const getTermsMap = async (path = "guidelines/index.html") =>
+  processTermsMap(await flattenDomFromFile(path));
 
 // Version-specific APIs
 
@@ -301,6 +302,13 @@ export const getAcknowledgementsForVersion = async (version: WcagVersion) => {
  */
 export const getPrinciplesForVersion = async (version: WcagVersion) =>
   processPrinciples(await loadRemoteGuidelines(version));
+
+/**
+ * Resolves term definitions from a WCAG 2.x publication,
+ * organized for lookup by name.
+ */
+export const getTermsMapForVersion = async (version: WcagVersion) =>
+  processTermsMap(await loadRemoteGuidelines(version));
 
 /** Parses errata items from the errata document for the specified WCAG version. */
 export const getErrataForVersion = async (version: WcagVersion) => {
