@@ -16,6 +16,7 @@ import {
   getPrinciples,
   getPrinciplesForVersion,
   getTermsMap,
+  getTermsMapForVersion,
   scSlugOverrides,
   type FlatGuidelinesMap,
   type Guideline,
@@ -57,10 +58,16 @@ const allPrinciples = await getPrinciples();
 /** Flattened Principles/Guidelines/SC across all versions (including later than selected) */
 const allFlatGuidelines = getFlatGuidelines(allPrinciples);
 
+async function resolveRelevantPrinciples() {
+  if (!process.env.WCAG_VERSION) return allPrinciples;
+  if (process.env.WCAG_FORCE_LOCAL_GUIDELINES)
+    return await getPrinciples(process.env.WCAG_FORCE_LOCAL_GUIDELINES);
+  assertIsWcagVersion(version);
+  return await getPrinciplesForVersion(version);
+}
+
 /** Tree of Principles/Guidelines/SC relevant to selected version */
-const principles = process.env.WCAG_VERSION
-  ? await getPrinciplesForVersion(version)
-  : allPrinciples;
+const principles = await resolveRelevantPrinciples();
 /** Flattened Principles/Guidelines/SC relevant to selected version */
 const flatGuidelines = getFlatGuidelines(principles);
 /** Flattened Principles/Guidelines/SC that only exist in later versions (to filter techniques) */
@@ -105,7 +112,14 @@ for (const [technology, list] of Object.entries(techniques)) {
 const understandingDocs = await getUnderstandingDocs(version);
 const understandingNav = await generateUnderstandingNavMap(principles, understandingDocs);
 
-const termsMap = process.env.WCAG_VERSION ? await getTermsMap(version) : await getTermsMap();
+function resolveRelevantTermsMap() {
+  if (!process.env.WCAG_VERSION) return getTermsMap();
+  if (process.env.WCAG_FORCE_LOCAL_GUIDELINES)
+    return getTermsMap(process.env.WCAG_FORCE_LOCAL_GUIDELINES);
+  assertIsWcagVersion(version);
+  return getTermsMapForVersion(version);
+}
+const termsMap = await resolveRelevantTermsMap();
 
 // Declare static global data up-front so we can build typings from it
 const globalData = {
