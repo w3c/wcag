@@ -14,18 +14,18 @@
     
     <section id="description">
       <h2>Description</h2>
-      <p>There are instances where indentation of text is considered important to the understandability of the text content. If the indentations were to be removed, then meaning or functionality could suffer. For instance, the nesting of unordered list hierarchies would become more difficult to notice if indentation were removed. Additionally, maintaining indentations can be important to help understand code patterns, if not even necessary for the code to function.</p>
-      <p>Maintaining indentation is important for these instances of text, and would be considered essential for two-dimensional scrolling if the text were enlarged and could not be fully presented within the available viewport. However, there are still styling modifications that could be made to help ensure the indentation was maintained, but as much text was made visible within the viewport as possible.</p>
+      <p>There can be instances where indentation of text is considered important to the presentation and understandability of the text content. If the indentations were to be removed, then meaning or functionality could suffer. For instance, the nesting of unordered lists can be harder to notice if indentations are removed. Additionally, maintaining indentations can be important to help understand code patterns, if not even necessary for the code to function.</p>
+      <p>Since maintaining indentation is important for these instances of text, two-dimensional scrolling of these distinct sections of content could be necessary. However, there are still styling modifications that could be made to help ensure the indentation was maintained, but as much text was made visible within the viewport as possible. Making such adjustments could limit, if not mitigate any two-dimensional scrolling from occurring, making the content easier for people to read.</p>
       </div>
    </section>
     
     <section id="examples">
       <h2>Examples</h2>
       <section class="example">
-        <p>A website conveys information in a nested list format. The understandability of the list hierarchy is supported by the indentation of the list content. While it is important for the individual list item text to reflow, the list hierarchy would suffer if flattened so that all content would fit within a 320 CSS pixel wide container.</p>  
-        <p>The following example list contains additional nested lists to provide more context for each of the parent list item's text. To maintain the visual hierarchy, the indentation of the lists is maintained, but reduced once an author defined CSS breakpoint is met. The container of the text content of each list item is given a maximum width of 320 CSS pixels so that even though the list will require bi-dimensional scrolling to view all nested lists, each list item in each nested list level will be able to be read witout the need to scroll in two directions.</p>
+        <p>A website conveys information in a nested list format. The understandability of the list hierarchy is supported by the indentation of the list content. While it is important for the individual list item text to reflow, the list hierarchy would suffer if flattened so that all content would fit within a 320 CSS pixel wide viewport.</p>  
+        <p>The following example list contains additional nested lists to provide more context for each of the parent list item's text. To maintain the visual hierarchy, the indentation of each list level remains present, but modified once an author defined CSS breakpoint is met. Additional styles are set for different breakpoints to mitigate against the potential for content to extend beyond a 320px wide viewport, while accounting for visual spacing against the borders of the viewport, to attempt to make the content not feel cramped. At the smallest breakpoint, the content of list items receive a minimum width to mitigate against potentially "squished" content lists with many nested levels. At this breakpoint, each nested list level can be horizontally scrolled into view, and once a nested list is visible within the viewport, only vertical scrolling will be necessary to read the content of the nested list's items.</p>
 <pre>
-&lt;div class=example>
+&lt;div class="example">
 	&lt;ul>
 		&lt;li>
 			&lt;p>Make a list using one of the HTML list elements, or even an ARIA <code>role=list</code> container.&lt;/p>
@@ -41,42 +41,50 @@
 				&lt;li>
 					&lt;p>Another type of list, description lists, exist as well - but they do not contain list items (<code>li</code> elements).&lt;/p>
 				&lt;/li>
+        ...
 			&lt;/ul>
 		&lt;/li>
 		&lt;li>
 			&lt;p>Neither the start or end tags of any of the HTML list elements are omissible.&lt;/p>
 			&lt;ul>
 				&lt;li>&lt;p>The end tags of <code>li</code> elements can be omitted if the <code>li</code> element is immeditely followed by another <code>li</code> element or there is no more content in the parent list element.&lt;/p>
-				</li>
-				<li><p>The list marker for each <code>li</code> element is initially based on the parent list element used.</p>
-					<ul>
-						<li><p>The list maker can be modified by using CSS,</p></li>
-						<li><p>or the list marker can be modifed by using the <code>type</code> attribute, if the parent list element is an <code>ol</code> element.</p></li>
-					</ul>
-				</li>
-			</ul>
-		</li>
-		<li>
-			<p>Validate your markup.</p>
-		</li>
-	</ul>
-</div>
+				&lt;/li>
+				...
+			&lt;/ul>
+		&lt;/li>
+		...
+	&lt;/ul>
+&lt;/div>
 </pre>
 <pre>
-@media screen and (max-width: 640px) {
-	.example {
-		overflow: auto;
-		max-width: 640px;
-	}
-	ul {
-		padding-inline-start: 1em;
-	}
-	li p {
-		max-width: 320px;
-		margin: .5em 0;
-	}
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+body, html {
+    font-family: arial;
+}
+@media screen and ( max-width: 640px ) {
+    .example {
+        overflow: auto;
+        max-width: 640px;
+    }
+    ul {
+        padding-inline-start: 1.25em;
+    }
+    li p {
+        padding: .25em;
+        margin: .5em 0 .5em -.25em;
+        max-width: 300px; /* saftey net for max-width */
+    }
+}
+@media screen and ( max-width: 400px ) {
+    ul { padding-inline-start: 1em; }
+    li p { min-width: 300px } {
+        min-width: 300px;
+    }
 }
 </pre>
+        <p>A working example of <a href="../../working-examples/reflow-nested-lists">a list where nested levels can be read within a 320px wide viewport</a>.</p>
       </section>
       
       <section class="example">
@@ -136,20 +144,38 @@ def complex_function(x):
 	}
 }
 </pre>
+        <p>A working example of <a href="../../working-examples/reflow-indenting.html">code snippets using CSS to modigy indentation width at different breakpoints</a>.
         </section>
     </section>
     
     <section id="tests">
       <h2>Tests</h2>
-      <section class="procedure"><h3>Procedure</h3>
+      <section class="procedure"><h3>Procedure for list example</h3>
          <ol>
-            <li>Open the content that requires horizontal scrolling on a full screen window. </li>
-            <li>Zoom in or resize the browser window so that the viewport 
+            <li>Display the web page in a user agent where the page can be zoomed, or the user agent can be resized.</li>
+            <li>Zoom in or resize the browser window so that the viewport is equivallent to 320 CSS pixels wide.</li>
+            <li>The list content fits within the width so that it is only necessary so scroll vertically to read the list.</li>
+            <li>Or, each nested list can be horizontally scrolled into view. Only vertical scrolling is necessary to read the content of list items within each specific nested list level.</li>
          </ol>
       </section>
       <section class="results"><h3>Expected Results</h3>
          <ul>
-            <li>Checks X are true.</li>
+            <li>Checks 3 or 4 are true.</li>
+         </ul>
+      </section>
+
+      <section class="procedure"><h3>Procedure for code snippets</h3>
+         <ol>
+            <li>Display the web page in a user agent where the page can be zoomed, or the user agent can be resized.</li>
+            <li>Zoom in or resize the browser window so that the viewport is equivallent to 320 CSS pixels wide.</li>
+            <li>The code snippets fits within the width so that it is only necessary so scroll vertically to read each line of code.</li>
+            <li>Or, for code where non-wrapping lines are not essential, the code wraps or a mechanism is provided to allow line wrapping.</li>
+            <li>Or, the indentation and linebreaks are meaningful to the code language. 
+         </ol>
+      </section>
+      <section class="results"><h3>Expected Results</h3>
+         <ul>
+            <li>Checks 3, 4 or 5 are true.</li>
          </ul>
       </section>
     </section>
