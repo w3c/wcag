@@ -1,5 +1,7 @@
 /** @fileoverview Common functions used by multiple parts of the build process */
 
+import { AxiosError, type AxiosResponse } from "axios";
+
 import type { Guideline, Principle, SuccessCriterion } from "./guidelines";
 
 /** Generates an ID for heading permalinks. Equivalent to wcag:generate-id in base.xslt. */
@@ -28,3 +30,23 @@ export function wcagSort(
   }
   return 0;
 }
+
+/**
+ * Handles HTTP error responses from Axios requests in local dev;
+ * re-throws error during builds to fail loudly.
+ * This should only be used for non-critical requests that can tolerate null data
+ * without major side effects.
+ */
+export const wrapAxiosRequest = <T, D>(promise: Promise<AxiosResponse<T, D>>) =>
+  promise.catch((error) => {
+    if (!(error instanceof AxiosError) || !error.response || !error.request) throw error;
+    const { response, request } = error;
+    console.warn(
+      `AxiosError: status ${response.status} received from ${
+        request.protocol + "//" + request.host
+      }${request.path || ""}`
+    );
+
+    if (process.env.ELEVENTY_RUN_MODE === "build") throw error;
+    else return { data: null };
+  });
