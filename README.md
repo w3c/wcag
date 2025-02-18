@@ -23,6 +23,7 @@ Content for WCAG 2.1 and later is organized according to the file structure belo
 * `guidelines/sc/{version}/*.html` - files for each success criterion
 * `guidelines/terms/{version}/*.html` - files for each definition
 * `understanding/{version}/*.html` - understanding files for each success criterion
+* `wcag20/` was used by a previous version of WCAG, so anything ending .xml is no longer used, *do not update*.
 
 Where `{version}` is "20", content came from WCAG 2.0. "21" is used for content introduced in WCAG 2.1, "22" for WCAG 2.2, etc.
 

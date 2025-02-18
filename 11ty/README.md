@@ -49,17 +49,32 @@ but may be useful if you're not seeing what you expect in the output files.
 
 ### `WCAG_VERSION`
 
-**Usage context:** for building older versions of techniques and understanding docs
+**Usage context:** for building informative docs pinned to a publication version
 
 Indicates WCAG version being built, in `XY` format (i.e. no `.`).
 Influences which pages get included, guideline/SC content,
 and a few details within pages (e.g. titles/URLs, "New in ..." content).
 Also influences base URLs for links to guidelines, techniques, and understanding pages.
+
 Explicitly setting this causes the build to reference guidelines and acknowledgements
 published under `w3.org/TR/WCAG{version}`, rather than using the local checkout
-(which is effectively the 2.2 Editors' Draft).
+(which is effectively the 2.2 Editors' Draft). Note this behavior can be further
+altered by `WCAG_FORCE_LOCAL_GUIDELINES`.
 
 Possible values: `22`, `21`
+
+### `WCAG_FORCE_LOCAL_GUIDELINES`
+
+**Usage context:** Only applicable when `WCAG_VERSION` is also set;
+should not need to be set manually
+
+When building against a fixed publication version, this overrides the behavior of
+loading data from published guidelines, to instead load an alternative local
+`guidelines/index.html` (e.g. from a separate git checkout of another branch).
+This was implemented to enable preview builds of pull requests targeting the
+`WCAG-2.1` branch while reusing the existing build process from `main`.
+
+Possible values: A path relative to the project root, e.g. `../guidelines/index.html`
 
 ### `WCAG_MODE`
 
