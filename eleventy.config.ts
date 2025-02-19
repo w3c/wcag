@@ -231,9 +231,6 @@ export default function (eleventyConfig: any) {
       isUnderstanding ? flatGuidelines[resolveUnderstandingFileSlug(page.fileSlug)] : null,
   });
 
-  // See https://www.11ty.dev/docs/copy/#emulate-passthrough-copy-during-serve
-  eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
-
   eleventyConfig.addPassthroughCopy("techniques/*.css");
   eleventyConfig.addPassthroughCopy("techniques/*/img/*");
   eleventyConfig.addPassthroughCopy({
@@ -249,6 +246,9 @@ export default function (eleventyConfig: any) {
   });
 
   eleventyConfig.addPassthroughCopy("working-examples/**");
+  // working-examples is in .eleventyignore to avoid processing as templates,
+  // but should still be included as a watch target to pick up changes in dev
+  eleventyConfig.watchIgnores.add("!working-examples/**");
 
   eleventyConfig.on("eleventy.before", async ({ runMode }: EleventyEvent) => {
     // Clear the _site folder before builds intended for the W3C site,
