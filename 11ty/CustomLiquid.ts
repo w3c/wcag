@@ -563,6 +563,18 @@ export class CustomLiquid extends Liquid {
       $el.prepend(`<p class="example-title marker">Example</p>`);
     });
 
+    // Perform second pass over notes/examples, to number when there are multiple in one section or dd
+    $("#key-terms dd, #success-criterion").each((_, containerEl) => {
+      for (const selector of [".example-title", ".note-title"]) {
+        const $titles = $(containerEl).find(selector);
+        if ($titles.length > 1) {
+          $titles.each((i, el) => {
+            $(el).text(`${$(el).text()} ${i + 1}`);
+          });
+        }
+      }
+    });
+
     // We don't need to do any more processing for index/about pages other than stripping comments
     if (indexPattern.test(scope.page.inputPath)) return stripHtmlComments($.html());
 
