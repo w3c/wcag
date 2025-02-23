@@ -36,8 +36,10 @@ export async function getBiblio() {
   const response = await wrapAxiosRequest(
     axios.get(`https://api.specref.org/bibrefs?refs=${uniqueRefs.join(",")}`)
   );
-  for (const [from, to] of Object.entries(invert(aliases)))
-    response.data[to] = response.data[from];
+  if (response.data) {
+    for (const [from, to] of Object.entries(invert(aliases)))
+      response.data[to] = response.data[from];
+  }
 
   return {
     ...response.data,
