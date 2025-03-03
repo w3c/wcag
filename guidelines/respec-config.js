@@ -41,7 +41,10 @@ var respecConfig = {
   
   // Name of the WG
   group: "ag",
-  github: "w3c/wcag",
+  github: {
+    repoURL: "https://github.com/w3c/wcag",
+    branch: "WCAG-2.1"
+  },
 	
 	// editors, add as many as you like
 	// only "name" is required
