@@ -11,10 +11,12 @@ import { resolveDecimalVersion } from "11ty/common";
 import {
   actRules,
   assertIsWcagVersion,
+  getErrataForVersion,
   getFlatGuidelines,
   getPrinciples,
   getPrinciplesForVersion,
   getTermsMap,
+  getTermsMapForVersion,
   scSlugOverrides,
   type FlatGuidelinesMap,
   type Guideline,
@@ -56,10 +58,16 @@ const allPrinciples = await getPrinciples();
 /** Flattened Principles/Guidelines/SC across all versions (including later than selected) */
 const allFlatGuidelines = getFlatGuidelines(allPrinciples);
 
+async function resolveRelevantPrinciples() {
+  if (!process.env.WCAG_VERSION) return allPrinciples;
+  if (process.env.WCAG_FORCE_LOCAL_GUIDELINES)
+    return await getPrinciples(process.env.WCAG_FORCE_LOCAL_GUIDELINES);
+  assertIsWcagVersion(version);
+  return await getPrinciplesForVersion(version);
+}
+
 /** Tree of Principles/Guidelines/SC relevant to selected version */
-const principles = process.env.WCAG_VERSION
-  ? await getPrinciplesForVersion(version)
-  : allPrinciples;
+const principles = await resolveRelevantPrinciples();
 /** Flattened Principles/Guidelines/SC relevant to selected version */
 const flatGuidelines = getFlatGuidelines(principles);
 /** Flattened Principles/Guidelines/SC that only exist in later versions (to filter techniques) */
@@ -104,12 +112,20 @@ for (const [technology, list] of Object.entries(techniques)) {
 const understandingDocs = await getUnderstandingDocs(version);
 const understandingNav = await generateUnderstandingNavMap(principles, understandingDocs);
 
-const termsMap = process.env.WCAG_VERSION ? await getTermsMap(version) : await getTermsMap();
+function resolveRelevantTermsMap() {
+  if (!process.env.WCAG_VERSION) return getTermsMap();
+  if (process.env.WCAG_FORCE_LOCAL_GUIDELINES)
+    return getTermsMap(process.env.WCAG_FORCE_LOCAL_GUIDELINES);
+  assertIsWcagVersion(version);
+  return getTermsMapForVersion(version);
+}
+const termsMap = await resolveRelevantTermsMap();
 
 // Declare static global data up-front so we can build typings from it
 const globalData = {
   version,
   versionDecimal: resolveDecimalVersion(version),
+  errata: process.env.WCAG_VERSION ? await getErrataForVersion(version) : {},
   techniques, // Used for techniques/index.html
   technologies, // Used for techniques/index.html
   technologyTitles, // Used for techniques/index.html
@@ -215,9 +231,6 @@ export default function (eleventyConfig: any) {
       isUnderstanding ? flatGuidelines[resolveUnderstandingFileSlug(page.fileSlug)] : null,
   });
 
-  // See https://www.11ty.dev/docs/copy/#emulate-passthrough-copy-during-serve
-  eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
-
   eleventyConfig.addPassthroughCopy("techniques/*.css");
   eleventyConfig.addPassthroughCopy("techniques/*/img/*");
   eleventyConfig.addPassthroughCopy({
@@ -233,6 +246,9 @@ export default function (eleventyConfig: any) {
   });
 
   eleventyConfig.addPassthroughCopy("working-examples/**");
+  // working-examples is in .eleventyignore to avoid processing as templates,
+  // but should still be included as a watch target to pick up changes in dev
+  eleventyConfig.watchIgnores.add("!working-examples/**");
 
   eleventyConfig.on("eleventy.before", async ({ runMode }: EleventyEvent) => {
     // Clear the _site folder before builds intended for the W3C site,
@@ -277,6 +293,7 @@ export default function (eleventyConfig: any) {
       root: ["_includes", "."],
       jsTruthy: true,
       strictFilters: true,
+      timezoneOffset: 0, // Avoid off-by-one YYYY-MM-DD date stamp conversions
       termsMap,
     })
   );
@@ -381,6 +398,19 @@ export default function (eleventyConfig: any) {
         .join("\nand\n");
     }
   );
+
+  // Renders a link to a GitHub commit or pull request
+  eleventyConfig.addShortcode("gh", (id: string) => {
+    if (/^#\d+$/.test(id)) {
+      const num = id.slice(1);
+      return `<a href="https://github.com/${GH_ORG}/${GH_REPO}/pull/${num}" aria-label="pull request ${num}">${id}</a>`
+    }
+    else if (/^[0-9a-f]{7,}$/.test(id)) {
+      const sha = id.slice(0, 7); // Truncate in case full SHA was passed
+      return `<a href="https://github.com/${GH_ORG}/${GH_REPO}/commit/${sha}" aria-label="commit ${sha}">${sha}</a>`
+    }
+    else throw new Error(`Invalid SHA or PR ID passed to gh tag: ${id}`);
+  });
 
   // Renders a section box (used for About this Technique and Guideline / SC)
   eleventyConfig.addPairedShortcode(
