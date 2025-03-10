@@ -3,9 +3,9 @@ import type { CheerioAPI } from "cheerio";
 import { glob } from "glob";
 
 import { readFile } from "fs/promises";
-import { basename } from "path";
+import { basename, join } from "path";
 
-import { flattenDomFromFile, load, type CheerioAnyNode } from "./cheerio";
+import { flattenDomFromFile, load, loadFromFile, type CheerioAnyNode } from "./cheerio";
 import { generateId } from "./common";
 
 export type WcagVersion = "20" | "21" | "22";
@@ -165,11 +165,11 @@ function processPrinciples($: CheerioAPI) {
 }
 
 /**
- * Resolves information from guidelines/index.html;
+ * Resolves information from a local guidelines/index.html source file;
  * comparable to the principles section of wcag.xml from the guidelines-xml Ant task.
  */
-export const getPrinciples = async () =>
-  processPrinciples(await flattenDomFromFile("guidelines/index.html"));
+export const getPrinciples = async (path = "guidelines/index.html") =>
+  processPrinciples(await flattenDomFromFile(path));
 
 /**
  * Returns a flattened object hash, mapping shortcodes to each principle/guideline/SC.
@@ -197,14 +197,10 @@ interface Term {
   /** id of dfn in TR, which matches original id in terms file */
   trId: string;
 }
+export type TermsMap = Record<string, Term>;
 
-/**
- * Resolves term definitions from guidelines/index.html organized for lookup by name;
- * comparable to the term elements in wcag.xml from the guidelines-xml Ant task.
- */
-export async function getTermsMap() {
-  const $ = await flattenDomFromFile("guidelines/index.html");
-  const terms: Record<string, Term> = {};
+function processTermsMap($: CheerioAPI) {
+  const terms: TermsMap = {};
 
   $("dfn").each((_, el) => {
     const $el = $(el);
@@ -228,42 +224,62 @@ export async function getTermsMap() {
   return terms;
 }
 
+/**
+ * Resolves term definitions from guidelines/index.html (or a specified alternate path)
+ * organized for lookup by name;
+ * comparable to the term elements in wcag.xml from the guidelines-xml Ant task.
+ */
+export const getTermsMap = async (path = "guidelines/index.html") =>
+  processTermsMap(await flattenDomFromFile(path));
+
 // Version-specific APIs
 
-const remoteGuidelines$: Partial<Record<WcagVersion, CheerioAPI>> = {};
+const guidelinesCache: Partial<Record<WcagVersion, string>> = {};
 
 /** Loads guidelines from TR space for specific version, caching for future calls. */
-const loadRemoteGuidelines = async (version: WcagVersion) => {
-  if (!remoteGuidelines$[version]) {
-    const $ = load(
-      (await axios.get(`https://www.w3.org/TR/WCAG${version}/`, { responseType: "text" })).data
-    );
+const loadRemoteGuidelines = async (version: WcagVersion, stripRespec = true) => {
+  const html =
+    guidelinesCache[version] ||
+    (guidelinesCache[version] = (
+      await axios.get(`https://www.w3.org/TR/WCAG${version}/`, { responseType: "text" })
+    ).data);
 
-    // Re-collapse definition links and notes, to be processed by this build system
-    $(".guideline a.internalDFN").removeAttr("class data-link-type id href title");
-    $(".guideline [role='note'] .marker").remove();
-    $(".guideline [role='note']").find("> div, > p").addClass("note").unwrap();
+  const $ = load(html);
+  if (!stripRespec) return $;
 
-    // Bibliography references are not processed in Understanding SC boxes
-    $(".guideline cite:has(a.bibref:only-child)").each((_, el) => {
-      const $el = $(el);
-      const $parent = $el.parent();
-      $el.remove();
-      // Remove surrounding square brackets (which aren't in a dedicated element)
-      $parent.html($parent.html()!.replace(/ \[\]/g, ""));
-    });
+  // Re-collapse definition links and notes, to be processed by this build system
+  $("a.internalDFN").removeAttr("class data-link-type id href title");
+  $("[role='note'] .marker").remove();
+  $("[role='note']").find("> div, > p").addClass("note").unwrap();
 
-    // Remove extra markup from headings so they can be parsed for names
-    $("bdi").remove();
+  // Convert data-plurals (present in publications) to data-lt
+  $("dfn[data-plurals]").each((_, el) => {
+    el.attribs["data-lt"] = (el.attribs["data-lt"] || "")
+      .split("|")
+      .concat(el.attribs["data-plurals"].split("|"))
+      .join("|");
+    delete el.attribs["data-plurals"];
+  });
 
-    // Remove abbr elements which exist only in TR, not in informative docs
-    $("#acknowledgements li abbr").each((_, abbrEl) => {
-      $(abbrEl).replaceWith($(abbrEl).text());
-    });
+  // Un-process bibliography references, to be processed by CustomLiquid
+  $("cite:has(a.bibref:only-child)").each((_, el) => {
+    const $el = $(el);
+    $el.replaceWith(`[${$el.find("a.bibref").html()}]`);
+  });
 
-    remoteGuidelines$[version] = $;
-  }
-  return remoteGuidelines$[version]!;
+  // Remove generated IDs and markers from examples
+  $(".example[id]").removeAttr("id");
+  $(".example > .marker").remove();
+
+  // Remove extra markup from headings so they can be parsed for names
+  $("bdi").remove();
+
+  // Remove abbr elements which exist only in TR, not in informative docs
+  $("#acknowledgements li abbr, #glossary abbr").each((_, abbrEl) => {
+    $(abbrEl).replaceWith($(abbrEl).text());
+  });
+
+  return $;
 };
 
 /**
@@ -286,3 +302,52 @@ export const getAcknowledgementsForVersion = async (version: WcagVersion) => {
  */
 export const getPrinciplesForVersion = async (version: WcagVersion) =>
   processPrinciples(await loadRemoteGuidelines(version));
+
+/**
+ * Resolves term definitions from a WCAG 2.x publication,
+ * organized for lookup by name.
+ */
+export const getTermsMapForVersion = async (version: WcagVersion) =>
+  processTermsMap(await loadRemoteGuidelines(version));
+
+/** Parses errata items from the errata document for the specified WCAG version. */
+export const getErrataForVersion = async (version: WcagVersion) => {
+  const $ = await loadFromFile(join("errata", `${version}.html`));
+  const $guidelines = await loadRemoteGuidelines(version, false);
+  const aSelector = `a[href*='}}#']:first-of-type`;
+  const errata: Record<string, string[]> = {};
+
+  $("main > section[id]")
+    .first()
+    .find(`li:has(${aSelector})`)
+    .each((_, el) => {
+      const $el = $(el);
+      const erratumHtml = $el
+          .html()!
+          // Remove everything before and including the final TR link
+          .replace(/^[\s\S]*href="\{\{\s*\w+\s*\}\}#[\s\S]*?<\/a>,?\s*/, "")
+          // Remove parenthetical github references (still in Liquid syntax)
+          .replace(/\(\{%.*%\}\)\s*$/, "")
+          .replace(/^(\w)/, (_, p1) => p1.toUpperCase());
+      
+      $el.find(aSelector).each((_, aEl) => {
+        const $aEl = $(aEl);
+        let hash: string | undefined = $aEl.attr("href")!.replace(/^.*#/, "");
+
+        // Check whether hash pertains to a guideline/SC section or term definition;
+        // if it doesn't, attempt to resolve it to one
+        const $hashEl = $guidelines(`#${hash}`);
+        if (!$hashEl.is("section.guideline, #terms dfn")) {
+          const $closest = $hashEl.closest("#terms dd, section.guideline");
+          if ($closest.is("#terms dd")) hash = $closest.prev().find("dfn[id]").attr("id");
+          else hash = $closest.attr("id");
+        }
+        if (!hash) return;
+
+        if (hash in errata) errata[hash].push(erratumHtml);
+        else errata[hash] = [erratumHtml];
+      });
+    });
+
+  return errata;
+};
