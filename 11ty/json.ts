@@ -1,12 +1,14 @@
-import { load } from "cheerio";
+import { load, type CheerioAPI } from "cheerio";
 import pick from "lodash-es/pick";
 import { mkdirp } from "mkdirp";
 
 import { writeFile } from "fs/promises";
 import { join } from "path";
 
+import type { CheerioAnyNode } from "./cheerio";
 import { resolveDecimalVersion } from "./common";
 import {
+  type SuccessCriterion,
   type WcagVersion,
   type WcagItem,
   getPrinciplesForVersion,
@@ -92,6 +94,95 @@ const altIds: Record<string, string> = {
   "name-role-value": "ensure-compat-rsv",
 };
 
+interface DetailItem {
+  text: string;
+}
+interface DetailItemWithHandle extends DetailItem {
+  handle: string;
+}
+
+interface NoteDetail extends DetailItemWithHandle {
+  type: "note";
+}
+interface ParagraphDetail extends DetailItem {
+  type: "p";
+}
+interface UlistDetail {
+  items: DetailItem[] | DetailItemWithHandle[];
+  type: "ulist";
+}
+
+type Details = (NoteDetail | ParagraphDetail | UlistDetail)[];
+
+function createDetailsFromSc(sc: SuccessCriterion) {
+  const details: Details = [];
+  const $ = load(`<section>${sc.content}</section>`, null, false);
+
+  function cleanText($el: CheerioAnyNode) {
+    $el.find("a").each((_, el) => {
+      const $el = $(el);
+      $el.replaceWith($el.text());
+    });
+    return $el.html()!.replace(/\n\s+/g, " ").trim();
+  }
+
+  // Note handling is in a reusable function to handle 1.4.7 edge case inside dd
+  const createNoteDetail = ($el: CheerioAnyNode) => ({
+    type: "note" as const,
+    handle: $el.find(".note-title").text(),
+    text: cleanText($el.find(".note-title + *")),
+  });
+
+  // Skip first paragraph of content, reflected in title field
+  $("section > *:not(p:first-child)").each((_, el) => {
+    const $el = $(el);
+    if ($el.hasClass("note")) {
+      details.push(createNoteDetail($el));
+    } else if (el.tagName === "p") {
+      details.push({
+        type: "p",
+        text: cleanText($el),
+      });
+    } else if (el.tagName === "dl") {
+      // WCAG SCs only ever have one dt per dd and vice versa
+      const items: DetailItemWithHandle[] = [];
+      const nestedNotes: NoteDetail[] = [];
+      const $dts = $el.children("dt");
+      const $dds = $el.children("dd");
+      if ($dts.length !== $dds.length) throw new Error("Unexpected non-1:1 definition list");
+      for (let i = 0; i < $dts.length; i++) {
+        const $dd = $dds.eq(i);
+        // Remove parent paragraph when it is the only top-level element
+        $dd.find(`dd > p:only-child`).each((_, el) => {
+          const $el = $(el);
+          $el.replaceWith($el.html()!);
+        });
+        // Push any nested notes (e.g. in 1.4.7) after the dl rather than merging or losing it
+        $dd.children(".note").each((_, noteEl) => {
+          const $noteEl = $(noteEl);
+          nestedNotes.push(createNoteDetail($noteEl));
+          $noteEl.remove();
+        });
+        items.push({
+          handle: cleanText($dts.eq(i)),
+          text: cleanText($dd),
+        });
+      }
+      details.push({ type: "ulist", items });
+      for (const note of nestedNotes) details.push(note);
+    } else if (el.tagName === "ul") {
+      details.push({
+        type: `ulist`,
+        items: $el
+          .children("li")
+          .toArray()
+          .map((el) => ({ text: cleanText($(el)) })),
+      });
+    }
+  });
+  return details;
+}
+
 function expandVersions(item: WcagItem) {
   if (item.id === "parsing") return ["20", "21"];
 
@@ -103,7 +194,10 @@ function expandVersions(item: WcagItem) {
 
 export async function generateWcagJson() {
   const principles = await getPrinciplesForVersion("22", false);
-  const termsMap = await getTermsMapForVersion("22", { includeSynonyms: false, stripRespec: false });
+  const termsMap = await getTermsMapForVersion("22", {
+    includeSynonyms: false,
+    stripRespec: false,
+  });
 
   const spreadCommonProps = (item: WcagItem) => {
     const content$ = load(item.content, null, false);
@@ -124,15 +218,15 @@ export async function generateWcagJson() {
         successcriteria: guideline.successCriteria.map((sc) => ({
           ...spreadCommonProps(sc),
           level: sc.level,
-          // TODO: details
+          details: createDetailsFromSc(sc),
         })),
       })),
     })),
     terms: Object.values(termsMap).map(({ definition, name, trId }) => ({
       id: trId,
       definition: definition,
-      name: name
-    }))
+      name: name,
+    })),
   };
   return JSON.stringify(data, null, "  ");
 }
