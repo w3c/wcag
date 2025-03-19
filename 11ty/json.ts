@@ -285,7 +285,7 @@ async function createTechniquesHtmlFromSc(sc: SuccessCriterion) {
 }
 
 function expandVersions(item: WcagItem) {
-  if (item.id === "parsing") return ["20", "21"];
+  if (item.id === "parsing") return ["2.0", "2.1"];
 
   const versions: string[] = [];
   for (const version of ["20", "21", "22"])
