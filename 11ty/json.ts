@@ -1,11 +1,10 @@
-import { load, type CheerioAPI } from "cheerio";
+import { load } from "cheerio";
 import pick from "lodash-es/pick";
-import { mkdirp } from "mkdirp";
 
-import { writeFile } from "fs/promises";
+import { readFile, writeFile } from "fs/promises";
 import { join } from "path";
 
-import type { CheerioAnyNode } from "./cheerio";
+import { loadFromFile, type CheerioAnyNode, type CheerioElement } from "./cheerio";
 import { resolveDecimalVersion } from "./common";
 import {
   type SuccessCriterion,
@@ -13,7 +12,9 @@ import {
   type WcagItem,
   getPrinciplesForVersion,
   getTermsMapForVersion,
+  assertIsWcagVersion,
 } from "./guidelines";
+import { techniqueAssociationTypes, type TechniqueAssociationType } from "./techniques";
 
 const altIds: Record<string, string> = {
   "text-alternatives": "text-equiv",
@@ -163,6 +164,12 @@ function createDetailsFromSc(sc: SuccessCriterion) {
           nestedNotes.push(createNoteDetail($noteEl));
           $noteEl.remove();
         });
+        // ...and remove the surrounding p element if it is now the only one
+        // (quickref already wraps each definition in p)
+        $dd.children("p:only-child").each((_, pEl) => {
+          const $pEl = $(pEl);
+          $pEl.replaceWith($pEl.html()!);
+        });
         items.push({
           handle: cleanText($dts.eq(i)),
           text: cleanText($dd),
@@ -183,6 +190,100 @@ function createDetailsFromSc(sc: SuccessCriterion) {
   return details;
 }
 
+interface TechniquesSituation {
+  content: string;
+  title: string;
+}
+
+type TechniquesHtmlMap = Partial<Record<TechniqueAssociationType, string | TechniquesSituation[]>>;
+
+async function createTechniquesHtmlFromSc(sc: SuccessCriterion) {
+  const $ = await loadFromFile(join("_site", "understanding", `${sc.id}.html`));
+
+  function cleanHtml($el: CheerioElement) {
+    // Remove links within notes, which point to definitions or Understanding sections
+    $el.find(".note a").each((_, aEl) => {
+      const $aEl = $(aEl);
+      $aEl.replaceWith($aEl.html()!);
+    });
+    // Reduce single-paragraph note markup
+    $el.find("div.note:has(p.note-title)").each((_, noteEl) => {
+      const noteParagraphSelector = "p.note-title + div > p, p.note-title + p";
+      const $noteEl = $(noteEl);
+      if ($noteEl.find(noteParagraphSelector).length !== 1) return;
+      const $titleEl = $noteEl.children("p.note-title").eq(0);
+      // Lift the content out from both the nested p and div (if applicable)
+      $noteEl.find("p.note-title + div > p").unwrap();
+      const $pEl = $noteEl.find(noteParagraphSelector).eq(0);
+      $pEl.replaceWith($pEl.html()!);
+      $titleEl.replaceWith(`<em>${$titleEl.html()!}:</em>`);
+      noteEl.tagName = "p";
+    });
+    return $el
+      .html()!
+      .trim()
+      .replace(/\n\s*\n/g, "\n");
+  }
+
+  const htmlMap: TechniquesHtmlMap = {};
+  for (const type of techniqueAssociationTypes) {
+    const $section = $(`section#${type}`);
+    if (!$section.length) continue;
+
+    $section.children("h3 + p:not(:has(a))").remove();
+    $section.children("h3").remove();
+
+    // Make techniques links absolute
+    // (this uses a different selector than the build process, to handle pre-built output)
+    $section.find("[href*='/techniques/' i]").each((_, el) => {
+      el.attribs.href = el.attribs["href"].replace(
+        /^.*\/([\w-]+\/[^\/]+)$/,
+        "https://www.w3.org/WAI/WCAG22/Techniques/$1"
+      );
+      delete el.attribs.class;
+    });
+
+    // Remove superfluous subheadings/subsections, e.g. "CSS Techniques (Advisory)"
+    $section.find("h4").each((_, el) => {
+      const $el = $(el);
+      if (new RegExp(` Techniques(?: \\(${type}\\))?$`, "gi").test($el.text())) {
+        const $closestSection = $el.closest("section");
+        $el.remove(); // Remove while $el reference is still valid
+        if (!$closestSection.is($section)) $closestSection.replaceWith($closestSection.html()!);
+      }
+    });
+    // Merge any consecutive lists (likely due to superfluous subsections)
+    $section.find("ul + ul").each((_, el) => {
+      const $el = $(el);
+      $el.prev().append($el.children());
+      $el.remove();
+    });
+
+    // Create situations array out of remaining h4s (also used for requirements in 1.4.8)
+    const situations = $section.find("section:has(h4)").toArray();
+    if (situations.length) {
+      htmlMap[type] = situations.map((situationEl) => {
+        const $situationEl = $(situationEl);
+        const $h4 = $situationEl.children("h4");
+        $h4.remove();
+        return {
+          title: $h4.text().trim(),
+          content: cleanHtml($situationEl),
+        };
+      });
+    } else {
+      // Remove links within notes, which point to definitions or Understanding sections
+      $section.find(".note a").each((_, el) => {
+        const $el = $(el);
+        $el.replaceWith($el.html()!);
+      });
+      const html = cleanHtml($section);
+      if (html) htmlMap[type] = html;
+    }
+  }
+  return htmlMap;
+}
+
 function expandVersions(item: WcagItem) {
   if (item.id === "parsing") return ["20", "21"];
 
@@ -192,9 +293,9 @@ function expandVersions(item: WcagItem) {
   return versions;
 }
 
-export async function generateWcagJson() {
-  const principles = await getPrinciplesForVersion("22", false);
-  const termsMap = await getTermsMapForVersion("22", {
+export async function generateWcagJson(version: WcagVersion) {
+  const principles = await getPrinciplesForVersion(version, false);
+  const termsMap = await getTermsMapForVersion(version, {
     includeSynonyms: false,
     stripRespec: false,
   });
@@ -211,17 +312,24 @@ export async function generateWcagJson() {
   };
 
   const data = {
-    principles: principles.map((principle) => ({
-      ...spreadCommonProps(principle),
-      guidelines: principle.guidelines.map((guideline) => ({
-        ...spreadCommonProps(guideline),
-        successcriteria: guideline.successCriteria.map((sc) => ({
-          ...spreadCommonProps(sc),
-          level: sc.level,
-          details: createDetailsFromSc(sc),
-        })),
-      })),
-    })),
+    principles: await Promise.all(
+      principles.map(async (principle) => ({
+        ...spreadCommonProps(principle),
+        guidelines: await Promise.all(
+          principle.guidelines.map(async (guideline) => ({
+            ...spreadCommonProps(guideline),
+            successcriteria: await Promise.all(
+              guideline.successCriteria.map(async (sc) => ({
+                ...spreadCommonProps(sc),
+                level: sc.level,
+                details: createDetailsFromSc(sc),
+                techniquesHtml: await createTechniquesHtmlFromSc(sc),
+              }))
+            ),
+          }))
+        ),
+      }))
+    ),
     terms: Object.values(termsMap).map(({ definition, name, trId }) => ({
       id: trId,
       definition: definition,
@@ -233,6 +341,21 @@ export async function generateWcagJson() {
 
 // Allow running directly, skipping Eleventy build
 if (import.meta.filename === process.argv[1]) {
-  await mkdirp("_site");
-  await writeFile(join("_site", "wcag.json"), await generateWcagJson());
+  let version: WcagVersion | undefined;
+  try {
+    const understandingIndex = await readFile(join("_site", "understanding", "index.html"), "utf8");
+    const match = /\<title\>Understanding WCAG (\d)\.(\d)/.exec(understandingIndex);
+    if (match && match[1] && match[2]) {
+      const parsedVersion = `${match[1]}${match[2]}`;
+      assertIsWcagVersion(parsedVersion);
+      version = parsedVersion;
+    }
+  } catch (error) {}
+  if (!version) {
+    console.error("No _site directory found; run `npm run build` first");
+    process.exit(1);
+  }
+  
+  console.log(`Generating wcag.json for version ${resolveDecimalVersion(version)}`)
+  await writeFile(join("_site", "wcag.json"), await generateWcagJson(version));
 }
