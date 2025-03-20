@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Reflow: lists with nested list levels</title>
+		<link rel="stylesheet" type="text/css" href="sources.css">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        body, html {
+            font-family: arial;
+            font-size:1.2em;
+        }
+        @media screen and ( max-width: 640px ) {
+            .example {
+                overflow: auto;
+                max-width: 640px;
+            }
+            ul {
+                padding-inline-start: 1.25em;
+            }
+            li p {
+                padding: .25em;
+                margin: .5em 0 .5em -.25em;
+                max-width: 300px;
+            }
+        }
+        @media screen and ( max-width: 400px ) {
+            ul {
+                padding-inline-start: 1em;
+            }
+            li p { min-width: 300px } {
+                min-width: 300px;
+            }
+        }
+
+        .bad-experience p {
+            max-width: initial !important;
+            min-width: initial;
+            word-wrap: break-word;
+        }
+        ul {
+            padding-inline-start: 3em;
+        }
+    </style>
+	</head>
+	<body>
+		<main>
+
+      <h2>Example lists with nested lists</h2>
+      <p>The following two examples are meant to demonstrate why Success Criterion 1.4.10 Reflow allows for a whole list to scroll in two-dimensions while ensuring individual list items still fit within the 320 CSS pixel width.</p>
+      <p>Zooming in to 400% on an original browser viewport width of 1280 pixels, the difference between a list which allows two-dimensional scrolling vs one that limits the entire list and its nested lists to a 320px width can be seen.</p>
+      <ul>
+        <li>In the first example, although the list is horizontally scrollable, you can scroll to the start of a nested list, identifiable via the indentation and by the starting bullet of a list item. Reading the content of that nest listitem and its sibling list items requires one only scroll in a single direction (vertically).  To read the content of a parent or child list, one again can horiztonally scroll to the start of that item, and then only scroll in a single direction to read.</li>
+        <li>In the second example, while the list does not require horizontal scrolling and technically meets the requirement, readability declines from the 3rd level of nesting onward. By the 4th level, each letter breaks onto a new line, making the content unnecessarily difficult to read.</li>
+      </ul>
+      </p>
+      <p>Note that there are additional styling updates that one might make, or futher manipulations to the lists to present the content in a differnet manner, bypassing the need for any horizontal scrolling. And those would be ways to adjust content to meet Reflow. But this example is also a valid means to meet the Reflow SC.</p>
+
+      <h3>Example 1</h2>
+      <div class="example">
+      <ul>
+          <li>
+              <p>Make a list using one of the HTML list elements, or even an ARIA <code>role=list</code> container.</p>
+              <ul>
+                  <li>
+                      <p>There are three types of lists in HTML which can contain list items <code>li</code> elements.</p>
+                      <ul>
+                          <li><p>the <code>ul</code> element</li>
+                          <li><p>the <code>ol</code> element</li>
+                          <li><p>the <code>menu</code> element</li>
+                      </ul>
+                  </li>
+                  <li>
+                      <p>Another type of list, description lists, exist as well - but they do not contain list items (<code>li</code> elements).</p>
+                      <ul>
+
+                      </ul>
+                  </li>
+              </ul>
+          </li>
+          <li>
+              <p>Neither the start or end tags of any of the HTML list elements are omissible.</p>
+              <ul>
+                  <li><p>The end tags of <code>li</code> elements can be omitted if the <code>li</code> element is immeditely followed by another <code>li</code> element or there is no more content in the parent list element.</p>
+                  </li>
+                  <li><p>The list marker for each <code>li</code> element is initially based on the parent list element used.</p>
+                      <ul>
+                        <li>
+                            <p>The list maker can be modified by using CSS,</p>
+                            <ul>
+                                <li><p>A list item's <code>::marker</code> can be styled similarly to other pseudo elements, like <code>::before</code> and <code>::after</code>. Use it to modify or restyle or create custom unordered list markers.</p></li>
+                                <li><p>Using the <code>::before</code> pseudo element, one can use the CSS <code>counter</code> and <code>content</code> properties to create custom incrementing numeration for list items.</p></li>
+                            </ul>
+                        </li>
+                          <li><p>or the list marker can be modifed by using the <code>type</code> attribute, if the parent list element is an <code>ol</code> element. The <code>type</code> attribute is obsolete on the <code>ul</code> element, and is not allowed on the <code>menu</code> element.</p>
+                        </li>
+                      </ul>
+                  </li>
+              </ul>
+          </li>
+          <li>
+              <p>Validate your markup to make sure your lists are properly structured.</p>
+          </li>
+      </ul>
+  </div>
+
+  <h3>Example 2</h2>
+  <div class="bad-experience">
+    <ul>
+        <li>
+            <p>Make a list using one of the HTML list elements, or even an ARIA <code>role=list</code> container.</p>
+            <ul>
+                <li>
+                    <p>There are three types of lists in HTML which can contain list items <code>li</code> elements.</p>
+                    <ul>
+                        <li><p>the <code>ul</code> element</li>
+                        <li><p>the <code>ol</code> element</li>
+                        <li><p>the <code>menu</code> element</li>
+                    </ul>
+                </li>
+                <li>
+                    <p>Another type of list, description lists, exist as well - but they do not contain list items (<code>li</code> elements).</p>
+                    <ul>
+
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <p>Neither the start or end tags of any of the HTML list elements are omissible.</p>
+            <ul>
+                <li><p>The end tags of <code>li</code> elements can be omitted if the <code>li</code> element is immeditely followed by another <code>li</code> element or there is no more content in the parent list element.</p>
+                </li>
+                <li><p>The list marker for each <code>li</code> element is initially based on the parent list element used.</p>
+                    <ul>
+                      <li>
+                          <p>The list maker can be modified by using CSS,</p>
+                          <ul>
+                              <li><p>A list item's <code>::marker</code> can be styled similarly to other pseudo elements, like <code>::before</code> and <code>::after</code>. Use it to modify or restyle or create custom unordered list markers.</p></li>
+                              <li><p>Using the <code>::before</code> pseudo element, one can use the CSS <code>counter</code> and <code>content</code> properties to create custom incrementing numeration for list items.</p></li>
+                          </ul>
+                      </li>
+                        <li><p>or the list marker can be modifed by using the <code>type</code> attribute, if the parent list element is an <code>ol</code> element. The <code>type</code> attribute is obsolete on the <code>ul</code> element, and is not allowed on the <code>menu</code> element.</p>
+                      </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <p>Validate your markup to make sure your lists are properly structured.</p>
+        </li>
+    </ul>
+</div>
+
+    </main>
+	</body>
+</html>
