@@ -243,7 +243,7 @@ export class CustomLiquid extends Liquid {
           $("figcaption").each((i, el) => {
             const $el = $(el);
             if (!$el.find("p").length) $el.wrapInner("<p></p>");
-            $el.prepend(`<span>Figure ${i + 1}</span>`);
+            $el.find("p").first().prepend(`<span>Figure ${i + 1}.</span> `);
           });
 
           // Remove spurious copy-pasted content in 2.5.3 that doesn't belong there
