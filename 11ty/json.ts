@@ -1,4 +1,4 @@
-import { load } from "cheerio";
+import { load, type CheerioAPI } from "cheerio";
 import pick from "lodash-es/pick";
 
 import { readFile, writeFile } from "fs/promises";
@@ -284,13 +284,13 @@ async function createTechniquesHtmlFromSc(sc: SuccessCriterion) {
   return htmlMap;
 }
 
-function expandVersions(item: WcagItem) {
-  if (item.id === "parsing") return ["2.0", "2.1"];
-
-  const versions: string[] = [];
-  for (const version of ["20", "21", "22"])
-    if (item.version <= version) versions.push(resolveDecimalVersion(version as WcagVersion));
-  return versions;
+function expandVersions(item: WcagItem, maxVersion: WcagVersion) {
+  const versions: WcagVersion[] = (["20", "21", "22"] as const).filter((v) => v <= maxVersion);
+  return (
+    item.id === "parsing"
+      ? versions.filter((v) => v <= "21")
+      : versions.filter((v) => item.version <= v)
+  ).map((v) => resolveDecimalVersion(v as WcagVersion));
 }
 
 export async function generateWcagJson(version: WcagVersion) {
@@ -300,14 +300,28 @@ export async function generateWcagJson(version: WcagVersion) {
     stripRespec: false,
   });
 
+  function cleanLinks($: CheerioAPI) {
+    $("a[href]").each((_, aEl) => {
+      const href = aEl.attribs.href;
+      if (/^(?:https?:\/)?\//.test(href)) return;
+      $(aEl)
+        // Make href absolute
+        .attr("href", `https://www.w3.org/TR/WCAG${version}/${aEl.attribs.href}`)
+        // Remove attributes specific to source document
+        .removeAttr("id class data-link-type");
+    });
+  }
+
   const spreadCommonProps = (item: WcagItem) => {
-    const content$ = load(item.content, null, false);
+    const $ = load(item.content, null, false);
+    cleanLinks($);
     return {
-      ...pick(item, "id", "num", "content"),
+      ...pick(item, "id", "num"),
       ...(item.type !== "Principle" && { alt_id: item.id in altIds ? [altIds[item.id]] : [] }),
+      content: $.html(),
       handle: item.name,
-      title: content$("p").first().text().trim().replace(/\s+/g, " "),
-      versions: expandVersions(item),
+      title: $("p").first().text().trim().replace(/\s+/g, " "),
+      versions: expandVersions(item, version),
     };
   };
 
@@ -330,11 +344,15 @@ export async function generateWcagJson(version: WcagVersion) {
         ),
       }))
     ),
-    terms: Object.values(termsMap).map(({ definition, name, trId }) => ({
-      id: trId,
-      definition: definition,
-      name: name,
-    })),
+    terms: Object.values(termsMap).map(({ definition, name, trId }) => {
+      const $ = load(definition, null, false);
+      cleanLinks($);
+      return {
+        id: trId,
+        definition: $.html(),
+        name: name,
+      };
+    }),
   };
   return JSON.stringify(data, null, "  ");
 }
@@ -355,7 +373,7 @@ if (import.meta.filename === process.argv[1]) {
     console.error("No _site directory found; run `npm run build` first");
     process.exit(1);
   }
-  
-  console.log(`Generating wcag.json for version ${resolveDecimalVersion(version)}`)
+
+  console.log(`Generating wcag.json for version ${resolveDecimalVersion(version)}`);
   await writeFile(join("_site", "wcag.json"), await generateWcagJson(version));
 }
