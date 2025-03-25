@@ -35,22 +35,28 @@ export const actRules = (
   JSON.parse(await readFile("guidelines/act-mapping.json", "utf8")) as ActMapping
 )["act-rules"];
 
+/** Version-dependent overrides of SC shortcodes for older versions */
+export const scSlugOverrides: Record<string, (version: WcagVersion) => string> = {
+  "target-size-enhanced": (version) => (version < "22" ? "target-size" : "target-size-enhanced"),
+};
+
 /**
  * Flattened object hash, mapping each WCAG 2 SC slug to the earliest WCAG version it applies to.
  * (Functionally equivalent to "guidelines-versions" target in build.xml; structurally inverted)
  */
-const scVersions = await (async function () {
+async function resolveScVersions(version: WcagVersion) {
   const paths = await glob("*/*.html", { cwd: "understanding" });
   const map: Record<string, WcagVersion> = {};
 
   for (const path of paths) {
     const [fileVersion, filename] = path.split("/");
     assertIsWcagVersion(fileVersion);
-    map[basename(filename, ".html")] = fileVersion;
+    const slug = basename(filename, ".html");
+    map[slug in scSlugOverrides ? scSlugOverrides[slug](version) : slug] = fileVersion;
   }
 
   return map;
-})();
+}
 
 export interface DocNode {
   id: string;
@@ -90,11 +96,6 @@ export function isSuccessCriterion(criterion: any): criterion is SuccessCriterio
   return !!(criterion?.type === "SC" && "level" in criterion);
 }
 
-/** Version-dependent overrides of SC shortcodes for older versions */
-export const scSlugOverrides: Record<string, (version: WcagVersion) => string> = {
-  "target-size-enhanced": (version) => (version < "22" ? "target-size" : "target-size-enhanced"),
-};
-
 /** Selectors ignored when capturing content of each Principle / Guideline / SC */
 const contentIgnores = [
   "h1, h2, h3, h4, h5, h6",
@@ -118,7 +119,12 @@ const getContentHtml = ($el: CheerioAnyNode) => {
 };
 
 /** Performs processing common across WCAG versions */
-function processPrinciples($: CheerioAPI) {
+async function processPrinciples($: CheerioAPI) {
+  // Auto-detect version from end of title
+  const version = $("title").text().trim().split(" ").pop()!.replace(".", "");
+  assertIsWcagVersion(version);
+  const scVersions = await resolveScVersions(version);
+
   const principles: Principle[] = [];
   $(".principle").each((i, el) => {
     const guidelines: Guideline[] = [];
