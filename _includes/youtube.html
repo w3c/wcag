@@ -1,0 +1,34 @@
+{% comment %}
+<!-- (HTML comment markup included to avoid confusing syntax highlighting)
+
+Based on https://adrianroselli.com/2024/01/embed-slides-youtube-videos-and-more.html#YouTube
+
+Inputs:
+- src, height, width = respective attribute values from YouTube's embed code
+- title = Desired title attribute value
+
+Procedure:
+1. Go to YouTube video page
+2. Right-click the video, then choose "Copy video embed code"
+3. Paste the code where you want to insert the video
+4. Replace `<iframe` with `{% include "youtube.html",`
+5. For each of width, height, and src, replace the `=` with `: ` and add `, ` after
+   - e.g. `width: "...", height: "...", src: "...", `
+6. Delete the remaining embed code, and add `title: "..."` with your desired text alternative
+7. End with ` %}`
+
+(Backticks are used as delimiters in the above instructions; do not include them in your code.)
+-->
+{% endcomment %}
+{% assign embedId = src | replace: "https://www.youtube.com/embed/", "" %}
+{% assign embedUrl = "https://www.youtube-nocookie.com/embed/" | append: embedId | append: "?autoplay=1&mute=1&rel=0" %}
+<iframe
+   title="{{ title | escape }}"
+   style="aspect-ratio: {{ width }} / {{ height }}; max-width: 400px;"
+   width="{{ width }}"
+   src="{{ embedUrl }}"
+   allow="autoplay"
+   allowfullscreen
+   loading="lazy"
+   srcdoc="&lt;style&gt;body{background-image:url(https://i3.ytimg.com/vi/{{ embedId }}/hqdefault.jpg);background-repeat:no-repeat;background-size:cover;background-position:center center;display:grid;place-items:center;min-height:97dvh;overflow:hidden;}a{display:block;width:96px;height:96px;overflow:hidden;}a:focus{outline:none;}a:focus circle,a:hover circle{fill:#000;}a:focus circle:first-child + circle,a:hover circle:first-child + circle{stroke-dasharray:.4,.4;}a:focus polygon,a:hover polygon{stroke:#fff;stroke-width:.75;}&lt;/style&gt;&lt;a href='{{ embedUrl }}'&gt;&lt;svg viewBox='0 0 16 16' width='96' height='96' xmlns='http://www.w3.org/2000/svg' aria-hidden='true'&gt;&lt;circle cx='50%' cy='50%' r='7.75' fill='none' stroke='#000' stroke-width='.5'/&gt;&lt;circle cx='50%' cy='50%' r='7.25' fill='none' stroke='#fff' stroke-width='.5'/&gt;&lt;circle cx='50%' cy='50%' r='7' fill='#0009'/&gt;&lt;polygon points='12, 8 6, 4.5 6, 11.5' fill='#fff' stroke-linejoin='round'&gt;&lt;/polygon&gt;&lt;/svg&gt;Play&lt;/a&gt;"
+   {{ attribs }}></iframe>
