@@ -1,6 +1,6 @@
 <!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta charset="UTF-8">
-<meta name="generator" content="ReSpec 35.2.3">
+<meta name="generator" content="ReSpec 35.3.0">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <style>
 span.example-title{text-transform:none}
@@ -101,6 +101,23 @@ dd{margin-left:0}
 <meta name="color-scheme" content="light">
 <meta name="description" content="Web Content Accessibility Guidelines (WCAG) 2.1 covers a wide range of recommendations for making web content more accessible. Following these guidelines will make content more accessible to a wider range of people with disabilities, including accommodations for blindness and low vision, deafness and hearing loss, limited movement, speech disabilities, photosensitivity, and combinations of these, and some accommodation for learning disabilities and cognitive limitations; but will not address every user need for people with these disabilities. These guidelines address accessibility of web content on any kind of device (including desktops, laptops, kiosks, and mobile devices). Following these guidelines will also often make web content more usable to users in general.">
 <style>
+var:hover{text-decoration:underline;cursor:pointer}
+var.respec-hl{color:var(--color,#000);background-color:var(--bg-color);box-shadow:0 0 0 2px var(--bg-color)}
+@media (prefers-color-scheme:dark){
+var.respec-hl{filter:saturate(.9) brightness(.9)}
+}
+var.respec-hl-c1{--bg-color:#f4d200}
+var.respec-hl-c2{--bg-color:#ff87a2}
+var.respec-hl-c3{--bg-color:#96e885}
+var.respec-hl-c4{--bg-color:#3eeed2}
+var.respec-hl-c5{--bg-color:#eacfb6}
+var.respec-hl-c6{--bg-color:#82ddff}
+var.respec-hl-c7{--bg-color:#ffbcf2}
+@media print{
+var.respec-hl{background:0 0;color:#000;box-shadow:unset}
+}
+</style>
+<style>
 var{position:relative;cursor:pointer}
 var[data-type]::after,var[data-type]::before{position:absolute;left:50%;top:-6px;opacity:0;transition:opacity .4s;pointer-events:none}
 var[data-type]::before{content:"";transform:translateX(-50%);border-width:4px 6px 0 6px;border-style:solid;border-color:transparent;border-top-color:#222}
@@ -116,7 +133,7 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
   "permalinkHide": false,
   "tocIntroductory": true,
   "specStatus": "ED",
-  "publishDate": "2025-03-20",
+  "publishDate": "2025-03-27",
   "diffTool": "http://www.aptest.com/standards/htmldiff/htmldiff.pl",
   "shortName": "WCAG21",
   "copyrightStart": "2020",
@@ -191,15 +208,15 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
       "id": "unesco"
     }
   },
-  "publishISODate": "2025-03-20T00:00:00.000Z",
-  "generatedSubtitle": "W3C Editor's Draft 20 March 2025"
+  "publishISODate": "2025-03-27T00:00:00.000Z",
+  "generatedSubtitle": "W3C Editor's Draft 27 March 2025"
 }</script>
 <link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED"></head>
     <body class="h-entry informative"><div class="head">
     <p class="logos"><a class="logo" href="https://www.w3.org/"><img crossorigin="" alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72">
   </a></p>
     <h1 id="title" class="title">Web Content Accessibility Guidelines (WCAG) 2.1</h1> 
-    <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">W3C Editor's Draft</a> <time class="dt-published" datetime="2025-03-20">20 March 2025</time></p>
+    <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">W3C Editor's Draft</a> <time class="dt-published" datetime="2025-03-27">27 March 2025</time></p>
     <details open="">
       <summary>More details about this document</summary>
       <dl>
@@ -5635,7 +5652,104 @@ sheets);</li>
       <a href="#ref-for-dfn-web-page-s-16" title="§ 6. Glossary">§ 6. Glossary</a> <a href="#ref-for-dfn-web-page-s-17" title="Reference 2">(2)</a> <a href="#ref-for-dfn-web-page-s-18" title="Reference 3">(3)</a> <a href="#ref-for-dfn-web-page-s-19" title="Reference 4">(4)</a> <a href="#ref-for-dfn-web-page-s-20" title="Reference 5">(5)</a> <a href="#ref-for-dfn-web-page-s-21" title="Reference 6">(6)</a> 
     </li>
   </ul>
-    </div><script id="respec-dfn-panel">(() => {
+    </div><script id="respec-highlight-vars">(() => {
+// @ts-check
+
+if (document.respec) {
+  document.respec.ready.then(setupVarHighlighter);
+} else {
+  setupVarHighlighter();
+}
+
+function setupVarHighlighter() {
+  document
+    .querySelectorAll("var")
+    .forEach(varElem => varElem.addEventListener("click", highlightListener));
+}
+
+function highlightListener(ev) {
+  ev.stopPropagation();
+  const { target: varElem } = ev;
+  const hightligtedElems = highlightVars(varElem);
+  const resetListener = () => {
+    const hlColor = getHighlightColor(varElem);
+    hightligtedElems.forEach(el => removeHighlight(el, hlColor));
+    [...HL_COLORS.keys()].forEach(key => HL_COLORS.set(key, true));
+  };
+  if (hightligtedElems.length) {
+    document.body.addEventListener("click", resetListener, { once: true });
+  }
+}
+
+// availability of highlight colors. colors from var.css
+const HL_COLORS = new Map([
+  ["respec-hl-c1", true],
+  ["respec-hl-c2", true],
+  ["respec-hl-c3", true],
+  ["respec-hl-c4", true],
+  ["respec-hl-c5", true],
+  ["respec-hl-c6", true],
+  ["respec-hl-c7", true],
+]);
+
+function getHighlightColor(target) {
+  // return current colors if applicable
+  const { value } = target.classList;
+  const re = /respec-hl-\w+/;
+  const activeClass = re.test(value) && value.match(re);
+  if (activeClass) return activeClass[0];
+
+  // first color preference
+  if (HL_COLORS.get("respec-hl-c1") === true) return "respec-hl-c1";
+
+  // otherwise get some other available color
+  return [...HL_COLORS.keys()].find(c => HL_COLORS.get(c)) || "respec-hl-c1";
+}
+
+function highlightVars(varElem) {
+  const textContent = norm(varElem.textContent);
+  const parent = varElem.closest(".algorithm, section");
+  const highlightColor = getHighlightColor(varElem);
+
+  const varsToHighlight = [...parent.querySelectorAll("var")].filter(
+    el =>
+      norm(el.textContent) === textContent &&
+      el.closest(".algorithm, section") === parent
+  );
+
+  // update availability of highlight color
+  const colorStatus = varsToHighlight[0].classList.contains("respec-hl");
+  HL_COLORS.set(highlightColor, colorStatus);
+
+  // highlight vars
+  if (colorStatus) {
+    varsToHighlight.forEach(el => removeHighlight(el, highlightColor));
+    return [];
+  } else {
+    varsToHighlight.forEach(el => addHighlight(el, highlightColor));
+  }
+  return varsToHighlight;
+}
+
+function removeHighlight(el, highlightColor) {
+  el.classList.remove("respec-hl", highlightColor);
+  // clean up empty class attributes so they don't come in export
+  if (!el.classList.length) el.removeAttribute("class");
+}
+
+function addHighlight(elem, highlightColor) {
+  elem.classList.add("respec-hl", highlightColor);
+}
+
+/**
+ * Same as `norm` from src/core/utils, but our build process doesn't allow
+ * imports in runtime scripts, so duplicated here.
+ * @param {string} str
+ */
+function norm(str) {
+  return str.trim().replace(/\s+/g, " ");
+}
+})()</script><script id="respec-dfn-panel">(() => {
 // @ts-check
 if (document.respec) {
   document.respec.ready.then(setupPanel);
