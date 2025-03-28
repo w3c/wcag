@@ -23,8 +23,14 @@ Content for WCAG 2.1 and later is organized according to the file structure belo
 * `guidelines/sc/{version}/*.html` - files for each success criterion
 * `guidelines/terms/{version}/*.html` - files for each definition
 * `understanding/{version}/*.html` - understanding files for each success criterion
+* `wcag20/` was used by a previous version of WCAG, so anything ending .xml is no longer used, *do not update*.
 
 Where `{version}` is "20", content came from WCAG 2.0. "21" is used for content introduced in WCAG 2.1, "22" for WCAG 2.2, etc.
+
+## Build System
+
+The Techniques and Understanding documents are processed through a build system based on Eleventy and Liquid for templating and Cheerio for transformations.
+More details, including instructions for previewing the output locally, can be found in the [build process README](11ty/README.md).
 
 ## Editing Draft Success Criteria
 
@@ -158,7 +164,7 @@ Once a technique branch and file is set up, populate the content and request rev
 
 ### Formatting Techniques
 
-Techniques in the repository are plain HTML files with minimal formatting. For publication to the editors' draft and W3C location, techniques are formatted by a build process based on Eleventy for templating and Cheerio for transformations. More details, including instructions for previewing locally, can be found in the [build process README](11ty/README.md).
+Techniques in the repository are plain HTML files with minimal formatting. For publication to the editors' draft and W3C location, techniques are formatted by the Eleventy build process described above in the [Build System section](#build-system).
 
 The generator compiles the techniques together as a suite with formatting and navigation. It enforces certain structures, such as ordering top-level sections described above and standardizing headings. It attempts to process cross reference links to make sure the URIs work upon publication. One of the most substantial roles is to populate the Applicability section with references to the guidelines or success criteria to which the technique relates. The information for this comes from the Understanding documents. Proper use of the technique template is important to enable this functionality, and mal-formed techniques may cause the generator to fail.
 
@@ -234,6 +240,14 @@ To create a working example:
 * Refer to resources shared among multiple examples using relative links, e.g., `../css/example.css`. Place other resources in the same directory as the main example, e.g., `working-examples/alt-attribute/css/alt.css`.
 * Reference working examples from techniques using the rawgit URI to the example in its development branch, e.g., `https://rawgit.com/w3c/wcag/main/working-examples/alt-attribute/`. Editors will update links when examples are approved.
 * When the example is complete and functional, submit a pull request into the main branch.
+
+## Errata
+
+The errata documents for WCAG 2.1 and 2.2 are now maintained in this repository.
+See the [Errata README](errata/README.md) for authoring details.
+
+**Note:** The errata for both versions are maintained on the `main` branch for use in builds.
+Direct edits to the guidelines for WCAG 2.1 must be performed under `guidelines/` on the `WCAG-2.1` branch.
 
 ## Translations
 
