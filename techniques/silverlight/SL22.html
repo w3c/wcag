@@ -1,0 +1,132 @@
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Supporting Browser Zoom in Silverlight</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Supporting Browser Zoom in Silverlight</h1><section class="meta"><p class="id">ID: SL22</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+      <ul id="silverlight.applicability.general">
+         <li> Microsoft Silverlight, versions 3 and greater </li>
+         <li> Silverlight managed programming model and Silverlight XAML </li>
+      </ul>
+      <ul>
+         <li> Silverlight content in a user agent host that supports browser
+    					zoom </li>
+      </ul>
+   </section><section id="description"><h2>Description</h2>
+      <p>The objective of this technique is to support or anticipate existing
+    				browser zoom features effectively when users interact with the Silverlight
+    				application. This technique explains how the Silverlight content area
+    				reacts to the browser zoom feature implemented by some user agent hosts.
+    				Silverlight content and layout properties are based on physical screen
+    				pixel measurements. When the browser zoom is engaged, Silverlight content
+    				scales correctly for the zoom factor, and uses the same zoom factor
+    				as any surrounding HTML content. </p>
+      <p>Browser zoom is relevant for accessibility and Silverlight because
+    				it is likely to be the zoom /scaling feature enabled by the browser
+    				host that Web technology users are the most familiar with as a technique
+    				for increasing the text size in Web content. </p>
+   	<section id="SL22_legacy">
+         <h4> Legacy behavior in Silverlight version 2 </h4>
+         <p>Built-in support for browser zoom was introduced as a feature in Silverlight
+    					version 3. Older documents on the Web might describe techniques that
+    					were relevant for Silverlight version 2, where dealing with browser
+    					zoom required JavaScript handling of the Resized event,
+    					and developers manually applied a <code class="obj">ScaleTransform</code> to Silverlight
+    					content to scale it up. Silverlight has a "quirks mode"   that
+    					detects existing handlers that might still use the older techniques.
+    					Built-in zoom not active in these cases, so that applications can avoid
+    					doubling or otherwise mishandling the user agent's zooming behavior. </p>
+   	</section>
+   	<section id="SL22_disable-zoom">
+         <h4> Deliberately disabling browser zoom in Silverlight applications </h4>
+         <p>Silverlight also provides the ability to disable the built-in browser
+    					zoom handling and rendering behavior. This is sometimes done in order
+    					to suppress some of the aliasing and distortion artifacts that host-level
+    					scaling can introduce, particularly for video content or certain uses
+    					of text. In these cases, application authors might consider other Silverlight
+    					techniques for scaling the user interface, perhaps specifically only
+    					for the text elements on a page. When an application disables the built-in
+    					zoom behavior and rendering for Silverlight content, the browser still
+    					retains its zoom settings, and that setting applies to other content
+    					outside of Silverlight such as the hosting HTML. </p>
+   	</section>
+   </section><section id="examples"><h2>Examples</h2>
+      <section class="example">
+         <h3>Verifying browser zoom, and checking the zoom factor</h3>
+         
+            <p>This example has a UI defined in XAML and logic defined in C#. The
+    						UI shows the zoom factor, and also demonstrates what happens when built-in
+    						browser zoom handling is deliberately disabled. Note that the zooming
+    						factor as reported by the API is still retained even when Silverlight
+    						built-in zoom scaling is disabled deliberately. The following is the
+    						XAML UI: </p>
+            <pre xml:space="preserve">&lt;UserControl x:Class="BrowserZoom.MainPage"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+&gt;
+   &lt;StackPanel x:Name="LayoutRoot" Background="White"&gt;
+       &lt;TextBlock&gt;Some text you can zoom.&lt;/TextBlock&gt;
+       &lt;Button Click="Button_Click"&gt;Toggle built-in zoom handling&lt;/Button&gt;
+       &lt;StackPanel Orientation="Horizontal"&gt;
+           &lt;Button Click="Button_Click_1"&gt;Query current zoom factor&lt;/Button&gt;
+           &lt;TextBox IsReadOnly="true" Name="zoomf"
+   Text="{Binding Path=reportZoom}"/&gt;
+       &lt;/StackPanel&gt;
+   &lt;/StackPanel&gt;
+&lt;/UserControl&gt;
+</pre>
+            <p>The following is the C# logic: </p>
+            <pre xml:space="preserve">   public partial class MainPage : UserControl
+   {
+       public MainPage()
+       {
+           InitializeComponent();
+       }
+       private void Button_Click(object sender, RoutedEventArgs e)
+       {
+           if (!Application.Current.Host.Settings.EnableAutoZoom == false) {
+           Application.Current.Host.Settings.EnableAutoZoom = false;
+           }
+           else
+           {
+               Application.Current.Host.Settings.EnableAutoZoom = true;
+           }
+       }
+       private void Button_Click_1(object sender, RoutedEventArgs e)
+       {
+           zoomf.Text = Application.Current.Host.Content.ZoomFactor.ToString();
+       }
+   }
+</pre>
+            <p class="working-example">This example is shown in operation in the <a href="../../working-examples/silverlight-browser-zoom/">working example of Browser Zoom</a>.</p>
+         
+      </section>
+   </section><section id="tests"><h2>Tests</h2>
+      <section class="procedure"><h3>Procedure</h3>
+         <ol>
+            <li> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. The browser
+    					being used for the test must support a browser zoom feature, and
+    					the feature must be turned on as a user preference. </li>
+            <li> Verify that the Silverlight application enables auto zoom (no
+    						Silverlight application-specific code or markup has set EnableAutoZoom
+    						API to false). </li>
+            <li> Test the zooming feature of the user agent. Verify that browser
+    							zoom factors apply to the Silverlight content. </li>
+         </ol>
+      </section>
+      <section class="results"><h3>Expected Results</h3>
+         <p>#2 and #3 are true. </p>
+      </section>
+   </section><section id="related"><h2>Related Techniques</h2><ul>
+      <li><a href="../general/G142">G142</a></li>
+      <li><a href="../general/G179">G179</a></li>
+   </ul></section><section id="resources"><h2>Resources</h2>
+      
+         <ul>
+            <li>
+                  <a href="https://msdn.microsoft.com/en-us/library/system.windows.interop.settings.enableautozoom%28VS.95%29.aspx">EnableAutoZoom
+    					Property</a> 
+               </li>
+            <li>
+                  <a href="https://msdn.microsoft.com/en-us/library/cc707824(VS.95).aspx">Silverlight
+    						Accessibility Overview</a> 
+               </li>
+         </ul>
+      
+   </section></body></html>
