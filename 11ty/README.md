@@ -96,7 +96,7 @@ Possible values:
 
 Generates `_site/wcag.json`. (This is not done by default, as it adds to build time.)
 
-**Default:** Unset (set to any non-empty value to enable)
+**Default:** Unset by default; `publish-w3c` scripts set this to a non-empty value.
 
 ### `GITHUB_REPOSITORY`
 
