@@ -23,6 +23,7 @@ Content for WCAG 2.1 and later is organized according to the file structure belo
 * `guidelines/sc/{version}/*.html` - files for each success criterion
 * `guidelines/terms/{version}/*.html` - files for each definition
 * `understanding/{version}/*.html` - understanding files for each success criterion
+* `wcag20/` was used by a previous version of WCAG, so anything ending .xml is no longer used, *do not update*.
 
 Where `{version}` is "20", content came from WCAG 2.0. "21" is used for content introduced in WCAG 2.1, "22" for WCAG 2.2, etc.
 
@@ -239,6 +240,14 @@ To create a working example:
 * Refer to resources shared among multiple examples using relative links, e.g., `../css/example.css`. Place other resources in the same directory as the main example, e.g., `working-examples/alt-attribute/css/alt.css`.
 * Reference working examples from techniques using the rawgit URI to the example in its development branch, e.g., `https://rawgit.com/w3c/wcag/main/working-examples/alt-attribute/`. Editors will update links when examples are approved.
 * When the example is complete and functional, submit a pull request into the main branch.
+
+## Errata
+
+The errata documents for WCAG 2.1 and 2.2 are now maintained in this repository.
+See the [Errata README](errata/README.md) for authoring details.
+
+**Note:** The errata for both versions are maintained on the `main` branch for use in builds.
+Direct edits to the guidelines for WCAG 2.1 must be performed under `guidelines/` on the `WCAG-2.1` branch.
 
 ## Translations
 
