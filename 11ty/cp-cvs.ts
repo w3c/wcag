@@ -51,3 +51,13 @@ for (const [srcDir, destDir] of Object.entries(dirs)) {
     await copyFile(srcPath, destPath);
   }
 }
+
+try {
+  await copyFile(join(outputBase, "wcag.json"), join(wcagBase, "wcag.json"));
+} catch (error) {}
+
+await mkdirp(join(wcagBase, "errata"));
+await copyFile(
+  join(outputBase, "errata", `${wcagVersion}.html`),
+  join(wcagBase, "errata", "Overview.html")
+);
