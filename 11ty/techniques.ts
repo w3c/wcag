@@ -41,12 +41,12 @@ function assertIsTechnology(
   if (!(technology in technologyTitles)) throw new Error(`Invalid technology name: ${technology}`);
 }
 
-const associationTypes = ["sufficient", "advisory", "failure"] as const;
-type AssociationType = (typeof associationTypes)[number];
+export const techniqueAssociationTypes = ["sufficient", "advisory", "failure"] as const;
+export type TechniqueAssociationType = (typeof techniqueAssociationTypes)[number];
 
 interface TechniqueAssociation {
   criterion: SuccessCriterion;
-  type: Capitalize<AssociationType>;
+  type: Capitalize<TechniqueAssociationType>;
   /** Indicates this technique must be paired with specific "child" techniques to fulfill SC */
   hasUsageChildren: boolean;
   /**
@@ -63,8 +63,8 @@ interface TechniqueAssociation {
   with: string[];
 }
 
-function assertIsAssociationType(type?: string): asserts type is AssociationType {
-  if (!associationTypes.includes(type as AssociationType))
+function assertIsAssociationType(type?: string): asserts type is TechniqueAssociationType {
+  if (!techniqueAssociationTypes.includes(type as TechniqueAssociationType))
     throw new Error(`Association processed for unexpected section ${type}`);
 }
 
@@ -92,7 +92,7 @@ export const understandingToTechniqueLinkSelector = [
  */
 export async function getTechniqueAssociations(guidelines: FlatGuidelinesMap) {
   const associations: Record<string, TechniqueAssociation[]> = {};
-  const itemSelector = associationTypes.map((type) => `section#${type} li`).join(", ");
+  const itemSelector = techniqueAssociationTypes.map((type) => `section#${type} li`).join(", ");
 
   const paths = await glob("understanding/*/*.html");
   for (const path of paths) {
@@ -105,7 +105,7 @@ export async function getTechniqueAssociations(guidelines: FlatGuidelinesMap) {
       const $parentListItem = $liEl.closest("ul, ol").closest("li");
       // Identify which expected section the list was found under
       const associationType = $liEl
-        .closest(associationTypes.map((type) => `section#${type}`).join(", "))
+        .closest(techniqueAssociationTypes.map((type) => `section#${type}`).join(", "))
         .attr("id");
       assertIsAssociationType(associationType);
 
@@ -144,7 +144,7 @@ export async function getTechniqueAssociations(guidelines: FlatGuidelinesMap) {
 
         const association: TechniqueAssociation = {
           criterion,
-          type: capitalize(associationType) as Capitalize<AssociationType>,
+          type: capitalize(associationType) as Capitalize<TechniqueAssociationType>,
           hasUsageChildren: !!$liEl.find("ul, ol").length,
           usageParentIds,
           usageParentDescription,
