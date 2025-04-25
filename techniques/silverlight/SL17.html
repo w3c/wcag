@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Providing Static Alternative Content for Silverlight Media Playing
+    			in a MediaElement</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Providing Static Alternative Content for Silverlight Media Playing
+    			in a MediaElement</h1><section class="meta"><p class="id">ID: SL17</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+      <ul id="silverlight.applicability.general">
+         <li> Microsoft Silverlight, versions 3 and greater </li>
+         <li> Silverlight managed programming model and Silverlight XAML </li>
+      </ul>
+   </section><section id="description"><h2>Description</h2>
+      <p>The objective of this technique is to replace a Silverlight <code class="obj">MediaElement</code> with
+    				static alternative non-media content that is not time-based. The static
+    				alternative content replaces the media in the same or a nearby user
+    				interface region of the Silverlight application. </p>
+      <ul>
+         <li> If the media being played is audio-only, and the alternative content
+    				is a text equivalent such as a transcript, this technique addresses <a href="https://www.w3.org/WAI/WCAG21/Understanding/audio-only-and-video-only-prerecorded">Success
+    					Criterion 1.2.1 (Audio-only and Video-only, Prerecorded)</a>. </li>
+         <li> If the media includes content that cannot be adequately described
+    						by either alternative audio track or additional text captions, and
+    						the best alternative is to provide a full description in text such
+    						as a screenplay of the content, this technique addresses <a href="https://www.w3.org/WAI/WCAG21/Understanding/audio-description-or-media-alternative-prerecorded">Success
+    							Criterion 1.2.3 (Audio Description or Full Text Alternative)</a> and
+    						is similar to <a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G69">G69:
+    							Providing an alternative for time based media</a>. </li>
+      </ul>
+      <p>A Silverlight application user interface can be adjusted at run time
+    				by removing elements from the visual tree, and adding new elements
+    				to the visual tree. In this case, the user interface is designed to
+    				provide a control that the user activates to display the static alternative
+    				content, which is often a control that displays text, or a text element. </p>
+   </section><section id="examples"><h2>Examples</h2>
+      <section class="example">
+         <h3>MediaElement playing audio, replace with transcript</h3>
+         
+            <p>This example has a UI definition in XAML and interaction logic in C#. In this case the <code class="obj">MediaElement</code> 
+              has no visual representation itself and is 0x0 size because it plays audio only. As a simple placeholder, this 
+              example displays the text "Library of Congress Audio" to represent the media element as something visible in the 
+              UI. In addition to Play/Stop controls, this interface includes a Display Transcript button. Activating the 
+              button displays static text that represents the transcript of the audio. The following is the basic UI in XAML.</p>
+            <pre xml:space="preserve">&lt;UserControl x:Class="ReplaceAudioWithTranscriptText.MainPage"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   xmlns:sys="clr-namespace:System;assembly=mscorlib"&gt;
+   &lt;UserControl.Resources&gt;
+       &lt;sys:String x:Key="transSpeakerName"&gt;Matt Raymond: &lt;/sys:String&gt;
+       &lt;sys:String x:Key="transText"&gt;This is Matt Raymond at the Library of Congress.
+Each year thousands of book lovers of all ages visit the nation's capital to celebrate the joys 
+of reading and lifelong literacy, at the Library of Congress National Book Festival. 
+For the first time in the festival's nine year history, President Barack Obama and 
+First Lady Michelle Obama will serve as honorary chairs of this free event. &lt;/sys:String&gt;
+   &lt;/UserControl.Resources&gt;
+   &lt;StackPanel x:Name="LayoutRoot" Background="White" &gt;
+       &lt;TextBlock FontSize="30" Foreground="Blue"&gt;Library of Congress Audio&lt;/TextBlock&gt;
+       &lt;MediaElement Source="/locintro.wma" AutoPlay="False" Name="player" Height="0" /&gt;
+       &lt;StackPanel Orientation="Horizontal" Name="ControlBar"&gt;
+           &lt;Button Name="Play" Click="Play_Click"&gt;Play&lt;/Button&gt;
+           &lt;Button Name="Stop" Click="Stop_Click"&gt;Stop&lt;/Button&gt;
+           &lt;Button Name="TextAlt" Click="TextAlt_Click"&gt;Display Transcript&lt;/Button&gt;
+       &lt;/StackPanel&gt;
+   &lt;/StackPanel&gt;
+&lt;/UserControl&gt;
+</pre>
+            <p>The following is the C# logic. </p>
+            <pre xml:space="preserve">   public partial class MainPage : UserControl
+   {
+       RichTextBox rtb;
+       bool transDisplayed=false;
+       public MainPage()
+       {
+           InitializeComponent();
+           rtb = new RichTextBox();
+           rtb.IsReadOnly = true;
+           Paragraph p = new Paragraph();
+           Run speakerName = new Run();
+           speakerName.Text = this.Resources["transSpeakerName"] as String;
+           speakerName.FontWeight = FontWeights.Bold;
+           Run transText = new Run();
+           transText.Text = this.Resources["transText"] as String;
+           p.Inlines.Add(speakerName);
+           p.Inlines.Add(transText);
+           rtb.Blocks.Add(p);
+       }
+       private void Play_Click(object sender, RoutedEventArgs e)
+       {
+           player.Play();
+           Play.IsEnabled = false;
+       }
+       private void Stop_Click(object sender, RoutedEventArgs e)
+       {
+           player.Stop();
+           Play.IsEnabled = true;
+       }
+       private void TextAlt_Click(object sender, RoutedEventArgs e)
+       {
+           Panel parent = (player.Parent as Panel);
+           if (!transDisplayed)
+           {
+               DisplayTranscript();
+               (sender as Button).Content = "Hide Transcript";
+               transDisplayed = true;
+           }
+           else
+           {
+               parent.Children.Remove(rtb);
+               (sender as Button).Content = "Display Transcript";
+               transDisplayed = false;
+           }
+       }
+       private void DisplayTranscript()
+       {
+           Panel parent = (player.Parent as Panel);
+           parent.Children.Add(rtb);
+       }
+</pre>
+            <p class="working-example">This example is shown in operation in the <a href="../../working-examples/silverlight-replace-audio-with-transcript/">working example of Replace Audio With Transcript</a>.</p>
+         
+      </section>
+   </section><section id="tests"><h2>Tests</h2>
+      <section class="procedure"><h3>Procedure</h3>
+         <ol>
+            <li> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. That
+    					application has audio-only media content and is expected to supply
+    					a text alternative, or has media that is expected to be replaced
+    					entirely with a transcript or similar text alternative. </li>
+            <li> Check for a control that indicates that activating it will supply
+    						static alternative content for the media. Activate the control. </li>
+            <li> Verify that the media control is replaced with alternate content,
+    							and that assistive technologies represent the change to the user
+    							interface. </li>
+         </ol>
+      </section>
+      <section class="results"><h3>Expected Results</h3>
+         <p>#3 is true. </p>
+      </section>
+   </section><section id="resources"><h2>Resources</h2>
+      
+         <ul>
+            <li>
+                  <a href="https://msdn.microsoft.com/en-us/library/cc189078(VS.95).aspx">Audio
+    						and Video Overview</a> 
+               </li>
+         </ul>
+      
+   </section></body></html>
