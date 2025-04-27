@@ -162,21 +162,21 @@
                     difference between the areas of:</p>
 
                 <ul>
-                    <li>A 92px by 32px rectangle (1px larger on all sides), and</li>
-                    <li>A 88px by 28px rectangle (1px smaller on all sides)</li>
+                    <li>A 94px by 34px rectangle (2px larger on all sides), and</li>
+                    <li>A 90px by 30px rectangle (the area of the control itself)</li>
                 </ul>
 
-                <p>This results in a minimum area of (92px * 32px) - (88px * 28px) = 480px<sup>2</sup>.</p>
+                <p>This results in a minimum area of <code>(94px * 34px) - (90px * 30px) = 496px<sup>2</sup></code>.</p>
 
                 <p>Some general formulas for 2 CSS pixel thick perimeters of common shapes are:</p>
 
                 <dl>
                     <dt>Rectangle with width <em>w</em> and height <em>h</em></dt>
-                    <dd>4<em>h</em> + 4<em>w</em></dd>
+                    <dd><code>((<em>w</em> + 4) * (<em>h</em> + 4)) - (<em>w</em> * <em>h</em>)</code></dd>
                     <dt>Circle with radius <em>r</em></dt>
-                    <dd>4𝜋<em>r</em></dd>
+                    <dd><code>𝜋 * ((<em>r</em>+2)<sup>2</sup> - <em>r</em><sup>2</sup>)</code></dd>
                     <dt>Rounded rectangle with width <em>w</em>, height <em>h</em>, and border radius <em>r</em></dt>
-                    <dd>4<em>h</em> + 4<em>w</em> - (16 - 4𝜋)<em>r</em></dd>
+                    <dd><code>4 * (<em>w</em> + <em>h</em> - 4 * <em>r</em>) + 𝜋 * ((<em>r</em>+2)<sup>2</sup> - <em>r</em><sup>2</sup>)</code></dd>
                 </dl>
 
                 <p class="note">If you need to use complex mathematics to work out if a focus indicator is large enough,
@@ -184,15 +184,15 @@
                     when an item receives focus, the easier it is for someone to see.</p>
 
                 <p>The following 2 examples use a 90px wide by 30px tall button, with a minimum area requirement of
-                    480px<sup>2</sup>:</p>
+                    496px<sup>2</sup>:</p>
 
                 <figure id="focus-indicator-custom-shapes-inset">
 
                     <img src="img/focus-indicator-custom-shapes-inset.png"
                         alt="Three 90 by 30 pixel buttons. The middle button has a focus indicator which is a 3px thick outline inset by 3px inside the button" />
-                    <figcaption>Passes: the inner outline is inset slightly from the outer edge of the component, but
-                        compensates for this by being 3px thick. It has an area of 612px<sup>2</sup>, which exceeds the
-                        480px<sup>2</sup> minimum.</figcaption>
+                    <figcaption>Passes: the inner outline is inset by 3px from the outer edge of the component, but
+                        compensates for this by being 3px thick. It has an area of 606px<sup>2</sup>, which exceeds the
+                        496px<sup>2</sup> minimum.</figcaption>
                 </figure>
 
                 <figure id="focus-indicator-custom-shapes-side-highlights">
@@ -200,7 +200,7 @@
                         alt="Three 90 by 30 pixel buttons. The middle button has a focus indicator which is two rectangles inside the button, one on either side" />
                     <figcaption>Passes: the indicator rectangles on either side of the focused button are each 9px wide
                         by 28px tall. In total, they are 504px<sup>2</sup>, which just barely meets the
-                        480px<sup>2</sup> minimum.</figcaption>
+                        496px<sup>2</sup> minimum.</figcaption>
 
                 </figure>
 
@@ -209,7 +209,7 @@
                     example, in a responsive design), the indicator might meet the area requirement in some variations
                     but not others. For example, in the above figure, if the width of the two highlight rectangles did
                     not scale as the button grew wider, it would stop meeting the minimum area requirement if the button
-                    needed to grow any wider to accomodate a longer button label.</p>
+                    needed to grow any wider to accommodate a longer button label.</p>
 
                 <p>Another way of achieving the area requirement is to alter the appearance of the entire component, for
                     instance by changing its color – provided that the new color has a contrast ratio of at least 3:1
@@ -631,7 +631,7 @@
                 <figure id="country-select">
 
                     <img src="img/focus-indicator-select.png"
-                        alt="A country select element with Afghanistan selected and Albani with focus" />
+                        alt="A country select element with Afghanistan selected and Albania with focus" />
                     <figcaption>Passes: The user agent's default <code>select</code> element presentation cannot be
                         modified by the author, so it passes regardless of the quality of the focus indicator
                     </figcaption>
