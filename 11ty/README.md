@@ -92,6 +92,12 @@ Possible values:
 - `editors` - Sets base URLs appropriate for `gh-pages` publishing; used by deploy action
 - `publication` - Sets base URLs appropriate for WAI site publishing; used by `publish-w3c` script
 
+### `WCAG_JSON`
+
+Generates `_site/wcag.json`. (This is not done by default, as it adds to build time.)
+
+**Default:** Unset by default; `publish-w3c` scripts set this to a non-empty value.
+
 ### `GITHUB_REPOSITORY`
 
 **Usage context:** Automatically set during GitHub workflows; should not need to be set manually
