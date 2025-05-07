@@ -8,10 +8,10 @@ var respecConfig = {
 	permalinkHide:     false,
 	tocIntroductory: true,
 	// specification status (e.g., WD, LC, NOTE, etc.). If in doubt use ED.
-	specStatus:           "ED",
+	specStatus:           "REC",
 	//crEnd:                "2012-04-30",
 	//perEnd:               "2013-07-23",
-	publishDate:          "2024-12-12",
+	publishDate:          "2025-05-06",
 	diffTool:             "http://www.aptest.com/standards/htmldiff/htmldiff.pl",
 	
 	// the specifications short name, as in https://www.w3.org/TR/short-name/
@@ -19,7 +19,7 @@ var respecConfig = {
 	
 	
 	// if you wish the publication date to be other than today, set this
-	publishDate:  "2024-12-12",
+	//publishDate:  "2024-12-12",
 	copyrightStart:  "2020",
 	license: "document",
 	
@@ -53,16 +53,14 @@ var respecConfig = {
 			name: "Andrew Kirkpatrick",
 			company: "Adobe",
 			companyURI: "http://www.adobe.com/",
-			w3cid: 39770,
-      retiredDate: "2020-03-04"
+			w3cid: 39770
 		},
 		{
 			name: "Joshue O Connor",
 			mailto: "josh@interaccess.ie",
 			company: "Invited Expert, InterAccess",
 			companyURI: "https://interaccess.org/",
-			w3cid: 41218,
-      retiredDate: "2018-09-30",
+			w3cid: 41218
 
 		},
 		{
@@ -76,8 +74,7 @@ var respecConfig = {
 			name: "Michael Cooper",
 			company: "W3C",
 			companyURI: "https://www.w3.org",
-			w3cid: 34017,
-      retiredDate: "2023-07-31"
+			w3cid: 34017
 		}
 	],
 	
@@ -99,13 +96,7 @@ var respecConfig = {
 	*/
 	
 	errata: 'https://www.w3.org/WAI/WCAG21/errata/',
-	
-	// name of the WG
-	wg:           "Accessibility Guidelines Working Group",
-	
-	// URI of the public WG page
-	wgURI:        "https://www.w3.org/WAI/GL/",
-	
+		
 	// name (with the @w3c.org) of the public mailing to which comments are due
 	wgPublicList: "public-agwg-comments",
 	
