@@ -8,18 +8,16 @@ var respecConfig = {
 	permalinkHide:     false,
 	tocIntroductory: true,
 	// specification status (e.g., WD, LC, NOTE, etc.). If in doubt use ED.
-	specStatus:           "REC",
+	specStatus:           "ED",
 	//crEnd:                "2012-04-30",
 	//perEnd:               "2013-07-23",
-	publishDate:          "2025-05-06",
+	// if you wish the publication date to be other than today, set this
+	//publishDate:          "2025-05-06",
 	diffTool:             "http://www.aptest.com/standards/htmldiff/htmldiff.pl",
 	
 	// the specifications short name, as in https://www.w3.org/TR/short-name/
 	shortName:            "WCAG21",
 	
-	
-	// if you wish the publication date to be other than today, set this
-	//publishDate:  "2024-12-12",
 	copyrightStart:  "2020",
 	license: "document",
 	
