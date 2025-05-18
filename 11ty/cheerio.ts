@@ -1,12 +1,14 @@
-import { load, type CheerioOptions } from "cheerio";
+import { load, type CheerioAPI, type CheerioOptions } from "cheerio";
 import { readFileSync } from "fs";
 import { readFile } from "fs/promises";
 import { dirname, resolve } from "path";
 
 export { load } from "cheerio";
 
-/** Superset of the type returned by any Cheerio $() call. */
-export type CheerioAnyNode = ReturnType<ReturnType<typeof load>>;
+/** Superset of the type returned by any Cheerio $() call */
+export type CheerioAnyNode = ReturnType<CheerioAPI>;
+/** Type returned by e.g. $(...).find() */
+export type CheerioElement = ReturnType<CheerioAnyNode["find"]>;
 
 /** Convenience function that combines readFile and load. */
 export const loadFromFile = async (
