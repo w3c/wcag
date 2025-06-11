@@ -115,10 +115,6 @@ export class CustomLiquid extends Liquid {
         $childList = null;
         $tocList.append(`<li><a href="#${el.attribs.id}">${$(h2El).text()}</a></li>`);
       });
-      $el.find("> h3:first-child").each((_, h3El) => {
-        if (!$childList) $childList = $(`<ol class="toc"></ol>`).appendTo($tocList);
-        $childList.append(`<li><a href="#${el.attribs.id}">${$(h3El).text()}</a></li>`);
-      });
     });
 
     return $.html();
