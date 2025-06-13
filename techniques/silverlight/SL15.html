@@ -1,0 +1,226 @@
+<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Providing Keyboard Shortcuts that Work Across the Entire Silverlight
+    			Application</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Providing Keyboard Shortcuts that Work Across the Entire Silverlight
+    			Application</h1><section class="meta"><p class="id">ID: SL15</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+      <ul id="silverlight.applicability.general">
+         <li> Microsoft Silverlight, versions 3 and greater </li>
+         <li> Silverlight managed programming model and Silverlight XAML </li>
+      </ul>
+   </section><section id="description"><h2>Description</h2>
+      <p>The objective of this technique is to introduce key handling that
+    				exists at the application root level of a Silverlight application,
+    				rather than per-element key handling. Event handling at the application
+    				level as opposed to at the element level is one way to address key
+    				equivalence. The key events provide key equivalence for particular
+    				user interface elements that a user might otherwise interact with using
+    				a mouse. This technique is related to events in the Silverlight programming
+    				model, as opposed to in the HTML DOM. </p>
+      <p>Handling key events at the root level of an application rather than
+    				only on the element that was the "source" of a key event
+    				is possible because of a Silverlight programming model feature known
+    				as event routing. For more information on event routing and how it
+    				works, see <a href="https://msdn.microsoft.com/en-us/library/cc189018(VS.95).aspx">Events
+    					Overview for Silverlight</a>. </p>
+      <p>This technique demonstrates a "menu" approach to key handling
+    				and user interaction. This technique is presented as a companion to <a href="#SL9"></a>, which
+    				can be thought of as an "accelerator key/hotkey" approach.
+    				The   "menu" approach towards keyboard equivalence is perhaps
+    				just as common as the "hotkey" approach. It is often simpler
+    				to document a menu's key equivalence in a user interface than it is
+    				to document key equivalents of particular regions of an application,
+    				or to communicate to users that where the current focus is placed is
+    				relevant to how keyboard keys are interpreted by the application, even
+    				if the key action is relevant to only one of the controls in an interface.
+    				If all keys are handled at the top level, the specific focused element
+    				is no longer relevant. </p>
+      <p>In order to originate a key event that Silverlight application code
+    				can detect, some element in the Silverlight application must have keyboard
+    				focus. One way to assure keyboard focus is to focus the Silverlight
+    				plug-in as a whole, as called from within an event handler for Application.Startup.
+    				This is shown in the examples. </p>
+      <p>If an application does handle keys at top level, care should be taken
+    				to not interfere with specific text entry control behavior, such as
+    				typing into a <code class="obj">TextBox</code>. To avoid interactions, the
+    				design of key equivalence at the top level of an application typically
+    				relies on combinations with key modifiers. The Control/CTRL key is
+    				a key that is often used for this purpose. Application authors should
+    				also be aware of the implications of browser hosts that might handle
+    				the key event at HTML DOM level without making that event available
+    				to the Silverlight programming surface. For more information on this
+    				concept, see "Keyboard Events and Browser Hosts" section
+    				of <a href="https://msdn.microsoft.com/en-us/library/cc189015(VS.95).aspx">Keyboard
+    					Support Overview for Silverlight on MSDN</a>. </p>
+      <p>Application authors are responsible for correctly documenting the
+    				accelerator keys that are pertinent for their application. There are
+    				a variety of techniques for documenting user interface actions that
+    				are not described here. One possible suggestion is to include a generalized "Help" button
+    				that appears early in the application's reading order, which is focusable
+    				and has an <code class="prop">AutomationProperties.Name</code> value available as the text content
+    				or equivalent. Such a button can be activated without knowing any of
+    				the application's accelerator keys, and the activation result could
+    				be a new text element that enumerates the possible keys. For example,
+    				the application could display a Silverlight <code class="obj">Popup</code> with
+    				the following content: </p>
+      <figure id="figure-silverlight-popup-control">
+         <img src="img/popup_keys.png" />
+            
+            <figcaption>A screen shot of a sample Popup control that documents specific accelerator keys</figcaption>
+          
+      </figure>
+   </section><section id="examples"><h2>Examples</h2>
+      <section class="example">
+         <h3>Key handling by application root UserControl</h3>
+         
+            <p>This example has only one interactive control for simplicity, but
+    						with two possible key combinations for that control being handled as
+    						actions. The purpose and explanation of the control is reported through
+    						a <code class="obj">TextBlock</code> that is associated with the labeled control
+    						through use of <a href="https://msdn.microsoft.com/en-us/library/system.windows.automation.automationproperties.labeledby%28VS.95%29.aspx">AutomationProperties.LabeledBy</a> in
+    						XAML. The control being illustrated is <code class="obj">MultiScaleImage</code>,
+    						which supports a zoom-in metaphor for examining an image that redraws
+    						at increasingly fine resolutions. For more information on <code class="obj">MultiScaleImage</code>,
+    						see <a href="https://msdn.microsoft.com/en-us/library/cc645050(VS.95).aspx">Deep
+    							Zoom on MSDN</a>. </p>
+            <p>The following is the startup logic at application level that sends
+    					focus to Silverlight in the HTML DOM. </p>
+            <pre xml:space="preserve">       private void Application_Startup(object sender, StartupEventArgs e)
+       {
+           this.RootVisual = new MainPage();
+           //bring overall DOM focus to Silverlight area, so that keys are captured by Silverlight
+           System.Windows.Browser.HtmlPage.Plugin.Focus();
+       }
+       </pre>
+            <p>The following is XAML UI for the main page. </p>
+            <pre xml:space="preserve"> &lt;UserControl xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+    x:Class="ApplicationLevelKeyHandling.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300" d:DesignWidth="400" KeyUp="UserControl_KeyUp"&gt;
+
+    &lt;StackPanel x:Name="LayoutRoot" Background="White"&gt;
+        &lt;Button Name="bInstructions" Click="bInstructions_Click"&gt;Get Help&lt;/Button&gt;
+        &lt;Popup Name="p"&gt;
+            &lt;Grid&gt;
+                &lt;Grid.RowDefinitions&gt;
+                    &lt;RowDefinition/&gt;
+                    &lt;RowDefinition/&gt;
+                    &lt;RowDefinition/&gt;
+                    &lt;RowDefinition/&gt;
+                &lt;/Grid.RowDefinitions&gt;
+                &lt;Grid.ColumnDefinitions&gt;
+                    &lt;ColumnDefinition/&gt;
+                    &lt;ColumnDefinition/&gt;
+                &lt;/Grid.ColumnDefinitions&gt;
+                &lt;TextBlock FontWeight="Bold"&gt;Key&lt;/TextBlock&gt;
+                &lt;TextBlock FontWeight="Bold" Grid.Column="1"&gt;Action&lt;/TextBlock&gt;
+                &lt;TextBlock Grid.Row="1"&gt;Ctrl + Alt + Plus&lt;/TextBlock&gt;
+                &lt;TextBlock Grid.Row="1" Grid.Column="1"&gt;Zooms in on the image&lt;/TextBlock&gt;
+                &lt;TextBlock Grid.Row="2"&gt;Ctrl + Alt + Minus&lt;/TextBlock&gt;
+                &lt;TextBlock Grid.Row="2" Grid.Column="1"&gt;Zooms out of the image&lt;/TextBlock&gt;
+                &lt;Button Grid.Row="3" Click="button1_Click"&gt;Close this Help&lt;/Button&gt;
+            &lt;/Grid&gt;
+        &lt;/Popup&gt;
+        &lt;MultiScaleImage x:Name="deepZoomObject"
+         Source="source/dzc_output.xml" 
+         MouseLeftButtonDown="DeepZoomObject_MouseLeftButtonDown"
+         MouseRightButtonDown="DeepZoomObject_MouseRightButtonDown"
+         AutomationProperties.LabeledBy="{Binding ElementName=lblInstructions}"/&gt;
+    &lt;/StackPanel&gt;
+ &lt;/UserControl&gt;</pre>
+            <p>The following is the C# logic. Note how the key handlers and mouse
+    					handlers reference the same logic function. </p>
+            <pre xml:space="preserve">        private void UserControl_KeyUp(object sender, KeyEventArgs e)
+        {
+            if ((Keyboard.Modifiers &amp; ModifierKeys.Control) == ModifierKeys.Control &amp;&amp;
+                (Keyboard.Modifiers &amp; ModifierKeys.Alt) == ModifierKeys.Alt &amp;&amp;
+                e.Key == Key.Add)
+            {
+                DZIn();
+            }
+            if ((Keyboard.Modifiers &amp; ModifierKeys.Control) == ModifierKeys.Control &amp;&amp;
+                (Keyboard.Modifiers &amp; ModifierKeys.Alt) == ModifierKeys.Alt &amp;&amp;
+                e.Key == Key.Subtract)
+            {
+                DZOut();
+            }
+        }
+        private void DeepZoomObject_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DZIn();
+        }
+        private void DeepZoomObject_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            DZOut();
+        }
+        private void DZIn()
+        {
+            this.deepZoomObject.ZoomAboutLogicalPoint(3, .5, .5);
+        }
+        private void DZOut()
+        {
+            this.deepZoomObject.ZoomAboutLogicalPoint(.333, .5, .5);
+        }
+        private void bInstructions_Click(object sender, RoutedEventArgs e)
+        {
+
+            // Set where the popup will show up on the screen.
+            p.VerticalOffset = 25;
+            p.HorizontalOffset = 25;
+            // Open the popup.
+            p.IsOpen = true;
+        }
+        void button1_Click(object sender, RoutedEventArgs e)
+        {
+            // Close the popup.
+            p.IsOpen = false;
+
+        }</pre>
+            <p class="working-example">This example is shown in operation in the <a href="../../working-examples/silverlight-application-level-key-handling/">working example of Application Level Key Handling</a>.</p>
+         
+      </section>
+   </section><section id="tests"><h2>Tests</h2>
+      <section class="procedure"><h3>Procedure</h3>
+         <ol>
+            <li> Using a browser that supports Silverlight, open an HTML page that
+    					references a Silverlight application through an object tag. </li>
+            <li> Verify that keyboard focus is somewhere within the Silverlight
+    						content area, and not elsewhere in the hosting HTML or hosting browser
+    						user interface. If necessary, use TAB key to traverse the overall
+    						HTML tab sequence until an interface element within Silverlight displays
+    						a visual focus indicator. </li>
+            <li> Verify that the keys to be used as keyboard equivalent action
+    							triggers for the application as a whole are documented for users.
+    							For example, text or long text alternative documents key / key combinations
+    							and short descriptions of actions. </li>
+            <li> Verify that pressing the application-specific keys results in
+    					the action as expected in the application. </li>
+            <li> Move keyboard focus throughout other areas of the Silverlight
+    					application, and verify that the same keys continue to function application-wide. </li>
+         </ol>
+      </section>
+      <section class="results"><h3>Expected Results</h3>
+         <p>#3, #4 and #5 are true. </p>
+      </section>
+   </section><section id="related"><h2>Related Techniques</h2><ul>
+      <li><a href="../silverlight/SL9">SL9</a></li>
+   </ul></section><section id="resources"><h2>Resources</h2>
+      
+         <ul>
+            <li>
+                  <a href="https://msdn.microsoft.com/en-us/library/cc189015(VS.95).aspx">Keyboard
+    					Support</a> 
+               </li>
+            <li>
+                  <a href="https://msdn.microsoft.com/en-us/library/cc645050(VS.95).aspx">Deep
+    					Zoom</a> 
+               </li>
+            <li>
+                  <a href="https://msdn.microsoft.com/en-us/library/cc707824(VS.95).aspx">Silverlight
+    						Accessibility Overview</a> 
+               </li>
+         </ul>
+      
+   </section></body></html>
