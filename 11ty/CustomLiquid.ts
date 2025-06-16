@@ -158,6 +158,10 @@ export class CustomLiquid extends Liquid {
       const prependedIncludes = ["header"];
       const appendedIncludes = ["wai-site-footer", "site-footer"];
 
+      // Include draft banner at top of informative pages for GH Pages builds and PR previews
+      if (process.env.WCAG_MODE === "editors" || (process.env.COMMIT_REF && !process.env.WCAG_MODE))
+        prependedIncludes.unshift("draft-banner");
+
       if (isUnderstanding)
         prependedIncludes.push(
           isIndex ? "understanding/navigation-index" : "understanding/navigation"
