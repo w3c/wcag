@@ -115,10 +115,6 @@ export class CustomLiquid extends Liquid {
         $childList = null;
         $tocList.append(`<li><a href="#${el.attribs.id}">${$(h2El).text()}</a></li>`);
       });
-      $el.find("> h3:first-child").each((_, h3El) => {
-        if (!$childList) $childList = $(`<ol class="toc"></ol>`).appendTo($tocList);
-        $childList.append(`<li><a href="#${el.attribs.id}">${$(h3El).text()}</a></li>`);
-      });
     });
 
     return $.html();
@@ -157,6 +153,10 @@ export class CustomLiquid extends Liquid {
 
       const prependedIncludes = ["header"];
       const appendedIncludes = ["wai-site-footer", "site-footer"];
+
+      // Include draft banner at top of informative pages for GH Pages builds and PR previews
+      if (process.env.WCAG_MODE === "editors" || (process.env.COMMIT_REF && !process.env.WCAG_MODE))
+        prependedIncludes.unshift("draft-banner");
 
       if (isUnderstanding)
         prependedIncludes.push(
@@ -243,7 +243,7 @@ export class CustomLiquid extends Liquid {
           $("figcaption").each((i, el) => {
             const $el = $(el);
             if (!$el.find("p").length) $el.wrapInner("<p></p>");
-            $el.prepend(`Figure ${i + 1}`);
+            $el.find("p").first().prepend(`<span>Figure ${i + 1}.</span> `);
           });
 
           // Remove spurious copy-pasted content in 2.5.3 that doesn't belong there
