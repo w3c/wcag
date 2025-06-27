@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 	<head>
-		<meta charset="UTF-8" />
+		<meta charset="UTF-8"/>
 		<title>Understanding Pointer Cancellation</title>
-		<link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove" />
+		<link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"/>
 	</head>
 	<body>
 		<h1>Understanding Pointer Cancellation</h1>
+
+		<section id="brief">
+			<h2>In brief</h2>
+			<dl>
+				<dt>Goal</dt><dd>Reduce accidental activation of controls by mouse or touch.</dd>
+				<dt>What to do</dt><dd>Make pointer cancellation predictable and consistent.</dd>
+				<dt>Why it's important</dt><dd>Make it easier for anyone to recover from something they didn’t mean to do.</dd>
+			</dl>
+	  
+		</section>
 		<section id="intent">
 			<h2>Intent</h2>
 			<p>The intent of this success criterion is to make it easier for users to prevent accidental or erroneous pointer input. People with various disabilities can inadvertently initiate touch or mouse events with unwanted results. Each of the following subsections roughly aligns with the bullets of this Success Criterion, and outlines a means of allowing users to cancel pointer operations.</p>
@@ -16,7 +26,7 @@
       
         <p>Up-event activation refers to the activation of a target when the pointer is released. In a touchscreen interaction, when the finger touches a target, the up-event activation only occurs when the finger is lifted while still being within the target boundary. Similarly in mouse interaction, the up-event occurs when the mouse button is released while the cursor is still within the boundary of the initial target set when the mouse button was pressed.</p>
       <p>Authors can reduce the problem of users inadvertently triggering an action by using generic platform activation/click events that activate functionality on the up-event. For example, the <code>click</code> event in JavaScript triggers on release of the primary mouse button, and is an example of an implicit up-event. Despite its name, the <code>click</code> event is device-independent and also works for touch and keyboard interaction.</p>
-         <p>The preference for up-events is implicit in the Success Criterion wording of the first bullet: <q>The down-event of the pointer is not used to execute any part of the function.</q> Authors meet the first bullet by using only the up-event.</p> 
+         <p>The preference for up-events is implicit in the success criterion wording of the first bullet: <q>The down-event of the pointer is not used to execute any part of the function.</q> Authors meet the first bullet by using only the up-event.</p> 
 			</section>
 			<section>
       <h3>Up-Event Abort or Undo</h3>
@@ -28,7 +38,7 @@
   <li>moved to a new location, while still being depressed, and</li>
   <li>released (up-event) to conclude the drop action.</li>
 </ol>
-<p>In such a complex action, the need for an Abort or Undo function increases. Designers may elect to confirm the move through something like a confirmation dialog or an undo button, giving the user the ability to Undo the process just completed. Alternatively, the ability to Abort the action can be acheived if, before completing step 3, the user returns the selected item to its original location and concludes the process there. If other parts of the screen disallow a move, the user can conclude the drag and drop there, effectively nullifying the operation.</p> 
+<p>In such a complex action, the need for an Abort or Undo function increases. Designers may elect to confirm the move through something like a confirmation dialog or an undo button, giving the user the ability to Undo the process just completed. Alternatively, the ability to Abort the action can be achieved if, before completing step 3, the user returns the selected item to its original location and concludes the process there. If other parts of the screen disallow a move, the user can conclude the drag and drop there, effectively nullifying the operation.</p> 
 			</section>
 			<section>
 <h3>Up Reversal</h3>
@@ -38,7 +48,7 @@
 <h3>Down-Event</h3>
 <p>Completing the function on the down-event is only permitted when it is essential that the up-event not be used.</p>
 <p>The most prevalent essential down-event activation occurs in keyboard emulation. On a physical keyboard, keys by default activate on the down-event -- a letter appears when the key is pressed. If a software keyboard emulator tried to override this expected behaviour by making letters appear when the key is released, the behaviour would be unexpected and would adversely affect expected interaction.</p>
-<p>Note that a keyboard has a built-in Backspace or Delete button, which effectively provides an Undo option. Undo is not a requirement of the down-event Essential exception; however, providing an easy way for users to undo any action is a recommended practice (and may be a functional necessity), even where it is not a requirement of this Success Criterion.</p>
+<p>Note that a keyboard has a built-in Backspace or Delete button, which effectively provides an Undo option. Undo is not a requirement of the down-event Essential exception; however, providing an easy way for users to undo any action is a recommended practice (and may be a functional necessity), even where it is not a requirement of this success criterion.</p>
 			<p>Other examples where the timing of an activation is essential and requires the down-event would be:</p>
 			<ul>
 				<li>An activity that emulates a physical on-press trigger, such as when playing an on-screen piano keyboard. Activation on the up-event would significantly alter the desired behaviour.</li>
@@ -46,13 +56,13 @@
 			</ul>
 			</section>
 </section>
-					<section id="benefits">
-				<h3>Benefits</h3>
-					<ul>
-					<li>Makes it easier for all users to recover from hitting the wrong target.</li>
-					<li>Helps people with visual disabilities, cognitive limitations, and motor impairments by reducing the chance that a control will be accidentally activated or an action will occur unexpectedly, and also ensures that where complex controls are activated, a means of Undoing or Aborting the action is available.</li>
-					<li>Individuals who are unable to detect changes of context are less likely to become disoriented while navigating a site.</li>
-				</ul>
+		<section id="benefits">
+			<h2>Benefits</h2>
+			<ul>
+				<li>Makes it easier for all users to recover from hitting the wrong target.</li>
+				<li>Helps people with visual disabilities, cognitive limitations, and motor impairments by reducing the chance that a control will be accidentally activated or an action will occur unexpectedly, and also ensures that where complex controls are activated, a means of Undoing or Aborting the action is available.</li>
+				<li>Individuals who are unable to detect changes of context are less likely to become disoriented while navigating a site.</li>
+			</ul>
 		</section>
 		<section id="examples">
 			<h2>Examples</h2>
@@ -62,12 +72,6 @@
         <li>A drag-and-drop interface allows users to sort vertically stacked cards by picking up one card with the pointer (down-event), move it to a new position, and insert it at the new location when the pointer is released (up-event). Releasing the pointer outside the drop target area reverts the action, i.e., it moves the card back to the old position before the interaction started.</li>
 			</ul>
 		</section>
-		<section id="resources">
-			<h2>Resources</h2>
-			<ul>
-				<li>Resource</li>
-			</ul>
-		</section>
 		<section id="techniques">
 			<h2>Techniques</h2>
 			<section id="sufficient">
@@ -75,7 +79,7 @@
 					<ul>
 						<li><a href="../../techniques/general/G210" class="general">G210</a></li>
 						<li><a href="../../techniques/general/G212" class="general">G212</a></li>
-						<li>@@ Touch events are only triggered when touch is removed from a control.</li>		
+						<li>Touch events are only triggered when touch is removed from a control (Potential future technique)</li>		
 					</ul>
 			</section>
 			<!--<section id="advisory">

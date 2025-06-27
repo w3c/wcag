@@ -15,18 +15,18 @@ var respecConfig = {
 	diffTool:             "http://www.aptest.com/standards/htmldiff/htmldiff.pl",
 	
 	// the specifications short name, as in https://www.w3.org/TR/short-name/
-	shortName:            "wcag-conformance-challenges",
+	shortName:            "accessibility-conformance-challenges",
 	
 	
 	// if you wish the publication date to be other than today, set this
-	//publishDate:  "2014-12-11",
-	copyrightStart:  "2019",
+	//publishDate:  "2020-06-04",
+	copyrightStart:  "2020",
 	license: "w3c-software-doc",
 	noRecTrack: true,
 	
 	// if there is a previously published draft, uncomment this and set its YYYY-MM-DD date
 	// and its maturity status
-	//previousPublishDate:  "2014-06-12",
+	//previousPublishDate:  "2020-06-04",
 	//previousMaturity:  "WD",
 	//prevRecURI: "https://www.w3.org/TR/2018/REC-WCAG21-20180605/",
 	//previousDiffURI: "https://www.w3.org/TR/2014/REC-wai-aria-20140320/",
@@ -42,10 +42,9 @@ var respecConfig = {
 	editors: [
 		{
 			name: "Janina Sajka",
-			company: "Amazon",
-			companyURL: "https://www.amazon.com/",
-			mailto: "sajkaj@amazon.com",
-			w3cid: 108617
+			URL: "https://linkedin.com/in/jsajka",
+			mailto: "janina@rednote.net",
+			w3cid: 33688
 		},
 		{
 			name: "Michael Cooper",
@@ -63,12 +62,11 @@ var respecConfig = {
 	authors:  [
 	//    { name: "Your Name", url: "http://example.org/",
 	//      company: "Your Company", companyURI: "http://example.com/" },
-	{
+		{
 			name: "Janina Sajka",
-			company: "Amazon",
-			companyURL: "https://www.amazon.com/",
-			mailto: "sajkaj@amazon.com",
-			w3cid: 108617
+			URL: "https://linkedin.com/in/jsajka",
+			mailto: "janina@rednote.net",
+			w3cid: 33688
 		},
 		{
 			name: "Peter Korn",
@@ -77,49 +75,11 @@ var respecConfig = {
 			mailto: "pkorn@amazon.com",
 			w3cid: 37425
 		},
-	{
-			name: "Joe Cronin",
-			company: "Amazon",
-			companyURL: "https://www.amazon.com/",
-			mailto: "joecron@amazon.com",
-			w3cid: 117679
-		},
- {
-		name: "Jeanne Spellman",
-		mailto: "jspellman@spellmanconsulting.com",
-		company: "TetraLogical",
-		companyURI: "https://tetralogical.com/",
-		w3cid: 42417
-	}, {
-		name: "Shawn Lauriat",
-		mailto: "lauriat@google.com",
-		company: "Google, Inc.",
-		companyURI: "https://www.google.com/",
-		w3cid: 90646
-	},	{
-		name: "Mary Jo Mueller",
-		mailto: "maryjom@us.ibm.com",
-		company: "IBM",
-		companyURI: "https://ibm.com/",
-		w3cid: 46880
-	},
-	{
-		name: "Andrew Kirkpatrick",
-		mailto: "akirkpat@adobe.com",
-		company: "Adobe",
-		companyURI: "https://adobe.com/",
-		w3cid: 39770
-	},
- {
-		name: "Charles Hall",
-		mailto: "charles.hall@mrm-mccann.com",
-		w3cid: 57439
-	},
- {
-		name: "Detlev Fischer",
-		mailto: "detlev.fischer@testkreis.de",
-		w3cid: 48042
-	},
+		{
+			name: "Charles Hall",
+			mailto: "charles.hall@mrm.com",
+			w3cid: 57439
+		}
 	],
 	
 	/*
@@ -148,8 +108,6 @@ var respecConfig = {
 	// Team Contact.
 	wgPatentURI:  "https://www.w3.org/2004/01/pp-impl/35422/status",
 	maxTocLevel: 4,
-	
-	localBiblio: biblio,
 	
 	postProcess: [addTextSemantics, swapInDefinitions]
 	
