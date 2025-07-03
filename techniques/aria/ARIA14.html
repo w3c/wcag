@@ -2,12 +2,13 @@
 <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
 
   <head>
-    <title>Using aria-label to provide an invisible label where a visible label cannot be used</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Using aria-label to provide an accessible name where a visible label cannot be used</title>
     <link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove" />
   </head>
 
   <body>
-    <h1>Using aria-label to provide an invisible label where a visible label cannot be used</h1>
+    <h1>Using aria-label to provide an accessible name where a visible label cannot be used</h1>
     <section class="meta">
       <p class="id">ID: ARIA14</p>
       <p class="technology">Technology: aria</p>
@@ -19,22 +20,22 @@
     </section>
     <section id="description">
       <h2>Description</h2>
-      <p>For sighted users, the context and visual appearance of an element can provide sufficient cues to determine the purpose. An example is the 'X' often used in the top right corner of pop-up <code class="language-html">div</code>s (light boxes) to indicate the control for closing the div.
+      <p>For sighted users, the context and visual appearance of an element can provide sufficient cues to determine the purpose. An example is the “&times;” often used in the top right corner of dialogs to indicate the control for closing the dialog. While it might be visually clear that the “&times;” button closes the dialog, users wit assistive technologies rely on accessible names that clearly communicate the purpose of components, in this case “Close”.
       </p>
-      <p>In some situations, elements can be given the attribute <code class="language-html">aria-label</code> to provide an accessible name for situations when there is no visible label due to a chosen design approach or layout but the context and visual appearance of the control make its purpose clear.</p>
+      <p>When no clear visible text label is available due to design decisions, the accessible name can be set by using the <code class="language-html">aria-label</code> attribute instead.</p>
 
-      <p>In other situations, elements can be given the attribute <code class="language-html">aria-label</code> to provide an accessible name when the native HTML labeling element is not supported by the control - for example, when a <code class="language-html">div</code> set to <code class="language-html">contentEditable</code> is used instead of native form elements such as <code class="language-html">input type="text"</code> or <code class="language-html">textarea</code> in order to provide a richer text editing experience.</p>
+      <p>The <code class="language-html">aria-label</code> attribute can also be used to provide an accessible name for custom controls. Custom controls cannot techniques for native HTML controls, like using a <code class="language-html">&lt;label&gt;</code> element with the <code class="language-html">for</code> attribute. When a <code class="language-html">&lt;div&gt;</code> element is made editable using the <code class="language-html">contentEditable</code> attribute, instead of native form elements such as <code class="language-html">&lt;input type="text"&gt;</code> or <code class="language-html">&lt;textarea&gt;</code>, in order to provide a richer text editing experience, it needs an accessible name provided by <code class="language-html">aria-label</code> or <code class="language-html">aria-labelledby</code>.</p>
 
     </section>
     <section id="examples">
       <h2>Examples</h2>
       <section class="example">
-        <h3>A close button in a pop-up box</h3>
+        <h3>A close button in a dialog</h3>
 
-        <p>On a page, a link displays a pop-up box (a <code class="language-html">div</code>) with additional information. The 'close' element is implemented as a <code class="language-html">button</code> containing merely the letter 'X'. The property <code class="language-html">aria-label="close"</code> is used to provide an accessible name to the <code class="language-html">button</code>.</p>
+        <p>On a page, a button displays a dialog (a <code class="language-html">&lt;div&gt;</code> element) with additional information. The “close” element is implemented as a <code class="language-html">&lt;button&gt;</code> containing merely the symbol “&times;”. The property <code class="language-html">aria-label="close"</code> is used to provide an accessible name to the button.</p>
         <pre xml:space="preserve"><code class="language-html">&lt;div id="box"&gt;
    This is a pop-up box.
-   &lt;button aria-label="Close"&gt;X&lt;/button&gt;
+   &lt;button aria-label="Close"&gt;&times;&lt;/button&gt;
 &lt;/div&gt;</code></pre>
         <p class="working-example">Working example: <a href="../../working-examples/aria-label-invisible-label-box/">Close button example</a>.
         </p>
@@ -56,7 +57,7 @@
       <h2>Tests</h2>
       <section class="procedure">
         <h3>Procedure</h3>
-        <p>For elements that use <code class="language-html">aria-label</code>:
+        <p>For elements that use the <code class="language-html">aria-label</code> attribute:
         </p>
         <ol>
           <li>Check that the value of the <code class="language-html">aria-label</code> attribute properly describes the purpose of an element where user input is required
