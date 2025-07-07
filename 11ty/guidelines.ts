@@ -35,10 +35,12 @@ export const actRules = (
   JSON.parse(await readFile("guidelines/act-mapping.json", "utf8")) as ActMapping
 )["act-rules"];
 
-/** Version-dependent overrides of SC shortcodes for older versions */
-export const scSlugOverrides: Record<string, (version: WcagVersion) => string> = {
-  "target-size-enhanced": (version) => (version < "22" ? "target-size" : "target-size-enhanced"),
-};
+/** Generates version-dependent overrides of SC shortcodes for older versions */
+export const generateScSlugOverrides = (version: WcagVersion): Record<string, string> => ({
+  ...(version < "22" && {
+    "target-size-enhanced": "target-size",
+  }),
+});
 
 /**
  * Flattened object hash, mapping each WCAG 2 SC slug to the earliest WCAG version it applies to.
@@ -46,13 +48,14 @@ export const scSlugOverrides: Record<string, (version: WcagVersion) => string> =
  */
 async function resolveScVersions(version: WcagVersion) {
   const paths = await glob("*/*.html", { cwd: "understanding" });
+  const scSlugOverrides = generateScSlugOverrides(version);
   const map: Record<string, WcagVersion> = {};
 
   for (const path of paths) {
     const [fileVersion, filename] = path.split("/");
     assertIsWcagVersion(fileVersion);
     const slug = basename(filename, ".html");
-    map[slug in scSlugOverrides ? scSlugOverrides[slug](version) : slug] = fileVersion;
+    map[slug in scSlugOverrides ? scSlugOverrides[slug] : slug] = fileVersion;
   }
 
   return map;
