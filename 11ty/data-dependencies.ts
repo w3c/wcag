@@ -52,8 +52,11 @@ export async function loadDataDependencies(version?: string) {
   const techniques = await getTechniquesByTechnology(flatGuidelines);
   const flatTechniques = getFlatTechniques(techniques);
 
-  const techniqueAssociations = await getTechniqueAssociations(flatGuidelines);
-  const futureTechniqueAssociations = await getTechniqueAssociations(futureGuidelines);
+  const techniqueAssociations = await getTechniqueAssociations(flatGuidelines, definedVersion);
+  const futureTechniqueAssociations = await getTechniqueAssociations(
+    futureGuidelines,
+    definedVersion
+  );
   const futureExclusiveTechniqueAssociations: typeof techniqueAssociations = {};
   for (const [id, associations] of Object.entries(futureTechniqueAssociations)) {
     if (!techniqueAssociations[id]) futureExclusiveTechniqueAssociations[id] = associations;
