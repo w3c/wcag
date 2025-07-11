@@ -13,8 +13,15 @@ import {
   getPrinciplesForVersion,
   getTermsMapForVersion,
   assertIsWcagVersion,
+  getFlatGuidelines,
 } from "./guidelines";
-import { techniqueAssociationTypes, type TechniqueAssociationType } from "./techniques";
+import {
+  getFlatTechniques,
+  getTechniquesByTechnology,
+  techniqueAssociationTypes,
+  type Technique,
+  type TechniqueAssociationType,
+} from "./techniques";
 
 const altIds: Record<string, string> = {
   "text-alternatives": "text-equiv",
@@ -197,7 +204,10 @@ interface TechniquesSituation {
 
 type TechniquesHtmlMap = Partial<Record<TechniqueAssociationType, string | TechniquesSituation[]>>;
 
-async function createTechniquesHtmlFromSc(sc: SuccessCriterion) {
+async function createTechniquesHtmlFromSc(
+  sc: SuccessCriterion,
+  techniquesMap: Record<string, Technique>
+) {
   const $ = await loadFromFile(join("_site", "understanding", `${sc.id}.html`));
 
   function cleanHtml($el: CheerioElement) {
@@ -236,11 +246,17 @@ async function createTechniquesHtmlFromSc(sc: SuccessCriterion) {
     // Make techniques links absolute
     // (this uses a different selector than the build process, to handle pre-built output)
     $section.find("[href*='/techniques/' i]").each((_, el) => {
-      el.attribs.href = el.attribs["href"].replace(
-        /^.*\/([\w-]+\/[^\/]+)$/,
-        "https://www.w3.org/WAI/WCAG22/Techniques/$1"
+      const $el = $(el);
+      const technique = techniquesMap[$el.attr("href")!.replace(/^.*\//, "")];
+      $el.attr(
+        "href",
+        $el
+          .attr("href")!
+          .replace(/^.*\/([\w-]+\/[^\/]+)$/, "https://www.w3.org/WAI/WCAG22/Techniques/$1")
       );
-      delete el.attribs.class;
+      $el.removeAttr("class");
+      // Restore full title (whereas links in build output used truncatedTitle)
+      $el.html(`${technique.id}: ${technique.title.replace(/\n\s+/g, " ")}`);
     });
 
     // Remove superfluous subheadings/subsections, e.g. "CSS Techniques (Advisory)"
@@ -299,6 +315,9 @@ export async function generateWcagJson(version: WcagVersion) {
     includeSynonyms: false,
     stripRespec: false,
   });
+  const techniquesMap = getFlatTechniques(
+    await getTechniquesByTechnology(getFlatGuidelines(principles))
+  );
 
   function cleanLinks($: CheerioAPI) {
     $("a[href]").each((_, aEl) => {
@@ -337,7 +356,7 @@ export async function generateWcagJson(version: WcagVersion) {
                 ...spreadCommonProps(sc),
                 level: sc.level,
                 details: createDetailsFromSc(sc),
-                techniquesHtml: await createTechniquesHtmlFromSc(sc),
+                techniquesHtml: await createTechniquesHtmlFromSc(sc, techniquesMap),
               }))
             ),
           }))
