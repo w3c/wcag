@@ -1,9 +1,9 @@
-WCAG (Web Content Accessibility Guidelines) - Branch for production of August 2016 review versions
+WCAG (Web Content Accessibility Guidelines) 2
 ===
 
-Please use this branch as the target for pull requests until July 10, 2016.
-
 This repository is used to develop content for WCAG 2, as well as associated understanding documents and techniques.
+
+See [Onboarding for working in Github](https://www.w3.org/WAI/GL/wiki/Onboarding_for_working_in_Github)
 
 ## Editorial style guide
 
