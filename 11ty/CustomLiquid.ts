@@ -138,9 +138,7 @@ export class CustomLiquid extends Liquid {
 
       // Clean out elements to be removed
       // (e.g. editors.css & sources.css, and leftover template paragraphs)
-      // Note 1: some paragraphs with the "instructions" class actually have custom content,
-      // but for now this remains consistent with the XSLT process by stripping all of them.
-      // Note 2: the link selector accounts for ~40 files forgetting class="remove" on editors.css
+      // Note: the link selector accounts for ~40 files forgetting class="remove" on editors.css
       $(".remove, link[href$='editors.css'], section#meta, section.meta").remove();
 
       if ($("p.instructions").length > 0) {
