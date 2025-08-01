@@ -14,6 +14,7 @@ import { promisify } from "util";
 import { resolveDecimalVersion } from "./common";
 import type { WcagVersion } from "./guidelines";
 import { technologies, technologyTitles } from "./techniques";
+import { loadDataDependencies } from "./data-dependencies";
 
 const execAsync = promisify(exec);
 
@@ -83,6 +84,7 @@ const getEarliestObsolescenceDate = (path: string, version: WcagVersion) => {
 };
 
 async function generateChangelog(version: WcagVersion) {
+  const { futureExclusiveTechniqueAssociations } = await loadDataDependencies(version);
   const entries: Entry[] = [];
 
   for (const technology of technologies) {
@@ -119,7 +121,7 @@ async function generateChangelog(version: WcagVersion) {
     for (let i = 1; i <= max; i++) {
       const techniquePath = join(techniquesPath, `${code}${i}.html`);
       const technique = basename(techniquePath, ".html");
-      if (technique in excludes) continue;
+      if (technique in excludes || technique in futureExclusiveTechniqueAssociations) continue;
 
       const additionDate = await getEarliestAdditionDate(techniquePath);
       if (!additionDate) continue; // Skip if added prior to start date
