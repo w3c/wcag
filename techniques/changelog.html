@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>WCAG {{ versionDecimal }} Techniques Change Log | WAI | W3C</title>
+  <link rel="stylesheet" href="https://w3.org/WAI/assets/css/style.css">
+  <link rel="stylesheet" type="text/css" href="base.css">
+</head>
+
+<body dir="ltr">
+  <div class="default-grid with-gap leftcol">
+    <aside class="box nav-hack sidebar standalone-resource__sidebar ">
+      <header class="box-h ">Page Contents</header>
+      <div class="box-i">
+        <nav aria-label="page contents" class="navtoc">
+          <ul>
+            <li><a href="#added">Added Techniques</a></li>
+            <li><a href="#removed">Removed Techniques</a></li>
+          </ul>
+        </nav>
+      </div>
+    </aside>
+
+    <main id="main" class="main-content standalone-resource__main">
+      <h1 id="title" class="title p-name">Techniques Change Log for WCAG {{ versionDecimal }}</h1>
+
+      <section id="added">
+        <h2>Added Techniques</h2>
+        <ul>
+          {% for entry in changelog[version] -%}
+            {%- if entry.type == "added" -%}
+              <li>
+                <time datetime="{{ entry.date }}">{{ entry.date | date: "%d %B %Y" }}</time>:
+                {% if entry.techniques.size == 1 -%}
+                  Added {{ entry.techniques[0] | linkTechniques }}
+                {%- else -%}
+                  Added the following techniques:
+                  <ul>
+                    {%- for technique in entry.techniques -%}
+                      <li>{{ technique | linkTechniques }}</li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif %}
+              </li>
+            {%- endif -%}
+          {%- endfor %}
+        </ul>
+      </section>
+
+      <section id="removed">
+        <h2>Removed Techniques</h2>
+        <ul>
+          {% for entry in changelog[version] -%}
+            {%- if entry.type == "removed" -%}
+              <li>
+                <time datetime="{{ entry.date }}">{{ entry.date | date: "%d %B %Y" }}</time>:
+                {% if entry.techniques.size == 1 -%}
+                  Removed {{ entry.techniques[0] }}
+                {%- else -%}
+                  Removed the following techniques:
+                  <ul>
+                    {%- for technique in entry.techniques -%}
+                      <li>{{ technique }}</li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif %}
+              </li>
+            {%- endif -%}
+          {%- endfor %}
+        </ul>
+      </section>
+    </main>
+  </div>
+</body>
+
+</html>

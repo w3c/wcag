@@ -17,7 +17,7 @@ import { techniqueToUnderstandingLinkSelector } from "./understanding";
 const titleSuffix = " | WAI | W3C";
 
 /** Matches index and about pages, traditionally processed differently than individual pages */
-const indexPattern = /(techniques|understanding)\/(index|about)\.html$/;
+const indexPattern = /(techniques|understanding)\/(index|about|changelog)\.html$/;
 const techniquesPattern = /\btechniques\//;
 const understandingPattern = /\bunderstanding\//;
 
