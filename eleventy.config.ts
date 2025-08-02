@@ -307,6 +307,21 @@ export default async function (eleventyConfig: any) {
     }
   );
 
+  // Filter that transforms a technique ID into its title (even if it is obsolete, e.g. for changelog)
+  eleventyConfig.addFilter("displayTechniqueTitle", function (this: EleventyContext, id: string) {
+    const technique = flatTechniques[id];
+    if (!technique) {
+      if (process.env.WCAG_VERBOSE) {
+        console.warn(
+          `displayTechniqueTitle in ${this.page.inputPath}: ` +
+            `skipping unresolvable technique id ${id}`
+        );
+      }
+      return;
+    }
+    return `${id}: ${technique.truncatedTitle}`;
+  });
+
   // Filter that transforms a guideline or SC shortname (or list of them) into links to their pages.
   eleventyConfig.addFilter(
     "linkUnderstanding",

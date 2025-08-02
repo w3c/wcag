@@ -58,12 +58,12 @@
               <li>
                 <time datetime="{{ entry.date }}">{{ entry.date | date: "%d %B %Y" }}</time>:
                 {% if entry.techniques.size == 1 -%}
-                  Removed {{ entry.techniques[0] }}
+                  Removed {{ entry.techniques[0] | displayTechniqueTitle | default: entry.techniques[0] }}
                 {%- else -%}
                   Removed the following techniques:
                   <ul>
                     {%- for technique in entry.techniques -%}
-                      <li>{{ technique }}</li>
+                      <li>{{ technique | displayTechniqueTitle | default: technique }}</li>
                     {%- endfor -%}
                   </ul>
                 {%- endif %}
