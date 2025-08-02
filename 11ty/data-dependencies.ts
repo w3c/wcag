@@ -38,6 +38,9 @@ export async function loadDataDependencies(version?: string) {
     return await getPrinciplesForVersion(definedVersion);
   }
 
+  // Note: many of these variables are documented in the return value instead of up-front,
+  // in order to provide docs to consumers of this function
+
   const principles = await resolveRelevantPrinciples();
   const flatGuidelines = getFlatGuidelines(principles);
   /** Flattened Principles/Guidelines/SC that only exist in later versions (to filter techniques) */
@@ -59,7 +62,8 @@ export async function loadDataDependencies(version?: string) {
   for (const [id, associations] of Object.entries(techniqueAssociations)) {
     // Prune associations from non-obsolete techniques to obsolete SCs
     techniqueAssociations[id] = associations.filter(
-      ({ criterion }) => criterion.level !== "" || isTechniqueObsolete(flatTechniques[id], definedVersion)
+      ({ criterion }) =>
+        criterion.level !== "" || isTechniqueObsolete(flatTechniques[id], definedVersion)
     );
   }
 
