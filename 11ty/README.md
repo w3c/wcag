@@ -23,10 +23,11 @@ Common tasks:
   - http://localhost:8080/techniques
   - http://localhost:8080/understanding
 
-Maintenance tasks (for working with Eleventy config and supporting files under this subdirectory):
+Maintenance tasks (for working with Eleventy config and supporting files used by the build):
 
 - `npm run check` checks for TypeScript errors
 - `npm run fmt` formats all TypeScript files
+- `npm run changelog` generates data for the Techniques Change Log
 
 ## Environment Variables
 
