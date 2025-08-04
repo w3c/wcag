@@ -1,17 +1,9 @@
-// TODOs:
-// - Handle running for 2.1 vs. 2.2 (would probably be easier by reusing techniques.ts, either as part of 11ty build or otherwise)
-// - Create techniques/changelog.html template, migrating changelog out of techniques/index.html
-//   - Ideally use {{ linkTechniques | ... }} for additions; removals should get titles but shouldn't link
-//     - Create cousin `labelTechnique` filter that only applies title logic w/o link?
-// - Figure out workflow story (i.e. when do we run this? Could do it ahead of w3c build...)
-
 import { exec } from "child_process";
 import { access, readFile, writeFile } from "fs/promises";
 import { glob } from "glob";
 import { basename, join } from "path";
 import { promisify } from "util";
 
-import { resolveDecimalVersion } from "./common";
 import type { WcagVersion } from "./guidelines";
 import { technologies, technologyTitles } from "./techniques";
 import { loadDataDependencies } from "./data-dependencies";
@@ -28,6 +20,7 @@ const sinceDate = new Date(2018, 5, 6);
 
 interface Entry {
   date: Date;
+  hash: string;
   technique: string;
   type: "added" | "removed";
 }
@@ -47,33 +40,45 @@ const checkTechnique = async (path: string) =>
     () => false
   );
 
-function resolveEarliestDate(a: Date | null, b: Date | null) {
-  if (a && b) return new Date(Math.min(+a, +b));
+function resolveEarliest(a: EarliestInfo | null, b: EarliestInfo | null) {
+  if (a && b) {
+    if (a.date > b.date) return b;
+    return a;
+  }
   if (a || b) return a || b;
   return null;
 }
 
+interface EarliestInfo {
+  date: Date;
+  hash: string;
+}
+
 // Cache getEarliestDate results to save time processing across versions
-const earliestDateCache: Record<string, Date | null> = {};
+const earliestCache: Record<string, EarliestInfo | null> = {};
 
 // Common function called by getEarlest...Date functions below
-async function getEarliestDate(path: string, logArgs: string) {
+async function getEarliest(path: string, logArgs: string) {
   const cacheKey = `${path} ${logArgs}`;
-  if (!(cacheKey in earliestDateCache)) {
-    const command = `git log ${logArgs} --format=%ad --date=iso-strict -- ${path} | tail -1`;
+  if (!(cacheKey in earliestCache)) {
+    const command = `git log ${logArgs} --format='%h %ad' --date=iso-strict -- ${path} | tail -1`;
     const output = (await execAsync(command)).stdout.trim();
-    earliestDateCache[cacheKey] = output ? new Date(output) : null;
+    if (output) {
+      const match = /^(\w+) (.+)$/.exec(output);
+      if (!match) throw new Error("Unexpected git log output format");
+      earliestCache[cacheKey] = { date: new Date(match[2]), hash: match[1] };
+    } else earliestCache[cacheKey] = null;
   }
-  return earliestDateCache[cacheKey];
+  return earliestCache[cacheKey];
 }
 
 // --diff-filter=A is NOT used for additions because it misses odd merge commit cases e.g. F99.
 // (Not using it seems to have negligible performance difference and causes no other changes.)
-const getEarliestAdditionDate = (path: string) => getEarliestDate(path, "");
-const getEarliestRemovalDate = (path: string) => getEarliestDate(path, "--diff-filter=D");
-const getEarliestObsolescenceDate = (path: string, version: WcagVersion) => {
+const getEarliestAddition = (path: string) => getEarliest(path, "");
+const getEarliestRemoval = (path: string) => getEarliest(path, "--diff-filter=D");
+const getEarliestObsolescence = (path: string, version: WcagVersion) => {
   const valuePattern = `2[0-${version[1]}]`;
-  return getEarliestDate(
+  return getEarliest(
     path,
     `-G'${
       path.endsWith(".json")
@@ -95,18 +100,17 @@ async function generateChangelog(version: WcagVersion) {
     if (!techniquesFiles.length) continue;
 
     const code = techniquesFiles[0].replace(/\d+\.html$/, "");
-    const technologyObsolescenceDate = await getEarliestObsolescenceDate(
+    const technologyObsolescence = await getEarliestObsolescence(
       join(techniquesPath, `${technology}.11tydata.json`),
       version
     );
-    if (technologyObsolescenceDate && technologyObsolescenceDate > sinceDate) {
+    if (technologyObsolescence && technologyObsolescence.date > sinceDate) {
       // The above check can handle future cases of marking an entire folder as obsolete;
       // for legacy cases (Flash/SL), check the first technique file for removal
-      const technologyRemovalDate = await getEarliestRemovalDate(
-        join(techniquesPath, `${code}1.html`)
-      );
+      const technologyRemoval = await getEarliestRemoval(join(techniquesPath, `${code}1.html`));
       entries.push({
-        date: technologyRemovalDate || technologyObsolescenceDate,
+        date: (technologyRemoval || technologyObsolescence).date,
+        hash: (technologyRemoval || technologyObsolescence).hash,
         technique: `all ${technologyTitles[technology]}`,
         type: "removed",
       });
@@ -123,24 +127,24 @@ async function generateChangelog(version: WcagVersion) {
       const technique = basename(techniquePath, ".html");
       if (technique in excludes || technique in futureExclusiveTechniqueAssociations) continue;
 
-      const additionDate = await getEarliestAdditionDate(techniquePath);
-      if (!additionDate) continue; // Skip if added prior to start date
-      if (additionDate > sinceDate)
+      const addition = await getEarliestAddition(techniquePath);
+      if (!addition) continue; // Skip if added prior to start date
+      if (addition.date > sinceDate)
         entries.push({
-          date: additionDate,
+          ...addition,
           technique,
           type: "added",
         });
 
-      const removalDate = (await checkTechnique(techniquePath))
+      const removal = (await checkTechnique(techniquePath))
         ? null
-        : resolveEarliestDate(
-            await getEarliestRemovalDate(techniquePath),
-            await getEarliestObsolescenceDate(techniquePath, version)
+        : resolveEarliest(
+            await getEarliestRemoval(techniquePath),
+            await getEarliestObsolescence(techniquePath, version)
           );
-      if (removalDate && removalDate > sinceDate)
+      if (removal && removal.date > sinceDate)
         entries.push({
-          date: removalDate,
+          ...removal,
           technique,
           type: "removed",
         });
@@ -156,11 +160,11 @@ async function generateChangelog(version: WcagVersion) {
     return 0;
   });
 
-  return entries.reduce((collectedEntries, { date, technique, type }) => {
+  return entries.reduce((collectedEntries, { date, hash, technique, type }) => {
     const previousEntry = collectedEntries[collectedEntries.length - 1];
     if (previousEntry && previousEntry.type === type && +previousEntry.date === +date)
       previousEntry.techniques.push(technique);
-    else collectedEntries.push({ date, techniques: [technique], type });
+    else collectedEntries.push({ date, hash, techniques: [technique], type });
     return collectedEntries;
   }, [] as CompoundEntry[]);
 }
