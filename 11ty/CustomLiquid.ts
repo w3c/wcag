@@ -1,3 +1,4 @@
+import { type Options as SlugifyOptions, slugifyWithCounter } from "@sindresorhus/slugify";
 import hljs from "highlight.js";
 import { Liquid, type Template } from "liquidjs";
 import type { LiquidOptions, RenderOptions } from "liquidjs/dist/liquid-options";
@@ -10,7 +11,6 @@ import type { GlobalData } from "eleventy.config";
 
 import { biblioPattern, getBiblio, getXmlBiblio } from "./biblio";
 import { flattenDom, load, type CheerioAnyNode } from "./cheerio";
-import { generateId } from "./common";
 import { getAcknowledgementsForVersion, type TermsMap } from "./guidelines";
 import { resolveTechniqueIdFromHref, understandingToTechniqueLinkSelector } from "./techniques";
 import { techniqueToUnderstandingLinkSelector } from "./understanding";
@@ -640,6 +640,9 @@ export class CustomLiquid extends Liquid {
       } else $("section#references").remove();
     }
 
+    const slugify = slugifyWithCounter();
+    const slugifyOptions: SlugifyOptions = { decamelize: false };
+
     // Allow autogenerating missing top-level section IDs in understanding docs,
     // but don't pick up incorrectly-nested sections in some techniques pages (e.g. H91)
     const sectionSelector = scope.isUnderstanding ? "section" : "section[id]:not(.obsolete)";
@@ -650,7 +653,8 @@ export class CustomLiquid extends Liquid {
       // when we have sections and sidebar skeleton already reordered
       const $tocList = $(".sidebar nav ul");
       $h2Sections.each((_, el) => {
-        if (!el.attribs.id) el.attribs.id = generateId($(el).find(sectionH2Selector).text());
+        if (!el.attribs.id)
+          el.attribs.id = slugify($(el).find(sectionH2Selector).text(), slugifyOptions);
         $("<a></a>")
           .attr("href", `#${el.attribs.id}`)
           .text(normalizeTocLabel($(el).find(sectionH2Selector).text()))
@@ -674,8 +678,13 @@ export class CustomLiquid extends Liquid {
     $(autoIdSectionSelectors.join(", "))
       .filter(`:has(${sectionHeadingSelector})`)
       .each((_, el) => {
-        el.attribs.id = generateId($(el).find(sectionHeadingSelector).text());
+        el.attribs.id = slugify($(el).find(sectionHeadingSelector).text(), slugifyOptions);
       });
+
+    // Also autogenerate IDs for any headings with no dedicated section nor explicit ID
+    $(":is(h3, h4, h5):not(:first-child):not([id])").each((_, el) => {
+      el.attribs.id = slugify($(el).text(), slugifyOptions);
+    });
 
     return stripHtmlComments($.html());
   }
