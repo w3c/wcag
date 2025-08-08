@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Using aria-current to identify the current item in a set examples</title>
+    <style>
+
+    :root {
+        font-size: 100%;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+
+        --white:hsl(0,0%,100%);
+        --black: hsl(0,0%,0%);
+        --redish:hsl(354,83%,43%);
+        --blue-light:hsl(197, 100%, 77%);
+        --blue-mid:hsl(234,72%,42%);
+        --blue-dark:hsl(213,100%,18%);
+        --focus:hsl(289,40%,32%);
+      }
+
+      *,
+      *::after,
+      *::before {
+        box-sizing: inherit;
+      }
+
+        body {
+        background: var(--white);
+        color: var(--black);
+        font: 1rem/1.5 system-ui, "Segoe UI", Roboto, Helvetica, sans-serif;
+      }            
+
+      [hidden]{
+        display:none;
+      }
+
+      h2{
+        margin-top:1.56em;
+        margin-bottom:0.1em;
+      }
+
+      .navbar{
+        background:var(--blue-light);
+        display:inline-flex;
+        list-style: none;
+        margin:0;
+        padding:0.25em 0.5em;
+      }
+
+      .navbar li a{
+        color:var(--black);
+        padding:0.33em 0.5em;
+        text-decoration: none;
+      }
+
+      .navbar li [aria-current=page]{
+        background:var(--blue-dark);
+        color:var(--white);
+        font-weight: bold;
+      }
+
+    /* Recipe */      
+
+      [aria-labelledby=recipe]{
+        border:1px solid var(--redish);
+        border-radius:4px;
+        width:15rem;
+      }
+
+      #recipe{
+        background:var(--redish);
+        color:var(--white);
+        margin-top:0;
+        text-align:center;
+      }
+
+      .current--step, .current--step a{
+      color:var(--redish);
+      font-weight:bold;
+      }
+
+      [aria-current=step] svg{
+        color:var(--redish);
+        fill:currentColor;
+        height:0.75em;
+        width:0.75em;
+      }
+
+    /* Class Schedule */
+
+      .class-wrapper{
+        border:1px solid var(--blue-mid);
+        border-radius:4px;
+        padding:1rem;
+        width:30rem;
+      }
+
+      #class-schedule{
+        color:var(--blue-mid);
+        margin:0;
+      }
+
+      .table-wrapper{
+        overflow: auto;
+      }
+
+      .table-wrapper:focus{
+        outline:2px solid var(--focus);
+        outline-offset:1px;
+      }
+
+      table{
+        border-collapse: collapse;
+        margin:0 auto;
+        width:100%
+      }
+
+      th{
+        background:var(--blue-mid);
+        color:var(--white);
+      }
+
+      tr th:first-child{
+        text-align: left;
+      }
+
+      tr td{
+        border-bottom:1px solid hsl(0,0%,90%);
+      }
+
+      th, td{
+        padding:0.25em;
+      }
+
+      tr.current-time td{
+        background:var(--blue-light);
+        color:var(--blue-dark);
+      }
+
+    .time-icon{
+      color:var(--blue-mid);
+      fill:var(--white);
+      height:1.5em;
+      vertical-align:middle;
+      width:0.8em;
+    }
+
+    </style>
+
+  </head>
+
+  <body>
+    
+    <svg hidden>
+      <symbol id="carat" viewbox="0 0 16 16">
+        <path d="M0 0, L16 8, L0 16"></path>
+      </symbol>
+      <symbol id="clock" viewbox="0 0 16 16">
+        <circle cx="8" cy="8" r="8" color="class"></circle>
+        <circle cx="8" cy="8" r="7.5" stroke="currentColor" stroke-width="1" fill="none"></circle>
+        <line x1="8" y1="14" x2="8" y2="7.5" stroke="currentColor"></line>
+        <line x1="3.9" y1="6.6" x2="8" y2="8" stroke="currentColor"></line>
+      </symbol>
+    </svg>
+
+    <main>
+
+      <h1>Using <code class="att">aria-current</code> to identify the current item in a set examples</h1>
+
+      <section id="example1">
+
+        <h2>Example 1: Using <code class="att">aria-current</code> to mark up a navigation bar</h2>
+
+        <nav>
+          <ul class="navbar">
+            <li><a href="#">Home</a></li>
+            <li><a href="#" aria-current="page">Food</a></li>
+            <li><a href="#">Drinks</a></li>
+            <li><a href="#">Accessories</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </nav>
+
+      </section>
+
+      <section id="example2">
+        <h2>Example 2: Using <code class="att">aria-current</code> to mark up the steps in a recipe</h2>
+
+        <div aria-labelledby="recipe" role="group">
+          <h3 id="recipe">Meringue Recipe Steps</h3>
+          <ol>
+            <li><a href="#oven">Heat your oven</a></li>
+            <li class="current--step">
+              <a aria-current="step" href="#separate">Separate eggs</a>
+            </li>
+            <li><a href="#whisk-eggs">Whisk egg whites</a></li>
+            <li><a href="#whisk-sugar">Whisk in the sugar</a></li>
+            <li><a href="#pipe">Pipe mixture into shapes</a></li>
+            <li><a href="#bake">Bake</a></li>
+            <li><a href="#cool">Allow to cool</a></li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="example3">
+        <h2>Example 3: Using <code class="att">aria-current</code> to mark up the current time in a timetable</h2>
+
+        <div class="class-wrapper">
+          <h3 id="class-schedule">Morning Class Schedule</h3>
+          <div aria-labelledby="class-schedule" class="table-wrapper" role="group" tabindex="0">
+            <table aria-labelledby="class-schedule">
+              <tr>
+                <th>Time</th>
+                <th>Subject</th>
+              </tr>
+              <tr>
+                <td>
+                  <time datetime="2021-03-25T08:30">8:30-9:00am</time>
+                </td>
+                <td>Morning Meeting</td>
+              </tr>
+              <tr>
+                <td>
+                  <time datetime="2021-03-25T09:00">9:00-9:30am</time>
+                </td>
+                <td>Math</td>
+              </tr>
+              <tr class="current-time">
+                <td>
+                  <time aria-current="time" datetime="2021-03-25T09:30">9:30-10:30am</time>
+                  <svg class="time-icon" aria-hidden="true"><use href="#clock"></use></svg>              
+                </td>
+                <td>Reading</td>
+              </tr>
+              <tr>
+                <td>
+                  <time datetime="2021-03-25T10:30">10:30-10:45am</time>
+                </td>
+                <td>Recess</td>
+              </tr>
+              <tr>
+                <td>
+                  <time datetime="2021-03-25T10:45">10:45-11:30am</time>
+                </td>
+                <td>Music</td>
+              </tr>
+              <tr>
+                <td>
+                  <time datetime="2021-03-25T11:30">11:30-12:00pm</time>
+                </td>
+                <td>Independent Work</td>
+              </tr>
+              <tr>
+                <td>
+                  <time datetime="2021-03-25T12:00">12:00-12:45pm</time>
+                </td>
+                <td>Lunchtime</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </section>
+  
+    </main>
+
+  </body>
+</html>
