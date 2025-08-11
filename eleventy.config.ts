@@ -416,13 +416,11 @@ export default async function (eleventyConfig: any) {
   eleventyConfig.addShortcode("gh", (id: string) => {
     if (/^#\d+$/.test(id)) {
       const num = id.slice(1);
-      return `<a href="https://github.com/${GH_ORG}/${GH_REPO}/pull/${num}" aria-label="pull request ${num}">${id}</a>`
-    }
-    else if (/^[0-9a-f]{7,}$/.test(id)) {
+      return `<a href="https://github.com/${GH_ORG}/${GH_REPO}/pull/${num}" aria-label="pull request ${num}">${id}</a>`;
+    } else if (/^[0-9a-f]{7,}$/.test(id)) {
       const sha = id.slice(0, 7); // Truncate in case full SHA was passed
-      return `<a href="https://github.com/${GH_ORG}/${GH_REPO}/commit/${sha}" aria-label="commit ${sha}">${sha}</a>`
-    }
-    else throw new Error(`Invalid SHA or PR ID passed to gh tag: ${id}`);
+      return `<a href="https://github.com/${GH_ORG}/${GH_REPO}/commit/${sha}" aria-label="commit ${sha}">${sha}</a>`;
+    } else throw new Error(`Invalid SHA or PR ID passed to gh tag: ${id}`);
   });
 
   // Renders a section box (used for About this Technique and Guideline / SC)
