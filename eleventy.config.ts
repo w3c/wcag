@@ -254,7 +254,8 @@ export default async function (eleventyConfig: any) {
     if (runMode === "build" && process.env.WCAG_MODE === "publication") await rimraf("_site");
   });
 
-  eleventyConfig.on("eleventy.after", async ({ dir }: EleventyEvent) => {
+  let hasDisplayedGuidance = false;
+  eleventyConfig.on("eleventy.after", async ({ dir, runMode }: EleventyEvent) => {
     // addPassthroughCopy can only map each file once,
     // but base.css needs to be copied to a 2nd destination
     await copyFile(
@@ -288,6 +289,13 @@ export default async function (eleventyConfig: any) {
       const { generateWcagJson } = await import("11ty/json");
       assertIsWcagVersion(version);
       await writeFile(`${dir.output}/wcag.json`, await generateWcagJson(version));
+    }
+
+    if (runMode === "serve" && !hasDisplayedGuidance) {
+      hasDisplayedGuidance = true;
+      console.log(
+        "If editing TypeScript files or adding new pages, press Enter to restart the dev server."
+      );
     }
   });
 
