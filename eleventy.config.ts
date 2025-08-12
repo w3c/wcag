@@ -294,7 +294,7 @@ export default async function (eleventyConfig: any) {
     if (runMode === "serve" && !hasDisplayedGuidance) {
       hasDisplayedGuidance = true;
       console.log(
-        "If editing TypeScript files or adding new pages, press Enter to restart the dev server."
+        "The dev server will restart on TypeScript changes. If you are adding new HTML pages, press Enter to restart it manually."
       );
     }
   });
