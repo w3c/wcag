@@ -23,294 +23,35 @@
       <section class="example">
          
             <p>This example does up and down reordering. This approach can also be used for two-dimensional reordering by adding left and right options.</p>
-            <p>The components in this example are list items in an unordered list. Unordered lists are a very good semantic model for sets of similar items, like these components. The menu approach can also be used for other types of groupings.</p>
+            <p>The components in this example are list items in an unordered list. Unordered lists are a very good semantic model for sets of similar items. The menu approach can also be used for other types of groupings.</p>
             <p>In this example, the menu is always visible. This is a good approach for components that are not too numerous, as it allows users to see the options without having to open a menu.</p>
-            <p>The <abbr title="Cascading Style Sheets">CSS</abbr> for swap using buttons is extensive to account for all WCAG accessibility conformance requirements. It includes media queries that adjust the text boxes based on the size of the screen. The example thus conforms to WCAG 2.2 </p>
-         
-<pre xml:space="preserve"><code class="language-css">
+           
+
+<pre xml:space="preserve"><code class="language-javascript">
+  const list = document.getElementById('myList');
+
+  // Attach a single event listener to the whole list
+  list.addEventListener('click', function (e) {
     
-    :root {
-    --bg: #ffffff;
-    --text: #111111;           /* strong contrast on white */
-    --muted: #f6f7f8;
-    --border: #3b3b3b;         /* >=3:1 vs white for control boundaries */
-    --focus: #005fcc;          /* vivid, accessible focus color */
-    --btn-bg: #ffffff;         /* keep text contrast high on buttons */
-    --btn-text: #111111;
-    --btn-border: #4a4a4a;
-    --btn-bg-hover: #f2f4f7;
-  }
+    // Ensure the click came from a button
+    if (e.target.tagName !== 'BUTTON') return;
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #0b0c0c;
-      --text: #ffffff;
-      --muted: #1a1d1f;
-      --border: #9aa0a6;       /* visible boundaries on dark */
-      --focus: #66aaff;        /* bright focus in dark mode */
-      --btn-bg: #121416;
-      --btn-text: #ffffff;
-      --btn-border: #9aa0a6;
-      --btn-bg-hover: #1a1d1f;
-    }
-  }
+    // Get the &lt;li&gt that contains the clicked button
+    const li = e.target.closest('li');
 
-  html { color-scheme: light dark; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font: 400 18px/1.7 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-    /* Respect user zoom; no fixed px layout sizes beyond targets */
-  }
-
-  /* Constrain text measure for readability; still wraps on small screens */
-  .content { max-inline-size: 75ch; }
-
-  /* =====================================
-     List layout with robust wrap behavior
-     ===================================== */
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 16px;
-    max-width: 100%;
-  }
-  li {
-    margin: 8px 0;
-    padding: 12px;
-    border: 2px solid var(--border); /* >=3:1 contrast against bg */
-    background: var(--muted);
-    display: flex;
-    flex-wrap: wrap;   /* allows wrapping at high zoom */
-    gap: 12px;
-    align-items: center;
-    border-radius: 8px;
-    scroll-margin: 16px; /* ensure focused item is visible after moves */
-  }
-
-  /* Focus styles — WCAG 2.2 Focus Appearance (strong, high-contrast) */
-  li:focus-within {
-    outline: 3px solid var(--focus);
-    outline-offset: 3px;
-  }
-
-  /* Buttons group */
-  .menu {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .menu button {
-    cursor: pointer;
-    padding-inline: 12px;
-    padding-block: 8px;
-    border: 2px solid var(--btn-border);
-    background-color: var(--btn-bg);
-    color: var(--btn-text);
-    border-radius: 8px;
-    font: inherit; /* ensure readable size */
-    line-height: 1.4;
-    /* WCAG 2.5.5 Target Size (Enhanced): 44x44 CSS px */
-    min-width: 44px;
-    min-height: 44px;
-  }
-  .menu button:hover { background-color: var(--btn-bg-hover); }
-  .menu button:focus-visible {
-    outline: 3px solid var(--focus);
-    outline-offset: 2px;
-    box-shadow: 0 0 0 4px color-mix(in oklab, var(--focus) 35%, transparent);
-  }
-  .menu button:active { transform: translateY(1px); }
-
-  /* Visually hidden utility for live region */
-  .visually-hidden {
-    position: absolute !important;
-    width: 1px; height: 1px;
-    margin: -1px; padding: 0; border: 0;
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    overflow: hidden;
-    white-space: nowrap;
-  }
-
-  /* Small screens / extreme zoom */
-  @media (max-width: 400px) {
-    li { flex-direction: column; align-items: stretch; }
-    .content { flex: 1 1 auto; }
-    .menu { justify-content: flex-start; width: 100%; }
-    .menu button { flex: 1; }
-  }
-
-  /* Respect user preferences: reduce motion */
-  @media (prefers-reduced-motion: reduce) {
-    * { transition: none !important; animation: none !important; }
-  }
-
-  /* High contrast / Windows forced-colors support */
-  @media (forced-colors: active) {
-    :root { --focus: Highlight; }
-    li, .menu button { border-color: CanvasText; }
-    .menu button { forced-color-adjust: auto; }
-    .menu button:focus-visible { outline-color: Highlight; box-shadow: none; }
-  }
-
-  /* Improve text selection visibility */
-  ::selection { background: #b3d4fc; color: #000; }}
-</code></pre>
-      </section>
-      <pre xml:space="preserve"><code class="language-javascript">
-        'use strict'; // Enable strict mode to catch common errors and enforce safer coding
-
-(function main() {
-  // Get references to the main list and the live region for announcements
-  const list = document.getElementById('myList');       // The <ul> containing list items
-  const live = document.getElementById('sr-live');     // The ARIA live region for screen readers
-
-  // Safety check: if list is missing, log error and stop execution
-  if (!list) {
-    console.error('[swap-list] #myList not found. Aborting setup.');
-    return;
-  }
-
-  // Key constants to improve readability
-  const KEY = Object.freeze({
-    ENTER: 'Enter',
-    ARROW_UP: 'ArrowUp',
-    ARROW_DOWN: 'ArrowDown'
-  });
-
-  /**
-   * announce(msg)
-   * Updates the live region for screen readers with a message
-   * @param {string} msg - The message to announce
-   */
-  function announce(msg) {
-    if (!live) return;        // Exit if live region does not exist
-    live.textContent = String(msg); // Update the live region text
-  }
-
-  /**
-   * closestLI(el)
-   * Finds the closest parent <li> element of a given element
-   * @param {Element} el - The starting element
-   * @returns {HTMLElement|null} - The closest <li> or null
-   */
-  function closestLI(el) {
-    if (!(el instanceof Element)) return null;
-    return el.closest('li');  // Uses DOM traversal to find the parent <li>
-  }
-
-  /**
-   * directionFromButton(btn)
-   * Determines the direction ("up" or "down") based on button class
-   * @param {Element} btn - The button element
-   * @returns {string|null} - "up", "down", or null
-   */
-  function directionFromButton(btn) {
-    if (!(btn instanceof Element)) return null;
-    if (btn.classList.contains('up')) return 'up';
-    if (btn.classList.contains('down')) return 'down';
-    return null;
-  }
-
-  /**
-   * swap(li, direction, focusBtn)
-   * Moves a list item up or down in the DOM and manages focus
-   * @param {HTMLElement} li - The <li> element to move
-   * @param {string} direction - "up" or "down"
-   * @param {HTMLElement} focusBtn - Optional: the button to keep focus on
-   */
-  function swap(li, direction, focusBtn) {
-    if (!(li instanceof Element) || !li.parentNode) return; // Safety check
-    const parent = li.parentNode;
-
-    if (direction === 'up') {
-      const prev = li.previousElementSibling; // Get the previous item
-      if (prev) {
-        parent.insertBefore(li, prev);       // Swap positions with previous
-        announce('Moved item up.');          // Screen reader announcement
-      } else {
-        parent.appendChild(li);              // Wrap first item to end
-        announce('Moved first item to end.');
-      }
-    } else if (direction === 'down') {
-      const next = li.nextElementSibling;     // Get the next item
-      if (next) {
-        parent.insertBefore(next, li);        // Swap with next
-        announce('Moved item down.');
-      } else {
-        parent.insertBefore(li, parent.firstElementChild); // Wrap last to start
-        announce('Moved last item to start.');
-      }
+    // Move up: insert the clicked &lt;li&gt before its previous sibling
+    if (e.target.classList.contains('up') && li.previousElementSibling) {
+      li.parentNode.insertBefore(li, li.previousElementSibling);
     }
 
-    // === Focus management ===
-    if (focusBtn instanceof HTMLElement) {
-      focusBtn.focus(); // Keep focus on the button that triggered the swap
-    } else {
-      // Fallback: focus first focusable element inside the <li> or the <li> itself
-      const focusable = li.querySelector('button, [href], input, select, textarea');
-      if (focusable instanceof HTMLElement) {
-        focusable.focus();
-      } else {
-        li.focus && li.focus();
-      }
-    }
-  }
-
-  /**
-   * Click event handler for the list
-   * Detects if a button inside a <li> was clicked and swaps the item
-   */
-  list.addEventListener('click', (e) => {
-    const button = (e.target instanceof Element) ? e.target.closest('button') : null;
-    if (!button) return; // Only proceed if a button was clicked
-
-    const dir = directionFromButton(button); // Determine swap direction
-    if (!dir) return;
-
-    const li = closestLI(button);           // Find the parent <li>
-    if (!li) return;
-
-    swap(li, dir, button);                  // Perform the swap and keep focus
-  });
-
-  /**
-   * Keyboard event handler for accessibility
-   * Supports Enter to activate button and arrow keys to move items
-   */
-  list.addEventListener('keydown', (e) => {
-    const btn = (e.target instanceof Element) ? e.target.closest('button') : null;
-
-    // Enter on a button triggers swap
-    if (btn && e.key === KEY.ENTER) {
-      const dir = directionFromButton(btn);
-      if (!dir) return;
-      const li = closestLI(btn);
-      if (!li) return;
-      swap(li, dir, btn); // Pass the button to preserve focus
-      e.preventDefault();
-      return;
-    }
-
-    // Arrow keys on the <li> move items
-    const li = closestLI(e.target);
-    if (!li) return;
-
-    if (e.key === KEY.ARROW_UP) {
-      swap(li, 'up');
-      e.preventDefault();
-    } else if (e.key === KEY.ARROW_DOWN) {
-      swap(li, 'down');
-      e.preventDefault();
+    // Move down: insert the next sibling before the clicked &lt;li&gt
+    if (e.target.classList.contains('down') && li.nextElementSibling) {
+      li.parentNode.insertBefore(li.nextElementSibling, li);
     }
   });
-})();
 </code></pre>
    </section>
-
+   Working example of this code: <a href="../working-examples/script-reorder-list-buttons/"><!--file included in commit-->Reorder list with buttons</a>
    <section id="tests">
     <h2>Tests</h2>
     <section class="procedure">
