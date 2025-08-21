@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SCR27 Working Example Swap List Items</title>
+    <style>
+            
+    :root {
+    --bg: #ffffff;
+    --text: #111111;           /* strong contrast on white */
+    --muted: #f6f7f8;
+    --border: #3b3b3b;         /* >=3:1 vs white for control boundaries */
+    --focus: #005fcc;          /* vivid, accessible focus color */
+    --btn-bg: #ffffff;         /* keep text contrast high on buttons */
+    --btn-text: #111111;
+    --btn-border: #4a4a4a;
+    --btn-bg-hover: #f2f4f7;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b0c0c;
+      --text: #ffffff;
+      --muted: #1a1d1f;
+      --border: #9aa0a6;       /* visible boundaries on dark */
+      --focus: #66aaff;        /* bright focus in dark mode */
+      --btn-bg: #121416;
+      --btn-text: #ffffff;
+      --btn-border: #9aa0a6;
+      --btn-bg-hover: #1a1d1f;
+    }
+  }
+
+  html { color-scheme: light dark; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 400 18px/1.7 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    /* Respect user zoom; no fixed px layout sizes beyond targets */
+  }
+
+  /* Constrain text measure for readability; still wraps on small screens */
+  .content { max-inline-size: 75ch; }
+
+  /* =====================================
+     List layout with robust wrap behavior
+     ===================================== */
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 16px;
+    max-width: 100%;
+  }
+  li {
+    margin: 8px 0;
+    padding: 12px;
+    border: 2px solid var(--border); /* >=3:1 contrast against bg */
+    background: var(--muted);
+    display: flex;
+    flex-wrap: wrap;   /* allows wrapping at high zoom */
+    gap: 12px;
+    align-items: center;
+    border-radius: 8px;
+    scroll-margin: 16px; /* ensure focused item is visible after moves */
+  }
+
+  /* Focus styles — WCAG 2.2 Focus Appearance (strong, high-contrast) */
+  li:focus-within {
+    outline: 3px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  /* Buttons group */
+  .menu {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .menu button {
+    cursor: pointer;
+    padding-inline: 12px;
+    padding-block: 8px;
+    border: 2px solid var(--btn-border);
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
+    border-radius: 8px;
+    font: inherit; /* ensure readable size */
+    line-height: 1.4;
+    /* WCAG 2.5.5 Target Size (Enhanced): 44x44 CSS px */
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .menu button:hover { background-color: var(--btn-bg-hover); }
+  .menu button:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--focus) 35%, transparent);
+  }
+  .menu button:active { transform: translateY(1px); }
+
+  /* Visually hidden utility for live region */
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0; border: 0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  /* Small screens / extreme zoom */
+  @media (max-width: 400px) {
+    li { flex-direction: column; align-items: stretch; }
+    .content { flex: 1 1 auto; }
+    .menu { justify-content: flex-start; width: 100%; }
+    .menu button { flex: 1; }
+  }
+
+  /* Respect user preferences: reduce motion */
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+
+  /* High contrast / Windows forced-colors support */
+  @media (forced-colors: active) {
+    :root { --focus: Highlight; }
+    li, .menu button { border-color: CanvasText; }
+    .menu button { forced-color-adjust: auto; }
+    .menu button:focus-visible { outline-color: Highlight; box-shadow: none; }
+  }
+
+  /* Improve text selection visibility */
+  ::selection { background: #b3d4fc; color: #000; }
+    </style>
+  </head>
+ <body>
+
+    <h1 style="padding-left: 12px;">Accessible swap list example</h1>
+<div id="sr-live" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+
+<ul id="myList" role="list" aria-label="Swappable items">
+  <li tabindex="0" role="listitem">
+    <div class="content">
+      This is a very long example paragraph. It is the first paragraph when the order has not been modified. It is long so that it stretches across multiple lines to test how the swap functionality works with larger text content. Each item should handle this gracefully without breaking layout or accessibility features.
+    </div>
+    <span class="menu" role="group" aria-label="Swap controls">
+      <button type="button" class="up" aria-label="Move up">Up</button>
+      <button type="button" class="down" aria-label="Move down">Down</button>
+    </span>
+  </li>
+  <li tabindex="0" role="listitem">
+    <div class="content">
+      Another example paragraph that is intentionally verbose. It is the second paragraph when the order has not been modified. This item includes a lot of text to simulate real-world usage where list items may contain descriptions, instructions, or other detailed content. Swapping should not affect the readability or spacing.
+    </div>
+    <span class="menu" role="group" aria-label="Swap controls">
+      <button type="button" class="up" aria-label="Move up">Up</button>
+      <button type="button" class="down" aria-label="Move down">Down</button>
+    </span>
+  </li>
+  <li tabindex="0" role="listitem">
+    <div class="content">
+      This is yet another long example paragraph. It is the third paragraph when the order has not been modified. It is designed to test the interface when the list items contain multiple sentences. The goal is to make sure swapping, keyboard navigation, and accessibility all work seamlessly even when the content is verbose and stretches the list visually.
+    </div>
+    <span class="menu" role="group" aria-label="Swap controls">
+      <button type="button" class="up" aria-label="Move up">Up</button>
+      <button type="button" class="down" aria-label="Move down">Down</button>
+    </span>
+  </li>
+</ul>
+  </body>
+  <script>'use strict';
+
+(function main() {
+  const list = document.getElementById('myList');
+  const live = document.getElementById('sr-live');
+
+  if (!list) {
+    console.error('[swap-list] #myList not found. Aborting setup.');
+    return;
+  }
+
+  const KEY = Object.freeze({
+    ENTER: 'Enter',
+    ARROW_UP: 'ArrowUp',
+    ARROW_DOWN: 'ArrowDown'
+  });
+
+  function announce(msg) {
+    if (!live) return;
+    live.textContent = String(msg);
+  }
+
+  function closestLI(el) {
+    if (!(el instanceof Element)) return null;
+    return el.closest('li');
+  }
+
+  function directionFromButton(btn) {
+    if (!(btn instanceof Element)) return null;
+    if (btn.classList.contains('up')) return 'up';
+    if (btn.classList.contains('down')) return 'down';
+    return null;
+  }
+
+  // === New helper: get item index and total for ARIA announcement
+  function ariaPosition(li) {
+    const items = Array.from(list.querySelectorAll('li'));
+    const index = items.indexOf(li);
+    return { index: index + 1, total: items.length }; // 1-based
+  }
+
+  function swap(li, direction, focusBtn) {
+    if (!(li instanceof Element) || !li.parentNode) return;
+    const parent = li.parentNode;
+    const { index: oldIndex, total } = ariaPosition(li);
+
+    if (direction === 'up') {
+      const prev = li.previousElementSibling;
+      if (prev) {
+        parent.insertBefore(li, prev);
+        const { index: newIndex } = ariaPosition(li);
+        announce(`Item ${newIndex} of ${total} moved up`);
+      } else {
+        parent.appendChild(li);
+        const { index: newIndex } = ariaPosition(li);
+        announce(`Item ${newIndex} of ${total} moved up (was first item)`);
+      }
+    } else if (direction === 'down') {
+      const next = li.nextElementSibling;
+      if (next) {
+        parent.insertBefore(next, li);
+        const { index: newIndex } = ariaPosition(li);
+        announce(`Item ${newIndex} of ${total} moved down`);
+      } else {
+        parent.insertBefore(li, parent.firstElementChild);
+        const { index: newIndex } = ariaPosition(li);
+        announce(`Item ${newIndex} of ${total} moved down (was last item)`);
+      }
+    }
+
+    // === Focus fix: focus the button that triggered the swap ===
+    if (focusBtn instanceof HTMLElement) {
+      focusBtn.focus();
+    } else {
+      const focusable = li.querySelector('button, [href], input, select, textarea');
+      if (focusable instanceof HTMLElement) {
+        focusable.focus();
+      } else {
+        li.focus && li.focus();
+      }
+    }
+  }
+
+  // === New: add aria-label to each li on page load ===
+  Array.from(list.querySelectorAll('li')).forEach((li, i) => {
+    li.setAttribute('aria-label', `Item ${i + 1} of ${list.children.length}`);
+  });
+
+  list.addEventListener('click', (e) => {
+    const button = (e.target instanceof Element) ? e.target.closest('button') : null;
+    if (!button) return;
+
+    const dir = directionFromButton(button);
+    if (!dir) return;
+
+    const li = closestLI(button);
+    if (!li) return;
+
+    swap(li, dir, button); // pass the clicked button to preserve focus
+
+    // Update ARIA labels after swap
+    Array.from(list.querySelectorAll('li')).forEach((li, i) => {
+      li.setAttribute('aria-label', `Item ${i + 1} of ${list.children.length}`);
+    });
+  });
+
+  list.addEventListener('keydown', (e) => {
+    const btn = (e.target instanceof Element) ? e.target.closest('button') : null;
+    if (btn && e.key === KEY.ENTER) {
+      const dir = directionFromButton(btn);
+      if (!dir) return;
+      const li = closestLI(btn);
+      if (!li) return;
+      swap(li, dir, btn); // pass the button for focus
+      e.preventDefault();
+
+      // Update ARIA labels after swap
+      Array.from(list.querySelectorAll('li')).forEach((li, i) => {
+        li.setAttribute('aria-label', `Item ${i + 1} of ${list.children.length}`);
+      });
+      return;
+    }
+
+    const li = closestLI(e.target);
+    if (!li) return;
+
+    if (e.key === KEY.ARROW_UP) {
+      swap(li, 'up');
+      e.preventDefault();
+      Array.from(list.querySelectorAll('li')).forEach((li, i) => {
+        li.setAttribute('aria-label', `Item ${i + 1} of ${list.children.length}`);
+      });
+    } else if (e.key === KEY.ARROW_DOWN) {
+      swap(li, 'down');
+      e.preventDefault();
+      Array.from(list.querySelectorAll('li')).forEach((li, i) => {
+        li.setAttribute('aria-label', `Item ${i + 1} of ${list.children.length}`);
+      });
+    }
+  });
+})();</script>
+</html>
