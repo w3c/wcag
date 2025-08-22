@@ -349,7 +349,7 @@ export class CustomLiquid extends Liquid {
         }
       }
     } else {
-      const $title = $("title");
+      const $title = $("head title");
 
       if (scope.isTechniques) {
         const isObsolete =
