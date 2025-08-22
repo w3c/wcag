@@ -42,6 +42,13 @@ jobs:
             echo "::notice title=Mixed TR and informative docs changes::Please submit changes to TR space separately from changes to informative docs."
             echo "CHECK_FAILED=1" >> "$GITHUB_ENV"
           fi
+      - name: Check TypeScript
+        run: |
+          npm ci
+          if test $(npx tsc | wc -l) -gt 0; then
+            echo '::notice title=Branch contains TypeScript errors::Run `npm run check` locally for details.'
+            echo "CHECK_FAILED=1" >> "$GITHUB_ENV"
+          fi
       - name: Reflect status
         run: |
           test ! $CHECK_FAILED
