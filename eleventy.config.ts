@@ -254,7 +254,8 @@ export default async function (eleventyConfig: any) {
     if (runMode === "build" && process.env.WCAG_MODE === "publication") await rimraf("_site");
   });
 
-  eleventyConfig.on("eleventy.after", async ({ dir }: EleventyEvent) => {
+  let hasDisplayedGuidance = false;
+  eleventyConfig.on("eleventy.after", async ({ dir, runMode }: EleventyEvent) => {
     // addPassthroughCopy can only map each file once,
     // but base.css needs to be copied to a 2nd destination
     await copyFile(
@@ -288,6 +289,13 @@ export default async function (eleventyConfig: any) {
       const { generateWcagJson } = await import("11ty/json");
       assertIsWcagVersion(version);
       await writeFile(`${dir.output}/wcag.json`, await generateWcagJson(version));
+    }
+
+    if (runMode === "serve" && !hasDisplayedGuidance) {
+      hasDisplayedGuidance = true;
+      console.log(
+        "The dev server will restart on TypeScript changes. If you are adding new HTML pages, press Enter to restart it manually."
+      );
     }
   });
 
@@ -408,13 +416,11 @@ export default async function (eleventyConfig: any) {
   eleventyConfig.addShortcode("gh", (id: string) => {
     if (/^#\d+$/.test(id)) {
       const num = id.slice(1);
-      return `<a href="https://github.com/${GH_ORG}/${GH_REPO}/pull/${num}" aria-label="pull request ${num}">${id}</a>`
-    }
-    else if (/^[0-9a-f]{7,}$/.test(id)) {
+      return `<a href="https://github.com/${GH_ORG}/${GH_REPO}/pull/${num}" aria-label="pull request ${num}">${id}</a>`;
+    } else if (/^[0-9a-f]{7,}$/.test(id)) {
       const sha = id.slice(0, 7); // Truncate in case full SHA was passed
-      return `<a href="https://github.com/${GH_ORG}/${GH_REPO}/commit/${sha}" aria-label="commit ${sha}">${sha}</a>`
-    }
-    else throw new Error(`Invalid SHA or PR ID passed to gh tag: ${id}`);
+      return `<a href="https://github.com/${GH_ORG}/${GH_REPO}/commit/${sha}" aria-label="commit ${sha}">${sha}</a>`;
+    } else throw new Error(`Invalid SHA or PR ID passed to gh tag: ${id}`);
   });
 
   // Renders a section box (used for About this Technique and Guideline / SC)
