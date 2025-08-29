@@ -138,9 +138,8 @@ export class CustomLiquid extends Liquid {
 
       // Clean out elements to be removed
       // (e.g. editors.css & sources.css, and leftover template paragraphs)
-      // NOTE: some paragraphs with the "instructions" class actually have custom content,
-      // but for now this remains consistent with the XSLT process by stripping all of them.
-      $(".remove, section#meta, section.meta").remove();
+      // Note: the link selector accounts for ~40 files forgetting class="remove" on editors.css
+      $(".remove, link[href$='editors.css'], section#meta, section.meta").remove();
 
       if ($("p.instructions").length > 0) {
         console.error(`${filepath} contains a <p class="instructions"> element.\n` +
@@ -150,6 +149,9 @@ export class CustomLiquid extends Liquid {
         );
         throw new Error("Instructions paragraph found; please resolve.")
       }
+
+      // Add charset to pages that forgot it
+      if (!$("meta[charset]").length) $('<meta charset="UTF-8">').prependTo("head");
 
       const prependedIncludes = ["header"];
       const appendedIncludes = ["wai-site-footer", "site-footer"];
@@ -349,7 +351,7 @@ export class CustomLiquid extends Liquid {
         }
       }
     } else {
-      const $title = $("title");
+      const $title = $("head title");
 
       if (scope.isTechniques) {
         const isObsolete =
