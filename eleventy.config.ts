@@ -11,17 +11,18 @@ import { resolveDecimalVersion } from "11ty/common";
 import {
   actRules,
   assertIsWcagVersion,
+  generateScSlugOverrides,
   getErrataForVersion,
   getFlatGuidelines,
   getPrinciples,
   getPrinciplesForVersion,
   getTermsMap,
   getTermsMapForVersion,
-  scSlugOverrides,
   type FlatGuidelinesMap,
   type WcagItem,
 } from "11ty/guidelines";
 import {
+  expandTechniqueToObject,
   getFlatTechniques,
   getTechniqueAssociations,
   getTechniquesByTechnology,
@@ -36,6 +37,8 @@ import type { EleventyContext, EleventyData, EleventyEvent } from "11ty/types";
 /** Version of WCAG to build */
 const version = process.env.WCAG_VERSION || "22";
 assertIsWcagVersion(version);
+
+const scSlugOverrides = generateScSlugOverrides(version);
 
 /**
  * Returns boolean indicating whether a technique is obsolete for the given version.
@@ -78,7 +81,7 @@ const techniques = await getTechniquesByTechnology(flatGuidelines);
 const flatTechniques = getFlatTechniques(techniques);
 
 /** Maps technique IDs to SCs found in target version */
-const techniqueAssociations = await getTechniqueAssociations(flatGuidelines);
+const techniqueAssociations = await getTechniqueAssociations(flatGuidelines, version);
 for (const [id, associations] of Object.entries(techniqueAssociations)) {
   // Prune associations from non-obsolete techniques to obsolete SCs
   techniqueAssociations[id] = associations.filter(
@@ -86,7 +89,7 @@ for (const [id, associations] of Object.entries(techniqueAssociations)) {
   );
 }
 /** Maps technique IDs to SCs only found in later versions */
-const futureTechniqueAssociations = await getTechniqueAssociations(futureGuidelines);
+const futureTechniqueAssociations = await getTechniqueAssociations(futureGuidelines, version);
 /** Subset of futureTechniqueAssociations not overlapping with techniqueAssociations */
 const futureExclusiveTechniqueAssociations: typeof techniqueAssociations = {};
 
@@ -163,13 +166,7 @@ if (process.env.WCAG_MODE === "editors") {
 }
 
 /** Applies any overridden SC IDs to incoming Understanding fileSlugs */
-function resolveUnderstandingFileSlug(fileSlug: string) {
-  if (fileSlug in scSlugOverrides) {
-    assertIsWcagVersion(version);
-    return scSlugOverrides[fileSlug](version);
-  }
-  return fileSlug;
-}
+const resolveUnderstandingFileSlug = (fileSlug: string) => scSlugOverrides[fileSlug] || fileSlug;
 
 export default async function (eleventyConfig: any) {
   for (const [name, value] of Object.entries(globalData)) eleventyConfig.addGlobalData(name, value);
@@ -411,6 +408,14 @@ export default async function (eleventyConfig: any) {
         .join("\nand\n");
     }
   );
+
+  // Strict version of default that will only fall back on null or undefined (not e.g. "")
+  eleventyConfig.addFilter("default-strict", (value: any, fallback: any) =>
+    value == null ? fallback : value
+  );
+
+  // Expands a technique shorthand string to an object with id or title
+  eleventyConfig.addFilter("expand-technique", expandTechniqueToObject);
 
   // Renders a link to a GitHub commit or pull request
   eleventyConfig.addShortcode("gh", (id: string) => {
