@@ -8,7 +8,7 @@ XSLT-based build process using Eleventy.
 Make sure you have Node.js installed. This has primarily been tested with v20,
 the current LTS at time of writing.
 
-If you use [fnm](https://github.com/Schniz/fnm) or [nvm](https://github.com/nvm-sh/nvm) to manage multiple Node.js versions,
+If you use [`fnm`](https://github.com/Schniz/fnm) or [`nvm`](https://github.com/nvm-sh/nvm) to manage multiple Node.js versions,
 you can switch to the recommended version by typing `fnm use` or `nvm use`
 (with no additional arguments) while in the repository directory.
 
