@@ -146,7 +146,7 @@
     						output of a sample Expression Encoder project. Note the CaptionSources
     						node in the initparams; that is the information item that informs the
     						Expression Encoder templates where to find the timed text file. </p>
-            <pre>     &lt;object data="data:application/x-silverlight," type="application/x-silverlight" width="100%" height="100%"&gt;
+            <pre><code>     &lt;object data="data:application/x-silverlight," type="application/x-silverlight" width="100%" height="100%"&gt;
        &lt;param name="source" value="MediaPlayerTemplate.xap"/&gt;
        &lt;param name="onerror" value="onSilverlightError" /&gt;
        &lt;param name="autoUpgrade" value="true" /&gt;
@@ -188,7 +188,7 @@
          &lt;/Items&gt;
       &lt;/Playlist&gt;'/&gt;       
    &lt;/object&gt;
-   </pre>
+   </code></pre>
             <p>The templates include a library that handles any parsing requirements
     						for the chosen timed text format, both at the level of getting the
     						basic text and timing into the <code>TimelineMarkers</code> used
@@ -247,8 +247,8 @@
     						is present in the definition of the media player class. </p>
             <p>
     					The following is example usage XAML: </p>
-            <pre> &lt;local:SimpleMediaPlayerWithTT Width="480" Height="360" CaptionUri="testttml.xml" MediaSourceUri="/xbox.wmv" /&gt;
-    					</pre>
+            <pre><code> &lt;local:SimpleMediaPlayerWithTT Width="480" Height="360" CaptionUri="testttml.xml" MediaSourceUri="/xbox.wmv" /&gt;
+    					</code></pre>
             <p>Note the attributes CaptionUri and SimpleMediaPlayerWithTT. Each
     						of these is a custom property of the media control class TTReader.
     						CaptionUri in particular references a URL, in this case a local URL
@@ -258,7 +258,7 @@
             <p>The following is the generic.xaml default template for the media player
     						control. The template is mainly relevant for showing the named elements
     						that are shown in the initialization code. </p>
-            <pre>               &lt;ControlTemplate TargetType="local:SimpleMediaPlayerWithTT"&gt;
+            <pre><code>               &lt;ControlTemplate TargetType="local:SimpleMediaPlayerWithTT"&gt;
                    &lt;Border Background="{TemplateBinding Background}"
                            BorderBrush="{TemplateBinding BorderBrush}"
                            BorderThickness="{TemplateBinding BorderThickness}"&gt;
@@ -280,10 +280,10 @@
                        &lt;/Grid&gt;
                    &lt;/Border&gt;
                &lt;/ControlTemplate&gt;
-               </pre>
+               </code></pre>
             <p>The following is the initialization code that is for general infrastructure. OnApplyTemplate represents
     					the code wiring to the template-generated UI. </p>
-            <pre>   public class SimpleMediaPlayerWithTT : Control
+            <pre><code>   public class SimpleMediaPlayerWithTT : Control
    {
        MediaElement player;
        TextBox captions;
@@ -347,7 +347,7 @@
            get { return msUri; }
            set { msUri = value; }
        }
-       </pre>
+       </code></pre>
             <p>The following is the logic that is particular to obtaining the separate
     						caption file. Some of this logic is referenced in the preceding template-specific
     						event handlers. This example uses the asynchronous <code>WebClient</code> technique
@@ -355,7 +355,7 @@
     						sure to use <code>AutoPlay</code>=false or some other means to allow
     						time for the caption file to download before attempting to play the
     						media file. </p>
-            <pre>       private void LoadCaptions(Uri captionURL)
+            <pre><code>       private void LoadCaptions(Uri captionURL)
        {
            WebClient wc = new WebClient();   // Web Client to download data files
            if (captionURL != null)
@@ -373,7 +373,7 @@
                ParseCaptionData(new StringReader(xml));
            }
        }
-       </pre>
+       </code></pre>
             <p>The actual parsing can be done using a combination of the "XML
     						to Linq" facilities of an optional Silverlight library, and
     						standard .NET Framework string format APIs from the Silverlight core.
@@ -385,7 +385,7 @@
     						generates a new <code>TimelineMarker</code>, and adds it to the
     						collection assigned to the active <code>MediaElement</code> as
     						identified by "player" in the application. </p>
-            <pre>       public void AddMediaMarker(string time, string type, string data)
+            <pre><code>       public void AddMediaMarker(string time, string type, string data)
        {
            TimelineMarker marker = new TimelineMarker();
            marker.Time = new TimeSpan(0,0,(Convert.ToInt32(time.Trim())/1000));
@@ -394,7 +394,7 @@
            marker.Text = data.Trim();
            player.Markers.Add(marker);
        }
-</pre>
+</code></pre>
          
       </section>
    </section><section id="tests"><h2>Tests</h2>
