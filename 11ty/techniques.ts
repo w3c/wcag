@@ -41,6 +41,13 @@ function assertIsTechnology(
   if (!(technology in technologyTitles)) throw new Error(`Invalid technology name: ${technology}`);
 }
 
+/**
+ * Returns boolean indicating whether a technique is obsolete for the given version.
+ * Tolerates undefined for use with hash lookups.
+ */
+export const isTechniqueObsolete = (technique: Technique | undefined, version: WcagVersion) =>
+  !!technique?.obsoleteSince && technique.obsoleteSince <= version;
+
 export const techniqueAssociationTypes = ["sufficient", "advisory", "failure"] as const;
 export type TechniqueAssociationType = (typeof techniqueAssociationTypes)[number];
 

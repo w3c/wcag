@@ -219,9 +219,8 @@ appended to the "Note" title in applicable versions, and the note will be hidden
 
 ### Techniques Change Log
 
-At the time of writing (November 2024), the Change Log in the Techniques index is identical between WCAG 2.1 and 2.2.
-These have been split out into separate version-specific includes under `_includes/techniques/changelog/*.html`
-for future-proofing in support of building multiple versions of informative documents from the same branch.
+Data for the Techniques Change Log is now generated automatically by a script that reads git history;
+see [Eleventy Usage](11ty/README.md#usage).
 
 ## Working Examples
 

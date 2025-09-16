@@ -23,10 +23,24 @@ Common tasks:
   - http://localhost:8080/techniques
   - http://localhost:8080/understanding
 
-Maintenance tasks (for working with Eleventy config and supporting files under this subdirectory):
+Maintenance tasks (for working with Eleventy config and supporting files used by the build):
 
 - `npm run check` checks for TypeScript errors
 - `npm run fmt` formats all TypeScript files
+
+## Publishing to WAI website
+
+The following npm scripts can be used to assist with publishing updates to the WAI website:
+
+- `npm run publish-w3c` to publish 2.2
+- `npm run publish-w3c:21` to publish 2.1
+
+Each of these scripts performs the following steps:
+
+1. Updates the data used for the Techniques Change Log page
+   - Note that this step may result in changes to `techniques/changelog.11tydata.json`, which should be committed to `main`
+2. Runs the build for the appropriate WCAG version, generating pages and `wcag.json` under `_site`
+3. Copies the built files from `_site` to the CVS checkout (see [`WCAG_CVSDIR`](#wcag_cvsdir))
 
 ## Environment Variables
 
