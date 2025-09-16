@@ -194,10 +194,18 @@ export default async function (eleventyConfig: any) {
   let hasDisplayedGuidance = false;
   eleventyConfig.on("eleventy.after", async ({ dir, runMode }: EleventyEvent) => {
     // addPassthroughCopy can only map each file once,
-    // but base.css needs to be copied to a 2nd destination
+    // but some CSS files need to be copied to 2 destinations
     await copyFile(
       join(dir.input, "css", "base.css"),
       join(dir.output, "understanding", "base.css")
+    );
+    await copyFile(
+      join(dir.input, "css", "a11y-light.css"),
+      join(dir.output, "understanding", "a11y-light.css")
+    );
+    await copyFile(
+      join(dir.input, "script", "highlight.min.js"),
+      join(dir.output, "understanding", "highlight.min.js")
     );
 
     // Output guidelines/index.html and dependencies for PR runs (not for GH Pages or W3C site)
