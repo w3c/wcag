@@ -11,13 +11,14 @@ import { resolveDecimalVersion } from "11ty/common";
 import { loadDataDependencies } from "11ty/data-dependencies";
 import {
   actRules,
+  generateScSlugOverrides,
   getErrataForVersion,
   getTermsMap,
   getTermsMapForVersion,
-  scSlugOverrides,
   type WcagItem,
 } from "11ty/guidelines";
 import {
+  expandTechniqueToObject,
   isTechniqueObsolete as isTechniqueObsoleteForVersion,
   technologies,
   technologyTitles,
@@ -51,6 +52,8 @@ const isTechniqueObsolete = (technique: Technique | undefined) =>
  */
 const isGuidelineObsolete = (guideline: WcagItem | undefined) =>
   guideline?.type === "SC" && guideline.level === "";
+
+const scSlugOverrides = generateScSlugOverrides(version);
 
 function resolveRelevantTermsMap() {
   if (!process.env.WCAG_VERSION) return getTermsMap();
@@ -103,10 +106,7 @@ if (process.env.WCAG_MODE === "editors") {
 }
 
 /** Applies any overridden SC IDs to incoming Understanding fileSlugs */
-function resolveUnderstandingFileSlug(fileSlug: string) {
-  if (fileSlug in scSlugOverrides) return scSlugOverrides[fileSlug](version);
-  return fileSlug;
-}
+const resolveUnderstandingFileSlug = (fileSlug: string) => scSlugOverrides[fileSlug] || fileSlug;
 
 export default async function (eleventyConfig: any) {
   for (const [name, value] of Object.entries(globalData)) eleventyConfig.addGlobalData(name, value);
@@ -370,6 +370,14 @@ export default async function (eleventyConfig: any) {
         .join("\nand\n");
     }
   );
+
+  // Strict version of default that will only fall back on null or undefined (not e.g. "")
+  eleventyConfig.addFilter("default-strict", (value: any, fallback: any) =>
+    value == null ? fallback : value
+  );
+
+  // Expands a technique shorthand string to an object with id or title
+  eleventyConfig.addFilter("expand-technique", expandTechniqueToObject);
 
   // Renders a link to a GitHub commit or pull request
   eleventyConfig.addShortcode("gh", (id: string) => {
