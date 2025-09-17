@@ -264,11 +264,11 @@ function stringifyUsingProps(technique: UnderstandingAssociatedTechniqueParent) 
 const cleanLinks = (html: string) => html.replace(/<a[^>]*>([^<]*)<\/a>/g, "$1");
 
 /** Resolves relative links against the base folder for the WCAG version */
-const resolveLinks = (html: string) =>
+const resolveLinks = (html: string, version: WcagVersion) =>
   html.replace(/href="([^"]*)"/g, (match, href: string) => {
     if (/^https?:/.test(href)) return match;
     const domain = `https://www.w3.org`;
-    const baseUrl = `${domain}/WAI/WCAG${process.env.WCAG_VERSION || "22"}/Understanding/`;
+    const baseUrl = `${domain}/WAI/WCAG${version}/Understanding/`;
     if (href.startsWith("/")) return `href="${domain}${href}"`;
     return `href="${baseUrl}${href}"`;
   });
@@ -306,7 +306,7 @@ function createTechniquesFromSc(
 
     if ("title" in technique && technique.title)
       return {
-        title: resolveLinks(removeNewlines(technique.title)),
+        title: resolveLinks(removeNewlines(technique.title), version),
         ...(usingContent && { suffix: usingContent }),
       };
 
