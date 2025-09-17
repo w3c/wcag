@@ -33,6 +33,7 @@ import {
   techniqueAssociationTypes,
   type Technique,
   type TechniqueAssociationType,
+  type Technology,
 } from "./techniques";
 
 const removeNewlines = (str: string) => str.trim().replace(/\n\s+/g, " ");
@@ -213,6 +214,7 @@ function createDetailsFromSc(sc: SuccessCriterion) {
 
 interface SerializedTechniqueAssociation {
   id?: string;
+  technology?: Technology;
   title: string;
   prefix?: string;
   suffix?: string;
@@ -346,7 +348,10 @@ function createTechniquesFromSc(
         );
 
       return {
-        ...(id && { id }),
+        ...(id && {
+          id,
+          technology: techniquesMap[id].technology,
+        }),
         ...titleProps,
         ...("prefix" in technique && technique.prefix && { prefix: technique.prefix }),
         ...("suffix" in technique && technique.suffix && { suffix: technique.suffix }),
