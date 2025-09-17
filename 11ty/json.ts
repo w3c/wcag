@@ -350,12 +350,7 @@ function createTechniquesFromSc(
         ...titleProps,
         ...("prefix" in technique && technique.prefix && { prefix: technique.prefix }),
         ...("suffix" in technique && technique.suffix && { suffix: technique.suffix }),
-        ...("using" in technique && {
-          // In the context of sections with groups, `using` will always be an array of group IDs
-          using: hasGroups
-            ? (technique.using as string[])
-            : mapAssociatedTechniques(technique.using),
-        }),
+        ...("using" in technique && { using: mapAssociatedTechniques(technique.using) }),
       };
     });
   }
