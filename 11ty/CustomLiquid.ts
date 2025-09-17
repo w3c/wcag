@@ -17,7 +17,7 @@ import { techniqueToUnderstandingLinkSelector } from "./understanding";
 const titleSuffix = " | WAI | W3C";
 
 /** Matches index and about pages, traditionally processed differently than individual pages */
-const indexPattern = /(techniques|understanding)\/(index|about)\.html$/;
+const indexPattern = /(techniques|understanding)\/(index|about|changelog)\.html$/;
 const techniquesPattern = /\btechniques\//;
 const understandingPattern = /\bunderstanding\//;
 
@@ -138,9 +138,8 @@ export class CustomLiquid extends Liquid {
 
       // Clean out elements to be removed
       // (e.g. editors.css & sources.css, and leftover template paragraphs)
-      // NOTE: some paragraphs with the "instructions" class actually have custom content,
-      // but for now this remains consistent with the XSLT process by stripping all of them.
-      $(".remove, section#meta, section.meta").remove();
+      // Note: the link selector accounts for ~40 files forgetting class="remove" on editors.css
+      $(".remove, link[href$='editors.css'], section#meta, section.meta").remove();
 
       if ($("p.instructions").length > 0) {
         console.error(`${filepath} contains a <p class="instructions"> element.\n` +
@@ -150,6 +149,9 @@ export class CustomLiquid extends Liquid {
         );
         throw new Error("Instructions paragraph found; please resolve.")
       }
+
+      // Add charset to pages that forgot it
+      if (!$("meta[charset]").length) $('<meta charset="UTF-8">').prependTo("head");
 
       const prependedIncludes = ["header"];
       const appendedIncludes = ["wai-site-footer", "site-footer"];
@@ -254,21 +256,9 @@ export class CustomLiquid extends Liquid {
             throw new Error("Incorrectly-nested Benefits section found: please resolve.");
           }
 
-          // XSLT orders resources then techniques last, opposite of source files
-          $("body")
-            .append("\n", $(`body > section#resources`))
-            .append("\n", $(`body > section#techniques`));
-
           // Expand top-level heading and add box for guideline/SC pages
           if ($("section#intent").length) $("h1").replaceWith(generateIncludes("understanding/h1"));
           $("section#intent").before(generateIncludes("understanding/about"));
-
-          $("section#techniques h2").after(generateIncludes("understanding/intro/techniques"));
-          if ($("section#sufficient .situation").length) {
-            $("section#sufficient h3").after(
-              generateIncludes("understanding/intro/sufficient-situation")
-            );
-          }
 
           // Disallow handwritten success-criteria section (should be auto-generated)
           if ($("section#success-criteria").length) {
@@ -281,21 +271,7 @@ export class CustomLiquid extends Liquid {
           // success-criteria template only renders content for guideline (not SC) pages
           $("body").append(generateIncludes("understanding/success-criteria"));
 
-          // Remove unpopulated techniques subsections
-          for (const id of ["sufficient", "advisory", "failure"]) {
-            $(`section#${id}:not(:has(:not(h3)))`).remove();
-          }
-
-          // Normalize subsection names for Guidelines (h2) and/or SC (h3)
-          $("section#sufficient h3").text("Sufficient Techniques");
-          $("section#advisory").find("h2, h3").text("Advisory Techniques");
-          $("section#failure h3").text("Failures");
-
           // Add intro prose to populated sections
-          $("section#advisory")
-            .find("h2, h3")
-            .after(generateIncludes("understanding/intro/advisory"));
-          $("section#failure h3").after(generateIncludes("understanding/intro/failure"));
           $("section#resources h2").after(generateIncludes("understanding/intro/resources"));
 
           // Expand techniques links to always include title
@@ -349,7 +325,7 @@ export class CustomLiquid extends Liquid {
         }
       }
     } else {
-      const $title = $("title");
+      const $title = $("head title");
 
       if (scope.isTechniques) {
         const isObsolete =
@@ -438,8 +414,8 @@ export class CustomLiquid extends Liquid {
         if (scope.guideline?.level === "") $("section#techniques").remove();
       }
 
-      // Process defined terms within #render,
-      // where we have access to global data and the about box's HTML
+      // Process defined terms within #render, where we have access to
+      // global data and the rendered HTML for the About box and related Techniques
       const $termLinks = $(termLinkSelector);
       const extractTermName = ($el: CheerioAnyNode) => {
         const name = $el
