@@ -105,11 +105,13 @@ There is one Understanding file per success criterion, plus an index:
 * `understanding/index.html` - index page, need to uncomment or add a reference to individual Understanding pages as they are made available
 * `understanding/{version}/*.html` - files for each understanding page, named the same as the success criterion file in the guidelines
 
-Files are populated with a template that provides the expected structure. Leave the template structure in place, and add content as appropriate within the sections. Elements with class="instructions" provide guidance about what content to include in that section; you can remove those elements if you want but don't have to. The template for examples proposes either a bullet list or a series of sub-sections, choose one of those approaches and remove the other from the template. The template for techniques includes sub-sections for "situations", remove that wrapper section if not needed.
+Files are populated with a template that provides the expected structure. Leave the template structure in place, and add content as appropriate within the sections. Elements with class="instructions" provide guidance about what content to include in that section; you can remove those elements if you want but don't have to. The template for examples proposes either a bullet list or a series of sub-sections, choose one of those approaches and remove the other from the template.
+
+Note that associated techniques are no longer defined within each understanding page; they are now defined in the `associatedTechniques` field in `understanding/understanding.11tydata.js`. See [Associated Techniques Data](11ty/README.md#associated-techniques-data) for more information.
 
 Understanding files are referenced from the relevant Success Criterion on the WCAG specification; these links are put in by the script.
 
-The formal publication location for Understanding pages is currently https://www.w3.org/WAI/WCAG21/Understanding/. This content is updated as needed; and may be automated.
+The formal publication location for Understanding pages is currently https://www.w3.org/WAI/WCAG22/Understanding/. This content is updated as needed; and may be automated.
 
 ## Editing Techniques
 
@@ -129,7 +131,7 @@ Techniques should include brief code examples to demonstrate how to author conte
 
 Cross references to other techniques may be provided where useful. Generally they should be provided in the "Related Techniques" section but can be provided elsewhere. Use a relative link to reference the technique, `{Technique ID}` if the same technology, or `../{Technology}/{Technique ID}` otherwise. If the technique is still under development and does not have a formal ID, reference the path to the development file. If the technique is under development in a different branch, use an absolute URI to the rawgit version of the technique.
 
-Cross references to guidelines and success criteria should use a relative URI to the *Understanding* page for that item. Cross references to other parts of the guidelines should use an absolute URI to the guidelines as published on the W3C TR page, a URI beginning with `https://www.w3.org/TR/WCAG21/#`. Note that references to guidelines or success criteria to which techniques relate are added by the generator upon publication based on information in the Understanding documents, so redundant links to those is not normally needed or advised.
+Cross references to guidelines and success criteria should use a relative URI to the *Understanding* page for that item. Cross references to other parts of the guidelines should use an absolute URI to the guidelines as published on the W3C TR page, a URI beginning with `https://www.w3.org/TR/WCAG22/#`. Note that references to guidelines or success criteria to which techniques relate are added by the generator upon publication based on information in the Understanding documents, so redundant links to those is not normally needed or advised.
 
 ### Create Techniques
 
@@ -219,9 +221,8 @@ appended to the "Note" title in applicable versions, and the note will be hidden
 
 ### Techniques Change Log
 
-At the time of writing (November 2024), the Change Log in the Techniques index is identical between WCAG 2.1 and 2.2.
-These have been split out into separate version-specific includes under `_includes/techniques/changelog/*.html`
-for future-proofing in support of building multiple versions of informative documents from the same branch.
+Data for the Techniques Change Log is now generated automatically by a script that reads git history;
+see [Eleventy Usage](11ty/README.md#usage).
 
 ## Working Examples
 
