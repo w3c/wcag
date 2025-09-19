@@ -153,6 +153,20 @@ export class CustomLiquid extends Liquid {
       // Add charset to pages that forgot it
       if (!$("meta[charset]").length) $('<meta charset="UTF-8">').prependTo("head");
 
+      const missingHljsOverrides$ = $("pre code:not([class])");
+      if (missingHljsOverrides$.length) {
+        missingHljsOverrides$.each((_, el) => {
+          const code = $(el).html()!.replace(/\n/g, "\\n");
+          const excerpt = `${code.slice(0, 40)}${code.length > 40 ? "..." : ""}`;
+          console.log(`${filepath} <pre><code> missing hljs override: ${excerpt}`);
+        });
+        if (process.env.ELEVENTY_RUN_MODE === "build") {
+          throw new Error(
+            "Some code blocks are missing highlight.js classes (language-* or no-highlight); please fix."
+          );
+        }
+      }
+
       const prependedIncludes = ["header"];
       const appendedIncludes = ["wai-site-footer", "site-footer"];
 
