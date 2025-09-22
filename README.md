@@ -94,7 +94,7 @@ If you are providing term definitions along with your SC, include them in the re
 <dd>{Definition}</dd>
 ```
 
-The ```dfn``` element tells the script that this is a term and causes special styling and linking features. To link to a term, use an `<a>` element without an `href` attribute; if the link text is the same as the term, the link will be correctly generated. For example, if there is a term `<dfn>web page</dfn>` on the page, a link in the form of `<a>web page</a>` will result in a proper link.
+The `dfn` element tells the script that this is a term and causes special styling and linking features. To link to a term, use an `<a>` element without an `href` attribute; if the link text is the same as the term, the link will be correctly generated. For example, if there is a term `<dfn>web page</dfn>` on the page, a link in the form of `<a>web page</a>` will result in a proper link.
 
 If the link text has a different form from the canonical term, e.g., "web pages" (note the plural), you can provide a hint on the term definition with the `data-lt` attribute. In this example, modify the term to be `<dfn data-lt="web pages">web page</dfn>`. Multiple alternate names for the term can be separated with pipe characters, with no leading or trailing space, e.g., `<dfn data-lt="web pages|page|pages">web page</dfn>`.
 
@@ -141,7 +141,7 @@ New techniques should use a filename that is derived from a shortened version of
 
 Each new technique should be created in a new branch. Set-up of the branch and file is automated via the create-techniques.sh script, which can be run with bash. The command line is:
 
-```Shell
+```
 bash create-techniques.sh <technology> <filename> <type> "<title>"
 ```
 
@@ -162,7 +162,7 @@ Once a technique branch and file is set up, populate the content and request rev
 * Populate the template with appropriate content, using other techniques as examples for code formatting choices. Keep the existing structural sections from the template in place.
 * When the technique is ready for review, make a pull request into the main branch.
 * If you wish to reference the draft technique from an Understanding document, use the technique's rawgit URI.
-* After a technique is approved, the chairs will assign it an ID and update links to it in the Undestanding documents. 
+* After a technique is approved, the chairs will assign it an ID and update links to it in the Understanding documents. 
 
 ### Formatting Techniques
 
@@ -189,6 +189,18 @@ obsoleteMessage: |
 
 In cases where entire technologies are obsolete (e.g. Flash and Silverlight), these properties may also be specified at the technique subdirectory level, e.g. via `techniques/flash/flash.11tydata.json`.
 Note that this case specifically requires JSON format, as this is consumed by both Eleventy and additional code in the build process used to assemble techniques data.
+
+## Spell-checking
+
+Both the normative and informative content is checked for spelling errors using [cspell](https://cspell.org/). This check runs on pull requests, and can be run locally via `npm run cspell` (requires [Node.js](https://nodejs.org/); remember to run `npm i` first if you haven't recently).
+
+### Adding valid words
+
+If a word is flagged that should be allowed anywhere it appears, add a line to the top-level `custom-words.txt` file, ideally under the appropriate section in alphabetical order.
+
+If a word is flagged that should be allowed in a specific file, but should be considered incorrect elsewhere, add an entry to the `overrides` list in the top-level `cspell.yml` file. (Several examples already exist for reference.)
+
+Note that both inline code and code blocks are ignored, so if you are using a term that pertains to a specific language/syntax, consider enclosing it in `<code>` or `<pre>` as appropriate.
 
 ## Version-specific Documentation
 
