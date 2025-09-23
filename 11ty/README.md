@@ -183,6 +183,8 @@ Generates `_site/wcag.json`. (This is not done by default, as it adds to build t
 
 **Default:** Unset by default; `publish-w3c` scripts set this to a non-empty value.
 
+For more information on the output, see [11ty/json/README.md](json#readme).
+
 ### `GITHUB_REPOSITORY`
 
 **Usage context:** Automatically set during GitHub workflows; should not need to be set manually
