@@ -166,6 +166,28 @@ export default async function (eleventyConfig: any) {
       isUnderstanding ? flatGuidelines[resolveUnderstandingFileSlug(page.fileSlug)] : null,
   });
 
+  const ignoredEndings = [
+    "-template.html",
+    "understanding/20/accessibility-support-documenting.html",
+    "understanding/20/seizures.html",
+  ];
+  eleventyConfig.addPreprocessor("ignore-html", "html", ({ page }: GlobalData) => {
+    if (
+      !page.filePathStem.startsWith("/errata/") &&
+      !page.filePathStem.startsWith("/techniques/") &&
+      !page.filePathStem.startsWith("/understanding/") &&
+      page.filePathStem !== "/index"
+    )
+      return false;
+    if (page.inputPath.includes("/img/")) return false;
+    for (const ending of ignoredEndings) if (page.inputPath.endsWith(ending)) return false;
+  });
+  eleventyConfig.addPreprocessor("ignore-md", "md", () => false);
+
+  // Add explicit watch targets to avoid addPassthroughCopy interference
+  eleventyConfig.addWatchTarget("techniques/**");
+  eleventyConfig.addWatchTarget("understanding/**");
+
   eleventyConfig.addPassthroughCopy("techniques/*.css");
   eleventyConfig.addPassthroughCopy("techniques/*/img/*");
   eleventyConfig.addPassthroughCopy({
