@@ -1,3 +1,4 @@
+import hljs from "highlight.js";
 import { Liquid, type Template } from "liquidjs";
 import type { LiquidOptions, RenderOptions } from "liquidjs/dist/liquid-options";
 import compact from "lodash-es/compact";
@@ -168,6 +169,15 @@ export class CustomLiquid extends Liquid {
           );
         }
       }
+
+      $("pre code[class*='language-']").each((_, el) => {
+        const $el = $(el);
+        // Unescape any HTML entities (which were originally needed for client-side highlight.js)
+        const code = $el.html()!.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+        const language = $el.attr("class")!.replace(/^.*language-(\S+).*$/, "$1");
+        $el.html(hljs.highlight(code, { language }).value);
+        $el.addClass("hljs");
+      });
 
       const prependedIncludes = ["header"];
       const appendedIncludes = ["wai-site-footer", "site-footer"];
