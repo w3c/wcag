@@ -14,8 +14,8 @@ import type {
 } from "understanding/understanding";
 import eleventyUnderstanding from "understanding/understanding.11tydata";
 
-import { type CheerioAnyNode } from "./cheerio";
-import { resolveDecimalVersion } from "./common";
+import { type CheerioAnyNode } from "../cheerio";
+import { resolveDecimalVersion } from "../common";
 import {
   type SuccessCriterion,
   type WcagVersion,
@@ -25,7 +25,7 @@ import {
   assertIsWcagVersion,
   getFlatGuidelines,
   generateScSlugOverrides,
-} from "./guidelines";
+} from "../guidelines";
 import {
   expandTechniqueToObject,
   getFlatTechniques,
@@ -34,7 +34,7 @@ import {
   type Technique,
   type TechniqueAssociationType,
   type Technology,
-} from "./techniques";
+} from "../techniques";
 
 const removeNewlines = (str: string) => str.trim().replace(/\n\s+/g, " ");
 
