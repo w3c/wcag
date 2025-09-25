@@ -58,7 +58,7 @@ function selectColour(objElement)
 				// create a short-hand hex triplet colour value
 				strColour = '#' + iInnerRed.toString(16).toUpperCase() + iInnerGreen.toString(16).toUpperCase() + iInnerBlue.toString(16).toUpperCase();
 
-				// Add an anchor and events to handle mouse and keyboard behaviour
+				// Add an anchor and events to handle mouse and keyboard behavior
 				objAnchor = document.createElement('a');
 				objAnchor.setAttribute('href', '#');
 				objAnchor.setAttribute('id', 'cp' + iCounter);
