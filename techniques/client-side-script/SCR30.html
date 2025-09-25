@@ -127,73 +127,73 @@
 			<section class="example" id="example-1"><h3>Example 1</h3>
 				<p>This example uses Javascript to add contextual information directly to the text of a link. The link class is used to determine which additional text to add. When the "Expand Links" link is activated, each link on the page is tested to see whether additional text should be added.</p>
 
-<pre xml:space="preserve"><code class="language-html">...
-&lt;script&gt;
-  var expanded = false;
-  var linkContext = {
-    "hist":" version of The History of the Web",
-    "cook":" version of Cooking for Nerds"
+<pre xml:space="preserve"><code class="language-html hljs">...
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript">
+  <span class="hljs-keyword">var</span> expanded = <span class="hljs-literal">false</span>;
+  <span class="hljs-keyword">var</span> linkContext = {
+    <span class="hljs-string">"hist"</span>:<span class="hljs-string">" version of The History of the Web"</span>,
+    <span class="hljs-string">"cook"</span>:<span class="hljs-string">" version of Cooking for Nerds"</span>
   };
 	
-  function doExpand() {
-    var links = document.links;
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">doExpand</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">var</span> links = <span class="hljs-variable language_">document</span>.<span class="hljs-property">links</span>;
 		
-    for (var i=0; i&lt;links.length; i++) {
-      var link = links[i];
-      var cn = link.className;
-      if (linkContext[cn]) {
-        span = link.appendChild(document.createElement("span"));
-        span.setAttribute("class", "linkexpansion");
-        span.appendChild(document.createTextNode(linkContext[cn]));
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i&lt;links.<span class="hljs-property">length</span>; i++) {
+      <span class="hljs-keyword">var</span> link = links[i];
+      <span class="hljs-keyword">var</span> cn = link.<span class="hljs-property">className</span>;
+      <span class="hljs-keyword">if</span> (linkContext[cn]) {
+        span = link.<span class="hljs-title function_">appendChild</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">"span"</span>));
+        span.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">"class"</span>, <span class="hljs-string">"linkexpansion"</span>);
+        span.<span class="hljs-title function_">appendChild</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createTextNode</span>(linkContext[cn]));
       }
     }
-    objUpdate = document.getElementById('expand');
-    if (objUpdate) {
-      objUpdate.childNodes[0].nodeValue = "Collapse links";
+    objUpdate = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'expand'</span>);
+    <span class="hljs-keyword">if</span> (objUpdate) {
+      objUpdate.<span class="hljs-property">childNodes</span>[<span class="hljs-number">0</span>].<span class="hljs-property">nodeValue</span> = <span class="hljs-string">"Collapse links"</span>;
     }
-    expanded = true;
+    expanded = <span class="hljs-literal">true</span>;
   }
 	
-  function doCollapse() {
-    objUpdate = document.getElementById('expand');
-    var spans = document.getElementsByTagName("span");
-    var span;
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">doCollapse</span>(<span class="hljs-params"></span>) {
+    objUpdate = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'expand'</span>);
+    <span class="hljs-keyword">var</span> spans = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementsByTagName</span>(<span class="hljs-string">"span"</span>);
+    <span class="hljs-keyword">var</span> span;
 	
-    // go backwards through the set as removing from the front changes indices
-    // and messes up the process
-    for (i = spans.length - 1; i &gt;= 0; i--) {
+    <span class="hljs-comment">// go backwards through the set as removing from the front changes indices</span>
+    <span class="hljs-comment">// and messes up the process</span>
+    <span class="hljs-keyword">for</span> (i = spans.<span class="hljs-property">length</span> - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
       span = spans[i];
-      if (span.getAttribute("class") == "linkexpansion")
-        span.parentNode.removeChild(span);
+      <span class="hljs-keyword">if</span> (span.<span class="hljs-title function_">getAttribute</span>(<span class="hljs-string">"class"</span>) == <span class="hljs-string">"linkexpansion"</span>)
+        span.<span class="hljs-property">parentNode</span>.<span class="hljs-title function_">removeChild</span>(span);
       }
-      if (objUpdate) {
-      objUpdate.childNodes[0].nodeValue = "Expand links";
+      <span class="hljs-keyword">if</span> (objUpdate) {
+      objUpdate.<span class="hljs-property">childNodes</span>[<span class="hljs-number">0</span>].<span class="hljs-property">nodeValue</span> = <span class="hljs-string">"Expand links"</span>;
     }
-    expanded = false;
+    expanded = <span class="hljs-literal">false</span>;
   }
 	
-  function toggle() {
-    if (expanded) doCollapse();
-    else doExpand();
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">toggle</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">if</span> (expanded) <span class="hljs-title function_">doCollapse</span>();
+    <span class="hljs-keyword">else</span> <span class="hljs-title function_">doExpand</span>();
   }
-&lt;/script&gt;
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 
 ...
 	
-&lt;h1&gt;Books for download&lt;/h1&gt;
-&lt;p&gt;&lt;button id="expand" onclick="toggle(); type="button"&gt;Expand Links&lt;/button&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;The History of the Web:
-    &lt;a href="history.docx" class="hist"&gt;Word&lt;/a&gt;, 
-    &lt;a href="history.pdf" class="hist"&gt;PDF&lt;/a&gt;, 
-    &lt;a href="history.html" class="hist"&gt;HTML&lt;/a&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Cooking for Nerds: 
-    &lt;a href="history.docx" class="cook"&gt;Word&lt;/a&gt;, 
-    &lt;a href="history.pdf" class="cook"&gt;PDF&lt;/a&gt;, 
-    &lt;a href="history.html" class="cook"&gt;HTML&lt;/a&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
+<span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Books for download<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"expand"</span> <span class="hljs-attr">onclick</span>=<span class="hljs-string">"toggle(); type="</span><span class="hljs-attr">button</span>"&gt;</span>Expand Links<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>The History of the Web:
+    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"history.docx"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"hist"</span>&gt;</span>Word<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>, 
+    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"history.pdf"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"hist"</span>&gt;</span>PDF<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>, 
+    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"history.html"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"hist"</span>&gt;</span>HTML<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>Cooking for Nerds: 
+    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"history.docx"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"cook"</span>&gt;</span>Word<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>, 
+    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"history.pdf"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"cook"</span>&gt;</span>PDF<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>, 
+    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"history.html"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"cook"</span>&gt;</span>HTML<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
 
 ...</code></pre>
          
@@ -260,7 +260,7 @@
 </div>
 <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
   <div class="inner" style="grid-column: 2 / 8">
-    <p><strong>Date:</strong> Updated 24 September 2025.</p>
+    <p><strong>Date:</strong> Updated 25 September 2025.</p>
     <p><strong>Developed by</strong>
       <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a>
       (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff Contact:
@@ -308,12 +308,9 @@
   </div>
 </footer>
 
-
 <link rel="stylesheet" href="../a11y-light.css">
-<script src="../highlight.min.js"></script>
 <script>
-  hljs.highlightAll();
-  var translationStrings = {}; /* fix WAI JS */
+  var translationStrings = {}; // prevent errors in WAI main.js t() calls
 </script>
 <script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
 

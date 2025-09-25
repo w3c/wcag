@@ -109,146 +109,146 @@
             <p>For simplicity, the example just validates two text fields, but can easily be extended to become a generic form handler. Client-side validation should not be the sole means of validation, and should be backed up with server-side validation. The benefit of client-side validation is that you can provide immediate feedback to the user to save them waiting for the errors to come back from the server, and it helps reduce unnecessary traffic to the server.</p>
             <p>Here is the script that adds the event handlers to the form. If scripting is enabled, the <code>validateNumbers()</code> function will be called to perform client-side validation before the form is submitted to the server. If scripting is not enabled, the form will be immediately submitted to the server, so validation should also be implemented on the server.</p>
          
-<pre xml:space="preserve"><code class="language-javascript">window.onload = initialise;
-function initialise() {
-  // Add an event handler for the number form
-  var objForm = document.getElementById('numberform');
-  objForm.onsubmit= function(){return validateNumbers(this);};
+<pre xml:space="preserve"><code class="language-javascript hljs"><span class="hljs-variable language_">window</span>.<span class="hljs-property">onload</span> = initialise;
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">initialise</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-comment">// Add an event handler for the number form</span>
+  <span class="hljs-keyword">var</span> objForm = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'numberform'</span>);
+  objForm.<span class="hljs-property">onsubmit</span>= <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>){<span class="hljs-keyword">return</span> <span class="hljs-title function_">validateNumbers</span>(<span class="hljs-variable language_">this</span>);};
 }</code></pre>
          
             <p>Here is the validation function.  Note the use of the <code>createElement()</code>, <code>createTextNode()</code>, and <code>appendChild()</code> DOM functions to create the error message elements.</p>
          
-<pre xml:space="preserve"><code class="language-javascript">function validateNumbers(objForm) {
-  // Test whether fields are valid
-  var bFirst = isNumber(document.getElementById('num1').value);
-  var bSecond = isNumber(document.getElementById('num2').value);
-  // If not valid, display errors
-  if (!bFirst || !bSecond) {
-    var objExisting = document.getElementById('validationerrors');
-    var objNew = document.createElement('div');
-    var objTitle = document.createElement('h2');
-    var objParagraph = document.createElement('p');
-    var objList = document.createElement('ol');
-    var objAnchor = document.createElement('a');
-    var strID = 'firsterror';
-    var strError;
-    // The heading element will contain a link so that screen readers
-    // can use it to place focus - the destination for the link is 
-    // the first error contained in a list
-    objAnchor.appendChild(document.createTextNode('Errors in Submission'));
-    objAnchor.setAttribute('href', '#firsterror');
-    objTitle.appendChild(objAnchor);
-    objParagraph.appendChild(document.createTextNode('Please review the following'));
-    objNew.setAttribute('id', 'validationerrors');
-    objNew.appendChild(objTitle);
-    objNew.appendChild(objParagraph);
+<pre xml:space="preserve"><code class="language-javascript hljs"><span class="hljs-keyword">function</span> <span class="hljs-title function_">validateNumbers</span>(<span class="hljs-params">objForm</span>) {
+  <span class="hljs-comment">// Test whether fields are valid</span>
+  <span class="hljs-keyword">var</span> bFirst = <span class="hljs-title function_">isNumber</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'num1'</span>).<span class="hljs-property">value</span>);
+  <span class="hljs-keyword">var</span> bSecond = <span class="hljs-title function_">isNumber</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'num2'</span>).<span class="hljs-property">value</span>);
+  <span class="hljs-comment">// If not valid, display errors</span>
+  <span class="hljs-keyword">if</span> (!bFirst || !bSecond) {
+    <span class="hljs-keyword">var</span> objExisting = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'validationerrors'</span>);
+    <span class="hljs-keyword">var</span> objNew = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'div'</span>);
+    <span class="hljs-keyword">var</span> objTitle = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'h2'</span>);
+    <span class="hljs-keyword">var</span> objParagraph = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'p'</span>);
+    <span class="hljs-keyword">var</span> objList = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'ol'</span>);
+    <span class="hljs-keyword">var</span> objAnchor = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'a'</span>);
+    <span class="hljs-keyword">var</span> strID = <span class="hljs-string">'firsterror'</span>;
+    <span class="hljs-keyword">var</span> strError;
+    <span class="hljs-comment">// The heading element will contain a link so that screen readers</span>
+    <span class="hljs-comment">// can use it to place focus - the destination for the link is </span>
+    <span class="hljs-comment">// the first error contained in a list</span>
+    objAnchor.<span class="hljs-title function_">appendChild</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createTextNode</span>(<span class="hljs-string">'Errors in Submission'</span>));
+    objAnchor.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">'href'</span>, <span class="hljs-string">'#firsterror'</span>);
+    objTitle.<span class="hljs-title function_">appendChild</span>(objAnchor);
+    objParagraph.<span class="hljs-title function_">appendChild</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createTextNode</span>(<span class="hljs-string">'Please review the following'</span>));
+    objNew.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">'id'</span>, <span class="hljs-string">'validationerrors'</span>);
+    objNew.<span class="hljs-title function_">appendChild</span>(objTitle);
+    objNew.<span class="hljs-title function_">appendChild</span>(objParagraph);
 
-    // Add each error found to the list of errors
-    if (!bFirst) {
-      strError = 'Please provide a numeric value for the first number';
-      objList.appendChild(addError(strError, '#num1', objForm, strID));
-      strID = '';
+    <span class="hljs-comment">// Add each error found to the list of errors</span>
+    <span class="hljs-keyword">if</span> (!bFirst) {
+      strError = <span class="hljs-string">'Please provide a numeric value for the first number'</span>;
+      objList.<span class="hljs-title function_">appendChild</span>(<span class="hljs-title function_">addError</span>(strError, <span class="hljs-string">'#num1'</span>, objForm, strID));
+      strID = <span class="hljs-string">''</span>;
     }
-    if (!bSecond) {
-      strError = 'Please provide a numeric value for the second number';
-      objList.appendChild(addError(strError, '#num2', objForm, strID));
-      strID = '';
-    }
-
-    // Add the list to the error information
-    objNew.appendChild(objList);
-
-    // If there were existing errors, replace them with the new lot,
-    // otherwise add the new errors to the start of the form
-    if (objExisting) {
-      objExisting.parentNode.replaceChild(objNew, objExisting);
-    }
-    else {
-      var objPosition = objForm.firstChild;
-      objForm.insertBefore(objNew, objPosition);
+    <span class="hljs-keyword">if</span> (!bSecond) {
+      strError = <span class="hljs-string">'Please provide a numeric value for the second number'</span>;
+      objList.<span class="hljs-title function_">appendChild</span>(<span class="hljs-title function_">addError</span>(strError, <span class="hljs-string">'#num2'</span>, objForm, strID));
+      strID = <span class="hljs-string">''</span>;
     }
 
-    // Place focus on the anchor in the heading to alert
-    // screen readers that the submission is in error
-    objAnchor.focus();
+    <span class="hljs-comment">// Add the list to the error information</span>
+    objNew.<span class="hljs-title function_">appendChild</span>(objList);
+
+    <span class="hljs-comment">// If there were existing errors, replace them with the new lot,</span>
+    <span class="hljs-comment">// otherwise add the new errors to the start of the form</span>
+    <span class="hljs-keyword">if</span> (objExisting) {
+      objExisting.<span class="hljs-property">parentNode</span>.<span class="hljs-title function_">replaceChild</span>(objNew, objExisting);
+    }
+    <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">var</span> objPosition = objForm.<span class="hljs-property">firstChild</span>;
+      objForm.<span class="hljs-title function_">insertBefore</span>(objNew, objPosition);
+    }
+
+    <span class="hljs-comment">// Place focus on the anchor in the heading to alert</span>
+    <span class="hljs-comment">// screen readers that the submission is in error</span>
+    objAnchor.<span class="hljs-title function_">focus</span>();
       
-    // Do not submit the form
-    objForm.submitAllowed = false;
-    return false;
+    <span class="hljs-comment">// Do not submit the form</span>
+    objForm.<span class="hljs-property">submitAllowed</span> = <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
   }
-  return true;
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
   
-// Function to validate a number
-function isNumber(strValue) {
-  return (!isNaN(strValue) &amp;&amp; strValue.replace(/^\s+|\s+$/, '') !== '');
+<span class="hljs-comment">// Function to validate a number</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">isNumber</span>(<span class="hljs-params">strValue</span>) {
+  <span class="hljs-keyword">return</span> (!<span class="hljs-built_in">isNaN</span>(strValue) &amp;&amp; strValue.<span class="hljs-title function_">replace</span>(<span class="hljs-regexp">/^\s+|\s+$/</span>, <span class="hljs-string">''</span>) !== <span class="hljs-string">''</span>);
 }</code></pre>
          
             <p>Below are the helper functions to create the error message and to set focus to the associated form field.</p>
          
-<pre xml:space="preserve"><code class="language-javascript">// Function to create a list item containing a link describing the error
-// that points to the appropriate form field
-function addError(strError, strFragment, objForm, strID) {
-  var objAnchor = document.createElement('a');
-  var objListItem = document.createElement('li');
-  objAnchor.appendChild(document.createTextNode(strError));
-  objAnchor.setAttribute('href', strFragment);
-  objAnchor.onclick = function(event){return focusFormField(this, event, objForm);};
-  objAnchor.onkeypress = function(event){return focusFormField(this, event, objForm);};
+<pre xml:space="preserve"><code class="language-javascript hljs"><span class="hljs-comment">// Function to create a list item containing a link describing the error</span>
+<span class="hljs-comment">// that points to the appropriate form field</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">addError</span>(<span class="hljs-params">strError, strFragment, objForm, strID</span>) {
+  <span class="hljs-keyword">var</span> objAnchor = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'a'</span>);
+  <span class="hljs-keyword">var</span> objListItem = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'li'</span>);
+  objAnchor.<span class="hljs-title function_">appendChild</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createTextNode</span>(strError));
+  objAnchor.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">'href'</span>, strFragment);
+  objAnchor.<span class="hljs-property">onclick</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>){<span class="hljs-keyword">return</span> <span class="hljs-title function_">focusFormField</span>(<span class="hljs-variable language_">this</span>, event, objForm);};
+  objAnchor.<span class="hljs-property">onkeypress</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>){<span class="hljs-keyword">return</span> <span class="hljs-title function_">focusFormField</span>(<span class="hljs-variable language_">this</span>, event, objForm);};
 
-  // If strID has a value, this is the first error in the list
-  if (strID.length &gt; 0){
-    objAnchor.setAttribute('id', strID);
+  <span class="hljs-comment">// If strID has a value, this is the first error in the list</span>
+  <span class="hljs-keyword">if</span> (strID.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>){
+    objAnchor.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">'id'</span>, strID);
   }
-  objListItem.appendChild(objAnchor);
-  return objListItem;
+  objListItem.<span class="hljs-title function_">appendChild</span>(objAnchor);
+  <span class="hljs-keyword">return</span> objListItem;
 }
   
-// Function to place focus to the form field in error
-function focusFormField(objAnchor, objEvent, objForm) {
+<span class="hljs-comment">// Function to place focus to the form field in error</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">focusFormField</span>(<span class="hljs-params">objAnchor, objEvent, objForm</span>) {
   
-  // Allow keyboard navigation over links
-  if (objEvent &amp;&amp; objEvent.type == 'keypress') {
-    if (objEvent.keyCode != 13 &amp;&amp; objEvent.keyCode != 32){
-      return true;
+  <span class="hljs-comment">// Allow keyboard navigation over links</span>
+  <span class="hljs-keyword">if</span> (objEvent &amp;&amp; objEvent.<span class="hljs-property">type</span> == <span class="hljs-string">'keypress'</span>) {
+    <span class="hljs-keyword">if</span> (objEvent.<span class="hljs-property">keyCode</span> != <span class="hljs-number">13</span> &amp;&amp; objEvent.<span class="hljs-property">keyCode</span> != <span class="hljs-number">32</span>){
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
   }
   
-  // set focus to the form control
-  var strFormField = objAnchor.href.match(/[^#]\w*$/);
-  objForm[strFormField].focus();
-  return false;
+  <span class="hljs-comment">// set focus to the form control</span>
+  <span class="hljs-keyword">var</span> strFormField = objAnchor.<span class="hljs-property">href</span>.<span class="hljs-title function_">match</span>(<span class="hljs-regexp">/[^#]\w*$/</span>);
+  objForm[strFormField].<span class="hljs-title function_">focus</span>();
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }</code></pre>
          
   <p>Here is the HTML for the example form.</p>
          
-<pre xml:space="preserve"><code class="language-html">&lt;!doctype html&gt;
-&lt;html lang="en"&gt;
-&lt;head&gt;
-  &lt;meta charset="utf-8"&gt;
-  &lt;title&gt;ECMAScript Form Validation&lt;/title&gt;
-  &lt;script src="validate.js"&gt;&lt;/script&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;h1&gt;Form Validation&lt;/h1&gt;
-  &lt;form id="numberform"&gt;
-    &lt;fieldset&gt;
-      &lt;legend&gt;Numeric Fields&lt;/legend&gt;
-      &lt;div&gt;
-        &lt;label for="num1"&gt;Enter first number&lt;/label&gt;
-        &lt;input type="text" size="20" name="num1" id="num1"&gt;
-      &lt;/div&gt;
-      &lt;div&gt;
-        &lt;label for="num2"&gt;Enter second number&lt;/label&gt;
-        &lt;input type="text" size="20" name="num2" id="num2"&gt;
-      &lt;/div&gt;
-    &lt;/fieldset&gt;
-    &lt;div&gt;
-      &lt;input type="submit" name="submit" value="Submit Form"&gt;
-    &lt;/div&gt;
-  &lt;/form&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
+<pre xml:space="preserve"><code class="language-html hljs"><span class="hljs-meta">&lt;!doctype <span class="hljs-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>ECMAScript Form Validation<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"validate.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Form Validation<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"numberform"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fieldset</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">legend</span>&gt;</span>Numeric Fields<span class="hljs-tag">&lt;/<span class="hljs-name">legend</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"num1"</span>&gt;</span>Enter first number<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">size</span>=<span class="hljs-string">"20"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"num1"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"num1"</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"num2"</span>&gt;</span>Enter second number<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">size</span>=<span class="hljs-string">"20"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"num2"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"num2"</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">fieldset</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"submit"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"submit"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"Submit Form"</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
          
             <p>This example is limited to client-side scripting, and should be backed up with server-side validation. The example is limited to the creation of error messages when client-side scripting is available. 
               </p>
@@ -314,7 +314,7 @@ function focusFormField(objAnchor, objEvent, objForm) {
 </div>
 <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
   <div class="inner" style="grid-column: 2 / 8">
-    <p><strong>Date:</strong> Updated 24 September 2025.</p>
+    <p><strong>Date:</strong> Updated 25 September 2025.</p>
     <p><strong>Developed by</strong>
       <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a>
       (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff Contact:
@@ -362,12 +362,9 @@ function focusFormField(objAnchor, objEvent, objForm) {
   </div>
 </footer>
 
-
 <link rel="stylesheet" href="../a11y-light.css">
-<script src="../highlight.min.js"></script>
 <script>
-  hljs.highlightAll();
-  var translationStrings = {}; /* fix WAI JS */
+  var translationStrings = {}; // prevent errors in WAI main.js t() calls
 </script>
 <script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
 

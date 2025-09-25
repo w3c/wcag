@@ -113,123 +113,123 @@
             <p>The components in this example are list items in an unordered list. Unordered lists are a very good semantic model for sets of similar items, like these components. The menu approach can also be used for other types of groupings.</p>
             <p>The modules are list items, and each module, in addition to content in <code>div</code> elements, contains a menu represented as a nested list.</p>
          
-<pre xml:space="preserve"><code class="language-html">&lt;ul id="swapper"&gt;
-    &lt;li id="black"&gt;
-      &lt;div class="module"&gt;
-        &lt;div class="module_header"&gt;
-          &lt;!-- menu link --&gt;
-          &lt;a href="#" onclick="ToggleMenu(event);"&gt;menu&lt;/a&gt;
-          &lt;!-- menu --&gt;
-          &lt;ul class="menu"&gt;
-            &lt;li&gt;&lt;a href="#" onclick="OnMenuClick(event)" 
-              onkeypress="OnMenuKeypress(event);"&gt;up&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href="#" onclick="OnMenuClick(event)" 
-              onkeypress="OnMenuKeypress(event);"&gt;down&lt;/a&gt;&lt;/li&gt;
-          &lt;/ul&gt;
-        &lt;/div&gt;
-      &lt;div class="module_body"&gt;
+<pre xml:space="preserve"><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"swapper"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"black"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"module"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"module_header"</span>&gt;</span>
+          <span class="hljs-comment">&lt;!-- menu link --&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span> <span class="hljs-attr">onclick</span>=<span class="hljs-string">"ToggleMenu(event);"</span>&gt;</span>menu<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+          <span class="hljs-comment">&lt;!-- menu --&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"menu"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span> <span class="hljs-attr">onclick</span>=<span class="hljs-string">"OnMenuClick(event)"</span> 
+              <span class="hljs-attr">onkeypress</span>=<span class="hljs-string">"OnMenuKeypress(event);"</span>&gt;</span>up<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span> <span class="hljs-attr">onclick</span>=<span class="hljs-string">"OnMenuClick(event)"</span> 
+              <span class="hljs-attr">onkeypress</span>=<span class="hljs-string">"OnMenuKeypress(event);"</span>&gt;</span>down<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"module_body"</span>&gt;</span>
         Text in the black module
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
   ...
-&lt;/ul&gt;</code></pre>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></code></pre>
          
             <p>Since we've covered the showing and hiding of menus in the simple tree samples, we'll focus here just on the code that swaps the modules. Once we harmonize the events and cancel the default link action, we go to work. First, we set a bunch of local variables for the elements with which we'll be working: the menu, the module to be reordered, the menuLink. Then, after checking the reorder direction, we try to grab the node to swap. If we find one, we then call <code>swapNode()</code> to swap our two modules, and <code>PositionElement()</code> to move the absolutely-positioned menu along with the module, and then set focus back on the menu item which launched the whole thing.</p>
          
-<pre xml:space="preserve"><code class="language-javascript">function MoveNode(evt,dir){
+<pre xml:space="preserve"><code class="language-javascript hljs"><span class="hljs-keyword">function</span> <span class="hljs-title function_">MoveNode</span>(<span class="hljs-params">evt,dir</span>){
   
-  HarmonizeEvent(evt);
-  evt.preventDefault();
+  <span class="hljs-title class_">HarmonizeEvent</span>(evt);
+  evt.<span class="hljs-title function_">preventDefault</span>();
     
-  var src = evt.target;
-  var menu = src.parentNode.parentNode;
-  var module = menu.parentNode.parentNode.parentNode;
-  var menuLink = module.getElementsByTagName("a")[0];
-  var swap = null;
+  <span class="hljs-keyword">var</span> src = evt.<span class="hljs-property">target</span>;
+  <span class="hljs-keyword">var</span> menu = src.<span class="hljs-property">parentNode</span>.<span class="hljs-property">parentNode</span>;
+  <span class="hljs-keyword">var</span> <span class="hljs-variable language_">module</span> = menu.<span class="hljs-property">parentNode</span>.<span class="hljs-property">parentNode</span>.<span class="hljs-property">parentNode</span>;
+  <span class="hljs-keyword">var</span> menuLink = <span class="hljs-variable language_">module</span>.<span class="hljs-title function_">getElementsByTagName</span>(<span class="hljs-string">"a"</span>)[<span class="hljs-number">0</span>];
+  <span class="hljs-keyword">var</span> swap = <span class="hljs-literal">null</span>;
   
-  switch(dir){
-    case 'up': {
-      swap = module.previousSibling;
-      while (swap &amp;&amp; swap.nodeType != 1){
-        swap = swap.previousSibling;
+  <span class="hljs-keyword">switch</span>(dir){
+    <span class="hljs-keyword">case</span> <span class="hljs-string">'up'</span>: {
+      swap = <span class="hljs-variable language_">module</span>.<span class="hljs-property">previousSibling</span>;
+      <span class="hljs-keyword">while</span> (swap &amp;&amp; swap.<span class="hljs-property">nodeType</span> != <span class="hljs-number">1</span>){
+        swap = swap.<span class="hljs-property">previousSibling</span>;
       }
-        break;
+        <span class="hljs-keyword">break</span>;
     }
-    case 'down': {
-      swap = module.nextSibling;
-      while (swap &amp;&amp; swap.nodeType != 1){
-        swap = swap.nextSibling;
+    <span class="hljs-keyword">case</span> <span class="hljs-string">'down'</span>: {
+      swap = <span class="hljs-variable language_">module</span>.<span class="hljs-property">nextSibling</span>;
+      <span class="hljs-keyword">while</span> (swap &amp;&amp; swap.<span class="hljs-property">nodeType</span> != <span class="hljs-number">1</span>){
+        swap = swap.<span class="hljs-property">nextSibling</span>;
       }
-        break;
+        <span class="hljs-keyword">break</span>;
     }
   }
-  if (swap &amp;&amp; swap.tagName == node.tagName){
-    module.swapNode(swap);
-    PositionElement(menu,menuLink,false,true);
+  <span class="hljs-keyword">if</span> (swap &amp;&amp; swap.<span class="hljs-property">tagName</span> == node.<span class="hljs-property">tagName</span>){
+    <span class="hljs-variable language_">module</span>.<span class="hljs-title function_">swapNode</span>(swap);
+    <span class="hljs-title class_">PositionElement</span>(menu,menuLink,<span class="hljs-literal">false</span>,<span class="hljs-literal">true</span>);
   }
-  src.focus();
+  src.<span class="hljs-title function_">focus</span>();
 }</code></pre>
          
             <p>The <abbr title="Cascading Style Sheets">CSS</abbr> for the node swap is not much different than that of our previous tree samples, with some size and color adjustment for the modules and the small menu.</p>
          
-<pre xml:space="preserve"><code class="language-css">ul#swapper {
+<pre xml:space="preserve"><code class="language-css hljs"><span class="hljs-selector-tag">ul</span><span class="hljs-selector-id">#swapper</span> {
   list-item-style:none;
-  margin:0px;
-  padding:0px;
+  <span class="hljs-attribute">margin</span>:<span class="hljs-number">0px</span>;
+  <span class="hljs-attribute">padding</span>:<span class="hljs-number">0px</span>;
 }
 
-ul#swapper li {
-  border:1px solid black;
-  height:5em;
-  list-style:none;
-  margin:1em;
-  padding:0;
-  width:15em;
+<span class="hljs-selector-tag">ul</span><span class="hljs-selector-id">#swapper</span> <span class="hljs-selector-tag">li</span> {
+  <span class="hljs-attribute">border</span>:<span class="hljs-number">1px</span> solid black;
+  <span class="hljs-attribute">height</span>:<span class="hljs-number">5em</span>;
+  <span class="hljs-attribute">list-style</span>:none;
+  <span class="hljs-attribute">margin</span>:<span class="hljs-number">1em</span>;
+  <span class="hljs-attribute">padding</span>:<span class="hljs-number">0</span>;
+  <span class="hljs-attribute">width</span>:<span class="hljs-number">15em</span>;
 }
 
-ul#swapper li a {
-  color:white;
-  font-size:90%;
-  text-decoration:none;
+<span class="hljs-selector-tag">ul</span><span class="hljs-selector-id">#swapper</span> <span class="hljs-selector-tag">li</span> <span class="hljs-selector-tag">a</span> {
+  <span class="hljs-attribute">color</span>:white;
+  <span class="hljs-attribute">font-size</span>:<span class="hljs-number">90%</span>;
+  <span class="hljs-attribute">text-decoration</span>:none;
 }
     
-ul#swapper li div.module_header {
-  padding:0 0.2em;
-  text-align:right;
+<span class="hljs-selector-tag">ul</span><span class="hljs-selector-id">#swapper</span> <span class="hljs-selector-tag">li</span> <span class="hljs-selector-tag">div</span><span class="hljs-selector-class">.module_header</span> {
+  <span class="hljs-attribute">padding</span>:<span class="hljs-number">0</span> <span class="hljs-number">0.2em</span>;
+  <span class="hljs-attribute">text-align</span><span class="hljs-selector-pseudo">:right</span>;
 }
 
-ul#swapper li div.module_body {
-  padding:0.2em;
+<span class="hljs-selector-tag">ul</span><span class="hljs-selector-id">#swapper</span> <span class="hljs-selector-tag">li</span> <span class="hljs-selector-tag">div</span><span class="hljs-selector-class">.module_body</span> {
+  <span class="hljs-attribute">padding</span>:<span class="hljs-number">0.2em</span>;
 }
     
-ul#swapper ul.menu {
-  background-color:#eeeeee; 
-  border:1px solid gray;
-  display:none;
-  height:auto;
-  list-style:none;
-  margin:0;
-  padding:0;
-  position:absolute;
-  text-align:left;
+<span class="hljs-selector-tag">ul</span><span class="hljs-selector-id">#swapper</span> <span class="hljs-selector-tag">ul</span><span class="hljs-selector-class">.menu</span> {
+  <span class="hljs-attribute">background-color</span>:<span class="hljs-number">#eeeeee</span>; 
+  <span class="hljs-attribute">border</span>:<span class="hljs-number">1px</span> solid gray;
+  <span class="hljs-attribute">display</span>:none;
+  <span class="hljs-attribute">height</span>:auto;
+  <span class="hljs-attribute">list-style</span>:none;
+  <span class="hljs-attribute">margin</span>:<span class="hljs-number">0</span>;
+  <span class="hljs-attribute">padding</span>:<span class="hljs-number">0</span>;
+  <span class="hljs-attribute">position</span>:absolute;
+  <span class="hljs-attribute">text-align</span><span class="hljs-selector-pseudo">:left</span>;
 }
 
-ul#swapper ul.menu li {
-  border:none;
-  font-weight:normal;
-  height:auto;
-  margin:0;
-  text-align:left;
-  width:5em;
+<span class="hljs-selector-tag">ul</span><span class="hljs-selector-id">#swapper</span> <span class="hljs-selector-tag">ul</span><span class="hljs-selector-class">.menu</span> <span class="hljs-selector-tag">li</span> {
+  <span class="hljs-attribute">border</span>:none;
+  <span class="hljs-attribute">font-weight</span>:normal;
+  <span class="hljs-attribute">height</span>:auto;
+  <span class="hljs-attribute">margin</span>:<span class="hljs-number">0</span>;
+  <span class="hljs-attribute">text-align</span><span class="hljs-selector-pseudo">:left</span>;
+  <span class="hljs-attribute">width</span>:<span class="hljs-number">5em</span>;
 }
 
-ul#swapper ul.menu li a {
-  color:black;
-  display:block;
-  padding:0 0.1em;
-  text-decoration:none;
-  width:100%;
+<span class="hljs-selector-tag">ul</span><span class="hljs-selector-id">#swapper</span> <span class="hljs-selector-tag">ul</span><span class="hljs-selector-class">.menu</span> <span class="hljs-selector-tag">li</span> <span class="hljs-selector-tag">a</span> {
+  <span class="hljs-attribute">color</span>:black;
+  <span class="hljs-attribute">display</span>:block;
+  <span class="hljs-attribute">padding</span>:<span class="hljs-number">0</span> <span class="hljs-number">0.1em</span>;
+  <span class="hljs-attribute">text-decoration</span>:none;
+  <span class="hljs-attribute">width</span>:<span class="hljs-number">100%</span>;
 }</code></pre>
       </section>
    </section>
@@ -287,7 +287,7 @@ ul#swapper ul.menu li a {
 </div>
 <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
   <div class="inner" style="grid-column: 2 / 8">
-    <p><strong>Date:</strong> Updated 24 September 2025.</p>
+    <p><strong>Date:</strong> Updated 25 September 2025.</p>
     <p><strong>Developed by</strong>
       <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a>
       (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff Contact:
@@ -335,12 +335,9 @@ ul#swapper ul.menu li a {
   </div>
 </footer>
 
-
 <link rel="stylesheet" href="../a11y-light.css">
-<script src="../highlight.min.js"></script>
 <script>
-  hljs.highlightAll();
-  var translationStrings = {}; /* fix WAI JS */
+  var translationStrings = {}; // prevent errors in WAI main.js t() calls
 </script>
 <script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
 

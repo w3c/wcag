@@ -121,67 +121,67 @@
 				<h3>Example 1: Adding a JavaScript action to a <code>div</code> element</h3>
 				<p>The <code>div</code> element on the page is given a unique <code>id</code> attribute and a <code>tabindex</code> attribute with value <code>0</code>. A script uses the Document Object Model (DOM) to find the <code>div</code> element by its <code>id</code> and add the <code>onclick</code> handler and the <code>onkeyup</code> handler. The <code>onkeyup</code> handler will invoke the action when the <kbd>Enter</kbd> key is pressed. Note that the <code>div</code> element must be loaded into the DOM before it can be found and modified. This is usually accomplished by calling the script from the <code>onload</code> event of the body element. The script to add the event handlers will only execute if the user agent supports and has JavaScript enabled.</p>
          
-<pre xml:space="preserve"><code class="language-html">&lt;script&gt;
-// this is the function to perform the action. This simple example toggles a message.
-function doSomething(event) {
-  var msg=document.getElementById("message");
-  msg.style.display = msg.style.display=="none" ? "" : "none";
+<pre xml:space="preserve"><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript">
+<span class="hljs-comment">// this is the function to perform the action. This simple example toggles a message.</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">doSomething</span>(<span class="hljs-params">event</span>) {
+  <span class="hljs-keyword">var</span> msg=<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">"message"</span>);
+  msg.<span class="hljs-property">style</span>.<span class="hljs-property">display</span> = msg.<span class="hljs-property">style</span>.<span class="hljs-property">display</span>==<span class="hljs-string">"none"</span> ? <span class="hljs-string">""</span> : <span class="hljs-string">"none"</span>;
 
-  //return false from the function to make certain
-  // that the href of the link does not get invoked
-  return false;
+  <span class="hljs-comment">//return false from the function to make certain</span>
+  <span class="hljs-comment">// that the href of the link does not get invoked</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
   }
 	
-  // this is the function to perform the action when the Enter key has been pressed.  
-  function doSomethingOnEnter(event) {
-    var key = 0;
+  <span class="hljs-comment">// this is the function to perform the action when the Enter key has been pressed.  </span>
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">doSomethingOnEnter</span>(<span class="hljs-params">event</span>) {
+    <span class="hljs-keyword">var</span> key = <span class="hljs-number">0</span>;
 
-     // Determine the key pressed, depending on whether window.event
-    // or the event object is in use
-    if (window.event) {
-      key = window.event.keyCode;
+     <span class="hljs-comment">// Determine the key pressed, depending on whether window.event</span>
+    <span class="hljs-comment">// or the event object is in use</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">window</span>.<span class="hljs-property">event</span>) {
+      key = <span class="hljs-variable language_">window</span>.<span class="hljs-property">event</span>.<span class="hljs-property">keyCode</span>;
     }
-    else if (event) {
-      key = event.keyCode;
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (event) {
+      key = event.<span class="hljs-property">keyCode</span>;
     }
 		
-    // Was the Enter or Space key pressed?
-    if (key == 13 || key == 32) {
-      return doSomething(event);
+    <span class="hljs-comment">// Was the Enter or Space key pressed?</span>
+    <span class="hljs-keyword">if</span> (key == <span class="hljs-number">13</span> || key == <span class="hljs-number">32</span>) {
+      <span class="hljs-keyword">return</span> <span class="hljs-title function_">doSomething</span>(event);
     } 
 
-    // The event has not been handled, so return true
-    return true;
+    <span class="hljs-comment">// The event has not been handled, so return true</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
   }
 	
-  // This setUpActions() function must be called to set the onclick and onkeyup
-  // event handlers onto the existing div element.
-  // This function must be called after the div element with id="active" 
-  // has been loaded into the DOM.
-  // In this example the setUpActions() function is called from the onload event
-  // for the body element.
-  function setUpActions() {
+  <span class="hljs-comment">// This setUpActions() function must be called to set the onclick and onkeyup</span>
+  <span class="hljs-comment">// event handlers onto the existing div element.</span>
+  <span class="hljs-comment">// This function must be called after the div element with id="active" </span>
+  <span class="hljs-comment">// has been loaded into the DOM.</span>
+  <span class="hljs-comment">// In this example the setUpActions() function is called from the onload event</span>
+  <span class="hljs-comment">// for the body element.</span>
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">setUpActions</span>(<span class="hljs-params"></span>) {
    
-    // get the div object
-    var active=document.getElementById("active");
+    <span class="hljs-comment">// get the div object</span>
+    <span class="hljs-keyword">var</span> active=<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">"active"</span>);
 
-    // assign the onclick handler to the object.
-    active.onclick=doSomething;
+    <span class="hljs-comment">// assign the onclick handler to the object.</span>
+    active.<span class="hljs-property">onclick</span>=doSomething;
 
-    // assign the onkeyup handler to the object.
-    active.onkeyup=doSomethingOnEnter;
+    <span class="hljs-comment">// assign the onkeyup handler to the object.</span>
+    active.<span class="hljs-property">onkeyup</span>=doSomethingOnEnter;
 }
-&lt;/script&gt;
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
  
-&lt;body onload="setUpActions();"&gt;
-  &lt;p&gt;Here is the link to modify with a javascript action:&lt;/p&gt;
-  &lt;div&gt;
-    &lt;span id="active" role="button" tabindex="0"&gt;Do Something&lt;/span&gt;
-  &lt;/div&gt;
-  &lt;div aria-live="polite"&gt;
-    &lt;div id="message"&gt;Hello, world!&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/body&gt;</code></pre>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span> <span class="hljs-attr">onload</span>=<span class="hljs-string">"setUpActions();"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Here is the link to modify with a javascript action:<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"active"</span> <span class="hljs-attr">role</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">tabindex</span>=<span class="hljs-string">"0"</span>&gt;</span>Do Something<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">aria-live</span>=<span class="hljs-string">"polite"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"message"</span>&gt;</span>Hello, world!<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></code></pre>
          
 			<p class="working-example">Working example of this code: <a href="../../working-examples/script-action-on-div/">Creating Divs with Actions using JavaScript</a>.</p>
 		</section>
@@ -268,7 +268,7 @@ function doSomething(event) {
 </div>
 <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
   <div class="inner" style="grid-column: 2 / 8">
-    <p><strong>Date:</strong> Updated 24 September 2025.</p>
+    <p><strong>Date:</strong> Updated 25 September 2025.</p>
     <p><strong>Developed by</strong>
       <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a>
       (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff Contact:
@@ -316,12 +316,9 @@ function doSomething(event) {
   </div>
 </footer>
 
-
 <link rel="stylesheet" href="../a11y-light.css">
-<script src="../highlight.min.js"></script>
 <script>
-  hljs.highlightAll();
-  var translationStrings = {}; /* fix WAI JS */
+  var translationStrings = {}; // prevent errors in WAI main.js t() calls
 </script>
 <script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
 

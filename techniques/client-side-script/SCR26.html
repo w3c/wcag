@@ -103,32 +103,32 @@
          
             <p>This example creates a menu when a link is clicked and inserts it after the link. The <code>onclick</code> event of the link is used to call the ShowHide script, passing in an <code>id</code> for the new menu as a parameter.</p>
          
-<pre xml:space="preserve"><code class="language-html">&lt;button aria-expanded="false" type="button" onclick="ShowHide('foo',this)"&gt;
+<pre xml:space="preserve"><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">aria-expanded</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">onclick</span>=<span class="hljs-string">"ShowHide('foo',this)"</span>&gt;</span>
   Toggle
-&lt;/button&gt;</code></pre>
+<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></code></pre>
          
             <p>The ShowHide script creates a <code>div</code> containing the new menu, and inserts a link into it. The last line is the core of the script. It finds the parent of the element that triggered the script, and appends the div it created as a new child to it. This causes the new <code>div</code> to be in the DOM after the menu. When the user hits tab, the focus will go to the first focusable item in the menu, the link we created.</p>
          
-<pre xml:space="preserve"><code class="language-javascript">function ShowHide(id,src){
-  var el = document.getElementById(id);
-  if (!el){
-    el = document.createElement("div");
-    el.id = id;
-    var link = document.createElement("a");
-    link.href = "/laptops";
-    link.appendChild(document.createTextNode("Laptops"));
-    el.appendChild(link);
-    src.parentElement.appendChild(el);
-    src.setAttribute("aria-controls", id);
-    src.setAttribute("aria-expanded", "true");
+<pre xml:space="preserve"><code class="language-javascript hljs"><span class="hljs-keyword">function</span> <span class="hljs-title function_">ShowHide</span>(<span class="hljs-params">id,src</span>){
+  <span class="hljs-keyword">var</span> el = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(id);
+  <span class="hljs-keyword">if</span> (!el){
+    el = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">"div"</span>);
+    el.<span class="hljs-property">id</span> = id;
+    <span class="hljs-keyword">var</span> link = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">"a"</span>);
+    link.<span class="hljs-property">href</span> = <span class="hljs-string">"/laptops"</span>;
+    link.<span class="hljs-title function_">appendChild</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createTextNode</span>(<span class="hljs-string">"Laptops"</span>));
+    el.<span class="hljs-title function_">appendChild</span>(link);
+    src.<span class="hljs-property">parentElement</span>.<span class="hljs-title function_">appendChild</span>(el);
+    src.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">"aria-controls"</span>, id);
+    src.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">"aria-expanded"</span>, <span class="hljs-string">"true"</span>);
    }
-   else if (el &amp;&amp; src.getAttribute("aria-expanded") === "false"){
-     el.style.display = 'block';
-     src.setAttribute("aria-expanded", "true");
+   <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (el &amp;&amp; src.<span class="hljs-title function_">getAttribute</span>(<span class="hljs-string">"aria-expanded"</span>) === <span class="hljs-string">"false"</span>){
+     el.<span class="hljs-property">style</span>.<span class="hljs-property">display</span> = <span class="hljs-string">'block'</span>;
+     src.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">"aria-expanded"</span>, <span class="hljs-string">"true"</span>);
    }
-   else{
-     el.style.display = 'none';
-     src.setAttribute("aria-expanded", "false");    
+   <span class="hljs-keyword">else</span>{
+     el.<span class="hljs-property">style</span>.<span class="hljs-property">display</span> = <span class="hljs-string">'none'</span>;
+     src.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">"aria-expanded"</span>, <span class="hljs-string">"false"</span>);    
    }   
 }</code></pre>
          
@@ -183,7 +183,7 @@
 </div>
 <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
   <div class="inner" style="grid-column: 2 / 8">
-    <p><strong>Date:</strong> Updated 24 September 2025.</p>
+    <p><strong>Date:</strong> Updated 25 September 2025.</p>
     <p><strong>Developed by</strong>
       <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a>
       (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff Contact:
@@ -231,12 +231,9 @@
   </div>
 </footer>
 
-
 <link rel="stylesheet" href="../a11y-light.css">
-<script src="../highlight.min.js"></script>
 <script>
-  hljs.highlightAll();
-  var translationStrings = {}; /* fix WAI JS */
+  var translationStrings = {}; // prevent errors in WAI main.js t() calls
 </script>
 <script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
 

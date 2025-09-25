@@ -127,79 +127,79 @@
             <section id="css-component">
             <h4>The CSS component</h4>
          
-<pre xml:space="preserve"><code class="language-css">#scrollContainer {
-  background-color: darkblue;
-  left: 10px;
-  overflow: hidden;
-  top: 50px;
-  visibility: visible;
+<pre xml:space="preserve"><code class="language-css hljs"><span class="hljs-selector-id">#scrollContainer</span> {
+  <span class="hljs-attribute">background-color</span>: darkblue;
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">10px</span>;
+  <span class="hljs-attribute">overflow</span>: hidden;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">50px</span>;
+  <span class="hljs-attribute">visibility</span>: visible;
 }
 
-.scrolling {
-  height: 50px;
-  position: absolute;
-  width: 200px;
+<span class="hljs-selector-class">.scrolling</span> {
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">50px</span>;
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">200px</span>;
 }
 
-.notscrolling {
-  margin:10px;
-  width: 500px;
+<span class="hljs-selector-class">.notscrolling</span> {
+  <span class="hljs-attribute">margin</span>:<span class="hljs-number">10px</span>;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">500px</span>;
 }
 
-#scrollingText {
-  color: white;
-  top: 0px;
+<span class="hljs-selector-id">#scrollingText</span> {
+  <span class="hljs-attribute">color</span>: white;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">0px</span>;
 }
 
-.scrolling #scrollingText {
-  position: absolute;
+<span class="hljs-selector-class">.scrolling</span> <span class="hljs-selector-id">#scrollingText</span> {
+  <span class="hljs-attribute">position</span>: absolute;
 }</code></pre>
          
 <h4>The script and HTML content:</h4>
-<pre xml:space="preserve"><code class="language-html">&lt;script&gt;
-var tid;
-function init() {
-  var st = document.getElementById('scrollingText');
-  st.style.top = '0px';
-  initScrolling();
+<pre xml:space="preserve"><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript">
+<span class="hljs-keyword">var</span> tid;
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">init</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">var</span> st = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'scrollingText'</span>);
+  st.<span class="hljs-property">style</span>.<span class="hljs-property">top</span> = <span class="hljs-string">'0px'</span>;
+  <span class="hljs-title function_">initScrolling</span>();
 }
 
-function initScrolling () {
-  tid = setInterval('scrollText()', 300);
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">initScrolling</span> (<span class="hljs-params"></span>) {
+  tid = <span class="hljs-built_in">setInterval</span>(<span class="hljs-string">'scrollText()'</span>, <span class="hljs-number">300</span>);
 }
 	
-function scrollText () {
-  var st = document.getElementById('scrollingText');
-  if (parseInt(st.style.top) &gt; (st.offsetHeight*(-1) + 8)) {
-    st.style.top = (parseInt(st.style.top) - 5) + 'px';
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">scrollText</span> (<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">var</span> st = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'scrollingText'</span>);
+  <span class="hljs-keyword">if</span> (<span class="hljs-built_in">parseInt</span>(st.<span class="hljs-property">style</span>.<span class="hljs-property">top</span>) &gt; (st.<span class="hljs-property">offsetHeight</span>*(-<span class="hljs-number">1</span>) + <span class="hljs-number">8</span>)) {
+    st.<span class="hljs-property">style</span>.<span class="hljs-property">top</span> = (<span class="hljs-built_in">parseInt</span>(st.<span class="hljs-property">style</span>.<span class="hljs-property">top</span>) - <span class="hljs-number">5</span>) + <span class="hljs-string">'px'</span>;
   }
-  else {
-    var sc = document.getElementById('scrollContainer');
-    st.style.top = parseInt(sc.offsetHeight) + 8 + 'px';
-  }
-}
-
-function toggle() {
-  var scr = document.getElementById('scrollContainer');
-  if (scr.className == 'scrolling') {
-    scr.className = 'notscrolling';
-    clearInterval(tid);
-    document.getElementById('scrollButton').value="Shrink";
-  }
-  else {
-    scr.className = 'scrolling';
-    initScrolling();
-    document.getElementById('scrollButton').value="Expand";
+  <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">var</span> sc = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'scrollContainer'</span>);
+    st.<span class="hljs-property">style</span>.<span class="hljs-property">top</span> = <span class="hljs-built_in">parseInt</span>(sc.<span class="hljs-property">offsetHeight</span>) + <span class="hljs-number">8</span> + <span class="hljs-string">'px'</span>;
   }
 }
 
-&lt;input type="button" id="scrollButton" value="Expand" onclick="toggle()"&gt;
-&lt;div id="scrollContainer" class="scrolling"&gt;
-  &lt;div id="scrollingText" class="on"&gt;
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">toggle</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">var</span> scr = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'scrollContainer'</span>);
+  <span class="hljs-keyword">if</span> (scr.<span class="hljs-property">className</span> == <span class="hljs-string">'scrolling'</span>) {
+    scr.<span class="hljs-property">className</span> = <span class="hljs-string">'notscrolling'</span>;
+    <span class="hljs-built_in">clearInterval</span>(tid);
+    <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'scrollButton'</span>).<span class="hljs-property">value</span>=<span class="hljs-string">"Shrink"</span>;
+  }
+  <span class="hljs-keyword">else</span> {
+    scr.<span class="hljs-property">className</span> = <span class="hljs-string">'scrolling'</span>;
+    <span class="hljs-title function_">initScrolling</span>();
+    <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'scrollButton'</span>).<span class="hljs-property">value</span>=<span class="hljs-string">"Expand"</span>;
+  }
+}
+
+&lt;input type=<span class="hljs-string">"button"</span> id=<span class="hljs-string">"scrollButton"</span> value=<span class="hljs-string">"Expand"</span> onclick=<span class="hljs-string">"toggle()"</span>&gt;
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"scrollContainer"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"scrolling"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"scrollingText"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"on"</span>&gt;</span>
     ... Text to be scrolled ...
-  &lt;/div&gt;
-&lt;/div&gt;
-...</code>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+...</span></code>
 </pre>
         </section>
          <p class="working-example">Working example of this code: <a href="../../working-examples/script-scroll-text-expand/">Expanding Scrolling Text in Place</a>.</p>
@@ -250,7 +250,7 @@ function toggle() {
 </div>
 <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
   <div class="inner" style="grid-column: 2 / 8">
-    <p><strong>Date:</strong> Updated 24 September 2025.</p>
+    <p><strong>Date:</strong> Updated 25 September 2025.</p>
     <p><strong>Developed by</strong>
       <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a>
       (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff Contact:
@@ -298,12 +298,9 @@ function toggle() {
   </div>
 </footer>
 
-
 <link rel="stylesheet" href="../a11y-light.css">
-<script src="../highlight.min.js"></script>
 <script>
-  hljs.highlightAll();
-  var translationStrings = {}; /* fix WAI JS */
+  var translationStrings = {}; // prevent errors in WAI main.js t() calls
 </script>
 <script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
 

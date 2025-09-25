@@ -114,51 +114,51 @@
       <section class="example" id="example-1-only-using-touch-specific-javascript-event-listeners-when-a-touchscreen-is-detected">
 				<h3>Example 1: Only using touch-specific JavaScript event listeners when a touchscreen is detected</h3>
 				<p>These types of approaches have historically been popular for "mobile" specific development, to ensure that touchscreen interactions are more responsive and immediate (due to the way that touch interactions used to add a delay of approximately 300ms between a "tap" interaction and the generic click event being fired).</p>
-				<pre xml:space="preserve"><code class="language-javascript">
-/* inferring the presence of a touchscreen based on
-   support for the Touch Events API */
+				<pre xml:space="preserve"><code class="language-javascript hljs">
+<span class="hljs-comment">/* inferring the presence of a touchscreen based on
+   support for the Touch Events API */</span>
 
-if (window.TouchEvent || ('ontouchstart' in window)) {
-  /* set up event listeners for touch */
-  target.addEventListener('touchend', ...);
+<span class="hljs-keyword">if</span> (<span class="hljs-variable language_">window</span>.<span class="hljs-property">TouchEvent</span> || (<span class="hljs-string">'ontouchstart'</span> <span class="hljs-keyword">in</span> <span class="hljs-variable language_">window</span>)) {
+  <span class="hljs-comment">/* set up event listeners for touch */</span>
+  target.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'touchend'</span>, ...);
   ...
 }
-else {
-  /* set up event listeners for mouse/keyboard */
-  target.addEventListener('click', ...);
+<span class="hljs-keyword">else</span> {
+  <span class="hljs-comment">/* set up event listeners for mouse/keyboard */</span>
+  target.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'click'</span>, ...);
   ...
 }</code></pre>
-<pre xml:space="preserve"><code class="language-javascript">
-/* inferring the presence of a touchscreen based on
+<pre xml:space="preserve"><code class="language-javascript hljs">
+<span class="hljs-comment">/* inferring the presence of a touchscreen based on
    the CSS Media Queries 4 Interaction Media Features
-   match for a "coarse" primary input mechanism */
+   match for a "coarse" primary input mechanism */</span>
 
-if (window.matchMedia &amp;&amp; window.matchMedia("(pointer:coarse)").matches) {
-  /* set up event listeners for touch */
-  target.addEventListener('touchend', ...);
+<span class="hljs-keyword">if</span> (<span class="hljs-variable language_">window</span>.<span class="hljs-property">matchMedia</span> &amp;&amp; <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">matchMedia</span>(<span class="hljs-string">"(pointer:coarse)"</span>).<span class="hljs-property">matches</span>) {
+  <span class="hljs-comment">/* set up event listeners for touch */</span>
+  target.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'touchend'</span>, ...);
   ...
 }
-else {
-  /* set up event listeners for mouse/keyboard */
-  target.addEventListener('click', ...);
+<span class="hljs-keyword">else</span> {
+  <span class="hljs-comment">/* set up event listeners for mouse/keyboard */</span>
+  target.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'click'</span>, ...);
   ...
 }</code></pre>
 			
 				<p>Similarly, web content that omits relevant/necessary keyboard event listeners (e.g. for the correct keyboard interaction with a complex widget, such as a tab interface) when a touchscreen is detected - under the assumption that on a touch device, keyboard support won't be necessary.</p>
 
-<pre xml:space="preserve"><code class="language-javascript">
-/* inferring the presence of a touchscreen based on
+<pre xml:space="preserve"><code class="language-javascript hljs">
+<span class="hljs-comment">/* inferring the presence of a touchscreen based on
    the navigator.maxTouchPoints property defined in
-   the Pointer Events API */
+   the Pointer Events API */</span>
 
-if (window.PointerEvent &amp;&amp; ('maxTouchPoints' in navigator) &amp;&amp;
-    (navigator.maxTouchPoints &gt; 0)) {
-	/* no need to listen to keyboard - there's a touchscreen... */
+<span class="hljs-keyword">if</span> (<span class="hljs-variable language_">window</span>.<span class="hljs-property">PointerEvent</span> &amp;&amp; (<span class="hljs-string">'maxTouchPoints'</span> <span class="hljs-keyword">in</span> navigator) &amp;&amp;
+    (navigator.<span class="hljs-property">maxTouchPoints</span> &gt; <span class="hljs-number">0</span>)) {
+	<span class="hljs-comment">/* no need to listen to keyboard - there's a touchscreen... */</span>
 	...
 }
-else {
-	/* set up event listeners for keyboard interactions */
-  target.addEventListener('keyup', ...);
+<span class="hljs-keyword">else</span> {
+	<span class="hljs-comment">/* set up event listeners for keyboard interactions */</span>
+  target.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'keyup'</span>, ...);
   ...
 }</code></pre>
 			
@@ -172,12 +172,12 @@ else {
       <section class="example" id="example-2-hiding/omitting-controls-for-mouse-and-keyboard-users-when-a-touchscreen-is-detected">
 				<h3>Example 2: Hiding/omitting controls for mouse and keyboard users when a touchscreen is detected</h3>
 				<p>Web content containing interactive widgets such as content carousels, with visible buttons to operate the widget (such as previous/next buttons, or a visible scrollbar/slider). These visible controls are hidden/omitted when a touchscreen is detected, under the assumption that users will simply use touch gestures to operate the widgets, and no other alternatives are then provided for keyboard or mouse users.</p>
-<pre xml:space="preserve"><code class="language-css">/* using CSS Media Queries 4 Interaction Media Features
+<pre xml:space="preserve"><code class="language-css hljs"><span class="hljs-comment">/* using CSS Media Queries 4 Interaction Media Features
    to hide particular elements in the page (such as a container
-   with visible controls) when a "coarse" primary input is present */
+   with visible controls) when a "coarse" primary input is present */</span>
 
-@media (pointer: coarse) {
-  #widget .controls { display: none; }
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">pointer</span>: coarse) {
+  <span class="hljs-selector-id">#widget</span> <span class="hljs-selector-class">.controls</span> { <span class="hljs-attribute">display</span>: none; }
 }</code></pre>
 				<p>Depending on the specific implementation, authors may allow mouse interactions with widgets that mirror touch gestures - for instance, allowing mouse users to also drag/swipe carousels, rather than just relying on clickable previous/next controls or scrollbars. In these cases, hiding controls when a touchscreen is detected will still allow users to operate the widget with the mouse (unless this interaction has also been suppressed/omitted when the touchscreen was detected, as per the previous example). However, if the only keyboard-operable controls for the widget were hidden, and no alternative for keyboard users was provided (such as allowing cursor key operation), this situation would still fail Success Criterion 2.5.6.</p>
 				<div class="note">
@@ -242,7 +242,7 @@ else {
 </div>
 <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
   <div class="inner" style="grid-column: 2 / 8">
-    <p><strong>Date:</strong> Updated 24 September 2025.</p>
+    <p><strong>Date:</strong> Updated 25 September 2025.</p>
     <p><strong>Developed by</strong>
       <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a>
       (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff Contact:
@@ -290,12 +290,9 @@ else {
   </div>
 </footer>
 
-
 <link rel="stylesheet" href="../a11y-light.css">
-<script src="../highlight.min.js"></script>
 <script>
-  hljs.highlightAll();
-  var translationStrings = {}; /* fix WAI JS */
+  var translationStrings = {}; // prevent errors in WAI main.js t() calls
 </script>
 <script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
 

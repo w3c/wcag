@@ -108,39 +108,39 @@
 				<h3>Example 1: Using Apache's <code>mod_redirect</code> module to redirect requests</h3>
 				<p>The following .htaccess file uses Apache's <code>mod_redirect</code> module to redirect requests for "inaccessible.html" to "accessible.html" unless the request comes from "accessible.html".</p>
      
-<pre xml:space="preserve"><code class="language-apache"># If the request for inaccessible content comes from a file 
-# called accessible.html, then set an environment variable that 
-# allows the inaccessible version to be displayed.
-SetEnvIf Referer .*(accessible.html)$ let_me_in
-&lt;FilesMatch ^(inaccessible.html)$&gt;
-  Order Deny,Allow
-  Deny from all
-  Allow from env=let_me_in
-&lt;/FilesMatch&gt;
+<pre xml:space="preserve"><code class="language-apache hljs"><span class="hljs-comment"># If the request for inaccessible content comes from a file </span>
+<span class="hljs-comment"># called accessible.html, then set an environment variable that </span>
+<span class="hljs-comment"># allows the inaccessible version to be displayed.</span>
+<span class="hljs-attribute">SetEnvIf</span> Referer .*(accessible.html)$ let_me_in
+<span class="hljs-section">&lt;FilesMatch ^(inaccessible.html)$&gt;</span>
+  <span class="hljs-attribute">Order</span> <span class="hljs-literal">Deny</span>,<span class="hljs-literal">Allow</span>
+  <span class="hljs-attribute">Deny</span> from <span class="hljs-literal">all</span>
+  <span class="hljs-attribute">Allow</span> from env=let_me_in
+<span class="hljs-section">&lt;/FilesMatch&gt;</span>
 
-# If the request comes from anyplace but accessible.html, then 
-# redirect the error condition to a location where the accessible 
-# version resides
-ErrorDocument 403 /example_directory/accessible.html</code></pre>
+<span class="hljs-comment"># If the request comes from anyplace but accessible.html, then </span>
+<span class="hljs-comment"># redirect the error condition to a location where the accessible </span>
+<span class="hljs-comment"># version resides</span>
+<span class="hljs-attribute">ErrorDocument</span> <span class="hljs-number">403</span> /example_directory/accessible.html</code></pre>
      </section>
 		 <section class="example" id="example-2-redirecting-direct-requests-for-files">
 			<h3>Example 2: Redirecting direct requests for files</h3>
      <p>This example assumes a directory structure where documents are available in multiple formats. One of the formats does not meet WCAG at the level claimed and uses the file extension "jna" (Just Not Accessible). All of these files are stored in a folder called "jna" with an .htaccess file which ensures that any direct request for a file with the .jna extension from pages where inaccessible versions are not already available is redirected to an index page that lists all of the available formats.</p>
      
-<pre xml:space="preserve"><code class="language-apache"># If the request for inaccessible content comes from a file at 
-# https://example.com/documents/index.html, then set an environment 
-# variable that allows the inaccessible version to be displayed.
-SetEnvIf Referer ^https://example.com/documents/index.html$ let_me_in
-&lt;FilesMatch ^(.*\.jna)$&gt;
-  Order Deny,Allow
-  Deny from all
-  Allow from env=let_me_in
-&lt;/FilesMatch&gt;
+<pre xml:space="preserve"><code class="language-apache hljs"><span class="hljs-comment"># If the request for inaccessible content comes from a file at </span>
+<span class="hljs-comment"># https://example.com/documents/index.html, then set an environment </span>
+<span class="hljs-comment"># variable that allows the inaccessible version to be displayed.</span>
+<span class="hljs-attribute">SetEnvIf</span> Referer ^https://example.com/documents/index.html$ let_me_in
+<span class="hljs-section">&lt;FilesMatch ^(.*\.jna)$&gt;</span>
+  <span class="hljs-attribute">Order</span> <span class="hljs-literal">Deny</span>,<span class="hljs-literal">Allow</span>
+  <span class="hljs-attribute">Deny</span> from <span class="hljs-literal">all</span>
+  <span class="hljs-attribute">Allow</span> from env=let_me_in
+<span class="hljs-section">&lt;/FilesMatch&gt;</span>
 
-# If the request comes from anyplace but https://example.com/documents/index.html, then 
-# redirect the error condition to a location where a link the accessible 
-# version resides
-ErrorDocument 403 https://example.com/documents/index.html</code></pre>
+<span class="hljs-comment"># If the request comes from anyplace but https://example.com/documents/index.html, then </span>
+<span class="hljs-comment"># redirect the error condition to a location where a link the accessible </span>
+<span class="hljs-comment"># version resides</span>
+<span class="hljs-attribute">ErrorDocument</span> <span class="hljs-number">403</span> https://example.com/documents/index.html</code></pre>
    </section>
  </section>
  
@@ -227,7 +227,7 @@ ErrorDocument 403 https://example.com/documents/index.html</code></pre>
 </div>
 <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
   <div class="inner" style="grid-column: 2 / 8">
-    <p><strong>Date:</strong> Updated 24 September 2025.</p>
+    <p><strong>Date:</strong> Updated 25 September 2025.</p>
     <p><strong>Developed by</strong>
       <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a>
       (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff Contact:
@@ -275,12 +275,9 @@ ErrorDocument 403 https://example.com/documents/index.html</code></pre>
   </div>
 </footer>
 
-
 <link rel="stylesheet" href="../a11y-light.css">
-<script src="../highlight.min.js"></script>
 <script>
-  hljs.highlightAll();
-  var translationStrings = {}; /* fix WAI JS */
+  var translationStrings = {}; // prevent errors in WAI main.js t() calls
 </script>
 <script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
 

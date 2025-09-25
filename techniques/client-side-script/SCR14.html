@@ -125,60 +125,60 @@
         <section id="the-javascript">
 				<h4>The JavaScript</h4>
          
-<pre xml:space="preserve"><code class="language-html">&lt;script&gt;
-document.addEventListener("DOMContentLoaded", function (e) {
-  const stockBox = document.querySelector("#stock-box");
-  const stockMovement = document.querySelector("#stock-movement");
-  const onBtn = document.querySelector("#live-on");
-  const offBtn = document.querySelector("#live-off"); 
-  const stocks = new Array("stock went down", "stock stayed the same", "stock went up");
-  let loopCount = 0;	
+<pre xml:space="preserve"><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript">
+<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">"DOMContentLoaded"</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) {
+  <span class="hljs-keyword">const</span> stockBox = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">"#stock-box"</span>);
+  <span class="hljs-keyword">const</span> stockMovement = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">"#stock-movement"</span>);
+  <span class="hljs-keyword">const</span> onBtn = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">"#live-on"</span>);
+  <span class="hljs-keyword">const</span> offBtn = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">"#live-off"</span>); 
+  <span class="hljs-keyword">const</span> stocks = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Array</span>(<span class="hljs-string">"stock went down"</span>, <span class="hljs-string">"stock stayed the same"</span>, <span class="hljs-string">"stock went up"</span>);
+  <span class="hljs-keyword">let</span> loopCount = <span class="hljs-number">0</span>;	
 		
-  onBtn.addEventListener("click", modifyLive, false);
-  offBtn.addEventListener("click", modifyLive, false);
+  onBtn.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">"click"</span>, modifyLive, <span class="hljs-literal">false</span>);
+  offBtn.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">"click"</span>, modifyLive, <span class="hljs-literal">false</span>);
 		
-  function modifyLive(e){
-    let elm = e.currentTarget;
-    let liveState = elm.getAttribute("id");
-    if (liveState === "live-off"){
-      stockBox.setAttribute("aria-live", "off");
-      onBtn.setAttribute("aria-pressed", "false");
-      offBtn.setAttribute("aria-pressed", "true");
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">modifyLive</span>(<span class="hljs-params">e</span>){
+    <span class="hljs-keyword">let</span> elm = e.<span class="hljs-property">currentTarget</span>;
+    <span class="hljs-keyword">let</span> liveState = elm.<span class="hljs-title function_">getAttribute</span>(<span class="hljs-string">"id"</span>);
+    <span class="hljs-keyword">if</span> (liveState === <span class="hljs-string">"live-off"</span>){
+      stockBox.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">"aria-live"</span>, <span class="hljs-string">"off"</span>);
+      onBtn.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">"aria-pressed"</span>, <span class="hljs-string">"false"</span>);
+      offBtn.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">"aria-pressed"</span>, <span class="hljs-string">"true"</span>);
     }
-    else{
-      stockBox.setAttribute("aria-live", "assertive");
-      onBtn.setAttribute("aria-pressed", "true");
-      offBtn.setAttribute("aria-pressed", "false");      
+    <span class="hljs-keyword">else</span>{
+      stockBox.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">"aria-live"</span>, <span class="hljs-string">"assertive"</span>);
+      onBtn.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">"aria-pressed"</span>, <span class="hljs-string">"true"</span>);
+      offBtn.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">"aria-pressed"</span>, <span class="hljs-string">"false"</span>);      
     }
   }
 		
-  setInterval(() =&gt; {
-    if(loopCount &gt;2){
-      loopCount = 0;
+  <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">if</span>(loopCount &gt;<span class="hljs-number">2</span>){
+      loopCount = <span class="hljs-number">0</span>;
     }
-    stockMovement.innerHTML = stocks[loopCount];
+    stockMovement.<span class="hljs-property">innerHTML</span> = stocks[loopCount];
       loopCount++;
-    }, 10000)
+    }, <span class="hljs-number">10000</span>)
   });
-&lt;/script&gt;</code></pre>
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
         </section>
         <section id="the-html">
 <h4>The <abbr title="HyperText Markup Language">HTML</abbr></h4>
          
-<pre xml:space="preserve"><code class="language-html">&lt;body&gt;
-  &lt;h1&gt;Turbo Encabulator Stock Information&lt;/h1&gt;	
-  &lt;div id="stock-box" aria-atomic="true" aria-live="assertive"&gt;
-    &lt;span&gt;Turbo Encabulator Stock Price: &lt;/span&gt;
-    &lt;span id="stock-movement"&gt;stock went up&lt;/span&gt;
-  &lt;/div&gt;
-  &lt;p&gt;Use the buttons to toggle screen reader announcements of stock changes:&lt;/p&gt;
-  &lt;div&gt;
-    &lt;button aria-pressed="true" id="live-on" type="button"&gt;
-     Turn Announcements On&lt;/button&gt;
-    &lt;button aria-pressed="false" id="live-off" type="button"&gt;
-     Turn Announcements Off&lt;/button&gt;
-  &lt;/div&gt;
-&lt;/body&gt;</code></pre>
+<pre xml:space="preserve"><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Turbo Encabulator Stock Information<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>	
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"stock-box"</span> <span class="hljs-attr">aria-atomic</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">aria-live</span>=<span class="hljs-string">"assertive"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Turbo Encabulator Stock Price: <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"stock-movement"</span>&gt;</span>stock went up<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Use the buttons to toggle screen reader announcements of stock changes:<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">aria-pressed</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"live-on"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span>&gt;</span>
+     Turn Announcements On<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">aria-pressed</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"live-off"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span>&gt;</span>
+     Turn Announcements Off<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></code></pre>
         </section>
          <p class="working-example">Working example of this code: <a href="../../working-examples/script-toggle-aria-alerts/">Demonstration of toggling ARIA alerts</a>.</p>
          
@@ -233,7 +233,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
 </div>
 <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
   <div class="inner" style="grid-column: 2 / 8">
-    <p><strong>Date:</strong> Updated 24 September 2025.</p>
+    <p><strong>Date:</strong> Updated 25 September 2025.</p>
     <p><strong>Developed by</strong>
       <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a>
       (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff Contact:
@@ -281,12 +281,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
   </div>
 </footer>
 
-
 <link rel="stylesheet" href="../a11y-light.css">
-<script src="../highlight.min.js"></script>
 <script>
-  hljs.highlightAll();
-  var translationStrings = {}; /* fix WAI JS */
+  var translationStrings = {}; // prevent errors in WAI main.js t() calls
 </script>
 <script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
 

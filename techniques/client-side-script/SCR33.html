@@ -123,159 +123,159 @@
             <p>In this example <abbr title="Cascading Style Sheets">CSS</abbr> and JavaScript are used to visually present some text in a scrolling format. A link is included to pause the scrolling movement.</p>
             <p>This implementation will display the full text and omit the link when JavaScript or CSS are unsupported or inactive.</p>
             <h4>The HTML component</h4>
-<pre xml:space="preserve"><code class="language-html">...
-&lt;div id="scroller"&gt;
-  &lt;p id="tag"&gt;This text will scroll and a Pause/Scroll link will be present 
-  when JavaScript and CSS are supported and active.&lt;/p&gt;
-&lt;/div&gt;
+<pre xml:space="preserve"><code class="language-html hljs">...
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"scroller"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"tag"</span>&gt;</span>This text will scroll and a Pause/Scroll link will be present 
+  when JavaScript and CSS are supported and active.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 ...</code></pre>
          
 <h4>The CSS component</h4>
-<pre xml:space="preserve"><code class="language-css">...
-body {
-  font:1em verdana,sans-serif;
-  color:#000;
-  margin:0
+<pre xml:space="preserve"><code class="language-css hljs">...
+<span class="hljs-selector-tag">body</span> {
+  <span class="hljs-attribute">font</span>:<span class="hljs-number">1em</span> verdana,sans-serif;
+  <span class="hljs-attribute">color</span>:<span class="hljs-number">#000</span>;
+  <span class="hljs-attribute">margin</span>:<span class="hljs-number">0</span>
 }
 
-#scroller {
-  position:relative;
-  overflow:hidden;
-  width:15em;
-  border:1px solid #008080;
+<span class="hljs-selector-id">#scroller</span> {
+  <span class="hljs-attribute">position</span>:relative;
+  <span class="hljs-attribute">overflow</span>:hidden;
+  <span class="hljs-attribute">width</span>:<span class="hljs-number">15em</span>;
+  <span class="hljs-attribute">border</span>:<span class="hljs-number">1px</span> solid <span class="hljs-number">#008080</span>;
 }
   
-#tag {
-  margin:2px 0;
+<span class="hljs-selector-id">#tag</span> {
+  <span class="hljs-attribute">margin</span>:<span class="hljs-number">2px</span> <span class="hljs-number">0</span>;
 }
 
-#testP {
-  visibility:hidden;
-  position:absolute;
-  white-space:nowrap;
+<span class="hljs-selector-id">#testP</span> {
+  <span class="hljs-attribute">visibility</span>:hidden;
+  <span class="hljs-attribute">position</span>:absolute;
+  <span class="hljs-attribute">white-space</span>:nowrap;
 } 
 
- #top {
-  width:350px;
-  margin:auto;
+ <span class="hljs-selector-id">#top</span> {
+  <span class="hljs-attribute">width</span>:<span class="hljs-number">350px</span>;
+  <span class="hljs-attribute">margin</span>:auto;
 }
 ...</code></pre>
          
 <h4>The JavaScript component</h4>
          
-<pre xml:space="preserve"><code class="language-javascript">var speed=50        // speed of scroller
-var step=3          // smoothness of movement
-var StartActionText= "Scroll"  // Text for start link
-var StopActionText = "Pause"   // Text for stop link
+<pre xml:space="preserve"><code class="language-javascript hljs"><span class="hljs-keyword">var</span> speed=<span class="hljs-number">50</span>        <span class="hljs-comment">// speed of scroller</span>
+<span class="hljs-keyword">var</span> step=<span class="hljs-number">3</span>          <span class="hljs-comment">// smoothness of movement</span>
+<span class="hljs-keyword">var</span> <span class="hljs-title class_">StartActionText</span>= <span class="hljs-string">"Scroll"</span>  <span class="hljs-comment">// Text for start link</span>
+<span class="hljs-keyword">var</span> <span class="hljs-title class_">StopActionText</span> = <span class="hljs-string">"Pause"</span>   <span class="hljs-comment">// Text for stop link</span>
  
-var x, scroll, divW, sText=""
+<span class="hljs-keyword">var</span> x, scroll, divW, sText=<span class="hljs-string">""</span>
  
-function onclickIE(idAttr,handler,call){
-  if ((document.all)&amp;&amp;(document.getElementById)){idAttr[handler]="Javascript:"+call}
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">onclickIE</span>(<span class="hljs-params">idAttr,handler,call</span>){
+  <span class="hljs-keyword">if</span> ((<span class="hljs-variable language_">document</span>.<span class="hljs-property">all</span>)&amp;&amp;(<span class="hljs-variable language_">document</span>.<span class="hljs-property">getElementById</span>)){idAttr[handler]=<span class="hljs-string">"Javascript:"</span>+call}
 }
  
-function addLink(id,call,txt){
-  var e=document.createElement('a');
-  e.setAttribute('href',call);
-  var linktext=document.createTextNode(txt);
-  e.appendChild(linktext);
-  document.getElementById(id).appendChild(e);
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">addLink</span>(<span class="hljs-params">id,call,txt</span>){
+  <span class="hljs-keyword">var</span> e=<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'a'</span>);
+  e.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">'href'</span>,call);
+  <span class="hljs-keyword">var</span> linktext=<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createTextNode</span>(txt);
+  e.<span class="hljs-title function_">appendChild</span>(linktext);
+  <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(id).<span class="hljs-title function_">appendChild</span>(e);
 }
  
-function getElementStyle() {
-  var elem = document.getElementById('scroller');
-  if (elem.currentStyle) {
-    return elem.currentStyle.overflow;
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">getElementStyle</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">var</span> elem = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'scroller'</span>);
+  <span class="hljs-keyword">if</span> (elem.<span class="hljs-property">currentStyle</span>) {
+    <span class="hljs-keyword">return</span> elem.<span class="hljs-property">currentStyle</span>.<span class="hljs-property">overflow</span>;
   }
-  else if (window.getComputedStyle) {
-    var compStyle = window.getComputedStyle(elem, '');
-    return compStyle.getPropertyValue("overflow");
+  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">window</span>.<span class="hljs-property">getComputedStyle</span>) {
+    <span class="hljs-keyword">var</span> compStyle = <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">getComputedStyle</span>(elem, <span class="hljs-string">''</span>);
+    <span class="hljs-keyword">return</span> compStyle.<span class="hljs-title function_">getPropertyValue</span>(<span class="hljs-string">"overflow"</span>);
   }
-  return "";
+  <span class="hljs-keyword">return</span> <span class="hljs-string">""</span>;
 }
 
-function addControls(){
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">addControls</span>(<span class="hljs-params"></span>){
   
-  // test for CSS support first 
-  // test for the overlow property value set in style element or external file
-  if (getElementStyle()=="hidden") {
-    var f=document.createElement('div');
-    f.setAttribute('id','controls');
-    document.getElementById('scroller').parentNode.appendChild(f);
-    addLink('controls','Javascript:clickAction(0)',StopActionText);
-    onclickIE(document.getElementById('controls').childNodes[0],"href",'clickAction(0)');
-    document.getElementById('controls').style.display='block';
+  <span class="hljs-comment">// test for CSS support first </span>
+  <span class="hljs-comment">// test for the overlow property value set in style element or external file</span>
+  <span class="hljs-keyword">if</span> (<span class="hljs-title function_">getElementStyle</span>()==<span class="hljs-string">"hidden"</span>) {
+    <span class="hljs-keyword">var</span> f=<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'div'</span>);
+    f.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">'id'</span>,<span class="hljs-string">'controls'</span>);
+    <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'scroller'</span>).<span class="hljs-property">parentNode</span>.<span class="hljs-title function_">appendChild</span>(f);
+    <span class="hljs-title function_">addLink</span>(<span class="hljs-string">'controls'</span>,<span class="hljs-string">'Javascript:clickAction(0)'</span>,<span class="hljs-title class_">StopActionText</span>);
+    <span class="hljs-title function_">onclickIE</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'controls'</span>).<span class="hljs-property">childNodes</span>[<span class="hljs-number">0</span>],<span class="hljs-string">"href"</span>,<span class="hljs-string">'clickAction(0)'</span>);
+    <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'controls'</span>).<span class="hljs-property">style</span>.<span class="hljs-property">display</span>=<span class="hljs-string">'block'</span>;
   }
 }
  
-function stopScroller(){clearTimeout(scroll)}
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">stopScroller</span>(<span class="hljs-params"></span>){<span class="hljs-built_in">clearTimeout</span>(scroll)}
   
-function setAction(callvalue,txt){
-  var c=document.getElementById('controls')
-  c.childNodes[0].setAttribute('href','Javascript:clickAction('+callvalue+')')
-    onclickIE(document.getElementById('controls').childNodes[0],"href",'clickAction
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">setAction</span>(<span class="hljs-params">callvalue,txt</span>){
+  <span class="hljs-keyword">var</span> c=<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'controls'</span>)
+  c.<span class="hljs-property">childNodes</span>[<span class="hljs-number">0</span>].<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">'href'</span>,<span class="hljs-string">'Javascript:clickAction('</span>+callvalue+<span class="hljs-string">')'</span>)
+    <span class="hljs-title function_">onclickIE</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'controls'</span>).<span class="hljs-property">childNodes</span>[<span class="hljs-number">0</span>],<span class="hljs-string">"href"</span>,<span class="hljs-string">'clickAction
 
-  ('+callvalue+')')
-  c.childNodes[0].firstChild.nodeValue=txt
+  ('</span>+callvalue+<span class="hljs-string">')'</span>)
+  c.<span class="hljs-property">childNodes</span>[<span class="hljs-number">0</span>].<span class="hljs-property">firstChild</span>.<span class="hljs-property">nodeValue</span>=txt
 }
 
-function clickAction(no){
-  switch(no) {
-    case 0:
-      stopScroller();
-      setAction(1,StartActionText);
-      break;
-    case 1:
-      startScroller();
-      setAction(0,StopActionText);
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">clickAction</span>(<span class="hljs-params">no</span>){
+  <span class="hljs-keyword">switch</span>(no) {
+    <span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:
+      <span class="hljs-title function_">stopScroller</span>();
+      <span class="hljs-title function_">setAction</span>(<span class="hljs-number">1</span>,<span class="hljs-title class_">StartActionText</span>);
+      <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:
+      <span class="hljs-title function_">startScroller</span>();
+      <span class="hljs-title function_">setAction</span>(<span class="hljs-number">0</span>,<span class="hljs-title class_">StopActionText</span>);
   }
 }
 
-function startScroller(){
-  document.getElementById('tag').style.whiteSpace='nowrap'
-  var p=document.createElement('p')
-  p.id='testP'
-  p.style.fontSize='25%' //fix for mozilla. multiply by 4 before using
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">startScroller</span>(<span class="hljs-params"></span>){
+  <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'tag'</span>).<span class="hljs-property">style</span>.<span class="hljs-property">whiteSpace</span>=<span class="hljs-string">'nowrap'</span>
+  <span class="hljs-keyword">var</span> p=<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'p'</span>)
+  p.<span class="hljs-property">id</span>=<span class="hljs-string">'testP'</span>
+  p.<span class="hljs-property">style</span>.<span class="hljs-property">fontSize</span>=<span class="hljs-string">'25%'</span> <span class="hljs-comment">//fix for mozilla. multiply by 4 before using</span>
   x-=step
-  if (document.getElementById('tag').className) p.className=document.getElementById
+  <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'tag'</span>).<span class="hljs-property">className</span>) p.<span class="hljs-property">className</span>=<span class="hljs-variable language_">document</span>.<span class="hljs-property">getElementById</span>
 
-  ('tag').className
-    p.appendChild(document.createTextNode(sText))
-    document.body.appendChild(p)
-    pw=p.offsetWidth
-    document.body.removeChild(p)
-    if (x&lt;(pw*4)*-1){x=divW}
-    document.getElementById('tag').style.left=x+'px'
-    scroll=setTimeout('startScroller()',speed)
+  (<span class="hljs-string">'tag'</span>).<span class="hljs-property">className</span>
+    p.<span class="hljs-title function_">appendChild</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createTextNode</span>(sText))
+    <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">appendChild</span>(p)
+    pw=p.<span class="hljs-property">offsetWidth</span>
+    <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">removeChild</span>(p)
+    <span class="hljs-keyword">if</span> (x&lt;(pw*<span class="hljs-number">4</span>)*-<span class="hljs-number">1</span>){x=divW}
+    <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'tag'</span>).<span class="hljs-property">style</span>.<span class="hljs-property">left</span>=x+<span class="hljs-string">'px'</span>
+    scroll=<span class="hljs-built_in">setTimeout</span>(<span class="hljs-string">'startScroller()'</span>,speed)
 }
   
-function initScroller(){
-  if (document.getElementById &amp;&amp; document.createElement &amp;&amp; document.body.appendChild) {
-    addControls();
-    divW=document.getElementById('scroller').offsetWidth;
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">initScroller</span>(<span class="hljs-params"></span>){
+  <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">document</span>.<span class="hljs-property">getElementById</span> &amp;&amp; <span class="hljs-variable language_">document</span>.<span class="hljs-property">createElement</span> &amp;&amp; <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-property">appendChild</span>) {
+    <span class="hljs-title function_">addControls</span>();
+    divW=<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'scroller'</span>).<span class="hljs-property">offsetWidth</span>;
     x=divW;
-    document.getElementById('tag').style.position='relative';
-    document.getElementById('tag').style.left=divW+'px';
-    var ss=document.getElementById('tag').childNodes;
-    for (i=0;i&lt;ss.length;i++) {sText+=ss[i].nodeValue+" "};
-    scroll=setTimeout('startScroller()',speed);
+    <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'tag'</span>).<span class="hljs-property">style</span>.<span class="hljs-property">position</span>=<span class="hljs-string">'relative'</span>;
+    <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'tag'</span>).<span class="hljs-property">style</span>.<span class="hljs-property">left</span>=divW+<span class="hljs-string">'px'</span>;
+    <span class="hljs-keyword">var</span> ss=<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'tag'</span>).<span class="hljs-property">childNodes</span>;
+    <span class="hljs-keyword">for</span> (i=<span class="hljs-number">0</span>;i&lt;ss.<span class="hljs-property">length</span>;i++) {sText+=ss[i].<span class="hljs-property">nodeValue</span>+<span class="hljs-string">" "</span>};
+    scroll=<span class="hljs-built_in">setTimeout</span>(<span class="hljs-string">'startScroller()'</span>,speed);
   }
 }
   
-function addLoadEvent(func) {
-  if (!document.getElementById | !document.getElementsByTagName) return
-  var oldonload = window.onload
-  if (typeof window.onload != 'function') {
-    window.onload = func;
-  } else {
-    window.onload = function() {
-      oldonload()
-      func()
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">addLoadEvent</span>(<span class="hljs-params">func</span>) {
+  <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">document</span>.<span class="hljs-property">getElementById</span> | !<span class="hljs-variable language_">document</span>.<span class="hljs-property">getElementsByTagName</span>) <span class="hljs-keyword">return</span>
+  <span class="hljs-keyword">var</span> oldonload = <span class="hljs-variable language_">window</span>.<span class="hljs-property">onload</span>
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-variable language_">window</span>.<span class="hljs-property">onload</span> != <span class="hljs-string">'function'</span>) {
+    <span class="hljs-variable language_">window</span>.<span class="hljs-property">onload</span> = func;
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-variable language_">window</span>.<span class="hljs-property">onload</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+      <span class="hljs-title function_">oldonload</span>()
+      <span class="hljs-title function_">func</span>()
     }
   }
 }
   
-addLoadEvent(initScroller)</code></pre>
+<span class="hljs-title function_">addLoadEvent</span>(initScroller)</code></pre>
          
             <p class="working-example">A working example of this code, <a href="../../working-examples/script-scroll-pause/">Example of using script to scroll content and providing a mechanism to pause it</a>, is available.</p>
          
@@ -334,7 +334,7 @@ addLoadEvent(initScroller)</code></pre>
 </div>
 <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
   <div class="inner" style="grid-column: 2 / 8">
-    <p><strong>Date:</strong> Updated 24 September 2025.</p>
+    <p><strong>Date:</strong> Updated 25 September 2025.</p>
     <p><strong>Developed by</strong>
       <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a>
       (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff Contact:
@@ -382,12 +382,9 @@ addLoadEvent(initScroller)</code></pre>
   </div>
 </footer>
 
-
 <link rel="stylesheet" href="../a11y-light.css">
-<script src="../highlight.min.js"></script>
 <script>
-  hljs.highlightAll();
-  var translationStrings = {}; /* fix WAI JS */
+  var translationStrings = {}; // prevent errors in WAI main.js t() calls
 </script>
 <script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
 

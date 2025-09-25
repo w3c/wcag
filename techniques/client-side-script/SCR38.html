@@ -120,62 +120,62 @@
 				<p>The script in the acctoggle.js file stores the pre-enhanced version - assigning the version the url postfix #accessible. Clicking the "WCAG 2 conforming alternate version" link (inserted as the first child of the <code>body</code> element in any enhanced versions) changes the url to include the postfix "#accessible" which then resets the html located in the <code>body</code> element and the <code>head</code> element to pre-enhanced code. The pre-enhanced state can be reached from the link, or directly from a url typed into the browser. In addition, a link is inserted into the pre-enhanced "Conforming Alternate Version" which allows the user to re-enhance the web page (something which can also be done using the web browser's back button).</p>
 				<section id="the-javscript">
 				<h4>acctoggle.js JavaScript:</h4>
-<pre xml:space="preserve"><code class="language-javascript">window.onload = function(event) {
+<pre xml:space="preserve"><code class="language-javascript hljs"><span class="hljs-variable language_">window</span>.<span class="hljs-property">onload</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) {
 
-// store pre-enhanced element content
-var initialHead = document.head.innerHTML;
-var initialBody = document.body.innerHTML;
-var initialURL = location.href;
+<span class="hljs-comment">// store pre-enhanced element content</span>
+<span class="hljs-keyword">var</span> initialHead = <span class="hljs-variable language_">document</span>.<span class="hljs-property">head</span>.<span class="hljs-property">innerHTML</span>;
+<span class="hljs-keyword">var</span> initialBody = <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-property">innerHTML</span>;
+<span class="hljs-keyword">var</span> initialURL = location.<span class="hljs-property">href</span>;
 				
-var runOnce = function() {
-  // payload you want to run per page call - e.g. analytics code
+<span class="hljs-keyword">var</span> runOnce = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-comment">// payload you want to run per page call - e.g. analytics code</span>
 }
 
-var setup = function() {
-  // create conforming alternate version link
+<span class="hljs-keyword">var</span> setup = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-comment">// create conforming alternate version link</span>
 
-  var toggleEnhanced = document.querySelector("#toggle_enhanced");
-  if (toggleEnhanced) {
-    toggleEnhanced.outerHTML = "";
+  <span class="hljs-keyword">var</span> toggleEnhanced = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">"#toggle_enhanced"</span>);
+  <span class="hljs-keyword">if</span> (toggleEnhanced) {
+    toggleEnhanced.<span class="hljs-property">outerHTML</span> = <span class="hljs-string">""</span>;
   }
 
-  var nel = document.createElement("a");
-  nel.id = "acctoggle";
-  nel.setAttribute("href", "#accessible");
-  nel.innerHTML = "WCAG 2 conforming alternate version";
-  document.body.insertBefore(nel, document.body.firstChild);
+  <span class="hljs-keyword">var</span> nel = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">"a"</span>);
+  nel.<span class="hljs-property">id</span> = <span class="hljs-string">"acctoggle"</span>;
+  nel.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">"href"</span>, <span class="hljs-string">"#accessible"</span>);
+  nel.<span class="hljs-property">innerHTML</span> = <span class="hljs-string">"WCAG 2 conforming alternate version"</span>;
+  <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">insertBefore</span>(nel, <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-property">firstChild</span>);
 
-  // payload
-  var s = document.createElement("SCRIPT");
-  s.setAttribute("src", "sayhello.js");
-  document.querySelector("HEAD").appendChild(s);   
+  <span class="hljs-comment">// payload</span>
+  <span class="hljs-keyword">var</span> s = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">"SCRIPT"</span>);
+  s.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">"src"</span>, <span class="hljs-string">"sayhello.js"</span>);
+  <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">"HEAD"</span>).<span class="hljs-title function_">appendChild</span>(s);   
 }
 					
-setup();
-runOnce();
+<span class="hljs-title function_">setup</span>();
+<span class="hljs-title function_">runOnce</span>();
 
-window.onpopstate = function(event) {
-  if (location.href.indexOf("#accessible") != -1) {
+<span class="hljs-variable language_">window</span>.<span class="hljs-property">onpopstate</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) {
+  <span class="hljs-keyword">if</span> (location.<span class="hljs-property">href</span>.<span class="hljs-title function_">indexOf</span>(<span class="hljs-string">"#accessible"</span>) != -<span class="hljs-number">1</span>) {
   
-  // revert element contents to pre-enhanced version
-  document.head.innerHTML = initialHead;
-  document.body.innerHTML = initialBody;
+  <span class="hljs-comment">// revert element contents to pre-enhanced version</span>
+  <span class="hljs-variable language_">document</span>.<span class="hljs-property">head</span>.<span class="hljs-property">innerHTML</span> = initialHead;
+  <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-property">innerHTML</span> = initialBody;
 
-  // create enhanced version link
-  var el = document.createElement("a");
-  el.id = "toggle_enhanced";
-  el.setAttribute("href", "");
-  el.innerHTML = "Enhanced version";
-  var back = function(e) {
-    e.preventDefault();
-    window.history.back();
+  <span class="hljs-comment">// create enhanced version link</span>
+  <span class="hljs-keyword">var</span> el = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">"a"</span>);
+  el.<span class="hljs-property">id</span> = <span class="hljs-string">"toggle_enhanced"</span>;
+  el.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">"href"</span>, <span class="hljs-string">""</span>);
+  el.<span class="hljs-property">innerHTML</span> = <span class="hljs-string">"Enhanced version"</span>;
+  <span class="hljs-keyword">var</span> back = <span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) {
+    e.<span class="hljs-title function_">preventDefault</span>();
+    <span class="hljs-variable language_">window</span>.<span class="hljs-property">history</span>.<span class="hljs-title function_">back</span>();
   }
-  el.addEventListener("click", back, false);
-  document.body.insertBefore(el, document.body.firstChild);
+  el.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">"click"</span>, back, <span class="hljs-literal">false</span>);
+  <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">insertBefore</span>(el, <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-property">firstChild</span>);
 }
 
-if (location.href == initialURL) {
-  setup();
+<span class="hljs-keyword">if</span> (location.<span class="hljs-property">href</span> == initialURL) {
+  <span class="hljs-title function_">setup</span>();
 }
 };
 }</code></pre>
@@ -183,22 +183,22 @@ if (location.href == initialURL) {
 
 <section id="the-html">
   <h4>HTML web page source code:</h4>
-<pre xml:space="preserve"><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;title&gt;Evaluera Ltd&lt;/title&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;script src="accSwitch.js"&gt;&lt;/script&gt;
-  &lt;/head&gt;
-  &lt;body&gt; 
-    &lt;h1&gt;Test Page&lt;/h1&gt;
-    &lt;p&gt;Say: &lt;span id="change"&gt;Goodbye&lt;/span&gt;&lt;/p&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</code></pre>
+<pre xml:space="preserve"><code class="language-html hljs"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Evaluera Ltd<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"accSwitch.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span> 
+    <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Test Page<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Say: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"change"</span>&gt;</span>Goodbye<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
 
 <h4>sayhello.js source code</h4>
-<pre xml:space="preserve"><code class="language-javascript">var change = document.querySelector("#change");
-change.innerText = "Hello";</code></pre>    
+<pre xml:space="preserve"><code class="language-javascript hljs"><span class="hljs-keyword">var</span> change = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">"#change"</span>);
+change.<span class="hljs-property">innerText</span> = <span class="hljs-string">"Hello"</span>;</code></pre>    
 </section>     
       </section>
    </section>
@@ -274,7 +274,7 @@ change.innerText = "Hello";</code></pre>
 </div>
 <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
   <div class="inner" style="grid-column: 2 / 8">
-    <p><strong>Date:</strong> Updated 24 September 2025.</p>
+    <p><strong>Date:</strong> Updated 25 September 2025.</p>
     <p><strong>Developed by</strong>
       <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a>
       (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff Contact:
@@ -322,12 +322,9 @@ change.innerText = "Hello";</code></pre>
   </div>
 </footer>
 
-
 <link rel="stylesheet" href="../a11y-light.css">
-<script src="../highlight.min.js"></script>
 <script>
-  hljs.highlightAll();
-  var translationStrings = {}; /* fix WAI JS */
+  var translationStrings = {}; // prevent errors in WAI main.js t() calls
 </script>
 <script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
 

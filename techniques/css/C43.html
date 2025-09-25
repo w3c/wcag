@@ -129,131 +129,131 @@
           <p>This example demonstrates a technique to un-obscure content underneath a fixed-position banner. To prevent the page becoming unusable at smaller screen sizes, the banner becomes un-fixed. To observe the <code>scroll-padding</code> effect you will need to use a viewport over 800px wide.</p>
         </aside>
 				<p>Working example: <a href="../../working-examples/css-padding-focus-not-obscured/">Using CSS <code>scroll-padding</code> to un-obscure content</a>.</p>
-<pre xml:space="preserve"><code>&lt;!doctype html&gt;
-&lt;html lang="en"&gt;
-&lt;head&gt;
-  &lt;meta charset="utf-8"&gt;
-  &lt;meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"&gt;
-  &lt;title&gt;Using CSS scroll-padding to un-obscure content&lt;/title&gt;
-  &lt;style&gt;
+<pre><code class="language-html hljs"><span class="hljs-meta">&lt;!doctype <span class="hljs-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width, initial-scale=1, shrink-to-fit=no"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Using CSS scroll-padding to un-obscure content<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css">
     ...
 
-    :root{
-      --height-dialog: 400px;
-      --breathing-room: 20px;
-      --scroll-padding: calc(var(--height-dialog) + var(--breathing-room));      
+    <span class="hljs-selector-pseudo">:root</span>{
+      <span class="hljs-attr">--height-dialog</span>: <span class="hljs-number">400px</span>;
+      <span class="hljs-attr">--breathing-room</span>: <span class="hljs-number">20px</span>;
+      <span class="hljs-attr">--scroll-padding</span>: <span class="hljs-built_in">calc</span>(<span class="hljs-built_in">var</span>(--height-dialog) + <span class="hljs-built_in">var</span>(--breathing-room));      
     }
 
-    .wrapper {
-      display:grid;
-      gap:1rem;
-      grid-template-columns:repeat(9, 1fr);
-      grid-template-rows:8rem auto minmax(10rem, max-content);
-      min-block-size: 100vh;
+    <span class="hljs-selector-class">.wrapper</span> {
+      <span class="hljs-attribute">display</span>:grid;
+      <span class="hljs-attribute">gap</span>:<span class="hljs-number">1rem</span>;
+      <span class="hljs-attribute">grid-template-columns</span>:<span class="hljs-built_in">repeat</span>(<span class="hljs-number">9</span>, <span class="hljs-number">1</span>fr);
+      <span class="hljs-attribute">grid-template-rows</span>:<span class="hljs-number">8rem</span> auto <span class="hljs-built_in">minmax</span>(<span class="hljs-number">10rem</span>, max-content);
+      <span class="hljs-attribute">min-block-size</span>: <span class="hljs-number">100vh</span>;
     }
 
-    .wrapper &gt; * {
-      border:1px solid var(--black);
-      padding:1rem;
+    <span class="hljs-selector-class">.wrapper</span> &gt; * {
+      <span class="hljs-attribute">border</span>:<span class="hljs-number">1px</span> solid <span class="hljs-built_in">var</span>(--black);
+      <span class="hljs-attribute">padding</span>:<span class="hljs-number">1rem</span>;
     }
 
-    header {
-      grid-column:1 / -1;
-      grid-row:1;
+    <span class="hljs-selector-tag">header</span> {
+      <span class="hljs-attribute">grid-column</span>:<span class="hljs-number">1</span> / -<span class="hljs-number">1</span>;
+      <span class="hljs-attribute">grid-row</span>:<span class="hljs-number">1</span>;
     }
 
-    main {
-      grid-column:1 / 8;
+    <span class="hljs-selector-tag">main</span> {
+      <span class="hljs-attribute">grid-column</span>:<span class="hljs-number">1</span> / <span class="hljs-number">8</span>;
     }
 
-    aside {
-      grid-column:8 / 10;
+    <span class="hljs-selector-tag">aside</span> {
+      <span class="hljs-attribute">grid-column</span>:<span class="hljs-number">8</span> / <span class="hljs-number">10</span>;
     }
 
-    footer {
-      grid-column:1 / -1;
+    <span class="hljs-selector-tag">footer</span> {
+      <span class="hljs-attribute">grid-column</span>:<span class="hljs-number">1</span> / -<span class="hljs-number">1</span>;
     }
 
-    @media (max-width:50rem) {
-      main {
-       grid-column:1 / -1;
+    <span class="hljs-keyword">@media</span> (<span class="hljs-attribute">max-width</span>:<span class="hljs-number">50rem</span>) {
+      <span class="hljs-selector-tag">main</span> {
+       <span class="hljs-attribute">grid-column</span>:<span class="hljs-number">1</span> / -<span class="hljs-number">1</span>;
       }
 
-      aside {
-        grid-column:1 / -1;
+      <span class="hljs-selector-tag">aside</span> {
+        <span class="hljs-attribute">grid-column</span>:<span class="hljs-number">1</span> / -<span class="hljs-number">1</span>;
       }
     }
 
-    .fixed-position-banner {
-      background:var(--banner-background);
-      border:3px solid var(--banner-border);
-      margin-block-end:0.5rem;
-      padding:1rem 1rem 5rem;
-      position:relative;
-      width:calc(100vw - 1rem);
+    <span class="hljs-selector-class">.fixed-position-banner</span> {
+      <span class="hljs-attribute">background</span>:<span class="hljs-built_in">var</span>(--banner-background);
+      <span class="hljs-attribute">border</span>:<span class="hljs-number">3px</span> solid <span class="hljs-built_in">var</span>(--banner-border);
+      <span class="hljs-attribute">margin-block-end</span>:<span class="hljs-number">0.5rem</span>;
+      <span class="hljs-attribute">padding</span>:<span class="hljs-number">1rem</span> <span class="hljs-number">1rem</span> <span class="hljs-number">5rem</span>;
+      <span class="hljs-attribute">position</span>:relative;
+      <span class="hljs-attribute">width</span>:<span class="hljs-built_in">calc</span>(<span class="hljs-number">100vw</span> - <span class="hljs-number">1rem</span>);
     }
 
-    @media (min-width: 50rem) {
-      html {
-        padding-bottom:var(--height-dialog);
-        scroll-padding-bottom:var(--scroll-padding);
+    <span class="hljs-keyword">@media</span> (<span class="hljs-attribute">min-width</span>: <span class="hljs-number">50rem</span>) {
+      <span class="hljs-selector-tag">html</span> {
+        <span class="hljs-attribute">padding-bottom</span>:<span class="hljs-built_in">var</span>(--height-dialog);
+        <span class="hljs-attribute">scroll-padding-bottom</span>:<span class="hljs-built_in">var</span>(--scroll-padding);
       }
 
-     .fixed-position-banner {
-        margin-block-end:0;
-        position:fixed;
-        inset:auto 0 0 0;
+     <span class="hljs-selector-class">.fixed-position-banner</span> {
+        <span class="hljs-attribute">margin-block-end</span>:<span class="hljs-number">0</span>;
+        <span class="hljs-attribute">position</span>:fixed;
+        <span class="hljs-attribute">inset</span>:auto <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>;
       }
     } 
     ...
-  &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;dialog class="fixed-position-banner"&gt;
-    &lt;h2 tabindex="-1"&gt;Fixed-Position Banner&lt;/h2&gt;
-    &lt;button aria-label="close fixed-position banner" class="close-banner" type="button"&gt;
+  </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dialog</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"fixed-position-banner"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">h2</span> <span class="hljs-attr">tabindex</span>=<span class="hljs-string">"-1"</span>&gt;</span>Fixed-Position Banner<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">aria-label</span>=<span class="hljs-string">"close fixed-position banner"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"close-banner"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span>&gt;</span>
       ...
-    &lt;/button&gt;
-  &lt;/dialog&gt;
-  &lt;div class="wrapper"&gt;
-    &lt;header&gt;
-      &lt;p&gt;Header Content&lt;/p&gt;
-    &lt;/header&gt;
-    &lt;main&gt;
-      &lt;h1&gt;Main Content&lt;/h1&gt;
-    &lt;/main&gt;
-    &lt;aside&gt;
-      &lt;h2&gt;Sidebar Content&lt;/h2&gt;
-      &lt;p&gt;&lt;a href="https://example.com"&gt;Here's an example link in the sidebar&lt;/a&gt;.&lt;/p&gt;
-    &lt;/aside&gt;
-    &lt;footer&gt;
-      &lt;h2&gt;Footer Content&lt;/h2&gt;
-      &lt;p&gt;&lt;a href="https://example.com"&gt;Here's an example link in the footer&lt;/a&gt;.&lt;/p&gt;
-    &lt;/footer&gt;
-  &lt;/div&gt;
-  &lt;script&gt;
-    window.addEventListener('DOMContentLoaded', () =&gt; {
-      const elFixedBanner = document.querySelector('dialog');
-      const elCloseBannerBtn = document.querySelector(".close-banner");
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">dialog</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"wrapper"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">header</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Header Content<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">header</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">main</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Main Content<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">main</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">aside</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Sidebar Content<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"https://example.com"</span>&gt;</span>Here's an example link in the sidebar<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">aside</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">footer</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Footer Content<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"https://example.com"</span>&gt;</span>Here's an example link in the footer<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">footer</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript">
+    <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'DOMContentLoaded'</span>, <span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-keyword">const</span> elFixedBanner = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">'dialog'</span>);
+      <span class="hljs-keyword">const</span> elCloseBannerBtn = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">".close-banner"</span>);
 
-      elFixedBanner.show();
+      elFixedBanner.<span class="hljs-title function_">show</span>();
 
-      const getDialogHeight = () =&gt; {
-        const height = elFixedBanner.offsetHeight;
-        document.documentElement.style.setProperty('--height-dialog', `${height}px`);
-        document.documentElement.style.setProperty('--breathing-room', `${height ? 20 : 0}px`);
+      <span class="hljs-keyword">const</span> <span class="hljs-title function_">getDialogHeight</span> = (<span class="hljs-params"></span>) =&gt; {
+        <span class="hljs-keyword">const</span> height = elFixedBanner.<span class="hljs-property">offsetHeight</span>;
+        <span class="hljs-variable language_">document</span>.<span class="hljs-property">documentElement</span>.<span class="hljs-property">style</span>.<span class="hljs-title function_">setProperty</span>(<span class="hljs-string">'--height-dialog'</span>, <span class="hljs-string">`<span class="hljs-subst">${height}</span>px`</span>);
+        <span class="hljs-variable language_">document</span>.<span class="hljs-property">documentElement</span>.<span class="hljs-property">style</span>.<span class="hljs-title function_">setProperty</span>(<span class="hljs-string">'--breathing-room'</span>, <span class="hljs-string">`<span class="hljs-subst">${height ? <span class="hljs-number">20</span> : <span class="hljs-number">0</span>}</span>px`</span>);
       }
 
-      const observer = new ResizeObserver(getDialogHeight);
-      observer.observe(elFixedBanner);
+      <span class="hljs-keyword">const</span> observer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResizeObserver</span>(getDialogHeight);
+      observer.<span class="hljs-title function_">observe</span>(elFixedBanner);
 
-      elCloseBannerBtn.addEventListener("click", function(e){
-        elFixedBanner.close();
-      }, false);
+      elCloseBannerBtn.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">"click"</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>){
+        elFixedBanner.<span class="hljs-title function_">close</span>();
+      }, <span class="hljs-literal">false</span>);
     });
-  &lt;/script&gt;	
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
+  </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>	
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
 
 			</section>      
 		</section>
@@ -332,7 +332,7 @@
 </div>
 <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
   <div class="inner" style="grid-column: 2 / 8">
-    <p><strong>Date:</strong> Updated 24 September 2025.</p>
+    <p><strong>Date:</strong> Updated 25 September 2025.</p>
     <p><strong>Developed by</strong>
       <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a>
       (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff Contact:
@@ -380,12 +380,9 @@
   </div>
 </footer>
 
-
 <link rel="stylesheet" href="../a11y-light.css">
-<script src="../highlight.min.js"></script>
 <script>
-  hljs.highlightAll();
-  var translationStrings = {}; /* fix WAI JS */
+  var translationStrings = {}; // prevent errors in WAI main.js t() calls
 </script>
 <script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
 
