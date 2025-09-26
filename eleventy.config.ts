@@ -166,12 +166,33 @@ export default async function (eleventyConfig: any) {
       isUnderstanding ? flatGuidelines[resolveUnderstandingFileSlug(page.fileSlug)] : null,
   });
 
+  const ignoredEndings = [
+    "-template.html",
+    "understanding/20/accessibility-support-documenting.html",
+    "understanding/20/seizures.html",
+  ];
+  eleventyConfig.addPreprocessor("ignore-html", "html", ({ page }: GlobalData) => {
+    if (
+      !page.filePathStem.startsWith("/errata/") &&
+      !page.filePathStem.startsWith("/techniques/") &&
+      !page.filePathStem.startsWith("/understanding/") &&
+      page.filePathStem !== "/index"
+    )
+      return false;
+    if (page.inputPath.includes("/img/")) return false;
+    for (const ending of ignoredEndings) if (page.inputPath.endsWith(ending)) return false;
+  });
+  eleventyConfig.addPreprocessor("ignore-md", "md", () => false);
+
+  // Add explicit watch targets to avoid addPassthroughCopy interference
+  eleventyConfig.addWatchTarget("techniques/**");
+  eleventyConfig.addWatchTarget("understanding/**");
+
   eleventyConfig.addPassthroughCopy("techniques/*.css");
   eleventyConfig.addPassthroughCopy("techniques/*/img/*");
   eleventyConfig.addPassthroughCopy({
     "css/base.css": "techniques/base.css",
     "css/a11y-light.css": "techniques/a11y-light.css",
-    "script/highlight.min.js": "techniques/highlight.min.js",
   });
 
   eleventyConfig.addPassthroughCopy("understanding/*.css");
@@ -202,10 +223,6 @@ export default async function (eleventyConfig: any) {
     await copyFile(
       join(dir.input, "css", "a11y-light.css"),
       join(dir.output, "understanding", "a11y-light.css")
-    );
-    await copyFile(
-      join(dir.input, "script", "highlight.min.js"),
-      join(dir.output, "understanding", "highlight.min.js")
     );
 
     // Output guidelines/index.html and dependencies for PR runs (not for GH Pages or W3C site)
