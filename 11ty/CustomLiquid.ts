@@ -1,3 +1,4 @@
+import hljs from "highlight.js";
 import { Liquid, type Template } from "liquidjs";
 import type { LiquidOptions, RenderOptions } from "liquidjs/dist/liquid-options";
 import compact from "lodash-es/compact";
@@ -152,6 +153,31 @@ export class CustomLiquid extends Liquid {
 
       // Add charset to pages that forgot it
       if (!$("meta[charset]").length) $('<meta charset="UTF-8">').prependTo("head");
+
+      const $missingHljsOverrides = $("pre code:not([class])");
+      if ($missingHljsOverrides.length) {
+        $missingHljsOverrides.each((_, el) => {
+          const code = $(el).html()!.replace(/\n/g, "\\n");
+          const excerpt = `${code.slice(0, 40)}${code.length > 40 ? "..." : ""}`;
+          console.log(
+            `${filepath} missing "language-*" or "no-highlight" class on <pre><code> starting with ${excerpt}`
+          );
+        });
+        if (process.env.ELEVENTY_RUN_MODE === "build") {
+          throw new Error(
+            "Please ensure all code blocks have a highlight.js class (language-* or no-highlight)."
+          );
+        }
+      }
+
+      $("pre code[class*='language-']").each((_, el) => {
+        const $el = $(el);
+        // Unescape any HTML entities (which were originally needed for client-side highlight.js)
+        const code = $el.html()!.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+        const language = $el.attr("class")!.replace(/^.*language-(\S+).*$/, "$1");
+        $el.html(hljs.highlight(code, { language }).value);
+        $el.addClass("hljs");
+      });
 
       const prependedIncludes = ["header"];
       const appendedIncludes = ["wai-site-footer", "site-footer"];
