@@ -1,4 +1,7 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>ARIA14: Using aria-label to provide an invisible label where a visible label cannot be used | WAI | W3C</title>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+    <title>ARIA14: Using aria-label to provide an accessible name where a visible label cannot be used | WAI | W3C</title>
+    
+  
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://w3.org/WAI/assets/css/style.css">
@@ -7,7 +10,9 @@
 
 
 
-</head><body dir="ltr">
+</head>
+
+  <body dir="ltr">
 <section class="default-grid info" aria-label="Notice">
   <p class="inner">
     This is an unpublished editor’s draft that might include content that is not finalized.
@@ -69,7 +74,8 @@
 </aside>
 
 <main id="main" class="standalone-resource__main">
-<h1><span>Technique ARIA14:</span>Using aria-label to provide an invisible label where a visible label cannot be used</h1>
+    
+<h1><span>Technique ARIA14:</span>Using aria-label to provide an accessible name where a visible label cannot be used</h1>
 
 
 
@@ -95,72 +101,92 @@
 </section>
 	
 
-<section id="description"><h2>Description</h2>
-      <p>For sighted users, the context and visual appearance of an element can provide sufficient cues to determine the purpose. An example is the 'X' often used in the top right corner of pop-up <code>div</code>s (light boxes) to indicate the control for closing the div.  
-</p>
-      <p>In some situations, elements can be given the attribute <code>aria-label</code> to provide an accessible name for situations when there is no visible label due to a chosen design approach or layout but the context and visual appearance of the control make its purpose clear.</p>
 
-      <p>In other situations, elements can be given the attribute <code>aria-label</code> to provide an accessible name when the native HTML labeling element is not supported by the control - for example, when a <code>div</code> set to <code>contentEditable</code> is used instead of native form elements such as <code>input type="text"</code> or <code>textarea</code> in order to provide a richer text editing experience.</p>
+    
+    
+    <section id="description">
+      <h2>Description</h2>
+      <p>For sighted users, the context and visual appearance of an element can provide sufficient cues to determine the purpose. An example is the “×” often used in the top-right corner of dialogs to indicate the control for closing the dialog. While it might be visually clear that the button with the “×” symbol closes the dialog, users with assistive technologies rely on accessible names that clearly communicate the purpose of components, in this case “Close”.
+      </p>
+      <p>When no clear visible text label is available due to design decisions, the <a href="https://www.w3.org/TR/accname-1.2/#dfn-accessible-name">accessible name</a> can be set by using the <code>aria-label</code> attribute instead, provided that the element has an implicit or explicit <a href="https://www.w3.org/TR/wai-aria-1.2/#namefromauthor">role that supports naming</a>.</p>
 
-   </section><section id="examples"><h2>Examples</h2>
-      <section class="example" id="example-1-a-close-button-in-a-pop-up-box">
-         <h3>Example 1: A close button in a pop-up box</h3>
-         
-            <p>On a page, a link displays a pop-up box (a <code>div</code>) with additional information. The 'close' element is implemented as a <code>button</code> containing merely the letter 'X'. The property <code>aria-label="close"</code> is used to provide an accessible name to the <code>button</code>.</p>
-<pre xml:space="preserve"><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"box"</span>&gt;</span>
-   This is a pop-up box.
-   <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">aria-label</span>=<span class="hljs-string">"Close"</span>&gt;</span>X<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>				
-<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
-            <p class="working-example">Working example: <a href="../../working-examples/aria-label-invisible-label-box/">Close button example</a>.
-</p>
-         
+<p>The <code>aria-label</code> attribute can also be used to provide an accessible name for custom controls that are not <a href="https://html.spec.whatwg.org/multipage/forms.html#category-label">labelable elements</a>, and cannot therefore use a <code>&lt;label&gt;</code> element with the <code>for</code> attribute.</p>
+
+<p>For instance, <code>aria-label</code> or <code>aria-labelledby</code> are the most suitable way to provide an accessible name when a <code>&lt;div&gt;</code> element is made editable using the <code>contentEditable</code> attribute, instead of native form elements such as <code>&lt;input type="text"&gt;</code> or <code>&lt;textarea&gt;</code> in order to provide a richer text editing experience.</p>
+
+    </section>
+    <section id="examples">
+      <h2>Examples</h2>
+      <section class="example" id="example-1-a-close-button-in-a-dialog">
+        <h3>Example 1: A close button in a dialog</h3>
+
+        <p>On a page, a button displays a dialog (a <code>&lt;div&gt;</code> element) with additional information. The “close” element is implemented as a <code>&lt;button&gt;</code> containing merely the symbol “×”. The property <code>aria-label="close"</code> is used to provide an accessible name to the button.</p>
+        <pre xml:space="preserve"><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">dialog</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"dialog"</span>&gt;</span>
+  This is the content of the dialog.
+  <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">aria-label</span>=<span class="hljs-string">"Close"</span>&gt;</span>×<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dialog</span>&gt;</span></code></pre>
+        <p class="working-example">Working example: <a href="../../working-examples/aria-label-accessible-name-dialog/">Close button example</a>.
+        </p>
+
       </section>
-      <section class="example" id="example-2-a-phone-number-with-multiple-fields">
-         <h3>Example 2: A phone number with multiple fields</h3>
-         
-<pre xml:space="preserve"><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">role</span>=<span class="hljs-string">"group"</span> <span class="hljs-attr">aria-labelledby</span>=<span class="hljs-string">"groupLabel"</span>&gt;</span>
+      <section class=" example" id="example-2-a-phone-number-with-multiple-fields">
+        <h3>Example 2: A phone number with multiple fields</h3>
+
+        <pre xml:space="preserve"><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">role</span>=<span class="hljs-string">"group"</span> <span class="hljs-attr">aria-labelledby</span>=<span class="hljs-string">"groupLabel"</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"groupLabel"</span>&gt;</span>Work Phone<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
   +<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">autocomplete</span>=<span class="hljs-string">"tel-country-code"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"number"</span> <span class="hljs-attr">aria-label</span>=<span class="hljs-string">"country code"</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">autocomplete</span>=<span class="hljs-string">"tel-area-code"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"number"</span> <span class="hljs-attr">aria-label</span>=<span class="hljs-string">"area code"</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">autocomplete</span>=<span class="hljs-string">"tel-local"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"number"</span> <span class="hljs-attr">aria-label</span>=<span class="hljs-string">"subscriber number"</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
-         
+
       </section>
-   </section><section id="resources"><h2>Related Resources</h2>
+    </section>
+    
+    
+    <section id="resources">
+      <h2>Related Resources</h2>
 <p style="margin-bottom: 1.5em;"><em><small>No endorsement implied.</small></em></p>
 
 
-      
-         <ul>
-            <li> 
-                  <a href="https://www.w3.org/WAI/ARIA/apg/">WAI-ARIA Authoring Practices Guide</a>
-               </li>
-            <li> 
-               <a href="https://www.w3.org/TR/html-aam/">HTML Accessibility API Mappings</a>
-               </li>
-         </ul>
-      
-   </section>
 
-<section id="related"><h2>Related Techniques</h2><ul>
-      <li><a href="../aria/ARIA6">ARIA6: Using aria-label to provide labels for objects</a></li>
-      <li><a href="../aria/ARIA16">ARIA16: Using aria-labelledby to provide a name for user interface controls</a></li>
-   </ul></section>
-<section id="tests"><h2>Tests</h2>
-      <section class="procedure" id="procedure"><h3>Procedure</h3>
-         <p>For elements that use <code>aria-label</code>:
-</p>
-         <ol>
-            <li>Check that the value of the <code>aria-label</code> attribute properly describes the purpose of an element where user input is required
-</li>
-         </ol>
+      <ul>
+        <li>
+          <a href="https://www.w3.org/WAI/ARIA/apg/">WAI-ARIA Authoring Practices Guide</a>
+        </li>
+        <li>
+          <a href="https://www.w3.org/TR/html-aam/">HTML Accessibility API Mappings</a>
+        </li>
+      </ul>
+
+    </section>
+  
+
+
+<section id="related">
+      <h2>Related Techniques</h2>
+      <ul>
+        <li><a href="../aria/ARIA6">ARIA6: Using aria-label to provide labels for objects</a></li>
+        <li><a href="../aria/ARIA16">ARIA16: Using aria-labelledby to provide a name for user interface controls</a></li>
+      </ul>
+    </section>
+<section id="tests">
+      <h2>Tests</h2>
+      <section class="procedure" id="procedure">
+        <h3>Procedure</h3>
+        <p>For elements that use the <code>aria-label</code> attribute:
+        </p>
+        <ol>
+          <li>Check that the value of the <code>aria-label</code> attribute properly describes the purpose of an element where user input is required
+          </li>
+        </ol>
       </section>
-      <section class="results" id="expected-results"><h3>Expected Results</h3>
-         <ul>
-            <li>#1 is true.</li>
-         </ul>
+      <section class="results" id="expected-results">
+        <h3>Expected Results</h3>
+        <ul>
+          <li>#1 is true.</li>
+        </ul>
       </section>
-   </section>
+    </section>
 
 
 <a class="button button-backtotop" href="#top">
