@@ -1,11 +1,21 @@
 import { load, type CheerioAPI } from "cheerio";
+import invert from "lodash-es/invert";
 import pick from "lodash-es/pick";
 
-import { readFile, writeFile } from "fs/promises";
+import { writeFile } from "fs/promises";
 import { join } from "path";
 
-import { loadFromFile, type CheerioAnyNode, type CheerioElement } from "./cheerio";
-import { resolveDecimalVersion } from "./common";
+import type {
+  ResolvedUnderstandingAssociatedTechnique,
+  UnderstandingAssociatedTechniqueArray,
+  UnderstandingAssociatedTechniqueEntry,
+  UnderstandingAssociatedTechniqueParent,
+  UnderstandingAssociatedTechniqueSection,
+} from "understanding/understanding";
+import eleventyUnderstanding from "understanding/understanding.11tydata";
+
+import { type CheerioAnyNode } from "../cheerio";
+import { resolveDecimalVersion } from "../common";
 import {
   type SuccessCriterion,
   type WcagVersion,
@@ -13,8 +23,20 @@ import {
   getPrinciplesForVersion,
   getTermsMapForVersion,
   assertIsWcagVersion,
-} from "./guidelines";
-import { techniqueAssociationTypes, type TechniqueAssociationType } from "./techniques";
+  getFlatGuidelines,
+  generateScSlugOverrides,
+} from "../guidelines";
+import {
+  expandTechniqueToObject,
+  getFlatTechniques,
+  getTechniquesByTechnology,
+  techniqueAssociationTypes,
+  type Technique,
+  type TechniqueAssociationType,
+  type Technology,
+} from "../techniques";
+
+const removeNewlines = (str: string) => str.trim().replace(/\n\s+/g, " ");
 
 const altIds: Record<string, string> = {
   "text-alternatives": "text-equiv",
@@ -124,7 +146,7 @@ function createDetailsFromSc(sc: SuccessCriterion) {
       const $el = $(el);
       $el.replaceWith($el.text());
     });
-    return $el.html()!.replace(/\n\s+/g, " ").trim();
+    return removeNewlines($el.html()!);
   }
 
   // Note handling is in a reusable function to handle 1.4.7 edge case inside dd
@@ -190,98 +212,188 @@ function createDetailsFromSc(sc: SuccessCriterion) {
   return details;
 }
 
-interface TechniquesSituation {
-  content: string;
+interface SerializedTechniqueAssociation {
+  id?: string;
+  technology?: Technology;
   title: string;
+  prefix?: string;
+  suffix?: string;
+  using?: SerializedTechniqueAssociationArray;
 }
 
-type TechniquesHtmlMap = Partial<Record<TechniqueAssociationType, string | TechniquesSituation[]>>;
+interface SerializedTechniqueConjunction {
+  and: SerializedTechniqueAssociation[];
+  using?: SerializedTechniqueAssociationArray;
+}
 
-async function createTechniquesHtmlFromSc(sc: SuccessCriterion) {
-  const $ = await loadFromFile(join("_site", "understanding", `${sc.id}.html`));
+type SerializedTechniqueAssociationArray = Array<
+  SerializedTechniqueAssociation | SerializedTechniqueConjunction
+>;
 
-  function cleanHtml($el: CheerioElement) {
-    // Remove links within notes, which point to definitions or Understanding sections
-    $el.find(".note a").each((_, aEl) => {
-      const $aEl = $(aEl);
-      $aEl.replaceWith($aEl.html()!);
-    });
-    // Reduce single-paragraph note markup
-    $el.find("div.note:has(p.note-title)").each((_, noteEl) => {
-      const noteParagraphSelector = "p.note-title + div > p, p.note-title + p";
-      const $noteEl = $(noteEl);
-      if ($noteEl.find(noteParagraphSelector).length !== 1) return;
-      const $titleEl = $noteEl.children("p.note-title").eq(0);
-      // Lift the content out from both the nested p and div (if applicable)
-      $noteEl.find("p.note-title + div > p").unwrap();
-      const $pEl = $noteEl.find(noteParagraphSelector).eq(0);
-      $pEl.replaceWith($pEl.html()!);
-      $titleEl.replaceWith(`<em>${$titleEl.html()!}:</em>`);
-      noteEl.tagName = "p";
-    });
-    return $el
-      .html()!
-      .trim()
-      .replace(/\n\s*\n/g, "\n");
+type SerializedTechniqueSection = {
+  title: string;
+  groups?: {
+    id: string;
+    title: string;
+    techniques: SerializedTechniqueAssociationArray;
+  }[];
+  note?: string;
+  techniques: SerializedTechniqueAssociationArray;
+};
+
+interface SerializedTechniques
+  extends Partial<
+    Record<
+      TechniqueAssociationType,
+      SerializedTechniqueAssociationArray | SerializedTechniqueSection[]
+    >
+  > {
+  sufficientNote?: string;
+}
+
+/**
+ * Converts a technique's using properties to their string representation.
+ * This is not reused by the techniques-list template due to differing requirements
+ * (the template operates within HTML context and also handles groups).
+ */
+function stringifyUsingProps(technique: UnderstandingAssociatedTechniqueParent) {
+  const { usingConjunction = "using", usingQuantity = "one", usingPrefix } = technique;
+  const quantityStr = usingQuantity ? `${usingQuantity} of ` : "";
+  return `${usingPrefix ? `${usingPrefix} ` : ""}${usingConjunction} ${quantityStr}the following techniques:`;
+}
+
+/** Removes links; intended for use with notes (consistent with previous JSON output) */
+const cleanLinks = (html: string) => html.replace(/<a[^>]*>([^<]*)<\/a>/g, "$1");
+
+/** Resolves relative links against the base folder for the WCAG version */
+const resolveLinks = (html: string, version: WcagVersion) =>
+  html.replace(/href="([^"]*)"/g, (match, href: string) => {
+    if (/^https?:/.test(href)) return match;
+    const domain = `https://www.w3.org`;
+    const baseUrl = `${domain}/WAI/WCAG${version}/Understanding/`;
+    if (href.startsWith("/")) return `href="${domain}${href}"`;
+    return `href="${baseUrl}${href}"`;
+  });
+
+const associatedTechniques = eleventyUnderstanding({}).associatedTechniques;
+function createTechniquesFromSc(
+  sc: SuccessCriterion,
+  techniquesMap: Record<string, Technique>,
+  version: WcagVersion
+) {
+  if (sc.level === "") return {}; // Do not emit techniques for obsolete SC (e.g. 4.1.1)
+
+  // Since SCs are already remapped for previous versions before calling this function,
+  // we need to be able to map back to the present to resolve keys in understanding.11tydata.ts
+  const scSlugMappings = invert(generateScSlugOverrides(version));
+
+  const scId = scSlugMappings[sc.id] || sc.id;
+  const associations = associatedTechniques[scId];
+  if (!associations) throw new Error(`No associatedTechniques found for ${scId}`);
+  const techniques: SerializedTechniques = {};
+
+  function resolveAssociatedTechniqueTitle(
+    technique: ResolvedUnderstandingAssociatedTechnique,
+    hasGroups?: boolean
+  ) {
+    const usingContent =
+      (hasGroups && "using one technique from each group outlined below") ||
+      ("using" in technique && !technique.skipUsingPhrase && stringifyUsingProps(technique));
+
+    if ("id" in technique && technique.id)
+      return {
+        title: removeNewlines(techniquesMap[technique.id].title),
+        ...(usingContent && { suffix: usingContent }),
+      };
+
+    if ("title" in technique && technique.title)
+      return {
+        title: resolveLinks(removeNewlines(technique.title), version),
+        ...(usingContent && { suffix: usingContent }),
+      };
+
+    if (usingContent) return { title: usingContent };
+    return null;
   }
 
-  const htmlMap: TechniquesHtmlMap = {};
-  for (const type of techniqueAssociationTypes) {
-    const $section = $(`section#${type}`);
-    if (!$section.length) continue;
-
-    $section.children("h3 + p:not(:has(a))").remove();
-    $section.children("h3").remove();
-
-    // Make techniques links absolute
-    // (this uses a different selector than the build process, to handle pre-built output)
-    $section.find("[href*='/techniques/' i]").each((_, el) => {
-      el.attribs.href = el.attribs["href"].replace(
-        /^.*\/([\w-]+\/[^\/]+)$/,
-        "https://www.w3.org/WAI/WCAG22/Techniques/$1"
-      );
-      delete el.attribs.class;
-    });
-
-    // Remove superfluous subheadings/subsections, e.g. "CSS Techniques (Advisory)"
-    $section.find("h4").each((_, el) => {
-      const $el = $(el);
-      if (new RegExp(` Techniques(?: \\(${type}\\))?$`, "gi").test($el.text())) {
-        const $closestSection = $el.closest("section");
-        $el.remove(); // Remove while $el reference is still valid
-        if (!$closestSection.is($section)) $closestSection.replaceWith($closestSection.html()!);
-      }
-    });
-    // Merge any consecutive lists (likely due to superfluous subsections)
-    $section.find("ul + ul").each((_, el) => {
-      const $el = $(el);
-      $el.prev().append($el.children());
-      $el.remove();
-    });
-
-    // Create situations array out of remaining h4s (also used for requirements in 1.4.8)
-    const situations = $section.find("section:has(h4)").toArray();
-    if (situations.length) {
-      htmlMap[type] = situations.map((situationEl) => {
-        const $situationEl = $(situationEl);
-        const $h4 = $situationEl.children("h4");
-        $h4.remove();
+  function mapAssociatedTechniques(
+    techniques: Array<string | UnderstandingAssociatedTechniqueEntry>
+  ): SerializedTechniqueAssociation[];
+  function mapAssociatedTechniques(
+    techniques: UnderstandingAssociatedTechniqueArray,
+    hasGroups?: boolean
+  ): SerializedTechniqueAssociationArray;
+  function mapAssociatedTechniques(
+    techniques:
+      | Array<string | UnderstandingAssociatedTechniqueEntry>
+      | UnderstandingAssociatedTechniqueArray,
+    hasGroups?: boolean
+  ) {
+    return techniques.map((t) => {
+      const technique = expandTechniqueToObject(t);
+      if ("and" in technique) {
         return {
-          title: $h4.text().trim(),
-          content: cleanHtml($situationEl),
+          and: mapAssociatedTechniques(technique.and.map(expandTechniqueToObject)),
+          ...("using" in technique &&
+            technique.using && { using: mapAssociatedTechniques(technique.using) }),
         };
-      });
+      }
+
+      const id = technique.id;
+      const titleProps = resolveAssociatedTechniqueTitle(technique, hasGroups);
+      if (!titleProps)
+        throw new Error(
+          "Couldn't resolve title for associated technique under " +
+            `${scId}: ${JSON.stringify(technique)}`
+        );
+
+      return {
+        ...(id && {
+          id,
+          technology: techniquesMap[id].technology,
+        }),
+        ...titleProps,
+        ...("prefix" in technique && technique.prefix && { prefix: technique.prefix }),
+        ...("suffix" in technique && technique.suffix && { suffix: technique.suffix }),
+        ...("using" in technique && { using: mapAssociatedTechniques(technique.using) }),
+      };
+    });
+  }
+
+  for (const type of techniqueAssociationTypes) {
+    const associationsOfType = associations[type];
+    if (!associationsOfType) continue;
+
+    if (typeof associationsOfType[0] !== "string" && "techniques" in associationsOfType[0]) {
+      techniques[type] = [];
+      for (const section of associationsOfType as UnderstandingAssociatedTechniqueSection[]) {
+        techniques[type]!.push({
+          title: section.title,
+          techniques: mapAssociatedTechniques(section.techniques, "groups" in section),
+          ...("groups" in section &&
+            section.groups && {
+              groups: section.groups.map((group) => ({
+                id: group.id,
+                title: group.title,
+                techniques: mapAssociatedTechniques(group.techniques),
+              })),
+            }),
+          ...(section.note && { note: cleanLinks(section.note) }),
+        } satisfies SerializedTechniqueSection);
+      }
     } else {
-      // Remove links within notes, which point to definitions or Understanding sections
-      $section.find(".note a").each((_, el) => {
-        const $el = $(el);
-        $el.replaceWith($el.html()!);
-      });
-      const html = cleanHtml($section);
-      if (html) htmlMap[type] = html;
+      techniques[type] = mapAssociatedTechniques(
+        associationsOfType as UnderstandingAssociatedTechniqueArray
+      );
+    }
+
+    if (type === "sufficient" && "sufficientNote" in associations && associations.sufficientNote) {
+      // Copy sufficient note, with any definitions unlinked
+      techniques.sufficientNote = cleanLinks(removeNewlines(associations.sufficientNote));
     }
   }
-  return htmlMap;
+
+  return techniques;
 }
 
 function expandVersions(item: WcagItem, maxVersion: WcagVersion) {
@@ -299,6 +411,9 @@ export async function generateWcagJson(version: WcagVersion) {
     includeSynonyms: false,
     stripRespec: false,
   });
+  const techniquesMap = getFlatTechniques(
+    await getTechniquesByTechnology(getFlatGuidelines(principles))
+  );
 
   function cleanLinks($: CheerioAPI) {
     $("a[href]").each((_, aEl) => {
@@ -337,7 +452,7 @@ export async function generateWcagJson(version: WcagVersion) {
                 ...spreadCommonProps(sc),
                 level: sc.level,
                 details: createDetailsFromSc(sc),
-                techniquesHtml: await createTechniquesHtmlFromSc(sc),
+                techniques: createTechniquesFromSc(sc, techniquesMap, version),
               }))
             ),
           }))
@@ -359,21 +474,8 @@ export async function generateWcagJson(version: WcagVersion) {
 
 // Allow running directly, skipping Eleventy build
 if (import.meta.filename === process.argv[1]) {
-  let version: WcagVersion | undefined;
-  try {
-    const understandingIndex = await readFile(join("_site", "understanding", "index.html"), "utf8");
-    const match = /\<title\>Understanding WCAG (\d)\.(\d)/.exec(understandingIndex);
-    if (match && match[1] && match[2]) {
-      const parsedVersion = `${match[1]}${match[2]}`;
-      assertIsWcagVersion(parsedVersion);
-      version = parsedVersion;
-    }
-  } catch (error) {}
-  if (!version) {
-    console.error("No _site directory found; run `npm run build` first");
-    process.exit(1);
-  }
-
+  const version = process.env.WCAG_VERSION || "22";
+  assertIsWcagVersion(version);
   console.log(`Generating wcag.json for version ${resolveDecimalVersion(version)}`);
   await writeFile(join("_site", "wcag.json"), await generateWcagJson(version));
 }
