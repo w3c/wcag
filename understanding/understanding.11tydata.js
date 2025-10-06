@@ -539,7 +539,7 @@ export default function (data) {
             techniques: ["G207", "G209"],
           },
         ],
-        failure: ["F78"],
+        failure: ["F78", "F114"],
       },
 
       "text-spacing": {
