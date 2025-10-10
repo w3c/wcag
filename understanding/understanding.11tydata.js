@@ -452,7 +452,7 @@ export default function (data) {
         // 1.4.8
         sufficientIntro: `
           <strong>Instructions:</strong> Since this is a multi-part success criterion,
-          you must satisfy one of the numbered items for each of the requirements below.
+          you must satisfy each requirement below using one of its listed techniques.
         `,
         sufficient: [
           {
