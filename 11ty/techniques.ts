@@ -272,10 +272,28 @@ export async function getTechniqueAssociations(
   }
 
   // Remove duplicates (due to similar shape across understanding docs) and sort by SC number
-  for (const [key, list] of Object.entries(associations))
-    associations[key] = uniqBy(list, (v) => JSON.stringify(v)).sort((a, b) =>
+  for (const [key, list] of Object.entries(associations)) {
+    const deduplicatedList = uniqBy(list, (v) => JSON.stringify(v)).sort((a, b) =>
       wcagSort(a.criterion, b.criterion)
     );
+    // Remove entries that are redundant of a more generalized preceding entry
+    for (let i = 1; i < deduplicatedList.length; i++) {
+      const previousEntry = deduplicatedList[i - 1];
+      const entry = deduplicatedList[i];
+      if (
+        entry.criterion.id === previousEntry.criterion.id &&
+        entry.type === previousEntry.type &&
+        !previousEntry.hasUsageChildren &&
+        !previousEntry.usageParentDescription &&
+        !previousEntry.usageParentIds.length &&
+        !previousEntry.with.length
+      ) {
+        deduplicatedList.splice(i, 1);
+        i--; // Next item is now in this index; repeat processing it
+      }
+    }
+    associations[key] = deduplicatedList;
+  }
 
   return associations;
 }
