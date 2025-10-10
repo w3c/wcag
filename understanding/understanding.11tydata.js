@@ -113,7 +113,7 @@ export default function (data) {
               "SM11",
               "SM12",
               "H95",
-              "Using any readily available media format that has a video player that supports closed captioning",
+              "Using any readily available media format with a video player that supports closed captioning",
             ],
             usingQuantity: "any",
           },
@@ -152,7 +152,7 @@ export default function (data) {
             using: [
               "SM11",
               "SM12",
-              "Using any readily available media format that has a video player that supports closed captioning",
+              "Using any readily available media format with a video player that supports closed captioning",
             ],
           },
         ],
