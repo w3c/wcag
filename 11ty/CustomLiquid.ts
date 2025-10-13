@@ -1,3 +1,5 @@
+import { type Options as SlugifyOptions, slugifyWithCounter } from "@sindresorhus/slugify";
+import hljs from "highlight.js";
 import { Liquid, type Template } from "liquidjs";
 import type { LiquidOptions, RenderOptions } from "liquidjs/dist/liquid-options";
 import compact from "lodash-es/compact";
@@ -9,7 +11,6 @@ import type { GlobalData } from "eleventy.config";
 
 import { biblioPattern, getBiblio, getXmlBiblio } from "./biblio";
 import { flattenDom, load, type CheerioAnyNode } from "./cheerio";
-import { generateId } from "./common";
 import { getAcknowledgementsForVersion, type TermsMap } from "./guidelines";
 import { resolveTechniqueIdFromHref, understandingToTechniqueLinkSelector } from "./techniques";
 import { techniqueToUnderstandingLinkSelector } from "./understanding";
@@ -152,6 +153,31 @@ export class CustomLiquid extends Liquid {
 
       // Add charset to pages that forgot it
       if (!$("meta[charset]").length) $('<meta charset="UTF-8">').prependTo("head");
+
+      const $missingHljsOverrides = $("pre code:not([class])");
+      if ($missingHljsOverrides.length) {
+        $missingHljsOverrides.each((_, el) => {
+          const code = $(el).html()!.replace(/\n/g, "\\n");
+          const excerpt = `${code.slice(0, 40)}${code.length > 40 ? "..." : ""}`;
+          console.log(
+            `${filepath} missing "language-*" or "no-highlight" class on <pre><code> starting with ${excerpt}`
+          );
+        });
+        if (process.env.ELEVENTY_RUN_MODE === "build") {
+          throw new Error(
+            "Please ensure all code blocks have a highlight.js class (language-* or no-highlight)."
+          );
+        }
+      }
+
+      $("pre code[class*='language-']").each((_, el) => {
+        const $el = $(el);
+        // Unescape any HTML entities (which were originally needed for client-side highlight.js)
+        const code = $el.html()!.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+        const language = $el.attr("class")!.replace(/^.*language-(\S+).*$/, "$1");
+        $el.html(hljs.highlight(code, { language }).value);
+        $el.addClass("hljs");
+      });
 
       const prependedIncludes = ["header"];
       const appendedIncludes = ["wai-site-footer", "site-footer"];
@@ -614,6 +640,9 @@ export class CustomLiquid extends Liquid {
       } else $("section#references").remove();
     }
 
+    const slugify = slugifyWithCounter();
+    const slugifyOptions: SlugifyOptions = { decamelize: false };
+
     // Allow autogenerating missing top-level section IDs in understanding docs,
     // but don't pick up incorrectly-nested sections in some techniques pages (e.g. H91)
     const sectionSelector = scope.isUnderstanding ? "section" : "section[id]:not(.obsolete)";
@@ -624,7 +653,8 @@ export class CustomLiquid extends Liquid {
       // when we have sections and sidebar skeleton already reordered
       const $tocList = $(".sidebar nav ul");
       $h2Sections.each((_, el) => {
-        if (!el.attribs.id) el.attribs.id = generateId($(el).find(sectionH2Selector).text());
+        if (!el.attribs.id)
+          el.attribs.id = slugify($(el).find(sectionH2Selector).text(), slugifyOptions);
         $("<a></a>")
           .attr("href", `#${el.attribs.id}`)
           .text(normalizeTocLabel($(el).find(sectionH2Selector).text()))
@@ -648,8 +678,13 @@ export class CustomLiquid extends Liquid {
     $(autoIdSectionSelectors.join(", "))
       .filter(`:has(${sectionHeadingSelector})`)
       .each((_, el) => {
-        el.attribs.id = generateId($(el).find(sectionHeadingSelector).text());
+        el.attribs.id = slugify($(el).find(sectionHeadingSelector).text(), slugifyOptions);
       });
+
+    // Also autogenerate IDs for any headings with no dedicated section nor explicit ID
+    $(":is(h3, h4, h5):not(:first-child):not([id])").each((_, el) => {
+      el.attribs.id = slugify($(el).text(), slugifyOptions);
+    });
 
     return stripHtmlComments($.html());
   }
