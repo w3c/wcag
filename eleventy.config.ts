@@ -8,41 +8,43 @@ import { join } from "path";
 
 import { CustomLiquid } from "11ty/CustomLiquid";
 import { resolveDecimalVersion } from "11ty/common";
+import { loadDataDependencies } from "11ty/data-dependencies";
 import {
   actRules,
-  assertIsWcagVersion,
+  generateScSlugOverrides,
   getErrataForVersion,
-  getFlatGuidelines,
-  getPrinciples,
-  getPrinciplesForVersion,
   getTermsMap,
   getTermsMapForVersion,
-  scSlugOverrides,
-  type FlatGuidelinesMap,
   type WcagItem,
 } from "11ty/guidelines";
 import {
-  getFlatTechniques,
-  getTechniqueAssociations,
-  getTechniquesByTechnology,
+  expandTechniqueToObject,
+  isTechniqueObsolete as isTechniqueObsoleteForVersion,
   technologies,
   technologyTitles,
   type Technique,
-  type Technology,
 } from "11ty/techniques";
-import { generateUnderstandingNavMap, getUnderstandingDocs } from "11ty/understanding";
 import type { EleventyContext, EleventyData, EleventyEvent } from "11ty/types";
 
-/** Version of WCAG to build */
-const version = process.env.WCAG_VERSION || "22";
-assertIsWcagVersion(version);
+const {
+  principles,
+  flatGuidelines,
+  allFlatGuidelines,
+  techniques,
+  flatTechniques,
+  techniqueAssociations,
+  futureExclusiveTechniqueAssociations,
+  understandingDocs,
+  understandingNav,
+  version,
+} = await loadDataDependencies(process.env.WCAG_VERSION);
 
-/**
- * Returns boolean indicating whether a technique is obsolete for the given version.
- * Tolerates undefined for use with hash lookups.
- */
+const skippedTechniques = Object.keys(futureExclusiveTechniqueAssociations).sort().join(", ");
+if (skippedTechniques)
+  console.log(`Skipping techniques that only reference later-version SCs: ${skippedTechniques}`);
+
 const isTechniqueObsolete = (technique: Technique | undefined) =>
-  !!technique?.obsoleteSince && technique.obsoleteSince <= version;
+  isTechniqueObsoleteForVersion(technique, version);
 
 /**
  * Returns boolean indicating whether an SC is obsolete for the given version.
@@ -51,73 +53,14 @@ const isTechniqueObsolete = (technique: Technique | undefined) =>
 const isGuidelineObsolete = (guideline: WcagItem | undefined) =>
   guideline?.type === "SC" && guideline.level === "";
 
-/** Tree of Principles/Guidelines/SC across all versions (including later than selected) */
-const allPrinciples = await getPrinciples();
-/** Flattened Principles/Guidelines/SC across all versions (including later than selected) */
-const allFlatGuidelines = getFlatGuidelines(allPrinciples);
-
-async function resolveRelevantPrinciples() {
-  if (!process.env.WCAG_VERSION) return allPrinciples;
-  if (process.env.WCAG_FORCE_LOCAL_GUIDELINES)
-    return await getPrinciples(process.env.WCAG_FORCE_LOCAL_GUIDELINES);
-  assertIsWcagVersion(version);
-  return await getPrinciplesForVersion(version);
-}
-
-/** Tree of Principles/Guidelines/SC relevant to selected version */
-const principles = await resolveRelevantPrinciples();
-/** Flattened Principles/Guidelines/SC relevant to selected version */
-const flatGuidelines = getFlatGuidelines(principles);
-/** Flattened Principles/Guidelines/SC that only exist in later versions (to filter techniques) */
-const futureGuidelines: FlatGuidelinesMap = {};
-for (const [key, value] of Object.entries(allFlatGuidelines)) {
-  if (value.version > version) futureGuidelines[key] = value;
-}
-
-const techniques = await getTechniquesByTechnology(flatGuidelines);
-const flatTechniques = getFlatTechniques(techniques);
-
-/** Maps technique IDs to SCs found in target version */
-const techniqueAssociations = await getTechniqueAssociations(flatGuidelines);
-for (const [id, associations] of Object.entries(techniqueAssociations)) {
-  // Prune associations from non-obsolete techniques to obsolete SCs
-  techniqueAssociations[id] = associations.filter(
-    ({ criterion }) => criterion.level !== "" || isTechniqueObsolete(flatTechniques[id])
-  );
-}
-/** Maps technique IDs to SCs only found in later versions */
-const futureTechniqueAssociations = await getTechniqueAssociations(futureGuidelines);
-/** Subset of futureTechniqueAssociations not overlapping with techniqueAssociations */
-const futureExclusiveTechniqueAssociations: typeof techniqueAssociations = {};
-
-for (const [id, associations] of Object.entries(futureTechniqueAssociations)) {
-  if (!techniqueAssociations[id]) futureExclusiveTechniqueAssociations[id] = associations;
-}
-const skippedTechniques = Object.keys(futureExclusiveTechniqueAssociations).sort().join(", ");
-if (skippedTechniques)
-  console.log(`Skipping techniques that only reference later-version SCs: ${skippedTechniques}`);
-
-for (const [technology, list] of Object.entries(techniques)) {
-  // Prune techniques that are obsolete or associated with SCs from later versions
-  // (only prune hierarchical structure for ToC; keep all in flatTechniques for lookups)
-  techniques[technology as Technology] = list.filter(
-    (technique) =>
-      (!technique.obsoleteSince || technique.obsoleteSince > version) &&
-      !futureExclusiveTechniqueAssociations[technique.id]
-  );
-}
-
-const understandingDocs = await getUnderstandingDocs(version);
-const understandingNav = await generateUnderstandingNavMap(principles, understandingDocs);
+const scSlugOverrides = generateScSlugOverrides(version);
 
 function resolveRelevantTermsMap() {
   if (!process.env.WCAG_VERSION) return getTermsMap();
   if (process.env.WCAG_FORCE_LOCAL_GUIDELINES)
     return getTermsMap(process.env.WCAG_FORCE_LOCAL_GUIDELINES);
-  assertIsWcagVersion(version);
   return getTermsMapForVersion(version);
 }
-const termsMap = await resolveRelevantTermsMap();
 
 // Declare static global data up-front so we can build typings from it
 const globalData = {
@@ -163,13 +106,7 @@ if (process.env.WCAG_MODE === "editors") {
 }
 
 /** Applies any overridden SC IDs to incoming Understanding fileSlugs */
-function resolveUnderstandingFileSlug(fileSlug: string) {
-  if (fileSlug in scSlugOverrides) {
-    assertIsWcagVersion(version);
-    return scSlugOverrides[fileSlug](version);
-  }
-  return fileSlug;
-}
+const resolveUnderstandingFileSlug = (fileSlug: string) => scSlugOverrides[fileSlug] || fileSlug;
 
 export default async function (eleventyConfig: any) {
   for (const [name, value] of Object.entries(globalData)) eleventyConfig.addGlobalData(name, value);
@@ -229,12 +166,33 @@ export default async function (eleventyConfig: any) {
       isUnderstanding ? flatGuidelines[resolveUnderstandingFileSlug(page.fileSlug)] : null,
   });
 
+  const ignoredEndings = [
+    "-template.html",
+    "understanding/20/accessibility-support-documenting.html",
+    "understanding/20/seizures.html",
+  ];
+  eleventyConfig.addPreprocessor("ignore-html", "html", ({ page }: GlobalData) => {
+    if (
+      !page.filePathStem.startsWith("/errata/") &&
+      !page.filePathStem.startsWith("/techniques/") &&
+      !page.filePathStem.startsWith("/understanding/") &&
+      page.filePathStem !== "/index"
+    )
+      return false;
+    if (page.inputPath.includes("/img/")) return false;
+    for (const ending of ignoredEndings) if (page.inputPath.endsWith(ending)) return false;
+  });
+  eleventyConfig.addPreprocessor("ignore-md", "md", () => false);
+
+  // Add explicit watch targets to avoid addPassthroughCopy interference
+  eleventyConfig.addWatchTarget("techniques/**");
+  eleventyConfig.addWatchTarget("understanding/**");
+
   eleventyConfig.addPassthroughCopy("techniques/*.css");
   eleventyConfig.addPassthroughCopy("techniques/*/img/*");
   eleventyConfig.addPassthroughCopy({
     "css/base.css": "techniques/base.css",
     "css/a11y-light.css": "techniques/a11y-light.css",
-    "script/highlight.min.js": "techniques/highlight.min.js",
   });
 
   eleventyConfig.addPassthroughCopy("understanding/*.css");
@@ -266,10 +224,6 @@ export default async function (eleventyConfig: any) {
       join(dir.input, "css", "a11y-light.css"),
       join(dir.output, "understanding", "a11y-light.css")
     );
-    await copyFile(
-      join(dir.input, "script", "highlight.min.js"),
-      join(dir.output, "understanding", "highlight.min.js")
-    );
 
     // Output guidelines/index.html and dependencies for PR runs (not for GH Pages or W3C site)
     const sha = process.env.COMMIT_REF; // Read environment variable exposed by Netlify
@@ -295,7 +249,6 @@ export default async function (eleventyConfig: any) {
     // Since json isn't a template format and we're generating it, write it directly
     if (process.env.WCAG_JSON) {
       const { generateWcagJson } = await import("11ty/json");
-      assertIsWcagVersion(version);
       await writeFile(`${dir.output}/wcag.json`, await generateWcagJson(version));
     }
 
@@ -315,7 +268,7 @@ export default async function (eleventyConfig: any) {
       jsTruthy: true,
       strictFilters: true,
       timezoneOffset: 0, // Avoid off-by-one YYYY-MM-DD date stamp conversions
-      termsMap,
+      termsMap: await resolveRelevantTermsMap(),
     })
   );
 
@@ -379,6 +332,21 @@ export default async function (eleventyConfig: any) {
     }
   );
 
+  // Filter that transforms a technique ID into its title (even if it is obsolete, e.g. for changelog)
+  eleventyConfig.addFilter("displayTechniqueTitle", function (this: EleventyContext, id: string) {
+    const technique = flatTechniques[id];
+    if (!technique) {
+      if (process.env.WCAG_VERBOSE) {
+        console.warn(
+          `displayTechniqueTitle in ${this.page.inputPath}: ` +
+            `skipping unresolvable technique id ${id}`
+        );
+      }
+      return;
+    }
+    return `${id}: ${technique.truncatedTitle}`;
+  });
+
   // Filter that transforms a guideline or SC shortname (or list of them) into links to their pages.
   eleventyConfig.addFilter(
     "linkUnderstanding",
@@ -419,6 +387,14 @@ export default async function (eleventyConfig: any) {
         .join("\nand\n");
     }
   );
+
+  // Strict version of default that will only fall back on null or undefined (not e.g. "")
+  eleventyConfig.addFilter("default-strict", (value: any, fallback: any) =>
+    value == null ? fallback : value
+  );
+
+  // Expands a technique shorthand string to an object with id or title
+  eleventyConfig.addFilter("expand-technique", expandTechniqueToObject);
 
   // Renders a link to a GitHub commit or pull request
   eleventyConfig.addShortcode("gh", (id: string) => {
