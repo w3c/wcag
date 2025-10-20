@@ -103,7 +103,8 @@ export const understandingToTechniqueLinkSelector = [
  */
 export function expandTechniqueToObject<O>(idOrTitle: string | O) {
   if (typeof idOrTitle !== "string") return idOrTitle; // Already expanded
-  if (/^[A-Z]+\d+$/.test(idOrTitle)) return { id: idOrTitle as string };
+  if (/^[A-Z]+\d+$/.test(idOrTitle) || /^[a-z-]+$/.test(idOrTitle))
+    return { id: idOrTitle as string };
   return { title: idOrTitle as string };
 }
 
