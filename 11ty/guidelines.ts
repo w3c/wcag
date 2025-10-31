@@ -4,7 +4,7 @@ import { glob } from "glob";
 import pick from "lodash-es/pick";
 
 import { readFile } from "fs/promises";
-import { basename, join } from "path";
+import { basename, join, sep } from "path";
 
 import { flattenDomFromFile, load, loadFromFile, type CheerioAnyNode } from "./cheerio";
 import { generateId } from "./common";
@@ -52,7 +52,7 @@ async function resolveScVersions(version: WcagVersion) {
   const map: Record<string, WcagVersion> = {};
 
   for (const path of paths) {
-    const [fileVersion, filename] = path.split("/");
+    const [fileVersion, filename] = path.split(sep);
     assertIsWcagVersion(fileVersion);
     const slug = basename(filename, ".html");
     map[slug in scSlugOverrides ? scSlugOverrides[slug] : slug] = fileVersion;
