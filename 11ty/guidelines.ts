@@ -266,6 +266,10 @@ const loadRemoteGuidelines = async (version: WcagVersion, stripRespec = true) =>
   // so that names parse consistently
   $("bdi").remove();
 
+  // Remove role="heading" + aria-level from notes/issues, as they cause more harm than good
+  // (especially in context of content reuse via wcag.json export)
+  $("[role='note'] .marker").removeAttr("role").removeAttr("aria-level");
+
   if (!stripRespec) return $;
 
   // Re-collapse definition links and notes, to be processed by this build system
