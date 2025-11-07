@@ -1,13 +1,11 @@
-import axios from "axios";
 import type { CheerioAPI } from "cheerio";
 import { glob } from "glob";
-import pick from "lodash-es/pick";
 
 import { readFile } from "fs/promises";
 import { basename, join, sep } from "path";
 
 import { flattenDomFromFile, load, loadFromFile, type CheerioAnyNode } from "./cheerio";
-import { generateId } from "./common";
+import { fetchText, generateId } from "./common";
 
 export type WcagVersion = "20" | "21" | "22";
 export function assertIsWcagVersion(v: string): asserts v is WcagVersion {
@@ -256,9 +254,7 @@ const guidelinesCache: Partial<Record<WcagVersion, string>> = {};
 const loadRemoteGuidelines = async (version: WcagVersion, stripRespec = true) => {
   const html =
     guidelinesCache[version] ||
-    (guidelinesCache[version] = (
-      await axios.get(`https://www.w3.org/TR/WCAG${version}/`, { responseType: "text" })
-    ).data);
+    (guidelinesCache[version] = await fetchText(`https://www.w3.org/TR/WCAG${version}/`));
 
   const $ = load(html);
 
@@ -360,13 +356,13 @@ export const getErrataForVersion = async (version: WcagVersion) => {
     .each((_, el) => {
       const $el = $(el);
       const erratumHtml = $el
-          .html()!
-          // Remove everything before and including the final TR link
-          .replace(/^[\s\S]*href="\{\{\s*\w+\s*\}\}#[\s\S]*?<\/a>,?\s*/, "")
-          // Remove parenthetical github references (still in Liquid syntax)
-          .replace(/\(\{%.*%\}\)\s*$/, "")
-          .replace(/^(\w)/, (_, p1) => p1.toUpperCase());
-      
+        .html()!
+        // Remove everything before and including the final TR link
+        .replace(/^[\s\S]*href="\{\{\s*\w+\s*\}\}#[\s\S]*?<\/a>,?\s*/, "")
+        // Remove parenthetical github references (still in Liquid syntax)
+        .replace(/\(\{%.*%\}\)\s*$/, "")
+        .replace(/^(\w)/, (_, p1) => p1.toUpperCase());
+
       $el.find(aSelector).each((_, aEl) => {
         const $aEl = $(aEl);
         let hash: string | undefined = $aEl.attr("href")!.replace(/^.*#/, "");
