@@ -132,11 +132,12 @@ export default function (data) {
           "G78",
           {
             id: "G173",
-            using: ["SM6", "SM7", "G226", "Using any player that supports audio and video"],
+            using: ["SM6", "SM7", "G226"],
+            usingQuantity: "one or more",
           },
           {
             id: "G8",
-            using: ["SM1", "SM2", "Using any player that supports audio and video"],
+            using: ["SM1", "SM2"],
           },
           "G203",
         ],
@@ -165,11 +166,12 @@ export default function (data) {
           "G78",
           {
             id: "G173",
-            using: ["SM6", "SM7", "G226", "Using any player that supports audio and video"],
+            using: ["SM6", "SM7", "G226"],
+            usingQuantity: "one or more",
           },
           {
             id: "G8",
-            using: ["SM1", "SM2", "Using any player that supports audio and video"],
+            using: ["SM1", "SM2"],
           },
           "G203",
         ],
@@ -193,7 +195,7 @@ export default function (data) {
         sufficient: [
           {
             id: "G8",
-            using: ["SM1", "SM2", "Using any player that supports audio and video"],
+            using: ["SM1", "SM2"],
           },
         ],
         advisory: ["H96"],
