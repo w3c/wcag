@@ -1368,7 +1368,7 @@ export default function (data) {
               "Situation C: If a status message conveys information on the progress of a process:",
             techniques: [
               "ARIA23",
-              '<a href="../techniques/aria/technique-using-progressbar-role-with-a-status-message.html">Using the ARIA progressbar role with a status message</a>',
+              "ARIA25",
               {
                 and: ["ARIA22", "G193"],
                 andConjunction: "in combination with",
