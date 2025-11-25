@@ -888,7 +888,8 @@ export default function (data) {
 
       "target-size-enhanced": {
         // 2.5.5
-        sufficient: ["Ensuring that targets are at least 44 by 44 CSS pixels"],
+        sufficient: [
+          "C44"],
         advisory: ["Ensuring inline links provide sufficiently large activation target"],
         failure: [
           "Failure of Success Criterion 2.5.5 due to target being less than 44 by 44 CSS pixels",
