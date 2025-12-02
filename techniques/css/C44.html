@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head>
 		<meta charset="utf-8">
-		<title>C42: Using min-height and min-width on target container to ensure sufficient target spacing | WAI | W3C</title>
+		<title>C44: Using CSS to ensure targets are at least 44 by 44 CSS pixels | WAI | W3C</title>
 	
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,7 +15,7 @@
 <section class="default-grid info" aria-label="Notice">
   <p class="inner">
     This is an unpublished editor’s draft that might include content that is not finalized.
-    <a href="https://www.w3.org/WAI/WCAG22/Techniques/css/C42">View the published version</a>
+    <a href="https://www.w3.org/WAI/WCAG22/Techniques/css/C44">View the published version</a>
   </p>
 </section>
 
@@ -73,7 +73,7 @@
 
 <main id="main" class="standalone-resource__main">
 		
-<h1><span>Technique C42:</span>Using <code>min-height</code> and <code>min-width</code> on target container to ensure sufficient target spacing</h1>
+<h1><span>Technique C44:</span>Using CSS to ensure targets are at least 44 by 44 CSS pixels</h1>
 
 
 
@@ -87,7 +87,7 @@
   <p>
     This technique relates to
     
-<a href="https://w3c.github.io/wcag/understanding/target-size-minimum">2.5.8: Target Size (Minimum)</a>
+<a href="https://w3c.github.io/wcag/understanding/target-size-enhanced">2.5.5: Target Size (Enhanced)</a>
 (<strong>Sufficient</strong>).</p>
   
 
@@ -104,50 +104,51 @@
 		
 		<section id="description">
 			<h2>Description</h2>
-			<p>The objective of this technique is to ensure that links in navigation or pagination menus will be spaced so that they fall within an area that measures at least 24 by 24 CSS pixels if the target area itself is smaller than that. The aim is to provide an adequate target clearance so the offset to adjacent targets is sufficient to prevent accidental pointer activation of adjacent targets.</p>	
-		
+			<p>The objective of this technique is to ensure that links in pagination components are large enough to meet the requirements of <a href="https://w3c.github.io/wcag/understanding/target-size-enhanced.html">Success Criterion 2.5.5, Target Size (Enhanced)</a>. The aim is to provide an adequate target size to prevent accidental pointer activation of adjacent targets.</p>
 		</section>
+		
 		<section id="examples">
 			<h2>Examples</h2>
-			<p>The following example can be seen in the <a href="../../working-examples/css-24px-target-size/">working example</a>.</p>
-
-			<section class="example" id="example-1-using-a-display-value-of-flex-with-min-height-and-min-width">
-				<h3>Example 1: Using a <code>display</code> value of <code>flex</code> with <code>min-height</code> and <code>min-width</code></h3>
-				<p>This example uses <code>min-height</code> and <code>min-width</code> on the list items containing the pagination links. The links don't meet the 24 by 24 CSS pixels size requirement, but centering the links inside containers that are at least 24 by 24 CSS pixels ensures sufficient spacing. The links' 24 CSS pixel diameter circles will each be completely within their containing list items, so they won't intersect each other.</p>
-				<figure id="pointer-spacing-block">
-					<img src="img/24px-target-size-pagination-navigation.svg" alt="A horizontal pagination component. Each page is represented by a square box containing a link labeled with the page number. The boxes are 24 by 24 CSS pixels, but only the numbers inside the boxes are links, not the boxes themselves; the actual links are smaller than 24 by 24 CSS pixels.">
-					<figcaption>Example of using CSS to ensure enough spacing around targets</figcaption>
+			<p>The following example can be seen as a <a href="../../working-examples/css-44px-target-size/">working example</a>.</p>
+			<section class="example" id="example-1-making-pagination-links-at-least-44px-wide-and-44px-high">
+				<h3>Example 1: Making pagination links at least 44px wide and 44px high</h3>
+				<p>This example uses <code>min-inline-size</code> and <code>min-block-size</code> on the targets.</p>
+				<figure id="pointer-spacing-flex">
+					<img src="img/44px-target-size-pagination-navigation.svg" alt="a pagination control with links for the previous page, pages 1 - 5, and the next page. Page 1 is visually highlighted." height="56" width="514">
+					<figcaption>Example of using CSS to ensure sufficiently large target size</figcaption>
 				</figure>
-				<section id="the-html">
-					<h4>The HTML</h4>
+				<h4 id="the-html">The HTML</h4>
 <pre><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">nav</span> <span class="hljs-attr">aria-label</span>=<span class="hljs-string">"pagination"</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">ol</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"previous"</span>&gt;</span>previous<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">aria-current</span>=<span class="hljs-string">"page"</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/page-2"</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/page-3"</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/page-4"</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/page-5"</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/pages-6-10"</span>&gt;</span>next<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ol</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pagination-list"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span>&gt;</span>previous<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">aria-current</span>=<span class="hljs-string">"page"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"visually-hidden"</span>&gt;</span>page <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/page-2"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"visually-hidden"</span>&gt;</span>page <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/page-3"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"visually-hidden"</span>&gt;</span>page <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/page-4"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"visually-hidden"</span>&gt;</span>page <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/page-5"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"visually-hidden"</span>&gt;</span>page <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/page-2"</span>&gt;</span>next<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">ol</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span></code></pre>
-				</section>
-
-				<section id="the-css">
-					<h4>The CSS</h4>
-<pre><code class="language-css hljs"><span class="hljs-selector-tag">ol</span> {
+					<h4 id="the-css">The CSS</h4>
+<pre><code class="language-css hljs"><span class="hljs-selector-class">.pagination-list</span>{
   <span class="hljs-attribute">display</span>: flex;
-  <span class="hljs-attribute">flex-wrap</span>: wrap;
+  <span class="hljs-attribute">gap</span>: <span class="hljs-number">0.5em</span>;
   <span class="hljs-attribute">list-style</span>: none;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>;        
 }
 
-<span class="hljs-selector-tag">li</span> {
-  <span class="hljs-attribute">margin</span>: <span class="hljs-number">3px</span>;
-  <span class="hljs-attribute">min-height</span>: <span class="hljs-number">24px</span>;
-  <span class="hljs-attribute">min-width</span>: <span class="hljs-number">24px</span>;
-  <span class="hljs-attribute">text-align</span>: center;
+<span class="hljs-selector-class">.pagination-list</span> <span class="hljs-selector-tag">li</span>{
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">0.25em</span>;
+}
+
+<span class="hljs-selector-class">.pagination-list</span> <span class="hljs-selector-tag">a</span>{
+  <span class="hljs-attribute">align-items</span>: center;
+  <span class="hljs-attribute">display</span>: flex;
+  <span class="hljs-attribute">justify-content</span>: center;
+  <span class="hljs-attribute">min-block-size</span>: <span class="hljs-number">44px</span>;
+  <span class="hljs-attribute">min-inline-size</span>: <span class="hljs-number">44px</span>;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">0.5em</span>;
 }</code></pre>
-				</section>
 			</section>
       
 		</section>
@@ -160,9 +161,7 @@
 <section id="related">
 			<h2>Related Techniques</h2>
 			<ul>
-				<li>
-					<a href="../css/C44">C44: Using CSS to ensure targets are at least 44 by 44 CSS pixels</a>
-				</li>
+				<li><a href="../css/C42">C42: Using min-height and min-width on target container to ensure sufficient target spacing</a></li>
 			</ul>
 
 		</section>
@@ -172,19 +171,17 @@
 			<section class="test-procedure" id="procedure">
 				<h3>Procedure</h3>
 
-				<p>For each undersized target that has no sufficiently large equivalent, that isn't in a sentence or otherwise
-					constrained by the <code>line-height</code> of non-target text, that has had its size modified by the author, and whose
+				<p>For each target that has no sufficiently large equivalent, that isn't in a sentence or otherwise constrained
+					by the <code>line-height</code> of non-target text, that has had its size modified by the author, and whose
 					presentation isn't essential:</p>
 				<ol>
-					<li>Draw a 24px diameter circle centered on the target's bounding box.</li>
-					<li>Check that the circle from #1 does not intersect any other target.</li>
-					<li>Check that the circle from #1 does not intersect any other undersized target's circle.</li>					
+					<li>Check that the target has a size of at least 44px width and 44px height.</li>					
 				</ol>
 			</section>
 			<section class="test-results" id="expected-results">
 				<h3>Expected Results</h3>
 				<ul>
-					<li>#2 and #3 are true.</li>
+					<li>#1 is true</li>
 				</ul>
 			</section>
 		</section>
