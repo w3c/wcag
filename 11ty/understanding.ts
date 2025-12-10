@@ -15,7 +15,7 @@ export const techniqueToUnderstandingLinkSelector = [
  * Resolves information for top-level understanding pages;
  * ported from generate-structure-xml.xslt
  */
-export async function getUnderstandingDocs(version: WcagVersion): Promise<DocNode[]> {
+export function getUnderstandingDocs(version: WcagVersion): DocNode[] {
   const decimalVersion = resolveDecimalVersion(version);
   return [
     {
@@ -24,11 +24,11 @@ export async function getUnderstandingDocs(version: WcagVersion): Promise<DocNod
     },
     {
       id: "understanding-techniques",
-      name: "Understanding Techniques for WCAG Success Criteria",
+      name: `Understanding Techniques for WCAG ${decimalVersion} Success Criteria`,
     },
     {
       id: "understanding-act-rules",
-      name: "Understanding Test Rules for WCAG Success Criteria",
+      name: `Understanding Test Rules for WCAG ${decimalVersion} Success Criteria`,
     },
     {
       id: "conformance",

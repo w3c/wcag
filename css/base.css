@@ -203,9 +203,9 @@ margin: 1.2em 0;
 align-items: stretch;
 }
 
-#site-header.minimal-header .minimal-header-name, 
-#site-header.minimal-header .minimal-header-subtitle, 
-#site-header.minimal-header .minimal-header-link 
+#site-header.minimal-header .minimal-header-name,
+#site-header.minimal-header .minimal-header-subtitle,
+#site-header.minimal-header .minimal-header-link
 {
 display: flex;
 flex-direction: column;
@@ -411,14 +411,14 @@ font-size: 95%;
 .standalone-resource-about a,
 .standalone-resource-pager a,
 .standalone-resource-about span,
-.standalone-resource-pager span 
+.standalone-resource-pager span
 {
 margin-left:.8em;
 margin-right:.8em;
 }
 
-.example video,
-#examples video
+#examples video,
+figure video
 {
     max-width: 100%;
 }
@@ -430,6 +430,32 @@ margin-right:.8em;
   margin-left: 2em;
 }
 
+/* overrides for restyled figures and captions */
+
+figure {
+  margin: 2em 0;
+	padding-left: 1em;
+	border-left: 2px solid var(--cloudy);
+}
+
+figure img,
+figure video,
+figure svg {
+	border: 1px solid var(--line-grey);
+}
+
+main table svg[role*="image"],
+figure svg[role*="image"] {
+    display: block;
+    max-inline-size: 100%;
+}
+
+figcaption {
+	font-weight: initial;
+	border-bottom: initial;
+  font-size: 0.9rem;
+}
+
 @media (max-width: 35em) {
 	.nav-container {
 		padding: 0;
@@ -438,7 +464,7 @@ margin-right:.8em;
 		display: inline-block;
 		width: calc(100% - 2em);
 	}
-	@supports (display:gred) {
+	@supports (display:grid) {
 		#site-header {
 			padding-left: 0;
 		}
@@ -470,4 +496,21 @@ margin-right:.8em;
 	.minimal-header-logo svg {
 		margin: 1em 0 0 0;
 	}
+}
+
+/* preformatted blocks - generally contain code element */
+
+pre {
+    padding: 1em;
+    border: 1px solid var(--line-grey);
+    background-color: var(--pure-white);
+}
+
+/* inline code not in a preformatted block or link */
+
+:not(:is(pre, a)) > code {
+    font-size: 0.85em;
+    background: #ebebeb;
+    padding: 0 0.25em;
+    display: inline-block;
 }
