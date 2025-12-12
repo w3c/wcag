@@ -1,4 +1,3 @@
-import axios from "axios";
 import compact from "lodash-es/compact";
 import { mkdirp } from "mkdirp";
 import { rimraf } from "rimraf";
@@ -7,7 +6,7 @@ import { copyFile, writeFile } from "fs/promises";
 import { join } from "path";
 
 import { CustomLiquid } from "11ty/CustomLiquid";
-import { resolveDecimalVersion } from "11ty/common";
+import { fetchText, resolveDecimalVersion } from "11ty/common";
 import { loadDataDependencies } from "11ty/data-dependencies";
 import {
   actRules,
@@ -166,12 +165,33 @@ export default async function (eleventyConfig: any) {
       isUnderstanding ? flatGuidelines[resolveUnderstandingFileSlug(page.fileSlug)] : null,
   });
 
+  const ignoredEndings = [
+    "-template.html",
+    "understanding/20/accessibility-support-documenting.html",
+    "understanding/20/seizures.html",
+  ];
+  eleventyConfig.addPreprocessor("ignore-html", "html", ({ page }: GlobalData) => {
+    if (
+      !page.filePathStem.startsWith("/errata/") &&
+      !page.filePathStem.startsWith("/techniques/") &&
+      !page.filePathStem.startsWith("/understanding/") &&
+      page.filePathStem !== "/index"
+    )
+      return false;
+    if (page.inputPath.includes("/img/")) return false;
+    for (const ending of ignoredEndings) if (page.inputPath.endsWith(ending)) return false;
+  });
+  eleventyConfig.addPreprocessor("ignore-md", "md", () => false);
+
+  // Add explicit watch targets to avoid addPassthroughCopy interference
+  eleventyConfig.addWatchTarget("techniques/**");
+  eleventyConfig.addWatchTarget("understanding/**");
+
   eleventyConfig.addPassthroughCopy("techniques/*.css");
   eleventyConfig.addPassthroughCopy("techniques/*/img/*");
   eleventyConfig.addPassthroughCopy({
     "css/base.css": "techniques/base.css",
     "css/a11y-light.css": "techniques/a11y-light.css",
-    "script/highlight.min.js": "techniques/highlight.min.js",
   });
 
   eleventyConfig.addPassthroughCopy("understanding/*.css");
@@ -203,10 +223,6 @@ export default async function (eleventyConfig: any) {
       join(dir.input, "css", "a11y-light.css"),
       join(dir.output, "understanding", "a11y-light.css")
     );
-    await copyFile(
-      join(dir.input, "script", "highlight.min.js"),
-      join(dir.output, "understanding", "highlight.min.js")
-    );
 
     // Output guidelines/index.html and dependencies for PR runs (not for GH Pages or W3C site)
     const sha = process.env.COMMIT_REF; // Read environment variable exposed by Netlify
@@ -222,9 +238,8 @@ export default async function (eleventyConfig: any) {
       );
 
       const url = `https://raw.githack.com/${GH_ORG}/${GH_REPO}/${sha}/guidelines/index.html?isPreview=true`;
-      const { data: processedGuidelines } = await axios.get(
-        `https://labs.w3.org/spec-generator/?type=respec&url=${encodeURIComponent(url)}`,
-        { responseType: "text" }
+      const processedGuidelines = await fetchText(
+        `https://labs.w3.org/spec-generator/?type=respec&url=${encodeURIComponent(url)}`
       );
       await writeFile(`${dir.output}/guidelines/index.html`, processedGuidelines);
     }

@@ -6,7 +6,7 @@
    </head>
    <body>
 
-      <h1>Semantically identifying a font icon with <code class="language-html">role="img"</code></h1>
+      <h1>Semantically identifying a font icon with <code>role="img"</code></h1>
 
       <section id="meta">
          <h2>Metadata</h2>
@@ -22,13 +22,13 @@
 
          <p>Some low vision users need user stylesheets, scripts, or extensions to override the fonts on a page to perceive text content. However, they need to be able to perceive icon fonts that are meaningful, such as a star signifying a favorite, or an email icon in a link.</p>
 
-         <p>The key is for the author to semantically markup icon fonts with <code class="language-html">role="img"</code>. Then the user's font replacement selector can hook into that semantic and exclude <code class="language-html">role="img"</code>. This results in those icon fonts being shown.</p>
+         <p>The key is for the author to semantically markup icon fonts with <code>role="img"</code>. Then the user's font replacement selector can hook into that semantic and exclude <code>role="img"</code>. This results in those icon fonts being shown.</p>
 
          <h3>Basic principle of the technique</h3>
 
          <h4>1. Author adds a font-face to the CSS</h4>
          <p>The first step is used for adding a font face with icons via the CSS file.</p>
-         <pre xml:space="preserve"><code class="language-html">/* specify font-family name for icons */
+         <pre xml:space="preserve"><code class="language-css">/* specify font-family name for icons */
 @font-face { font-family: 'IconFontRoleImg'; }
 
 /* default class for fonts-face with icons */
@@ -48,7 +48,7 @@
 
          <h4>3. User CSS file replaces the font-family except the icon file</h4>
          <p>The third step uses the ":not selector" in combination with the "[attribute] selector" to only replace font faces for regular text.</p>
-         <pre xml:space="preserve"><code class="language-html">/* replaces font faces but excludes all elements with attribute role="img" */
+         <pre xml:space="preserve"><code class="language-css">/* replaces font faces but excludes all elements with attribute role="img" */
 *:not([role="img"]) { font-family: Verdana, sans-serif !important; }</code></pre>
 
       </section>
@@ -79,7 +79,7 @@
 			</section>
          	<section>
             <h5><strong>- Do... -</strong></h5>
-            <pre xml:space="preserve"><code>&lt;p&gt;
+            <pre><code class="language-html">&lt;p&gt;
   &lt;span class=&quot;icon icon-star-bg&quot; role=&quot;img&quot; aria-label=&quot;Favorite&quot;&gt;&lt;/span&gt;
 &lt;/p&gt;</code></pre>
          	</section>
@@ -181,7 +181,7 @@
 
             <h3>Multiple Icon Fonts as part of another sematic element WITH visible text</h3>
 
-            <p>This example already has a visible text label in the link to be used as an accessible name, the mail and chevron font icons must stay visible when the font family is changed. This can be done by ensuring the icons are contained in their own element and the attribute <code>aria-hidden=&quot;true&quot;</code> is used so the font icons will be ignored by assistive technologies.</p>
+            <p>This example already has a visible text label in the link to be used as an accessible name, the mail and chevron font icons must stay visible when the font family is changed. This can be done by ensuring the icons are contained in their own element and the attribute <code>aria-hidden="true"</code> is used so the font icons will be ignored by assistive technologies.</p>
 			<section>
             <h4>Author CSS</h4>
             <pre xml:space="preserve"><code class="language-css">/* default class for fonts-face with icons */
