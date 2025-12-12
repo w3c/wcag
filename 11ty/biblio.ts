@@ -1,4 +1,3 @@
-import axios from "axios";
 import { readFile } from "fs/promises";
 import { glob } from "glob";
 import invert from "lodash-es/invert";
@@ -6,7 +5,7 @@ import uniq from "lodash-es/uniq";
 import { join } from "path";
 
 import { loadFromFile } from "./cheerio";
-import { wrapAxiosRequest } from "./common";
+import { fetchOptionalText } from "./common";
 
 export const biblioPattern = /\[\[\??([\w-]+)\]\]/g;
 
@@ -33,16 +32,16 @@ export async function getBiblio() {
     ref in aliases ? aliases[ref as keyof typeof aliases] : ref
   );
 
-  const response = await wrapAxiosRequest(
-    axios.get(`https://api.specref.org/bibrefs?refs=${uniqueRefs.join(",")}`)
+  const responseText = await fetchOptionalText(
+    `https://api.specref.org/bibrefs?refs=${uniqueRefs.join(",")}`
   );
-  if (response.data) {
-    for (const [from, to] of Object.entries(invert(aliases)))
-      response.data[to] = response.data[from];
+  const data = responseText ? JSON.parse(responseText) : null;
+  if (data) {
+    for (const [from, to] of Object.entries(invert(aliases))) data[to] = data[from];
   }
 
   return {
-    ...response.data,
+    ...data,
     ...localBiblio,
   };
 }

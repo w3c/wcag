@@ -1,7 +1,5 @@
 /** @fileoverview Common functions used by multiple parts of the build process */
 
-import { AxiosError, type AxiosResponse } from "axios";
-
 import type { WcagItem } from "./guidelines";
 
 /** Generates an ID for heading permalinks. Equivalent to wcag:generate-id in base.xslt. */
@@ -17,10 +15,7 @@ export function generateId(title: string) {
 export const resolveDecimalVersion = (version: `${number}`) => version.split("").join(".");
 
 /** Sort function for ordering WCAG principle/guideline/SC numbers ascending */
-export function wcagSort(
-  a: WcagItem,
-  b: WcagItem
-) {
+export function wcagSort(a: WcagItem, b: WcagItem) {
   const aParts = a.num.split(".").map((n) => +n);
   const bParts = b.num.split(".").map((n) => +n);
 
@@ -31,22 +26,32 @@ export function wcagSort(
   return 0;
 }
 
+type FetchText = (...args: Parameters<typeof fetch>) => Promise<string>;
+
+/** Performs a fetch, returning body text or throwing an error if a 4xx/5xx response occurs. */
+export const fetchText: FetchText = (input, init) =>
+  fetch(input, init).then(
+    (response) => {
+      if (response.status >= 400)
+        throw new Error(`fetching ${input} yielded ${response.status} response`);
+      return response.text();
+    },
+    (error) => {
+      throw new Error(`fetching ${input} yielded error: ${error.message}`);
+    }
+  );
+
 /**
- * Handles HTTP error responses from Axios requests in local dev;
- * re-throws error during builds to fail loudly.
- * This should only be used for non-critical requests that can tolerate null data
+ * Performs a fetch that ignores errors in local dev;
+ * throws during builds to fail loudly.
+ * This should only be used for non-critical requests that can tolerate no data
  * without major side effects.
  */
-export const wrapAxiosRequest = <T, D>(promise: Promise<AxiosResponse<T, D>>) =>
-  promise.catch((error) => {
-    if (!(error instanceof AxiosError) || !error.response || !error.request) throw error;
-    const { response, request } = error;
-    console.warn(
-      `AxiosError: status ${response.status} received from ${
-        request.protocol + "//" + request.host
-      }${request.path || ""}`
-    );
-
-    if (process.env.ELEVENTY_RUN_MODE === "build") throw error;
-    else return { data: null };
-  });
+export const fetchOptionalText: FetchText =
+  process.env.ELEVENTY_RUN_MODE === "build"
+    ? fetchText
+    : (input, init) =>
+        fetchText(input, init).catch((error) => {
+          console.warn("Bypassing fetch error:", error.message);
+          return "";
+        });
