@@ -1,4 +1,3 @@
-import axios from "axios";
 import compact from "lodash-es/compact";
 import { mkdirp } from "mkdirp";
 import { rimraf } from "rimraf";
@@ -7,7 +6,7 @@ import { copyFile, writeFile } from "fs/promises";
 import { join } from "path";
 
 import { CustomLiquid } from "11ty/CustomLiquid";
-import { resolveDecimalVersion } from "11ty/common";
+import { fetchText, resolveDecimalVersion } from "11ty/common";
 import { loadDataDependencies } from "11ty/data-dependencies";
 import {
   actRules,
@@ -239,9 +238,8 @@ export default async function (eleventyConfig: any) {
       );
 
       const url = `https://raw.githack.com/${GH_ORG}/${GH_REPO}/${sha}/guidelines/index.html?isPreview=true`;
-      const { data: processedGuidelines } = await axios.get(
-        `https://labs.w3.org/spec-generator/?type=respec&url=${encodeURIComponent(url)}`,
-        { responseType: "text" }
+      const processedGuidelines = await fetchText(
+        `https://labs.w3.org/spec-generator/?type=respec&url=${encodeURIComponent(url)}`
       );
       await writeFile(`${dir.output}/guidelines/index.html`, processedGuidelines);
     }
