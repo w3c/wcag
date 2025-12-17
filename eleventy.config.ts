@@ -239,7 +239,7 @@ export default async function (eleventyConfig: any) {
 
       const url = `https://raw.githack.com/${GH_ORG}/${GH_REPO}/${sha}/guidelines/index.html?isPreview=true`;
       const processedGuidelines = await fetchText(
-        `https://labs.w3.org/spec-generator/?type=respec&url=${encodeURIComponent(url)}`
+        `https://www.w3.org/publications/spec-generator/?type=respec&url=${encodeURIComponent(url)}`
       );
       await writeFile(`${dir.output}/guidelines/index.html`, processedGuidelines);
     }
