@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Carousel panels that scroll horizontally are designed to fit within a width of 320 CSS pixels on a vertically scrolling page</title>
+        <link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: sans-serif;
+                margin: 0;
+                padding: 0;
+                color: #000;
+            }
+
+            .carousel {
+                position: relative;
+                overflow: hidden;
+            }
+
+            h2 {
+              margin: 20px;
+            }
+            .carousel .prod-list > ul {
+                display: flex;
+                gap: 20px;
+                scroll-behavior: smooth;
+                overflow-x: scroll;
+                margin: 0;
+                padding: 0 20px;
+                scroll-snap-type: x mandatory;
+            }
+
+            .carousel .prod-list > ul li {
+                list-style: none;
+                flex: 0 0 320px;
+                background-color: #efefef;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                display: block;
+                max-width: 320px;
+              padding:20px;
+              scroll-snap-align: center;
+            }
+
+            .carousel .prod-list > ul li img {
+                /*max-width: 100%;*/
+                height: auto;
+            }
+
+            .carousel .prod-list > ul li p {
+                margin: 20px 0;
+            }
+
+            #carousel-actions {
+                display: flex;
+                justify-content: space-between;
+                margin: 20px;
+            }
+
+            #carousel-actions button {
+                background-color: #000;
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+                padding: 15px 25px;
+                font-size: 15px;
+                cursor: pointer;
+            }
+
+
+            #carousel-actions button:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            ul::-webkit-scrollbar {
+                display: none;
+            }
+
+            ul {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+
+            .carousel .img-box { overflow: hidden; }
+            .carousel img { width: 800%; }
+            .carousel .prod-name {
+                color: #000;
+                display: block;
+                font-weight: bold;
+                font-size: 1.1em;
+                margin: 15px 0;
+            }
+            .carousel .price {
+                font-size: 1.1em;
+                font-weight: bold;
+            }
+            .carousel ul.colors {
+                display: inline-block; 
+                height: 34px; 
+                vertical-align: middle;
+                margin-left: 10px;
+            }
+            .carousel ul.colors li {display:inline;}
+            .carousel ul.colors li {border-radius:50%; width:20px; height:20px; padding:15px; font-size:0; border:1px solid #676767;}
+            .carousel ul.colors li.black {background:#000;}
+            .carousel ul.colors li.brown {background:#895129;}
+            .carousel ul.colors li.grey {background:#AAA;}
+            .carousel ul.colors li.flame {background: linear-gradient(90deg, rgba(0,0,0,1) 35%, rgba(255,168,53,1) 65%);}
+            .carousel ul.colors li.stripe-brown-beige {background: linear-gradient(90deg, rgba(46,24,17,1) 35%, rgba(255,244,230,1) 65%);}
+        </style>
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function() {
+                (function() {
+                    const carousel = document.querySelector('.carousel .prod-list > ul');
+                    const slides = document.querySelectorAll('.carousel .prod-list > ul > li');
+                    const prevButton = document.querySelector('.carousel .prev');
+                    const nextButton = document.querySelector('.carousel .next');
+
+                    const getCardWidth = function() {
+                        const firstSlide = slides[0];
+                        const secondSlide = slides[1];
+                        const gap = secondSlide.offsetLeft - (firstSlide.offsetLeft + firstSlide.offsetWidth);
+                        const cardWidth = firstSlide.offsetWidth + gap;
+                        return cardWidth;
+                    };
+
+                    const updateButtons = function() {
+                        const cardWidth = getCardWidth();
+                        const maxScroll = carousel.scrollWidth - carousel.offsetWidth;
+                        prevButton.disabled = carousel.scrollLeft <= 0;
+                        nextButton.disabled = carousel.scrollLeft >= maxScroll;
+                    };
+
+                    const scrollLeft = function() {
+                        const cardWidth = getCardWidth();
+                        carousel.scrollBy({
+                            left: -cardWidth,
+                            behavior: 'smooth'
+                        });
+                    };
+
+                    const scrollRight = function() {
+                        const cardWidth = getCardWidth();
+                        const maxScroll = carousel.scrollWidth - carousel.offsetWidth;
+                        const remainingScroll = maxScroll - carousel.scrollLeft;
+                        if (remainingScroll < cardWidth) {
+                            carousel.scrollBy({
+                                left: remainingScroll,
+                                behavior: 'smooth'
+                            });
+                        } else {
+                            carousel.scrollBy({
+                                left: cardWidth,
+                                behavior: 'smooth'
+                            });
+                        }
+                    };
+
+                    prevButton.addEventListener('click', scrollLeft);
+                    nextButton.addEventListener('click', scrollRight);
+                    carousel.addEventListener('scroll', updateButtons);
+
+                    updateButtons();
+
+                    document.addEventListener('keydown', (e) => {
+                        if (e.key === 'ArrowLeft') {
+                            scrollLeft();
+                        } else if (e.key === 'ArrowRight') {
+                            scrollRight();
+                        }
+                    });
+                })();
+            });
+        </script>
+    </head>
+    <body>
+        <div class="carousel">
+            <div>
+                <h2 id="news">New Jackets</h2>
+                <div class="prod-list" role="region" tabindex="0" aria-labelledby="news">
+                    <ul>
+                        <li>
+                            <div class="img-box">
+                                <img src="jackets.png" alt="">
+                            </div>
+                            <a class="prod-name" href="#">Giacomo's Jacket</a>
+                            <p>A classic biker-style jacket with quilted shoulders and a belted waist</p>
+                            <p class="price">$500</p>
+                            <span>Colors</span>
+                            <ul class="colors">
+                                <li class="black" title="black">Black</li>
+                                <li class="brown" title="brown">Brown</li>
+                            </ul>
+                        </li>
+                        <li>                            
+                            <div class="img-box">
+                                <img src="jackets.png" alt="" style="transform: translate(-12.5%, 0%)">
+                            </div>
+                            <a class="prod-name" href="#">Scott's Jacket</a>
+                            <p>A vibrant, colorful bomber jacket with a unique, almost flame-like pattern</p>
+                            <p class="price">$500</p>
+                            <span>Colors</span>
+                            <ul class="colors">
+                                <li class="black" title="black">Black</li>
+                                <li class="flame" title="flame">Flame</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="img-box">
+                                <img src="jackets.png" alt="" style="transform: translate(-25%, 0%)">
+                            </div>
+                            <a class="prod-name" href="#">Patrick's Jacket</a>
+                            <p>A more structured, utilitarian jacket with multiple pockets</p>
+                            <p class="price">$600</p>                            
+                            <span>Colors</span>
+                            <ul class="colors">
+                                <li class="black" title="black">Black</li>
+                                <li class="brown" title="brown">Brown</li>
+                                <li class="grey" title="grey">Grey</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="img-box">
+                                <img src="jackets.png" alt="" style="transform: translate(-37.5%, 0%)">
+                            </div>
+                            <a class="prod-name" href="#">Alastair's Jacket</a>
+                            <p>A long, loose-fitting coat with a minimalist design</p>
+                            <p class="price">$700</p>                           
+                            <span>Colors</span>
+                            <ul class="colors">
+                                <li class="black" title="black">Black</li>
+                                <li class="grey" title="grey">Grey</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="img-box">
+                                <img src="jackets.png" alt="" style="transform: translate(-50%, 0%)">
+                            </div>
+                            <a class="prod-name" href="#">Bruce's Jacket</a>
+                            <p>A pinstripe suit jacket in a light beige and dark brown color combination</p>
+                            <p class="price">$300</p>                          
+                            <span>Colors</span>
+                            <ul class="colors">
+                                <li class="stripe-brown-beige" title="Beige with dark brown stripe">Beige with dark brown stripe</li>
+                            </ul>
+                        </li>
+                        <li>                            
+                            <div class="img-box">
+                                <img src="jackets.png" alt="" style="transform: translate(-62.5%, 0%)">
+                            </div>
+                            <a class="prod-name" href="#">Mike's Jacket</a>
+                            <p>A brown leather jacket with a unique, almost distressed texture</p>
+                            <p class="price">$400</p>
+                            <span>Colors</span>
+                            <ul class="colors">
+                                <li class="black" title="black">Black</li>
+                                <li class="brown" title="brown">Brown</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="img-box">
+                                <img src="jackets.png" alt="" style="transform: translate(-75%, 0%)">
+                            </div>
+                            <a class="prod-name" href="#">Francis's Jacket</a>
+                            <p>A warm-looking, quilted puffer jacket with a unique, textured appearance</p>
+                            <p class="price">$500</p>                        
+                            <span>Colors</span>
+                            <ul class="colors">
+                                <li class="black" title="black">Black</li>
+                                <li class="flame" title="flame">Flame</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="img-box">
+                                <img src="jackets.png" alt="" style="transform: translate(-87.5%, 0%)">
+                            </div>
+                            <a class="prod-name" href="#">Detlev's Jacket</a>
+                            <p>A black jacket with an unusual scale-like and heavily textured surface</p>
+                            <p class="price">$600</p>                           
+                            <span>Colors</span>
+                            <ul class="colors">
+                                <li class="black" title="black">Black</li>
+                                <li class="brown" title="brown">Brown</li>
+                                <li class="grey" title="grey">Grey</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div id="carousel-actions">
+                    <button class="prev" aria-label="Previous jacket">&lt;</button>
+                    <button class="next" aria-label="Next jacket">&gt;</button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
