@@ -272,6 +272,7 @@ export default function (data) {
                   "PDF17",
                   "PDF21",
                   "H97",
+                  "H62",
                 ],
                 usingQuantity: "",
               },
