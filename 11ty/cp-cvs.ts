@@ -1,9 +1,8 @@
 /** @fileoverview script to copy already-built output to CVS subfolders */
 
 import { glob } from "glob";
-import { mkdirp } from "mkdirp";
 
-import { copyFile, unlink } from "fs/promises";
+import { copyFile, mkdir, unlink } from "fs/promises";
 import { dirname, join } from "path";
 
 import { assertIsWcagVersion } from "./guidelines";
@@ -40,14 +39,14 @@ for (const [srcDir, destDir] of Object.entries(dirs)) {
   for (const path of indexPaths) {
     const srcPath = join(outputBase, srcDir, path);
     const destPath = join(wcagBase, destDir, path.replace(/index\.html$/, "Overview.html"));
-    await mkdirp(dirname(destPath));
+    await mkdir(dirname(destPath), { recursive: true });
     await copyFile(srcPath, destPath);
   }
 
   for (const path of nonIndexPaths) {
     const srcPath = join(outputBase, srcDir, path);
     const destPath = join(wcagBase, destDir, path);
-    await mkdirp(dirname(destPath));
+    await mkdir(dirname(destPath), { recursive: true });
     await copyFile(srcPath, destPath);
   }
 }
@@ -56,7 +55,7 @@ try {
   await copyFile(join(outputBase, "wcag.json"), join(wcagBase, "wcag.json"));
 } catch (error) {}
 
-await mkdirp(join(wcagBase, "errata"));
+await mkdir(join(wcagBase, "errata"), { recursive: true });
 await copyFile(
   join(outputBase, "errata", `${wcagVersion}.html`),
   join(wcagBase, "errata", "Overview.html")
