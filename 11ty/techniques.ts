@@ -366,7 +366,12 @@ export async function getTechniquesByTechnology(guidelines: FlatGuidelinesMap) {
     // Isolate h1 from each file before feeding into Cheerio to save ~300ms total
     const h1Match = content.match(/<h1[^>]*>([\s\S]+?)<\/h1>/);
     if (!h1Match || !h1Match[1]) throw new Error(`No h1 found in techniques/${path}`);
-    const $h1 = load(h1Match[1], null, false);
+
+    const normalizedH1 = h1Match[1]
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    const $h1 = load(normalizedH1, null, false);
 
     let title = $h1.text();
     let titleHtml = $h1.html();
