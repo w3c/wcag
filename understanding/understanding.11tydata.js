@@ -314,7 +314,7 @@ export default function (data) {
           "C27",
           "PDF3",
         ],
-        failure: ["F34", "F33", "F32", "F49", "F1"],
+        failure: ["F34", "F33", "F32", "F49", "F1", "F999"],
       },
 
       "sensory-characteristics": {
