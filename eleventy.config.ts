@@ -1,13 +1,10 @@
-import axios from "axios";
 import compact from "lodash-es/compact";
-import { mkdirp } from "mkdirp";
-import { rimraf } from "rimraf";
 
-import { copyFile, writeFile } from "fs/promises";
+import { copyFile, mkdir, rm, writeFile } from "fs/promises";
 import { join } from "path";
 
 import { CustomLiquid } from "11ty/CustomLiquid";
-import { resolveDecimalVersion } from "11ty/common";
+import { fetchText, resolveDecimalVersion } from "11ty/common";
 import { loadDataDependencies } from "11ty/data-dependencies";
 import {
   actRules,
@@ -209,7 +206,8 @@ export default async function (eleventyConfig: any) {
   eleventyConfig.on("eleventy.before", async ({ runMode }: EleventyEvent) => {
     // Clear the _site folder before builds intended for the W3C site,
     // to avoid inheriting dev-only files from previous runs
-    if (runMode === "build" && process.env.WCAG_MODE === "publication") await rimraf("_site");
+    if (runMode === "build" && process.env.WCAG_MODE === "publication")
+      await rm("_site", { recursive: true });
   });
 
   let hasDisplayedGuidance = false;
@@ -228,7 +226,7 @@ export default async function (eleventyConfig: any) {
     // Output guidelines/index.html and dependencies for PR runs (not for GH Pages or W3C site)
     const sha = process.env.COMMIT_REF; // Read environment variable exposed by Netlify
     if (sha && !process.env.WCAG_MODE) {
-      await mkdirp(join(dir.output, "guidelines"));
+      await mkdir(join(dir.output, "guidelines"), { recursive: true });
       await copyFile(
         join(dir.input, "guidelines", "guidelines.css"),
         join(dir.output, "guidelines", "guidelines.css")
@@ -239,9 +237,8 @@ export default async function (eleventyConfig: any) {
       );
 
       const url = `https://raw.githack.com/${GH_ORG}/${GH_REPO}/${sha}/guidelines/index.html?isPreview=true`;
-      const { data: processedGuidelines } = await axios.get(
-        `https://labs.w3.org/spec-generator/?type=respec&url=${encodeURIComponent(url)}`,
-        { responseType: "text" }
+      const processedGuidelines = await fetchText(
+        `https://www.w3.org/publications/spec-generator/?type=respec&url=${encodeURIComponent(url)}`
       );
       await writeFile(`${dir.output}/guidelines/index.html`, processedGuidelines);
     }
