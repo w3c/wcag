@@ -22,6 +22,10 @@ import {
   type Technique,
 } from "11ty/techniques";
 import type { EleventyContext, EleventyData, EleventyEvent } from "11ty/types";
+import { glob } from "glob";
+
+/** Date stamp used for cache busting in docs stylesheet filenames */
+const cacheBustValue = Date.now();
 
 const {
   principles,
@@ -62,6 +66,7 @@ function resolveRelevantTermsMap() {
 // Declare static global data up-front so we can build typings from it
 const globalData = {
   version,
+  cacheBustValue,
   versionDecimal: resolveDecimalVersion(version),
   errata: process.env.WCAG_VERSION ? await getErrataForVersion(version) : {},
   techniques, // Used for techniques/index.html
@@ -185,14 +190,8 @@ export default async function (eleventyConfig: any) {
   eleventyConfig.addWatchTarget("techniques/**");
   eleventyConfig.addWatchTarget("understanding/**");
 
-  eleventyConfig.addPassthroughCopy("techniques/*.css");
   eleventyConfig.addPassthroughCopy("techniques/*/img/*");
-  eleventyConfig.addPassthroughCopy({
-    "css/base.css": "techniques/base.css",
-    "css/a11y-light.css": "techniques/a11y-light.css",
-  });
 
-  eleventyConfig.addPassthroughCopy("understanding/*.css");
   eleventyConfig.addPassthroughCopy({
     "guidelines/relative-luminance.html": "understanding/relative-luminance.html",
     "understanding/*/img/*": "understanding/img", // Intentionally flatten
@@ -212,16 +211,28 @@ export default async function (eleventyConfig: any) {
 
   let hasDisplayedGuidance = false;
   eleventyConfig.on("eleventy.after", async ({ dir, runMode }: EleventyEvent) => {
-    // addPassthroughCopy can only map each file once,
-    // but some CSS files need to be copied to 2 destinations
-    await copyFile(
-      join(dir.input, "css", "base.css"),
-      join(dir.output, "understanding", "base.css")
-    );
-    await copyFile(
-      join(dir.input, "css", "a11y-light.css"),
-      join(dir.output, "understanding", "a11y-light.css")
-    );
+    /**
+     * Copies a css/*.css file to target directories, with a cache-busting filename segment.
+     * This also accomplishes copying the same file to multiple destinations,
+     * which cannot be done with 11ty's addPassthroughCopy.
+     */
+    const copyCss = (basename: string, destinations: string[]) =>
+      Promise.all(
+        destinations.map(async (destination) => {
+          const outputSubdir = join(dir.output, destination);
+          // Remove any previous cache-busted version to avoid pile-up in the output dir
+          for (const filename of await glob(`${basename}.*.css`, { cwd: outputSubdir })) {
+            await rm(join(outputSubdir, filename));
+          }
+          await copyFile(
+            join(dir.input, "css", `${basename}.css`),
+            join(outputSubdir, `${basename}.${cacheBustValue}.css`)
+          );
+        })
+      );
+
+    await copyCss("base", ["techniques", "understanding"]);
+    await copyCss("a11y-light", ["techniques", "understanding"]);
 
     // Output guidelines/index.html and dependencies for PR runs (not for GH Pages or W3C site)
     const sha = process.env.COMMIT_REF; // Read environment variable exposed by Netlify
