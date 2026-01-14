@@ -374,9 +374,7 @@ export class CustomLiquid extends Liquid {
           .replace(/^th(e|is) (technique|failure)s? (is )?/i, "")
           .replace(/^general( technique|ly applicable)?(\.|$).*$/i, "all technologies")
           .replace(/^appropriate to use for /i, "")
-          .replace(/^use this technique on /i, "")
-          // Work around redundant sentences (e.g. F105)
-          .replace(/\.\s+This technique relates to Success Criterion [\d\.]+\d[^\.]+\.$/, "");
+          .replace(/^use this technique on /i, "");
         if (customApplicability) {
           const appliesPattern = /^(?:appli(?:es|cable)|relates) (to|when(?:ever)?)\s*/i;
           const rephrasedApplicability = customApplicability.replace(appliesPattern, "");
