@@ -31,8 +31,8 @@ jobs:
           fi
       - name: Check for changes to legacy files
         run: |
-          if test $(git diff origin/${{ github.base_ref }} --numstat | egrep -c '\s(conformance-challenges|requirements|wcag20)/') -gt 0; then
-            echo "::notice title=Legacy files modified::PRs should not change files under conformance-challenges/, requirements/, or wcag20/"
+          if test $(git diff origin/${{ github.base_ref }} --numstat | egrep -c '\s(conformance-challenges|requirements)/') -gt 0; then
+            echo "::notice title=Legacy files modified::PRs should not change files under conformance-challenges/ or requirements/"
             echo "CHECK_FAILED=1" >> "$GITHUB_ENV"
           fi
       - name: Check for isolation of changes to TR space or informative docs
