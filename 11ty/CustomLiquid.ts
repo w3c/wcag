@@ -9,7 +9,7 @@ import { basename } from "path";
 
 import type { GlobalData } from "eleventy.config";
 
-import { biblioPattern, getBiblio, getXmlBiblio } from "./biblio";
+import { biblioPattern, getBiblio, getWcag20Biblio } from "./biblio";
 import { flattenDom, load, type CheerioAnyNode } from "./cheerio";
 import { getAcknowledgementsForVersion, type TermsMap } from "./guidelines";
 import { resolveTechniqueIdFromHref, understandingToTechniqueLinkSelector } from "./techniques";
@@ -23,7 +23,7 @@ const techniquesPattern = /\btechniques\//;
 const understandingPattern = /\bunderstanding\//;
 
 const biblio = await getBiblio();
-const xmlBiblio = await getXmlBiblio();
+const wcag20Biblio = await getWcag20Biblio();
 const termLinkSelector = "a:not([href])";
 
 /** Generates {% include "foo.html" %} directives from 1 or more basenames */
@@ -611,7 +611,7 @@ export class CustomLiquid extends Liquid {
 
     // Link biblio references
     if (scope.isUnderstanding) {
-      const xmlBiblioReferences: string[] = [];
+      const wcag20BiblioReferences: string[] = [];
       $("p").each((_, el) => {
         const $el = $(el);
         const html = $el.html();
@@ -619,8 +619,8 @@ export class CustomLiquid extends Liquid {
           $el.html(
             html.replace(biblioPattern, (substring, code) => {
               if (biblio[code]?.href) return `[<a href="${biblio[code].href}">${code}</a>]`;
-              if (code in xmlBiblio) {
-                xmlBiblioReferences.push(code);
+              if (code in wcag20Biblio) {
+                wcag20BiblioReferences.push(code);
                 return `[<a href="#${code}">${code}</a>]`;
               }
               console.warn(`${scope.page.inputPath}: Unresolved biblio ref: ${code}`);
@@ -631,10 +631,10 @@ export class CustomLiquid extends Liquid {
       });
 
       // Populate references section, or remove if unused
-      if (xmlBiblioReferences.length) {
-        for (const ref of uniq(xmlBiblioReferences).sort()) {
+      if (wcag20BiblioReferences.length) {
+        for (const ref of uniq(wcag20BiblioReferences).sort()) {
           $("section#references dl").append(
-            `\n      <dt id="${ref}">${ref}</dt><dd>${xmlBiblio[ref]}</dd>`
+            `\n      <dt id="${ref}">${ref}</dt><dd>${wcag20Biblio[ref]}</dd>`
           );
         }
       } else $("section#references").remove();
