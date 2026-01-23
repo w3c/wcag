@@ -143,12 +143,13 @@ export class CustomLiquid extends Liquid {
       $(".remove, link[href$='editors.css'], section#meta, section.meta").remove();
 
       if ($("p.instructions").length > 0) {
-        console.error(`${filepath} contains a <p class="instructions"> element.\n` +
-          "  This suggests that a template was copied and not fully filled out.\n" +
-          "  If the paragraph has been modified and should be retained, remove the class.\n" +
-          "  Otherwise, if the corresponding section has been updated, remove the paragraph."
+        console.error(
+          `${filepath} contains a <p class="instructions"> element.\n` +
+            "  This suggests that a template was copied and not fully filled out.\n" +
+            "  If the paragraph has been modified and should be retained, remove the class.\n" +
+            "  Otherwise, if the corresponding section has been updated, remove the paragraph."
         );
-        throw new Error("Instructions paragraph found; please resolve.")
+        throw new Error("Instructions paragraph found; please resolve.");
       }
 
       // Add charset to pages that forgot it
@@ -271,7 +272,10 @@ export class CustomLiquid extends Liquid {
           $("figcaption").each((i, el) => {
             const $el = $(el);
             if (!$el.find("p").length) $el.wrapInner("<p></p>");
-            $el.find("p").first().prepend(`<span>Figure ${i + 1}.</span> `);
+            $el
+              .find("p")
+              .first()
+              .prepend(`<span>Figure ${i + 1}.</span> `);
           });
 
           // Remove spurious copy-pasted content in 2.5.3 that doesn't belong there
@@ -634,7 +638,9 @@ export class CustomLiquid extends Liquid {
       if (wcag20BiblioReferences.length) {
         for (const ref of uniq(wcag20BiblioReferences).sort()) {
           $("section#references dl").append(
-            `\n      <dt id="${ref}">${ref}</dt><dd>${wcag20Biblio[ref]}</dd>`
+            `\n      <dt id="${ref}">${ref}</dt><dd>${
+              wcag20Biblio[ref as keyof typeof wcag20Biblio]
+            }</dd>`
           );
         }
       } else $("section#references").remove();
