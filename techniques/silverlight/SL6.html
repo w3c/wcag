@@ -1,11 +1,11 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Defining a UI Automation Peer for a Custom Silverlight Control</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Defining a UI Automation Peer for a Custom Silverlight Control</h1><section class="meta"><p class="id">ID: SL6</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html><html lang="en"><head><title>Defining a UI Automation Peer for a Custom Silverlight Control</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></head><body><h1>Defining a UI Automation Peer for a Custom Silverlight Control</h1><section class="meta"><p class="id">ID: SL6</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <ul id="silverlight.applicability.general">
          <li> Microsoft Silverlight, versions 3 and greater </li>
          <li> Silverlight managed programming model and Silverlight XAML </li>
       </ul>
    </section><section id="description"><h2>Description</h2>
-      <p>The objective of this technique is to create an <code class="obj">AutomationPeer</code> class
-    				for a custom Silverlight control. The <code class="obj">AutomationPeer</code> exposes
+      <p>The objective of this technique is to create an <code>AutomationPeer</code> class
+    				for a custom Silverlight control. The <code>AutomationPeer</code> exposes
     				accessibility properties of the control in a way that abstracts the
     				Silverlight technology specifics of the control model and maps information
     				to UI Automation concepts, so that these properties can be consumed
@@ -44,8 +44,8 @@
     				method Invoke, which would activate the button without
     				any device input events being produced or required. </p>
       <p>By convention, controls and their automation peers share a naming
-    				pattern. For example, if a control is named <code class="obj">Spinner</code>, its automation
-    				peer is named <code class="obj">SpinnerPeer</code>. However, the actual wiring for the class-peer
+    				pattern. For example, if a control is named <code>Spinner</code>, its automation
+    				peer is named <code>SpinnerPeer</code>. However, the actual wiring for the class-peer
     				association is made in the control code by overriding OnCreateAutomationPeer.
     				Thus it is necessary to have access to the control code in order to
     				associate a new peer class implementation with that control. </p>
@@ -67,7 +67,7 @@
     						but any consumer of the control can change the visual appearance by
     						applying a new template. Nevertheless, the basic accessibility characteristics
     						of the control can be shaped by the control author, and can apply even
-    						for cases where the visible UI is noticably different. This separation
+    						for cases where the visible UI is noticeably different. This separation
     						between design-implementation and code-behavior is one reason for the
     						peer-owner design in UI Automation. The majority of the example shows
     						the C# code, including the following : </p>
@@ -78,7 +78,7 @@
     						supports a Value pattern. </li>
             </ul>
             <p>Control definition class: </p>
-            <pre xml:space="preserve">   public class SimpleNumericUpDown : Control
+            <pre>   public class SimpleNumericUpDown : Control
    {
        public SimpleNumericUpDown()
        {
@@ -102,7 +102,7 @@
    }
    </pre>
             <p>Automation peer definition: </p>
-            <pre xml:space="preserve">   public class SimpleNumericUpDownAutomationPeer : FrameworkElementAutomationPeer, IValueProvider
+            <pre>   public class SimpleNumericUpDownAutomationPeer : FrameworkElementAutomationPeer, IValueProvider
    {
        private SimpleNumericUpDown OwnerControl { get { return (SimpleNumericUpDown)Owner; } }
        public SimpleNumericUpDownAutomationPeer(SimpleNumericUpDown owner)

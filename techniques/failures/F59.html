@@ -1,17 +1,17 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Failure of Success Criterion 4.1.2 due to using script to make div or span a user interface control in HTML without providing a role for the control</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Failure of Success Criterion 4.1.2 due to using script to make div or span a user interface control in HTML without providing a role for the control</h1><section class="meta"><p class="id">ID: F59</p><p class="technology">Technology: failures</p><p class="type">Type: Failure</p></section><section id="applicability"><h2>When to Use</h2>
-      <p> HTML and XHTML</p>
+<!DOCTYPE html><html lang="en"><head><title>Failure of Success Criterion 4.1.2 due to using script to make div or span a user interface control in HTML without providing a role for the control</title><link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></head><body><h1>Failure of Success Criterion 4.1.2 due to using script to make div or span a user interface control in HTML without providing a role for the control</h1><section class="meta"><p class="id">ID: F59</p><p class="technology">Technology: failures</p><p class="type">Type: Failure</p></section><section id="applicability"><h2>When to Use</h2>
+      <p>HTML</p>
    </section><section id="description"><h2>Description</h2>
       <p> This failure demonstrates how using generic HTML elements to create user
                         interface controls can make the controls inaccessible to assistive
                         technology. Assistive technologies rely on knowledge of the role and current
                         state of a component in order to provide that information to the user. Many
                         HTML elements have well defined roles, such as links, buttons, text fields,
-                        etc. Generic elements such as <code class="el">div</code> and <code class="el">span</code> do not
+                        etc. Generic elements such as <code>div</code> and <code>span</code> do not
                         have any predefined roles. When these generic elements are used to create
                         user interface controls in HTML the assistive technology may not have the
                         necessary information to describe and interact with the control. </p>
       <p><div class="note">Attaching event handlers to elements that are not normally interactive, such
-                        as <code class="el">span</code> and <code class="el">div</code>, can be disorienting to
+                        as <code>span</code> and <code>div</code>, can be disorienting to
                         users. Even if care is taken to provide keyboard access to such elements,
                         users may have a difficult time discovering that there are interactive
                         controls in the content or understanding what type of behavior to expect
@@ -19,32 +19,31 @@
                         the script to activate the element. Additionally, these elements do not
                         generate the same operating system events as interactive elements, so
                         assistive technology may not be notified when the user activates them.</div></p>
-      <p> The W3C Candidate Recommendation "<a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA) 1.0</a>" describes mechanisms to provide the necessary role and state information to create fully accessible user interface controls.</p>
+      <p><a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</a> describes mechanisms to provide the necessary role and state information to create fully accessible user interface controls.</p>
    </section><section id="examples"><h2>Examples</h2>
       <section class="example">
          
             <p>The following example fails because it creates a checkbox using a span and an image.</p>
-            <pre xml:space="preserve">
-  &lt;p&gt; 
-  &lt;span  onclick="toggleCheckbox('chkbox')"&gt; 
-  &lt;img src="unchecked.gif"  id="chkbox" alt=""&gt; Include Signature 
-  &lt;/span&gt; 
-  &lt;/p&gt;</pre>
-            <p>Here is the scripting code which changes the image source when the <code class="el">span</code> is clicked with the mouse.</p>
-            <pre xml:space="preserve"> 
-  var CHECKED = "check.gif"; 
-  var UNCHECKED = "unchecked.gif"; 
-  function toggleCheckbox(imgId) { 
+<pre><code class="language-html">&lt;p&gt; 
+   &lt;span onclick="toggleCheckbox('chkbox')"&gt; 
+     &lt;img src="unchecked.gif" id="chkbox" alt=""&gt; Include Signature 
+   &lt;/span&gt; 
+&lt;/p&gt;</code></pre>
+            <p>Here is the scripting code which changes the image source when the <code>span</code> is clicked with the mouse.</p>
+<pre><code class="language-javascript">var CHECKED = "check.gif"; 
+var UNCHECKED = "unchecked.gif"; 
+function toggleCheckbox(imgId) { 
   var theImg = document.getElementById(imgId); 
-  if ( theImg.src.lastIndexOf(CHECKED)!= -1 ) { 
-  theImg.src = UNCHECKED; 
-  // additional code to implement unchecked action 
+  if (theImg.src.lastIndexOf(CHECKED)!= -1) {
+    theImg.src = UNCHECKED; 
+    // additional code to implement unchecked action 
   } 
   else { 
-  theImg.src = CHECKED; 
-  // additional code to implement checked action 
+    theImg.src = CHECKED; 
+    // additional code to implement checked action 
   } 
-  } </pre>
+}</code>
+</pre>
             <p> A checkbox created in this manner will not work with assistive technology since there is no information that identifies it as a checkbox. In addition, this example is also not operable from the keyboard and would fail guideline 2.1.</p>
          
       </section>
@@ -60,18 +59,19 @@
          <p>If check #2 AND check #3 are false, the failure condition applies.</p>
       </section>
    </section><section id="related"><h2>Related Techniques</h2><ul>
-      <li><a href="../failures/F42">F42</a></li>
       <li><a href="../aria/ARIA4">ARIA4</a></li>
+      <li><a href="../failures/F42">F42</a></li>
       
    </ul></section><section id="resources"><h2>Resources</h2>
       
          <ul>
             <li>
-                  <a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA) 1.0</a>
-               </li>
+               <a href="https://www.w3.org/TR/wai-aria/">Accessible Rich Internet Applications (WAI-ARIA)</a>
+            </li>
             <li>
-                  <a href="https://www.w3.org/TR/wai-aria-practices/">WAI-ARIA 1.0 Authoring Practices</a> 
-               </li>
+               <a href="https://www.w3.org/WAI/ARIA/apg/">WAI-ARIA Authoring Practices Guide</a> 
+            </li>
          </ul>
       
-   </section></body></html>
+   </section>
+</body></html>
