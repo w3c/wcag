@@ -107,7 +107,7 @@
 		<copy file="guidelines/guidelines.css" todir="output/guidelines/${guidelines.version}"/>
 		<copy file="guidelines/relative-luminance.html" todir="output/guidelines/${guidelines.version}"/>
 		<exec executable="curl">
-			<arg value="&quot;https://labs.w3.org/spec-generator/?type=respec&amp;url=https://raw.githack.com/w3c/wcag/master/guidelines/index.html&quot;"/>
+			<arg value="&quot;https://www.w3.org/publications/spec-generator/?type=respec&amp;url=https://raw.githack.com/w3c/wcag/main/guidelines/index.html&quot;"/>
 			<arg value="-o"/>
 			<arg value="output/guidelines/${guidelines.version}/index.html"/>
 			<arg value="-f"/>
@@ -169,22 +169,6 @@
 			<factory name="${xslt.factory}"/>
 			<param name="techniques.dir" expression="${techniques.dir}"/>
 			<param name="understanding.dir" expression="${understanding.dir}"/>
-		</xslt>
-	</target>
-	
-	<!-- JSON -->
-	<target name="json" depends="init, guidelines-xml, techniques-list, techniques-association">
-		<xslt in="${inputdir.guidelines}/wcag.xml" out="${inputdir.guidelines}/wcag.json" style="xslt/xml-to-json.xslt" force="true">
-			<classpath path="${classpath.saxon}"/>
-			<factory name="${xslt.factory}"/>
-		</xslt>
-	</target>
-	
-	<!-- Generic JSON -->
-	<target name="generic-json" depends="init, guidelines-xml">
-		<xslt in="${inputdir.guidelines}/wcag.xml" out="${inputdir.guidelines}/wcag.json" style="xslt/generic-xml-to-json.xslt" force="true">
-			<classpath path="${classpath.saxon}"/>
-			<factory name="${xslt.factory}"/>
 		</xslt>
 	</target>
 	
