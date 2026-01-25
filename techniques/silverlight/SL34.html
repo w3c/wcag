@@ -1,5 +1,5 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using the Silverlight Default Tab Sequence and Altering Tab Sequences
-    			With Properties</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using the Silverlight Default Tab Sequence and Altering Tab Sequences
+<!DOCTYPE html><html lang="en"><head><title>Using the Silverlight Default Tab Sequence and Altering Tab Sequences
+    			With Properties</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></head><body><h1>Using the Silverlight Default Tab Sequence and Altering Tab Sequences
     			With Properties</h1><section class="meta"><p class="id">ID: SL34</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <ul id="silverlight.applicability.general">
          <li> Microsoft Silverlight, versions 3 and greater </li>
@@ -39,10 +39,10 @@
     				Overview on MSDN</a>. </p>
    	<section id="SL34_tab-sequence">
          <h4> How Silverlight implements tab sequence concepts </h4>
-         <p>The Silverlight programming model defines a <code class="obj">Control</code> class
+         <p>The Silverlight programming model defines a <code>Control</code> class
     					that is a base class of many of the practical controls that produce
-    					a Silverlight application user interface. One of the behaviors of the <code class="obj">Control</code> class
-    					is that only a <code class="obj">Control</code> can receive keyboard focus
+    					a Silverlight application user interface. One of the behaviors of the <code>Control</code> class
+    					is that only a <code>Control</code> can receive keyboard focus
     					as a discrete element within the Silverlight content area. </p>
          <p>When a Silverlight application user interface is constructed from
     					the visual tree, a default tab sequence for all Silverlight content
@@ -65,11 +65,11 @@
    	<section id="SL34_control-properties">
          <h4> Changing control properties </h4>
          <ul>
-            <li> Setting the <code class="prop">Visibility</code> property of a control
-    					to <code class="prop">Collapsed</code> causes the control to no longer render
+            <li> Setting the <code>Visibility</code> property of a control
+    					to <code>Collapsed</code> causes the control to no longer render
     					in the UI. As a secondary effect, that control is removed from the
     					tab sequence. </li>
-            <li> Setting the <code class="prop">IsEnabled</code> property of a control to
+            <li> Setting the <code>IsEnabled</code> property of a control to
     						false causes the control to no longer be focusable by keyboard or
     						clickable by the mouse. In many cases, the visual appearance of the
     						control changes also, through a theme style. For example, the control
@@ -80,15 +80,15 @@
    	<section id="SL34_tab-properties">
          <h4> Changing specific tab properties </h4>
          <ul>
-            <li> Setting the <code class="prop">IsTabStop</code> property of a control to
+            <li> Setting the <code>IsTabStop</code> property of a control to
     					false causes the control to no longer be focusable by keyboard or
     					programmatic focus, and that control is removed from the tab sequence. </li>
-            <li> Setting the <code class="prop">TabIndex</code> property of a control to
+            <li> Setting the <code>TabIndex</code> property of a control to
     						a specific index causes the control to be inserted at that position
-    						in the tab sequence. The default value of <code class="prop">TabIndex</code> is
+    						in the tab sequence. The default value of <code>TabIndex</code> is
     						Single.MaxValue, therefore any non-default value promotes that control
     						to be first in an otherwise default tab sequence. More typically,
-    						authors would specify a <code class="prop">TabIndex</code> for any controls
+    						authors would specify a <code>TabIndex</code> for any controls
     						that are involved in a deliberate segment of tab order re-ordering. </li>
          </ul>
    	</section>
@@ -97,17 +97,17 @@
          <p>Left-to-right is the default only for languages that use left-to-right
     					reading order. For languages that use right-to-left reading order,
     					right-to-left is also the default tab order as implemented by Silverlight
-    					runtime behavior. That language preference is declared by the acting <code class="obj">CultureInfo</code>.
-    					For more information on <code class="obj">CultureInfo</code>, see <a href="#SL27"></a>. </p>
+    					runtime behavior. That language preference is declared by the acting <code>CultureInfo</code>.
+    					For more information on <code>CultureInfo</code>, see <a href="#SL27"></a>. </p>
    	</section>
    </section><section id="examples"><h2>Examples</h2>
       <section class="example">
          <h3>Default tab order, based on ordering in the StackPanel</h3>
          
-            <p>In this example, a <code class="obj">StackPanel</code> has a natural layout
-    						order of top-to-bottom, and that will also be the tab order of each <code class="obj">StackPanel</code> child
+            <p>In this example, a <code>StackPanel</code> has a natural layout
+    						order of top-to-bottom, and that will also be the tab order of each <code>StackPanel</code> child
     						element (FirstName, then LastName). </p>
-            <pre xml:space="preserve">   &lt;StackPanel x:Name="LayoutRoot" Background="White"&gt;
+            <pre>   &lt;StackPanel x:Name="LayoutRoot" Background="White"&gt;
        &lt;StackPanel Orientation="Horizontal"&gt;
            &lt;TextBlock Name="lbl_FirstName"&gt;First name&lt;/TextBlock&gt;
            &lt;TextBox AutomationProperties.LabeledBy="{Binding ElementName=lbl_FirstName}" Name="tbFirstName" Width="100"/&gt;
@@ -129,11 +129,11 @@
     						column. The order in the content is row by row but the author feels
     						it is more logical for users to navigate the form column by column.
     						This way, all the groom's criteria can be filled in before moving on
-    						to the bride's criteria. The <code class="prop">TabIndex</code> attributes of
+    						to the bride's criteria. The <code>TabIndex</code> attributes of
     						the Silverlight elements are used to specify a tab order that navigates
     						column by column. This example specifically illustrates how changing
     						tab order can change the meaningful sequence. </p>
-            <pre xml:space="preserve"> &lt;UserControl x:Class="TabSequence.MainPage"
+            <pre> &lt;UserControl x:Class="TabSequence.MainPage"
  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
  &gt;
@@ -177,12 +177,12 @@
          
             <p>In this example, a radio button choice in a form controls whether
     						certain other fields in the form are relevant or not relevant. The
-    						current radio button selection toggles the <code class="prop">IsEnabled</code> property
+    						current radio button selection toggles the <code>IsEnabled</code> property
     						in such fields to enable or disable them based on how the user selected
     						the preceding logical element, which also affects whether the fields
     						appear in the further tab sequence. The following is UI definition
     						in XAML. </p>
-            <pre xml:space="preserve">&lt;UserControl x:Class="TabSequence.MainPage"
+            <pre>&lt;UserControl x:Class="TabSequence.MainPage"
    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 &gt;
@@ -213,7 +213,7 @@
 &lt;/UserControl&gt;
 </pre>
             <p>The following is event handler code. </p>
-            <pre xml:space="preserve">       private void RadioButton_CheckedC(object sender, RoutedEventArgs e)
+            <pre>       private void RadioButton_CheckedC(object sender, RoutedEventArgs e)
        {
            tb_fn.IsEnabled = true;
            tb_ln.IsEnabled = true;
