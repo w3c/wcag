@@ -26,18 +26,14 @@ function linkUnderstanding() {
 		if (node.id == "parsing") pathFrag = "parsing"; // special case parsing
 		var el = document.createElement("div");
 		el.setAttribute("class", "doclinks");
-		el.innerHTML = "<a href=\"" + understandingBaseURI + pathFrag + ".html\">Understanding " + heading + "</a> <span class=\"screenreader\">|</span> <br /><a href=\"https://www.w3.org/WAI/WCAG" + version + "/quickref/#" + pathFrag + "\">How to Meet " + heading + "</a>";
+		el.innerHTML = "<a href=\"" + understandingBaseURI + pathFrag + ".html\">Understanding " + heading +
+			"</a> <span class=\"screenreader\">|</span> <a href=\"https://www.w3.org/WAI/WCAG" + version + "/quickref/#" + pathFrag + "\">How to Meet " + heading + "</a>";
 		if (node.className = "sc") node.insertBefore(el, node.children[2]);
 		if (node.className = "guideline") node.insertBefore(el, node.children[1]);
 	})
 }
 
 function addTextSemantics() {
-	// put brackets around the change marker
-	document.querySelectorAll('p.change').forEach(function(node){
-		var change = node.textContent;
-		node.textContent = "[" + change + "]";
-	})
 	// put level before and parentheses around the conformance level marker
 	document.querySelectorAll('p.conformance-level').forEach(function(node){
 		var level = node.textContent;
