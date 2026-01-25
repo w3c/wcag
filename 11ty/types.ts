@@ -9,7 +9,7 @@ interface EleventyPage {
   outputPath: string;
   rawInput: string;
   templateSyntax: string;
-  url: string;
+  url: string | false; // (false when permalink is set to false for the page)
 }
 
 interface EleventyDirectories {
