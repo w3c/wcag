@@ -1,12 +1,11 @@
-import axios from "axios";
 import type { CheerioAPI } from "cheerio";
 import { glob } from "glob";
 
 import { readFile } from "fs/promises";
-import { basename, join } from "path";
+import { basename, join, sep } from "path";
 
 import { flattenDomFromFile, load, loadFromFile, type CheerioAnyNode } from "./cheerio";
-import { generateId } from "./common";
+import { fetchText, generateId } from "./common";
 
 export type WcagVersion = "20" | "21" | "22";
 export function assertIsWcagVersion(v: string): asserts v is WcagVersion {
@@ -34,22 +33,31 @@ export const actRules = (
   JSON.parse(await readFile("guidelines/act-mapping.json", "utf8")) as ActMapping
 )["act-rules"];
 
+/** Generates version-dependent overrides of SC shortcodes for older versions */
+export const generateScSlugOverrides = (version: WcagVersion): Record<string, string> => ({
+  ...(version < "22" && {
+    "target-size-enhanced": "target-size",
+  }),
+});
+
 /**
  * Flattened object hash, mapping each WCAG 2 SC slug to the earliest WCAG version it applies to.
  * (Functionally equivalent to "guidelines-versions" target in build.xml; structurally inverted)
  */
-const scVersions = await (async function () {
+async function resolveScVersions(version: WcagVersion) {
   const paths = await glob("*/*.html", { cwd: "understanding" });
+  const scSlugOverrides = generateScSlugOverrides(version);
   const map: Record<string, WcagVersion> = {};
 
   for (const path of paths) {
-    const [fileVersion, filename] = path.split("/");
+    const [fileVersion, filename] = path.split(sep);
     assertIsWcagVersion(fileVersion);
-    map[basename(filename, ".html")] = fileVersion;
+    const slug = basename(filename, ".html");
+    map[slug in scSlugOverrides ? scSlugOverrides[slug] : slug] = fileVersion;
   }
 
   return map;
-})();
+}
 
 export interface DocNode {
   id: string;
@@ -83,14 +91,11 @@ export interface SuccessCriterion extends DocNode {
   type: "SC";
 }
 
+export type WcagItem = Principle | Guideline | SuccessCriterion;
+
 export function isSuccessCriterion(criterion: any): criterion is SuccessCriterion {
   return !!(criterion?.type === "SC" && "level" in criterion);
 }
-
-/** Version-dependent overrides of SC shortcodes for older versions */
-export const scSlugOverrides: Record<string, (version: WcagVersion) => string> = {
-  "target-size-enhanced": (version) => (version < "22" ? "target-size" : "target-size-enhanced"),
-};
 
 /** Selectors ignored when capturing content of each Principle / Guideline / SC */
 const contentIgnores = [
@@ -115,7 +120,12 @@ const getContentHtml = ($el: CheerioAnyNode) => {
 };
 
 /** Performs processing common across WCAG versions */
-function processPrinciples($: CheerioAPI) {
+async function processPrinciples($: CheerioAPI) {
+  // Auto-detect version from end of title
+  const version = $("title").text().trim().split(" ").pop()!.replace(".", "");
+  assertIsWcagVersion(version);
+  const scVersions = await resolveScVersions(version);
+
   const principles: Principle[] = [];
   $(".principle").each((i, el) => {
     const guidelines: Guideline[] = [];
@@ -175,7 +185,7 @@ export const getPrinciples = async (path = "guidelines/index.html") =>
  * Returns a flattened object hash, mapping shortcodes to each principle/guideline/SC.
  */
 export function getFlatGuidelines(principles: Principle[]) {
-  const map: Record<string, Principle | Guideline | SuccessCriterion> = {};
+  const map: Record<string, WcagItem> = {};
   for (const principle of principles) {
     map[principle.id] = principle;
     for (const guideline of principle.guidelines) {
@@ -199,7 +209,7 @@ interface Term {
 }
 export type TermsMap = Record<string, Term>;
 
-function processTermsMap($: CheerioAPI) {
+function processTermsMap($: CheerioAPI, includeSynonyms = true) {
   const terms: TermsMap = {};
 
   $("dfn").each((_, el) => {
@@ -213,12 +223,16 @@ function processTermsMap($: CheerioAPI) {
       trId: el.attribs.id,
     };
 
-    // Include both original and all-lowercase version to simplify lookups
-    // (since most synonyms are lowercase) while preserving case in name
-    const names = [term.name, term.name.toLowerCase()].concat(
-      (el.attribs["data-lt"] || "").toLowerCase().split("|")
-    );
-    for (const name of names) terms[name] = term;
+    if (includeSynonyms) {
+      // Include both original and all-lowercase version to simplify lookups
+      // (since most synonyms are lowercase) while preserving case in name
+      const names = [term.name, term.name.toLowerCase()].concat(
+        (el.attribs["data-lt"] || "").toLowerCase().split("|")
+      );
+      for (const name of names) terms[name] = term;
+    } else {
+      terms[term.name] = term;
+    }
   });
 
   return terms;
@@ -230,7 +244,7 @@ function processTermsMap($: CheerioAPI) {
  * comparable to the term elements in wcag.xml from the guidelines-xml Ant task.
  */
 export const getTermsMap = async (path = "guidelines/index.html") =>
-  processTermsMap(await flattenDomFromFile(path));
+  processTermsMap(await flattenDomFromFile(path), true);
 
 // Version-specific APIs
 
@@ -240,11 +254,18 @@ const guidelinesCache: Partial<Record<WcagVersion, string>> = {};
 const loadRemoteGuidelines = async (version: WcagVersion, stripRespec = true) => {
   const html =
     guidelinesCache[version] ||
-    (guidelinesCache[version] = (
-      await axios.get(`https://www.w3.org/TR/WCAG${version}/`, { responseType: "text" })
-    ).data);
+    (guidelinesCache[version] = await fetchText(`https://www.w3.org/TR/WCAG${version}/`));
 
   const $ = load(html);
+
+  // Remove extra markup from headings, regardless of stripRespec setting,
+  // so that names parse consistently
+  $("bdi").remove();
+
+  // Remove role="heading" + aria-level from notes/issues, as they cause more harm than good
+  // (especially in context of content reuse via wcag.json export)
+  $("[role='note'] .marker").removeAttr("role").removeAttr("aria-level");
+
   if (!stripRespec) return $;
 
   // Re-collapse definition links and notes, to be processed by this build system
@@ -270,9 +291,6 @@ const loadRemoteGuidelines = async (version: WcagVersion, stripRespec = true) =>
   // Remove generated IDs and markers from examples
   $(".example[id]").removeAttr("id");
   $(".example > .marker").remove();
-
-  // Remove extra markup from headings so they can be parsed for names
-  $("bdi").remove();
 
   // Remove abbr elements which exist only in TR, not in informative docs
   $("#acknowledgements li abbr, #glossary abbr").each((_, abbrEl) => {
@@ -300,15 +318,30 @@ export const getAcknowledgementsForVersion = async (version: WcagVersion) => {
 /**
  * Retrieves and processes a pinned WCAG version using published guidelines.
  */
-export const getPrinciplesForVersion = async (version: WcagVersion) =>
-  processPrinciples(await loadRemoteGuidelines(version));
+export const getPrinciplesForVersion = async (version: WcagVersion, stripRespec?: boolean) =>
+  processPrinciples(await loadRemoteGuidelines(version, stripRespec));
+
+interface GetTermsMapForVersionOptions {
+  /**
+   * Whether to populate additional map keys based on synonyms defined in data-lt;
+   * this should typically be true for informative docs, but may be false for other purposes
+   */
+  includeSynonyms?: boolean;
+  /**
+   * Whether to strip respec-generated content and attributes;
+   * this should typically be true for informative docs, but may be false for other purposes
+   */
+  stripRespec?: boolean;
+}
 
 /**
  * Resolves term definitions from a WCAG 2.x publication,
  * organized for lookup by name.
  */
-export const getTermsMapForVersion = async (version: WcagVersion) =>
-  processTermsMap(await loadRemoteGuidelines(version));
+export const getTermsMapForVersion = async (
+  version: WcagVersion,
+  { includeSynonyms, stripRespec }: GetTermsMapForVersionOptions = {}
+) => processTermsMap(await loadRemoteGuidelines(version, stripRespec), includeSynonyms);
 
 /** Parses errata items from the errata document for the specified WCAG version. */
 export const getErrataForVersion = async (version: WcagVersion) => {
@@ -323,13 +356,13 @@ export const getErrataForVersion = async (version: WcagVersion) => {
     .each((_, el) => {
       const $el = $(el);
       const erratumHtml = $el
-          .html()!
-          // Remove everything before and including the final TR link
-          .replace(/^[\s\S]*href="\{\{\s*\w+\s*\}\}#[\s\S]*?<\/a>,?\s*/, "")
-          // Remove parenthetical github references (still in Liquid syntax)
-          .replace(/\(\{%.*%\}\)\s*$/, "")
-          .replace(/^(\w)/, (_, p1) => p1.toUpperCase());
-      
+        .html()!
+        // Remove everything before and including the final TR link
+        .replace(/^[\s\S]*href="\{\{\s*\w+\s*\}\}#[\s\S]*?<\/a>,?\s*/, "")
+        // Remove parenthetical github references (still in Liquid syntax)
+        .replace(/\(\{%.*%\}\)\s*$/, "")
+        .replace(/^(\w)/, (_, p1) => p1.toUpperCase());
+
       $el.find(aSelector).each((_, aEl) => {
         const $aEl = $(aEl);
         let hash: string | undefined = $aEl.attr("href")!.replace(/^.*#/, "");

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Designing a Focused Visual State for Custom Silverlight Controls</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Designing a Focused Visual State for Custom Silverlight Controls</h1><section class="meta"><p class="id">ID: SL7</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html><html lang="en"><head><title>Designing a Focused Visual State for Custom Silverlight Controls</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></head><body><h1>Designing a Focused Visual State for Custom Silverlight Controls</h1><section class="meta"><p class="id">ID: SL7</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <ul id="silverlight.applicability.general">
          <li> Microsoft Silverlight, versions 3 and greater </li>
          <li> Silverlight managed programming model and Silverlight XAML </li>
@@ -70,11 +70,11 @@
     					state that indicates that the mouse is over the control (this is termed
     					either MouseOver or Hover state). Controls that support activation
     					also have a visual state that provides feedback for activation. For
-    					example, the default Silverlight <code class="obj">RepeatButton</code> changes
-    					its <code class="prop">Background</code> gradient on the button field to be
+    					example, the default Silverlight <code>RepeatButton</code> changes
+    					its <code>Background</code> gradient on the button field to be
     					darker blue value when the mouse is over the button, and changes to
     					an even darker value blue when the button is activated (either by clicking
-    					the mouse or by pressing SPACE or ENTER with keyboard focus on the <code class="obj">RepeatButton</code>).
+    					the mouse or by pressing SPACE or ENTER with keyboard focus on the <code>RepeatButton</code>).
     					To see this behavior in a live sample, see <a href="http://samples.msdn.microsoft.com/Silverlight/SampleBrowser/index.htm#/?sref=System.Windows.Controls.RepeatButtonEx">RepeatButton
     						sample on MSDN</a>. </p>
    	</section>
@@ -124,11 +124,11 @@
     					application concept of keyboard focus. The element that has focus is
     					the element within the Silverlight object tree and programming model
     					that has first chance to process the Silverlight key events. As a more
-    					tangible example that is user-centric, if a <code class="obj">TextBox</code> has
+    					tangible example that is user-centric, if a <code>TextBox</code> has
     					keyboard focus, then when the user presses keys on the keyboard, the
     					characters associated with the user's pressed keys (or possibly input
     					that is enabled by an assistive technology that can substitute for
-    					key strokes) will appear in the <code class="obj">TextBox</code>. A user interface
+    					key strokes) will appear in the <code>TextBox</code>. A user interface
     					element in Silverlight can obtain keyboard focus in one of three ways: </p>
          <ol>
             <li> The user uses the Silverlight tab sequence to traverse into the
@@ -154,7 +154,7 @@
     						edge is defined by the "FocusVisual" element in the composition,
     						and is initially Visibility=Collapsed (the expected visual state prior
     						to being focused). </p>
-            <pre xml:space="preserve">&lt;ResourceDictionary
+            <pre>&lt;ResourceDictionary
    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
    xmlns:local="clr-namespace:FocusVisualCustomControl"
@@ -184,11 +184,11 @@
 &lt;/ResourceDictionary&gt;
 </pre>
             <p>The following is the specific visual state portion. Note how the
-    						visual state includes an <code class="obj">ObjectAnimation</code> with discrete
+    						visual state includes an <code>ObjectAnimation</code> with discrete
     						keyframes for hard transition between Visible and Collapsed, targeting
     						the element "FocusVisual" in the composition shown in the
     						previous XAML. </p>
-            <pre xml:space="preserve">                       &lt;VisualStateManager.VisualStateGroups&gt;
+            <pre>                       &lt;VisualStateManager.VisualStateGroups&gt;
                            &lt;VisualStateGroup x:Name="FocusStates"&gt;
                                &lt;VisualState x:Name="Unfocused"/&gt;
                                &lt;VisualState x:Name="Focused"&gt;
@@ -214,7 +214,7 @@
     						of reverting to the default state, which in the case of this design
     						is intentional. Alternatively, authors could make specific template
     						changes that revert any animation that applied to the focused state. </p>
-            <pre xml:space="preserve">       protected override void OnGotFocus(RoutedEventArgs e)
+            <pre>       protected override void OnGotFocus(RoutedEventArgs e)
        {
            base.OnGotFocus(e);
            VisualStateManager.GoToState(this, "Focused", false);
@@ -235,10 +235,10 @@
     					references a Silverlight application through an object tag. </li>
             <li> Using a keyboard, tab to the element where focus characteristics
     						are being examined. </li>
-            <li> Check that the background, border, or other noticable visual indicator
+            <li> Check that the background, border, or other noticeable visual indicator
     							of the element changes color. </li>
             <li> Check that the changes in color for the background, border, or
-    								other noticable visual indicator are removed when the element loses
+    								other noticeable visual indicator are removed when the element loses
     								focus. </li>
          </ol>
       </section>
