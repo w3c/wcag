@@ -1,0 +1,31 @@
+---js
+// Same condition used for copying guidelines assets in eleventy.config.ts
+const includeGuidelines = process.env.COMMIT_REF && !process.env.WCAG_MODE;
+const repoUrl = process.env.REPOSITORY_URL;
+const prNumber = process.env.REVIEW_ID;
+---
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Web Content Accessibility Guidelines {{ versionDecimal }}</title>
+	</head>
+	<body>
+		<h1>Web Content Accessibility Guidelines {{ versionDecimal }}</h1>
+    {% if repoUrl and prNumber -%}
+    <p>
+      <strong>Note:</strong> This is a <strong>preview</strong> for
+      <a href="{{ repoUrl }}/pull/{{ prNumber }}">PR #{{ prNumber }}</a>.
+    </p>
+    {%- endif %}
+		<ul>
+      <li><a href="errata/21.html">Errata for 2.1</a>
+      <li><a href="errata/22.html">Errata for 2.2</a>
+      {% if includeGuidelines -%}
+        <li><a href="guidelines/">Guidelines</a></li>
+      {%- endif %}
+			<li><a href="techniques/">Techniques</a></li>
+			<li><a href="understanding/">Understanding Docs</a></li>
+		</ul>
+	</body>
+</html>
