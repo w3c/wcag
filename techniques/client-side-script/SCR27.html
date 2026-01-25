@@ -21,35 +21,31 @@
       <p>The menu is a list of links using the device-independent onclick event to trigger scripts which re-order the content. The content is re-ordered in the Document Object Model (DOM), not just visually, so that it is in the correct order for all devices. </p>
    </section><section id="examples"><h2>Examples</h2>
       <section class="example">
-         
-            <p>This example does up and down reordering. This approach can also be used for two-dimensional reordering by adding left and right options.</p>
-            <p>The components in this example are list items in an unordered list. Unordered lists are a very good semantic model for sets of similar items. The menu approach can also be used for other types of groupings.</p>
-            <p>In this example, the menu is always visible. This is a good approach for components that are not too numerous, as it allows users to see the options without having to open a menu.</p>
-           
+        <p>This example does up and down reordering. This approach can also be used for two-dimensional reordering by adding left and right options.</p>
+        <p>The components in this example are list items in an unordered list. Unordered lists are a very good semantic model for sets of similar items. The menu approach can also be used for other types of groupings.</p>
+        <p>In this example, the menu is always visible. This is a good approach for components that are not too numerous, as it allows users to see the options without having to open a menu.</p>
 
-<pre xml:space="preserve"><code class="language-javascript">
-  const list = document.getElementById('myList');
+<pre><code class="language-javascript">const list = document.getElementById('myList');
 
-  // Attach a single event listener to the whole list
-  list.addEventListener('click', function (e) {
+// Attach a single event listener to the whole list
+list.addEventListener('click', function (e) {
     
-    // Ensure the click came from a button
-    if (e.target.tagName !== 'BUTTON') return;
+  // Ensure the click came from a button
+  if (e.target.tagName !== 'BUTTON') return;
 
-    // Get the &lt;li&gt that contains the clicked button
-    const li = e.target.closest('li');
+  // Get the &lt;li&gt that contains the clicked button
+  const li = e.target.closest('li');
 
-    // Move up: insert the clicked &lt;li&gt before its previous sibling
-    if (e.target.classList.contains('up') && li.previousElementSibling) {
-      li.parentNode.insertBefore(li, li.previousElementSibling);
-    }
+  // Move up: insert the clicked &lt;li&gt before its previous sibling
+  if (e.target.classList.contains('up') && li.previousElementSibling) {
+    li.parentNode.insertBefore(li, li.previousElementSibling);
+  }
 
-    // Move down: insert the next sibling before the clicked &lt;li&gt
-    if (e.target.classList.contains('down') && li.nextElementSibling) {
-      li.parentNode.insertBefore(li.nextElementSibling, li);
-    }
-  });
-</code></pre>
+  // Move down: insert the next sibling before the clicked &lt;li&gt
+  if (e.target.classList.contains('down') && li.nextElementSibling) {
+    li.parentNode.insertBefore(li.nextElementSibling, li);
+  }
+});</code></pre>
    </section>
    Working example of this code: <a href="../working-examples/script-reorder-list-buttons/"><!--file included in commit-->Reorder list with buttons</a>
    <section id="tests">
