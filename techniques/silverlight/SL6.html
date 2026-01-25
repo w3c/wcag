@@ -1,8 +1,11 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head xmlns:wcag="https://www.w3.org/WAI/GL/"><title>Defining a UI Automation Peer for a Custom Silverlight Control</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body xmlns:wcag="https://www.w3.org/WAI/GL/"><h1>Defining a UI Automation Peer for a Custom Silverlight Control</h1><section class="meta"><p class="id">ID: SL6</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section class="applicability"><h2>When to Use</h2>
-      <p use-id="silverlight.applicability.general"></p>
-   </section><section class="description"><h2>Description</h2>
-      <p>The objective of this technique is to create an AutomationPeer class
-    				for a custom Silverlight control. The AutomationPeer exposes
+<!DOCTYPE html><html lang="en"><head><title>Defining a UI Automation Peer for a Custom Silverlight Control</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></head><body><h1>Defining a UI Automation Peer for a Custom Silverlight Control</h1><section class="meta"><p class="id">ID: SL6</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+      <ul id="silverlight.applicability.general">
+         <li> Microsoft Silverlight, versions 3 and greater </li>
+         <li> Silverlight managed programming model and Silverlight XAML </li>
+      </ul>
+   </section><section id="description"><h2>Description</h2>
+      <p>The objective of this technique is to create an <code>AutomationPeer</code> class
+    				for a custom Silverlight control. The <code>AutomationPeer</code> exposes
     				accessibility properties of the control in a way that abstracts the
     				Silverlight technology specifics of the control model and maps information
     				to UI Automation concepts, so that these properties can be consumed
@@ -41,8 +44,8 @@
     				method Invoke, which would activate the button without
     				any device input events being produced or required. </p>
       <p>By convention, controls and their automation peers share a naming
-    				pattern. For example, if a control is named Spinner, its automation
-    				peer is named SpinnerPeer. However, the actual wiring for the class-peer
+    				pattern. For example, if a control is named <code>Spinner</code>, its automation
+    				peer is named <code>SpinnerPeer</code>. However, the actual wiring for the class-peer
     				association is made in the control code by overriding OnCreateAutomationPeer.
     				Thus it is necessary to have access to the control code in order to
     				associate a new peer class implementation with that control. </p>
@@ -54,17 +57,17 @@
     				set the value of the owner control. The functionality exposed by the
     				implementation of a control pattern can be accessed either by automation-based
     				testing, or by assistive technologies. </p>
-   </section><section class="examples"><h2>Examples</h2>
+   </section><section id="examples"><h2>Examples</h2>
       <section class="example">
-         <h3>Example 1: SimpleNumericUpDown control and its peer</h3>
-         <section class="description"><h2>Description</h2>
+         <h3>SimpleNumericUpDown control and its peer</h3>
+         
             <p>The example implements a very simple Silverlight custom control named
     						SimpleNumericUpDown. The control is a templateable control, meaning
     						that the UI is defined in a XAML file that serves as the default UI,
     						but any consumer of the control can change the visual appearance by
     						applying a new template. Nevertheless, the basic accessibility characteristics
     						of the control can be shaped by the control author, and can apply even
-    						for cases where the visible UI is noticably different. This separation
+    						for cases where the visible UI is noticeably different. This separation
     						between design-implementation and code-behavior is one reason for the
     						peer-owner design in UI Automation. The majority of the example shows
     						the C# code, including the following : </p>
@@ -75,7 +78,7 @@
     						supports a Value pattern. </li>
             </ul>
             <p>Control definition class: </p>
-            <pre xml:space="preserve">   public class SimpleNumericUpDown : Control
+            <pre>   public class SimpleNumericUpDown : Control
    {
        public SimpleNumericUpDown()
        {
@@ -99,7 +102,7 @@
    }
    </pre>
             <p>Automation peer definition: </p>
-            <pre xml:space="preserve">   public class SimpleNumericUpDownAutomationPeer : FrameworkElementAutomationPeer, IValueProvider
+            <pre>   public class SimpleNumericUpDownAutomationPeer : FrameworkElementAutomationPeer, IValueProvider
    {
        private SimpleNumericUpDown OwnerControl { get { return (SimpleNumericUpDown)Owner; } }
        public SimpleNumericUpDownAutomationPeer(SimpleNumericUpDown owner)
@@ -131,10 +134,10 @@
            OwnerControl.NumericValue = Convert.ToInt32(value);
        }
 </pre>
-            <p>This example is shown in operation in the <a href="https://www.w3.org/WAI/WCAG20/Techniques/working-examples/SimpleNumericUpDownTestPage.html">working example of Simple Numeric UpDown control</a>.</p>
-         </section>
+            <p class="working-example">This example is shown in operation in the <a href="../../working-examples/silverlight-simple-numeric-up-down/">working example of Simple Numeric UpDown control</a>.</p>
+         
       </section>
-   </section><section class="tests"><h2>Tests</h2>
+   </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
          <ol>
             <li> Using a browser that supports Silverlight, open an HTML page that
@@ -162,9 +165,9 @@
       <section class="results"><h3>Expected Results</h3>
          <p>#3, #4, and #5 (if applicable) are true. </p>
       </section>
-   </section><section class="related"><h2>Related Techniques</h2>
-      
-   </section><section class="resources"><h2>Resources</h2>
+   </section><section id="related"><h2>Related Techniques</h2><ul>
+      <li><a href="../general/G10">G10</a></li>
+   </ul></section><section id="resources"><h2>Resources</h2>
       
          <ul>
             <li>

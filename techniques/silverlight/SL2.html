@@ -1,6 +1,9 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head xmlns:wcag="https://www.w3.org/WAI/GL/"><title>Changing The Visual Focus Indicator in Silverlight</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body xmlns:wcag="https://www.w3.org/WAI/GL/"><h1>Changing The Visual Focus Indicator in Silverlight</h1><section class="meta"><p class="id">ID: SL2</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section class="applicability"><h2>When to Use</h2>
-      <p use-id="silverlight.applicability.general"></p>
-   </section><section class="description"><h2>Description</h2>
+<!DOCTYPE html><html lang="en"><head><title>Changing The Visual Focus Indicator in Silverlight</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></head><body><h1>Changing The Visual Focus Indicator in Silverlight</h1><section class="meta"><p class="id">ID: SL2</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+      <ul id="silverlight.applicability.general">
+         <li> Microsoft Silverlight, versions 3 and greater </li>
+         <li> Silverlight managed programming model and Silverlight XAML </li>
+      </ul>
+   </section><section id="description"><h2>Description</h2>
       <p>The objective of this technique is to use the Silverlight "control
     				skinning" scenario and feature set to change the visible focus
     				indication of a control. In particular, the intent is to increase the
@@ -20,7 +23,7 @@
     				is largely written in XAML. The logic is largely written in code (for
     				example C#) and is left unaffected when a Silverlight application author
     				provides a new control template "skin". The hooks that connect
-    				the appearance and the logic are a Style property of the control (which
+    				the appearance and the logic are a <code>Style</code> property of the control (which
     				the author changes the value of, to refer to their new XAML resource)
     				and a contract of expected named entities in the XAML. The control
     				logic invokes the names of the entities/parts whenever control state
@@ -41,13 +44,13 @@
     				associated with keyboard focus to work with. If this is not the case,
     				or if the scenario is that a Silverlight author is defining their own
     				control, a different technique is needed. See <a href="#SL7"></a>. </p>
-      
-         <h> Focus in Silverlight </h>
+   	<section id="SL2_focus_in_silverlight">
+         <h4> Focus in Silverlight </h4>
          <p>Focus in Silverlight is equivalent to the larger user interface and
     					application concept of keyboard focus. The element that has focus is
     					the element within the Silverlight object tree and programming model
     					that has first chance to process the Silverlight key events. As a more
-    					tangible example that is user-centric, if a TextBox has
+    					tangible example that is user-centric, if a <code>TextBox</code> has
     					keyboard focus, then when the user presses keys on the keyboard, the
     					characters associated with the user's pressed keys will appear in the
     					TextBox. A user interface element in Silverlight can obtain keyboard
@@ -65,16 +68,16 @@
     							behavior, and does not require each application author to call Focus in
     							application code. </li>
          </ol>
-      
-   </section><section class="examples"><h2>Examples</h2>
+   	</section>
+   </section><section id="examples"><h2>Examples</h2>
       <section class="example">
-         <h3>Example 1: Two Button elements, one reskinned to provide new visible
+         <h3>Two Button elements, one reskinned to provide new visible
 					focus indicator </h3>
-         <section class="description"><h2>Description</h2>
+         
             <p>XAML templates can be verbose; for clarity, only the parts of the
 					template that were changed or useful for showing the structure are
 					shown. Omitted portions are shown as ellipsis (...). </p>
-            <pre xml:space="preserve">&lt;UserControl x:Class="VisibleFocusTemplate.MainPage"
+            <pre>&lt;UserControl x:Class="VisibleFocusTemplate.MainPage"
  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 &gt;
@@ -126,11 +129,11 @@
             <p>The most interesting aspect of this example is the change made to
 						the FocusVisualElement part. Here is the original (default template)
 						FocusVisualElement: </p>
-            <pre xml:space="preserve">&lt;Rectangle x:Name="FocusVisualElement" RadiusX="2" RadiusY="2" Margin="1" Stroke="#FF6DBDD1" StrokeThickness="1" 
+            <pre>&lt;Rectangle x:Name="FocusVisualElement" RadiusX="2" RadiusY="2" Margin="1" Stroke="#FF6DBDD1" StrokeThickness="1" 
  Opacity="0" IsHitTestVisible="false" /&gt;
 </pre>
             <p>Here is the changed FocusVisualElement: </p>
-            <pre xml:space="preserve">&lt;Border x:Name="FocusVisualElement" IsHitTestVisible="false"
+            <pre>&lt;Border x:Name="FocusVisualElement" IsHitTestVisible="false"
  Opacity="0" CornerRadius="2"
  BorderBrush="#D0FF0000" BorderThickness="4"&gt;
  &lt;Rectangle x:Name="rectangle" IsHitTestVisible="false"
@@ -140,22 +143,22 @@
 </pre>
             <p>The following images show how each of the two buttons (default and
 						reskinned) appear when focused. </p>
-            <p>
-               
+            <figure id="figure-default-focus-button-sl">
+               <img src="img/default_button_focus.png">
                   
-                  Default button focus
+                  <figcaption>Default button focus</figcaption>
                 
-            </p>
-            <p>
-               
+            </figure>
+            <figure id="figure-silverlight-reskinned-button-focus">
+               <img src="img/reskinned_button_focus.png">
                   
-                  Reskinned button focus
+                  <figcaption>Reskinned button focus</figcaption>
                 
-            </p>
-            <p>This example is shown in operation in the <a href="https://www.w3.org/WAI/WCAG20/Techniques/working-examples/VisibleFocusTemplateTestPage.html">working example of Visible Focus Template</a>.</p>
-         </section>
+            </figure>
+            <p class="working-example">This example is shown in operation in the <a href="../../working-examples/silverlight-visible-focus-template/">working example of Visible Focus Template</a>.</p>
+         
       </section>
-   </section><section class="tests"><h2>Tests</h2>
+   </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
          <p>Note that not all Silverlight applications necessarily will start
     					with the keyboard focus being somewhere within the Silverlight content
@@ -171,19 +174,19 @@
     					references a Silverlight application through an object tag. </li>
             <li> Using a keyboard, tab to the element where focus characteristics
     						are being examined. </li>
-            <li> Check that the background, border, or other noticable visual indicator
+            <li> Check that the background, border, or other noticeable visual indicator
     							of the element changes color. </li>
             <li> Check that the changes in color for the background, border, or
-    								other noticable visual indicator are removed when the element loses
+    								other noticeable visual indicator are removed when the element loses
     								focus. </li>
          </ol>
       </section>
       <section class="results"><h3>Expected Results</h3>
          <p>#3 and #4 are true. </p>
       </section>
-   </section><section class="related"><h2>Related Techniques</h2>
-      
-   </section><section class="resources"><h2>Resources</h2>
+   </section><section id="related"><h2>Related Techniques</h2><ul>
+      <li><a href="../client-side-script/SCR31">SCR31</a></li>
+   </ul></section><section id="resources"><h2>Resources</h2>
       
          <ul>
             <li>

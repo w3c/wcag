@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">    <title>Expanding Scrolling Text in Place</title>
+    <style>
+
+      #scrollContainer {
+        visibility: visible;
+        overflow: hidden;
+        top: 50px; left: 10px;
+        background-color: darkblue;
+      }
+      .scrolling { 
+        position: absolute;
+        width: 200px; 
+        height: 50px;
+      }
+      .notscrolling { 
+        width: 500px; 
+        margin:10px;
+      }
+      #scrollingText {
+        top: 0px;
+        color: white; 
+      }
+      .scrolling #scrollingText {
+        position: absolute;
+      }
+
+    </style>
+
+    <script>
+
+      var tid;
+      function init() {
+        var st = document.getElementById('scrollingText');
+        st.style.top = '0px';
+        initScrolling();
+      }
+      function initScrolling () {
+        tid = setInterval('scrollText()', 300);
+      }
+      function scrollText () {
+        var st = document.getElementById('scrollingText');
+        if (parseInt(st.style.top) > (st.offsetHeight*(-1) + 8)) {
+          st.style.top = (parseInt(st.style.top) - 5) + 'px';
+        } else {
+          var sc = document.getElementById('scrollContainer');
+          st.style.top = parseInt(sc.offsetHeight) + 8 + 'px';
+        }
+      }
+      function toggle() { 
+        var scr = document.getElementById('scrollContainer'); 
+        if (scr.className == 'scrolling') { 
+          scr.className = 'notscrolling'; 
+          clearInterval(tid); 
+           document.getElementById('scrollButton').value="Shrink";
+        } else { 
+          scr.className = 'scrolling'; 
+          initScrolling(); 
+          document.getElementById('scrollButton').value="Expand";
+        } 
+      } 
+
+  </script>
+
+</head><body onload="init()"> 
+    <p>
+  <input id="scrollButton" value="Expand" onclick="toggle()" type="button"></p>
+  <div id="scrollContainer" class="scrolling"> 
+    <div style="top: -305px;" id="scrollingText" class="on"> 
+      <p>There was no possibility of taking a walk that day. We had been wandering, indeed, in the leafless shrubbery an hour in the morning; but since dinner (Mrs. Reed, when there was no company, dined early) the cold winter wind had brought with it clouds so sombre, and a rain so penetrating, that further outdoor exercise was now out of the question.</p>
+
+        <p>I was glad of it: I never liked long walks, especially on chilly afternoons: dreadful to me was the coming home in the raw twilight, with nipped fingers and toes, and a heart saddened by the chidings of Bessie, the nurse, and humbled by the consciousness of my physical inferiority to Eliza, John, and Georgiana Reed.</p>
+        
+        <p>The said Eliza, John, and Georgiana were now clustered round their mama in the drawing-room: she lay reclined on a sofa by the fireside, and with her darlings about her (for the time neither quarrelling nor crying) looked perfectly happy. Me, she had dispensed from joining the group; saying, <q>She regretted to be under the necessity of keeping me at a distance; but that until she heard from Bessie, and could discover by her own observation, that I was endeavouring in good earnest to acquire a more sociable and childlike disposition, a more attractive and sprightly manner-something lighter, franker, more natural, as it were-she really must exclude me from privileges intended only for contented, happy, little children</q>.</p>
+        
+        <p><q>What does Bessie say I have done?</q> I asked.</p>
+        
+        <p><q>Jane, I don't like cavillers or questioners; besides, there is something truly forbidding in a child taking up her elders in that manner. Be seated somewhere; and until you can speak pleasantly, remain silent.</q></p>
+        
+        <p>A breakfast-room adjoined the drawing-room, I slipped in there. It contained a bookcase: I soon possessed myself of a volume, taking care that it should be one stored with pictures. I mounted into the window-seat: gathering up my feet, I sat cross-legged, like a Turk; and, having drawn the red moreen curtain nearly close, I was shrined in double retirement.</p>
+        
+        <p>Folds of scarlet drapery shut in my view to the right hand; to the left were the clear panes of glass, protecting, but not separating me from the drear November day. At intervals, while turning over the leaves of my book, I studied the aspect of that winter afternoon. Afar, it offered a pale blank of mist and cloud; near a scene of wet lawn and storm-beat shrub, with ceaseless rain sweeping away wildly before a long and lamentable blast.</p></p>
+    </div>
+  </div>
+</body></html>

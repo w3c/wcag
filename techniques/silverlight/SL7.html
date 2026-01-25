@@ -1,6 +1,9 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head xmlns:wcag="https://www.w3.org/WAI/GL/"><title>Designing a Focused Visual State for Custom Silverlight Controls</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body xmlns:wcag="https://www.w3.org/WAI/GL/"><h1>Designing a Focused Visual State for Custom Silverlight Controls</h1><section class="meta"><p class="id">ID: SL7</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section class="applicability"><h2>When to Use</h2>
-      <p use-id="silverlight.applicability.general"></p>
-   </section><section class="description"><h2>Description</h2>
+<!DOCTYPE html><html lang="en"><head><title>Designing a Focused Visual State for Custom Silverlight Controls</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></head><body><h1>Designing a Focused Visual State for Custom Silverlight Controls</h1><section class="meta"><p class="id">ID: SL7</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+      <ul id="silverlight.applicability.general">
+         <li> Microsoft Silverlight, versions 3 and greater </li>
+         <li> Silverlight managed programming model and Silverlight XAML </li>
+      </ul>
+   </section><section id="description"><h2>Description</h2>
       <p>The objective of this technique is to build custom visual states for
     				custom controls that include visible focus indicators in the templates
     				and parts. </p>
@@ -26,8 +29,8 @@
     				on the control class, to assist design tools. The best resource for
     				general information about Silverlight control customization is <a href="https://msdn.microsoft.com/en-us/library/cc278064%28v=VS.95%29.aspx">Silverlight
     					documentation on MSDN</a>. </p>
-      
-         <h>Component Parts</h>
+   	<section id="SL7_component_parts">
+         <h4>Component Parts</h4>
          <p>Some controls are created by assembling various component parts that
     					are already defined as controls either by the Silverlight run time
     					libraries or by third parties. That scenario is not really what this
@@ -39,9 +42,9 @@
     					at a lower level for the control as a whole. The actual focus region
     					is defined by the control author in that case, and the focus indicator
     					is also defined to match the behavior visually and functionally. </p>
-      
-      
-         <h>Design for Focus Indicators</h>
+   	</section>
+   	<section id="SL7_focus_indicator_design">
+         <h4>Design for Focus Indicators</h4>
          <p>The general design principles for visual focus indicators are that
     					the indicators should apply a visual change to the focus region's exterior
     					margin. A common pattern is to deliberately define the visuals for
@@ -67,16 +70,16 @@
     					state that indicates that the mouse is over the control (this is termed
     					either MouseOver or Hover state). Controls that support activation
     					also have a visual state that provides feedback for activation. For
-    					example, the default Silverlight RepeatButton changes
-    					its Background gradient on the button field to be
+    					example, the default Silverlight <code>RepeatButton</code> changes
+    					its <code>Background</code> gradient on the button field to be
     					darker blue value when the mouse is over the button, and changes to
     					an even darker value blue when the button is activated (either by clicking
-    					the mouse or by pressing SPACE or ENTER with keyboard focus on the RepeatButton).
+    					the mouse or by pressing SPACE or ENTER with keyboard focus on the <code>RepeatButton</code>).
     					To see this behavior in a live sample, see <a href="http://samples.msdn.microsoft.com/Silverlight/SampleBrowser/index.htm#/?sref=System.Windows.Controls.RepeatButtonEx">RepeatButton
     						sample on MSDN</a>. </p>
-      
-      
-         <h>Logic for Focus Indicators</h>
+   	</section>
+   	<section id="SL7_focus_indicator_logic">
+         <h4>Logic for Focus Indicators</h4>
          <p>Typical logic is that the border to indicate focus is present in the
     					default template design, but with an initial value of Visibility=Collapsed.
     					Then, a visual state for focus is defined with a name that properly
@@ -114,18 +117,18 @@
     					correct state to load from the XAML templates. Examples for all of
     					the APIs discussed here are available in the MSDN topic <a href="https://msdn.microsoft.com/en-us/library/cc278064(VS.95).aspx">Creating
     						a New Control by Creating a ControlTemplate</a>. </p>
-      
-      
-         <h>Focus in Silverlight</h>
+   	</section>
+   	<section id="SL7_silverlight_focus">
+         <h4>Focus in Silverlight</h4>
          <p>Focus in Silverlight is equivalent to the larger user interface and
     					application concept of keyboard focus. The element that has focus is
     					the element within the Silverlight object tree and programming model
     					that has first chance to process the Silverlight key events. As a more
-    					tangible example that is user-centric, if a TextBox has
+    					tangible example that is user-centric, if a <code>TextBox</code> has
     					keyboard focus, then when the user presses keys on the keyboard, the
     					characters associated with the user's pressed keys (or possibly input
     					that is enabled by an assistive technology that can substitute for
-    					key strokes) will appear in the TextBox. A user interface
+    					key strokes) will appear in the <code>TextBox</code>. A user interface
     					element in Silverlight can obtain keyboard focus in one of three ways: </p>
          <ol>
             <li> The user uses the Silverlight tab sequence to traverse into the
@@ -140,18 +143,18 @@
     							behavior, and does not require each application author to call Focus()
     							in application code. </li>
          </ol>
-      
-   </section><section class="examples"><h2>Examples</h2>
+   	</section>
+   </section><section id="examples"><h2>Examples</h2>
       <section class="example">
-         <h3>Example 1: Visible focus indicator as a style and state</h3>
-         <section class="description"><h2>Description</h2>
+         <h3>Visible focus indicator as a style and state</h3>
+         
             <p>The following is the XAML that defines the basic (normal) control
     						template. This control is simple: it has a yellow circle graphic, which
     						overlays a red circle edge when the control is focused. The circle
     						edge is defined by the "FocusVisual" element in the composition,
     						and is initially Visibility=Collapsed (the expected visual state prior
     						to being focused). </p>
-            <pre xml:space="preserve">&lt;ResourceDictionary
+            <pre>&lt;ResourceDictionary
    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
    xmlns:local="clr-namespace:FocusVisualCustomControl"
@@ -181,11 +184,11 @@
 &lt;/ResourceDictionary&gt;
 </pre>
             <p>The following is the specific visual state portion. Note how the
-    						visual state includes an ObjectAnimation with discrete
+    						visual state includes an <code>ObjectAnimation</code> with discrete
     						keyframes for hard transition between Visible and Collapsed, targeting
     						the element "FocusVisual" in the composition shown in the
     						previous XAML. </p>
-            <pre xml:space="preserve">                       &lt;VisualStateManager.VisualStateGroups&gt;
+            <pre>                       &lt;VisualStateManager.VisualStateGroups&gt;
                            &lt;VisualStateGroup x:Name="FocusStates"&gt;
                                &lt;VisualState x:Name="Unfocused"/&gt;
                                &lt;VisualState x:Name="Focused"&gt;
@@ -211,7 +214,7 @@
     						of reverting to the default state, which in the case of this design
     						is intentional. Alternatively, authors could make specific template
     						changes that revert any animation that applied to the focused state. </p>
-            <pre xml:space="preserve">       protected override void OnGotFocus(RoutedEventArgs e)
+            <pre>       protected override void OnGotFocus(RoutedEventArgs e)
        {
            base.OnGotFocus(e);
            VisualStateManager.GoToState(this, "Focused", false);
@@ -222,29 +225,29 @@
            VisualStateManager.GoToState(this, "Unfocused", false);
        }
 </pre>
-            <p>This example is shown in operation in the <a href="https://www.w3.org/WAI/WCAG20/Techniques/working-examples/FocusVisualCustomControlTestPage.html">working example of Visual Focus Indicator</a>.</p>
-         </section>
+            <p class="working-example">This example is shown in operation in the <a href="../../working-examples/silverlight-focus-visual-custom-control/">working example of Visual Focus Indicator</a>.</p>
+         
       </section>
-   </section><section class="tests"><h2>Tests</h2>
+   </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
          <ol>
             <li> Using a browser that supports Silverlight, open an HTML page that
     					references a Silverlight application through an object tag. </li>
             <li> Using a keyboard, tab to the element where focus characteristics
     						are being examined. </li>
-            <li> Check that the background, border, or other noticable visual indicator
+            <li> Check that the background, border, or other noticeable visual indicator
     							of the element changes color. </li>
             <li> Check that the changes in color for the background, border, or
-    								other noticable visual indicator are removed when the element loses
+    								other noticeable visual indicator are removed when the element loses
     								focus. </li>
          </ol>
       </section>
       <section class="results"><h3>Expected Results</h3>
          <p>#3 and #4 are true. </p>
       </section>
-   </section><section class="related"><h2>Related Techniques</h2>
-      
-   </section><section class="resources"><h2>Resources</h2>
+   </section><section id="related"><h2>Related Techniques</h2><ul>
+      <li><a href="../client-side-script/SCR31">SCR31</a></li>
+   </ul></section><section id="resources"><h2>Resources</h2>
       
          <ul>
             <li>

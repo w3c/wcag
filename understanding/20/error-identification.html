@@ -1,332 +1,151 @@
 <!DOCTYPE html>
-<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
-   <meta charset="UTF-8"></meta>
+   <meta charset="UTF-8">
    <title>Understanding Error Identification</title>
-   <link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link>
+   <link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove">
 </head>
 <body>
    <h1>Understanding Error Identification</h1>
-   
-   
+
+   <section id="brief">
+		<h2>In brief</h2>
+		<dl>
+         <dt>Goal</dt><dd>Users know an error exists and what is wrong.</dd>
+         <dt>What to do</dt><dd>Provide descriptive notification of errors.</dd>
+         <dt>Why it's important</dt><dd>Flagging errors helps people with reduced sight and cognitive disabilities resolve them.</dd>
+      </dl>
+
+   </section>
+
    <section id="intent">
       <h2>Intent of Error Identification</h2>
-      
-      
-      <p>The intent of this Success Criterion is to ensure that users are aware that an error
-         has occurred and can determine what is wrong. The error message should be as specific
-         as possible. 
-         						In the case of an unsuccessful form submission, re-displaying the form and indicating
-         the fields in error is insufficient for some users to perceive that an error has occurred.
-         Screen reader users, for example, will not know there was an error until they encounter
-         one of the indicators. They may abandon the form altogether before encountering the
-         error indicator, thinking that the page simply is not functional. Per the definition in WCAG 2.0, an "input error" is information provided by the user
-         that is not accepted. This includes: 
+
+      <p>The intent of this success criterion is to ensure that users are aware that an error
+         has occurred and can determine what is wrong. In the case of an unsuccessful form submission,
+         it is not sufficient to only re-display the form without providing any hint that the submission
+         failed.
+         The error must be indicated in <a>text</a>.</p>
+         <p>This SC requires that users be provided with information about the nature of the error, including the identity of the item in error. What the user should do to correct the item in error is covered by 
+         <a href="error-suggestion">3.3.3 Error Suggestion</a>. Often, the error description can be phrased so that it meets both SC 3.3.1 and SC 3.3.3 at the same time. For instance, "Email is not valid" would pass SC 3.3.1, but "Please provide a valid email address in the format name@domain.com" also conveys how it can be fixed and passes both.
       </p>
-      
+      <p>An "input error" includes:</p>
+
       <ul>
-         
          <li>information that is required by the web page but omitted by the user, or</li>
-         
-         <li>information that is provided by the user but that falls outside the required data
-            format or allowed values.
-         </li>
-         
+         <li>information that is provided by the user but that falls outside the required data format or allowed values.</li>
       </ul>
-      
+
       <p>For example:</p>
-      
+
       <ul>
-         
-         <li>the user fails to enter the proper abbreviation in to state, province, region, etc.
-            field; 
-         </li>
-         
+         <li>the user fails to enter the proper abbreviation in a state, province, or region field;</li>
          <li>the user enters a state abbreviation that is not a valid state; </li>
-         
          <li>the user enters a non existent zip or postal code;</li>
-         
          <li>the user enters a birth date 2 years in the future;</li>
-         
-         <li>the user enters alphabetic characters or parentheses into their phone number field
-            that only accepts numbers;
-         </li>
-         
+         <li>the user enters alphabetic characters or parentheses into their phone number field that only accepts numbers;</li>
          <li>the user enters a bid that is below the previous bid or the minimum bid increment.</li>
-         
       </ul>
-      
+
       <div class="note">
-         
          <p>If a user enters a value that is too high or too low, and the coding on the page automatically
             changes that value to fall within the allowed range, the user's error would still
             need to be described to them as required by the success criterion. Such an error description
             telling the person of the changed value would meet both this success criterion (Error
-            Identification) and 
-            <a href="error-suggestion" class="understanding">Success Criterion 3.3.3 (Error Suggestion)</a>. 
+            Identification) and <a href="error-suggestion">3.3.3 Error Suggestion</a>.
          </p>
-         
       </div>
-      
+
       <p>The identification and description of an error can be combined with programmatic information
          that user agents or assistive technologies can use to identify an error and provide
          error information to the user. For example, certain technologies can specify that
          the user's input must not fall outside a specific range, or that a form field is required.
-         Currently, few technologies support this kind of programmatic information, but the
-         Success Criterion does not require, nor prevent it.
-         
-      </p>
-      
-      <p>It is perfectly acceptable to indicate the error in other ways such as image, color
-         etc, in addition to the text description. 
-         
-      </p>
-      
-      <p>See also 
-         <a href="error-suggestion">3.3.1: Error Suggestion</a>.
-      </p>
-      
-      
+         This type of programmatic information is not required for this success criterion, but may be covered
+         by other criteria such as <a href="name-role-value">4.1.2 Name, Role, Value</a>.</p>
+
+      <p>It is perfectly acceptable to indicate the error in other ways such as through the use of an image,
+         color, or other visual indicator, in addition to the text description.</p>
+
+      <div class="note">
+         <p>This criterion does not mandate any particular way in which errors should be displayed. Depending
+            on the situation, it may be more suitable for all errors to be listed at the start or before a form.
+            In other cases, it may be more appropriate to show errors inline, with error messages next to the specific
+            fields that are in error. Errors could also be listed in an alert, or dialog. This criterion does not
+            cover which of these methods should be used - the only requirement is for errors  to be presented to users in text or a text alternative.
+         </p>
+      </div>
+
+      <p>See also <a href="error-suggestion">3.3.3: Error Suggestion</a>.</p>
+
+      <h3>User agent native HTML form validation</h3>
+
+      <p>When using native HTML <a href="https://html.spec.whatwg.org/multipage/forms.html#client-side-form-validation">client-side form validation</a>,
+         user agents will automatically prevent the submission of incomplete or invalid forms, and display generic error messages to the user.
+         The user agent will generally set focus back to the first form field that is in error, and as a result scroll the page
+         so that the field in error and the generated error message will be visible in the viewport.</p> 
+      <p>In most common user agent and screen reader combinations, the screen reader will announce the error message
+         and the programmatic name of the focused field. 
+         While this meets the requirements of this success criterion, it should be noted that there are several disadvantages related to this approach:</p>
+      <ul>
+         <li>Depending on the user agent, the message may not be permanent, or fail to scroll with the page.</li>
+         <li>Depending on the user agent, even if a user has zoomed-in (magnified) the content, the error messages will not appear magnified,
+            as the text in the validation message will be displayed at the same size as the user agent interface; the message may be too small for users to read.</li>
+         <li>The default HTML validation error messages are generally quite generic, and they may not provide sufficiently helpful or specific suggestions to the user
+            that would conform to <a href="error-suggestion">3.3.3 Error Suggestion</a>.
+         </li>
+         <li>If several errors are present, only the first error message is exposed; once the user has provided an input that conforms to the type of field,
+            and resubmits the form, the next error (if present) will be exposed. This means that repeated resubmissions and corrections may be required.</li>
+      </ul>
+    <p>As these problems relate to user agent behavior, developers will need to carefully consider if native browser validation is <a href="https://www.w3.org/TR/WCAG22/#dfn-accessibility-supported">accessibility supported</a>.</p>
    </section>
    <section id="benefits">
       <h2>Benefits of Error Identification</h2>
-      
-      
+
       <ul>
-         
-         <li> Providing information about input errors in text allows users who are blind or colorblind
-            to perceive the fact that an error occurred.  
-         </li>
-         
          <li>
-            This Success Criterion may help people with cognitive, language, and learning disabilities
-            who have difficulty understanding the meaning represented by icons and other visual
-            cues. 
-            
-            
+            Providing information about input errors in text allows users who are blind, have low vision, or have color vision deficiency to perceive the fact that an error occurred.
          </li>
-         
+         <li>
+            This success criterion may help people with cognitive, language, and learning disabilities
+            who have difficulty understanding the specific reason why a form submission failed (in cases
+            where this is not already made obvious by the nature of the form).
+         </li>
       </ul>
-      
+
    </section>
-   
+
    <section id="examples">
       <h2>Examples of Error Identification</h2>
-      
-      
-      <ul>
-         
-         <li>
-            
-            <p>
-               								       
-               <strong>Identifying errors in a form submission</strong>
-               							     
-            </p>
-            
-            <p>
-               An airline Web site offers a special promotion on discounted flights. The user is
+
+      <dl>
+         <dt>Identifying errors in a form submission</dt>
+         <dd>
+            <p>An airline website offers a special promotion on discounted flights. The user is
                asked to complete a simple form that asks for personal information such as name, address,
-               phone number, seating preference and e-mail address. If any of the fields of the form
+               phone number, seating preference and email address. If any of the fields of the form
                are either not completed or completed incorrectly, an alert is displayed notifying
-               the user which field or fields were missing or incorrect. 
-               
-               
-            </p>
-            
+               the user which field or fields were missing or incorrect.</p>
+
             <div class="note">
-               
-               <p>This Success Criterion does not mean that color or text styles cannot be used to indicate
-                  errors. It simply requires that errors also be identified using text. In this example,
-                  two asterisks are used in addition to color.
+               <p>This success criterion does not mean that color or text styles cannot be used to indicate
+                  errors. It simply requires that errors also be identified using text.
                </p>
-               
             </div>
-            
-         </li>
-         
-         <li>
-            
-            <p>
-               								       
-               <strong>Providing multiple cues</strong>
-               							     
-            </p>
-            
-            <p>The user fails to fill in two fields on the form.  In addition to describing the error
+         </dd>
+         <dt>Providing multiple cues</dt>
+         <dd>The user fails to fill in two fields on the form.  In addition to describing the error
                and providing a unique character to make it easy to search for the fields, the fields
-               are highlighted in yellow to make it easier to visually search for them as well.
-               
-            </p>
-            
-         </li>
-         
-      </ul>
-      
+               are highlighted in yellow to make it easier to visually search for them as well.</dd>
+      </dl>
+
    </section>
-   
+
    <section id="resources">
       <h2>Resources for Error Identification</h2>
-      
-      
-      
+
    </section>
-   
-   <section id="techniques">
-      <h2>Techniques for Error Identification</h2>
-      
-      
-      <section id="sufficient">
-         <h3>Sufficient Techniques for Error Identification</h3>
-         
-         
-         <section class="situation" id="error-identification-situation-0">
-            
-            <h4>Situation A: If a form contains fields for which information from the user is mandatory.</h4>
-            
-            <ol>
-               
-               <li>
-                  										           
-                  <a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G83" class="general">Providing a text description that identifies the field as mandatory</a>
-                  									         
-               </li>
-               
-               <li>
-                  
-                  <a href="https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA21" class="aria"></a>
-                  
-               </li>
-               
-               <li>
-                  										           
-                  <a href="https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR18" class="script">Providing client-side validation and alert </a>
-                  									         
-               </li>
-               
-               <li>
-                  
-                  <a href="https://www.w3.org/WAI/WCAG21/Techniques/pdf/PDF5" class="pdf"></a>
-                  
-               </li>
-               
-               <li>
-                  
-                  <a href="https://www.w3.org/WAI/WCAG21/Techniques/silverlight/SL35" class="silverlight"></a>
-                  
-               </li>
-               
-            </ol>
-            
-         </section>
-         
-         <section class="situation" id="error-identification-situation-1">
-            
-            <h4>Situation B: If information provided by the user is required to be in a specific data
-               format or of certain values.
-            </h4>
-            
-            <ol>
-               
-               <li>
-                  
-                  <a href="https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA18" class="aria"></a>
-                  
-               </li>
-               
-               <li>
-                  
-                  <a href="https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA19" class="aria"></a>
-                  
-               </li>
-               
-               <li>
-                  
-                  <a href="https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA21" class="aria"></a>
-                  
-               </li>
-               
-               <li>
-                  										           
-                  <a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G84" class="general">G84: Providing a text description when the user provides information that is not in
-                     the list of allowed values
-                  </a>
-                  									         
-               </li>
-               
-               <li>
-                  										           
-                  <a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G85" class="general">Providing a text description when user input falls outside the required format or
-                     values
-                  </a>
-                  									         
-               </li>
-               
-               <li>
-                  										           
-                  <a href="https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR18" class="script">Providing client-side validation and alert</a>
-                  									         
-               </li>
-               
-               <li>
-                  										           
-                  <a href="https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR32" class="script">Providing client-side validation and adding error text via the DOM</a>
-                  									         
-               </li>
-               
-               <li>
-                  										           
-                  <a href="https://www.w3.org/WAI/WCAG21/Techniques/flash/FLASH12" class="flash">Providing client-side validation and adding error text via the accessible description</a>
-                  									         
-               </li>
-               
-               <li>
-                  
-                  <a href="https://www.w3.org/WAI/WCAG21/Techniques/pdf/PDF22" class="pdf"></a>
-                  
-               </li>
-               
-               <li>
-                  
-                  <a href="https://www.w3.org/WAI/WCAG21/Techniques/silverlight/SL35" class="silverlight"></a>
-                  
-               </li>
-               
-            </ol>
-            
-         </section>
-         
-      </section>
-      
-      <section id="advisory">
-         <h3>Additional Techniques (Advisory) for Error Identification</h3>
-         
-         
-         <ul>
-            
-            <li>
-               									         
-               <a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G139" class="general">G139: Creating a mechanism that allows users to jump to errors</a>
-               								       
-            </li>
-            
-            <li>
-               									         
-               <a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G199" class="general">Providing success feedback when data is submitted successfully</a>
-               								       
-            </li>
-            
-         </ul>
-         
-      </section>
-      
-      <section id="failure">
-         <h3>Failures for Error Identification</h3>
-         
-         
-      </section>
-      
-   </section>
-   
+
+   {% # Data for associated techniques is defined in understanding/understanding.11tydata.js %}
+   {% include "understanding/techniques.html" %}
 </body>
 </html>

@@ -31,7 +31,7 @@ var respecConfig = {
 	//previousDiffURI: "https://www.w3.org/TR/2014/REC-wai-aria-20140320/",
 	
 	// if there a publicly available Editors Draft, this is the link
-	edDraftURI: "https://w3c.github.io/wcag21/understanding/",
+	edDraftURI: "https://w3c.github.io/wcag/understanding/",
 	
 	// if this is a LCWD, uncomment and set the end of its review period
 	// lcEnd: "2012-02-21",

@@ -1,6 +1,9 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head xmlns:wcag="https://www.w3.org/WAI/GL/"><title>Providing keyboard access to a Flash object and avoiding a keyboard trap</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body xmlns:wcag="https://www.w3.org/WAI/GL/"><h1>Providing keyboard access to a Flash object and avoiding a keyboard trap</h1><section class="meta"><p class="id">ID: FLASH17</p><p class="technology">Technology: flash</p><p class="type">Type: Technique</p></section><section class="applicability"><h2>When to Use</h2>
-      <p use-id="flash.applicability.general"></p>
-   </section><section class="description"><h2>Description</h2>
+<!DOCTYPE html><html lang="en"><head><title>Providing keyboard access to a Flash object and avoiding a keyboard trap</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></head><body><h1>Providing keyboard access to a Flash object and avoiding a keyboard trap</h1><section class="meta"><p class="id">ID: FLASH17</p><p class="technology">Technology: flash</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+      <ul id="flash.applicability.general">
+         <li>Adobe Flash Professional version MX and higher </li>
+         <li>Adobe Flex</li>
+      </ul>
+   </section><section id="description"><h2>Description</h2>
       <p>The objective of this technique is to allow keyboard focus to move to and from Flash content embedded in a web page. In browsers other than Internet   Explorer, there is a problem related to keyboard accessibility of   embedded Flash content. The problem is that, while both the Flash   content and the HTML content around it may be keyboard accessible, many browsers do not support moving keyboard focus between the Flash content and HTML   content without using a mouse. Once focus is placed inside the Flash   content, a keyboard user will be trapped there. Similarly, when focus is   placed somewhere else on the HTML content (outside the Flash content), it   will be impossible to move focus into the content.  This technique is designed to let the Flash author address this issue and provide support for moving focus between the Flash content and the HTML content via the keyboard. </p>
       <p>This issue has been around for a long time, and is related to the   way browsers implement embedded plug-ins. Until this problem is fixed,   it is up to the Flash developer to come up with a work around. This   technique is one of those workarounds. The approach behind this   technique is the following: </p>
       <ul>
@@ -31,23 +34,23 @@
             <p>With this approach, the developer can use ID values to   identify the elements that come before and after the Flash content in the   HTML tab order. This is done by setting special class names on the Flash   content's &lt;object&gt; element. This is the preferred   approach, as it does not cause an unnecessary cluttering of the tab   order. However, it does require more work and awareness by the developer   (who has to manually set ID values). Also, in some scenarios there   simply may not be a next or previous focusable element for a Flash   content.</p>
          </li>
       </ol>
-   </section><section class="examples"><h2>Examples</h2>
-      <p>The two examples below are shown in the <a href="https://www.w3.org/WAI/WCAG20/Techniques/working-examples/keyboard_trap_fix_custom_as3.html">working example of Preventing a keyboard trap in Flash content</a>. The example html file has two Flash contents embedded in it. The first Flash content is embedded with the approach described in example 1. The second example is embedded with the approach described in example 2. The <a href="https://www.w3.org/WAI/WCAG20/Techniques/working-examples/keyboard_trap_fix_custom_as3.zip">source of Preventing a keyboard trap in Flash content</a> is available. The source zip file contains the SWFFocus class.</p>
+   </section><section id="examples"><h2>Examples</h2>
+   	<p class="working-example">The two examples below are shown in the <a href="../../working-examples/flash-keyboard-trap-fix-custom/">working example of Preventing a keyboard trap in Flash content</a>. The example html file has two Flash contents embedded in it. The first Flash content is embedded with the approach described in example 1. The second example is embedded with the approach described in example 2. The <a href="../../working-examples/flash-keyboard-trap-fix-custom/keyboard_trap_fix_custom_as3.zip">source of Preventing a keyboard trap in Flash content</a> is available. The source zip file contains the SWFFocus class.</p>
       <div class="note">
          <p>To run the example from a local drive (as opposed to running it from a web server), the local directory needs to be added to Flash Player's security settings. </p>
       </div>
       <section class="example">
-         <h3>Example 1: Using automatically generated links</h3>
-         <section class="description"><h2>Description</h2>
+         <h3>Using automatically generated links</h3>
+         
             <p>In this example, the SWFFocus class is used without explicitly   identifying focusable HTML elements. This will cause SWFFocus to   dynamically insert hidden links before and after the Flash content. </p>
-            Loading the Flash Content
+            <p class="exsubhead">Loading the Flash Content</p>
             <p>The Flash object in this example is added using <a href="https://github.com/swfobject/swfobject">SWFObject's dynamic publishing method</a>, which means   that the object tag is created dynamically by JavaScript in a way that   the browser supports. While this is the recommended approach, it is not a   requirement for using this technique. The SWFFocus class will also work   when the object tag is hardcoded into the HTML document. </p>
             <p>The sample code below shows how to load the content dynamically   with SWFObject. </p>
-            HTML and Javascript Code Sample for Example 1 
-         </section>
-         <pre xml:space="preserve">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+            <p class="exsubhead">HTML and Javascript Code Sample for Example 1 </p>
+         
+         <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
+  "https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
 &lt;html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"&gt;
   &lt;head&gt;
     &lt;title&gt;Keyboard Trap Fix Example&lt;/title&gt;
@@ -77,20 +80,20 @@
     &lt;/div&gt;
   &lt;/body&gt;
 &lt;/html&gt;</pre>
-         <section class="description"><h2>Description</h2>
-            Importing and Initializing the SWFFocus class in Flash
+         
+            <p class="exsubhead">Importing and Initializing the SWFFocus class in Flash</p>
             <p>The SWFFocus class needs to be added to a Flash or Flex project's source   path. The easiest way to achieve this is to import the SWFFocus.swc into Library path for your project or to copy the   com/swffocus/SWFFocus.as file (including the nested directory structure)   to the project's root directory. </p>
             <p>When the SWFFocus class is added to the content's source path, it   needs to be initialized with the following code: </p>
-         </section>
-         <pre xml:space="preserve">import com.adobe.swffocus.SWFFocus;
+         
+         <pre>import com.adobe.swffocus.SWFFocus;
 SWFFocus.init(stage);</pre>
-         <section class="description"><h2>Description</h2>
+         
             <p>The code for the class itself can be found in the source files.</p>
-         </section>
+         
       </section>
       <section class="example">
-         <h3>Example 2: Explicitly identifying existing focusable html element</h3>
-         <section class="description"><h2>Description</h2>
+         <h3>Explicitly identifying existing focusable html element</h3>
+         
             <p>For a large part, this technique is the same as example 1 : </p>
             <ul>
                <li> The dynamic loading approach by SWFObject is used to load the   Flash content </li>
@@ -103,19 +106,19 @@ SWFFocus.init(stage);</pre>
                <li> 'swfNext-&lt;next ID&gt;', where '&lt;next element&gt;' should   be the ID value of the next element in the tab order. </li>
             </ul>
             <p>For example, the HTML code could look like this (notice the added   class names on the object tag): </p>
-         </section>
-         <pre xml:space="preserve">&lt;a href="http://www.lipsum.com/" id="focus1"&gt;test 1&lt;/a&gt;
+         
+         <pre>&lt;a href="http://www.lipsum.com/" id="focus1"&gt;test 1&lt;/a&gt;
 &lt;object class="swfPrev-focus1 swfNext-focus2"
   data="keyboard_trap_fix_as3.swf" tabindex="0"
   type="application/x-shockwave-flash"/&gt;
 &lt;a href="http://www.lipsum.com/" id="focus2"&gt;test 2&lt;/a&gt;</pre>
-         <section class="description"><h2>Description</h2>
+         
             <p>Since this example uses SWFObject's dynamic loading, the class names   will have to be specified as attribute when SWFObject is initialized.   This is demonstrated in the code example below. </p>
-            HTML and Javascript Code Sample for Example 2 
-         </section>
-         <pre xml:space="preserve">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+            <p class="exsubhead">HTML and Javascript Code Sample for Example 2 </p>
+         
+         <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
+  "https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
 &lt;html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"&gt;
   &lt;head&gt;
     &lt;title&gt;Keyboard Trap Fix Example &lt;/title&gt;
@@ -150,16 +153,16 @@ SWFFocus.init(stage);</pre>
     &lt;a href="http://www.lipsum.com/"&gt;lorem&lt;/a&gt;
   &lt;/body&gt;
 &lt;/html&gt;</pre>
-         <section class="description"><h2>Description</h2>
+         
             <p>Note: this example assumes that the focusable HTML elements exist and   have an ID value at the time SWFObject is called to insert the Flash   content. However, in some situations it is also possible that these   elements do not yet exist when the Flash content is created, or that the   elements will be deleted dynamically at a later point. If this happens,   it is possible to reassign ID values for previous and next focusable   elements. To do this, call the SWFsetFocusIds() method on the Flash   content object, like so: </p>
-         </section>
-         <pre xml:space="preserve">var o = document.getElementById("FlashSample1SWF");
+         
+         <pre>var o = document.getElementById("FlashSample1SWF");
 o.SWFsetFocusIds('prevId', 'nextId');</pre>
-         <section class="description"><h2>Description</h2>
+         
             <p>From that point on the updated IDs will be used to move focus to when   tabbing out of the Flash content. </p>
-         </section>
+         
       </section>
-   </section><section class="tests"><h2>Tests</h2>
+   </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
          <p>For a Flash content on a web page: </p>
          <ol>
@@ -174,11 +177,11 @@ o.SWFsetFocusIds('prevId', 'nextId');</pre>
             <li> Checks 3 and 4 are true </li>
          </ul>
       </section>
-   </section><section class="resources"><h2>Resources</h2>
+   </section><section id="resources"><h2>Resources</h2>
       
          <ul>
             <li>
-									         <a href="https://www.w3.org/WAI/WCAG20/Techniques/working-examples/keyboard_trap_fix_custom_as3.zip">Example source containing the SWFFocus class</a>
+            	<a href="../../working-examples/flash-keyboard-trap-fix-custom/keyboard_trap_fix_custom_as3.zip">Example source containing the SWFFocus class</a>
 								       </li>
             <li>
 									         <a href="http://www.iheni.com/flash-and-keyboard-access-across-browsers/">Flash and keyboard access across browsers</a> by Henny Swan</li>

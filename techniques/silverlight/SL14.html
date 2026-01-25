@@ -1,8 +1,11 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head xmlns:wcag="https://www.w3.org/WAI/GL/"><title>Providing Custom Control Key Handling for Keyboard Functionality
-    			in Silverlight</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body xmlns:wcag="https://www.w3.org/WAI/GL/"><h1>Providing Custom Control Key Handling for Keyboard Functionality
-    			in Silverlight</h1><section class="meta"><p class="id">ID: SL14</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section class="applicability"><h2>When to Use</h2>
-      <p use-id="silverlight.applicability.general"></p>
-   </section><section class="description"><h2>Description</h2>
+<!DOCTYPE html><html lang="en"><head><title>Providing Custom Control Key Handling for Keyboard Functionality
+    			in Silverlight</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></head><body><h1>Providing Custom Control Key Handling for Keyboard Functionality
+    			in Silverlight</h1><section class="meta"><p class="id">ID: SL14</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+      <ul id="silverlight.applicability.general">
+         <li> Microsoft Silverlight, versions 3 and greater </li>
+         <li> Silverlight managed programming model and Silverlight XAML </li>
+      </ul>
+   </section><section id="description"><h2>Description</h2>
       <p>The objective of this technique is to implement built-in handling
     				of key events in a custom control. If a custom control is correctly
     				implemented, then any Silverlight applications that include the control
@@ -27,8 +30,8 @@
     				often have parallel conventions whereby the user is made aware of which
     				element is visually focused and is the current input scope presented
     				by the assistive technology. </p>
-      
-         <h> Browser hosts and keyboard events </h>
+   	<section id="SL14_hosts">
+         <h4> Browser hosts and keyboard events </h4>
          <p>Silverlight is hosted as a plug-in inside a browser host. The Silverlight
     					runtime only receives the input events that the browser host forwards
     					to hosted plug-ins through a browser-specific program access layer.
@@ -47,13 +50,13 @@
     					but still are a natural choice for an accelerator. Using the CTRL key
     					as a modifier is a convention that is frequently used in existing Silverlight
     					applications. </p>
-      
-      
-         <h> Informing users of which keys to use for keyboard equivalence </h>
+   	</section>
+   	<section id="SL14_which-keys">
+         <h4> Informing users of which keys to use for keyboard equivalence </h4>
          <p>If a control supports user interaction, which key to use to engage
     					the keyboard equivalent behavior is not always obvious. One way to
     					inform users of the possible key options that a control supports is
-    					to author an AutomationProperties.HelpText value in
+    					to author an <code>AutomationProperties.HelpText</code> value in
     					the application UI that gives instructions such as "Press the
     					plus key to increment value". This is up to the application author
     					to do; the control definitions do not provide a means to set HelpText
@@ -63,9 +66,9 @@
     					menu framework that visually indicates the key associations (perhaps
     					with the Windows key-underlined convention), providing a generalized
     					application Help, or displaying plain text in the user interface. </p>
-      
-      
-         <h> The On* method pattern in Silverlight </h>
+   	</section>
+   	<section id="SL14_on-methods">
+         <h4> The On* method pattern in Silverlight </h4>
          <p>Silverlight classes often have methods that follow the naming pattern On* where
     					the star is a string that also identifies an event. These On* methods
     					are prewired event handlers, defined as virtual methods so that subclasses
@@ -76,12 +79,12 @@
     					of OnGotFocus and OnLostFocus. Controls that introduce new events should
     					consider also exposing a virtual On* method that pairs with the event,
     					so that consumers of the custom control can use the same pattern. </p>
-      
-   </section><section class="examples"><h2>Examples</h2>
+   	</section>
+   </section><section id="examples"><h2>Examples</h2>
       <section class="example">
-         <h3>Example 1: KeyNumericUpDown Control That Handles Arrow Key Equivalence
+         <h3>KeyNumericUpDown Control That Handles Arrow Key Equivalence
     					for + and - Buttons</h3>
-         <section class="description"><h2>Description</h2>
+         
             <p>This example implements a custom Silverlight control that displays
     						an integer value, and can increment or decrement the integer value
     						based on user actions. When a user interacts with the control, the
@@ -100,9 +103,9 @@
     						helper functions (Increment() and Decrement()). </p>
             <p>Handling the + and - keys as alternate or additional keyboard equivalents
     						for the actions is also possible (if that is desired, handler would
-    						check for Key.Add or Key.Subtract values). </p>
+    						check for <code>Key.Add</code> or <code>Key.Subtract</code> values). </p>
             <p>The following is the XAML-defined control template for this control.</p>
-            <pre xml:space="preserve">   &lt;Style TargetType="local:KeysNumericUpDown"&gt;
+            <pre>   &lt;Style TargetType="local:KeysNumericUpDown"&gt;
        &lt;Setter Property="BorderThickness" Value="1"/&gt;
        &lt;Setter Property="Height" Value="22"/&gt;
        &lt;Setter Property="BorderBrush"&gt;
@@ -156,7 +159,7 @@
     						of the base class are omitted for clarity, as is automation support.
     						Note the event wiring in OnApplyTemplate; this is
     						a common pattern for custom control definitions. </p>
-            <pre xml:space="preserve">   public class KeysNumericUpDown : UpDownBase&lt;double&gt;
+            <pre>   public class KeysNumericUpDown : UpDownBase&lt;double&gt;
    {
        Grid root;
        Button plusButton;
@@ -227,12 +230,12 @@
     						simple. Note that there are no key handlers on this instance; the
     						necessary key handling to wire up the increment/decrement logic is
     						already built-in to all instances of the control. </p>
-            <pre xml:space="preserve">&lt;local:KeysNumericUpDown Width="100" Height="45"/&gt;
+            <pre>&lt;local:KeysNumericUpDown Width="100" Height="45"/&gt;
 </pre>
-            <p>This example is shown in operation in the <a href="https://www.w3.org/WAI/WCAG20/Techniques/working-examples/SimpleNumericUpDownTestPage.html">working example of Numeric Up / Down control</a>.</p>
-         </section>
+            <p class="working-example">This example is shown in operation in the <a href="../../working-examples/silverlight-simple-numeric-up-down/">working example of Numeric Up / Down control</a>.</p>
+         
       </section>
-   </section><section class="tests"><h2>Tests</h2>
+   </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
          <ol>
             <li> Using a browser that supports Silverlight, open an HTML page that
@@ -247,11 +250,11 @@
       <section class="results"><h3>Expected Results</h3>
          <p>#3 is true. </p>
       </section>
-   </section><section class="related"><h2>Related Techniques</h2>
-      
-      
-      
-   </section><section class="resources"><h2>Resources</h2>
+   </section><section id="related"><h2>Related Techniques</h2><ul>
+      <li><a href="../general/G90">G90</a></li>
+      <li><a href="../silverlight/SL9">SL9</a></li>
+      <li><a href="../silverlight/SL19">SL19</a></li>
+   </ul></section><section id="resources"><h2>Resources</h2>
       
          <ul>
             <li>

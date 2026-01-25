@@ -1,31 +1,34 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head xmlns:wcag="https://www.w3.org/WAI/GL/"><title>Providing Script-Embedded Text Captions for MediaElement Content</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body xmlns:wcag="https://www.w3.org/WAI/GL/"><h1>Providing Script-Embedded Text Captions for MediaElement Content</h1><section class="meta"><p class="id">ID: SL16</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section class="applicability"><h2>When to Use</h2>
-      <p use-id="silverlight.applicability.general"></p>
-   </section><section class="description"><h2>Description</h2>
+<!DOCTYPE html><html lang="en"><head><title>Providing Script-Embedded Text Captions for MediaElement Content</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></head><body><h1>Providing Script-Embedded Text Captions for MediaElement Content</h1><section class="meta"><p class="id">ID: SL16</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+      <ul id="silverlight.applicability.general">
+         <li> Microsoft Silverlight, versions 3 and greater </li>
+         <li> Silverlight managed programming model and Silverlight XAML </li>
+      </ul>
+   </section><section id="description"><h2>Description</h2>
       <p>The objective of this technique is to use text captioning that is
-    				embedded in the stream with media displayed in a Silverlight MediaElement,
+    				embedded in the stream with media displayed in a Silverlight <code>MediaElement</code>,
     				and present that text captioning in a separate Silverlight control
     				or text element. </p>
-      <p>This particular technique uses scripting files with a TimelineMarkers collection
+      <p>This particular technique uses scripting files with a <code>TimelineMarkers</code> collection
     				that are embedded directly within the media file. When text captioning
-    				is embedded directly in the streams, synchonization of the scripting
-    				stream versus the video content stream is done automatically by the MediaElement component.
+    				is embedded directly in the streams, synchronization of the scripting
+    				stream versus the video content stream is done automatically by the <code>MediaElement</code> component.
     				Each time the MarkerReached event fires, that is an
     				indication that a synch point in the video that corresponds to a script
     				marker entry has been reached. Silverlight application authors can
     				obtain the text from the relevant timeline marker entry through their
     				event handler implementations, and can display captions in the user
     				interface area where the text captions are displayed. Typical Silverlight
-    				controls that can be used for displaying text captions include TextBlock (nonfocusable), TextBox,
-    				or RichTextBox. A typical interface design would place
-    				the caption-display control in close proximity to the MediaElement control
+    				controls that can be used for displaying text captions include <code>TextBlock</code> (nonfocusable), <code>TextBox</code>,
+    				or <code>RichTextBox</code>. A typical interface design would place
+    				the caption-display control in close proximity to the <code>MediaElement</code> control
     				that is being captioned, for example might place the captions directly
-    				underneath the MediaElement "screen". </p>
+    				underneath the <code>MediaElement</code> "screen". </p>
       <p>Script-embedded captions are captions that are stored directly in
     				the media file as metadata, rather than as a separate file. For information
     				about techniques for captions in separate files, see <a href="#SL28"></a>. </p>
-      
-         <h> Tools </h>
-         <p>Producing the media file with TimelineMarkers captions
+   	<section id="SL16_tools">
+         <h4> Tools </h4>
+         <p>Producing the media file with <code>TimelineMarkers</code> captions
     					directly in embedded scripting can be accomplished using the Microsoft
     					Expression Encoder tool. Online help for the procedure of encoding
     					scripting with text captions in the stream are available in the offline
@@ -35,26 +38,26 @@
          <p>There is a <a href="https://msdn.microsoft.com/en-us/library/dd743937%28VS.85%29.aspx">public
     					API</a> for introducing Markers into a WMV file, as part of the Windows
     					Media Format SDK. Using Expression Encoder is the way that the task
-    					of directly embedding TimelineMarkers is presented
+    					of directly embedding <code>TimelineMarkers</code> is presented
     					and taught in Microsoft's available instructional material on Silverlight.
     					However, because the mechanism is public, it is possible that other
-    					tools exist or will exist that can also produce media with script-encoded TimelineMarkers. </p>
-      
-   </section><section class="examples"><h2>Examples</h2>
+    					tools exist or will exist that can also produce media with script-encoded <code>TimelineMarkers</code>. </p>
+   	</section>
+   </section><section id="examples"><h2>Examples</h2>
       <section class="example">
-         <h3>Example 1: MediaElement handles MarkerReached, displays marker text
+         <h3>MediaElement handles MarkerReached, displays marker text
     					in existing TextBox</h3>
-         <section class="description"><h2>Description</h2>
+         
             <p>This example has a UI definition in XAML and interaction logic in
     						C#. The following is the basic UI in XAML. This example is deliberately
-    						simple and does not include AutomationProperties for
+    						simple and does not include <code>AutomationProperties</code> for
     						identification or user instructions. The most relevant part of this
     						example is that the Silverlight author declares a handler for the event MarkerReached.
     						This event fires potentially hundreds of times, once for each caption
     						in the stream. Each time the event fires, the event handler runs and
-    						adds the text to the dedicated TextBox in the user
+    						adds the text to the dedicated <code>TextBox</code> in the user
     						interface. </p>
-            <pre xml:space="preserve">&lt;UserControl x:Class="MediaTimelineMarkers.MainPage"
+            <pre>&lt;UserControl x:Class="MediaTimelineMarkers.MainPage"
    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 &gt;
@@ -76,10 +79,10 @@ private void OnMarkerReached(object sender, TimelineMarkerRoutedEventArgs e)
    captionText.SelectedText = e.Marker.Text.ToString() + "\n";
 }
 </pre>
-            <p>This example is shown in operation in the <a href="https://www.w3.org/WAI/WCAG20/Techniques/working-examples/MediaTimelineMarkersTestPage.html">working example of Media Timeline Markers</a>.</p>
-         </section>
+            <p class="working-example">This example is shown in operation in the <a href="../../working-examples/silverlight-media-timeline-markers/">working example of Media Timeline Markers</a>.</p>
+         
       </section>
-   </section><section class="tests"><h2>Tests</h2>
+   </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
          <ol>
             <li> Using a browser that supports Silverlight, open an HTML page that
@@ -92,10 +95,10 @@ private void OnMarkerReached(object sender, TimelineMarkerRoutedEventArgs e)
       <section class="results"><h3>Expected Results</h3>
          <p># 2 is true. </p>
       </section>
-   </section><section class="related"><h2>Related Techniques</h2>
-      
-      
-   </section><section class="resources"><h2>Resources</h2>
+   </section><section id="related"><h2>Related Techniques</h2><ul>
+      <li><a href="../silverlight/SL17">SL17</a></li>
+      <li><a href="../silverlight/SL28">SL28</a></li>
+   </ul></section><section id="resources"><h2>Resources</h2>
       
          <ul>
             <li>

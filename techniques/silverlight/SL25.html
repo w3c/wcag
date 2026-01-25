@@ -1,8 +1,11 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head xmlns:wcag="https://www.w3.org/WAI/GL/"><title>Using Controls and Programmatic Focus to Bypass Blocks of Content
-    			in Silverlight</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body xmlns:wcag="https://www.w3.org/WAI/GL/"><h1>Using Controls and Programmatic Focus to Bypass Blocks of Content
-    			in Silverlight</h1><section class="meta"><p class="id">ID: SL25</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section class="applicability"><h2>When to Use</h2>
-      <p use-id="silverlight.applicability.general"></p>
-   </section><section class="description"><h2>Description</h2>
+<!DOCTYPE html><html lang="en"><head><title>Using Controls and Programmatic Focus to Bypass Blocks of Content
+    			in Silverlight</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></head><body><h1>Using Controls and Programmatic Focus to Bypass Blocks of Content
+    			in Silverlight</h1><section class="meta"><p class="id">ID: SL25</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+      <ul id="silverlight.applicability.general">
+         <li> Microsoft Silverlight, versions 3 and greater </li>
+         <li> Silverlight managed programming model and Silverlight XAML </li>
+      </ul>
+   </section><section id="description"><h2>Description</h2>
       <p>The objective of this technique is to use the combination of Silverlight
     				control activation and programmatic focus to enable the user to skip
     				regions of content in a Silverlight application user interface. </p>
@@ -10,30 +13,30 @@
     				purpose is to skip content, so that the resulting programmatic focus
     				shift is not interpreted as an undesired change of context. </p>
       <p>The object to call focus to (the receiver of focus after the user-initiated
-    				action is triggered) has to be a Control in the Silverlight
+    				action is triggered) has to be a <code>Control</code> in the Silverlight
     				programming model. This is because the Focus method
     				must be called on the target, and therefore the target must inherit
-    				the Control class. So, an application author might
-    				call focus to a read-only TextBox, or perhaps a RichTextBox,
+    				the <code>Control</code> class. So, an application author might
+    				call focus to a read-only <code>TextBox</code>, or perhaps a <code>RichTextBox</code>,
     				depending on the purpose of the Silverlight application and its user
-    				interface design. You can also focus a UserControl,
+    				interface design. You can also focus a <code>UserControl</code>,
     				for cases where the area to call focus to represents a custom control
     				implementation. </p>
-      
-         <h> Setting TabIndex (not recommended) </h>
-         <p>Silverlight provides a TabIndex attribute that can
+      <section>
+         <h4> Setting TabIndex (not recommended) </h4>
+         <p>Silverlight provides a <code>TabIndex</code> attribute that can
     					be used to override the default-generated tab sequence. Do not attempt
     					to adjust tab index as a technique for getting past content blocks.
     					Doing so will create a focus order that does not match the apparent
-    					visual order, as described in <a href="https://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-focus-order">SC
+    					visual order, as described in <a href="https://www.w3.org/WAI/WCAG21/Understanding/focus-order">SC
     					2.4.3</a>. </p>
-      
-   </section><section class="examples"><h2>Examples</h2>
+      </section>
+   </section><section id="examples"><h2>Examples</h2>
       <section class="example">
-         <h3>Example 1: User-enabled control that programmatically sets focus</h3>
-         <section class="description"><h2>Description</h2>
+         <h3>User-enabled control that programmatically sets focus</h3>
+         
             <p>The following is the XAML for the user interface. </p>
-            <pre xml:space="preserve">   &lt;StackPanel Name="LayoutRoot"&gt;
+            <pre>   &lt;StackPanel Name="LayoutRoot"&gt;
        &lt;Button Name="bypassbtn1" Click="bypassbtn1_Click"&gt;Skip menus, go to main page content&lt;/Button&gt;
        &lt;!intervening content--&gt;
        &lt;StackPanel&gt;
@@ -44,15 +47,15 @@
    &lt;/StackPanel&gt;
    </pre>
             <p>The following is the event handler that forces focus. </p>
-            <pre xml:space="preserve">       private void bypassbtn1_Click(object sender, RoutedEventArgs e)
+            <pre>       private void bypassbtn1_Click(object sender, RoutedEventArgs e)
        {
            rtb_MainContent.Focus();
        }
 </pre>
-            <p>This example is shown in operation in the <a href="https://www.w3.org/WAI/WCAG20/Techniques/working-examples/ProgrammaticFocusTestPage.html">working example of Programmatic Focus</a>.</p>
-         </section>
+            <p class="working-example">This example is shown in operation in the <a href="../../working-examples/silverlight-programmatic-focus/">working example of Programmatic Focus</a>.</p>
+         
       </section>
-   </section><section class="tests"><h2>Tests</h2>
+   </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
          <ol>
             <li> Open the test HTML page for a Silverlight application. </li>
@@ -66,9 +69,9 @@
       <section class="results"><h3>Expected Results</h3>
          <p>#2 and #3 are true. </p>
       </section>
-   </section><section class="related"><h2>Related Techniques</h2>
-      
-   </section><section class="resources"><h2>Resources</h2>
+   </section><section id="related"><h2>Related Techniques</h2><ul>
+      <li><a href="../general/G123">G123</a></li>
+   </ul></section><section id="resources"><h2>Resources</h2>
       
          <ul>
             <li>

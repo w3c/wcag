@@ -1,43 +1,46 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head xmlns:wcag="https://www.w3.org/WAI/GL/"><title>Adding a group name to the accessible name of a form control</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body xmlns:wcag="https://www.w3.org/WAI/GL/"><h1>Adding a group name to the accessible name of a form control</h1><section class="meta"><p class="id">ID: FLASH8</p><p class="technology">Technology: flash</p><p class="type">Type: Technique</p></section><section class="applicability"><h2>When to Use</h2>
-      <p use-id="flash.applicability.general"></p>
-   </section><section class="description"><h2>Description</h2>
+<!DOCTYPE html><html lang="en"><head><title>Adding a group name to the accessible name of a form control</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></head><body><h1>Adding a group name to the accessible name of a form control</h1><section class="meta"><p class="id">ID: FLASH8</p><p class="technology">Technology: flash</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+      <ul id="flash.applicability.general">
+         <li>Adobe Flash Professional version MX and higher </li>
+         <li>Adobe Flex</li>
+      </ul>
+   </section><section id="description"><h2>Description</h2>
       <p>The objective of this technique is to provide a semantic grouping for   related form controls. This allows users to understand the relationship   of the controls and interact with the form more quickly and   effectively. </p>
       <p>In Flash, when related form controls are grouped, this grouping   can be indicated by adding the group's name to each form control's   accessible name. </p>
       <p>Grouping controls is most important for related radio buttons and   checkboxes. A set of radio buttons or checkboxes is related when they   all submit values for a single named field. They work in the same way as   selection lists, allowing the user to choose from a set of options,   except selection lists are single controls while radio buttons and   checkboxes are multiple controls. Because they are multiple controls, it   is particularly important that they be grouped semantically so they can   be more easily treated as a single control. Often, user agents will   present the value of the legend before the label of each control, to   remind users that they are part of the same group. </p>
       <p>It can also be useful to group other sets of controls that are   not as tightly related as sets of radio buttons and checkboxes. For   instance, several fields that collect a user's address might be grouped   together with a legend of "Address". </p>
-   </section><section class="examples"><h2>Examples</h2>
+   </section><section id="examples"><h2>Examples</h2>
       <section class="example">
-         <h3>Example 1: Adding a group name to the accessible name of radio buttons</h3>
-         <section class="description"><h2>Description</h2>
+         <h3>Adding a group name to the accessible name of radio buttons</h3>
+         
             <p>This example shows how the group name for radio buttons in a group   can be made accessible by adding it to each button's accessible name: </p>
             <ol>
                <li> Add radio button components to the stage: </li>
-               <li> Enter each button's label using its label property </li>
+               <li> Enter each button's label using its <code>label</code> property </li>
                <li> Add the visual group label to the left or above the buttons   added in step 1 </li>
                <li> Select each radio button. In the Accessibility panel, add the   group name to the "Name" field; </li>
             </ol>
             <p>Flash will concatenate the group name with each button's individual   name, such as "gender male". </p>
             <p>This approach is illustrated in the screenshot below: </p>
-            <p>
-								       
+            <figure id="figure-Flash-group-name-controls">
+					<img src="img/groupname.png">			       
                   
-                  Using the Accessibility panel to add a group name to a form control
+                  <figcaption>Using the Accessibility panel to add a group name to a form control</figcaption>
                
-							     </p>
+							     </figure>
             <div class="note">
                <p>To make the radio buttons in this example accessible, the   following two lines need to be added to the movie's script: import fl.accessibility.RadioButtonAccImpl;
 RadioButtonAccImpl.enableAccessibility();
 								       </p>
             </div>
-            <p>For an illustration of this approach, see the <a href="https://www.w3.org/WAI/WCAG20/Techniques/working-examples/radio_button_group_as3.html">working version of Adding a group name to the accessible name of radio buttons</a>. The <a href="https://www.w3.org/WAI/WCAG20/Techniques/working-examples/radio_button_group_as3.fla">source of Adding a group name to the accessible name of radio buttons</a> is available.</p>
-         </section>
+      	<p class="working-example">For an illustration of this approach, see the <a href="../../working-examples/flash-radio-button-group/radio_button_group_as3.html">working version of Adding a group name to the accessible name of radio buttons</a>. The <a href="../../working-examples/flash-radio-button-group/radio_button_group_as3.fla">source of Adding a group name to the accessible name of radio buttons</a> is available.</p>
+         
       </section>
       <section class="example">
-         <h3>Example 2: Programmatically adding a group name with the accessible name of radio buttons</h3>
-         <section class="description"><h2>Description</h2>
-            <p>The code example below shows a basic proof of concept of a class that   automatically places a set of form controls inside a fieldset like   rectangle, including a legend. For each added control an AccessibilityProperties   object is created, and its name property is set to a   combination of the legend text and the actual form control label. </p>
-         </section>
-         <pre xml:space="preserve">
+         <h3>Programmatically adding a group name with the accessible name of radio buttons</h3>
+         
+            <p>The code example below shows a basic proof of concept of a class that   automatically places a set of form controls inside a fieldset like   rectangle, including a legend. For each added control an <code>AccessibilityProperties</code>   object is created, and its <code>name</code> property is set to a   combination of the legend text and the actual form control label. </p>
+         
+         <pre>
 package wcagSamples {
   import flash.display. *;
   import flash.text. *;
@@ -180,10 +183,10 @@ package wcagSamples {
     }
   }
 }</pre>
-         <section class="description"><h2>Description</h2>
+         
             <p>This example class can be initialized as follows: </p>
-         </section>
-         <pre xml:space="preserve">var myFieldSet = new FieldSet("Personal Details",  // the legend 
+         
+         <pre>var myFieldSet = new FieldSet("Personal Details",  // the legend 
   [["TextInput", "Name"],                          // text field
   ["RadioGroup", "Gender", ["Male", "Female"]],    // radio button group
   ["CheckBox", "Do you smoke", "yes"],             // checkbox
@@ -191,19 +194,19 @@ package wcagSamples {
 ]);
 addChild(myFieldSet);
 </pre>
-         <section class="description"><h2>Description</h2>
-            <p>For an illustration of this approach, see the <a href="https://www.w3.org/WAI/WCAG20/Techniques/working-examples/grouped_form_controls.html">working version of Programmatically adding a group name with the accessible name of radio buttons</a>. The <a href="https://www.w3.org/WAI/WCAG20/Techniques/working-examples/grouped_form_controls.zip">source of Programmatically adding a group name with the accessible name of radio buttons</a> is available.</p>
+         
+      	<p class="working-example">For an illustration of this approach, see the <a href="../../working-examples/flash-grouped_form_controls/">working version of Programmatically adding a group name with the accessible name of radio buttons</a>. The <a href="../../working-examples/flash-grouped_form_controls/grouped_form_controls.zip">source of Programmatically adding a group name with the accessible name of radio buttons</a> is available.</p>
             <div class="note">
                <p>Adobe Flex allows you to perform this type of behavior by   using the &lt;form&gt;, &lt;formitem&gt; and &lt;formheading&gt;   elements </p>
             </div>
-         </section>
+         
       </section>
-   </section><section class="tests"><h2>Tests</h2>
+   </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
          <p>When a Flash Movie contains grouped form controls, confirm that   either : </p>
          <ul>
             <li> The group's name is included in the Accessibility panel's   "name" field for each control. </li>
-            <li> Each control has an AccessibilityProperties.name property,   which contains both the group's name and the control's label text </li>
+            <li> Each control has an <code>AccessibilityProperties.name</code> property,   which contains both the group's name and the control's label text </li>
          </ul>
       </section>
       <section class="results"><h3>Expected Results</h3>
@@ -211,6 +214,6 @@ addChild(myFieldSet);
             <li> One of the above is true </li>
          </ul>
       </section>
-   </section><section class="related"><h2>Related Techniques</h2>
-      
-   </section></body></html>
+   </section><section id="related"><h2>Related Techniques</h2><ul>
+      <li><a href="../flash/FLASH25">FLASH25</a></li>
+   </ul></section></body></html>
