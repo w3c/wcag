@@ -272,6 +272,7 @@ export default function (data) {
                   "PDF17",
                   "PDF21",
                   "H97",
+                  "H62",
                 ],
                 usingQuantity: "",
               },
@@ -292,7 +293,7 @@ export default function (data) {
           },
         ],
         advisory: ["C22", "G162", "ARIA1", "ARIA2", "G141"],
-        failure: ["F2", "F33", "F34", "F42", "F43", "F46", "F48", "F90", "F91", "F92", "F111"],
+        failure: ["F2", "F33", "F34", "F42", "F43", "F46", "F48", "F90", "F91", "F92", "F111", "F114"],
       },
 
       "meaningful-sequence": {
@@ -313,7 +314,7 @@ export default function (data) {
           "C27",
           "PDF3",
         ],
-        failure: ["F34", "F33", "F32", "F49", "F1"],
+        failure: ["F34", "F33", "F32", "F49", "F1", "F114"],
       },
 
       "sensory-characteristics": {
