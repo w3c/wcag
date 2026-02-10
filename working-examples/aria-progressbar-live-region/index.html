@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Working example - Using an ARIA live region to convey the status of a progress bar</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<style>
+			:root{
+				background: #fff;
+				color:#000;
+				font:100% / 1.5 system-ui;
+			}
+
+			button{
+				background: #0054AE;
+				border:1px solid transparent;
+				color:#fff;
+				font:inherit;
+				&[aria-disabled=true]{
+					background: #E9E9E9;
+					color: #696969;
+					cursor: not-allowed;
+				}
+				&:focus-visible{
+					outline:2px solid #0054AE;
+					outline-offset: 2px;
+				}
+			}
+
+			.upload-container {
+				max-width: 400px;
+				margin: 20px 0;
+			}
+
+			#upload-progress {
+				background-color: #f0f0f0;
+				border: 1px solid #808080;
+				border-radius: 4px;
+				height: 20px;
+				max-width: 500px;
+				overflow: hidden;
+				position: relative;
+				--width: 0%;
+			}
+
+			#upload-progress::before {
+				background-color: #653171;
+				content: '';
+				height: 100%;
+				left: 0;
+				position: absolute;
+				top: 0;
+				transition: width 0.8s ease-in-out;
+				width: var(--width);
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				#upload-progress::before {
+						transition: none;
+				}
+			}
+
+			#upload-progress-label{
+				margin-block-end:0;
+			}
+			
+			#progress-text {
+				font-size: 0.875em;
+				margin:0;
+			}
+			
+			#start-upload {
+				padding: 8px 16px;
+				margin-top: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Working example - Using an ARIA live region to convey the status of a progress bar</h1>
+		<p>This working example relates to <a href="../../techniques/aria/ARIA25.html">technique ARIA25</a>.</p>
+		
+		<div class="upload-container">
+			<p id="upload-progress-label">Uploading document: <strong>report.pdf</strong></p>
+			<div 
+				aria-labelledby="upload-progress-label"
+				role="progressbar" 
+				aria-describedby="progress-text"
+				aria-valuemin="0" 
+				aria-valuemax="100"
+				aria-valuenow="0" 
+				id="upload-progress">
+			</div>
+			<p id="progress-text" aria-live="polite">0% complete</p>
+			<button id="start-upload" type="button">Start Upload</button>
+    </div>
+
+		<script>
+		function startUpload() {
+			const progressBar = document.getElementById('upload-progress');
+			const progressText = document.getElementById('progress-text');
+			const startButton = document.getElementById('start-upload');
+			
+			// Non-uniform progress intervals: 0 → 15 → 35 → 70 → 90 → 100
+			const progressSteps = [0, 15, 35, 70, 90, 100];
+			const timeIntervals = [0, 800, 2000, 1500, 800, 1800]; // Different timing for each step
+			
+			let currentStep = 0;
+			startButton.setAttribute('aria-disabled', 'true');
+			
+			function updateProgress() {
+				if (currentStep < progressSteps.length) {
+					const progress = progressSteps[currentStep];
+					
+					// Update ARIA attributes
+					progressBar.setAttribute('aria-valuenow', progress);
+					
+					// Update visual progress using CSS custom property for smooth animation
+					progressBar.style.setProperty('--width', progress + '%');
+					
+					// Update text after animation completes (only if motion is preferred)
+					const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+					const delay = prefersReducedMotion ? 0 : 800; // No delay if reduced motion is preferred
+					
+					if (progress === 100) {
+						// Wait for the animation to complete before showing final text
+						setTimeout(() => {
+							progressText.textContent = 'Upload complete!';
+						}, delay);
+					} else {
+						// Wait for the animation to complete before showing progress text
+						setTimeout(() => {
+							progressText.textContent = progress + '%';
+						}, delay);
+					}
+					
+					currentStep++;
+					
+					if (currentStep < progressSteps.length) {
+						setTimeout(updateProgress, timeIntervals[currentStep]);
+					}
+				}
+			}
+			
+			// Start the progress simulation
+			updateProgress();
+		}
+
+		// Add event listener instead of onclick
+		document.addEventListener('DOMContentLoaded', function() {
+			const startButton = document.getElementById('start-upload');
+			startButton.addEventListener('click', function(event) {
+				// Ignore click events when button is aria-disabled
+				if (startButton.getAttribute('aria-disabled') === 'true') {
+					event.preventDefault();
+					return;
+				}
+				startUpload();
+			});
+		});
+		</script>
+	</body>
+</html>
