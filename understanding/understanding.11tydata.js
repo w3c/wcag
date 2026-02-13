@@ -815,6 +815,20 @@ export default function (data) {
             using: ["PDF11", "PDF13"],
           },
         ],
+        sufficientNote: `
+          <p>
+            Some of the listed techniques provide self-contained link purpose only to some groups of users.
+            <a class="aria" href="https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA8">ARIA8: Using aria-label for link purpose</a>
+            replaces the visible link text with a more fleshed-out description in the value of the <code>aria-label</code> attribute,
+            providing the purpose of the link to visually-impaired users using a screen reader.
+            The Technique, however, does not help users with cognitive disabilities since the visual context does not provide the purpose of the link.
+          </p>
+          <p>
+            Similarly, <a href="https://www.w3.org/WAI/WCAG22/Techniques/css/C7">C7: Supplementing link text with hidden text</a>
+            helps screen reader users, but since the supplemented text providing the link purpose is invisible,
+            it does not help sighted users with cognitive disabilities.
+          </p>
+        `,
         advisory: ["H2", "H33"],
         failure: ["F84", "F89"],
       },
