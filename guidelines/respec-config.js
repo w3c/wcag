@@ -11,7 +11,7 @@ var respecConfig = {
 	specStatus:           "ED",
 	//crEnd:                "2012-04-30",
 	//perEnd:               "2013-07-23",
-	//publishDate:          "2013-08-22",
+	publishDate:          "2024-12-12",
 	diffTool:             "http://www.aptest.com/standards/htmldiff/htmldiff.pl",
 	
 	// the specifications short name, as in https://www.w3.org/TR/short-name/
@@ -27,7 +27,7 @@ var respecConfig = {
 	// and its maturity status
 	//previousPublishDate:  "2014-06-12",
 	//previousMaturity:  "WD",
-	prevRecURI: "https://www.w3.org/TR/2018/REC-WCAG21-20180605/",
+	prevRecURI: "https://www.w3.org/TR/WCAG21/",
 	//previousDiffURI: "https://www.w3.org/TR/2014/REC-wai-aria-20140320/",
 	
 	// if there a publicly available Editors Draft, this is the link
@@ -40,67 +40,44 @@ var respecConfig = {
 	// only "name" is required
 	editors: [
 		{
-			name: "Andrew Kirkpatrick",
-			url: "http://www.adobe.com/",
-			mailto: "akirkpat@adobe.com",
-			company: "Adobe",
-			companyURI: "http://www.adobe.com/",
-			w3cid: 39770
-		},
-		{
 			name: "Alastair Campbell",
-			url: "https://www.nomensa.com/",
+			//url: "https://www.nomensa.com/",
 			mailto: "acampbell@nomensa.com",
 			company: "Nomensa",
 			companyURI: "https://www.nomensa.com/",
 			w3cid: 44689
 		},
 		{
+			name: "Chuck Adams",
+			//url: "https://www.oracle.com/",
+			mailto: "charles.adams@oracle.com",
+			company: "Oracle",
+			companyURI: "https://www.oracle.com/",
+			w3cid: 104852
+		},
+		{
+			name: "Rachael Bradley Montgomery",
+			mailto: "rachael@accessiblecommunity.org",
+			company: "Library of Congress",
+			companyURI: "https://loc.gov/",
+			w3cid: 90310
+		},
+    {
 			name: "Michael Cooper",
-			url: 'https://www.w3.org',
-			mailto: "cooper@w3.org",
+			url: 'https://www.w3.org/People/cooper',
 			company: "W3C",
 			companyURI: "https://www.w3.org",
-			w3cid: 34017
+			w3cid: 34017,
+			retiredDate: "2023-07-31"
+		},
+		{
+			name: "Andrew Kirkpatrick",
+			company: "Adobe",
+			companyURI: "http://www.adobe.com/",
+			w3cid: 39770,
+			retiredDate: "2020-03-04"
 		}
-	],
-	formerEditors: [
-		{
-			name: "Ben Caldwell",
-			company: "Trace R&D Center, University of Wisconsin-Madison",
-			w3cid: 33602
-		},
-		{
-			name: "Loretta Guarino Reid",
-			company: "Google, Inc.",
-			w3cid: 35436
-		},
-		{
-			name: "Gregg Vanderheiden",
-			company: "Trace R&D Center, University of Wisconsin-Madison",
-			w3cid: 3442
-		},
-		{
-			name: "Wendy Chisholm",
-			company: "W3C",
-			w3cid: 4099
-		},
-		{
-			name: "John Slatin",
-			company: "Accessibility Institute, University of Texas at Austin",
-			w3cid: 35537
-		},
-		{
-			name: "Jason White",
-			company: "University of Melbourne",
-			w3cid: 74028
-		},
-		{
-			name: "Joshue O Connor",
-			company: "Invited Expert, InterAccess",
-			w3cid: 41218
-		}
-	],
+  ],
 	
 	// authors, add as many as you like.
 	// This is optional, uncomment if you have authors as well as editors.
@@ -119,25 +96,15 @@ var respecConfig = {
 	],
 	*/
 	
-	// errata: 'https://www.w3.org/2010/02/rdfa/errata.html',
+	errata: 'https://www.w3.org/WAI/WCAG22/errata/',
+  implementationReportURI: 'https://www.w3.org/WAI/WCAG22/implementation-report/',
 	
 	// name of the WG
-	wg:           "Accessibility Guidelines Working Group",
-	
-	// URI of the public WG page
-	wgURI:        "https://www.w3.org/WAI/GL/",
-	
-	// name (with the @w3c.org) of the public mailing to which comments are due
-	wgPublicList: "public-agwg-comments",
-	
-	// URI of the patent status for this WG, for Rec-track documents
-	// !!!! IMPORTANT !!!!
-	// This is important for Rec-track documents, do not copy a patent URI from a random
-	// document unless you know what you're doing. If in doubt ask your friendly neighbourhood
-	// Team Contact.
-	wgPatentURI:  "https://www.w3.org/2004/01/pp-impl/35422/status",
+	group:  "ag",
+	github: "w3c/wcag",
+
 	maxTocLevel: 4,
 	
-	postProcess: [addTextSemantics, swapInDefinitions]
+	postProcess: [postRespec]
 	
 };

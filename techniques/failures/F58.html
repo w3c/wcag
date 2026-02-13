@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Failure of Success Criterion 2.2.1 due to using server-side techniques to automatically
-                    redirect pages after a time-out</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Failure of Success Criterion 2.2.1 due to using server-side techniques to automatically
+<!DOCTYPE html><html lang="en"><head><title>Failure of Success Criterion 2.2.1 due to using server-side techniques to automatically
+                    redirect pages after a time-out</title><link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></head><body><h1>Failure of Success Criterion 2.2.1 due to using server-side techniques to automatically
                     redirect pages after a time-out</h1><section class="meta"><p class="id">ID: F58</p><p class="technology">Technology: failures</p><p class="type">Type: Failure</p></section><section id="applicability"><h2>When to Use</h2>
       <ul>
          <li> Any server-side scripting language </li>
-         <li> Content does not meet the exceptions in the Success Criterion for
+         <li> Content does not meet the exceptions in the success criterion for
                                 permitted time limits. </li>
       </ul>
    </section><section id="description"><h2>Description</h2>
@@ -25,42 +25,22 @@
                                 redirect is implemented in Java Servlets or JavaServer Pages
                             (JSP).</p>
          
-         <pre xml:space="preserve">
-public void doGet (HttpServletRequest request, HttpServletResponse response)
-      throws IOException, ServletException {
-        response.setContentType("text/html");
-	PrintWriter out = response.getWriter();
-	response.setHeader("Refresh", "10; URL=TargetPage.html");
-	out.println("&lt;!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
-	 \"https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"&gt;");
-	out.println("&lt;html&gt;&lt;head&gt;&lt;title&gt;Redirect&lt;/title&gt;&lt;/head&gt;&lt;body&gt;");
-	out.println("&lt;p&gt;This page will redirect you in 10 seconds.&lt;/p&gt;");
-	out.println("&lt;/body&gt;&lt;/html&gt;");
-  }
-</pre>
-      </section>
-      <section class="example">
-         
-            <p>The following example is a failure because a timed server-side
-                                redirect is implemented in Active Server Pages (ASP) with VBScript.</p>
-         
-         <pre xml:space="preserve">
- &lt;% @Language = "VBScript" %&gt;
- &lt;% option explicit 
- Response.Clear
- Response.AddHeader "Refresh", "5; URL=TargetPage.htm"
- %&gt;&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
- "https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
- &lt;html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"&gt;
- …
- &lt;!--HTML code for content that is shown before the redirect is triggered--&gt;
- </pre>
+<pre><code class="language-java">public void doGet (HttpServletRequest request, HttpServletResponse response)
+   throws IOException, ServletException {
+      response.setContentType("text/html");
+PrintWriter out = response.getWriter();
+response.setHeader("Refresh", "10; URL=TargetPage.html");
+out.println("&lt;!DOCTYPE html&gt;");
+out.println("&lt;html&gt;&lt;head&gt;&lt;title&gt;Redirect&lt;/title&gt;&lt;/head&gt;&lt;body&gt;");
+out.println("&lt;p&gt;This page will redirect you in 10 seconds.&lt;/p&gt;");
+out.println("&lt;/body&gt;&lt;/html&gt;");
+}</code></pre>
       </section>
    </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
          <ol>
             <li>Check to see if the web page automatically redirects to another page after some period of time without the user taking any action.</li>
-          <li>Check if the page qualifies for Real-time or Essential Exceptions in <a href="https://www.w3.org/TR/WCAG21/#timing-adjustable">Success Criterion 2.2.1 Timing Adjustable</a>.</li>
+          <li>Check if the page qualifies for Real-time or Essential Exceptions in <a href="/TR/WCAG/#timing-adjustable">Success Criterion 2.2.1 Timing Adjustable</a>.</li>
           <li>Check if the user is provided an opportunity to turn off, extend, or adjust the timing of the page refresh.</li>
          </ol>
       </section>
@@ -76,14 +56,9 @@ public void doGet (HttpServletRequest request, HttpServletResponse response)
       
          <ul>
             <li> 
-                  <a href="http://www.ietf.org/rfc/rfc1945.txt">Hypertext
-                                        Transfer Protocol -- HTTP/1.0 (IETF Request for Comments
-                                        1945)</a> (plain text) </li>
-            <li> 
-                  <a href="http://www.ietf.org/rfc/rfc2616.txt">Hypertext
-                                        Transfer Protocol -- HTTP/1.1 (IETF Request for Comments
-                                        2616)</a> (plain text) </li>
+              <a href="https://www.rfc-editor.org/rfc/rfc9110#name-redirection-3xx">RFC 9110: HTTP Semantics 15.4. Redirection 3xx</a></li>
             
          </ul>
       
-   </section></body></html>
+   </section>
+</body></html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Accounting for meaningful text indentation and Reflow</title>
+    <link rel="stylesheet" href="../../css/sources.css" class="remove">
+  </head>
+  <body>
+    <h1>Accounting for meaningful text indentation and Reflow</h1>
+    <section class="meta"><p class="id">ID: G224</p><p class="technology">Technology: general</p><p class="type">Type: Technique</p></section>
+    <section id="applicability">
+      <h2>When to Use</h2>
+      <p>All technologies that support style switching</p>
+    </section>
+    
+    <section id="description">
+      <h2>Description</h2>
+      <p>There can be instances where indentation of text is considered important to the presentation and understandability of the text content. If the indentations were to be removed, then meaning or functionality could suffer. For instance, the nesting of unordered lists can be harder to notice if indentations are removed. Additionally, maintaining indentations can be important to help understand code patterns, if not even necessary for the code to function.</p>
+      <p>Since maintaining indentation is important for these instances of text, two-dimensional scrolling of these distinct sections of content could be necessary. However, there are still styling modifications that could be made to help ensure the indentation was maintained, but as much text was made visible within the viewport as possible. Making such adjustments could limit, if not mitigate any two-dimensional scrolling from occurring, making the content easier for people to read.</p>
+      </div>
+   </section>
+    
+    <section id="examples">
+      <h2>Examples</h2>
+      <section class="example">
+        <p>A website conveys information in a nested list format. The understandability of the list hierarchy is supported by the indentation of the list content. While it is important for the individual list item text to reflow, the list hierarchy would suffer if flattened so that all content would fit within a 320 CSS pixel wide viewport.</p>  
+        <p>The following example list contains additional nested lists to provide more context for each of the parent list item's text. To maintain the visual hierarchy, the indentation of each list level remains present, but modified once an author defined CSS breakpoint is met. Additional styles are set for different breakpoints to mitigate against the potential for content to extend beyond a 320px wide viewport, while accounting for visual spacing against the borders of the viewport, to attempt to make the content not feel cramped. At the smallest breakpoint, the content of list items receive a minimum width to mitigate against potentially "squished" content lists with many nested levels. At this breakpoint, each nested list level can be horizontally scrolled into view, and once a nested list is visible within the viewport, only vertical scrolling will be necessary to read the content of the nested list's items.</p>
+<pre><code class="language-html">
+&lt;div class="example">
+	&lt;ul>
+		&lt;li>
+			&lt;p>Make a list using one of the HTML list elements, or even an ARIA &lt;code>role=list&lt;/code> container.&lt;/p>
+			&lt;ul>
+				&lt;li>
+					&lt;p>There are three types of lists in HTML which can contain list items (&lt;code>li&lt;/code> elements).&lt;/p>
+					&lt;ul>
+						&lt;li>&lt;p>the &lt;code>ul&lt;/code> element&lt;/li>
+						&lt;li>&lt;p>the &lt;code>ol&lt;/code> element&lt;/li>
+						&lt;li>&lt;p>the &lt;code>menu&lt;/code> element&lt;/li>
+					&lt;/ul>
+				&lt;/li>
+				&lt;li>
+					&lt;p>Another type of list, description lists, exist as well - but they do not contain list items (&lt;code>li&lt;/code> elements).&lt;/p>
+				&lt;/li>
+        ...
+			&lt;/ul>
+		&lt;/li>
+		&lt;li>
+			&lt;p>Neither the start or end tags of any of the HTML list elements are omissible.&lt;/p>
+			&lt;ul>
+				&lt;li>&lt;p>The end tags of &lt;code>li&lt;/code> elements can be omitted if the &lt;code>li&lt;/code> element is immeditely followed by another &lt;code>li&lt;/code> element or there is no more content in the parent list element.&lt;/p>
+				&lt;/li>
+				...
+			&lt;/ul>
+		&lt;/li>
+		...
+	&lt;/ul>
+&lt;/div>
+</code></pre>
+<pre><code class="language-css">
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+body, html {
+    font-family: arial;
+}
+@media screen and ( max-width: 640px ) {
+    .example {
+        overflow: auto;
+        max-width: 640px;
+    }
+    ul {
+        padding-inline-start: 1.25em;
+    }
+    li p {
+        padding: .25em;
+        margin: .5em 0 .5em -.25em;
+        max-width: 300px; /* saftey net for max-width */
+    }
+}
+@media screen and ( max-width: 400px ) {
+    ul { padding-inline-start: 1em; }
+    li p { min-width: 300px } {
+        min-width: 300px;
+    }
+}
+</code></pre>
+        <p>A working example of <a href="../../working-examples/reflow-nested-lists">a list where nested levels can be read within a 320px wide viewport</a>.</p>
+      </section>
+      
+      <section class="example">
+        <p>A website providing code snippets needs to maintain line indentations, as the indentations are meaningful not only to the structure of the code, but in some languages - such as with Python, are requirements when defining blocks of code.</p>
+        <p>As a user zooms in the web page, the CSS of the indentation can be adjusted to maintain this necessary structure, while also allowing more text to be visible on a single line.</p>
+
+        <p>The following represents a Python code example. The indentation of each line of text is necessary to create a group of statements that are executed as a block.</p>
+<pre><code class="language-python">
+def complex_function(x):
+    if x > 0:
+        for i in range(x):
+            if i % 2 == 0:
+                print(f"{i} is even")
+                for a in range(i):
+                    if a % 5 == 0:
+                        print(f"  {a} can be divided by 5")
+                    else:
+                        print(f"  {a} cannot be divided by 5")
+            else:
+                print(f"{i} is odd")
+                for a in range(i):
+                    if a % 2 == 0:
+                        print(f"  {a} is even")
+                    else:
+                        print(f"  {a} is odd")
+    else:
+        print("x is not a positive number")
+</code></pre>
+        <p>The following code example demonstrates the use of indentation to convey the nesting of elements in an HTML document:</p>
+<pre><code class="language-html">
+&lt;html lang=en>
+	&lt;head>...&lt;/head>
+	&lt;body>
+		&lt;div>
+			&lt;!-- ... keep indenting as necessary  -->
+		&lt;/div>
+	&lt;/body>
+&lt;/html>
+</code></pre>     
+        <p>The indentation of code blocks like these could be adjusted at different viewport sizes, via a CSS Media Query.</p>
+<pre><code class="language-css">
+@media screen and ( min-width: 320px ) {
+	pre {
+		tab-size: 8px;
+	}
+}
+
+@media screen and ( min-width: 640px ) {
+	pre {
+		tab-size: 16px;
+	}
+}
+
+@media screen and ( min-width: 1280px ) {
+	pre {
+		tab-size: 32px;
+	}
+}
+</code></pre>
+        <p>A working example of <a href="../../working-examples/reflow-indenting">code snippets using CSS to modify indentation width at different breakpoints</a>.
+        </section>
+    </section>
+    
+    <section id="tests">
+      <h2>Tests</h2>
+      <section class="procedure"><h3>Procedure for list example</h3>
+         <ol>
+            <li>Display the web page in a user agent where the page can be zoomed, or the user agent can be resized.</li>
+            <li>Zoom in or resize the browser window so that the viewport is equivalent to 320 CSS pixels wide.</li>
+            <li>The list content fits within the width so that it is only necessary so scroll vertically to read the list.</li>
+            <li>Or, each nested list can be horizontally scrolled into view. Only vertical scrolling is necessary to read the content of list items within each specific nested list level.</li>
+         </ol>
+      </section>
+      <section class="results"><h3>Expected Results</h3>
+         <ul>
+            <li>Checks 3 or 4 are true.</li>
+         </ul>
+      </section>
+
+      <section class="procedure"><h3>Procedure for code snippets</h3>
+         <ol>
+            <li>Display the web page in a user agent where the page can be zoomed, or the user agent can be resized.</li>
+            <li>Zoom in or resize the browser window so that the viewport is equivalent to 320 CSS pixels wide.</li>
+            <li>The code snippets fits within the width so that it is only necessary so scroll vertically to read each line of code.</li>
+            <li>Or, for code where non-wrapping lines are not essential, the code wraps or a mechanism is provided to allow line wrapping.</li>
+            <li>Or, the indentation and linebreaks are meaningful to the code language. 
+         </ol>
+      </section>
+      <section class="results"><h3>Expected Results</h3>
+         <ul>
+            <li>Checks #3, #4 or #5 are true.</li>
+         </ul>
+      </section>
+    </section>
+    <section id="related">
+      <h2>Related Techniques</h2>
+      <ul>
+      <li><a href="../css/C20">C20</a></li>
+      </ul>
+    </section>
+  </body>
+</html>

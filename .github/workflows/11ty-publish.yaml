@@ -1,0 +1,48 @@
+name: Push to gh-pages branch
+
+# Reference documentation: https://docs.github.com/en/actions/reference
+
+# See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#onpushpull_requestbranchestags
+on:
+  push:
+    branches: [main]
+
+jobs:
+  main:
+    name: deploy (11ty)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+      - name: Checkout gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: _site
+          token: ${{ secrets.W3CGRUNTBOT_TOKEN }}
+      - name: Install Node.js and dependencies
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version-file: '.nvmrc'
+      - name: Build
+        env:
+          WCAG_MODE: editors
+        run: |
+          npm i
+          npm run build
+          cp guidelines/guidelines.css guidelines/relative-luminance.html _site/guidelines/22
+          curl https://www.w3.org/publications/spec-generator/?type=respec"&"url=https://raw.githack.com/$GITHUB_REPOSITORY/main/guidelines/index.html -o _site/guidelines/22/index.html -f  --retry 3
+          curl https://www.w3.org/publications/spec-generator/?type=respec"&"url=https://raw.githack.com/$GITHUB_REPOSITORY/main/requirements/22/index.html -o _site/requirements/22/index.html -f  --retry 3
+          curl https://www.w3.org/publications/spec-generator/?type=respec"&"url=https://raw.githack.com/$GITHUB_REPOSITORY/main/conformance-challenges/index.html -o _site/conformance-challenges/index.html -f  --retry 3
+      - name: Push
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          repository: _site
+          branch: gh-pages
+          commit_user_name: w3cgruntbot
+          commit_user_email: 87540780+w3cgruntbot@users.noreply.github.com
+          commit_author: "w3cgruntbot <87540780+w3cgruntbot@users.noreply.github.com>"
+          commit_message: ":robot: Deploy to GitHub Pages: ${{ github.sha }} from branch ${{ github.ref }}"
+          skip_fetch: true
+          skip_checkout: true

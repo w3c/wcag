@@ -1,9 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>SCR 28 Example: Toggle table of contents with a button</title>
-<style type="text/css" media="screen">
+<style>
 #toc {
 	border: 1px solid #aaa;
 	background-color: #f9f9f9;
@@ -19,27 +20,42 @@
 	font-size: 100%;
 	font-weight: bold;
 }
+
+[aria-expanded="false"] + nav{
+  display:none;
+}
 </style>
-  <script type="text/javascript">
-  function toggle(id){
-    var n = document.getElementById(id);
-    n.style.display =  (n.style.display != 'none' ? 'none' : '' );
-  }
-  </script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(e){
+    let tocToggle = document.querySelector(".toc-toggle");
+    let toc = document.querySelector("#toc");
+    tocToggle.addEventListener("click", toggle, false);
+    
+    function toggle(e){
+      let elm = e.currentTarget;
+      if(elm.getAttribute("aria-expanded") === "false"){
+        elm.setAttribute("aria-expanded", "true");
+      }
+      else{
+        elm.setAttribute("aria-expanded", "false");
+      }
+    }      
+  });
+</script>
 </head>
 
 <body>
   <h1>SCR28 Example: Toggle table of contents with a button</h1>
-  <button onclick="return toggle('toc');">Toggle Table of Contents</button>
-  <div id="toc">
-  <h2>Table of Contents</h2>
+  <button aria-controls="toc" aria-expanded="true" class="toc-toggle" type="button">Toggle Table Of Contents</button>
+  <nav aria-labelledby="toc-header" id="toc">
+  <h2 id="toc-header">Table of Contents</h2>
     <ul>
         <li><a href="#sec1">Section 1</a></li>
         <li><a href="#sec2">Section 2</a></li>
         <li><a href="#sec3">Section 3</a></li>
         <li><a href="#sec4">Section 4</a></li>
     </ul>
-  </div>
+  </nav>
   
 <div id="maincontent">
 <h2 id="sec1">Section 1</h2>

@@ -1,0 +1,89 @@
+version: "0.2"
+allowCompoundWords: true
+minWordLength: 3
+dictionaries:
+  - en_US
+  - companies
+  - softwareTerms
+  - css
+  - html
+  - custom
+dictionaryDefinitions:
+  - name: custom
+    path: custom-words.txt
+    addWords: true
+ignorePaths:
+  - "_includes/**"
+  - "acknowledgements/**"
+  - "conformance-challenges/**"
+  - "lib/**"
+  - "requirements/**"
+  - "wcag20/**"
+  - "working-examples/**"
+  - "xslt/**"
+  - "*.css"
+  - "*.js"
+  - "*.json"
+  - "*.sh"
+  - "*.ts"
+  - "*.xml"
+  - "*.yml"
+  - "*.yaml"
+  - "custom-words.txt"
+useGitignore: true
+overrides:
+  # File-specific words are defined here, which should be considered typos elsewhere
+  - filename: errata/*.html
+    words: [ccriteria] # Records of corrected typos
+  - filename: guidelines/input-purposes.html
+    words: [lle] # Superscript fragment of Mlle
+  - filename: techniques/*/F32.html
+    words: [Higashi, Kyo, Miyako] # Japanese examples
+  - filename: techniques/*/F71.html
+    words: [ϲоοk] # Intentional Unicode character example
+  - filename: techniques/*/FLASH17.html
+    words: [SWFFocus] # Class mentioned only in this page
+  - filename: techniques/*/FLASH28.html
+    words: [rulez] # Example in leetspeak
+  - filename: techniques/*/H34.html
+    words: [HCTIWS, SDRADNATS, BEW] # Intentionally-reversed words
+  - filename: techniques/*/H56.html
+    words: [YTIVITCA, NOITAZILANOITANRETNI] # Intentionally-reversed words
+  - filename: techniques/*/SVR2.html
+    words: [jna] # Example file extension
+  - filename: understanding/*/language-of-parts.html
+    words: [voyture] # Pronunciation example
+  - filename: understanding/*/text-spacing.html
+    words: [drawi, whe] # Examples of text clipping
+languageSettings:
+  - languageId: html
+    ignoreRegExpList:
+      # Non-English elements
+      - /<(\w+)[^>]+lang="(?!en)\w+"[^>]*>[\s\S]*?<\/\1\s*>/gi
+      # Encoded citations
+      - /\[\[[^\]]+\]\]/g
+      # Other citations
+      - /\w+ et al\b/g
+      # pre/code tags
+      - /<(pre|code)\b[^>]*>[\s\S]*?</\1>/g
+      # (...) References sections
+      - /<section>\s*<h\d>[^<]*references</h\d>[\s\S]*?</section>/gi
+      # Resources (...) sections
+      - /<section[^>]*>\s*<h\d>\s*resources[^<]*</h\d>[\s\S]*?</section>/gi
+      # HTML tags
+      - /<[^>]*>/g
+      # Namespaces
+      - /x(mlns|si):\w+/g
+      # Liquid directives
+      - /\{[\{%].*?[\}%]\}/g
+  - languageId: markdown
+    ignoreRegExpList:
+      # Fenced code block
+      - |
+        /
+          ^(\s*```).*  # Opening ```
+          [\s\S]*?     # Code block
+          ^```         # Closing ```
+        /gmx
+      # Inline code
+      - /`[^`\n]+`/g

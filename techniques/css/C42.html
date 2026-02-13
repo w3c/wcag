@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Using min-height and min-width on target container to ensure sufficient target spacing</title>
+	</head>
+	<body>
+		<h1>Using <code>min-height</code> and <code>min-width</code> on target container to ensure sufficient target spacing</h1>
+		<section id="applicability">
+			<h2>When to Use</h2>
+			<p>All technologies that support CSS and pointer input.</p>
+		</section>
+		<section id="description">
+			<h2>Description</h2>
+			<p>The objective of this technique is to ensure that links in navigation or pagination menus will be spaced so that they fall within an area that measures at least 24 by 24 CSS pixels if the target area itself is smaller than that. The aim is to provide an adequate target clearance so the offset to adjacent targets is sufficient to prevent accidental pointer activation of adjacent targets.</p>	
+		
+		</section>
+		<section id="examples">
+			<h2>Examples</h2>
+			<p>The following example can be seen in the <a href="../../working-examples/css-24px-target-size/">working example</a>.</p>
+
+			<section class="example">
+				<h3>Using a <code>display</code> value of <code>flex</code> with <code>min-height</code> and <code>min-width</code></h3>
+				<p>This example uses <code>min-height</code> and <code>min-width</code> on the list items containing the pagination links. The links don't meet the 24 by 24 CSS pixels size requirement, but centering the links inside containers that are at least 24 by 24 CSS pixels ensures sufficient spacing. The links' 24 CSS pixel diameter circles will each be completely within their containing list items, so they won't intersect each other.</p>
+				<figure id="pointer-spacing-block">
+					<img src="img/24px-target-size-pagination-navigation.svg" alt="A horizontal pagination component. Each page is represented by a square box containing a link labeled with the page number. The boxes are 24 by 24 CSS pixels, but only the numbers inside the boxes are links, not the boxes themselves; the actual links are smaller than 24 by 24 CSS pixels.">
+					<figcaption>Example of using CSS to ensure enough spacing around targets</figcaption>
+				</figure>
+				<section>
+					<h4>The HTML</h4>
+<pre><code class="language-html">&lt;nav aria-label="pagination"&gt;
+  &lt;ol&gt;
+    &lt;li&gt;&lt;a class="previous"&gt;previous&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a aria-current="page"&gt;1&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/page-2"&gt;2&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/page-3"&gt;3&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/page-4"&gt;4&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/page-5"&gt;5&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/pages-6-10"&gt;next&lt;/a&gt;&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/nav&gt;</code></pre>
+				</section>
+
+				<section>
+					<h4>The CSS</h4>
+<pre><code class="language-css">ol {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+}
+
+li {
+  margin: 3px;
+  min-height: 24px;
+  min-width: 24px;
+  text-align: center;
+}</code></pre>
+				</section>
+			</section>
+      
+		</section>
+		<section id="tests">
+			<h2>Tests</h2>
+			
+			<section class="test-procedure">
+				<h3>Procedure</h3>
+
+				<p>For each undersized target that has no sufficiently large equivalent, that isn't in a sentence or otherwise
+					constrained by the <code>line-height</code> of non-target text, that has had its size modified by the author, and whose
+					presentation isn't essential:</p>
+				<ol>
+					<li>Draw a 24px diameter circle centered on the target's bounding box.</li>
+					<li>Check that the circle from #1 does not intersect any other target.</li>
+					<li>Check that the circle from #1 does not intersect any other undersized target's circle.</li>					
+				</ol>
+			</section>
+			<section class="test-results">
+				<h3>Expected Results</h3>
+				<ul>
+					<li>#2 and #3 are true.</li>
+				</ul>
+			</section>
+		</section>
+		<section id="related">
+			<h2>Related Techniques</h2>
+			<ul>
+				<li>
+					<a href="C44">C44</a>
+				</li>
+			</ul>
+
+		</section>
+		<!-- <section id="resources">
+			<h2>Resources</h2>
+		</section> -->
+	</body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Togglimg ARIA alerts</title>
+<script>
+document.addEventListener("DOMContentLoaded", function (e) {
+  const stockBox = document.querySelector("#stock-box");
+  const stockMovement = document.querySelector("#stock-movement");
+  const onBtn = document.querySelector("#live-on");
+  const offBtn = document.querySelector("#live-off"); 
+  const stocks = new Array("stock went down", "stock stayed the same", "stock went up");
+  let loopCount = 0;  
+  
+  onBtn.addEventListener("click", modifyLive, false);
+  offBtn.addEventListener("click", modifyLive, false);
+  
+  function modifyLive(e){
+    let elm = e.currentTarget;
+    let liveState = elm.getAttribute("id");
+    if (liveState === "live-off"){
+      stockBox.setAttribute("aria-live", "off");
+      onBtn.setAttribute("aria-pressed", "false");
+      offBtn.setAttribute("aria-pressed", "true");
+    }
+    else{
+      stockBox.setAttribute("aria-live", "assertive");
+      onBtn.setAttribute("aria-pressed", "true");
+      offBtn.setAttribute("aria-pressed", "false");      
+    }
+  }
+  
+  setInterval(() => {
+    if(loopCount >2){
+       loopCount = 0;
+    }
+    stockMovement.innerHTML = stocks[loopCount];
+    loopCount++;
+  }, 10000)
+ 
+});
+</script>
+
+<style>
+  *, *::after, *::before {
+		box-sizing: inherit;
+}
+
+body {
+	background:white;
+	color:black;
+	font: 1rem/1.5 system-ui, "Segoe UI", Roboto, Helvetica, sans-serif;
+}
+
+#stock-box{
+  border:1px solid;
+  display:inline-block;
+  padding:0.5em;
+}
+
+button{
+  border:1px solid transparent;
+  font:inherit;
+	font-size:0.75rem;
+	margin:0 0.25rem;
+  padding:0.5em;
+}
+
+button:focus-visible {
+	outline:2px solid #00377C;
+	outline-offset: 2px;
+}
+
+[aria-pressed=true]{
+  background:#00377C;
+  color:white;
+}
+
+[aria-pressed=false]{
+  background:white;
+  border:1px solid #00377C;
+  color:#00377C;
+}
+</style>
+</head>
+<body>
+	<h1>Turbo Encabulator Stock Information</h1>
+	<div id="stock-box" aria-atomic="true" aria-live="assertive">
+		<span>Turbo Encabulator Stock Price: </span>
+		<span id="stock-movement">stock went up</span>
+	</div>
+	<p>Use the buttons to toggle screen reader announcements of stock changes:</p>
+	<div>
+		<button aria-pressed="true" id="live-on" type="button">Turn Announcements On</button>
+		<button aria-pressed="false" id="live-off" type="button">Turn Announcements Off</button>
+	</div>
+</body>
+</html>

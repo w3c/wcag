@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Relying on Silverlight AutomationPeer Behavior to Set AutomationProperties.Name</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Relying on Silverlight AutomationPeer Behavior to Set AutomationProperties.Name</h1><section class="meta"><p class="id">ID: SL20</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html><html lang="en"><head><title>Relying on Silverlight AutomationPeer Behavior to Set AutomationProperties.Name</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></head><body><h1>Relying on Silverlight AutomationPeer Behavior to Set AutomationProperties.Name</h1><section class="meta"><p class="id">ID: SL20</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <ul id="silverlight.applicability.general">
          <li> Microsoft Silverlight, versions 3 and greater </li>
          <li> Silverlight managed programming model and Silverlight XAML </li>
@@ -6,11 +6,11 @@
    </section><section id="description"><h2>Description</h2>
       <p>The objective of this technique is to illustrate how in certain cases,
     				the Silverlight automation peer system can provide an accessibility
-    				framework <code class="prop">Name</code> based on any simple text strings that
+    				framework <code>Name</code> based on any simple text strings that
     				are also presented in the visible user interface as control content. </p>
       <p>The applicability of this technique to SC 1.3.1 is that once promoted,
-    				the <code class="prop">Name</code> becomes the primary information item that
-    				describes the user interface element to accessibiity frameworks and
+    				the <code>Name</code> becomes the primary information item that
+    				describes the user interface element to accessibility frameworks and
     				assistive technologies, and the information is thus immune to any further
     				applications of the Silverlight style system that might change the
     				appearance of the visual text equivalent (styled with color, uses italic
@@ -19,28 +19,28 @@
     				peer promotion behavior provides the Name component of Name, Role,
     				Value. This is related to the description of the term <em>label</em> in
     				SC4.1.2. </p>
-      <p>A default behavior for generating <code class="prop">Name</code> for accessibility
+      <p>A default behavior for generating <code>Name</code> for accessibility
     				frameworks is possible for certain peers of content controls. The content
     				controls that might support a default automation peer behavior include: </p>
       <ul>
          <li> 
-               <code class="obj">TextBlock</code> 
+               <code>TextBlock</code> 
             </li>
          <li> 
-               <code class="obj">ButtonBase</code> derived classes that do not change
-    				the GetNameCore implementation. This includes the <code class="obj">Button</code> class.
-    				In order for the default promotion to work, the <code class="prop">Content</code> of
-    				the button must be set as a plain string or must contain only a <code class="obj">TextBlock</code>;
-    				any compositing such as wrapping in a <code class="obj">Border</code> or
+               <code>ButtonBase</code> derived classes that do not change
+    				the GetNameCore implementation. This includes the <code>Button</code> class.
+    				In order for the default promotion to work, the <code>Content</code> of
+    				the button must be set as a plain string or must contain only a <code>TextBlock</code>;
+    				any compositing such as wrapping in a <code>Border</code> or
     				other container will disable the default promotion. </li>
-         <li> Any other <code class="obj">ContentControl</code> derived class where
-    					the <code class="prop">Content</code> property contains either <code class="obj">TextBlock</code> or
-    					a text-content-only <code class="obj">ButtonBase</code> implementation as
+         <li> Any other <code>ContentControl</code> derived class where
+    					the <code>Content</code> property contains either <code>TextBlock</code> or
+    					a text-content-only <code>ButtonBase</code> implementation as
     					sole content. </li>
       </ul>
-      <p>In these cases the string that sets either <code class="prop">Content</code> (for <code class="obj">ContentControl</code> and <code class="obj">ButtonBase</code>)
-    				or <code class="prop">Text</code> (for <code class="obj">TextBlock</code>) is promoted
-    				as the <code class="prop">AutomationProperties.Name</code> for the control in
+      <p>In these cases the string that sets either <code>Content</code> (for <code>ContentControl</code> and <code>ButtonBase</code>)
+    				or <code>Text</code> (for <code>TextBlock</code>) is promoted
+    				as the <code>AutomationProperties.Name</code> for the control in
     				UI Automation, without any further attribution. The properties in the
     				UI Automation tree are reported to accessibility frameworks (UI Automation,
     				and MSAA through the bridge). The accessibility frameworks reports
@@ -56,7 +56,7 @@
       <p>For cases where there is control compositing in a control rather than
     				simple text, the automation peer typically cannot provide a default
     				simple string, and it may be the application author's responsibility
-    				to set <code class="prop">AutomationProperties.Name</code> explicitly as an
+    				to set <code>AutomationProperties.Name</code> explicitly as an
     				attribute in XAML, or as a property in runtime code. For details, see <a href="#SL30"></a>. </p>
    	<section id="SL20_test-based">
          <h4> Test-based methodology </h4>
@@ -88,18 +88,18 @@
             <p>The following example shows XAML UI only. Logic is not shown, but
     						would typically be added by referencing a Click handler
     						from the XAML. </p>
-            <pre xml:space="preserve"> &lt;Button Height="20" Width="200"&gt;Fire photon torpedoes!&lt;/Button&gt;
+            <pre> &lt;Button Height="20" Width="200"&gt;Fire photon torpedoes!&lt;/Button&gt;
 </pre>
             <p>The following illustration shows the UIAVerify tree view of this
     						simple interface. Note that the internal string "Fire photon
     						torpedoes!"   is being peer-forwarded. This is verified by the
     						Properties view on the right side: the Name property value is "Fire
     						Photon Torpedoes", even though no programmatic Name property
-    						or <code class="prop">AutomationProperties.Name</code> has been applied to
-    						that button that would otherwise have supplied an acccessibility
+    						or <code>AutomationProperties.Name</code> has been applied to
+    						that button that would otherwise have supplied an accessibility
     						framework "Name". </p>
             <figure id="figure-uia-tree">
-               <img src="img/uiatree_simplepeerforwarding.png" />
+               <img src="img/uiatree_simplepeerforwarding.png">
                   
                   <figcaption>UIAVerify tree view</figcaption>
                 
