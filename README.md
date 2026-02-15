@@ -1,9 +1,9 @@
-WCAG (Web Content Accessibility Guidelines) - Branch for production of August 2016 review versions
+WCAG (Web Content Accessibility Guidelines) 2
 ===
 
-Please use this branch as the target for pull requests until July 10, 2016.
-
 This repository is used to develop content for WCAG 2, as well as associated understanding documents and techniques.
+
+See [Onboarding for working in Github](https://www.w3.org/WAI/GL/wiki/Onboarding_for_working_in_Github)
 
 ## Editorial style guide
 
@@ -94,7 +94,7 @@ If you are providing term definitions along with your SC, include them in the re
 <dd>{Definition}</dd>
 ```
 
-The ```dfn``` element tells the script that this is a term and causes special styling and linking features. To link to a term, use an `<a>` element without an `href` attribute; if the link text is the same as the term, the link will be correctly generated. For example, if there is a term `<dfn>web page</dfn>` on the page, a link in the form of `<a>web page</a>` will result in a proper link.
+The `dfn` element tells the script that this is a term and causes special styling and linking features. To link to a term, use an `<a>` element without an `href` attribute; if the link text is the same as the term, the link will be correctly generated. For example, if there is a term `<dfn>web page</dfn>` on the page, a link in the form of `<a>web page</a>` will result in a proper link.
 
 If the link text has a different form from the canonical term, e.g., "web pages" (note the plural), you can provide a hint on the term definition with the `data-lt` attribute. In this example, modify the term to be `<dfn data-lt="web pages">web page</dfn>`. Multiple alternate names for the term can be separated with pipe characters, with no leading or trailing space, e.g., `<dfn data-lt="web pages|page|pages">web page</dfn>`.
 
@@ -105,11 +105,13 @@ There is one Understanding file per success criterion, plus an index:
 * `understanding/index.html` - index page, need to uncomment or add a reference to individual Understanding pages as they are made available
 * `understanding/{version}/*.html` - files for each understanding page, named the same as the success criterion file in the guidelines
 
-Files are populated with a template that provides the expected structure. Leave the template structure in place, and add content as appropriate within the sections. Elements with class="instructions" provide guidance about what content to include in that section; you can remove those elements if you want but don't have to. The template for examples proposes either a bullet list or a series of sub-sections, choose one of those approaches and remove the other from the template. The template for techniques includes sub-sections for "situations", remove that wrapper section if not needed.
+Files are populated with a template that provides the expected structure. Leave the template structure in place, and add content as appropriate within the sections. Elements with class="instructions" provide guidance about what content to include in that section; you can remove those elements if you want but don't have to. The template for examples proposes either a bullet list or a series of sub-sections, choose one of those approaches and remove the other from the template.
+
+Note that associated techniques are no longer defined within each understanding page; they are now defined in the `associatedTechniques` field in `understanding/understanding.11tydata.js`. See [Associated Techniques Data](11ty/README.md#associated-techniques-data) for more information.
 
 Understanding files are referenced from the relevant Success Criterion on the WCAG specification; these links are put in by the script.
 
-The formal publication location for Understanding pages is currently https://www.w3.org/WAI/WCAG21/Understanding/. This content is updated as needed; and may be automated.
+The formal publication location for Understanding pages is currently https://www.w3.org/WAI/WCAG22/Understanding/. This content is updated as needed; and may be automated.
 
 ## Editing Techniques
 
@@ -129,7 +131,7 @@ Techniques should include brief code examples to demonstrate how to author conte
 
 Cross references to other techniques may be provided where useful. Generally they should be provided in the "Related Techniques" section but can be provided elsewhere. Use a relative link to reference the technique, `{Technique ID}` if the same technology, or `../{Technology}/{Technique ID}` otherwise. If the technique is still under development and does not have a formal ID, reference the path to the development file. If the technique is under development in a different branch, use an absolute URI to the rawgit version of the technique.
 
-Cross references to guidelines and success criteria should use a relative URI to the *Understanding* page for that item. Cross references to other parts of the guidelines should use an absolute URI to the guidelines as published on the W3C TR page, a URI beginning with `https://www.w3.org/TR/WCAG21/#`. Note that references to guidelines or success criteria to which techniques relate are added by the generator upon publication based on information in the Understanding documents, so redundant links to those is not normally needed or advised.
+Cross references to guidelines and success criteria should use a relative URI to the *Understanding* page for that item. Cross references to other parts of the guidelines should use an absolute URI to the guidelines as published on the W3C TR page, a URI beginning with `https://www.w3.org/TR/WCAG22/#`. Note that references to guidelines or success criteria to which techniques relate are added by the generator upon publication based on information in the Understanding documents, so redundant links to those is not normally needed or advised.
 
 ### Create Techniques
 
@@ -139,7 +141,7 @@ New techniques should use a filename that is derived from a shortened version of
 
 Each new technique should be created in a new branch. Set-up of the branch and file is automated via the create-techniques.sh script, which can be run with bash. The command line is:
 
-```Shell
+```
 bash create-techniques.sh <technology> <filename> <type> "<title>"
 ```
 
@@ -160,7 +162,7 @@ Once a technique branch and file is set up, populate the content and request rev
 * Populate the template with appropriate content, using other techniques as examples for code formatting choices. Keep the existing structural sections from the template in place.
 * When the technique is ready for review, make a pull request into the main branch.
 * If you wish to reference the draft technique from an Understanding document, use the technique's rawgit URI.
-* After a technique is approved, the chairs will assign it an ID and update links to it in the Undestanding documents. 
+* After a technique is approved, the chairs will assign it an ID and update links to it in the Understanding documents. 
 
 ### Formatting Techniques
 
@@ -187,6 +189,18 @@ obsoleteMessage: |
 
 In cases where entire technologies are obsolete (e.g. Flash and Silverlight), these properties may also be specified at the technique subdirectory level, e.g. via `techniques/flash/flash.11tydata.json`.
 Note that this case specifically requires JSON format, as this is consumed by both Eleventy and additional code in the build process used to assemble techniques data.
+
+## Spell-checking
+
+Both the normative and informative content is checked for spelling errors using [cspell](https://cspell.org/). This check runs on pull requests, and can be run locally via `npm run cspell` (requires [Node.js](https://nodejs.org/); remember to run `npm i` first if you haven't recently).
+
+### Adding valid words
+
+If a word is flagged that should be allowed anywhere it appears, add a line to the top-level `custom-words.txt` file, ideally under the appropriate section in alphabetical order.
+
+If a word is flagged that should be allowed in a specific file, but should be considered incorrect elsewhere, add an entry to the `overrides` list in the top-level `cspell.yml` file. (Several examples already exist for reference.)
+
+Note that both inline code and code blocks are ignored, so if you are using a term that pertains to a specific language/syntax, consider enclosing it in `<code>` or `<pre>` as appropriate.
 
 ## Version-specific Documentation
 
@@ -219,9 +233,8 @@ appended to the "Note" title in applicable versions, and the note will be hidden
 
 ### Techniques Change Log
 
-At the time of writing (November 2024), the Change Log in the Techniques index is identical between WCAG 2.1 and 2.2.
-These have been split out into separate version-specific includes under `_includes/techniques/changelog/*.html`
-for future-proofing in support of building multiple versions of informative documents from the same branch.
+Data for the Techniques Change Log is now generated automatically by a script that reads git history;
+see [Eleventy Usage](11ty/README.md#usage).
 
 ## Working Examples
 

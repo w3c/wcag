@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using Separate Text-Format Text Captions for MediaElement Content</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using Separate Text-Format Text Captions for MediaElement Content</h1><section class="meta"><p class="id">ID: SL28</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html><html lang="en"><head><title>Using Separate Text-Format Text Captions for MediaElement Content</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></head><body><h1>Using Separate Text-Format Text Captions for MediaElement Content</h1><section class="meta"><p class="id">ID: SL28</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <ul id="silverlight.applicability.general">
          <li> Microsoft Silverlight, versions 3 and greater </li>
          <li> Silverlight managed programming model and Silverlight XAML </li>
@@ -6,20 +6,20 @@
    </section><section id="description"><h2>Description</h2>
       <p>The objective of this technique is to use text captioning that comes
     				from a separate text file, synchronize the captions with the media
-    				in a Silverlight <code class="obj">MediaElement</code>, and display the captions
+    				in a Silverlight <code>MediaElement</code>, and display the captions
     				in Silverlight. </p>
       <p>There are two variations of the general theme of implementing Silverlight
     				media player controls to work with external timed text: using built-in
     				capabilities of the Microsoft Expression Encoder tool, and using parsing
     				code that consumes caption as a raw file format and converts that format
-    				into the Silverlight API's <code class="obj">TimelineMarkers</code> representation.
+    				into the Silverlight API's <code>TimelineMarkers</code> representation.
     				This technique primarily addresses how to use the Expression Encoder
     				technique, along with media player templates that are also provided
     				by Expression Encoder or related Silverlight SDKs such as the Smooth
     				Streaming SDK. </p>
-      <p>At a pure architecture level, Silverlight uses the <code class="obj">TimelineMarkers</code> API
+      <p>At a pure architecture level, Silverlight uses the <code>TimelineMarkers</code> API
     				to display caption text at synchronized times. The Expression Encoder
-    				and Expression Blend tools provide a front end to drive the <code class="obj">TimelineMarkers</code> API
+    				and Expression Blend tools provide a front end to drive the <code>TimelineMarkers</code> API
     				for the supported formats. The intention of the architecture is so
     				that Silverlight as a run-time has a base architecture that could potentially
     				use any existing or future timed text format, but the tools for Silverlight
@@ -39,13 +39,13 @@
          <li> Parsing the format into general information items like timings,
     				text, format etc. that are either consumable directly in a Silverlight
     				API, or useful as intermediates </li>
-         <li> Using the timecode information to create <code class="obj">TimelineMarker</code> representations
+         <li> Using the timecode information to create <code>TimelineMarker</code> representations
     					for each timed text entity </li>
-         <li> Associating the <code class="obj">TimelineMarkers</code> with media loaded
+         <li> Associating the <code>TimelineMarkers</code> with media loaded
     						by the player </li>
          <li> Finding a place to store the additional formatting that is conveyed,
     							including the text and any formatting </li>
-         <li> Handling events from <code class="obj">TimelineMarkers</code> in the media
+         <li> Handling events from <code>TimelineMarkers</code> in the media
     								player, in such a way that text and formatting behavior can be retrieved
     								and presented in the Text part of the player UI </li>
       </ul>
@@ -85,13 +85,13 @@
          <p>Rather than build the parsing logic for all these formats into the
     					Silverlight runtime, or choosing just one of these formats to support,
     					the Silverlight design for text captioning at the core level instead
-    					makes the <code class="obj">TimelineMarkers</code> property of a <code class="obj">MediaElement</code> writeable,
-    					independently of the value of <code class="prop">Source</code>. The format of
-    					each <code class="obj">TimelineMarker</code> in the collection is very simple:
+    					makes the <code>TimelineMarkers</code> property of a <code>MediaElement</code> writeable,
+    					independently of the value of <code>Source</code>. The format of
+    					each <code>TimelineMarker</code> in the collection is very simple:
     					a time value expressed in the format, and the text value of the text
-    					for that synchronized caption. The time format for <code class="obj">TimelineMarkers</code> is
+    					for that synchronized caption. The time format for <code>TimelineMarkers</code> is
     					documented as <a href="https://msdn.microsoft.com/en-us/library/system.windows.media.timelinemarker.time%28VS.95%29.aspx">TimelineMarker
-    						reference on MSDN</a>. Converting timed text formats to <code class="obj">TimelineMarkers</code> form
+    						reference on MSDN</a>. Converting timed text formats to <code>TimelineMarkers</code> form
     					as consumed by the Silverlight core can be done by following any of
     					the following application design patterns: </p>
          <ul>
@@ -110,7 +110,7 @@
     							it is possible to adapt the code to support timed text formats that
     							are not directly supported in the Expression Encoder project UI. </li>
             <li> Using a 3rd party media player implementation that also includes
-    								a codebase for processing timed text formats, producing <code class="obj">TimelineMarkers</code>,
+    								a codebase for processing timed text formats, producing <code>TimelineMarkers</code>,
     								and displaying the captions in the player-specific UI. </li>
             <li> Including a library that handles just the format parsing, and
     									using APIs of this library as part of the Silverlight application
@@ -146,7 +146,7 @@
     						output of a sample Expression Encoder project. Note the CaptionSources
     						node in the initparams; that is the information item that informs the
     						Expression Encoder templates where to find the timed text file. </p>
-            <pre xml:space="preserve">     &lt;object data="data:application/x-silverlight," type="application/x-silverlight" width="100%" height="100%"&gt;
+            <pre>     &lt;object data="data:application/x-silverlight," type="application/x-silverlight" width="100%" height="100%"&gt;
        &lt;param name="source" value="MediaPlayerTemplate.xap"/&gt;
        &lt;param name="onerror" value="onSilverlightError" /&gt;
        &lt;param name="autoUpgrade" value="true" /&gt;
@@ -191,8 +191,8 @@
    </pre>
             <p>The templates include a library that handles any parsing requirements
     						for the chosen timed text format, both at the level of getting the
-    						basic text and timing into the <code class="obj">TimelineMarkers</code> used
-    						by the run-time <code class="obj">MediaElement</code>, and for preserving
+    						basic text and timing into the <code>TimelineMarkers</code> used
+    						by the run-time <code>MediaElement</code>, and for preserving
     						a subset of format information that can reasonably be crossmapped
     						from the formatting paradigm of the source (typically HTML/CSS) into
     						the Silverlight text object model of the text element that displays
@@ -229,7 +229,7 @@
     						shown here are the default, but could be in different locations on
     						any given computer or configuration. </p>
             <figure id="figure-expression-encoder-silverlight">
-               <img src="img/encoder_scr.png" />
+               <img src="img/encoder_scr.png">
                   
                   <figcaption>Expression Encoder screenshot</figcaption>
                 
@@ -247,7 +247,7 @@
     						is present in the definition of the media player class. </p>
             <p>
     					The following is example usage XAML: </p>
-            <pre xml:space="preserve"> &lt;local:SimpleMediaPlayerWithTT Width="480" Height="360" CaptionUri="testttml.xml" MediaSourceUri="/xbox.wmv" /&gt;
+            <pre> &lt;local:SimpleMediaPlayerWithTT Width="480" Height="360" CaptionUri="testttml.xml" MediaSourceUri="/xbox.wmv" /&gt;
     					</pre>
             <p>Note the attributes CaptionUri and SimpleMediaPlayerWithTT. Each
     						of these is a custom property of the media control class TTReader.
@@ -258,7 +258,7 @@
             <p>The following is the generic.xaml default template for the media player
     						control. The template is mainly relevant for showing the named elements
     						that are shown in the initialization code. </p>
-            <pre xml:space="preserve">               &lt;ControlTemplate TargetType="local:SimpleMediaPlayerWithTT"&gt;
+            <pre>               &lt;ControlTemplate TargetType="local:SimpleMediaPlayerWithTT"&gt;
                    &lt;Border Background="{TemplateBinding Background}"
                            BorderBrush="{TemplateBinding BorderBrush}"
                            BorderThickness="{TemplateBinding BorderThickness}"&gt;
@@ -283,7 +283,7 @@
                </pre>
             <p>The following is the initialization code that is for general infrastructure. OnApplyTemplate represents
     					the code wiring to the template-generated UI. </p>
-            <pre xml:space="preserve">   public class SimpleMediaPlayerWithTT : Control
+            <pre>   public class SimpleMediaPlayerWithTT : Control
    {
        MediaElement player;
        TextBox captions;
@@ -350,12 +350,12 @@
        </pre>
             <p>The following is the logic that is particular to obtaining the separate
     						caption file. Some of this logic is referenced in the preceding template-specific
-    						event handlers. This example uses the asynchronous <code class="obj">WebClient</code> technique
-    						to request the file result of the <code class="prop">CaptionUri</code>. Make
-    						sure to use <code class="prop">AutoPlay</code>=false or some other means to allow
+    						event handlers. This example uses the asynchronous <code>WebClient</code> technique
+    						to request the file result of the <code>CaptionUri</code>. Make
+    						sure to use <code>AutoPlay</code>=false or some other means to allow
     						time for the caption file to download before attempting to play the
     						media file. </p>
-            <pre xml:space="preserve">       private void LoadCaptions(Uri captionURL)
+            <pre>       private void LoadCaptions(Uri captionURL)
        {
            WebClient wc = new WebClient();   // Web Client to download data files
            if (captionURL != null)
@@ -382,10 +382,10 @@
     						to follow in the implementation is to obtain the necessary text and
     						timing information, and to pass it to a function that might resemble
     						the following code template. This code template takes the raw information,
-    						generates a new <code class="obj">TimelineMarker</code>, and adds it to the
-    						collection assigned to the active <code class="obj">MediaElement</code> as
+    						generates a new <code>TimelineMarker</code>, and adds it to the
+    						collection assigned to the active <code>MediaElement</code> as
     						identified by "player" in the application. </p>
-            <pre xml:space="preserve">       public void AddMediaMarker(string time, string type, string data)
+            <pre>       public void AddMediaMarker(string time, string type, string data)
        {
            TimelineMarker marker = new TimelineMarker();
            marker.Time = new TimeSpan(0,0,(Convert.ToInt32(time.Trim())/1000));

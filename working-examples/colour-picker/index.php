@@ -53,7 +53,7 @@ echo "\t<style type=\"text/css\">body, legend, a{ color: " . htmlspecialchars($s
 	<input type="text" value="<?php echo htmlspecialchars($strForecolour); ?>" id="foreground" name="foreground">
 </div>
 <div>
-	<label for="background">Backgound: <a href="choosecolour.php#background" id="backlink">pick<span class="context"> a foreground colour</span></a></label>
+	<label for="background">Background: <a href="choosecolour.php#background" id="backlink">pick<span class="context"> a foreground colour</span></a></label>
 	<input type="text" value="<?php echo htmlspecialchars($strBackcolour); ?>" id="background" name="background">
 </div>
 </fieldset>

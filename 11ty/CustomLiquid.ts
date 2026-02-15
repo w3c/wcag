@@ -1,3 +1,5 @@
+import { type Options as SlugifyOptions, slugifyWithCounter } from "@sindresorhus/slugify";
+import hljs from "highlight.js";
 import { Liquid, type Template } from "liquidjs";
 import type { LiquidOptions, RenderOptions } from "liquidjs/dist/liquid-options";
 import compact from "lodash-es/compact";
@@ -9,7 +11,6 @@ import type { GlobalData } from "eleventy.config";
 
 import { biblioPattern, getBiblio, getXmlBiblio } from "./biblio";
 import { flattenDom, load, type CheerioAnyNode } from "./cheerio";
-import { generateId } from "./common";
 import { getAcknowledgementsForVersion, type TermsMap } from "./guidelines";
 import { resolveTechniqueIdFromHref, understandingToTechniqueLinkSelector } from "./techniques";
 import { techniqueToUnderstandingLinkSelector } from "./understanding";
@@ -17,7 +18,7 @@ import { techniqueToUnderstandingLinkSelector } from "./understanding";
 const titleSuffix = " | WAI | W3C";
 
 /** Matches index and about pages, traditionally processed differently than individual pages */
-const indexPattern = /(techniques|understanding)\/(index|about)\.html$/;
+const indexPattern = /(techniques|understanding)\/(index|about|changelog)\.html$/;
 const techniquesPattern = /\btechniques\//;
 const understandingPattern = /\bunderstanding\//;
 
@@ -115,10 +116,6 @@ export class CustomLiquid extends Liquid {
         $childList = null;
         $tocList.append(`<li><a href="#${el.attribs.id}">${$(h2El).text()}</a></li>`);
       });
-      $el.find("> h3:first-child").each((_, h3El) => {
-        if (!$childList) $childList = $(`<ol class="toc"></ol>`).appendTo($tocList);
-        $childList.append(`<li><a href="#${el.attribs.id}">${$(h3El).text()}</a></li>`);
-      });
     });
 
     return $.html();
@@ -142,9 +139,8 @@ export class CustomLiquid extends Liquid {
 
       // Clean out elements to be removed
       // (e.g. editors.css & sources.css, and leftover template paragraphs)
-      // NOTE: some paragraphs with the "instructions" class actually have custom content,
-      // but for now this remains consistent with the XSLT process by stripping all of them.
-      $(".remove, section#meta, section.meta").remove();
+      // Note: the link selector accounts for ~40 files forgetting class="remove" on editors.css
+      $(".remove, link[href$='editors.css'], section#meta, section.meta").remove();
 
       if ($("p.instructions").length > 0) {
         console.error(`${filepath} contains a <p class="instructions"> element.\n` +
@@ -155,8 +151,40 @@ export class CustomLiquid extends Liquid {
         throw new Error("Instructions paragraph found; please resolve.")
       }
 
+      // Add charset to pages that forgot it
+      if (!$("meta[charset]").length) $('<meta charset="UTF-8">').prependTo("head");
+
+      const $missingHljsOverrides = $("pre code:not([class])");
+      if ($missingHljsOverrides.length) {
+        $missingHljsOverrides.each((_, el) => {
+          const code = $(el).html()!.replace(/\n/g, "\\n");
+          const excerpt = `${code.slice(0, 40)}${code.length > 40 ? "..." : ""}`;
+          console.log(
+            `${filepath} missing "language-*" or "no-highlight" class on <pre><code> starting with ${excerpt}`
+          );
+        });
+        if (process.env.ELEVENTY_RUN_MODE === "build") {
+          throw new Error(
+            "Please ensure all code blocks have a highlight.js class (language-* or no-highlight)."
+          );
+        }
+      }
+
+      $("pre code[class*='language-']").each((_, el) => {
+        const $el = $(el);
+        // Unescape any HTML entities (which were originally needed for client-side highlight.js)
+        const code = $el.html()!.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+        const language = $el.attr("class")!.replace(/^.*language-(\S+).*$/, "$1");
+        $el.html(hljs.highlight(code, { language }).value);
+        $el.addClass("hljs");
+      });
+
       const prependedIncludes = ["header"];
       const appendedIncludes = ["wai-site-footer", "site-footer"];
+
+      // Include draft banner at top of informative pages for GH Pages builds and PR previews
+      if (process.env.WCAG_MODE === "editors" || (process.env.COMMIT_REF && !process.env.WCAG_MODE))
+        prependedIncludes.unshift("draft-banner");
 
       if (isUnderstanding)
         prependedIncludes.push(
@@ -254,21 +282,9 @@ export class CustomLiquid extends Liquid {
             throw new Error("Incorrectly-nested Benefits section found: please resolve.");
           }
 
-          // XSLT orders resources then techniques last, opposite of source files
-          $("body")
-            .append("\n", $(`body > section#resources`))
-            .append("\n", $(`body > section#techniques`));
-
           // Expand top-level heading and add box for guideline/SC pages
           if ($("section#intent").length) $("h1").replaceWith(generateIncludes("understanding/h1"));
           $("section#intent").before(generateIncludes("understanding/about"));
-
-          $("section#techniques h2").after(generateIncludes("understanding/intro/techniques"));
-          if ($("section#sufficient .situation").length) {
-            $("section#sufficient h3").after(
-              generateIncludes("understanding/intro/sufficient-situation")
-            );
-          }
 
           // Disallow handwritten success-criteria section (should be auto-generated)
           if ($("section#success-criteria").length) {
@@ -281,21 +297,7 @@ export class CustomLiquid extends Liquid {
           // success-criteria template only renders content for guideline (not SC) pages
           $("body").append(generateIncludes("understanding/success-criteria"));
 
-          // Remove unpopulated techniques subsections
-          for (const id of ["sufficient", "advisory", "failure"]) {
-            $(`section#${id}:not(:has(:not(h3)))`).remove();
-          }
-
-          // Normalize subsection names for Guidelines (h2) and/or SC (h3)
-          $("section#sufficient h3").text("Sufficient Techniques");
-          $("section#advisory").find("h2, h3").text("Advisory Techniques");
-          $("section#failure h3").text("Failures");
-
           // Add intro prose to populated sections
-          $("section#advisory")
-            .find("h2, h3")
-            .after(generateIncludes("understanding/intro/advisory"));
-          $("section#failure h3").after(generateIncludes("understanding/intro/failure"));
           $("section#resources h2").after(generateIncludes("understanding/intro/resources"));
 
           // Expand techniques links to always include title
@@ -349,7 +351,7 @@ export class CustomLiquid extends Liquid {
         }
       }
     } else {
-      const $title = $("title");
+      const $title = $("head title");
 
       if (scope.isTechniques) {
         const isObsolete =
@@ -372,9 +374,7 @@ export class CustomLiquid extends Liquid {
           .replace(/^th(e|is) (technique|failure)s? (is )?/i, "")
           .replace(/^general( technique|ly applicable)?(\.|$).*$/i, "all technologies")
           .replace(/^appropriate to use for /i, "")
-          .replace(/^use this technique on /i, "")
-          // Work around redundant sentences (e.g. F105)
-          .replace(/\.\s+This technique relates to Success Criterion [\d\.]+\d[^\.]+\.$/, "");
+          .replace(/^use this technique on /i, "");
         if (customApplicability) {
           const appliesPattern = /^(?:appli(?:es|cable)|relates) (to|when(?:ever)?)\s*/i;
           const rephrasedApplicability = customApplicability.replace(appliesPattern, "");
@@ -438,8 +438,8 @@ export class CustomLiquid extends Liquid {
         if (scope.guideline?.level === "") $("section#techniques").remove();
       }
 
-      // Process defined terms within #render,
-      // where we have access to global data and the about box's HTML
+      // Process defined terms within #render, where we have access to
+      // global data and the rendered HTML for the About box and related Techniques
       const $termLinks = $(termLinkSelector);
       const extractTermName = ($el: CheerioAnyNode) => {
         const name = $el
@@ -638,6 +638,9 @@ export class CustomLiquid extends Liquid {
       } else $("section#references").remove();
     }
 
+    const slugify = slugifyWithCounter();
+    const slugifyOptions: SlugifyOptions = { decamelize: false };
+
     // Allow autogenerating missing top-level section IDs in understanding docs,
     // but don't pick up incorrectly-nested sections in some techniques pages (e.g. H91)
     const sectionSelector = scope.isUnderstanding ? "section" : "section[id]:not(.obsolete)";
@@ -648,7 +651,8 @@ export class CustomLiquid extends Liquid {
       // when we have sections and sidebar skeleton already reordered
       const $tocList = $(".sidebar nav ul");
       $h2Sections.each((_, el) => {
-        if (!el.attribs.id) el.attribs.id = generateId($(el).find(sectionH2Selector).text());
+        if (!el.attribs.id)
+          el.attribs.id = slugify($(el).find(sectionH2Selector).text(), slugifyOptions);
         $("<a></a>")
           .attr("href", `#${el.attribs.id}`)
           .text(normalizeTocLabel($(el).find(sectionH2Selector).text()))
@@ -672,8 +676,13 @@ export class CustomLiquid extends Liquid {
     $(autoIdSectionSelectors.join(", "))
       .filter(`:has(${sectionHeadingSelector})`)
       .each((_, el) => {
-        el.attribs.id = generateId($(el).find(sectionHeadingSelector).text());
+        el.attribs.id = slugify($(el).find(sectionHeadingSelector).text(), slugifyOptions);
       });
+
+    // Also autogenerate IDs for any headings with no dedicated section nor explicit ID
+    $(":is(h3, h4, h5):not(:first-child):not([id])").each((_, el) => {
+      el.attribs.id = slugify($(el).text(), slugifyOptions);
+    });
 
     return stripHtmlComments($.html());
   }

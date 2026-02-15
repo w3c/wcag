@@ -63,7 +63,7 @@ Example phrasing when linking to a term definition:
 In the definition for <a href="{{ trUrl }}#dfn-single-pointer">single pointer</a>
 ```
 
-(Remember that term definition fraagments always begin with `dfn-`.)
+(Remember that term definition fragments always begin with `dfn-`.)
 
 It is possible to reference multiple sections/terms from one erratum,
 so long as all of the links remain front-loaded prior to the erratum's details.
@@ -76,7 +76,7 @@ For example:
 
 - updating the red threshold from ... to ...
 - removing one note and adding two new notes, including ...
-- removing a supernumary "Note" indicator from the first note.
+- removing a supernumerary "Note" indicator from the first note.
 - correcting the word ... to ...
 
 ### GitHub PR or commit

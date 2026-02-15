@@ -1,13 +1,11 @@
-import axios from "axios";
 import type { CheerioAPI } from "cheerio";
 import { glob } from "glob";
-import pick from "lodash-es/pick";
 
 import { readFile } from "fs/promises";
-import { basename, join } from "path";
+import { basename, join, sep } from "path";
 
 import { flattenDomFromFile, load, loadFromFile, type CheerioAnyNode } from "./cheerio";
-import { generateId } from "./common";
+import { fetchText, generateId } from "./common";
 
 export type WcagVersion = "20" | "21" | "22";
 export function assertIsWcagVersion(v: string): asserts v is WcagVersion {
@@ -35,10 +33,12 @@ export const actRules = (
   JSON.parse(await readFile("guidelines/act-mapping.json", "utf8")) as ActMapping
 )["act-rules"];
 
-/** Version-dependent overrides of SC shortcodes for older versions */
-export const scSlugOverrides: Record<string, (version: WcagVersion) => string> = {
-  "target-size-enhanced": (version) => (version < "22" ? "target-size" : "target-size-enhanced"),
-};
+/** Generates version-dependent overrides of SC shortcodes for older versions */
+export const generateScSlugOverrides = (version: WcagVersion): Record<string, string> => ({
+  ...(version < "22" && {
+    "target-size-enhanced": "target-size",
+  }),
+});
 
 /**
  * Flattened object hash, mapping each WCAG 2 SC slug to the earliest WCAG version it applies to.
@@ -46,13 +46,14 @@ export const scSlugOverrides: Record<string, (version: WcagVersion) => string> =
  */
 async function resolveScVersions(version: WcagVersion) {
   const paths = await glob("*/*.html", { cwd: "understanding" });
+  const scSlugOverrides = generateScSlugOverrides(version);
   const map: Record<string, WcagVersion> = {};
 
   for (const path of paths) {
-    const [fileVersion, filename] = path.split("/");
+    const [fileVersion, filename] = path.split(sep);
     assertIsWcagVersion(fileVersion);
     const slug = basename(filename, ".html");
-    map[slug in scSlugOverrides ? scSlugOverrides[slug](version) : slug] = fileVersion;
+    map[slug in scSlugOverrides ? scSlugOverrides[slug] : slug] = fileVersion;
   }
 
   return map;
@@ -253,15 +254,17 @@ const guidelinesCache: Partial<Record<WcagVersion, string>> = {};
 const loadRemoteGuidelines = async (version: WcagVersion, stripRespec = true) => {
   const html =
     guidelinesCache[version] ||
-    (guidelinesCache[version] = (
-      await axios.get(`https://www.w3.org/TR/WCAG${version}/`, { responseType: "text" })
-    ).data);
+    (guidelinesCache[version] = await fetchText(`https://www.w3.org/TR/WCAG${version}/`));
 
   const $ = load(html);
 
   // Remove extra markup from headings, regardless of stripRespec setting,
   // so that names parse consistently
   $("bdi").remove();
+
+  // Remove role="heading" + aria-level from notes/issues, as they cause more harm than good
+  // (especially in context of content reuse via wcag.json export)
+  $("[role='note'] .marker").removeAttr("role").removeAttr("aria-level");
 
   if (!stripRespec) return $;
 
@@ -353,13 +356,13 @@ export const getErrataForVersion = async (version: WcagVersion) => {
     .each((_, el) => {
       const $el = $(el);
       const erratumHtml = $el
-          .html()!
-          // Remove everything before and including the final TR link
-          .replace(/^[\s\S]*href="\{\{\s*\w+\s*\}\}#[\s\S]*?<\/a>,?\s*/, "")
-          // Remove parenthetical github references (still in Liquid syntax)
-          .replace(/\(\{%.*%\}\)\s*$/, "")
-          .replace(/^(\w)/, (_, p1) => p1.toUpperCase());
-      
+        .html()!
+        // Remove everything before and including the final TR link
+        .replace(/^[\s\S]*href="\{\{\s*\w+\s*\}\}#[\s\S]*?<\/a>,?\s*/, "")
+        // Remove parenthetical github references (still in Liquid syntax)
+        .replace(/\(\{%.*%\}\)\s*$/, "")
+        .replace(/^(\w)/, (_, p1) => p1.toUpperCase());
+
       $el.find(aSelector).each((_, aEl) => {
         const $aEl = $(aEl);
         let hash: string | undefined = $aEl.attr("href")!.replace(/^.*#/, "");
