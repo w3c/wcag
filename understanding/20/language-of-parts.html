@@ -128,29 +128,17 @@
   &lt;li&gt;&lt;a href="..." lang="zh-hant"&gt;繁體中文&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</code></pre>
 
-      <h3>Element's content used as accessible name</h3>
-      <p>When the accessible name of an element is computed using its content, assistive technologies may behave differently in how they convey that element to users. 
-         Depending on the navigation mode, screen readers and other assistive technologies may or may not correctly switch pronunciation rules according to the language declared for that portion of content.</p>
-
-      <h4>Single-language element's content used as accessible name</h4>
-      <p>When content is used as the accessible name of an element, the correct language should be specified on that element. This helps assistive technologies pronounce it accurately.</p>
-      <p>The following link may be pronounced in English, mispronouncing "<span lang="es">Español</span>".</p>
+      <h3>Changes of language and computed accessible names</h3>
+      <p>In certain situations, screen readers and other assistive technologies will announce elements using their computed <a href="https://www.w3.org/TR/accname/#dfn-accessible-name">accessible name</a>. Accessible names are "flat" strings, and don't contain any structure or information. Despite being correctly marked up, changes in the natural language of content are not exposed to assistive technologies in these cases. As a result, assistive technologies won't switch pronunciation rules or voice/language packs for the specified language(s). As these problems are caused by limitations of user agents and assistive technologies, they <em>don't fail</em> the requirements of this success criterion.</p>
+      <p>In simple cases, there are ways in which authors can work around these problems. Note that this is <em>not required</em> for this success criterion, but will improve the experience for assistive technology users.</p>
+      <p>As an example, the following link correctly identifies a change of language to Spanish inside its content. This is a valid way to satisfy this success criterion. Assuming that the main language of the HTML document is English, the link may be announced by assistive technologies using English pronunciation in certain situations – for instance, when presenting users with the list of links in the current page.</p>
       <pre><code class="language-html">&lt;a href="/es/"&gt;&lt;span lang="es"&gt;Español&lt;/span&gt;&lt;/a&gt;</code></pre>
-      <p>The following version correctly applies the Spanish language to the link element, ensuring that "<span lang="es">Español</span>" can be correctly pronounced in Spanish.</p>
+      <p>By moving the language declaration to the link element itself, the content is more likely to be correctly announced by assistive technologies using an appropriate Spanish pronunciation.</p>
       <pre><code class="language-html">&lt;a href="/es/" lang="es"&gt;&lt;span&gt;Español&lt;/span&gt;&lt;/a&gt;</code></pre>
-      <div class="note">
-         <p>Although marking only the <code>span</code> with a different language (as in the first example) is theoretically correct, user agents and assistive technologies may present the element to the user using the inherited English language, which can result in mispronunciation of "<span lang="es">Español</span>". 
-            Since the <code>span</code> is the sole content of the link and contributes entirely to its accessible name, setting the language on the parent 
-            <code>a</code> element (as in the second example) is more reliable and ensures that screen readers pronounce the content correctly.</p>
-      </div>
-
-      <h4>Multi-language element's content used as accessible name</h4>
-      <p>When content includes multiple languages, any child elements that use a different language must have their own <code>lang</code> attribute.</p>
-      <p>This example assumes the page's default language is English. The main text of the link is in English, but it includes the original Italian title of a poem. The Italian portion is correctly marked with <code>lang="it"</code>.</p>
+      <p>However, there are more complex situations, where the content includes parts in multiple different languages.</p>
+      <p>The following example assumes the page's default language is English. The main text of the link is in English, but it includes the original Italian title of a poem. The Italian portion is correctly marked with <code>lang="it"</code>.</p>
       <pre><code class="language-html">&lt;a href="/la-divina-commedia.html"&gt;Read this book: &lt;span lang="it"&gt;La Divina Commedia&lt;/span&gt;&lt;/a&gt;</code></pre>
-      <div class="note">
-         <p>Since the accessible name of this link consists in multiple languages, it is required to mark each portion with the appropriate <code>lang</code>, either inherited or set explicitly. That said, if assistive technologies present the content using only the inherited language (and mispronounce some parts), this does not constitute an accessibility violation.</p>
-      </div>
+      <p>In these cases, there are unfortunately no work-arounds to ensure that assistive technologies correctly announce the link when they only use the element's accessible name. While this example is valid, and does satisfy the requirements of this success criterion, it may nonetheless not be announced correctly by assistive technologies, and it's outside of the author's control to fix this.</p>
 
          <h3>"Podcast" used in a French sentence</h3>
          <p>Because "podcast" is part of the vernacular of the immediately surrounding text in the following excerpt, "<span lang="fr">À l'occasion de l'exposition "Energie éternelle. 1500 ans d'art indien", le Palais des Beaux-Arts de Bruxelles a lancé son premier podcast. Vous pouvez télécharger ce podcast au format M4A et MP3</span>", no indication of language change is required.</p>
