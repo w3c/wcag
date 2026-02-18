@@ -44,6 +44,12 @@
          determined.
       </p>
 
+      <div class="note">
+         <p>In certain situations or modes of operation, screen readers and other assistive technologies will announce an element using its computed <a href="https://www.w3.org/TR/accname/#dfn-accessible-name">accessible name</a>. As an example, this currently happens in most commonly available screen readers when accessing the isolated list of links in the current page.</p>
+         <p>Accessible names are "flat" strings, and don't contain any structure or information. Despite being correctly denoted in the underlying code or markup, changes in the natural language of content are not exposed to assistive technologies in these cases. As a result, assistive technologies won't switch pronunciation rules or voice/language packs for the specified language(s). While there may be workarounds for certain simple cases – such as moving the `lang` language attribute to the element itself, rather than indicating a change of language on a child nodes inside the element – these may not work in all user agent/assistive technology combinations.</p>
+         <p>As these problems are caused by limitations of user agents and assistive technologies, and are outside of an author's control, they <em>don't fail</em> the requirements of this success criterion. When evaluating content against this success criterion, auditors can therefore not solely rely on the spoken output from assistive technologies, but must verify whether or not changes in natural language have been identified correctly in the underlying code or markup.</p>
+      </div>
+
       <p>Individual words or phrases in one language can become part of another language. For
          example, "rendezvous" is a French word that has been adopted in English, appears in
          English dictionaries, and is properly pronounced by English screen readers. Hence
@@ -130,22 +136,12 @@
 
       <h3>"Podcast" used in a French sentence</h3>
       <p>Because "podcast" is part of the vernacular of the immediately surrounding text in the following excerpt, "<span lang="fr">À l'occasion de l'exposition "Energie éternelle. 1500 ans d'art indien", le Palais des Beaux-Arts de Bruxelles a lancé son premier podcast. Vous pouvez télécharger ce podcast au format M4A et MP3</span>", no indication of language change is required.</p>
-
-      <h3>Changes of language and computed accessible names</h3>
-      <p>In certain situations, screen readers and other assistive technologies will announce elements using their computed <a href="https://www.w3.org/TR/accname/#dfn-accessible-name">accessible name</a>. Accessible names are "flat" strings, and don't contain any structure or information. Despite being correctly marked up, changes in the natural language of content are not exposed to assistive technologies in these cases. As a result, assistive technologies won't switch pronunciation rules or voice/language packs for the specified language(s). As these problems are caused by limitations of user agents and assistive technologies, they <em>don't fail</em> the requirements of this success criterion.</p>
-      <p>In simple cases, there are ways in which authors can work around these problems. Note that this is <em>not required</em> for this success criterion, but will improve the experience for assistive technology users.</p>
-      <p>As an example, the following link correctly identifies a change of language to Spanish inside its content. This is a valid way to satisfy this success criterion. Assuming that the main language of the HTML document is English, the link may be announced by assistive technologies using English pronunciation in certain situations – for instance, when presenting users with the list of links in the current page.</p>
-      <pre><code class="language-html">&lt;a href="/es/"&gt;&lt;span lang="es"&gt;Español&lt;/span&gt;&lt;/a&gt;</code></pre>
-      <p>By moving the language declaration to the link element itself, the content is more likely to be correctly announced by assistive technologies using an appropriate Spanish pronunciation.</p>
-      <pre><code class="language-html">&lt;a href="/es/" lang="es"&gt;&lt;span&gt;Español&lt;/span&gt;&lt;/a&gt;</code></pre>
-      <p>However, there are more complex situations, where the content includes parts in multiple different languages.</p>
-      <p>The following example assumes the page's default language is English. The main text of the link is in English, but it includes the original Italian title of a poem. The Italian portion is correctly marked with <code>lang="it"</code>.</p>
-      <pre><code class="language-html">&lt;a href="/la-divina-commedia.html"&gt;Read this book: &lt;span lang="it"&gt;La Divina Commedia&lt;/span&gt;&lt;/a&gt;</code></pre>
-      <p>A similar problem can occur when the content of an element is in one language, but the element's attribute values are in another. The following example assumes that the page's default content is in English. The link's <code class="language-html">title</code> attribute is in English, but the content of the link is in Italian. In this case, it would not be possible to move the <code class="language-html">lang</code> attribute to the link element itself (as in the simple example above).</p>
-      <pre><code class="language-html">&lt;a title="Opens in a new tab" href="/la-divina-commedia.html" target="_blank"&gt;&lt;span lang="it"&gt;La Divina Commedia&lt;/span&gt;&lt;/a&gt;</code></pre>
-      <p>In these cases, there are unfortunately no workarounds to ensure that assistive technologies correctly announce the content when they only use the element's accessible name. While these more complex examples are valid, and do satisfy the requirements of this success criterion, they may nonetheless not be announced correctly by assistive technologies, and it's outside of the author's control to fix this.</p>
-
    </section>
+
+      <h3>The element's content and attribute values are in different languages</h3>
+      <p>This example assumes that the page's default content is in English. The link's <code>title</code> attribute is in English, but the nested <code>span</code> element that contains the word <span lang="es">Español</span> has a <code>lang="es"</code> attribute.</p>
+
+      <pre><code class="language-html">&lt;a title="Spanish" href="qa-html-language-declarations-es.html"&gt;&lt;span lang="es"&gt;Español&lt;/span&gt;&lt;/a&gt;</code></pre>
 
    <section id="resources">
       <h2>Resources for Language of Parts</h2>
