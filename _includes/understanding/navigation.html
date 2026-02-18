@@ -1,0 +1,50 @@
+{% comment %}
+Navigation used for individual Understanding pages.
+See _includes/header.html for expected input notes
+{% endcomment %}
+<div class="default-grid nav-container nav-page-specific">
+  <div class="nav">
+    <nav class="nav standalone-resource-pager" aria-label="{{ headerLabel }}">
+      <ul>
+        <li class="nav__item">
+          {% if page.fileSlug == "understanding" %}
+          <a href="." class="active" aria-current="page">All {{ headerLabel }}</a>
+          {% else %}
+          <a href=".">All {{ headerLabel }}</a>
+          {% endif %}
+        </li>
+        {% # nav data is set up in eleventy.config.ts via 11ty/guidelines.ts %}
+        {% if nav.parent %}
+        <li class="nav__item">
+          <a href="{{ nav.parent.id }}">
+            <svg alt="up" focusable="false" aria-hidden="true" class="icon-arrow-up-thin pager-icon" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"></path>
+            </svg>
+            {{ nav.parent.type }}: {{ nav.parent.name }}
+          </a>
+        </li>
+        {% endif %}
+        {% if nav.previous %}
+        <li class="nav__item">
+          <a href="{{ nav.previous.id }}">
+            <svg focusable="false" aria-hidden="true" class="icon-arrow-left-thin pager-icon" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"></path>
+            </svg>
+            Previous {{ nav.previous.type }}: {{ nav.previous.name }}
+          </a>
+        </li>
+        {% endif %}
+        {% if nav.next %}
+        <li class="nav__item">
+          <a href="{{ nav.next.id }}">
+            Next {{ nav.next.type }}: {{ nav.next.name }}
+            <svg focusable="false" aria-hidden="true" class="icon-arrow-right-thin pager-icon" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"></path>
+            </svg>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>

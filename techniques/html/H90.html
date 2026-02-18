@@ -1,93 +1,119 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Indicating required form controls using label or legend</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Indicating required form controls using label or legend</h1><section class="meta"><p class="id">ID: H90</p><p class="technology">Technology: html</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
-      <p>HTML and XHTML controls that use external labels.</p>
-   </section><section id="description"><h2>Description</h2>
-      <p>The objective of this technique is to provide a clear indication that a specific form control in a Web application or form is required for successful data submission. A symbol or text indicating that the control is required is programmatically associated with the field by using the <code class="el">label</code> element, or the <code class="el">legend</code> for groups of controls associated via <code class="el">fieldset</code>. If a symbol is used, the user is advised of its meaning before the first use. </p>
-   </section><section id="examples"><h2>Examples</h2>
-      <section class="example">
-         <h3>Using text to indicate required state</h3>
-         
-            <p>The text field in the example below has the explicit label of "First name (required):". The <code class="el">label</code> element's  <code class="att">for</code> attribute matches the <code class="att">id</code> attribute of the <code class="el">input</code> element and the <code class="el">label</code> text indicates that the control is required. </p>
-         
-         <pre xml:space="preserve">
-&lt;label for="firstname"&gt;First name (required):&lt;/label&gt; 
-&lt;input type="text" name="firstname" id="firstname" /&gt;
-</pre>
-         
-            <div class="note">
-               <p>Some authors abbreviate "required" to "req." but there is anecdotal evidence that suggests that this abbreviation is confusing. </p>
-            </div>
-         
-      </section>
-      <section class="example">
-         <h3>Using an asterisk to indicate required state</h3>
-         
-            <p>The text field in the example below has an explicit label that includes an asterisk to indicate the control is required. It is important that the asterisk meaning is defined at the start of the form. In this example, the asterisk is contained within a <code class="el">abbr</code> element to allow for the asterisk character to be styled so that it is larger than the default asterisk character, since the asterisk character can be difficult to see for those with impaired vision. </p>
-         
-         <pre xml:space="preserve">
-CSS:
-.req {font-size: 150%} 
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Indicating required form controls using label or legend</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove">
+	</head>
+	<body>
+		<h1>Indicating required form controls using <code>label</code> or <code>legend</code></h1>
+		<section class="meta">
+			<p class="id">ID: H90</p>
+			<p class="technology">Technology: html</p>
+			<p class="type">Type: Technique</p>
+		</section>
+		<section id="applicability">
+			<h2>When to Use</h2>
+      <p><abbr title="HyperText Markup Language">HTML</abbr> controls that use external labels.</p>
+		</section>
+		<section id="description">
+			<h2>Description</h2>
+      <p>The objective of this technique is to provide a clear indication that a specific form control in a web application or form is required for successful data submission. A symbol or text indicating that the control is required is programmatically associated with the field by using the <code>label</code> element, or the <code>legend</code> for groups of controls associated via <code>fieldset</code>. If a symbol is used, the user is advised of its meaning before the first use. </p>
+   </section>
+	 <section id="examples">
+		<h2>Examples</h2>
+		<section class="example">
+			<h3>Using text to indicate required state</h3>
+			<p>The text field in the example below has the explicit label of "First name (required):". The <code>label</code> element's  <code>for</code> attribute matches the <code>id</code> attribute of the <code>input</code> element and the <code>label</code> text indicates that the control is required.</p>
+<pre><code class="language-html">&lt;label for="firstname"&gt;First name (required):&lt;/label&gt; 
+&lt;input id="firstname" name="firstname" type="text"&gt;</code></pre>
+      <div class="note">
+				<p>Some authors abbreviate "required" to "req.". There is anecdotal evidence that suggests this abbreviation is confusing.</p>
+			</div>
+		</section>
+    <section class="example">
+			<h3>Using an asterisk to indicate required state</h3>
+			<p>The text field in the example below has an explicit label that includes an asterisk to indicate the control is required. It is important that the asterisk meaning is defined at the start of the form. In this example, the asterisk is contained within a <code>abbr</code> element to allow for the asterisk character to be styled so that it is larger than the default asterisk character, since the asterisk character can be difficult to see for those with impaired vision.</p>
+			<section>
+				<h4>The CSS</h4>
+				<pre><code class="language-css">.req {font-size: 150%}</code></pre>
+			</section>
+		    <section>
+				<h4>The HTML</h4>
+<pre><code class="language-html">&lt;p&gt;Required fields are marked with an asterisk
+   (&lt;abbr class="req" title="required"&gt;*&lt;/abbr&gt;).&lt;/p&gt;
+&lt;form action="https://example.com" method="post"&gt;
+  &lt;label for="firstname"&gt;First name &lt;abbr class="req" title="required"&gt;*&lt;/abbr&gt;:&lt;/label&gt; 
+  &lt;input id="firstname" name="firstname" type="text"&gt;
+  ...
+&lt;/form&gt;</code></pre>
+			</section>
+    </section>
+    <section class="example">
+			<h3>Using an image to indicate required state</h3>
+			<p>The text field in the example below has an explicit label that includes an image to indicate the control is required. It is important that the image meaning is defined at the start of the form.</p>
+<pre><code class="language-html">&lt;p&gt;&lt;img alt="required" src="req_img.gif"&gt; indicates that the information is required&lt;/p&gt;
+&lt;form action="https://www.example.com" method="post"&gt;
+  &lt;label for="firstname"&gt;First name &lt;img alt="required" src="req_img.gif"&gt;:&lt;/label&gt; 
+  &lt;input id="firstname" name="firstname" type="text"&gt;
+  ...
+&lt;/form&gt;</code></pre>
+    </section>
+    <section class="example">
+			<h3>Indicating required state for groups of radio buttons or check box controls</h3>
+			<p>Radio buttons and checkboxes are treated differently than other interactive controls since individual radio buttons and checkboxes are not required but indicates that a response for the group is required. The methods used in examples 1-3 apply to radio buttons and checkboxes, but the indication of the required state should be placed in the <code>legend</code> element instead of the <code>label</code> element. </p>
 
-HTML:
-
-&lt;p&gt; Required fields are marked with an asterisk (&lt;abbr class="req" title="required"&gt;*&lt;/abbr&gt;).&lt;/p&gt;
-&lt;form action="http://www.test.com" method="post"&gt;
-&lt;label for="firstname"&gt;First name &lt;abbr class="req" title="required"&gt;*&lt;/abbr&gt;:&lt;/label&gt; 
-&lt;input type="text" name="firstname" id="firstname" /&gt;
-</pre>
-      </section>
-      <section class="example">
-         <h3>Using an image to indicate required state</h3>
-         
-            <p>The text field in the example below has an explicit label that includes an image to indicate the control is required. It is important that the image meaning is defined at the start of the form.</p>
-         
-         <pre xml:space="preserve">
-&lt;p&gt;&lt;img src="req_img.gif" alt="Required Control" /&gt; indicates that the form control is required&lt;/p&gt;
-&lt;form action="http://www.test.com" method="post"&gt;
-&lt;label for="firstname"&gt;First name &lt;img src="req_img.gif" alt="Required Control" /&gt;:&lt;/label&gt; 
-&lt;input type="text" name="firstname" id="firstname" /&gt;
-...
-</pre>
-      </section>
-      <section class="example">
-         <h3>Indicating required state for groups of radio buttons or check box controls</h3>
-         
-            <p>Radio buttons and checkboxes are treated differently than other interactive controls since individual radio buttons and checkboxes are not required but indicates that a response for the group is required. The methods used in examples 1-3 apply to radio buttons and checkboxes, but the indication of the required state should be placed in the <code class="el">legend</code> element instead of the <code class="el">label</code> element. </p>
-         
-         <pre xml:space="preserve">
-&lt;fieldset&gt;
-&lt;legend&gt;I am interested in the following (Required):&lt;/legend&gt;
-&lt;input type="checkbox" id="photo" name="interests" value="ph"&gt;
-&lt;label for="photo"&gt;Photography&lt;/label&gt;&lt;/br&gt;
-&lt;input type="checkbox" id="watercol" name="interests" checked="checked" value="wa"&gt;
-&lt;label for="watercol"&gt;Watercolor&lt;/label&gt;&lt;/br&gt;
-&lt;input type="checkbox" id="acrylic" name="interests" checked="checked" value="ac"&gt;
-&lt;label for="acrylic"&gt;Acrylic&lt;/label&gt;
-…
-&lt;/fieldset&gt;
-</pre>
-      </section>
-   </section><section id="tests"><h2>Tests</h2>
-      <section class="procedure"><h3>Procedure</h3>
-         <ol>
-            <li>For each required form control, check that the required status is indicated in the form control's <code class="el">label</code> or <code class="el">legend</code>. </li>
-            <li>For each indicator of required status that is not provided in text, check that the meaning of the indicator is explained before the form control that uses it. </li>
-         </ol>
-      </section>
-      <section class="results"><h3>Expected Results</h3>
-         <ul>
-            <li>All checks above are true.</li>
-         </ul>
-      </section>
-   </section><section id="related"><h2>Related Techniques</h2><ul>
-      <li><a href="../html/H44">H44</a></li>
-      <li><a href="../html/H65">H65</a></li>
-      <li><a href="../html/H71">H71</a></li>
-   </ul></section><section id="resources"><h2>Resources</h2>
-      
-         <ul>
-            <li>
-									         <a href="https://www.w3.org/TR/html401/interact/forms.html#h-17.9">HTML 4.01 form labels</a>
-								       </li>
-         </ul>
-      
-   </section></body></html>
+<pre><code class="language-html">&lt;fieldset&gt;
+  &lt;legend&gt;I am interested in the following (Required):&lt;/legend&gt;
+  &lt;div&gt;
+    &lt;input id="photo" name="interests" type="checkbox" value="ph"&gt;
+    &lt;label for="photo"&gt;Photography&lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;input checked id="watercol" name="interests" type="checkbox" value="wa"&gt;
+    &lt;label for="watercol"&gt;Watercolor&lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;input checked id="acrylic" name="interests" type="checkbox" value="ac"&gt;
+    &lt;label for="acrylic"&gt;Acrylic&lt;/label&gt;
+  &lt;/div&gt;
+  ...
+&lt;/fieldset&gt;</code></pre>
+  	</section>
+	</section>
+	<section id="tests">
+		<h2>Tests</h2>
+		<section class="procedure">
+			<h3>Procedure</h3>
+			<ol>
+				<li>For each required form control, check that the required status is indicated in the form control's <code>label</code> or <code>legend</code>.</li>
+				<li>For each indicator of required status that is not provided in text, check that the meaning of the indicator is explained before the form control that uses it.</li>
+			</ol>
+		</section>
+		<section class="results">
+			<h3>Expected Results</h3>
+			<ul>
+				<li>All checks above are true.</li>
+			</ul>
+		</section>
+	</section>
+	<section id="related">
+		<h2>Related Techniques</h2>
+		<ul>
+			<li><a href="../html/H44">H44</a></li>
+			<li><a href="../html/H65">H65</a></li>
+			<li><a href="../html/H71">H71</a></li>
+		</ul>
+	</section>
+	<section id="resources">
+		<h2>Resources</h2>
+		<ul>
+			<li>
+				<a href="https://html.spec.whatwg.org/multipage/forms.html#the-label-element">HTML - <code>label</code> element</a>
+			</li>
+			<li>
+				<a href="https://html.spec.whatwg.org/multipage/form-elements.html#the-legend-element">HTML - <code>legend</code> element</a>
+			</li>
+    </ul>
+	</section>
+</body>
+</html>

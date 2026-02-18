@@ -1,0 +1,34 @@
+{% if technique.obsoleteSince <= version %}
+<section class="box obsolete-message">
+  <h2 class="box-h">Obsolete</h2>
+  {% if technique.obsoleteMessage %}<div class="box-i">{{ technique.obsoleteMessage }}</div>{% endif %}
+</section>
+{% endif %}
+{% sectionbox "technique" "About this Technique" %}
+{% include "techniques/applicability.html" %}
+{% case technique.technology %}
+{% when "aria" %}
+  <p>This technique applies to content using <a href="https://www.w3.org/TR/wai-aria/">WAI-<abbr title="Accessible Rich Internet Applications">ARIA</abbr></a>.</p>
+{% when "client-side-script" %}
+  <p>This technique applies to content using client-side script (JavaScript, ECMAScript).</p>
+{% when "css" %}
+  <p>This technique applies to content using technologies that support <a href="https://www.w3.org/TR/CSS/"><abbr title="Cascading Style Sheets">CSS</abbr></a>.</p>
+{% # failures intentionally has no applicability statement %}
+{% when "flash" %}
+  <p>This technique applies to content implemented in Adobe Flash.</p>
+{% when "general" %}
+  <p>This technique applies to content implemented in any technology.</p>
+{% when "html" %}
+  <p>This technique applies to content structured in <a href="https://www.w3.org/TR/html/"><abbr title="HyperText Markup Language">HTML</abbr></a>.</p>
+{% when "pdf" %}
+  <p>This technique applies to content implemented in Adobe Tagged PDF.</p>
+{% when "server-side-script" %}
+  <p>This technique applies to content modified by the server before being sent to the user.</p>
+{% when "silverlight" %}
+  <p>This technique applies to content implemented in Microsoft Silverlight.</p>
+{% when "smil" %}
+  <p>This technique applies to content implemented in <a href="https://www.w3.org/TR/SMIL/">Synchronized Multimedia Integration Language (SMIL)</a>.</p>
+{% when "text" %}
+  <p>This technique applies to content implemented in plain text, including Markdown and similar formats, without use of a structure technology.</p>
+{% endcase %}
+{% endsectionbox %}
