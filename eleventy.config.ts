@@ -378,7 +378,7 @@ export default async function (eleventyConfig: any) {
           const urlBase = this.page.filePathStem.startsWith("/understanding/")
             ? ""
             : baseUrls.understanding;
-          const label = `${guideline.num}: ${guideline.name}`;
+          const label = `${guideline.num} ${guideline.name}`;
           return `<a href="${urlBase}${id}">${label}</a>`;
         })
         .join("\nand\n");
