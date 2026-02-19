@@ -15,22 +15,24 @@
 				<h2>Example</h2>
 				<p>This example simulates the progress of uploading a document. The progress of the upload is communicated visually to the user with a progress bar, accompanied by visible text underneath. The visible text is contained in an element with an <code>aria-live="polite"</code> attribute. This attribute tells screen readers to announce updates made to the content of the element.</p>
 
-				<p class="note">The following example uses an element with a <code>role="progressbar">. </code>The <code>aria-valuemin</code>, <code>aria-valuemax</code>, and <code>aria-valuenow</code> values on the <code>progressbar</code> component programmatically communicate the progress of the upload, but because the <code>progressbar</code> role is not a live region, screen readers won't announce updates to those values as they change. The use of an ARIA progress bar is not actually important for this technique – what matters is the visible text that acts as the actual status message.</p>
+				<p class="note">The following example uses an element with a <code>role="progressbar"</code>attribute. The <code>aria-valuemin</code>, <code>aria-valuemax</code>, and <code>aria-valuenow</code> values on the <code>progressbar</code> component programmatically communicate the progress of the upload, but because the <code>progressbar</code> role is not a live region, screen readers won't announce updates to those values as they change. The use of an ARIA progress bar is not actually important for this technique – what matters is the progress of the bar being a status message.</p>
 
-				<p>The following code can also be seen as a <a href="../../working-examples/aria-progressbar-live-region/">working example</a>.</p>
+				<p>The following code can also be seen as a <a href="../../working-examples/aria-progressbar-status-message/">working example</a>.</p>
 
-<pre><code class="language-html">&lt;p id=&quot;upload-progress-label&quot;&gt;Uploading document: &lt;strong&gt;report.pdf&lt;/strong&gt;&lt;/p&gt;
-  &lt;div 
-    aria-describedby=&quot;progress-text&quot;
+<pre><code class="language-html">&lt;div class=&quot;upload-container&quot;&gt;
+  &lt;p id=&quot;upload-progress-label&quot;&gt;Uploading document: &lt;strong&gt;report.pdf&lt;/strong&gt;&lt;/p&gt;
+  &lt;div
     aria-labelledby=&quot;upload-progress-label&quot;
+    role=&quot;progressbar&quot;
+    aria-describedby=&quot;progress-text&quot;
+    aria-valuemin=&quot;0&quot;
     aria-valuemax=&quot;100&quot;
-    aria-valuemin=&quot;0&quot; 
-    aria-valuenow=&quot;0&quot; 
-    id=&quot;upload-progress&quot;
-    role=&quot;progressbar&quot;&gt;
-&lt;/div&gt;	
-&lt;p id=&quot;progress-text&quot; aria-live=&quot;polite&quot;&gt;0% complete&lt;/p&gt;</code></pre>
-    </section>
+    aria-valuenow=&quot;0&quot;
+    id=&quot;upload-progress&quot;&gt;&lt;/div&gt;
+    &lt;button id=&quot;start-upload&quot; type=&quot;button&quot;&gt;Start Upload&lt;/button&gt;
+    &lt;div aria-live=&quot;polite&quot; class=&quot;visually-hidden&quot; id=&quot;progress-text&quot;&gt;0% complete&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+		</section>
 
 		<section id="tests">
 			<h2>Tests</h2>
