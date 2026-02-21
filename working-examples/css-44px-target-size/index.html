@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Working example - Using CSS to ensure sufficient target size</title>	
+<style>
+	:root {
+		font-size: 100%;
+		box-sizing: border-box;
+	}
+
+	*,*::after,*::before {
+		box-sizing: inherit;
+	}
+
+	body {
+		background:#fff;
+		color:#000;
+		font: 1rem/1.5 system-ui;
+	}
+
+	.visually-hidden {
+		clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+	.pagination-list{
+		display: flex;
+		flex-wrap: wrap;
+		gap:0.5em;
+		list-style: none;
+		padding:0;        
+	}
+
+	.pagination-list li{
+		background:#B9D6E5;
+		border:1px solid #183544;
+	}
+
+	.pagination-list a{
+		align-items:center;
+		display:flex;
+		color:#183544;
+		justify-content: center;
+		min-block-size:44px;
+		min-inline-size:44px;
+		padding:0.5em;
+		text-decoration: none;
+		transition: background 0.2s ease-in-out;
+		&:focus-visible{
+			outline:2px solid #653171;
+			outline-offset:-4px;
+		}
+	}
+
+	.pagination-list a[href]:hover{
+		background: #653171;
+		color:#fff;
+	}
+
+	a:not([href]){
+		color:#5b5b3d;
+	}
+
+	.pagination-list [aria-current=page]{
+		background: #183544;
+		color:#fff;
+	}
+
+	.navigation-controls{
+		display: flex;
+		gap:4px;
+		line-height: 0;
+		list-style: none;
+		padding: 0;
+	}
+
+	.navigation-controls a{
+		display:inline-block;
+		line-height: 0;
+	}
+
+	@media (forced-colors:active){
+		[class^=pagination-list--] [aria-current=page]{
+			background-color: selecteditem;
+			color:selecteditemtext;
+		}
+	}
+	</style>
+	
+</head>
+
+<body>
+	
+	<h1>Working example of using CSS to ensure targets are at least 44 by 44 CSS pixels</h1>
+	
+	<p>This example relates to technique <a href="../../techniques/css/technique-using-css-to-ensure-targets-are-at-least-44-by-44-css-pixels.html">CXXXXXX</a>.</p>
+
+	<nav aria-label="pagination">
+		<ol class="pagination-list">
+			<li><a>previous</a></li>
+			<li><a aria-current="page"><span class="visually-hidden">page </span>1</a></li>
+			<li><a href="https://example.com/page-2"><span class="visually-hidden">page </span>2</a></li>
+			<li><a href="https://example.com/page-3"><span class="visually-hidden">page </span>3</a></li>
+			<li><a href="https://example.com/page-4"><span class="visually-hidden">page </span>4</a></li>
+			<li><a href="https://example.com/page-5"><span class="visually-hidden">page </span>5</a></li>
+			<li><a href="https://example.com/page-2">next</a></li>
+		</ol>
+	</nav>
+
+</body>
+</html>

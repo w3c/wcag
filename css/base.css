@@ -25,20 +25,6 @@ main {
 	;
 }
 
-.minimal-header {
-	-ms-grid-column: 2;
-	-ms-grid-column-span: 8;
-	-ms-grid-row: 1;
-	grid-column: 2/10;
-}
-
-.minimal-header-name a {
-  text-decoration: none;
-}
-.minimal-header-name a:hover, .minimal-header-name a:focus {
-  text-decoration: underline;
-}
-
 .main-content {
 	-ms-grid-column: 2;
 	-ms-grid-column-span: 6;
@@ -129,19 +115,6 @@ dt div {
 	padding-top: 0;
 }
 
-.minimal-header-container {
-	background-color: #005a9c;
-	background-color: var(--w3c-classic);
-	color: #fff;
-	color: var(--pure-white);
-}
-.minimal-header-logo > a {
-	display: flex;
-}
-.minimal-header-name > a {
-	color: inherit;
-}
-
 .note {
 	padding: 0em 1em;
   margin-bottom: 1em;
@@ -191,50 +164,7 @@ text-decoration: none;
 padding: 1.75em 0 0 0;
 }
 
-.minimal-header-logo img {
-margin: 1px 0 1px 0;
-}
-.minimal-header-logo svg {
-margin: 0.75em 0 0.75em 0.5em;
-}
 
-#site-header.minimal-header {
-margin: 1.2em 0;
-align-items: stretch;
-}
-
-#site-header.minimal-header .minimal-header-name, 
-#site-header.minimal-header .minimal-header-subtitle, 
-#site-header.minimal-header .minimal-header-link 
-{
-display: flex;
-flex-direction: column;
-justify-content: center;
-}
-
-.minimal-header-name {
-flex: width 0 0;
-}
-
-.minimal-header-subtitle,
-.minimal-header-link {
-border-left: 1px solid var(--gold);
-padding-left: 8px;
-margin-left: 18px;
-display: block;
-font-size: 80%;
-flex: 1 0 0;
-}
-
-.minimal-header-subtitle {
-font-style: italic;
-}
-
-.minimal-header-link {
-text-decoration: underline !important;
-font-weight: normal;
-margin-right: 16px;
-}
 
 .nav-container {
 margin-bottom: 0;
@@ -411,7 +341,7 @@ font-size: 95%;
 .standalone-resource-about a,
 .standalone-resource-pager a,
 .standalone-resource-about span,
-.standalone-resource-pager span 
+.standalone-resource-pager span
 {
 margin-left:.8em;
 margin-right:.8em;
@@ -430,6 +360,16 @@ figure video
   margin-left: 2em;
 }
 
+/* override WAI blockquote styles */
+
+blockquote p:first-of-type::before,
+blockquote p:last-of-type::after {
+  content: "";
+}
+[dir="ltr"] blockquote p:first-of-type::before {
+  margin-left: 0;
+}
+
 /* overrides for restyled figures and captions */
 
 figure {
@@ -442,6 +382,12 @@ figure img,
 figure video,
 figure svg {
 	border: 1px solid var(--line-grey);
+}
+
+main table svg[role*="image"],
+figure svg[role*="image"] {
+    display: block;
+    max-inline-size: 100%;
 }
 
 figcaption {
@@ -463,31 +409,21 @@ figcaption {
 			padding-left: 0;
 		}
 	}
-	.minimal-header {
-		display: block;
-	}
-	#site-header.minimal-header .minimal-header-name, #site-header.minimal-header .minimal-header-subtitle, #site-header.minimal-header .minimal-header-link {
-		display: block;
-	}
-	#site-header.minimal-header .minimal-header-subtitle {
-		display: none;
-	}
-	.minimal-header-name {
-		font-size: 160%;
-		margin-bottom: 0.5em;
-	}
-	.minimal-header-link {
-		margin-left: 0;
-		padding-left: 0;
-		border: none;
-	}
-	.minimal-header-logo {
-		display: block;
-	}
-	.minimal-header-logo > a {
-		display: inline-block;
-	}
-	.minimal-header-logo svg {
-		margin: 1em 0 0 0;
-	}
+}
+
+/* preformatted blocks - generally contain code element */
+
+pre {
+    padding: 1em;
+    border: 1px solid var(--line-grey);
+    background-color: var(--pure-white);
+}
+
+/* inline code not in a preformatted block or link */
+
+:not(:is(pre, a)) > code {
+    font-size: 0.85em;
+    background: #ebebeb;
+    padding: 0 0.25em;
+    display: inline-block;
 }

@@ -8,15 +8,15 @@
  </ul>
 <div class="note"><p>One of the above two situations may be true for a field which has programmatically associated label and / or instructions that conveys data format, a data range, or the <code>required</code> property.</p></div>   
 <p>While it is always preferable to programmatically associate specific error description with the failed field, the page's design or the framework employed may sometimes constrain the author's ability to do so. In these cases, authors may programmatically set <code>aria-invalid</code> to <code>"true"</code> on the fields that have failed validation. This is interpretable mainly by assistive technologies (like screen readers / screen magnifiers) employed by users who are vision impaired. When a field has <code>aria-invalid</code> set to “true”, VoiceOver in Safari announces <samp>invalid</samp> data when the field gets focus; JAWS and NVDA notify the error as an <samp>invalid entry</samp>.</p>
-<p>This ARIA attribute has to be set / turned on programmatically. It should not be set to “true” before input validation is performed or the form is submitted. Setting <code>aria-invalid</code> to “false” is the same as not placing the attribute for the form control at all. Quite understandably, nothing is conveyed by assistive technology to users in this case.</p>
-<p>When visible text is used to programmatically identify a failed field and / or convey how the error can be corrected, setting <code>aria-invalid</code> to "true" is not required from a strict compliance standpoint but may still provide helpful information for users.</p>
+<p>This ARIA attribute has to be set / turned on programmatically. It should not be set to “true” before input validation is performed or the form is submitted. Setting <code>aria-invalid</code> to <code>"false"</code> is the same as not placing the attribute for the form control at all. Quite understandably, nothing is conveyed by assistive technology to users in this case.</p>
+<p>When visible text is used to programmatically identify a failed field and / or convey how the error can be corrected, setting <code>aria-invalid</code> to <code>"true"</code> is not required from a strict compliance standpoint but may still provide helpful information for users.</p>
       </section><section id="examples"><h2>Examples</h2>
       <section class="example">
          <h3>Using aria-invalid on required fields</h3>
          
             <p>The <code>aria-invalid</code> attribute is used on required fields that have no input. A message above the form conveys that form submission has failed due to this.</p>
 			<p>A portion of the jQuery code and the HTML form markup follow:</p>
-<pre xml:space="preserve"><code class="language-html">&lt;script&gt;
+<pre><code class="language-html">&lt;script&gt;
 ...
 ...
    if ($('#first').val() === '') {
@@ -64,9 +64,9 @@ $("label[for='email']").addClass('failed');
       <section class="example">
          <h3>Identifying errors in data format</h3>
          
-            <p><code>Aria-invalid</code> and <code>aria-describedby</code> are used together to indicate an error when the personal identification number (PIN), email address, or start date are not in the expected format. The error message is associated with the field using <code>aria-describedby</code>, and <code>aria-invalid</code> makes it easier to programmatically find fields with errors.</p>
+            <p><code>aria-invalid</code> and <code>aria-describedby</code> are used together to indicate an error when the personal identification number (PIN), email address, or start date are not in the expected format. The error message is associated with the field using <code>aria-describedby</code>, and <code>aria-invalid</code> makes it easier to programmatically find fields with errors.</p>
             <p>Below is the rendered HTML code for the email address field in Example 1: When an invalid email address is entered by the user such as "samexample.com" (instead of sam@example.com), the HTML code is:</p>
-<pre xml:space="preserve"><code class="language-html">&lt;div class="control"&gt;
+<pre><code class="language-html">&lt;div class="control"&gt;
   &lt;div&gt;
     &lt;label for="email"&gt;Email address: [*]&lt;/label&gt; 
     &lt;input type="email" name="email" id="email" class="error"
@@ -76,7 +76,7 @@ $("label[for='email']").addClass('failed');
 &lt;/div&gt;</code></pre>
 <p>And when no data is entered in the email field, the HTML code is:</p>
 
-<pre xml:space="preserve"><code class="language-html">&lt;div class="control"&gt;
+<pre><code class="language-html">&lt;div class="control"&gt;
   &lt;div&gt;&lt;label for="email"&gt;Email address: [*]&lt;/label&gt; 
     &lt;input type="email" name="email" id="email" class="error"
      aria-invalid="true" aria-describedBy="err_2"&gt;
@@ -85,12 +85,12 @@ $("label[for='email']").addClass('failed');
 &lt;/div&gt;</code></pre>
 <p>jQuery code: jQuery is used to add aria-invalid or aria-describedby attributes as well as the class attribute and append the error text. This is the code that inserts aria-invalid and class="error" but does not associate the error text "incorrect data" with the control programmatically:</p>
 
-<pre xml:space="preserve"><code class="language-javascript">$(errFld).attr("aria-invalid", "true").attr("class", "error");
+<pre><code class="language-javascript">$(errFld).attr("aria-invalid", "true").attr("class", "error");
 // Suffix error text: 
 $(errFld).parent().append('&lt;span class="errtext"&gt;Error: Incorrect data&lt;/span&gt;');</code></pre>
 
 <p>CSS Code:</p>
-<pre xml:space="preserve"><code class="language-css">input.error {
+<pre><code class="language-css">input.error {
   border: red thin solid;
 }
 

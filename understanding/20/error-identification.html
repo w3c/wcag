@@ -25,12 +25,11 @@
          has occurred and can determine what is wrong. In the case of an unsuccessful form submission,
          it is not sufficient to only re-display the form without providing any hint that the submission
          failed.
-         The error must be indicated in <a>text</a>.
-         Whether or not an error message provides users with sufficient information about the nature of
-         the error, and what they should do to correct it, is covered more specifically by
-         <a href="error-suggestion">3.3.3 Error Suggestion</a>.
+         The error must be indicated in <a>text</a>.</p>
+         <p>This SC requires that users be provided with information about the nature of the error, including the identity of the item in error. What the user should do to correct the item in error is covered by 
+         <a href="error-suggestion">3.3.3 Error Suggestion</a>. Often, the error description can be phrased so that it meets both SC 3.3.1 and SC 3.3.3 at the same time. For instance, "Email is not valid" would pass SC 3.3.1, but "Please provide a valid email address in the format name@domain.com" also conveys how it can be fixed and passes both.
       </p>
-      <p>An "input error" is information provided by the user that is not accepted. This includes:</p>
+      <p>An "input error" includes:</p>
 
       <ul>
          <li>information that is required by the web page but omitted by the user, or</li>
@@ -78,6 +77,26 @@
 
       <p>See also <a href="error-suggestion">3.3.3: Error Suggestion</a>.</p>
 
+      <h3>User agent native HTML form validation</h3>
+
+      <p>When using native HTML <a href="https://html.spec.whatwg.org/multipage/forms.html#client-side-form-validation">client-side form validation</a>,
+         user agents will automatically prevent the submission of incomplete or invalid forms, and display generic error messages to the user.
+         The user agent will generally set focus back to the first form field that is in error, and as a result scroll the page
+         so that the field in error and the generated error message will be visible in the viewport.</p> 
+      <p>In most common user agent and screen reader combinations, the screen reader will announce the error message
+         and the programmatic name of the focused field. 
+         While this meets the requirements of this success criterion, it should be noted that there are several disadvantages related to this approach:</p>
+      <ul>
+         <li>Depending on the user agent, the message may not be permanent, or fail to scroll with the page.</li>
+         <li>Depending on the user agent, even if a user has zoomed-in (magnified) the content, the error messages will not appear magnified,
+            as the text in the validation message will be displayed at the same size as the user agent interface; the message may be too small for users to read.</li>
+         <li>The default HTML validation error messages are generally quite generic, and they may not provide sufficiently helpful or specific suggestions to the user
+            that would conform to <a href="error-suggestion">3.3.3 Error Suggestion</a>.
+         </li>
+         <li>If several errors are present, only the first error message is exposed; once the user has provided an input that conforms to the type of field,
+            and resubmits the form, the next error (if present) will be exposed. This means that repeated resubmissions and corrections may be required.</li>
+      </ul>
+    <p>As these problems relate to user agent behavior, developers will need to carefully consider if native browser validation is <a href="https://www.w3.org/TR/WCAG22/#dfn-accessibility-supported">accessibility supported</a>.</p>
    </section>
    <section id="benefits">
       <h2>Benefits of Error Identification</h2>
@@ -103,7 +122,7 @@
          <dd>
             <p>An airline website offers a special promotion on discounted flights. The user is
                asked to complete a simple form that asks for personal information such as name, address,
-               phone number, seating preference and e-mail address. If any of the fields of the form
+               phone number, seating preference and email address. If any of the fields of the form
                are either not completed or completed incorrectly, an alert is displayed notifying
                the user which field or fields were missing or incorrect.</p>
 
