@@ -87,7 +87,7 @@
 	
 
 <section id="description"><h2>Description</h2>
-<p>This technique demonstrates how <code>aria-invalid</code> may be employed to specifically identify fields that have failed validation. Its use is most suitable when:</p>   
+<p>This technique demonstrates how <code>aria-invalid</code> may be employed to specifically identify fields that have failed validation. Its use is most suitable when:</p>
  <ul>
  <li>The error description does not programmatically identify the failed fields</li>
  <li>The failed fields are identified in a manner that is not available to some users - for example by using an error-icon rendered visually by some technique that does not rely on color such as a visual cue like a border.</li>
@@ -95,14 +95,14 @@
 <div class="note">
 				<p class="note-title marker">Note</p>
 				<div><p>One of the above two situations may be true for a field which has programmatically associated label and / or instructions that conveys data format, a data range, or the <code>required</code> property.</p></div>
-			</div>   
+			</div>
 <p>While it is always preferable to programmatically associate specific error description with the failed field, the page's design or the framework employed may sometimes constrain the author's ability to do so. In these cases, authors may programmatically set <code>aria-invalid</code> to <code>"true"</code> on the fields that have failed validation. This is interpretable mainly by assistive technologies (like screen readers / screen magnifiers) employed by users who are vision impaired. When a field has <code>aria-invalid</code> set to “true”, VoiceOver in Safari announces <samp>invalid</samp> data when the field gets focus; JAWS and NVDA notify the error as an <samp>invalid entry</samp>.</p>
 <p>This ARIA attribute has to be set / turned on programmatically. It should not be set to “true” before input validation is performed or the form is submitted. Setting <code>aria-invalid</code> to <code>"false"</code> is the same as not placing the attribute for the form control at all. Quite understandably, nothing is conveyed by assistive technology to users in this case.</p>
 <p>When visible text is used to programmatically identify a failed field and / or convey how the error can be corrected, setting <code>aria-invalid</code> to <code>"true"</code> is not required from a strict compliance standpoint but may still provide helpful information for users.</p>
       </section><section id="examples"><h2>Examples</h2>
       <section class="example" id="example-1-using-aria-invalid-on-required-fields">
          <h3>Example 1: Using aria-invalid on required fields</h3>
-         
+
             <p>The <code>aria-invalid</code> attribute is used on required fields that have no input. A message above the form conveys that form submission has failed due to this.</p>
 			<p>A portion of the jQuery code and the HTML form markup follow:</p>
 <pre><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript">
@@ -115,11 +115,11 @@ $(<span class="hljs-string">"label[for='first']"</span>).<span class="hljs-title
    <span class="hljs-keyword">if</span> ($(<span class="hljs-string">'#last'</span>).<span class="hljs-title function_">val</span>() === <span class="hljs-string">''</span>) {
       $(<span class="hljs-string">'#last'</span>).<span class="hljs-title function_">attr</span>(<span class="hljs-string">"aria-invalid"</span>, <span class="hljs-string">"true"</span>);
 $(<span class="hljs-string">"label[for='last']"</span>).<span class="hljs-title function_">addClass</span>(<span class="hljs-string">'failed'</span>);
-   } 
+   }
    <span class="hljs-keyword">if</span> ($(<span class="hljs-string">'#email'</span>).<span class="hljs-title function_">val</span>() === <span class="hljs-string">''</span>) {
       $(<span class="hljs-string">'#email'</span>).<span class="hljs-title function_">attr</span>(<span class="hljs-string">"aria-invalid"</span>, <span class="hljs-string">"true"</span>);
 $(<span class="hljs-string">"label[for='email']"</span>).<span class="hljs-title function_">addClass</span>(<span class="hljs-string">'failed'</span>);
-   } 
+   }
 ...
 ...
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
@@ -148,34 +148,34 @@ $(<span class="hljs-string">"label[for='email']"</span>).<span class="hljs-title
   <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span></code></pre>
       	<p class="working-example"><a href="../../working-examples/aria-invalid-required-fields/">Working example: Using aria-invalid on required fields</a>.</p>
-         
+
       </section>
       <section class="example" id="example-2-identifying-errors-in-data-format">
          <h3>Example 2: Identifying errors in data format</h3>
-         
+
             <p><code>aria-invalid</code> and <code>aria-describedby</code> are used together to indicate an error when the personal identification number (PIN), email address, or start date are not in the expected format. The error message is associated with the field using <code>aria-describedby</code>, and <code>aria-invalid</code> makes it easier to programmatically find fields with errors.</p>
             <p>Below is the rendered HTML code for the email address field in Example 1: When an invalid email address is entered by the user such as "samexample.com" (instead of sam@example.com), the HTML code is:</p>
 <pre><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"control"</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"email"</span>&gt;</span>Email address: [*]<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span> 
+    <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"email"</span>&gt;</span>Email address: [*]<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"email"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"email"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"email"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"error"</span>
-     <span class="hljs-attr">aria-invalid</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">aria-describedBy</span>=<span class="hljs-string">"err_1"</span>&gt;</span>
+     <span class="hljs-attr">aria-invalid</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">aria-describedby</span>=<span class="hljs-string">"err_1"</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"errtext"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"err_1"</span>&gt;</span>Error: Incorrect data<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
 <p>And when no data is entered in the email field, the HTML code is:</p>
 
 <pre><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"control"</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"email"</span>&gt;</span>Email address: [*]<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span> 
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"email"</span>&gt;</span>Email address: [*]<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"email"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"email"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"email"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"error"</span>
-     <span class="hljs-attr">aria-invalid</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">aria-describedBy</span>=<span class="hljs-string">"err_2"</span>&gt;</span>
+     <span class="hljs-attr">aria-invalid</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">aria-describedby</span>=<span class="hljs-string">"err_2"</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"errtext"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"err_2"</span>&gt;</span>Error: Input data missing<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
 <p>jQuery code: jQuery is used to add aria-invalid or aria-describedby attributes as well as the class attribute and append the error text. This is the code that inserts aria-invalid and class="error" but does not associate the error text "incorrect data" with the control programmatically:</p>
 
 <pre><code class="language-javascript hljs">$(errFld).<span class="hljs-title function_">attr</span>(<span class="hljs-string">"aria-invalid"</span>, <span class="hljs-string">"true"</span>).<span class="hljs-title function_">attr</span>(<span class="hljs-string">"class"</span>, <span class="hljs-string">"error"</span>);
-<span class="hljs-comment">// Suffix error text: </span>
+<span class="hljs-comment">// Suffix error text:</span>
 $(errFld).<span class="hljs-title function_">parent</span>().<span class="hljs-title function_">append</span>(<span class="hljs-string">'&lt;span class="errtext"&gt;Error: Incorrect data&lt;/span&gt;'</span>);</code></pre>
 
 <p>CSS Code:</p>
@@ -186,20 +186,20 @@ $(errFld).<span class="hljs-title function_">parent</span>().<span class="hljs-t
 <span class="hljs-selector-tag">span</span><span class="hljs-selector-class">.errtext</span> {
   <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#EEEEFF</span>;
   <span class="hljs-attribute">background-image</span>:<span class="hljs-built_in">url</span>(<span class="hljs-string">'images/iconError.gif'</span>);
-  <span class="hljs-attribute">background-position</span><span class="hljs-selector-pseudo">:right</span>;	
+  <span class="hljs-attribute">background-position</span><span class="hljs-selector-pseudo">:right</span>;
   <span class="hljs-attribute">background-repeat</span>:no-repeat;
   <span class="hljs-attribute">border</span>: red thin solid;
   <span class="hljs-attribute">margin-bottom</span>: <span class="hljs-number">1em</span>;
   <span class="hljs-attribute">padding</span>: .<span class="hljs-number">25em</span> <span class="hljs-number">1.4em</span> .<span class="hljs-number">25em</span> .<span class="hljs-number">25em</span>;
 }</code></pre>
       	<p class="working-example"><a href="../../working-examples/aria-invalid-data-format/">Working example: Identifying errors in data format</a>.</p>
-         
+
       </section>
    </section><section id="resources"><h2>Related Resources</h2>
 <p style="margin-bottom: 1.5em;"><em><small>No endorsement implied.</small></em></p>
 
 
-      
+
          <ul>
             <li>
                   <a href="https://www.w3.org/TR/wai-aria-1.1/#states_and_properties">Supported States and Properties: WAI-ARIA 1.1</a>
@@ -208,7 +208,7 @@ $(errFld).<span class="hljs-title function_">parent</span>().<span class="hljs-t
                	<a href="http://www.deque.com/blog/aria-invalid-error-indication/">Using Aria-invalid for Error Indication</a>
                </li>
          </ul>
-      
+
    </section>
 
 
