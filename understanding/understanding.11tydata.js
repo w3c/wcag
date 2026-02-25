@@ -1037,7 +1037,6 @@ export default function (data) {
           A change of content is not always a <a>change of context</a>.
           This success criterion is automatically met if changes in content are not also changes of context.
         `,
-        advisory: ["G200", "G201"],
         failure: ["F55"],
       },
 
@@ -1055,7 +1054,6 @@ export default function (data) {
           A change of content is not always a <a>change of context</a>.
           This success criterion is automatically met if changes in content are not also changes of context.
         `,
-        advisory: ["G201"],
         failure: ["F36", "F37"],
       },
 
@@ -1128,7 +1126,7 @@ export default function (data) {
             techniques: ["SCR19"],
           },
         ],
-        advisory: ["G200"],
+        advisory: ["G201"],
         failure: ["F60", "F61", "F9", "F22", "F52", "F40", "F41"],
       },
 
