@@ -758,7 +758,7 @@ export default function (data) {
           },
           { and: ["G91", "semantically indicating links"], using: ["PDF11", "PDF13"] },
         ],
-        advisory: ["H2", "H80"],
+        advisory: ["H2", "H80", "G201", "SCR24"],
         failure: ["F63", "F89"],
       },
 
@@ -781,6 +781,7 @@ export default function (data) {
           Headings and labels must be programmatically determined,
           per <a href="info-and-relationships">Success Criterion 1.3.1</a>.
         `,
+        advisory: ["G201", "SCR24"],
       },
 
       "focus-visible": {
@@ -815,7 +816,7 @@ export default function (data) {
             using: ["PDF11", "PDF13"],
           },
         ],
-        advisory: ["H2", "H33"],
+        advisory: ["H2", "H33", "G201", "SCR24"],
         failure: ["F84", "F89"],
       },
 
