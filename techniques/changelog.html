@@ -1,0 +1,91 @@
+---
+skipHistory: true
+---
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>WCAG {{ versionDecimal }} Techniques Change Log | WAI | W3C</title>
+  <link rel="stylesheet" href="https://w3.org/WAI/assets/css/style.css">
+  <link rel="stylesheet" type="text/css" href="base.css">
+</head>
+
+<body dir="ltr">
+  <div class="default-grid with-gap leftcol">
+    <aside class="box nav-hack sidebar standalone-resource__sidebar ">
+      <header class="box-h ">Page Contents</header>
+      <div class="box-i">
+        <nav aria-label="page contents" class="navtoc">
+          <ul>
+            <li><a href="#added">Added Techniques</a></li>
+            <li><a href="#removed">Removed Techniques</a></li>
+          </ul>
+        </nav>
+      </div>
+    </aside>
+
+    <main id="main" class="main-content standalone-resource__main">
+      <h1 id="title" class="title p-name">Techniques Change Log for WCAG {{ versionDecimal }}</h1>
+
+      <section id="added">
+        <h2>Added Techniques</h2>
+        <ul>
+          {% for entry in changelog[version] -%}
+            {%- if entry.type == "added" -%}
+              <li>
+                <time datetime="{{ entry.date }}">{{ entry.date | date: "%d %B %Y" }}</time>
+                (<a href="https://github.com/w3c/wcag/commit/{{ entry.hash }}">{{ entry.hash }}</a>):
+                {% if entry.techniques.size == 1 -%}
+                  Added {{ entry.techniques[0] | linkTechniques }}
+                {%- else -%}
+                  Added the following techniques:
+                  <ul>
+                    {%- for technique in entry.techniques -%}
+                      <li>{{ technique | linkTechniques }}</li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif %}
+              </li>
+            {%- endif -%}
+          {%- endfor %}
+        </ul>
+      </section>
+
+      <section id="removed">
+        <h2>Removed Techniques</h2>
+        <ul>
+          {% for entry in changelog[version] -%}
+            {%- if entry.type == "removed" -%}
+              <li>
+                <time datetime="{{ entry.date }}">{{ entry.date | date: "%d %B %Y" }}</time>
+                (<a href="https://github.com/w3c/wcag/commit/{{ entry.hash }}">{{ entry.hash }}</a>):
+                {% if entry.techniques.size == 1 -%}
+                  Removed {{ entry.techniques[0] | displayTechniqueTitle | default: entry.techniques[0] }}
+                {%- else -%}
+                  Removed the following techniques:
+                  <ul>
+                    {%- for technique in entry.techniques -%}
+                      <li>{{ technique | displayTechniqueTitle | default: technique }}</li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif %}
+              </li>
+            {%- endif -%}
+          {%- endfor %}
+        </ul>
+      </section>
+      <a class="button button-backtotop" href="#top"><span><svg focusable="false" aria-hidden="true" class="icon-arrow-up " viewBox="0 0 26 28">
+        <path d="M25.172 15.172c0 0.531-0.219 1.031-0.578 1.406l-1.172 1.172c-0.375 0.375-0.891 0.594-1.422 0.594s-1.047-0.219-1.406-0.594l-4.594-4.578v11c0 1.125-0.938 1.828-2 1.828h-2c-1.062 0-2-0.703-2-1.828v-11l-4.594 4.578c-0.359 0.375-0.875 0.594-1.406 0.594s-1.047-0.219-1.406-0.594l-1.172-1.172c-0.375-0.375-0.594-0.875-0.594-1.406s0.219-1.047 0.594-1.422l10.172-10.172c0.359-0.375 0.875-0.578 1.406-0.578s1.047 0.203 1.422 0.578l10.172 10.172c0.359 0.375 0.578 0.891 0.578 1.422z"></path></svg> Back to Top
+      </span></a>
+    </main>
+  </div>
+  <script>
+    var translationStrings = {}; /* fix WAI JS */
+  </script>
+  <script src="https://www.w3.org/WAI/assets/scripts/main.js"></script>
+</body>
+
+</html>

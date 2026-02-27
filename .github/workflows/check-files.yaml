@@ -1,0 +1,54 @@
+name: Check PR files
+
+on:
+  pull_request:
+
+jobs:
+  files:
+    name: Check files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # allows diffing against base branch
+      - name: Check for videos
+        run: |
+          if test $(find -name '*.mp4' -o -name '*.mov' -o -name '*.m4v' -o -name '*.mkv' -o -name '*.webm' -o -name '*.ogv' | wc -l) -gt 0; then
+            echo "::notice title=Video file found::Videos should not be stored in the repository; please ask the WAI Team for assistance."
+            echo "CHECK_FAILED=1" >> "$GITHUB_ENV"
+          fi
+      - name: Check for non-finalized Technique filenames
+        run: |
+          if test $(find techniques/*/* -name '*.html' | egrep -vc '/[A-Z]+[0-9]+.html$') -gt 0; then
+            echo "::notice title=Technique with temporary filename found::New techniques should follow the naming scheme for their folder."
+            echo "CHECK_FAILED=1" >> "$GITHUB_ENV"
+          fi
+      - name: Check for remaining class="instructions" paragraphs
+        run: |
+          if test $(fgrep -rl 'class="instructions"' techniques/ understanding/ | grep -vc -- '-template.html$') -gt 0; then
+            echo "::notice title=Leftover instructions paragraph in informative docs::Make sure to clean any instructions paragraphs from newly-added Techniques or Understanding pages."
+            echo "CHECK_FAILED=1" >> "$GITHUB_ENV"
+          fi
+      - name: Check for changes to legacy files
+        run: |
+          if test $(git diff origin/${{ github.base_ref }} --numstat | egrep -c '\s(conformance-challenges|requirements|wcag20)/') -gt 0; then
+            echo "::notice title=Legacy files modified::PRs should not change files under conformance-challenges/, requirements/, or wcag20/"
+            echo "CHECK_FAILED=1" >> "$GITHUB_ENV"
+          fi
+      - name: Check for isolation of changes to TR space or informative docs
+        run: |
+          if test $(git diff origin/${{ github.base_ref }} --numstat | egrep -c '\sguidelines/|\sscript/') -gt 0 &&
+          test $(git diff origin/${{ github.base_ref }} --numstat | egrep -vc '\sguidelines/|\sscript/') -gt 0; then
+            echo "::notice title=Mixed TR and informative docs changes::Please submit changes to TR space separately from changes to informative docs."
+            echo "CHECK_FAILED=1" >> "$GITHUB_ENV"
+          fi
+      - name: Check TypeScript
+        run: |
+          npm ci
+          if test $(npx tsc | wc -l) -gt 0; then
+            echo '::notice title=Branch contains TypeScript errors::Run `npm run check` locally for details.'
+            echo "CHECK_FAILED=1" >> "$GITHUB_ENV"
+          fi
+      - name: Reflect status
+        run: |
+          test ! $CHECK_FAILED

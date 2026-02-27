@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
-   <meta charset="UTF-8"/>
+   <meta charset="UTF-8">
    <title>Understanding Focus Not Obscured (Minimum)</title>
-   <link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"/>
+   <link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove">
 </head>
 <body>
    <h1>Understanding Focus Not Obscured (Minimum)</h1>
@@ -21,15 +21,17 @@
       
       <h2>Intent of Focus Not Obscured (Minimum)</h2>
 
-      <p>The intent of this Success Criterion is to ensure that the item receiving keyboard focus is always partially visible in the user's viewport. For sighted people who rely on a keyboard (or on a device that operates through the keyboard interface, such as a switch or voice input), knowing the current point of focus is critical. The component with focus signals the interaction point on the page. Where users cannot see the item with focus, they may not know how to proceed, or may even think the system has become unresponsive.</p>
+      <p>The intent of this success criterion is to ensure that the item receiving keyboard focus is always partially visible in the user's viewport. For sighted people who rely on a keyboard (or on a device that operates through the keyboard interface, such as a switch or voice input), knowing the current point of focus is critical. The component with focus signals the interaction point on the page. Where users cannot see the item with focus, they may not know how to proceed, or may even think the system has become unresponsive.</p>
 
       <p>In recognition of the complex responsive designs common today, this AA criterion allows for the component receiving focus to be <em>partially</em> obscured by other author-created content. A partly obscured component can still be very visible, although the more of it that is obscured, the less easy it is to see. For that reason, authors should attempt to design interactions to reduce the degree and frequency with which the item receiving focus is partly obscured. For best visibility, <em>none</em> of the component receiving focus should be obscured. This preferred outcome is covered by the AAA criterion <a href="focus-not-obscured-enhanced.html">Focus Not Obscured (Enhanced)</a>.</p>
 
       <p>Typical types of content that can overlap focused items are sticky footers, sticky headers, and non-modal dialogs. As a user tabs through the page, these layers of content can obscure the item receiving focus, along with its focus indicator.</p>
 
-      <p>A notification implemented as sticky content, such as a cookie banner, will fail this Success Criterion if it entirely obscures a component receiving focus. Ways of passing include making the banner modal so the user has to dismiss the banner before navigating through the page, or using <a href="https://www.w3.org/TR/css-scroll-snap/#propdef-scroll-padding">scroll padding</a> so the banner does not overlap other content. Notifications that do not require user action could also meet this criterion by closing on loss of focus.</p>
+      <p>A notification implemented as sticky content, such as a cookie banner, will fail this success criterion if it entirely obscures a component receiving focus. Ways of passing include making the banner modal so the user has to dismiss the banner before navigating through the page, or using <a href="https://www.w3.org/TR/css-scroll-snap/#propdef-scroll-padding">scroll padding</a> so the banner does not overlap other content. Notifications that do not require user action could also meet this criterion by closing on loss of focus.</p>
 
       <p>Another form of obscuring can occur where light boxes or other semi-opaque effects overlap the item with focus. While less than 100 percent opacity is not causing the component to be <q>entirely obscured</q>, such semi-opaque overlaps may cause a failure of <a href="../understanding/non-text-contrast.html">1.4.11 Non-text Contrast</a>. When a focus indicator can be covered by a semi-opaque component, the ability of the focus indicator to pass 1.4.11 should be evaluated (and pass) while the focus indicator is under the semi-opaque component. The intention in both situations is that the component receiving focus should never be obscured to the point a user cannot tell which item has focus.</p>
+
+      <p class="note">This criterion evaluates the focused <em>component</em>, rather than the focus <em>indicator</em>. The component itself does not include the focus indicator when checking that "the component is not entirely hidden" - unless the focus indicator is inside the component, or focus is indicated by a change to the component itself. Although users benefit from both the component and the focus indicator (if external to the component) not being obscured when tracking the focus, for the purposes of this criterion only checking the component provides a clearer metric. However, if the focus indicator is fully obscured, it would likely fail <a href="focus-visible">2.4.7 Focus Visible</a>.</p>
 
       <section id="Movable">
          <h3>User-movable content</h3>
@@ -37,14 +39,14 @@
          <p>This note is intended to accommodate a common interaction in complex applications such as authoring tools, where the main editing region (also called a canvas) can be enhanced by displaying toolbars or other panels, which can be repositioned around the canvas. It is possible to design such toolbars so they do <em>not</em> obscure focus. Authors are encouraged to do so, as well as pursue techniques which ensure equitable keyboard use of such toolbars. However, in recognition of the complexities involved in responsive design as well as in supporting the ability to transform the text size and spacing of content, only the starting position of such movable panels is assessed.</p>
          <!--
          <figure id="">
-            <img src="" alt=""/>
+            <img src="" alt="">
             <figcaption>Placeholder for future simplified illustration showing an abstract layout of an authoring tool UI with a user-movable toolbar</figcaption>
          </figure>
          -->
       </section>
       <section id="disclosed">
          <h3>User-opened content</h3>
-         <p>This SC contains a note regarding content that is opened or disclosed by the user. One example of such content is a menu button opened by a user that opens a list of choices over pre-existing content on the screen. Such content can obscure other information on the screen, but it does not obscure an item receiving keyboard focus, because the new content doesn't stay open through a change of focus. However, authors may create user-opened content that is intentionally designed to persist until closed by the user, such as a chat window. Such persistent content has the potential to fail Focus Not Obscured (Minimum). Various types are described in this section. All can be designed so that they pass this Success Criterion.</p>
+         <p>This SC contains a note regarding content that is opened or disclosed by the user. One example of such content is a menu button opened by a user that opens a list of choices over pre-existing content on the screen. Such content can obscure other information on the screen, but it does not obscure an item receiving keyboard focus, because the new content doesn't stay open through a change of focus. However, authors may create user-opened content that is intentionally designed to persist until closed by the user, such as a chat window. Such persistent content has the potential to fail Focus Not Obscured (Minimum). Various types are described in this section. All can be designed so that they pass this success criterion.</p>
 
          <p>This section only applies to content that the user actively discloses. Content pre-positioned by the author (such as a sticky footer), or content that appears without direct user initiation, such as system warnings, must not prevent the item receiving focus from being immediately visible in the viewport. Also, this note is not intended to apply to disclosures that are by convention non-persistent. As discussed in the following sub-section, an open dropdown that does not close when no longer focused is not following this convention.</p>
 
@@ -53,7 +55,7 @@
             <p>A number of components on the web open (or disclose) additional content (on activation or on focus) intended for immediate user interaction or information. This new content is often on top of other content, obscuring it. Examples of such components are menu items, select element items, combobox lists (and other dropdown items), date picker calendars, and tooltips. The common trait of all these components is that they are not expected to persist after being acted on or once they are no longer the primary point of user interaction. Such non-persistent disclosures do not fail this SC since they do not obscure the item with focus. However, if an author allows such components to <strong>persist</strong> after the user has 1) activated one of the opened items or 2) moved the focus away from the triggering item and the additional content, it is at risk of failing this criterion by obscuring the item with focus.</p>
             <!--
                   <figure id="">
-                     <img src="" alt=""/>
+                     <img src="" alt="">
                      <figcaption>Placeholder for future illustration showing an open dropdown obscuring information underneath</figcaption>
                </figure>
             -->
@@ -67,16 +69,16 @@
                <li><strong>When the additional content appears, it displaces existing content.</strong> An accordion is an example of this. When an accordion is opened, the disclosed content shifts existing content further down the page. Since the new content does not obscure existing content, it cannot obscure the item with focus.
                <!--
                <figure id="">
-               <img src="" alt=""/>
+               <img src="" alt="">
                <figcaption>Placeholder for future illustrations showing an abstract representation of an accordion pushing content down when opened</figcaption>
                </figure>
                -->
                </li>
 
-               <li><strong>When the additional content appears, existing content reflows.</strong> The popout sidebar on the <a href="https://www.w3.org/TR/WCAG22/">WCAG standard</a> is an example of this pattern. When the side menu is activated, it opens a new section of information along the left side of the page. The main content area is reduced horizontally to accommodate the new content, and the existing content reflows to fit in the thinner space. As a result, there is no overlapping content between the two sections; the item receiving focus, whether in the left navigation or in the main content, will not be obscured by the other section.
+               <li><strong>When the additional content appears, existing content reflows.</strong> The pop-out sidebar on the <a href="https://www.w3.org/TR/WCAG22/">WCAG standard</a> is an example of this pattern. When the side menu is activated, it opens a new section of information along the left side of the page. The main content area is reduced horizontally to accommodate the new content, and the existing content reflows to fit in the thinner space. As a result, there is no overlapping content between the two sections; the item receiving focus, whether in the left navigation or in the main content, will not be obscured by the other section.
                <!--
                <figure id="">
-               <img src="" alt=""/>
+               <img src="" alt="">
                <figcaption>Placeholder for future illustration pair showing an abstract representation of a sidebar reflowing a thinner main content region</figcaption>
                </figure>
                -->
@@ -85,7 +87,7 @@
                <strong>When the additional content is opened, it takes focus and the tab ring is constrained to the new content until it is dismissed.</strong> This modality is somewhat like a dialog, in that a user cannot navigate beyond the opened content by keyboard without dismissing it first (typically by pressing Esc). However, unlike in a modal dialog, in some implementations a pointer user may be able to interact with content outside the opened section without dismissing it. Since this pattern potentially creates an inequitable experience between keyboard and pointer users, it should be used cautiously. That said, it does prevent the opened content from obscuring the keyboard focus in the main content, and thus should pass this SC. This is described and demonstrated in a short video in the Knowbility article in the reference section, under the section heading <a href="https://knowbility.org/blog/2020/accessible-slide-menus#keep-keyboard-focus-in-the-slide-out-navigation-until-its-closed">Keep keyboard focus in the slide-out navigation until it's closed</a>.
                <!--
                <figure id="">
-               <img src="" alt=""/>
+               <img src="" alt="">
                <figcaption>Placeholder for future illustrations showing an abstract representation of a side panel where the tab ring is restricted to the panel</figcaption>
                </figure>
                -->
@@ -93,7 +95,7 @@
                <li>
                <strong>The disclosure expands into an area of the page containing no other content.</strong> Many pages are designed with wide margins, providing significant white space into which new content can be opened. Many chatbots and toast notifications are designed to 'slide up' into the right unpopulated side of a page. Where authors are careful to ensure content is not obscured at each breakpoint in a responsive design, no obscuring of other operable content need occur.
                <!-- <figure id="">
-               <img src="" alt=""/>
+               <img src="" alt="">
                <figcaption>Placeholder for future illustrations showing an abstract representation of a chat window expanding into empty space on the right side of the screen.</figcaption>
                </figure>
                -->
@@ -102,7 +104,7 @@
                <strong>When focus leaves the additional content, the additional content is automatically hidden or collapsed, or the content can be hidden or collapsed by use of a dedicated keyboard command (for example, the <kbd>Escape</kbd> key</strong>.) This is very similar to patterns discussed previously under Non-persistent opened information. A distinguishing factor can be that the user's last point of interaction in the disclosure is preserved (it persists) even though it may be hidden until a user returns. Some trees and side navigation patterns behave this way.
                <!--
                <figure id="">
-               <img src="" alt=""/>
+               <img src="" alt="">
                <figcaption>Placeholder for future illustrations showing a collapsible tree that when expanded shows the prior point of interaction</figcaption>
                </figure>
                -->
@@ -122,7 +124,7 @@
    
             <ul>
                <li>A user opens a chat interface, which is a popover non-modal dialog. This results in some content of the underlying page being fully obscured. The user navigates away from the chat interface by use of the <kbd>tab</kbd> key, focusing onto a link that has been fully obscured by the dialog. The user presses the <kbd>Escape</kbd> key to close the chat interface, which un-obscures the link.</li>
-               <li>A user expands a fixed-position page feedback component at the bottom of a Web page. They then use their keyboard to navigate to a link that's fully obscured by the expanded component and press the <kbd>down arrow</kbd> or <kbd>space</kbd> key on their keyboard to scroll the content on the page, un-obscuring the link.</li>
+               <li>A user expands a fixed-position page feedback component at the bottom of a web page. They then use their keyboard to navigate to a link that's fully obscured by the expanded component and press the <kbd>down arrow</kbd> or <kbd>space</kbd> key on their keyboard to scroll the content on the page, un-obscuring the link.</li>
                <li>A user opens a web-based multi-user authoring application. An overlay appears displaying a list of people who have contributed to the document. The user tabs through the list of contributors and activates one of them. The application displays a new overlay, which obscures the first one, that displays that person's recent contributions. The user presses the <kbd>F6</kbd> key to toggle the stacking order of the two overlays.</li>
             </ul>
 
@@ -167,35 +169,7 @@
    </section>
 
    
-   <section id="techniques">
-      <h2>Techniques for Focus Not Obscured (Minimum)</h2>
-      
-      <section id="sufficient">
-         <h3>Sufficient Techniques</h3>
-         
-         <ul>
-            <li>
-              <a href="../../techniques/css/C43">C43: Using CSS scroll-padding to un-obscure content</a>
-            </li>
-         </ul>
-         
-      </section>
-      
-      <section id="advisory">
-         <h3>Additional Techniques (Advisory)</h3>
-         
-      </section>
-      
-      <section id="failure">
-         <h3>Failures</h3>
-         <ul>
-            <li>
-               <a href="../../techniques/failures/F110">F110 - Failure due to a sticky footer hiding focused elements</a>
-            </li>
-         </ul>
-      </section>
-      
-   </section>
-   
+   {% # Data for associated techniques is defined in understanding/understanding.11tydata.js %}
+   {% include "understanding/techniques.html" %}
 </body>
 </html>

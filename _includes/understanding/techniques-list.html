@@ -1,0 +1,40 @@
+{%- comment -%}
+Expected inputs:
+- techniques = Array of technique objects or shorthand strings
+- groups = Optional array of groups, if they exist in context (for referencing IDs)
+{%- endcomment -%}
+<ul>
+{%- for technique in techniques %}
+  <li>
+    {% if technique.using %}<p>{% endif %}
+    {%- if technique.and -%}
+      {%- assign andConjunction = technique.andConjunction | default: "<strong>AND</strong>" -%}
+      {%- for andEntry in technique.and %}
+        {% unless forloop.first %}{{ andConjunction }}{% endunless %}
+        {% include "understanding/techniques-entry.html", technique: andEntry %}
+      {%- endfor -%}
+    {%- else -%}
+      {%- include "understanding/techniques-entry.html", technique: technique -%}
+    {%- endif -%}
+    {% if groups -%}
+      {% # When groups are involved, generate a single "using" phrase joined by "AND" %}
+      {%- for group in groups -%}
+        {%- if forloop.first %} using {% else %} <strong>AND</strong> {% endif -%}
+        one of the following <strong><a href="#{{ group.id }}">{{ group.title }}</a></strong>
+      {%- endfor -%}
+    {%- elsif technique.using %}
+      {%- unless technique.skipUsingPhrase -%}
+        {%- assign usingConjunction = technique.usingConjunction | default-strict: "using" -%}
+        {%- assign usingQuantity = technique.usingQuantity | default-strict: "one" -%}
+        {%- if technique.usingPrefix %}
+          {{ technique.usingPrefix }}
+        {%- endif %}
+        {{ usingConjunction }}
+        {{ usingQuantity }} {% if usingQuantity != "" %}of {% endif %}the following techniques
+      {%- endunless -%}:
+      </p>
+      {% include "understanding/techniques-list.html", techniques: technique.using %}
+    {%- endif -%}
+  </li>
+{% endfor -%}
+</ul>

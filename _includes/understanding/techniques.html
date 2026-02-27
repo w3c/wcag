@@ -1,0 +1,47 @@
+{%- comment -%}
+Entry point for Techniques section of Understanding pages.
+Calls other understanding/techniques-* templates.
+Data for associated techniques is defined in understanding/understanding.11tydata.js.
+{%- endcomment -%}
+<section id="techniques">
+  <h2>Techniques</h2>
+  <p>
+    Each numbered item in this section represents a technique or combination of techniques
+    that the Accessibility Guidelines Working Group deems sufficient for meeting this success criterion.
+    A technique may go beyond the minimum requirement of the criterion. There may be other ways of meeting the criterion not covered by these techniques.
+    For information on using other techniques, see
+    <a href="understanding-techniques">Understanding Techniques for WCAG Success Criteria</a>,
+    particularly the "Other Techniques" section.
+  </p>
+
+  {% # Reference associatedTechniques via filename (not remapped for older versions) %}
+  {%- assign assocEntry = associatedTechniques[page.fileSlug] -%}
+  {%- if assocEntry.sufficient %}
+    <section id="sufficient">
+      <h3>Sufficient Techniques</h3>
+      {%- if assocEntry.sufficientIntro %}
+        <p>{{ assocEntry.sufficientIntro }}</p>
+      {% endif -%}
+      {% include "understanding/techniques-subsection.html", type: "sufficient" %}
+      {%- if assocEntry.sufficientNote -%}
+        {% include "note.html", note: assocEntry.sufficientNote | strip %}
+      {%- endif -%}
+    </section>
+  {% endif -%}
+
+  {%- if assocEntry.advisory %}
+    <section id="advisory">
+      <h3>Advisory Techniques</h3>
+      {% include "understanding/intro/advisory.html" %}
+      {% include "understanding/techniques-subsection.html", type: "advisory" %}
+    </section>
+  {% endif -%}
+
+  {%- if assocEntry.failure %}
+    <section id="failure">
+      <h3>Failures</h3>
+      {% include "understanding/intro/failure.html" %}
+      {% include "understanding/techniques-subsection.html", type: "failure" %}
+    </section>
+  {% endif -%}
+</section>

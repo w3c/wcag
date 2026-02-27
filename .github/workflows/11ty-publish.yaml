@@ -10,7 +10,7 @@ on:
 jobs:
   main:
     name: deploy (11ty)
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v4
@@ -32,14 +32,17 @@ jobs:
           npm i
           npm run build
           cp guidelines/guidelines.css guidelines/relative-luminance.html _site/guidelines/22
-          curl https://labs.w3.org/spec-generator/?type=respec"&"url=https://raw.githack.com/$GITHUB_REPOSITORY/main/guidelines/index.html -o _site/guidelines/22/index.html -f  --retry 3
-          curl https://labs.w3.org/spec-generator/?type=respec"&"url=https://raw.githack.com/$GITHUB_REPOSITORY/main/requirements/22/index.html -o _site/requirements/22/index.html -f  --retry 3
-          curl https://labs.w3.org/spec-generator/?type=respec"&"url=https://raw.githack.com/$GITHUB_REPOSITORY/main/conformance-challenges/index.html -o _site/conformance-challenges/index.html -f  --retry 3
+          curl https://www.w3.org/publications/spec-generator/?type=respec"&"url=https://raw.githack.com/$GITHUB_REPOSITORY/main/guidelines/index.html -o _site/guidelines/22/index.html -f  --retry 3
+          curl https://www.w3.org/publications/spec-generator/?type=respec"&"url=https://raw.githack.com/$GITHUB_REPOSITORY/main/requirements/22/index.html -o _site/requirements/22/index.html -f  --retry 3
+          curl https://www.w3.org/publications/spec-generator/?type=respec"&"url=https://raw.githack.com/$GITHUB_REPOSITORY/main/conformance-challenges/index.html -o _site/conformance-challenges/index.html -f  --retry 3
       - name: Push
-        working-directory: _site
-        run: |
-          git config user.email 87540780+w3cgruntbot@users.noreply.github.com
-          git config user.name w3cgruntbot
-          git add -A .
-          git commit -m ":robot: Deploy to GitHub Pages: $GITHUB_SHA from branch $GITHUB_REF"
-          git push origin gh-pages
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          repository: _site
+          branch: gh-pages
+          commit_user_name: w3cgruntbot
+          commit_user_email: 87540780+w3cgruntbot@users.noreply.github.com
+          commit_author: "w3cgruntbot <87540780+w3cgruntbot@users.noreply.github.com>"
+          commit_message: ":robot: Deploy to GitHub Pages: ${{ github.sha }} from branch ${{ github.ref }}"
+          skip_fetch: true
+          skip_checkout: true

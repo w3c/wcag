@@ -1,12 +1,11 @@
-import axios from "axios";
 import type { CheerioAPI } from "cheerio";
 import { glob } from "glob";
 
 import { readFile } from "fs/promises";
-import { basename } from "path";
+import { basename, join, sep } from "path";
 
-import { flattenDomFromFile, load, type CheerioAnyNode } from "./cheerio";
-import { generateId } from "./common";
+import { flattenDomFromFile, load, loadFromFile, type CheerioAnyNode } from "./cheerio";
+import { fetchText, generateId } from "./common";
 
 export type WcagVersion = "20" | "21" | "22";
 export function assertIsWcagVersion(v: string): asserts v is WcagVersion {
@@ -34,22 +33,31 @@ export const actRules = (
   JSON.parse(await readFile("guidelines/act-mapping.json", "utf8")) as ActMapping
 )["act-rules"];
 
+/** Generates version-dependent overrides of SC shortcodes for older versions */
+export const generateScSlugOverrides = (version: WcagVersion): Record<string, string> => ({
+  ...(version < "22" && {
+    "target-size-enhanced": "target-size",
+  }),
+});
+
 /**
  * Flattened object hash, mapping each WCAG 2 SC slug to the earliest WCAG version it applies to.
  * (Functionally equivalent to "guidelines-versions" target in build.xml; structurally inverted)
  */
-const scVersions = await (async function () {
+async function resolveScVersions(version: WcagVersion) {
   const paths = await glob("*/*.html", { cwd: "understanding" });
+  const scSlugOverrides = generateScSlugOverrides(version);
   const map: Record<string, WcagVersion> = {};
 
   for (const path of paths) {
-    const [fileVersion, filename] = path.split("/");
+    const [fileVersion, filename] = path.split(sep);
     assertIsWcagVersion(fileVersion);
-    map[basename(filename, ".html")] = fileVersion;
+    const slug = basename(filename, ".html");
+    map[slug in scSlugOverrides ? scSlugOverrides[slug] : slug] = fileVersion;
   }
 
   return map;
-})();
+}
 
 export interface DocNode {
   id: string;
@@ -83,14 +91,11 @@ export interface SuccessCriterion extends DocNode {
   type: "SC";
 }
 
+export type WcagItem = Principle | Guideline | SuccessCriterion;
+
 export function isSuccessCriterion(criterion: any): criterion is SuccessCriterion {
   return !!(criterion?.type === "SC" && "level" in criterion);
 }
-
-/** Version-dependent overrides of SC shortcodes for older versions */
-export const scSlugOverrides: Record<string, (version: WcagVersion) => string> = {
-  "target-size-enhanced": (version) => (version < "22" ? "target-size" : "target-size-enhanced"),
-};
 
 /** Selectors ignored when capturing content of each Principle / Guideline / SC */
 const contentIgnores = [
@@ -115,7 +120,12 @@ const getContentHtml = ($el: CheerioAnyNode) => {
 };
 
 /** Performs processing common across WCAG versions */
-function processPrinciples($: CheerioAPI) {
+async function processPrinciples($: CheerioAPI) {
+  // Auto-detect version from end of title
+  const version = $("title").text().trim().split(" ").pop()!.replace(".", "");
+  assertIsWcagVersion(version);
+  const scVersions = await resolveScVersions(version);
+
   const principles: Principle[] = [];
   $(".principle").each((i, el) => {
     const guidelines: Guideline[] = [];
@@ -165,17 +175,17 @@ function processPrinciples($: CheerioAPI) {
 }
 
 /**
- * Resolves information from guidelines/index.html;
+ * Resolves information from a local guidelines/index.html source file;
  * comparable to the principles section of wcag.xml from the guidelines-xml Ant task.
  */
-export const getPrinciples = async () =>
-  processPrinciples(await flattenDomFromFile("guidelines/index.html"));
+export const getPrinciples = async (path = "guidelines/index.html") =>
+  processPrinciples(await flattenDomFromFile(path));
 
 /**
  * Returns a flattened object hash, mapping shortcodes to each principle/guideline/SC.
  */
 export function getFlatGuidelines(principles: Principle[]) {
-  const map: Record<string, Principle | Guideline | SuccessCriterion> = {};
+  const map: Record<string, WcagItem> = {};
   for (const principle of principles) {
     map[principle.id] = principle;
     for (const guideline of principle.guidelines) {
@@ -197,14 +207,10 @@ interface Term {
   /** id of dfn in TR, which matches original id in terms file */
   trId: string;
 }
+export type TermsMap = Record<string, Term>;
 
-/**
- * Resolves term definitions from guidelines/index.html organized for lookup by name;
- * comparable to the term elements in wcag.xml from the guidelines-xml Ant task.
- */
-export async function getTermsMap() {
-  const $ = await flattenDomFromFile("guidelines/index.html");
-  const terms: Record<string, Term> = {};
+function processTermsMap($: CheerioAPI, includeSynonyms = true) {
+  const terms: TermsMap = {};
 
   $("dfn").each((_, el) => {
     const $el = $(el);
@@ -217,53 +223,81 @@ export async function getTermsMap() {
       trId: el.attribs.id,
     };
 
-    // Include both original and all-lowercase version to simplify lookups
-    // (since most synonyms are lowercase) while preserving case in name
-    const names = [term.name, term.name.toLowerCase()].concat(
-      (el.attribs["data-lt"] || "").toLowerCase().split("|")
-    );
-    for (const name of names) terms[name] = term;
+    if (includeSynonyms) {
+      // Include both original and all-lowercase version to simplify lookups
+      // (since most synonyms are lowercase) while preserving case in name
+      const names = [term.name, term.name.toLowerCase()].concat(
+        (el.attribs["data-lt"] || "").toLowerCase().split("|")
+      );
+      for (const name of names) terms[name] = term;
+    } else {
+      terms[term.name] = term;
+    }
   });
 
   return terms;
 }
 
+/**
+ * Resolves term definitions from guidelines/index.html (or a specified alternate path)
+ * organized for lookup by name;
+ * comparable to the term elements in wcag.xml from the guidelines-xml Ant task.
+ */
+export const getTermsMap = async (path = "guidelines/index.html") =>
+  processTermsMap(await flattenDomFromFile(path), true);
+
 // Version-specific APIs
 
-const remoteGuidelines$: Partial<Record<WcagVersion, CheerioAPI>> = {};
+const guidelinesCache: Partial<Record<WcagVersion, string>> = {};
 
 /** Loads guidelines from TR space for specific version, caching for future calls. */
-const loadRemoteGuidelines = async (version: WcagVersion) => {
-  if (!remoteGuidelines$[version]) {
-    const $ = load(
-      (await axios.get(`https://www.w3.org/TR/WCAG${version}/`, { responseType: "text" })).data
-    );
+const loadRemoteGuidelines = async (version: WcagVersion, stripRespec = true) => {
+  const html =
+    guidelinesCache[version] ||
+    (guidelinesCache[version] = await fetchText(`https://www.w3.org/TR/WCAG${version}/`));
 
-    // Re-collapse definition links and notes, to be processed by this build system
-    $(".guideline a.internalDFN").removeAttr("class data-link-type id href title");
-    $(".guideline [role='note'] .marker").remove();
-    $(".guideline [role='note']").find("> div, > p").addClass("note").unwrap();
+  const $ = load(html);
 
-    // Bibliography references are not processed in Understanding SC boxes
-    $(".guideline cite:has(a.bibref:only-child)").each((_, el) => {
-      const $el = $(el);
-      const $parent = $el.parent();
-      $el.remove();
-      // Remove surrounding square brackets (which aren't in a dedicated element)
-      $parent.html($parent.html()!.replace(/ \[\]/g, ""));
-    });
+  // Remove extra markup from headings, regardless of stripRespec setting,
+  // so that names parse consistently
+  $("bdi").remove();
 
-    // Remove extra markup from headings so they can be parsed for names
-    $("bdi").remove();
+  // Remove role="heading" + aria-level from notes/issues, as they cause more harm than good
+  // (especially in context of content reuse via wcag.json export)
+  $("[role='note'] .marker").removeAttr("role").removeAttr("aria-level");
 
-    // Remove abbr elements which exist only in TR, not in informative docs
-    $("#acknowledgements li abbr").each((_, abbrEl) => {
-      $(abbrEl).replaceWith($(abbrEl).text());
-    });
+  if (!stripRespec) return $;
 
-    remoteGuidelines$[version] = $;
-  }
-  return remoteGuidelines$[version]!;
+  // Re-collapse definition links and notes, to be processed by this build system
+  $("a.internalDFN").removeAttr("class data-link-type id href title");
+  $("[role='note'] .marker").remove();
+  $("[role='note']").find("> div, > p").addClass("note").unwrap();
+
+  // Convert data-plurals (present in publications) to data-lt
+  $("dfn[data-plurals]").each((_, el) => {
+    el.attribs["data-lt"] = (el.attribs["data-lt"] || "")
+      .split("|")
+      .concat(el.attribs["data-plurals"].split("|"))
+      .join("|");
+    delete el.attribs["data-plurals"];
+  });
+
+  // Un-process bibliography references, to be processed by CustomLiquid
+  $("cite:has(a.bibref:only-child)").each((_, el) => {
+    const $el = $(el);
+    $el.replaceWith(`[${$el.find("a.bibref").html()}]`);
+  });
+
+  // Remove generated IDs and markers from examples
+  $(".example[id]").removeAttr("id");
+  $(".example > .marker").remove();
+
+  // Remove abbr elements which exist only in TR, not in informative docs
+  $("#acknowledgements li abbr, #glossary abbr").each((_, abbrEl) => {
+    $(abbrEl).replaceWith($(abbrEl).text());
+  });
+
+  return $;
 };
 
 /**
@@ -284,5 +318,69 @@ export const getAcknowledgementsForVersion = async (version: WcagVersion) => {
 /**
  * Retrieves and processes a pinned WCAG version using published guidelines.
  */
-export const getPrinciplesForVersion = async (version: WcagVersion) =>
-  processPrinciples(await loadRemoteGuidelines(version));
+export const getPrinciplesForVersion = async (version: WcagVersion, stripRespec?: boolean) =>
+  processPrinciples(await loadRemoteGuidelines(version, stripRespec));
+
+interface GetTermsMapForVersionOptions {
+  /**
+   * Whether to populate additional map keys based on synonyms defined in data-lt;
+   * this should typically be true for informative docs, but may be false for other purposes
+   */
+  includeSynonyms?: boolean;
+  /**
+   * Whether to strip respec-generated content and attributes;
+   * this should typically be true for informative docs, but may be false for other purposes
+   */
+  stripRespec?: boolean;
+}
+
+/**
+ * Resolves term definitions from a WCAG 2.x publication,
+ * organized for lookup by name.
+ */
+export const getTermsMapForVersion = async (
+  version: WcagVersion,
+  { includeSynonyms, stripRespec }: GetTermsMapForVersionOptions = {}
+) => processTermsMap(await loadRemoteGuidelines(version, stripRespec), includeSynonyms);
+
+/** Parses errata items from the errata document for the specified WCAG version. */
+export const getErrataForVersion = async (version: WcagVersion) => {
+  const $ = await loadFromFile(join("errata", `${version}.html`));
+  const $guidelines = await loadRemoteGuidelines(version, false);
+  const aSelector = `a[href*='}}#']:first-of-type`;
+  const errata: Record<string, string[]> = {};
+
+  $("main > section[id]")
+    .first()
+    .find(`li:has(${aSelector})`)
+    .each((_, el) => {
+      const $el = $(el);
+      const erratumHtml = $el
+        .html()!
+        // Remove everything before and including the final TR link
+        .replace(/^[\s\S]*href="\{\{\s*\w+\s*\}\}#[\s\S]*?<\/a>,?\s*/, "")
+        // Remove parenthetical github references (still in Liquid syntax)
+        .replace(/\(\{%.*%\}\)\s*$/, "")
+        .replace(/^(\w)/, (_, p1) => p1.toUpperCase());
+
+      $el.find(aSelector).each((_, aEl) => {
+        const $aEl = $(aEl);
+        let hash: string | undefined = $aEl.attr("href")!.replace(/^.*#/, "");
+
+        // Check whether hash pertains to a guideline/SC section or term definition;
+        // if it doesn't, attempt to resolve it to one
+        const $hashEl = $guidelines(`#${hash}`);
+        if (!$hashEl.is("section.guideline, #terms dfn")) {
+          const $closest = $hashEl.closest("#terms dd, section.guideline");
+          if ($closest.is("#terms dd")) hash = $closest.prev().find("dfn[id]").attr("id");
+          else hash = $closest.attr("id");
+        }
+        if (!hash) return;
+
+        if (hash in errata) errata[hash].push(erratumHtml);
+        else errata[hash] = [erratumHtml];
+      });
+    });
+
+  return errata;
+};
