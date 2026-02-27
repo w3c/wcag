@@ -132,11 +132,12 @@ export default function (data) {
           "G78",
           {
             id: "G173",
-            using: ["SM6", "SM7", "G226", "Using any player that supports audio and video"],
+            using: ["SM6", "SM7", "G226"],
+            usingQuantity: "one or more",
           },
           {
             id: "G8",
-            using: ["SM1", "SM2", "Using any player that supports audio and video"],
+            using: ["SM1", "SM2"],
           },
           "G203",
         ],
@@ -165,11 +166,12 @@ export default function (data) {
           "G78",
           {
             id: "G173",
-            using: ["SM6", "SM7", "G226", "Using any player that supports audio and video"],
+            using: ["SM6", "SM7", "G226"],
+            usingQuantity: "one or more",
           },
           {
             id: "G8",
-            using: ["SM1", "SM2", "Using any player that supports audio and video"],
+            using: ["SM1", "SM2"],
           },
           "G203",
         ],
@@ -193,7 +195,7 @@ export default function (data) {
         sufficient: [
           {
             id: "G8",
-            using: ["SM1", "SM2", "Using any player that supports audio and video"],
+            using: ["SM1", "SM2"],
           },
         ],
         advisory: ["H96"],
@@ -888,7 +890,8 @@ export default function (data) {
 
       "target-size-enhanced": {
         // 2.5.5
-        sufficient: ["Ensuring that targets are at least 44 by 44 CSS pixels"],
+        sufficient: [
+          "C44"],
         advisory: ["Ensuring inline links provide sufficiently large activation target"],
         failure: [
           "Failure of Success Criterion 2.5.5 due to target being less than 44 by 44 CSS pixels",
@@ -1141,7 +1144,7 @@ export default function (data) {
           {
             title:
               "Situation A: If a form contains fields for which information from the user is mandatory.",
-            techniques: ["G83", "ARIA2", "ARIA21", "SCR18", "PDF5"],
+            techniques: ["G83", "ARIA21", "SCR18", "PDF5"],
           },
           {
             title:
@@ -1149,7 +1152,7 @@ export default function (data) {
             techniques: ["ARIA18", "ARIA19", "ARIA21", "G84", "G85", "SCR18", "SCR32", "PDF22"],
           },
         ],
-        advisory: ["G139", "G199"],
+        advisory: ["G139", "G199", "ARIA2"],
       },
 
       "labels-or-instructions": {
@@ -1170,7 +1173,7 @@ export default function (data) {
           only used when the other techniques cannot be applied to the page.
           The earlier techniques are preferred because they increase accessibility to a wider user group.
         `,
-        advisory: ["G13"],
+        advisory: ["G13", "ARIA2"],
         failure: ["F82"],
       },
 
