@@ -9,7 +9,7 @@ import { basename } from "path";
 
 import type { GlobalData } from "eleventy.config";
 
-import { biblioPattern, getBiblio, getXmlBiblio } from "./biblio";
+import { biblioPattern, getBiblio, getWcag20Biblio } from "./biblio";
 import { flattenDom, load, type CheerioAnyNode } from "./cheerio";
 import { getAcknowledgementsForVersion, type TermsMap } from "./guidelines";
 import { resolveTechniqueIdFromHref, understandingToTechniqueLinkSelector } from "./techniques";
@@ -23,7 +23,7 @@ const techniquesPattern = /\btechniques\//;
 const understandingPattern = /\bunderstanding\//;
 
 const biblio = await getBiblio();
-const xmlBiblio = await getXmlBiblio();
+const wcag20Biblio = await getWcag20Biblio();
 const termLinkSelector = "a:not([href])";
 
 /** Generates {% include "foo.html" %} directives from 1 or more basenames */
@@ -143,12 +143,13 @@ export class CustomLiquid extends Liquid {
       $(".remove, link[href$='editors.css'], section#meta, section.meta").remove();
 
       if ($("p.instructions").length > 0) {
-        console.error(`${filepath} contains a <p class="instructions"> element.\n` +
-          "  This suggests that a template was copied and not fully filled out.\n" +
-          "  If the paragraph has been modified and should be retained, remove the class.\n" +
-          "  Otherwise, if the corresponding section has been updated, remove the paragraph."
+        console.error(
+          `${filepath} contains a <p class="instructions"> element.\n` +
+            "  This suggests that a template was copied and not fully filled out.\n" +
+            "  If the paragraph has been modified and should be retained, remove the class.\n" +
+            "  Otherwise, if the corresponding section has been updated, remove the paragraph."
         );
-        throw new Error("Instructions paragraph found; please resolve.")
+        throw new Error("Instructions paragraph found; please resolve.");
       }
 
       // Add charset to pages that forgot it
@@ -271,7 +272,10 @@ export class CustomLiquid extends Liquid {
           $("figcaption").each((i, el) => {
             const $el = $(el);
             if (!$el.find("p").length) $el.wrapInner("<p></p>");
-            $el.find("p").first().prepend(`<span>Figure ${i + 1}.</span> `);
+            $el
+              .find("p")
+              .first()
+              .prepend(`<span>Figure ${i + 1}.</span> `);
           });
 
           // Remove spurious copy-pasted content in 2.5.3 that doesn't belong there
@@ -609,7 +613,7 @@ export class CustomLiquid extends Liquid {
 
     // Link biblio references
     if (scope.isUnderstanding) {
-      const xmlBiblioReferences: string[] = [];
+      const wcag20BiblioReferences: string[] = [];
       $("p").each((_, el) => {
         const $el = $(el);
         const html = $el.html();
@@ -617,8 +621,8 @@ export class CustomLiquid extends Liquid {
           $el.html(
             html.replace(biblioPattern, (substring, code) => {
               if (biblio[code]?.href) return `[<a href="${biblio[code].href}">${code}</a>]`;
-              if (code in xmlBiblio) {
-                xmlBiblioReferences.push(code);
+              if (code in wcag20Biblio) {
+                wcag20BiblioReferences.push(code);
                 return `[<a href="#${code}">${code}</a>]`;
               }
               console.warn(`${scope.page.inputPath}: Unresolved biblio ref: ${code}`);
@@ -629,10 +633,12 @@ export class CustomLiquid extends Liquid {
       });
 
       // Populate references section, or remove if unused
-      if (xmlBiblioReferences.length) {
-        for (const ref of uniq(xmlBiblioReferences).sort()) {
+      if (wcag20BiblioReferences.length) {
+        for (const ref of uniq(wcag20BiblioReferences).sort()) {
           $("section#references dl").append(
-            `\n      <dt id="${ref}">${ref}</dt><dd>${xmlBiblio[ref]}</dd>`
+            `\n      <dt id="${ref}">${ref}</dt><dd>${
+              wcag20Biblio[ref as keyof typeof wcag20Biblio]
+            }</dd>`
           );
         }
       } else $("section#references").remove();

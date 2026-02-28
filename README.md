@@ -15,15 +15,12 @@ See also: [WCAG 2 Style Guide](https://github.com/w3c/wcag/wiki/WCAG-2-style-gui
 
 ## File Structure
 
-WCAG 2.0 was maintained in a different file structure than subsequent versions of WCAG. Source files for WCAG 2.0 are in the wcag20 folder and exists primarily for archival purposes. Do not edit content in that folder.
-
 Content for WCAG 2.1 and later is organized according to the file structure below. The WCAG repository contains source and auxiliary files for WCAG 2, Understanding WCAG 2, and eventually techniques. It also contains auxiliary files that support automated formatting of the document. To facilitate multi-party editing, each success criterion is in a separate file, consisting of a HTML fragment that can be included into the main guidelines. Key files include:
 
 * `guidelines/index.html` - the main guidelines file
 * `guidelines/sc/{version}/*.html` - files for each success criterion
 * `guidelines/terms/{version}/*.html` - files for each definition
 * `understanding/{version}/*.html` - understanding files for each success criterion
-* `wcag20/` was used by a previous version of WCAG, so anything ending .xml is no longer used, *do not update*.
 
 Where `{version}` is "20", content came from WCAG 2.0. "21" is used for content introduced in WCAG 2.1, "22" for WCAG 2.2, etc.
 
@@ -66,7 +63,7 @@ Success criteria use a simple structure of HTML elements, with a few class attri
 
 Note you do not provide the SC number. Numbers will be assigned, and most likely automatically generated, later.
 
-Values you provide are described below. Refer to [Success Criterion 2.2.1](https://www.w3.org/TR/WCAG20/#time-limits-required-behaviors) for an example of each of these pieces of content.
+Values you provide are described below. Refer to [Success Criterion 2.2.1](https://www.w3.org/TR/WCAG22/#timing-adjustable) for an example of each of these pieces of content.
 
 <dl>
 	<dt>{SC Handle}</dt>
