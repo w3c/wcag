@@ -339,7 +339,7 @@
 				<h2> Help improve this page </h2>
 			</header>
 			<div class="box-i">
-    		<p>Please share your ideas, suggestions, or comments via e-mail to the publicly-archived list <a href="mailto:public-agwg-comments@w3.org?subject=%5BUnderstanding%20and%20Techniques%20Feedback%5D">public-agwg-comments@w3.org@w3.org</a> or via GitHub</p>
+    		<p>Please share your ideas, suggestions, or comments via e-mail to the publicly-archived list <a href="mailto:public-agwg-comments@w3.org?subject=%5BUnderstanding%20and%20Techniques%20Feedback%5D">public-agwg-comments@w3.org</a> or via GitHub</p>
 				<div class="button-group">
 					<a href="mailto:public-agwg-comments@w3.org?subject=%5BUnderstanding%20and%20Techniques%20Feedback%5D"
 						class="button"><span>E-mail</span></a>
@@ -353,7 +353,7 @@
 	<xsl:template name="wai-site-footer">
 		<footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
     	<div class="inner" style="grid-column: 2 / 8">
-      	<p><strong>Date:</strong> Updated <xsl:value-of select="format-date(current-date(), '[D] [MNn] [Y]')"/>.</p> <p><strong>Developed by</strong><xsl:text> </xsl:text><a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a> (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff Contact: Michael Cooper).</p>
+      	<p><strong>Date:</strong> Updated <xsl:value-of select="format-date(current-date(), '[D] [MNn] [Y]')"/>.</p> <p><strong>Developed by</strong><xsl:text> </xsl:text><a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a> (Co-Chairs: Alastair Campbell, Charles Adams, Rachael Bradley Montgomery. W3C Staff Contact: Kevin White).</p>
     		<p>The content was developed as part of the <a href="https://www.w3.org/WAI/about/projects/#us">WAI-Core projects</a> funded by U.S. Federal funds. The user interface was designed by the Education and Outreach Working Group (<a href="https://www.w3.org/groups/wg/eowg/participants">EOWG</a>) with contributions from Shadi Abou-Zahra, Steve Lee, and Shawn Lawton Henry as part of the <a href="https://www.w3.org/WAI/about/projects/wai-guide/">WAI-Guide</a> project, co-funded by the European Commission.</p>
 			</div>
   	</footer>	
