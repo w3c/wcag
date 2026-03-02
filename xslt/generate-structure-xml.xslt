@@ -8,19 +8,24 @@
 	
 	<xsl:include href="base.xslt"/>
 	
+	<xsl:function name="wcag:get-id">
+		<xsl:param name="el" />
+		<xsl:choose>
+			<xsl:when test="$el/@id"><xsl:value-of select="$el/@id"/></xsl:when>
+			<xsl:otherwise><xsl:value-of select="wcag:generate-id(wcag:find-heading($el))"/></xsl:otherwise>
+		</xsl:choose>
+	</xsl:function>
+	
 	<xsl:output method="xml" indent="yes"/>
 	
 	<xsl:template name="id">
-		<xsl:attribute name="id">
-			<xsl:choose>
-				<xsl:when test="@id"><xsl:value-of select="@id"/></xsl:when>
-				<xsl:otherwise><xsl:value-of select="wcag:generate-id(wcag:find-heading(.))"/></xsl:otherwise>
-			</xsl:choose>
-		</xsl:attribute>
+		<xsl:attribute name="id" select="wcag:get-id(.)"/>
 	</xsl:template>
 	
 	<xsl:template name="content">
-		<content><xsl:copy-of select="*[not(name() = 'h1' or name() = 'h2' or name() = 'h3' or name() = 'h4' or name() = 'h5' or name() = 'h6' or name() = 'section' or @class = 'conformance-level' or @class = 'change')]"></xsl:copy-of></content>
+		<xsl:variable name="content"><xsl:copy-of select="*[not(name() = 'h1' or name() = 'h2' or name() = 'h3' or name() = 'h4' or name() = 'h5' or name() = 'h6' or name() = 'section' or @class = 'conformance-level' or @class = 'change')]"></xsl:copy-of></xsl:variable>
+		<content><xsl:copy-of select="$content"/></content>
+		<contenttext><xsl:value-of select="serialize($content)"/></contenttext>
 	</xsl:template>
 	
 	<xsl:template match="html:html">
@@ -72,6 +77,12 @@
 	<xsl:template match="html:section[contains(@class, 'guideline')]">
 		<guideline>
 			<xsl:call-template name="id"/>
+			<version>
+				<xsl:choose>
+					<xsl:when test="@id = 'pointer-accessible'">WCAG21</xsl:when>
+					<xsl:otherwise>WCAG20</xsl:otherwise>
+				</xsl:choose>
+			</version>
 			<num><xsl:number level="multiple" count="html:section[contains(@class, 'principle')]|html:section[contains(@class, 'guideline')]" format="1.1"/></num>
 			<name><xsl:value-of select="wcag:find-heading(.)"/></name>
 			<xsl:call-template name="content"/>
@@ -83,6 +94,7 @@
 	<xsl:template match="html:section[contains(@class, 'sc')]">
 		<success-criterion>
 			<xsl:call-template name="id"/>
+			<version>WCAG<xsl:value-of select="$versions.doc//id[@id = wcag:get-id(current())]/parent::version/@name"/></version>
 			<num><xsl:number level="multiple" count="html:section[contains(@class, 'principle')]|html:section[contains(@class, 'guideline')]|html:section[contains(@class, 'sc')]" format="1.1.1"/></num>
 			<name><xsl:value-of select="wcag:find-heading(.)"/></name>
 			<xsl:call-template name="content"/>
