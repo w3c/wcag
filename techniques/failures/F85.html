@@ -1,46 +1,78 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Failure of Success Criterion 2.4.3 due to using dialogs or menus that are not adjacent to their trigger control in the sequential navigation order</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Failure of Success Criterion 2.4.3 due to using dialogs or menus that are not adjacent to their trigger control in the sequential navigation order</h1><section class="meta"><p class="id">ID: F85</p><p class="technology">Technology: failures</p><p class="type">Type: Failure</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Failure of Success Criterion 2.4.3 due to using dialogs or menus that are not adjacent to their trigger control in the sequential navigation order</title>
+    <link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove">
+  </head>
+  <body>
+    <h1>Failure of Success Criterion 2.4.3 due to using dialogs or menus that are not adjacent to their trigger control in the sequential navigation order</h1>
+    <section class="meta">
+      <p class="id">ID: F85</p>
+      <p class="technology">Technology: failures</p>
+      <p class="type">Type: Failure</p>
+    </section>
+    <section id="applicability">
+      <h2>When to Use</h2>
       <p>All technologies.</p>
-   </section><section id="description"><h2>Description</h2>
-      <p>This describes the failure condition that results when a Web page opens a dialog or menu interface component embedded on the page in a way that makes it difficult for a keyboard user to operate because of its position in the sequential navigation order. When the user opens the dialog or menu embedded on the page by activating a button or link, his next action will be to interact with the dialog or menu. If focus is not set to the dialog or menu, and it is not adjacent to the trigger control in the sequential navigation order, it will be difficult for the keyboard user to operate the dialog or menu.</p>
-   </section><section id="examples"><h2>Examples</h2>
+    </section>
+    <section id="description">
+      <h2>Description</h2>
+      <p>This describes the failure condition that results when a web page opens a dialog or menu interface component embedded on the page in a way that makes it difficult for a keyboard user to operate because of its position in the sequential navigation order. When the user opens the dialog or menu embedded on the page by activating a button or link, their next action will be to interact with the dialog or menu. If focus is not set to the dialog or menu, or a logical focusable descendent of these widgets, and the widget or a focusable descendent is not next in the sequential navigation order, it will be difficult for the keyboard user to operate the dialog or menu.</p>
+
+      <div class="note">
+        <p>Dismissing a dialog or menu means to close it without taking any action on it. For example: a modal dialog opens on a web page and displays a sign-up form for a mailing list. A user dismisses the dialog by either pressing a "close" button or using the <kbd>Escape</kbd> key.</p>
+      </div>
+
+      <div class="note">
+        <p>Sometimes it's not possible to return focus to the control the user activated to open a dialog. For example: a blog post has a list of tags, each tag containing a delete button. Pressing a delete button opens a modal dialog that asks the user to confirm the deletion. On confirming the deletion, the tag is deleted, the modal dialog closes, and focus is placed on the next tag in the list of tags. Placing focus onto a different, but logical, control is not a failure of Success Criterion 2.4.3.</p>
+      </div>
+    </section>
+    <section id="examples">
+      <h2>Examples</h2>
       <section class="example">
-         <h3>Adding a dialog or menu embedded on the page to the end of the sequential navigation order</h3>
-         
-            <p>When a DHTML menu or dialog is activated, it is created dynamically, positioned visually near the trigger, and appended to the end of the DOM. Because it is appended to the end of the DOM, it is at the end of the sequential navigation order. The user must tab through the rest of the web page before he can interact with the dialog or menu.</p>
-         
+        <h3>Adding a dialog to the page at the end of the sequential navigation order</h3>
+        <p>A non-native HTML dialog is created, with it being marked up at the end of the DOM (Document Object Model). Script was created to reveal the dialog, but no script was added to move focus to it. The dialog is visually positioned above the content of the page and the user's focus isn't moved to the dialog. Since the dialog is found at the end of the DOM, it is at the end of the keyboard navigation order. Because a user's focus isn't managed, or a keyboard mechanism isn't provided to allow them to immediately move to the invoked dialog, the user will need to tab through the rest of the web page before they can interact with the dialog.</p>
       </section>
       <section class="example">
-         <h3>Setting focus to the document after dismissing a menu embedded on the page</h3>
-         
-            <p>When a menu is dismissed, it is removed or hidden from the web page and focus is set to the document. The user must tab from the beginning of the navigation sequence to reach the point from which the menu was opened.</p>
-         
+        <h3>Setting focus to the document after dismissing a menu embedded on the page</h3>
+        <p>When a menu is dismissed, it is removed or hidden from the web page and focus is set to the document. The user must tab from the beginning of the navigation sequence to reach the point from which the menu was opened.</p> 
       </section>
-   </section><section id="tests"><h2>Tests</h2>
-      <section class="procedure"><h3>Procedure</h3>
-         <p>For each menu or dialog embedded on a Web page that is opened via a trigger control:</p>
-         <ol>
-            <li>
-               <p>Activate the trigger control via the keyboard.</p>
-               <ul>
-                  <li>Check whether focus is in the menu or dialog.</li>
-                  <li>Check whether advancing the focus in the sequential navigation order puts focus in the menu or dialog.</li>
-               </ul>
-            </li>
-            <li>
-               <p>Dismiss the menu or dialog.</p>
-               <ul>
-                  <li>Check whether focus is on the trigger control.</li>
-                  <li>Check whether advancing the focus backwards in the sequential navigation order puts focus in the trigger control.</li>
-               </ul>
-            </li>
-         </ol>
+    </section>
+    <section id="tests">
+      <h2>Tests</h2>
+      <section class="procedure">
+        <h3>Procedure</h3>
+        <p>For each menu or dialog on a web page that is opened via a trigger control:</p>
+        <ol>
+          <li>
+            <p>Activate the trigger control via the keyboard.</p>
+            <ul>
+              <li>Check whether focus has been set to the menu, dialog, or a logical focusable descendent of the widget.</li>
+              <li>If not, check whether moving the focus forward once in the sequential navigation order puts focus in the menu or dialog.</li>
+            </ul>
+          </li>
+          <li>
+            <p>Dismiss the menu or dialog</p>
+            <ul>
+              <li>Check whether focus is on the trigger control.</li>
+              <li>If focus needs to be placed on a different control, check whether that different control is logical.</li>
+            </ul>
+          </li>
+        </ol>
       </section>
-      <section class="results"><h3>Expected Results</h3>
-         <ul>
-            <li>If both points under step 1 are false, then this failure condition applies and the content fails this success criterion.</li>
-            <li>If both points under step 2 are false, then this failure condition applies and the content fails this success criterion.</li>
-         </ul>
+      <section class="results">
+        <h3>Expected Results</h3>
+        <ul>
+          <li>If both points under step 1 are false, then this failure condition applies and the content fails this success criterion.</li>
+          <li>If both points under step 2 are false, then this failure condition applies and the content fails this success criterion.</li>
+        </ul>
       </section>
-   </section><section id="related"><h2>Related Techniques</h2><ul>
-      <li><a href="../client-side-script/SCR26">SCR26</a></li>
-   </ul></section></body></html>
+    </section>
+    <section id="related">
+      <h2>Related Techniques</h2>
+      <ul>
+        <li><a href="../client-side-script/SCR26">SCR26</a></li>
+      </ul>
+    </section>
+  </body>
+</html>

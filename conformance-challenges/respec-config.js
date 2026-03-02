@@ -42,10 +42,9 @@ var respecConfig = {
 	editors: [
 		{
 			name: "Janina Sajka",
-			company: "Amazon",
-			companyURL: "https://www.amazon.com/",
-			mailto: "sajkaj@amazon.com",
-			w3cid: 108617
+			URL: "https://linkedin.com/in/jsajka",
+			mailto: "janina@rednote.net",
+			w3cid: 33688
 		},
 		{
 			name: "Michael Cooper",
@@ -65,10 +64,9 @@ var respecConfig = {
 	//      company: "Your Company", companyURI: "http://example.com/" },
 		{
 			name: "Janina Sajka",
-			company: "Amazon",
-			companyURL: "https://www.amazon.com/",
-			mailto: "sajkaj@amazon.com",
-			w3cid: 108617
+			URL: "https://linkedin.com/in/jsajka",
+			mailto: "janina@rednote.net",
+			w3cid: 33688
 		},
 		{
 			name: "Peter Korn",

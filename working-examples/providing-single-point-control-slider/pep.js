@@ -578,7 +578,7 @@
         sr = this.targetingShadow(t);
         while (sr) {
 
-          // find the the element inside the shadow root
+          // find the element inside the shadow root
           st = sr.elementFromPoint(x, y);
           if (!st) {
 
