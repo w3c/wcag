@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Using CSS scroll-padding to un-obscure content</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css">
+	</head>
+	<body>
+		<h1>Using <abbr title="Cascading Style Sheets">CSS</abbr> <code>scroll-padding</code> to un-obscure content</h1>
+		<section id="meta">
+			<h2>Metadata</h2>
+			<p id="id"></p>
+			<p id="technology">CSS</p>
+			<p id="type"></p>
+		</section>
+		<section id="applicability">
+			<h2>When to Use</h2>
+			<p>All technologies that support CSS.</p>
+		</section>
+		<section id="description">
+			<h2>Description</h2>
+			<p>The objective of this technique is to ensure that user interface components (for example: links, buttons, and form fields) that are initially completely obscured by a fixed-position component can still be accessed by users. In this example, this is achieved using CSS <code>padding</code> and <code>scroll-padding</code> properties to create space underneath the site footer and allow the link in the footer to scroll into view when it is focused with a keyboard.</p>
+		</section>
+		<section id="examples">
+			<h2>Examples</h2>
+
+			<section class="example">
+				<h3>Using CSS <code>scroll-padding</code> to un-obscure content</h3>
+				<p>This example shows a situation where there is a fixed-position banner at the bottom of the screen that is covering up the site footer, which contains a link. This type of fixed-position banner is a common design for cookie-consent banners.</p>
+        <aside class="note">
+          <p>This example demonstrates a technique to un-obscure content underneath a fixed-position banner. To prevent the page becoming unusable at smaller screen sizes, the banner becomes un-fixed. To observe the <code>scroll-padding</code> effect you will need to use a viewport over 800px wide.</p>
+        </aside>
+				<p>Working example: <a href="../../working-examples/css-padding-focus-not-obscured/">Using CSS <code>scroll-padding</code> to un-obscure content</a>.</p>
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"&gt;
+  &lt;title&gt;Using CSS scroll-padding to un-obscure content&lt;/title&gt;
+  &lt;style&gt;
+    ...
+
+    :root{
+      --height-dialog: 400px;
+      --breathing-room: 20px;
+      --scroll-padding: calc(var(--height-dialog) + var(--breathing-room));      
+    }
+
+    .wrapper {
+      display:grid;
+      gap:1rem;
+      grid-template-columns:repeat(9, 1fr);
+      grid-template-rows:8rem auto minmax(10rem, max-content);
+      min-block-size: 100vh;
+    }
+
+    .wrapper &gt; * {
+      border:1px solid var(--black);
+      padding:1rem;
+    }
+
+    header {
+      grid-column:1 / -1;
+      grid-row:1;
+    }
+
+    main {
+      grid-column:1 / 8;
+    }
+
+    aside {
+      grid-column:8 / 10;
+    }
+
+    footer {
+      grid-column:1 / -1;
+    }
+
+    @media (max-width:50rem) {
+      main {
+       grid-column:1 / -1;
+      }
+
+      aside {
+        grid-column:1 / -1;
+      }
+    }
+
+    .fixed-position-banner {
+      background:var(--banner-background);
+      border:3px solid var(--banner-border);
+      margin-block-end:0.5rem;
+      padding:1rem 1rem 5rem;
+      position:relative;
+      width:calc(100vw - 1rem);
+    }
+
+    @media (min-width: 50rem) {
+      html {
+        padding-bottom:var(--height-dialog);
+        scroll-padding-bottom:var(--scroll-padding);
+      }
+
+     .fixed-position-banner {
+        margin-block-end:0;
+        position:fixed;
+        inset:auto 0 0 0;
+      }
+    } 
+    ...
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;dialog class="fixed-position-banner"&gt;
+    &lt;h2 tabindex="-1"&gt;Fixed-Position Banner&lt;/h2&gt;
+    &lt;button aria-label="close fixed-position banner" class="close-banner" type="button"&gt;
+      ...
+    &lt;/button&gt;
+  &lt;/dialog&gt;
+  &lt;div class="wrapper"&gt;
+    &lt;header&gt;
+      &lt;p&gt;Header Content&lt;/p&gt;
+    &lt;/header&gt;
+    &lt;main&gt;
+      &lt;h1&gt;Main Content&lt;/h1&gt;
+    &lt;/main&gt;
+    &lt;aside&gt;
+      &lt;h2&gt;Sidebar Content&lt;/h2&gt;
+      &lt;p&gt;&lt;a href="https://example.com"&gt;Here's an example link in the sidebar&lt;/a&gt;.&lt;/p&gt;
+    &lt;/aside&gt;
+    &lt;footer&gt;
+      &lt;h2&gt;Footer Content&lt;/h2&gt;
+      &lt;p&gt;&lt;a href="https://example.com"&gt;Here&#39;s an example link in the footer&lt;/a&gt;.&lt;/p&gt;
+    &lt;/footer&gt;
+  &lt;/div&gt;
+  &lt;script&gt;
+    window.addEventListener('DOMContentLoaded', () => {
+      const elFixedBanner = document.querySelector('dialog');
+      const elCloseBannerBtn = document.querySelector(".close-banner");
+
+      elFixedBanner.show();
+
+      const getDialogHeight = () => {
+        const height = elFixedBanner.offsetHeight;
+        document.documentElement.style.setProperty('--height-dialog', `${height}px`);
+        document.documentElement.style.setProperty('--breathing-room', `${height ? 20 : 0}px`);
+      }
+
+      const observer = new ResizeObserver(getDialogHeight);
+      observer.observe(elFixedBanner);
+
+      elCloseBannerBtn.addEventListener("click", function(e){
+        elFixedBanner.close();
+      }, false);
+    });
+  &lt;/script&gt;	
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+			</section>      
+		</section>
+		
+		<section id="tests">
+			<h2>Tests</h2>
+			<section class="test-procedure">
+				<h3>Procedure</h3>
+
+				<p>For each user interface component that can receive keyboard focus:</p>
+				<ol>
+					<li>Check that the user interface component is not entirely hidden when it receives keyboard focus.</li>
+          <li>Check that no part of the user interface component is hidden when it receives keyboard focus.</li>
+				</ol>
+			</section>
+			<section class="test-results">
+				<h3>Expected Results</h3>
+				<ul>
+					<li>Check #1 is true.</li>
+          <li>For Focus Not Obscured (Enhanced) (Level AAA), #2 is also true.</li>
+				</ul>
+			</section>
+		</section>
+		<section id="related">
+			<h2>Related Techniques</h2>
+			<ol>
+				<li><a href="C32.html">C32</a></li>
+				<li><a href="C34.html">C34</a></li>
+			</ol>
+
+		</section>
+		<section id="resources">
+			<h2>Resources</h2>
+			<ol>
+				<li><a href="https://www.w3.org/TR/css-box/#padding"><abbr title="World Wide Web Consortium">W3C</abbr> - CSS padding</a>.</li>
+				<li><a href="https://www.w3.org/TR/css-scroll-snap/#scroll-padding">W3C - CSS the <code>scroll-padding</code> property</a>.</li>
+			</ol>
+
+		</section>
+	</body>
+</html>

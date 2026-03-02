@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>Figure source: Focus Indicator Offset Types</title>
+  <style>
+    :root {
+      /*
+        For figure accuracy:
+        - indicator-fg must meet 3:1 with page-bg, button-bg, and button-border-fg
+        - indicator-thickness must be exactly 2px
+        - indicator-style must be solid
+
+        For figure clarity:
+        - button-border-fg should meet 4.5:1 with page-bg and button-bg
+        - indicator-fg should meet 4.5:1 with page-bg, button-bg, and button-border-fg
+      */
+      --indicator-offset: 3px;
+      --indicator-thickness: 2px;
+      --indicator-style: solid;
+
+      --indicator-fg: #000;
+      --page-bg: #fff;
+      --button-bg: #cce;
+      --button-fg: #000;
+      --button-border-fg: #77a;
+
+      --button-border-radius: 10px;
+    }
+    button {
+      background: var(--button-bg);;
+      border: solid 2px var(--button-border-fg);
+      border-radius: var(--button-border-radius);
+      box-shadow: none;
+      box-sizing: border-box;
+      color: var(--button-fg);
+      margin-top: 15px;
+      margin-bottom: 15px;
+      margin-left: 10px;
+      margin-right: 10px;
+      outline: none;
+      width: 150px;
+      height: 50px;
+      font-size: 24px;
+    }
+    .button-container {
+      display: flex;
+      width: 100%;
+      justify-content: center
+    }
+
+    .outset {
+      outline-offset: var(--indicator-offset);
+      outline: var(--indicator-thickness) var(--indicator-style) var(--indicator-fg);
+    }
+
+    .outline {
+      outline: var(--indicator-thickness) var(--indicator-style) var(--indicator-fg);
+    }
+
+    .border {
+      border: var(--indicator-thickness) var(--indicator-style) var(--indicator-fg);
+    }
+
+    .inset {
+      position:relative;
+    }
+    .inset::after {
+      content: '';
+      position: absolute;
+      top: var(--indicator-offset);
+      right: var(--indicator-offset);
+      bottom: var(--indicator-offset);
+      left: var(--indicator-offset);
+      border: var(--indicator-thickness) var(--indicator-style) var(--indicator-fg);
+      border-radius: calc(var(--button-border-radius) - var(--indicator-offset));
+    }
+  </style>
+
+  <main>
+    <h1>Figure source: Focus Indicator Offset Types</h1>
+    <div class="button-container">
+      <button>Unfocused</button>
+    </div>
+    <div class="button-container">
+      <button class="outset">Outset</button>
+      <button class="outline">Outline</button>
+      <button class="border">Border</button>
+      <button class="inset">Inset</button>
+    </div>
+  </main>
+
+</html>
