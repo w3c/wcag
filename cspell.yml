@@ -1,8 +1,8 @@
 version: "0.2"
-allowCompoundWords: true
 minWordLength: 3
+language:
+  - en-us
 dictionaries:
-  - en_US
   - companies
   - softwareTerms
   - css
@@ -28,28 +28,49 @@ ignorePaths:
   - "*.ts"
   - "*.xml"
   - "*.yml"
+  - "*.yaml"
   - "custom-words.txt"
 useGitignore: true
 overrides:
   # File-specific words are defined here, which should be considered typos elsewhere
+  - filename: README.md
+    words: [rawgit] # TODO: Any references to rawgit should really be updated
   - filename: errata/*.html
-    words: [ccriteria] # Records of corrected typos
+    words: [ccriteria, critera, dismissable] # Records of corrected typos
+  - filename: guidelines/sc/21/content-on-hover-or-focus.html
+    words: [nonmodal] # Exists in current publication
+  - filename: guidelines/terms/20/image-of-text.html
+    words: [nametag] # Exists in current publication
+  - filename: guidelines/relative-luminance.html
+    words: [colour] # GB spelling used in citations
   - filename: guidelines/input-purposes.html
     words: [lle] # Superscript fragment of Mlle
-  - filename: techniques/*/F32.html
+  - filename: techniques/aria/ARIA21.html
+    words: [samexample] # Invalid email example
+  - filename: techniques/failures/F32.html
     words: [Higashi, Kyo, Miyako] # Japanese examples
-  - filename: techniques/*/F71.html
+  - filename: techniques/failures/F71.html
     words: [ϲоοk] # Intentional Unicode character example
-  - filename: techniques/*/FLASH17.html
-    words: [SWFFocus] # Class mentioned only in this page
-  - filename: techniques/*/FLASH28.html
+  - filename: techniques/failures/F83.html
+    words: [quickcheck] # Used under Tests
+  - filename: techniques/flash/*.html
+    words: [Actionscript, hotspot, hotspots, movieclip, SWFFocus] # Flash-specific concepts
+  - filename: techniques/flash/FLASH28.html
     words: [rulez] # Example in leetspeak
-  - filename: techniques/*/H34.html
+  - filename: techniques/general/G60.html
+    words: [Binfor] # Example
+  - filename: techniques/general/G130.html
+    words: [Ourtown] # Example
+  - filename: techniques/html/H34.html
     words: [HCTIWS, SDRADNATS, BEW] # Intentionally-reversed words
-  - filename: techniques/*/H56.html
+  - filename: techniques/html/H56.html
     words: [YTIVITCA, NOITAZILANOITANRETNI] # Intentionally-reversed words
-  - filename: techniques/*/SVR2.html
+  - filename: techniques/pdf/PDF*.html
+    words: [pushbuttons] # PDF-specific concepts
+  - filename: techniques/server-side-script/SVR2.html
     words: [jna] # Example file extension
+  - filename: techniques/silverlight/*.html
+    words: [initparams, namescope, namescopes, templatable, toolsets] # SL-specific concepts
   - filename: understanding/*/language-of-parts.html
     words: [voyture] # Pronunciation example
   - filename: understanding/*/text-spacing.html
@@ -58,7 +79,7 @@ languageSettings:
   - languageId: html
     ignoreRegExpList:
       # Non-English elements
-      - /<(\w+)[^>]+lang="(?!en)\w+"[^>]*>.*?<\/\1>/gi
+      - /<(\w+)[^>]+lang="(?!en)\w+"[^>]*>[\s\S]*?<\/\1\s*>/gi
       # Encoded citations
       - /\[\[[^\]]+\]\]/g
       # Other citations
