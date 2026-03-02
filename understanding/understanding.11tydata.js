@@ -479,7 +479,7 @@ export default function (data) {
           },
           {
             title:
-              "Fifth Requirement: Techniques to ensure text can be resized without assistive technology up to 200 percent in a way that does not require the user to scroll horizontally to read a line of text on a full-screen window",
+              "Fifth Requirement: Techniques to ensure text can be resized without assistive technology up to 200 percent in a way that does not require the user to scroll horizontally to read a line of text when displayed with the viewport maximized",
             techniques: [
               "G204",
               {
