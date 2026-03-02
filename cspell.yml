@@ -1,0 +1,109 @@
+version: "0.2"
+minWordLength: 3
+language:
+  - en-us
+dictionaries:
+  - companies
+  - softwareTerms
+  - css
+  - html
+  - custom
+dictionaryDefinitions:
+  - name: custom
+    path: custom-words.txt
+    addWords: true
+ignorePaths:
+  - "_includes/**"
+  - "acknowledgements/**"
+  - "conformance-challenges/**"
+  - "lib/**"
+  - "requirements/**"
+  - "wcag20/**"
+  - "working-examples/**"
+  - "xslt/**"
+  - "*.css"
+  - "*.js"
+  - "*.json"
+  - "*.sh"
+  - "*.ts"
+  - "*.xml"
+  - "*.yml"
+  - "*.yaml"
+  - "custom-words.txt"
+useGitignore: true
+overrides:
+  # File-specific words are defined here, which should be considered typos elsewhere
+  - filename: README.md
+    words: [rawgit] # TODO: Any references to rawgit should really be updated
+  - filename: errata/*.html
+    words: [ccriteria, critera, dismissable] # Records of corrected typos
+  - filename: guidelines/sc/21/content-on-hover-or-focus.html
+    words: [nonmodal] # Exists in current publication
+  - filename: guidelines/terms/20/image-of-text.html
+    words: [nametag] # Exists in current publication
+  - filename: guidelines/relative-luminance.html
+    words: [colour] # GB spelling used in citations
+  - filename: guidelines/input-purposes.html
+    words: [lle] # Superscript fragment of Mlle
+  - filename: techniques/aria/ARIA21.html
+    words: [samexample] # Invalid email example
+  - filename: techniques/failures/F32.html
+    words: [Higashi, Kyo, Miyako] # Japanese examples
+  - filename: techniques/failures/F71.html
+    words: [ϲоοk] # Intentional Unicode character example
+  - filename: techniques/failures/F83.html
+    words: [quickcheck] # Used under Tests
+  - filename: techniques/flash/*.html
+    words: [Actionscript, hotspot, hotspots, movieclip, SWFFocus] # Flash-specific concepts
+  - filename: techniques/flash/FLASH28.html
+    words: [rulez] # Example in leetspeak
+  - filename: techniques/general/G60.html
+    words: [Binfor] # Example
+  - filename: techniques/general/G130.html
+    words: [Ourtown] # Example
+  - filename: techniques/html/H34.html
+    words: [HCTIWS, SDRADNATS, BEW] # Intentionally-reversed words
+  - filename: techniques/html/H56.html
+    words: [YTIVITCA, NOITAZILANOITANRETNI] # Intentionally-reversed words
+  - filename: techniques/pdf/PDF*.html
+    words: [pushbuttons] # PDF-specific concepts
+  - filename: techniques/server-side-script/SVR2.html
+    words: [jna] # Example file extension
+  - filename: techniques/silverlight/*.html
+    words: [initparams, namescope, namescopes, templatable, toolsets] # SL-specific concepts
+  - filename: understanding/*/language-of-parts.html
+    words: [voyture] # Pronunciation example
+  - filename: understanding/*/text-spacing.html
+    words: [drawi, whe] # Examples of text clipping
+languageSettings:
+  - languageId: html
+    ignoreRegExpList:
+      # Non-English elements
+      - /<(\w+)[^>]+lang="(?!en)\w+"[^>]*>[\s\S]*?<\/\1\s*>/gi
+      # Encoded citations
+      - /\[\[[^\]]+\]\]/g
+      # Other citations
+      - /\w+ et al\b/g
+      # pre/code tags
+      - /<(pre|code)\b[^>]*>[\s\S]*?</\1>/g
+      # (...) References sections
+      - /<section>\s*<h\d>[^<]*references</h\d>[\s\S]*?</section>/gi
+      # Resources (...) sections
+      - /<section[^>]*>\s*<h\d>\s*resources[^<]*</h\d>[\s\S]*?</section>/gi
+      # HTML tags
+      - /<[^>]*>/g
+      # Namespaces
+      - /x(mlns|si):\w+/g
+      # Liquid directives
+      - /\{[\{%].*?[\}%]\}/g
+  - languageId: markdown
+    ignoreRegExpList:
+      # Fenced code block
+      - |
+        /
+          ^(\s*```).*  # Opening ```
+          [\s\S]*?     # Code block
+          ^```         # Closing ```
+        /gmx
+      # Inline code
+      - /`[^`\n]+`/g
