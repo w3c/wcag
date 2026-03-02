@@ -1,0 +1,18 @@
+{%- capture section_id -%}
+  {%- if guideline.type == "SC" -%}success-criterion{%- else -%}guideline{%- endif -%}
+{%- endcapture -%}
+{%- capture section_title -%}
+  {%- if guideline.type == "SC" -%}Success Criterion (SC){%- else -%}Guideline{%- endif -%}
+{%- endcapture -%}
+{% sectionbox section_id section_title -%}
+  {{ guideline.content }}
+  {%- if errata[guideline.id] %}
+    <h3>Errata</h3>
+    <ul>
+      {%- for erratum in errata[guideline.id] %}
+        <li>{{ erratum }}</li>
+      {%- endfor -%}
+    </ul>
+    <p><a href="https://www.w3.org/WAI/WCAG{{ version }}/errata/">View all errata</a></p>
+  {% endif -%}
+{%- endsectionbox %}
