@@ -20,7 +20,6 @@ else
    
 
   <link rel="stylesheet" type="text/css" media="screen" href="<?php echo($thestyle);?>.css" >
-
 </head>
 
 <body>

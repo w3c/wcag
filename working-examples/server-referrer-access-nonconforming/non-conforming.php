@@ -7,6 +7,13 @@
 <head>
   <meta charset="utf-8">
   <title>Non-Conforming Content</title>
+<style>
+body{
+	background:#fff;
+	color:#000;
+	font:100% / 1.5 sans-serif;
+}
+</style>
 </head>
 <body>
   <h1>This is a non-conforming page</h1>
