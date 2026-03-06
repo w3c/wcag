@@ -2,38 +2,54 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Using aria-alertdialog to Identify Errors</title>
-<script src="http://code.jquery.com/jquery.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Using aria-alertdialog to Identify Errors: WCAG 2</title>
 <script>
-$(document).ready(function(e) {
-	$('#trigger-alertdialog').click(function() {
-		$('main').attr('aria-hidden','true');
-		var lastFocus = document.activeElement;
-		var modalOverlay = $('<div>').attr({id:"modalOverlay", tabindex:"0"});
-		$(modalOverlay).appendTo('body');		
-		var dialog = $('<div>').attr({role:"alertdialog", "aria-labelledby":"alertHeading", tabindex:"0"});
-		$(dialog).html('<div id="firstElement" tabindex="0"></div><h1 id="alertHeading">Error</h1><p>Employee\'s Birth Date is after their hire date. Please verify the birth date and hire date.</p><button id="firstButton">Save and Continue</button><button id="lastButton">Return to page and correct error</button><div id="lastElement" tabindex="0"></div>').appendTo('body');
-		$('#firstButton').focus();
+document.addEventListener('DOMContentLoaded', function() {
+	document.getElementById('trigger-alertdialog').addEventListener('click', function(e) {
+		e.preventDefault();
+		const main = document.querySelector('main');
+		main.setAttribute('aria-hidden', 'true');
+		const lastFocus = document.activeElement;
 
-$('#lastElement').focusin(function(e) {
-	   $('#firstButton').focus();
-});
-$('#firstElement').focusin(function(e) {
-	   $('#lastButton').focus();
-});
+		const modalOverlay = document.createElement('div');
+		modalOverlay.id = 'modalOverlay';
+		modalOverlay.setAttribute('tabindex', '0');
+		document.body.appendChild(modalOverlay);
 
-$('[role=alertdialog] button').click(function(e) {
-    	$('main').attr('aria-hidden','false');		
-		$(modalOverlay).remove();
-		$(dialog).remove();
-        lastFocus.focus();
-});
-		return false;
+		const ariaDialog = document.createElement('div');
+		ariaDialog.setAttribute('role', 'alertdialog');
+		ariaDialog.setAttribute('aria-labelledby', 'alertHeading');
+		ariaDialog.setAttribute('tabindex', '0');
+		ariaDialog.innerHTML = '<div id="firstElement" tabindex="0"></div><h1 id="alertHeading">Error</h1><p>Employee\'s Birth Date is after their hire date. Please verify the birth date and hire date.</p><button id="firstButton">Save and Continue</button><button id="lastButton">Return to page and correct error</button><div id="lastElement" tabindex="0"></div>';
+		document.body.appendChild(ariaDialog);
+
+		document.getElementById('firstButton').focus();
+
+		document.getElementById('lastElement').addEventListener('focusin', function() {
+			document.getElementById('firstButton').focus();
+		});
+		document.getElementById('firstElement').addEventListener('focusin', function() {
+			document.getElementById('lastButton').focus();
+		});
+
+		ariaDialog.querySelectorAll('button').forEach(function(button) {
+			button.addEventListener('click', function() {
+				main.setAttribute('aria-hidden', 'false');
+				modalOverlay.remove();
+				ariaDialog.remove();
+				lastFocus.focus();
+			});
+		});
 	});
-	
 });
 </script>
-<style type="text/css">
+<style>
+body{
+	background:#fff;
+	color:#000;
+	font:100% / 1.5 sans-serif;
+}
 #modalOverlay {
 	width:100%;
 	height:100%;
@@ -65,7 +81,7 @@ $('[role=alertdialog] button').click(function(e) {
 <main>
 <h1>Using aria-alertdialog to Identify Errors</h1>
 <p>This example shows how role=&quot;alertdialog&quot; can be used to notify someone they have entered invalid information.</p>
-<button id="trigger-alertdialog">Trigger Alertdialog</button>
+<button id="trigger-alertdialog" type="button">Trigger Alertdialog</button>
 </main>
 </body>
 </html>
