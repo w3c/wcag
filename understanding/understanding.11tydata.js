@@ -252,7 +252,7 @@ export default function (data) {
                 title:
                   "Making information and relationships conveyed through presentation programmatically determinable",
                 using: [
-                  "ARIA25",
+                  "ARIA26",
                   "G138",
                   "H51",
                   "PDF6",
@@ -792,7 +792,7 @@ export default function (data) {
 
       location: {
         // 2.4.8
-        sufficient: ["G65", "G63", "G128", "ARIA25", "G127"],
+        sufficient: ["G65", "G63", "G128", "ARIA26", "G127"],
         advisory: ["PDF14", "PDF17"],
       },
 
