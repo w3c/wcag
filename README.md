@@ -178,7 +178,7 @@ Obsolete techniques should not be removed from the repository. Instead, they can
 ---
 obsoleteSince: 22
 obsoleteMessage: |
-  This failure relates to 4.1.1: Parsing, which was removed as of WCAG 2.2.
+  This failure relates to 4.1.1 Parsing, which was removed as of WCAG 2.2.
 ---
 ```
 
