@@ -18,6 +18,7 @@
 
 	label{
 		display: block;
+		margin-block-end: 0.25em;
 		width:max-content;
 		&.failed{
 			background:#CE0000;
@@ -32,8 +33,9 @@
 	
 	[type=submit]{
 		background: #666;
-		font:inherit;
 		color:#fff;
+		font:inherit;
+		padding:0.25em 0.5em;
 	}
 
 	div{
@@ -42,7 +44,6 @@
 
 	#errors{
 		color:#CE0000;
-		width: max-content;
 	}
 </style>
 <script>
@@ -56,8 +57,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		errText.textContent = '';
 		
 		// Reset all inputs and labels
-		document.querySelectorAll('input').forEach(input => {
-			input.removeAttribute('aria-invalid');
+		document.querySelectorAll('input[type="text"]').forEach(input => {
+			input.setAttribute('aria-invalid', 'false');
 		});
 		document.querySelectorAll('label').forEach(label => {
 			label.classList.remove('failed');
@@ -86,21 +87,21 @@ document.addEventListener('DOMContentLoaded', function() {
 <body>
 <h1>Input Error Notification with <code>aria-live=assertive</code> and <code>aria-invalid</code></h1>
 <form name="signup" id="signup" method="post" action="">
-	<p id="errors" aria-live="assertive" aria-atomic="true"></p>
+	<p id="errors" aria-live="assertive"></p>
 	<div>
 		<label for="first">First Name (required)</label>
-		<input autocomplete="given-name" type="text" name="first" id="first">
+		<input aria-invalid="false" autocomplete="given-name" type="text" name="first" id="first">
 	</div>
 	<div>
 		<label for="last">Last Name (required)</label>
-		<input autocomplete="family-name" type="text" name="last" id="last">
+		<input aria-invalid="false" autocomplete="family-name" type="text" name="last" id="last">
 	</div>
 	<div>
 		<label for="email">Email (required)</label>
-		<input autocomplete="email" type="text" name="email" id="email">
+		<input aria-invalid="false" autocomplete="email" type="text" name="email" id="email">
 	</div>
 	<div>
-		<input type="submit" name="button" id="button" value="Submit">
+		<button id="button" type="submit">Sign Up</button>
 	</div>
 </form>
 </body>
