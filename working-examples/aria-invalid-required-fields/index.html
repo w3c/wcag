@@ -1,62 +1,107 @@
 <!DOCTYPE HTML>
 <html lang="en">
- <head> <title>Input Error Notification with aria-live=assertive and aria-invalid using jQuery</title> 
+ <head>
+	<title>Input Error Notification with aria-live=assertive and aria-invalid: WCAG 2</title> 
 <meta charset="utf-8">
-<script src="http://code.jquery.com/jquery-1.10.2.js"></script> 
-<script>
-$(document).ready(function(e) {
-	$('#signup').submit(function() {
-		$('#errText').html('');
-$('input').removeAttr("aria-invalid");
-$('label').removeAttr("class");
-var eFlag = 0;
-		if ($('#first').val() === '') {
-			$('#first').attr("aria-invalid", "true");
-$("label[for='first']").addClass('failed');
-eFlag++;
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+	body{
+		background:#fff;
+		color:#000;
+		font-family:sans-serif;
+	}
+
+	:focus-visible{
+		outline: 2px solid darkblue;
+		outline-offset: 2px;
+	}
+
+	label{
+		display: block;
+		width:max-content;
+		&.failed{
+			background:#CE0000;
+			color:#fff;
 		}
-		if ($('#last').val() === '') {
-			$('#last').attr("aria-invalid", "true");
-$("label[for='last']").addClass('failed');
-eFlag++;
-		} 
-		if ($('#email').val() === '') {
-			$('#email').attr("aria-invalid", "true");
-$("label[for='email']").addClass('failed');
-eFlag++;
-		} 
-if (eFlag > 0) {
-		$('#errText').html("Please complete  all required fields (" + eFlag + ") and retry").focus();
-}
-		return false;
+	}
+
+	input{
+		border:1px solid #000;
+		font:inherit;
+	}
+	
+	[type=submit]{
+		background: #666;
+		font:inherit;
+		color:#fff;
+	}
+
+	div{
+		margin-block:0.5em;
+	}
+
+	#errors{
+		color:#CE0000;
+		width: max-content;
+	}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+	const form = document.getElementById('signup');
+	
+	form.addEventListener('submit', function(event) {
+		event.preventDefault();
+		
+		const errText = document.getElementById('errors');
+		errText.textContent = '';
+		
+		// Reset all inputs and labels
+		document.querySelectorAll('input').forEach(input => {
+			input.removeAttribute('aria-invalid');
+		});
+		document.querySelectorAll('label').forEach(label => {
+			label.classList.remove('failed');
+		});
+		
+		const requiredFields = ['first', 'last', 'email'];
+		let errorCount = 0;
+		
+		requiredFields.forEach(fieldId => {
+			const field = document.getElementById(fieldId);
+			if (field.value.trim() === '') {
+				field.setAttribute('aria-invalid', 'true');
+				document.querySelector(`label[for='${fieldId}']`).classList.add('failed');
+				errorCount++;
+			}
+		});
+		
+		if (errorCount > 0) {
+			errText.textContent = `Please complete all ${errorCount} required ${errorCount === 1 ? 'field' : 'fields'} and retry`;
+		}
 	});
 });
 </script>
-<style type="text/css">
-label.failed {
-	border: red thin solid;
-}
-</style>
 
 </head>
 <body>
-<h2 tabindex="-1" id="errText" aria-live="assertive"></h2>
-<form name="signup" id="signup" method="post" action="#">
- <p>
-    <label for="first">First Name (required)</label><br>
-    <input type="text" name="first" id="first">
-  </p>
-  <p>
-    <label for="last">Last Name (required)</label><br>
-    <input type="text" name="last" id="last">
-  </p>
-  <p>
-    <label for="email">Email (required)</label><br>
-    <input type="text" name="email" id="email">
-  </p>
-  <p>
-    <input type="submit" name="button" id="button" value="Submit">
-  </p>
+<h1>Input Error Notification with <code>aria-live=assertive</code> and <code>aria-invalid</code></h1>
+<form name="signup" id="signup" method="post" action="">
+	<p id="errors" aria-live="assertive" aria-atomic="true"></p>
+	<div>
+		<label for="first">First Name (required)</label>
+		<input autocomplete="given-name" type="text" name="first" id="first">
+	</div>
+	<div>
+		<label for="last">Last Name (required)</label>
+		<input autocomplete="family-name" type="text" name="last" id="last">
+	</div>
+	<div>
+		<label for="email">Email (required)</label>
+		<input autocomplete="email" type="text" name="email" id="email">
+	</div>
+	<div>
+		<input type="submit" name="button" id="button" value="Submit">
+	</div>
 </form>
 </body>
 </html>
