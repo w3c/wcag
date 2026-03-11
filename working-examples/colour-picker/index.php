@@ -36,7 +36,7 @@ if ($_POST)
 <head>
 	<title>Colour Picker</title>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script type="text/javascript" src="colourpicker.js"></script>
 	<link href="style.css" rel="stylesheet" type="text/css">
 <?php
