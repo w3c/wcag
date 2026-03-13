@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>
+      Working example - Using an ARIA live region to convey the status of a progress bar
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <style>
+      :root {
+        --color-brand: #0054ae;
+        --color-progress: #1e2eb8;
+        background: #fff;
+        color: #000;
+        font: 100% / 1.5 system-ui;
+      }
+
+      button {
+        background: var(--color-brand);
+        border: 1px solid transparent;
+        color: #fff;
+        font: inherit;
+        &[aria-disabled="true"] {
+          background: #e9e9e9;
+          color: #696969;
+          cursor: not-allowed;
+        }
+        &:focus-visible {
+          outline: 0.125rem solid var(--color-brand);
+          outline-offset: 0.125rem;
+        }
+      }
+
+      .upload-container {
+        max-inline-size: 25rem;
+        margin-block: 1.25rem;
+      }
+
+      #upload-progress {
+        --width: 0%;
+        background-color: #f0f0f0;
+        block-size: 1.25rem;
+        border: 1px solid #808080;
+        border-radius: 0.25rem;
+        max-inline-size: 31.25rem;
+        overflow: hidden;
+        position: relative;
+        &::before {
+          background-color: var(--color-progress);
+          block-size: 100%;
+          content: "";
+          inline-size: var(--width);
+          inset-block-start: 0;
+          inset-inline-start: 0;
+          position: absolute;
+          transition: inline-size 0.8s ease-in-out;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          &::before {
+            transition: none;
+          }
+        }
+      }
+
+      #upload-progress-label {
+        margin-block-end: 0;
+      }
+
+      #progress-text {
+        font-size: 0.875em;
+        margin: 0;
+      }
+
+      #start-upload {
+        margin-block-start: 0.625rem;
+        padding: 0.5rem 1rem;
+      }
+
+      .visually-hidden {
+        block-size: 1px;
+        border: 0;
+        clip: rect(0, 0, 0, 0);
+        inline-size: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Working example - Using the ARIA <code>progressbar</code> role with a status message</h1>
+    <p>
+      This working example relates to
+      <a href="../../techniques/aria/ARIA25.html">technique ARIA25</a>.
+    </p>
+
+    <div class="upload-container">
+      <p id="upload-progress-label">Uploading document: <strong>report.pdf</strong></p>
+      <div
+        aria-labelledby="upload-progress-label"
+        role="progressbar"
+        aria-describedby="progress-text"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="0"
+        id="upload-progress"
+      ></div>
+      <button id="start-upload" type="button">Start Upload</button>
+      <div aria-live="polite" class="visually-hidden" id="progress-text">0% complete</div>
+    </div>
+
+    <script>
+      (() => {
+        const progressBar = document.getElementById("upload-progress");
+        const progressText = document.getElementById("progress-text");
+        const startButton = document.getElementById("start-upload");
+        const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+
+        // Non-uniform progress intervals: 0 → 15 → 35 → 70 → 90 → 100
+        const steps = [
+          { progress: 0, delay: 0 },
+          { progress: 15, delay: 800 },
+          { progress: 35, delay: 2000 },
+          { progress: 70, delay: 1500 },
+          { progress: 90, delay: 800 },
+          { progress: 100, delay: 1800 },
+        ];
+
+        function updateProgress(stepIndex) {
+          const { progress, delay } = steps[stepIndex];
+          const textDelay = reducedMotion.matches ? 0 : 800;
+
+          progressBar.ariaValueNow = progress;
+          progressBar.style.setProperty("--width", `${progress}%`);
+
+          setTimeout(() => {
+            progressText.textContent = progress === 100 ? "Upload complete!" : `${progress}%`;
+          }, textDelay);
+
+          if (stepIndex + 1 < steps.length) {
+            setTimeout(() => updateProgress(stepIndex + 1), steps[stepIndex + 1].delay);
+          }
+        }
+
+        startButton.addEventListener("click", () => {
+          if (startButton.ariaDisabled === "true") return;
+          startButton.ariaDisabled = "true";
+          updateProgress(0);
+        });
+      })();
+    </script>
+  </body>
+</html>
