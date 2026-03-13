@@ -236,7 +236,7 @@ export default async function (eleventyConfig: any) {
         join(dir.output, "guidelines", "relative-luminance.html")
       );
 
-      const url = `https://raw.githack.com/${GH_ORG}/${GH_REPO}/${sha}/guidelines/index.html?isPreview=true`;
+      const url = `https://raw.githubusercontent.com/${GH_ORG}/${GH_REPO}/${sha}/guidelines/index.html?isPreview=true`;
       const processedGuidelines = await fetchText(
         `https://www.w3.org/publications/spec-generator/?type=respec&url=${encodeURIComponent(url)}`
       );
@@ -378,7 +378,7 @@ export default async function (eleventyConfig: any) {
           const urlBase = this.page.filePathStem.startsWith("/understanding/")
             ? ""
             : baseUrls.understanding;
-          const label = `${guideline.num}: ${guideline.name}`;
+          const label = `${guideline.num} ${guideline.name}`;
           return `<a href="${urlBase}${id}">${label}</a>`;
         })
         .join("\nand\n");
