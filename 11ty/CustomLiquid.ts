@@ -1,3 +1,5 @@
+import { type Options as SlugifyOptions, slugifyWithCounter } from "@sindresorhus/slugify";
+import hljs from "highlight.js";
 import { Liquid, type Template } from "liquidjs";
 import type { LiquidOptions, RenderOptions } from "liquidjs/dist/liquid-options";
 import compact from "lodash-es/compact";
@@ -7,9 +9,8 @@ import { basename } from "path";
 
 import type { GlobalData } from "eleventy.config";
 
-import { biblioPattern, getBiblio, getXmlBiblio } from "./biblio";
+import { biblioPattern, getBiblio, getWcag20Biblio } from "./biblio";
 import { flattenDom, load, type CheerioAnyNode } from "./cheerio";
-import { generateId } from "./common";
 import { getAcknowledgementsForVersion, type TermsMap } from "./guidelines";
 import { resolveTechniqueIdFromHref, understandingToTechniqueLinkSelector } from "./techniques";
 import { techniqueToUnderstandingLinkSelector } from "./understanding";
@@ -22,7 +23,7 @@ const techniquesPattern = /\btechniques\//;
 const understandingPattern = /\bunderstanding\//;
 
 const biblio = await getBiblio();
-const xmlBiblio = await getXmlBiblio();
+const wcag20Biblio = await getWcag20Biblio();
 const termLinkSelector = "a:not([href])";
 
 /** Generates {% include "foo.html" %} directives from 1 or more basenames */
@@ -142,16 +143,42 @@ export class CustomLiquid extends Liquid {
       $(".remove, link[href$='editors.css'], section#meta, section.meta").remove();
 
       if ($("p.instructions").length > 0) {
-        console.error(`${filepath} contains a <p class="instructions"> element.\n` +
-          "  This suggests that a template was copied and not fully filled out.\n" +
-          "  If the paragraph has been modified and should be retained, remove the class.\n" +
-          "  Otherwise, if the corresponding section has been updated, remove the paragraph."
+        console.error(
+          `${filepath} contains a <p class="instructions"> element.\n` +
+            "  This suggests that a template was copied and not fully filled out.\n" +
+            "  If the paragraph has been modified and should be retained, remove the class.\n" +
+            "  Otherwise, if the corresponding section has been updated, remove the paragraph."
         );
-        throw new Error("Instructions paragraph found; please resolve.")
+        throw new Error("Instructions paragraph found; please resolve.");
       }
 
       // Add charset to pages that forgot it
       if (!$("meta[charset]").length) $('<meta charset="UTF-8">').prependTo("head");
+
+      const $missingHljsOverrides = $("pre code:not([class])");
+      if ($missingHljsOverrides.length) {
+        $missingHljsOverrides.each((_, el) => {
+          const code = $(el).html()!.replace(/\n/g, "\\n");
+          const excerpt = `${code.slice(0, 40)}${code.length > 40 ? "..." : ""}`;
+          console.log(
+            `${filepath} missing "language-*" or "no-highlight" class on <pre><code> starting with ${excerpt}`
+          );
+        });
+        if (process.env.ELEVENTY_RUN_MODE === "build") {
+          throw new Error(
+            "Please ensure all code blocks have a highlight.js class (language-* or no-highlight)."
+          );
+        }
+      }
+
+      $("pre code[class*='language-']").each((_, el) => {
+        const $el = $(el);
+        // Unescape any HTML entities (which were originally needed for client-side highlight.js)
+        const code = $el.html()!.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+        const language = $el.attr("class")!.replace(/^.*language-(\S+).*$/, "$1");
+        $el.html(hljs.highlight(code, { language }).value);
+        $el.addClass("hljs");
+      });
 
       const prependedIncludes = ["header"];
       const appendedIncludes = ["wai-site-footer", "site-footer"];
@@ -245,7 +272,10 @@ export class CustomLiquid extends Liquid {
           $("figcaption").each((i, el) => {
             const $el = $(el);
             if (!$el.find("p").length) $el.wrapInner("<p></p>");
-            $el.find("p").first().prepend(`<span>Figure ${i + 1}.</span> `);
+            $el
+              .find("p")
+              .first()
+              .prepend(`<span>Figure ${i + 1}.</span> `);
           });
 
           // Remove spurious copy-pasted content in 2.5.3 that doesn't belong there
@@ -348,9 +378,7 @@ export class CustomLiquid extends Liquid {
           .replace(/^th(e|is) (technique|failure)s? (is )?/i, "")
           .replace(/^general( technique|ly applicable)?(\.|$).*$/i, "all technologies")
           .replace(/^appropriate to use for /i, "")
-          .replace(/^use this technique on /i, "")
-          // Work around redundant sentences (e.g. F105)
-          .replace(/\.\s+This technique relates to Success Criterion [\d\.]+\d[^\.]+\.$/, "");
+          .replace(/^use this technique on /i, "");
         if (customApplicability) {
           const appliesPattern = /^(?:appli(?:es|cable)|relates) (to|when(?:ever)?)\s*/i;
           const rephrasedApplicability = customApplicability.replace(appliesPattern, "");
@@ -585,7 +613,7 @@ export class CustomLiquid extends Liquid {
 
     // Link biblio references
     if (scope.isUnderstanding) {
-      const xmlBiblioReferences: string[] = [];
+      const wcag20BiblioReferences: string[] = [];
       $("p").each((_, el) => {
         const $el = $(el);
         const html = $el.html();
@@ -593,8 +621,8 @@ export class CustomLiquid extends Liquid {
           $el.html(
             html.replace(biblioPattern, (substring, code) => {
               if (biblio[code]?.href) return `[<a href="${biblio[code].href}">${code}</a>]`;
-              if (code in xmlBiblio) {
-                xmlBiblioReferences.push(code);
+              if (code in wcag20Biblio) {
+                wcag20BiblioReferences.push(code);
                 return `[<a href="#${code}">${code}</a>]`;
               }
               console.warn(`${scope.page.inputPath}: Unresolved biblio ref: ${code}`);
@@ -605,14 +633,19 @@ export class CustomLiquid extends Liquid {
       });
 
       // Populate references section, or remove if unused
-      if (xmlBiblioReferences.length) {
-        for (const ref of uniq(xmlBiblioReferences).sort()) {
+      if (wcag20BiblioReferences.length) {
+        for (const ref of uniq(wcag20BiblioReferences).sort()) {
           $("section#references dl").append(
-            `\n      <dt id="${ref}">${ref}</dt><dd>${xmlBiblio[ref]}</dd>`
+            `\n      <dt id="${ref}">${ref}</dt><dd>${
+              wcag20Biblio[ref as keyof typeof wcag20Biblio]
+            }</dd>`
           );
         }
       } else $("section#references").remove();
     }
+
+    const slugify = slugifyWithCounter();
+    const slugifyOptions: SlugifyOptions = { decamelize: false };
 
     // Allow autogenerating missing top-level section IDs in understanding docs,
     // but don't pick up incorrectly-nested sections in some techniques pages (e.g. H91)
@@ -624,7 +657,8 @@ export class CustomLiquid extends Liquid {
       // when we have sections and sidebar skeleton already reordered
       const $tocList = $(".sidebar nav ul");
       $h2Sections.each((_, el) => {
-        if (!el.attribs.id) el.attribs.id = generateId($(el).find(sectionH2Selector).text());
+        if (!el.attribs.id)
+          el.attribs.id = slugify($(el).find(sectionH2Selector).text(), slugifyOptions);
         $("<a></a>")
           .attr("href", `#${el.attribs.id}`)
           .text(normalizeTocLabel($(el).find(sectionH2Selector).text()))
@@ -648,8 +682,13 @@ export class CustomLiquid extends Liquid {
     $(autoIdSectionSelectors.join(", "))
       .filter(`:has(${sectionHeadingSelector})`)
       .each((_, el) => {
-        el.attribs.id = generateId($(el).find(sectionHeadingSelector).text());
+        el.attribs.id = slugify($(el).find(sectionHeadingSelector).text(), slugifyOptions);
       });
+
+    // Also autogenerate IDs for any headings with no dedicated section nor explicit ID
+    $(":is(h3, h4, h5):not(:first-child):not([id])").each((_, el) => {
+      el.attribs.id = slugify($(el).text(), slugifyOptions);
+    });
 
     return stripHtmlComments($.html());
   }
