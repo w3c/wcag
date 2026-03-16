@@ -68,7 +68,7 @@
 			$strError = "<h2>$iErrorCount Errors in Submission</h2>\n" . $strError;
 	}
 ?>
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">

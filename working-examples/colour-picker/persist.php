@@ -1,4 +1,4 @@
-<!DOCTYPE HTML> 
+<!DOCTYPE html> 
 <html lang="en">
 <head>
 	<title>Colour picker persistence</title>

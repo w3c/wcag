@@ -31,7 +31,7 @@ if ($_POST)
 	setcookie("backcolour", $strBackcolour, time() + (3600 * 24 * 365), "/");
 	setcookie("forecolour", $strForecolour, time() + (3600 * 24 * 365), "/");
 }
-?><!DOCTYPE HTML> 
+?><!DOCTYPE html> 
 <html lang="en">
 <head>
 	<title>Colour Picker</title>
