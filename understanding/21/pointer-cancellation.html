@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<html lang="en">
 	<head>
-		<meta charset="UTF-8"/>
+		<meta charset="UTF-8">
 		<title>Understanding Pointer Cancellation</title>
-		<link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"/>
+		<link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove">
 	</head>
 	<body>
 		<h1>Understanding Pointer Cancellation</h1>
@@ -26,11 +26,11 @@
       
         <p>Up-event activation refers to the activation of a target when the pointer is released. In a touchscreen interaction, when the finger touches a target, the up-event activation only occurs when the finger is lifted while still being within the target boundary. Similarly in mouse interaction, the up-event occurs when the mouse button is released while the cursor is still within the boundary of the initial target set when the mouse button was pressed.</p>
       <p>Authors can reduce the problem of users inadvertently triggering an action by using generic platform activation/click events that activate functionality on the up-event. For example, the <code>click</code> event in JavaScript triggers on release of the primary mouse button, and is an example of an implicit up-event. Despite its name, the <code>click</code> event is device-independent and also works for touch and keyboard interaction.</p>
-         <p>The preference for up-events is implicit in the Success Criterion wording of the first bullet: <q>The down-event of the pointer is not used to execute any part of the function.</q> Authors meet the first bullet by using only the up-event.</p> 
+         <p>The preference for up-events is implicit in the success criterion wording of the first bullet: <q>The down-event of the pointer is not used to execute any part of the function.</q> Authors meet the first bullet by using only the up-event.</p> 
 			</section>
 			<section>
       <h3>Up-Event Abort or Undo</h3>
-       <p>Where the interaction is equivalent to a simple "click", up-event activation has a built-in ability to cancel. There is a distinction between when someone touches a screen and when they remove their finger. Similarly, in mouse interaction, there is a difference between pressing and releasing the mouse button. When activation occurs only as the pointer is released, users have the opportunity to Abort (cancel) the activation. Users who have difficulty accurately using a mouse or touchscreen benefit greatly from this basic behaviour. They normally receive visual feedback when an item is pressed. If they discover they have selected the wrong item, they can cancel the action by moving their pointer or finger away from the target before releasing.</p>
+       <p>Where the interaction is equivalent to a simple "click", up-event activation has a built-in ability to cancel. There is a distinction between when someone touches a screen and when they remove their finger. Similarly, in mouse interaction, there is a difference between pressing and releasing the mouse button. When activation occurs only as the pointer is released, users have the opportunity to Abort (cancel) the activation. Users who have difficulty accurately using a mouse or touchscreen benefit greatly from this basic behavior. They normally receive visual feedback when an item is pressed. If they discover they have selected the wrong item, they can cancel the action by moving their pointer or finger away from the target before releasing.</p>
 			
       <p>For more complex interactions, such as drag and drop, the down- and up-events may initiate and end a series of actions to complete a process. For example, with drag and drop, the item may be:</p>
   <ol>
@@ -42,16 +42,16 @@
 			</section>
 			<section>
 <h3>Up Reversal</h3>
-<p>In other interactions, the down-event may trigger a behaviour which can be reversed when the up-event concludes. Examples of this include press-and-hold actions such as where a transient popup appears (or a video plays) when the user presses on an object (down-event), but the popup (or video) disappears as soon as the user releases the pointer (up-event). Since the up-event reverses the preceding down event, the user is returned to their prior point, and has effectively cancelled the operation.</p>
+<p>In other interactions, the down-event may trigger a behavior which can be reversed when the up-event concludes. Examples of this include press-and-hold actions such as where a transient popup appears (or a video plays) when the user presses on an object (down-event), but the popup (or video) disappears as soon as the user releases the pointer (up-event). Since the up-event reverses the preceding down event, the user is returned to their prior point, and has effectively cancelled the operation.</p>
 			</section>
 			<section>
 <h3>Down-Event</h3>
 <p>Completing the function on the down-event is only permitted when it is essential that the up-event not be used.</p>
-<p>The most prevalent essential down-event activation occurs in keyboard emulation. On a physical keyboard, keys by default activate on the down-event -- a letter appears when the key is pressed. If a software keyboard emulator tried to override this expected behaviour by making letters appear when the key is released, the behaviour would be unexpected and would adversely affect expected interaction.</p>
-<p>Note that a keyboard has a built-in Backspace or Delete button, which effectively provides an Undo option. Undo is not a requirement of the down-event Essential exception; however, providing an easy way for users to undo any action is a recommended practice (and may be a functional necessity), even where it is not a requirement of this Success Criterion.</p>
+<p>The most prevalent essential down-event activation occurs in keyboard emulation. On a physical keyboard, keys by default activate on the down-event -- a letter appears when the key is pressed. If a software keyboard emulator tried to override this expected behavior by making letters appear when the key is released, the behavior would be unexpected and would adversely affect expected interaction.</p>
+<p>Note that a keyboard has a built-in Backspace or Delete button, which effectively provides an Undo option. Undo is not a requirement of the down-event Essential exception; however, providing an easy way for users to undo any action is a recommended practice (and may be a functional necessity), even where it is not a requirement of this success criterion.</p>
 			<p>Other examples where the timing of an activation is essential and requires the down-event would be:</p>
 			<ul>
-				<li>An activity that emulates a physical on-press trigger, such as when playing an on-screen piano keyboard. Activation on the up-event would significantly alter the desired behaviour.</li>
+				<li>An activity that emulates a physical on-press trigger, such as when playing an on-screen piano keyboard. Activation on the up-event would significantly alter the desired behavior.</li>
 				<li>A program for shooting skeets where waiting for the "up" event would invalidate the precise timing necessary for the activation.</li>
 			</ul>
 			</section>
@@ -72,28 +72,7 @@
         <li>A drag-and-drop interface allows users to sort vertically stacked cards by picking up one card with the pointer (down-event), move it to a new position, and insert it at the new location when the pointer is released (up-event). Releasing the pointer outside the drop target area reverts the action, i.e., it moves the card back to the old position before the interaction started.</li>
 			</ul>
 		</section>
-		<section id="techniques">
-			<h2>Techniques</h2>
-			<section id="sufficient">
-				<h3>Sufficient</h3>
-					<ul>
-						<li><a href="../../techniques/general/G210" class="general">G210</a></li>
-						<li><a href="../../techniques/general/G212" class="general">G212</a></li>
-						<li>Touch events are only triggered when touch is removed from a control (Potential future technique)</li>		
-					</ul>
-			</section>
-			<!--<section id="advisory">
-				<h2>Advisory</h2>
-				<ul>
-					
-				</ul>
-			</section>-->
-			<section id="failure">
-				<h2>Failure</h2>
-				<ul>
-					<li><a href="../../techniques/failures/F101">Failure of Success Criterion 2.5.2 due to activating a control on the down-event</a></li>
-				</ul>
-			</section>
-		</section>
+		{% # Data for associated techniques is defined in understanding/understanding.11tydata.js %}
+		{% include "understanding/techniques.html" %}
 	</body>
 </html>

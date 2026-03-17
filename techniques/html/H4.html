@@ -2,25 +2,25 @@
 obsoleteMessage: Manipulating focus order is discouraged, as it frequently introduces new accessibility issues.
 obsoleteSince: 20
 ---
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Creating a logical tab order through links, form controls, and objects</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Creating a logical tab order through links, form controls, and objects</h1><section class="meta"><p class="id">ID: H4</p><p class="technology">Technology: html</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html><html lang="en"><head><title>Creating a logical tab order through links, form controls, and objects</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></head><body><h1>Creating a logical tab order through links, form controls, and objects</h1><section class="meta"><p class="id">ID: H4</p><p class="technology">Technology: html</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <p>HTML and XHTML</p>
    </section><section id="description"><h2>Description</h2>
       <p>The objective of this technique is to provide a logical tab order when the default tab
-            order does not suffice. Often, <a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G59">placing the
+            order does not suffice. Often, <a href="https://www.w3.org/WAI/WCAG22/Techniques/general/G59">placing the
               interactive elements in an order that follows sequences and relationships within the
               content</a> is sufficient and this technique is not necessary. It can be very easy
             to introduce usability bugs when setting the tab order explicitly.</p>
       <p>In some cases, the author may want to specify a tab order that follows relationships in
             the content without following the order of the interactive elements in the code. In
-            these cases, an alternative order can be specified using the <code class="att">tabindex</code>
-            attribute of the interactive element. The <code class="att">tabindex</code> is given a value between
-            0 and 32767. </p>
+            these cases, an alternative order can be specified using the <code>tabindex</code>
+            attribute of the interactive element. The <code>tabindex</code> is given a value between
+            <code>0</code> and <code>32767</code>. </p>
       <p>When the interactive elements are navigated using the tab key, the elements are given
-            focus in increasing order of the value of their <code class="att">tabindex</code> attribute.
-            Elements that have a <code class="att">tabindex</code> value higher than zero will receive focus
-            before elements without a <code class="att">tabindex</code> or a <code class="att">tabindex</code> of 0. After
-            all of the elements with a tabindex higher than 0 have received focus, the rest of the
-            interactive elements are given focus in the order in which they appear in the Web
+            focus in increasing order of the value of their <code>tabindex</code> attribute.
+            Elements that have a <code>tabindex</code> value greater than <code>0</code> will receive focus
+            before elements without a <code>tabindex</code> or a <code>tabindex</code> of <code>0</code>. After
+            all of the elements with a <code>tabindex</code> greater than <code>0</code> have received focus, the rest of the
+            interactive elements are given focus in the order in which they appear in the web
           page.</p>
    </section><section id="examples"><h2>Examples</h2>
       <section class="example">
@@ -31,10 +31,10 @@ obsoleteSince: 20
                 the bride in the second column. The order in the content is row by row but the
                 author feels it is more logical to navigate the form column by column. This way, all
                 the groom's criteria can be filled in before moving on to the bride's criteria. The
-                  <code class="att">tabindex</code> attributes of the input fields are used to specify a tab
+                  <code>tabindex</code> attributes of the input fields are used to specify a tab
                 order that navigates column by column.</p>
          
-         <pre xml:space="preserve">&lt;form action="#" method="post"&gt;
+         <pre><code class="language-html">&lt;form action="#" method="post"&gt;
  &lt;table summary="the first column contains the search criteria 
   of the groom, the second column the search criteria of 
   of the bride"&gt;
@@ -66,11 +66,11 @@ obsoleteSince: 20
       title="Place of birth of the bride" tabindex="6"&gt;&lt;/td&gt;
  &lt;/tr&gt;
 &lt;/table&gt;
-&lt;/form&gt;      </pre>
+&lt;/form&gt;</code></pre>
       </section>
       <section class="example">
          
-            <p>A Web page contains a search field in the upper right corner. The field is given
+            <p>A web page contains a search field in the upper right corner. The field is given
                 tabindex="1" so that it will occur first in the tab order, even though it is not
                 first in the content order.</p>
          
@@ -78,9 +78,9 @@ obsoleteSince: 20
       <section class="example">
          
             <p>
-								       <code class="att">Tabindex</code> values need not be sequential nor must they begin with any
+								       <code>tabindex</code> values need not be sequential nor must they begin with any
                 particular value. The values do not have to be unique. Elements that have identical
-                  <code class="att">tabindex</code> values are navigated in the order they appear in the
+                  <code>tabindex</code> values are navigated in the order they appear in the
                 character stream. </p>
          
          
@@ -89,20 +89,20 @@ obsoleteSince: 20
                 a different number for each element. Then it is easy to rearrange those elements or
                 add new elements and maintain a logical tab order.</p>
          
-         <pre xml:space="preserve"> &lt;a href="xxx" tabindex = "1"&gt;First link in list&lt;/a&gt;
+         <pre><code class="language-html">&lt;a href="xxx" tabindex = "1"&gt;First link in list&lt;/a&gt;
 &lt;a href="xxx" tabindex = "1"&gt;Second link in list&lt;/a&gt;
 &lt;a href="xxx" tabindex = "1"&gt;Link that was added long 
   after the original list was created&lt;/a&gt;
 &lt;a href="xxx" tabindex = "1"&gt;Third link in list&lt;/a&gt;
   ...
-&lt;a href="xxx" tabindex = "1"&gt;Twentieth link in list&lt;/a&gt;      </pre>
+&lt;a href="xxx" tabindex = "1"&gt;Twentieth link in list&lt;/a&gt;</code></pre>
       </section>
    </section><section id="tests"><h2>Tests</h2>
       <section class="procedure"><h3>Procedure</h3>
          <ol>
-            <li>Check if <code class="att">tabindex</code> is used</li>
-            <li>If <code class="att">tabindex</code> is used, check that the tab order specified by the
-                    <code class="att">tabindex</code> attributes follows relationships in the content.</li>
+            <li>Check if <code>tabindex</code> is used</li>
+            <li>If <code>tabindex</code> is used, check that the tab order specified by the
+                    <code>tabindex</code> attributes follows relationships in the content.</li>
          </ol>
       </section>
       <section class="results"><h3>Expected Results</h3>

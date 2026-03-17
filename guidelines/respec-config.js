@@ -11,7 +11,7 @@ var respecConfig = {
 	specStatus:           "ED",
 	//crEnd:                "2012-04-30",
 	//perEnd:               "2013-07-23",
-	publishDate:          "2023-10-05",
+	publishDate:          "2024-12-12",
 	diffTool:             "http://www.aptest.com/standards/htmldiff/htmldiff.pl",
 	
 	// the specifications short name, as in https://www.w3.org/TR/short-name/
@@ -62,62 +62,22 @@ var respecConfig = {
 			companyURI: "https://loc.gov/",
 			w3cid: 90310
 		},
-		{
+    {
 			name: "Michael Cooper",
 			url: 'https://www.w3.org/People/cooper',
-			//mailto: "cooper@w3.org",
 			company: "W3C",
 			companyURI: "https://www.w3.org",
-			w3cid: 34017
+			w3cid: 34017,
+			retiredDate: "2023-07-31"
 		},
 		{
 			name: "Andrew Kirkpatrick",
-			//url: "http://www.adobe.com/",
-			mailto: "akirkpat@adobe.com",
 			company: "Adobe",
 			companyURI: "http://www.adobe.com/",
-			w3cid: 39770
+			w3cid: 39770,
+			retiredDate: "2020-03-04"
 		}
-	],
-	/* 
-	formerEditors: [
-		{
-			name: "Ben Caldwell",
-			company: "Trace R&D Center, University of Wisconsin-Madison",
-			w3cid: 33602
-		},
-		{
-			name: "Loretta Guarino Reid",
-			company: "Google, Inc.",
-			w3cid: 35436
-		},
-		{
-			name: "Gregg Vanderheiden",
-			company: "Trace R&D Center, University of Wisconsin-Madison",
-			w3cid: 3442
-		},
-		{
-			name: "Wendy Chisholm",
-			company: "W3C",
-			w3cid: 4099
-		},
-		{
-			name: "John Slatin",
-			company: "Accessibility Institute, University of Texas at Austin",
-			w3cid: 35537
-		},
-		{
-			name: "Jason White",
-			company: "University of Melbourne",
-			w3cid: 74028
-		},
-		{
-			name: "Joshue O Connor",
-			company: "Invited Expert, InterAccess",
-			w3cid: 41218
-		}
-	],
-	*/
+  ],
 	
 	// authors, add as many as you like.
 	// This is optional, uncomment if you have authors as well as editors.

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Handling Key Events to Enable Keyboard Functionality in Silverlight</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Handling Key Events to Enable Keyboard Functionality in Silverlight</h1><section class="meta"><p class="id">ID: SL9</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html><html lang="en"><head><title>Handling Key Events to Enable Keyboard Functionality in Silverlight</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></head><body><h1>Handling Key Events to Enable Keyboard Functionality in Silverlight</h1><section class="meta"><p class="id">ID: SL9</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <ul id="silverlight.applicability.general">
          <li> Microsoft Silverlight, versions 3 and greater </li>
          <li> Silverlight managed programming model and Silverlight XAML </li>
@@ -67,25 +67,25 @@
     					can handle the event and/or rely on the built-in key handling as listed. </p>
          <ul>
             <li> 
-                  <code class="obj">Button</code> (SPACE and ENTER) - raises Click event. </li>
-            <li> Other <code class="obj">ButtonBase</code> classes eg <code class="obj">RepeatButton</code>, <code class="obj">HyperlinkButton</code> (SPACE
+                  <code>Button</code> (SPACE and ENTER) - raises Click event. </li>
+            <li> Other <code>ButtonBase</code> classes eg <code>RepeatButton</code>, <code>HyperlinkButton</code> (SPACE
     					and ENTER) - raises Click event. </li>
             <li> 
-                  <code class="obj">TextBox</code> (ENTER, unless in a mode where the <code class="obj">TextBox</code> 
+                  <code>TextBox</code> (ENTER, unless in a mode where the <code>TextBox</code> 
     						accepts multiple lines) - moves focus to next control, treated like
     						a TAB </li>
             <li> 
-                  <code class="obj">ListBox</code> (various keys) - see <a href="https://msdn.microsoft.com/en-us/library/system.windows.controls.listbox.onkeydown%28VS.95%29.aspx">OnKeyDown
+                  <code>ListBox</code> (various keys) - see <a href="https://msdn.microsoft.com/en-us/library/system.windows.controls.listbox.onkeydown%28VS.95%29.aspx">OnKeyDown
     							Method</a>. </li>
             <li> 
-                  <code class="obj">ComboBox</code> (arrow keys ) - traverse list choices
+                  <code>ComboBox</code> (arrow keys ) - traverse list choices
     								as control UI if popup area displayed. </li>
             <li> 
-                  <code class="obj">RichTextBox</code> (various keys ) - enable edit mode
+                  <code>RichTextBox</code> (various keys ) - enable edit mode
     									operations; see <a href="https://msdn.microsoft.com/en-us/library/ee681613%28VS.95%29.aspx">RichTextBox
     										Overview</a>. </li>
             <li> 
-                  <code class="obj">Slider</code> (arrow keys ) - increment/decrement values. </li>
+                  <code>Slider</code> (arrow keys ) - increment/decrement values. </li>
          </ul>
    	</section>
    	<section id="SL9_host_events">
@@ -140,26 +140,26 @@
             <p>This example pertains to cases where the control that handles key
     						events is focusable (through the tab sequence, etc.) and where an existing
     						Silverlight control behavior provides the keyboard equivalence In this
-    						example, a Silverlight UI includes a <code class="obj">Button</code> element.
+    						example, a Silverlight UI includes a <code>Button</code> element.
     						For sighted users, or users that generally use the mouse to interact
     						with UI, a typical way to interact with the button is to position the
     						mouse pointer over the element, and click the left mouse button. However,
-    						the <code class="obj">Button</code> also supports a built-in key handling behavior,
+    						the <code>Button</code> also supports a built-in key handling behavior,
     						whereby either the SPACE or ENTER keys are treated as an equivalent
     						action to clicking the button with a mouse. The requirement for this
-    						interaction is that the <code class="obj">Button</code> must have keyboard
-    						focus at the point in time that SPACE or ENTER are pressed. The <code class="obj">Button</code> might
+    						interaction is that the <code>Button</code> must have keyboard
+    						focus at the point in time that SPACE or ENTER are pressed. The <code>Button</code> might
     						gain focus because the user pressed the TAB key to move through the
     						tab sequence, or some equivalent action enabled by assistive technology.
     						In terms of the programming experience, the Silverlight application
     						author does not have to separately handle KeyDown for
-    						this case. Within the <code class="obj">Button</code> control built-in code,
-    						the special case of SPACE or ENTER keys pressed while a <code class="obj">Button</code> has
+    						this case. Within the <code>Button</code> control built-in code,
+    						the special case of SPACE or ENTER keys pressed while a <code>Button</code> has
     						focus invokes the button’s Click event. Then the Silverlight
     						application author can simply handle Click without
     						differentiating whether the input action was a mouse click or a keyboard
     						equivalent. The following is the entire XAML UI. </p>
-            <pre xml:space="preserve">&lt;UserControl x:Class="BuiltInKeyEquivalence.MainPage"
+            <pre>&lt;UserControl x:Class="BuiltInKeyEquivalence.MainPage"
    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 &gt;
@@ -172,7 +172,7 @@
 &lt;/UserControl&gt;
 </pre>
             <p>The following is the C# logic. </p>
-            <pre xml:space="preserve">   private void button1_Click(object sender, RoutedEventArgs e)
+            <pre>   private void button1_Click(object sender, RoutedEventArgs e)
    {
        MessageBox.Show("You clicked a button ... or maybe you hit the space bar ... or ENTER ... it's all the same to me.");
    }
@@ -194,7 +194,7 @@
     						accelerator keys, where these actions are equivalent to clicking the
     						button composition parts of the control with a mouse. The following
     						is the default XAML template. </p>
-            <pre xml:space="preserve">&lt;ControlTemplate TargetType="local:SimpleNumericUpDown"&gt;
+            <pre>&lt;ControlTemplate TargetType="local:SimpleNumericUpDown"&gt;
   &lt;Border Background="{TemplateBinding Background}"
           BorderBrush="{TemplateBinding BorderBrush}"
           BorderThickness="{TemplateBinding BorderThickness}" Name="controlFrame"&gt;
@@ -214,11 +214,11 @@
 </pre>
             <p>The following C# code shows the event handlers. Also, the code includes
     						the event-wiring technique that is used whenever a Silverlight control
-    						author implements a templateable control. This technique enables
+    						author implements a templatable control. This technique enables
     						the separation of UI appearance (which can be overridden) from the
     						input event-handling behavior (which is implemented by the control
     						author). </p>
-            <pre xml:space="preserve">   public class SimpleNumericUpDown : Control
+            <pre>   public class SimpleNumericUpDown : Control
    {
        public SimpleNumericUpDown()
        {
