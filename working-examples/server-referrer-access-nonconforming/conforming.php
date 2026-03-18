@@ -2,7 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Conforming Content</title>
+    <title>Conforming Content | WCAG 2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
 body{
 	background:#fff;

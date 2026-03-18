@@ -1,8 +1,8 @@
 <!DOCTYPE html> 
 <html lang="en">
 <head>
-	<title>Colour picker persistence</title>
 	<meta charset="utf-8">
+	<title>Colour picker persistence | WCAG 2</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="style.css" rel="stylesheet">
 <?php

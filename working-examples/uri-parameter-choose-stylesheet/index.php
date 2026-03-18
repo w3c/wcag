@@ -16,7 +16,7 @@ else
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Using PHP $_GET to apply a different external CSS file</title>
+<title>Using PHP $_GET to apply a different external CSS file | WCAG 2</title>
    
 
   <link rel="stylesheet" media="screen" href="<?php echo($thestyle);?>.css" >

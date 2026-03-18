@@ -73,7 +73,7 @@
 <head>
 	<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">	
-	<title>Form Validation</title>
+	<title>Form Validation | WCAG 2</title>
 	<link href="css/validate.css" rel="stylesheet">
 	<script src="scripts/validate.js"></script>
 </head>

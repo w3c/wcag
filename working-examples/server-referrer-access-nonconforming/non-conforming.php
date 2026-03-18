@@ -6,7 +6,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Non-Conforming Content</title>
+  <title>Non-Conforming Content | WCAG 2</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 body{
 	background:#fff;

@@ -34,8 +34,8 @@ if ($_POST)
 <!DOCTYPE html> 
 <html lang="en">
 <head>
-	<title>Colour Picker - Choose Colour</title>
 	<meta charset="utf-8">
+	<title>Colour Picker - Choose Colour | WCAG 2</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="style.css" rel="stylesheet">
 <?php
