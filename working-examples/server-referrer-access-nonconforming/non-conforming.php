@@ -9,11 +9,11 @@
   <title>Non-Conforming Content | WCAG 2</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-body{
-	background:#fff;
-	color:#000;
-	font:100% / 1.5 sans-serif;
-}
+  body{
+    background:#fff;
+    color:#000;
+    font:100% / 1.5 sans-serif;
+  }
 </style>
 </head>
 <body>
