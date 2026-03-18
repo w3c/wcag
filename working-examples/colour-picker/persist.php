@@ -4,7 +4,7 @@
 	<title>Colour picker persistence</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="style.css" rel="stylesheet" type="text/css">
+	<link href="style.css" rel="stylesheet">
 <?php
 // Get the foreground colour
 if (strlen($_COOKIE["forecolour"]) == 4)

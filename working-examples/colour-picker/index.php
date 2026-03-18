@@ -37,8 +37,8 @@ if ($_POST)
 	<title>Colour Picker</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<script type="text/javascript" src="colourpicker.js"></script>
-	<link href="style.css" rel="stylesheet" type="text/css">
+	<script src="colourpicker.js"></script>
+	<link href="style.css" rel="stylesheet">
 <?php
 // Set style block
 echo "\t<style type=\"text/css\">body, legend, a{ color: " . htmlspecialchars($strForecolour) . "; background: " . htmlspecialchars($strBackcolour) . ";}</style>\n";

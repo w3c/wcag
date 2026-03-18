@@ -37,7 +37,7 @@ if ($_POST)
 	<title>Colour Picker - Choose Colour</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="style.css" rel="stylesheet" type="text/css">
+	<link href="style.css" rel="stylesheet">
 <?php
 // Set style block
 echo "\t<style type=\"text/css\">body, legend, a{ color: " . htmlspecialchars($strForecolour) . "; background: " . htmlspecialchars($strBackcolour) . ";}</style>\n";

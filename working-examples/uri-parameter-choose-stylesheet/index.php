@@ -19,7 +19,7 @@ else
 <title>Using PHP $_GET to apply a different external CSS file</title>
    
 
-  <link rel="stylesheet" type="text/css" media="screen" href="<?php echo($thestyle);?>.css" >
+  <link rel="stylesheet" media="screen" href="<?php echo($thestyle);?>.css" >
 </head>
 
 <body>
