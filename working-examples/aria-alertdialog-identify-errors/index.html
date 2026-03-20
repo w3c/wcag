@@ -1,71 +1,100 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Using aria-alertdialog to Identify Errors</title>
-<script src="http://code.jquery.com/jquery.js"></script>
-<script>
-$(document).ready(function(e) {
-	$('#trigger-alertdialog').click(function() {
-		$('main').attr('aria-hidden','true');
-		var lastFocus = document.activeElement;
-		var modalOverlay = $('<div>').attr({id:"modalOverlay", tabindex:"0"});
-		$(modalOverlay).appendTo('body');		
-		var dialog = $('<div>').attr({role:"alertdialog", "aria-labelledby":"alertHeading", tabindex:"0"});
-		$(dialog).html('<div id="firstElement" tabindex="0"></div><h1 id="alertHeading">Error</h1><p>Employee\'s Birth Date is after their hire date. Please verify the birth date and hire date.</p><button id="firstButton">Save and Continue</button><button id="lastButton">Return to page and correct error</button><div id="lastElement" tabindex="0"></div>').appendTo('body');
-		$('#firstButton').focus();
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Using aria-alertdialog to Identify Errors: WCAG 2</title>
+	<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		const triggerButton = document.getElementById('trigger-alertdialog');
+		const main = document.querySelector('main');
+		const modalBackdrop = document.getElementById('modal-backdrop');
+		const ariaDialog = document.querySelector('[role="alertdialog"]');
+		const dialogButton = ariaDialog.querySelector('button');
+		let lastFocus;
 
-$('#lastElement').focusin(function(e) {
-	   $('#firstButton').focus();
-});
-$('#firstElement').focusin(function(e) {
-	   $('#lastButton').focus();
-});
+		triggerButton.addEventListener('click', function() {
+			lastFocus = document.activeElement;
+			main.inert = true;
+			modalBackdrop.hidden = false;
+			ariaDialog.hidden = false;
+			dialogButton.focus();
+		});
 
-$('[role=alertdialog] button').click(function(e) {
-    	$('main').attr('aria-hidden','false');		
-		$(modalOverlay).remove();
-		$(dialog).remove();
-        lastFocus.focus();
-});
-		return false;
+		// Close dialog on button click
+		ariaDialog.querySelectorAll('button').forEach(function(button) {
+			button.addEventListener('click', function() {
+				main.inert = false;
+				modalBackdrop.hidden = true;
+				ariaDialog.hidden = true;
+				lastFocus.focus();
+			});
+		});
 	});
-	
-});
-</script>
-<style type="text/css">
-#modalOverlay {
-	width:100%;
-	height:100%;
-	z-index:2; 
-	background-color:#000;
-	opacity:0.5;
-	position:fixed;
-	top:0;
-	left:0;
-	margin:0;
-	padding:0;
-}
-[role=alertdialog] {
-	width:50%;
-	margin-left:auto;
-	margin-right:auto;
-	padding: 5px;
-	border: thin #000 solid;
-	background-color:#fff;
-	z-index:3;
-	position:fixed;
-	top:25%;
-	left:25%;
-}
-</style>
-</head>
+	</script>
+	<style>
+		body {
+			background: #fff;
+			color: #000;
+			font: 100% / 1.5 sans-serif;
+		}
 
+		:focus-visible {
+			outline: 2px solid darkblue;
+			outline-offset: 2px;
+		}
+
+		button {
+			background: #666;
+			border: 1px solid #000;
+			color: #fff;
+			font: inherit;
+		}
+
+		#modal-backdrop {
+			position: fixed;
+			inset: 0;
+			z-index: 2;
+			background-color: #000;
+			opacity: 0.5;
+		}
+
+		[role=alertdialog] {
+			background: #fff;
+			border: thin #000 solid;
+			box-sizing: border-box;
+			height: fit-content;
+			inset: 1rem;
+			margin: auto;
+			max-height: calc(100vh - 2rem);
+			max-width: 40rem;
+			overflow-y: auto;
+			padding: 1rem;
+			position: fixed;
+			width: calc(100% - 2rem);
+			z-index: 3;
+
+			& h1 {
+				margin: 0;
+			}
+		}
+
+		[hidden] {
+			display: none;
+		}
+	</style>
+</head>
 <body>
-<main>
-<h1>Using aria-alertdialog to Identify Errors</h1>
-<p>This example shows how role=&quot;alertdialog&quot; can be used to notify someone they have entered invalid information.</p>
-<button id="trigger-alertdialog">Trigger Alertdialog</button>
-</main>
+	<main>
+		<h1>Using <code>aria-alertdialog</code> to Identify Errors</h1>
+		<p>This example shows how <code>role="alertdialog"</code> can be used to notify someone they have entered invalid information.</p>
+		<button id="trigger-alertdialog" type="button">Trigger Alertdialog</button>
+	</main>
+	<div id="modal-backdrop" hidden></div>
+	<div aria-modal="true" role="alertdialog" aria-labelledby="alert-heading" hidden>
+		<h1 id="alert-heading">Error</h1>
+		<p>Employee's Birth Date is after their hire date. Please verify the birth date and hire date.</p>
+		<button type="button">Return to page and correct error</button>
+	</div>
 </body>
 </html>

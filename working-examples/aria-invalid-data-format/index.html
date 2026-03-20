@@ -1,85 +1,98 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-<title>Forms: Using aria-invalid </title>
-<style type="text/css">
-div.control label {
-margin: 0;
-padding: 0;
-padding-right: .25em;
-text-align: right;
-clear: both;
-float: left;
-}
-div.control {
-margin: .5em;
-}
-input.error {
-   border: red thin solid;}
-input[type=submit] {
-clear: both;
-padding: 0;
-margin: 0;
-margin-top: .5em;
-margin-left: 13em;
-}
-span.errtext {
+  <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">	
+	<title>Forms: Using aria-invalid to identify invalid form fields: WCAG 2</title>
+	<style>
+
+	body{
+		background:#fff;
+		color:#000;
+		font:100% / 1.5 sans-serif;
+	}
+
+	:focus-visible{
+		outline: 2px solid darkblue;
+		outline-offset: 2px;
+	}
+	
+	div.control {
+	margin-block-start: 1rem;
+		label {
+			display: block;
+			margin: 0;
+			padding: 0;
+		}
+	}
+
+	input, button{
+		border:1px solid grey;
+		font:inherit;
+		padding:0.25em;
+	}
+
+	button{
+		margin-block-start: 1em;
+	}
+
+	.error {
+  	border: #CE0000 thin solid;
+	}
+	
+.errtext {
+	background: #EEEEFF url('error-icon.svg') no-repeat right 0.25em center;
+	color:#CE0000;
 	margin-bottom: 1em;
-	padding: .25em 1.4em .25em .25em;
-	border: red thin solid;
-	background-color: #EEEEFF;
-	background-image:url('images/iconError.gif');
-	background-repeat:no-repeat;
-	background-position:right;	
+	max-width: fit-content;
+	padding: .25em 1.6em .25em .25em;
+}
+
+#error-header{
+	color:#CE0000;
+	font-weight: bold;
+}
+
+[hidden]{
+	display: none;
+}
+
+form{
+	border:1px solid;
+	margin:0 auto;
+	max-width:20rem;
+	padding: 1rem;
+	& h2{
+		margin-block-start:0;
+	}
 }
 </style>
-<script src="http://code.jquery.com/jquery-1.10.2.js"></script> 
-<script type="text/JavaScript" src="valcheck.js"></script>
+<script src="valcheck.js"></script>
 </head>
 <body>
-<h2>Forms: Using aria-invalid to identify failed fields </h2>
-<h3>Features</h3>
-<ul>
-<li>Places an aria-invalid attribute for a field only if the input data is not in the expected format. These also have generic error text alongside but the text is not tied to the field. </li>
-<li>Uses a standard generic error message against every field when no data is entered. The error message is tied to the form control using aria-describedby.</li>
-<li>The error displayed for a past date (after Jan 1, 2000) is associated with the field via markup</li> 
-<li>Every form control that fails validation has a red border and an error icon to its right (placed via CSS) for visual reinforcement</li>
-<li>Date is not a required field; today's date  is filled in as default</li>
-<li>The error message placed above the form is within a span tag with role=alert. The SPAN tagg is within an h2 and is read by NVDA and JAWS. VoiceOver reads it in iOS and OSX.</li>
-</ul> 
-<h2> <span role="alert" id="err_final" tabindex="-1"></span></h2>
+<h1>Forms: Using <code>aria-invalid</code> to identify invalid form fields</h1>
 
-<form action="#" method="post"  id="login3" onsubmit="return errorAlert2()">
-
-<div class="control">
-<p><label for="pin4">Personal Id. Number (PIN) - 4 digits: [*]</label> 
-<input type="text" size="4" name="pin4" id="pin4"></p>
-</div>
-<div class="control">
-<p><label for="email">Email address: [*]</label> 
-<input type="text" name="email" id="email"> </p> 
-</div>
-<div class="control">
-<p><label for="lname">Last name:  [*]</label>
-<input type="text" name="lname" id="lname" size="12"> </p> 
-</div>
-<div class="control">
-<p><label for="startDt">Desired policy start date (MM / DD / YYYY)</label>
-<input type="text" name="startDt" id="startDt" size="12"> </p> 
-</div>
-<p><input type="hidden" name="spanval" id="spanval">
-
-<input type="submit" value="Login" id="next_btn" name="next_btn"></p>
+<form action="#" method="post" id="login3" novalidate>
+	<h2>Log into your account</h2>
+	<p hidden id="error-header" tabindex="-1"></p>
+	<p>* means required</p>
+	<div class="control">
+		<label for="pin4">PIN * (4 digits)</label> 
+		<input id="pin4" name="pin4" pattern="\d{4}" size="4" type="text">
+	</div>
+	<div class="control">
+		<label for="email">Email address *</label> 
+		<input autocomplete="email" id="email" name="email" type="email" >
+	</div>
+	<div class="control">
+		<label for="lname">Last name *</label>
+		<input autocomplete="family-name" id="lname" name="lname" pattern="[a-zA-Z]{2,}" type="text">
+	</div>
+	<div class="control">
+		<label for="startDt">Desired policy start date (YYYY-MM-DD)</label>
+		<input id="startDt" name="startDt" pattern="20\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])" type="text">
+	</div>
+	<button id="next_btn" name="next_btn" type="button">Login</button>
 </form>
-<h3>About the error messages</h3>
-<ul>
-<li>JAWS and NVDA  expose a field with aria-invalid=true as "invalid entry".</li>
-<li>VoiceOver with Safari on OSX or iOS reads out the field as "invalid data"</li>
-<li>The field's label (or other accessible name) is announced before the "invalid" notification.</li> 
-<li>The field-specific error messages when associated with aria-describedby are read by JAWS and NVDA as one tabs to the fields. VoiceOver reads these automatically only in iOS ... the error message is announced after a slight pause after the label is read. In OSX on a MacBook Pro, the VO+Shift+h key combination causes the error text referenced by aria-describedby to be read by VoiceOver.</li>
-</ul>
-
-
 </body>
 </html>

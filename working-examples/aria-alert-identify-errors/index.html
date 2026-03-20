@@ -3,90 +3,109 @@
 <head>
 <meta charset="UTF-8">
 <title>Using ARIA live regions or role=alert to identify errors</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 	body{
 		background:#fff;
 		color:#000;
-		font-family:system-ui;
+		font-family:sans-serif;
+	}
+
+	label{
+		display: block;
 	}
 
 	input{
 		border:1px solid #000;
 		font:inherit;
 	}
-
+	
 	[type=submit]{
 		background: #666;
+		font:inherit;
 		color:#fff;
 	}
-</style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
+	div{
+		margin-block:0.5em;
+	}
+</style>
 <script>
-$(document).ready(function(e) {
-	$('#signup').submit(function() {
-		$('#errors').html('');
-		if ($('#first').val() === '') {
-			$('#errors').append('<p>Please enter your first name.</p>');
+// Wait for the page to fully load before running our code
+document.addEventListener('DOMContentLoaded', function() {
+
+	// Get the form element
+	const form = document.getElementById('signup');
+
+	// Listen for when the form is submitted
+	form.addEventListener('submit', function(event) {
+
+		// Stop the form from actually submitting (so we can check it first)
+		event.preventDefault();
+
+		// Get references to the input fields
+		const firstNameInput = document.getElementById('first');
+		const lastNameInput = document.getElementById('last');
+		const emailInput = document.getElementById('email');
+
+		// Get the element where we'll show error messages
+		const errorsContainer = document.getElementById('errors');
+
+		// Create an empty array to collect error messages
+		const errorMessages = [];
+
+		// Check if first name is empty
+		if (firstNameInput.value === '') {
+			errorMessages.push('<li>Please enter your first name.</li>');
 		}
-		if ($('#last').val() === '') {
-			$('#errors').append('<p>Please enter your last name.</p>');
-		} 
-		if ($('#email').val() === '') {
-			$('#errors').append('<p>Please enter your email address.</p>');
-		} 
-		return false;
-	});
-	$('#signup2').submit(function() {
-		$('#errors2').html('');
-		if ($('#first2').val() === '') {
-			$('#errors2').append('<p>Please enter your first name.</p>');
+
+		// Check if last name is empty
+		if (lastNameInput.value === '') {
+			errorMessages.push('<li>Please enter your last name.</li>');
 		}
-		if ($('#last2').val() === '') {
-			$('#errors2').append('<p>Please enter your last name.</p>');
-		} 
-		if ($('#email2').val() === '') {
-			$('#errors2').append('<p>Please enter your email address.</p>');
-		} 
-		return false;
-	});
-	$('#signup3').submit(function() {
-		$('#errors3').html('');
-		if ($('#first3').val() === '') {
-			$('#errors3').append('<p>Please enter your first name.</p>');
+
+		// Check if email is empty
+		if (emailInput.value === '') {
+			errorMessages.push('<li>Please enter your email address.</li>');
 		}
-		if ($('#last3').val() === '') {
-			$('#errors3').append('<p>Please enter your last name.</p>');
-		} 
-		if ($('#email3').val() === '') {
-			$('#errors3').append('<p>Please enter your email address.</p>');
-		} 
-		return false;
+
+		// Clear the errors container first
+		// (This helps screen readers notice when new content appears)
+		errorsContainer.innerHTML = '';
+
+		// Wait 500 milliseconds, then show the errors
+		setTimeout(function() {
+			// If there are any errors, wrap them in a list and display them
+			if (errorMessages.length > 0) {
+				errorsContainer.innerHTML = '<ul>' + errorMessages.join('') + '</ul>';
+			}
+		}, 500);
 	});
 });
 </script>
 </head>
 
 <body>
-<h1>Using ARIA live regions or <code>role=alert</code> to identify errors</h1>
-<form name="signup" id="signup" method="post" action="">
-  <p id="errors" role="alert" aria-atomic="true"></p>
-  <p>
-    <label for="first">First Name (required)</label><br>
-    <input type="text" name="first" id="first">
-  </p>
-  <p>
-    <label for="last">Last Name (required)</label><br>
-    <input type="text" name="last" id="last">
-  </p>
-  <p>
-    <label for="email">Email (required)</label><br>
-    <input type="text" name="email" id="email">
-  </p>
-  <p>
-    <input type="submit" name="button" id="button" value="Submit">
-  </p>
-</form>
+	<main>
+		<h1>Using ARIA live regions or <code>role=alert</code> to identify errors</h1>
+		<form name="signup" id="signup" method="post" action="">
+			<p id="errors" role="alert" aria-atomic="true"></p>
+			<div>
+				<label for="first">First Name (required)</label>
+				<input autocomplete="given-name" type="text" name="first" id="first">
+			</div>
+			<div>
+				<label for="last">Last Name (required)</label>
+				<input autocomplete="family-name" type="text" name="last" id="last">
+			</div>
+			<div>
+				<label for="email">Email (required)</label>
+				<input autocomplete="email" type="text" name="email" id="email">
+			</div>
+			<div>
+				<input type="submit" name="button" id="button" value="Submit">
+			</div>
+		</form>
+</main>
 </body>
 </html>
