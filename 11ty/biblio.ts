@@ -46,16 +46,43 @@ export async function getBiblio() {
   };
 }
 
+/** Refs originally found in wcag20/sources/guide-to-wcag2-src.xml */
+const wcag20Refs = {
+  "ANSI-HFES-100-1988":
+    "ANSI/HFS 100-1988, American National Standard for Human Factors Engineering of Visual Display Terminal Workstations, Section 6, pp. 17-20.",
+  ARDITI:
+    "Arditi, A. (2002). Effective color contrast: designing for people with partial sight and color deficiencies. New York, Arlene R. Gordon Research Institute, Lighthouse International.",
+  "ARDITI-FAYE":
+    "Arditi, A. and Faye, E. (2004). Monocular and binocular letter contrast sensitivity and letter acuity in a diverse ophthalmologic practice. Supplement to Optometry and Vision Science, 81 (12S), 287.",
+  "ARDITI-KNOBLAUCH-1994":
+    "Arditi, A. and Knoblauch, K. (1994). Choosing effective display colors for the partially-sighted. Society for Information Display International Symposium Digest of Technical Papers, 25, 32-35.",
+  "ARDITI-KNOBLAUCH-1996":
+    "Arditi, A. and Knoblauch, K. (1996). Effective color contrast and low vision. In B. Rosenthal and R. Cole (Eds.) Functional Assessment of Low Vision. St. Louis, Mosby, 129-135.",
+  CAPTCHA:
+    "The CAPTCHA Project, Carnegie Mellon University. The project is online at http://www.captcha.net.",
+  "GITTINGS-FOZARD":
+    "Gittings, NS and Fozard, JL (1986). Age related changes in visual acuity. Experimental Gerontology, 21(4-5), 423-433.",
+  "HARDING-BINNIE":
+    "Harding G. F. A. and Binnie, C.D., Independent Analysis of the ITC Photosensitive Epilepsy Calibration Test Tape. 2002.",
+  "HEARING-AID-INT":
+    "Levitt, H., Kozma-Spytek, L., & Harkins, J. (2005). In-the-ear measurements of interference in hearing aids from digital wireless telephones. Seminars in Hearing, 26(2), 87.",
+  "IEC-4WD":
+    "IEC/4WD 61966-2-1: Colour Measurement and Management in Multimedia Systems and Equipment - Part 2.1: Default Colour Space - sRGB. May 5, 1998.",
+  "ISO-9241-3":
+    "ISO 9241-3, Ergonomic requirements for office work with visual display terminals (VDTs) - Part 3: Visual display requirements. Amendment 1.",
+  "I18N-CHAR-ENC":
+    "\n" +
+    '"Tutorial: Character sets & encodings in XHTML, HTML and CSS," R. Ishida, ed., This tutorial is available at http://www.w3.org/International/tutorials/tutorial-char-enc/. \n',
+  KNOBLAUCH:
+    "Knoblauch, K., Arditi, A. and Szlyk, J. (1991). Effects of chromatic and luminance contrast on reading. Journal of the Optical Society of America A, 8, 428-439.",
+  LAALS:
+    "Bakke, M. H., Levitt, H., Ross, M., & Erickson, F. (1999). Large area assistive listening systems (ALS): Review and recommendations (PDF) (Final Report. NARIC Accession Number: O16430). Jackson Heights, NY: Lexington School for the Deaf/Center for the Deaf Rehabilitation Research Engineering Center on Hearing Enhancement.\n",
+  sRGB: '"A Standard Default Color Space for the Internet - sRGB," M. Stokes, M. Anderson, S. Chandrasekar, R. Motta, eds., Version 1.10, November 5, 1996. A copy of this paper is available at http://www.w3.org/Graphics/Color/sRGB.html.',
+  UNESCO:
+    "International Standard Classification of Education, 1997. A copy of the standard is available at http://www.unesco.org/education/information/nfsunesco/doc/isced_1997.htm.",
+  WCAG20:
+    '"Web Content Accessibility Guidelines 2.0,"  B. Caldwell, M Cooper, L Guarino Reid, and G. Vanderheiden, eds., W3 Recommendation 12 December 2008, http://www.w3.org/TR/2008/REC-WCAG20-20081211. The latest version of WCAG 2.0 is available at http://www.w3.org/TR/WCAG20/.\n',
+};
+
 /** Returns mapping of references included in WCAG 2.0, which largely lack URLs */
-export async function getXmlBiblio() {
-  const xmlRefs: Record<string, string> = {};
-  const $ = await loadFromFile(join("wcag20", "sources", "guide-to-wcag2-src.xml"));
-  $("bibl[id]").each((_, el) => {
-    const $ref = $(`#${el.attribs.id}`);
-    if (!$ref.length) return;
-    // Note: Using text() drops links (<loc> tags in the XML),
-    // but the only link within refs that are actually used seems to be broken
-    xmlRefs[el.attribs.id] = $ref.text();
-  });
-  return xmlRefs;
-}
+export const getWcag20Biblio = () => wcag20Refs;

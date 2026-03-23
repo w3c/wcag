@@ -252,6 +252,7 @@ export default function (data) {
                 title:
                   "Making information and relationships conveyed through presentation programmatically determinable",
                 using: [
+                  "ARIA26",
                   "G138",
                   "H51",
                   "PDF6",
@@ -792,7 +793,7 @@ export default function (data) {
 
       location: {
         // 2.4.8
-        sufficient: ["G65", "G63", "G128", "G127"],
+        sufficient: ["G65", "G63", "G128", "ARIA26", "G127"],
         advisory: ["PDF14", "PDF17"],
       },
 
@@ -1370,7 +1371,7 @@ export default function (data) {
               "Situation C: If a status message conveys information on the progress of a process:",
             techniques: [
               "ARIA23",
-              'Using <code>role="progressbar"</code> (future link)',
+              "ARIA25",
               {
                 and: ["ARIA22", "G193"],
                 andConjunction: "in combination with",
@@ -1379,9 +1380,7 @@ export default function (data) {
           },
         ],
         advisory: [
-          "Using aria-live regions with chat clients (future link)",
           'Using aria-live regions to support <a href="content-on-hover-or-focus">1.4.13 Content on Hover or Focus</a> (future link)',
-          'Using <code>role="marquee"</code> (future link)',
           'Using <code>role="timer"</code> (future link)',
           {
             id: "ARIA18",
