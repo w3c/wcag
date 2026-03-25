@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Misuse of &lt;span&gt; to convey ruby annotations</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      html {
+        font-family: system-ui, sans-serif;
+        font-size: 62.5%;
+      }
+
+      body {
+        font-size: 2.0rem;
+      }
+
+      p {
+        max-inline-size: 80ch;
+        line-height: 1.5;
+      }
+
+      .specimen {
+        display: inline-block;
+        font-size: 6.0rem;
+        padding-block-start: 1.6rem;
+      }
+
+      .annotated {
+        position: relative;
+        text-decoration: none;
+
+        & > span {
+          position: absolute;
+          inset-block-start: -1.1em;
+          inset-inline-start: 50%;
+          translate: -50%;
+          font-size: 0.5em;
+          white-space: nowrap;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Misuse of <code>&lt;span&gt;</code> to convey ruby annotations</h1>
+      <p>
+        “<a href="https://www.w3.org/TR/ruby/">Ruby</a>” are short runs of text
+        alongside the base text, typically used in East Asian documents to
+        indicate pronunciation or to provide a short annotation.
+      </p>
+      <p>
+        In the following Japanese text, <span lang="ja">み, か, だお</span> are
+        ruby annotations that indicate to the reader how the kanji characters
+        <span lang="ja">見, 掛, 倒</span>, respectively, should be pronounced.
+      </p>
+      <div class="specimen">
+        <p lang="ja"
+          ><span class="annotated">見<span>み</span></span
+          ><span class="annotated">掛<span>か</span></span
+          >け<span class="annotated">倒<span>だお</span></span
+          >し
+        </p>
+      </div>
+      <p>
+        In this example, an author has used <code>&lt;span&gt;</code> elements
+        and custom CSS to visually convey ruby annotations. This is a failure
+        because assistive technologies cannot programmatically determine the
+        structured ruby annotations that are visually presented.
+      </p>
+    </main>
+  </body>
+</html>
