@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Using Silverlight Control Compositing and AutomationProperties.Name</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Using Silverlight Control Compositing and AutomationProperties.Name</h1><section class="meta"><p class="id">ID: SL30</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
+<!DOCTYPE html><html lang="en"><head><title>Using Silverlight Control Compositing and AutomationProperties.Name</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></head><body><h1>Using Silverlight Control Compositing and AutomationProperties.Name</h1><section class="meta"><p class="id">ID: SL30</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <ul id="silverlight.applicability.general">
          <li> Microsoft Silverlight, versions 3 and greater </li>
          <li> Silverlight managed programming model and Silverlight XAML </li>
@@ -22,7 +22,7 @@
     				provide any text alternative for purposes other than the accessibility
     				framework. However, Silverlight authors should declare alternative
     				text on the control that is specifically consumed by accessibility
-    				frameworks, by setting <code class="prop">AutomationProperties.Name</code> as
+    				frameworks, by setting <code>AutomationProperties.Name</code> as
     				an attribute in XAML. In most cases, this text can be the same as the
     				visible text in the control composition, per the definition of 'label'
     				in SC 4.1.2. </p>
@@ -35,36 +35,36 @@
     				of an application-specific UI Automation tree, so that control composition
     				as an implementation detail does not interfere with the usage of controls
     				by Silverlight application authors. The primary source of accessibility-related
-    				information is the specific <code class="prop">AutomationProperties.Name</code> property
+    				information is the specific <code>AutomationProperties.Name</code> property
     				as set on the parent control in the composition, which is set by the
     				application author rather than the control author. </p>
       <p>The control author does specify the information that is reported to
     				accessibility frameworks as the "ClassName", which is often
     				used by assistive technologies for identification purposes and is appended
     				to any "Name" value. For example, if an application author
-    				includes a   "Widget" control, and gives it an <code class="prop">AutomationProperties.Name</code> value
+    				includes a   "Widget" control, and gives it an <code>AutomationProperties.Name</code> value
     				of "Show Map", an assistive technology might identify the
     				element as   "Show Map widget". The "Show Map" part
     				comes from the application author code, and the "widget" part
     				comes from the Widget control implementation code. </p>
    </section><section id="examples"><h2>Examples</h2>
       <section class="example">
-         <h3>Button is composed with a StackPanel that contains nontext
+         <h3>Button is composed with a StackPanel that contains non-text
     					and text content</h3>
          
-            <p>In this example the <code class="obj">TextBlock</code> that goes with the
+            <p>In this example the <code>TextBlock</code> that goes with the
     						graphic image conveys the text information for non-accessibility purposes.
-    						The <code class="obj">Button</code> has internal composition that combines
-    						text from a non-focusable <code class="obj">TextBlock</code> part and an image
+    						The <code>Button</code> has internal composition that combines
+    						text from a non-focusable <code>TextBlock</code> part and an image
     						part. Therefore the "Pause" Text is not promoted to serve
-    						as "Name" through built-in <code class="obj">Button</code> automation
+    						as "Name" through built-in <code>Button</code> automation
     						peer logic. The Silverlight application author is responsible for explicitly
-    						setting <code class="prop">AutomationProperties.Name</code> on the <code class="obj">Button</code> so
+    						setting <code>AutomationProperties.Name</code> on the <code>Button</code> so
     						that the text equivalent is available to the accessibility framework.
     						This example shows the XAML UI. The logic, which might be attached
-    						to <code class="obj">Button</code> with a Click handler, is
+    						to <code>Button</code> with a Click handler, is
     						not shown. </p>
-            <pre xml:space="preserve"> &lt;Button
+            <pre> &lt;Button
    Height="20" Width="50" AutomationProperties.Name="Pause" 
  &gt;
    &lt;StackPanel Orientation="Horizontal" &gt;
@@ -73,7 +73,7 @@
    &lt;/StackPanel&gt;
  &lt;/Button&gt;
 </pre>
-            <p class="working-example">This example is shown in operation in the <a href="../../working-examples/silverlight-button-nontext-text-composition/">working example of Button Nontext Text Composition</a>.</p>
+            <p class="working-example">This example is shown in operation in the <a href="../../working-examples/silverlight-button-nontext-text-composition/">working example of Button Non-text Text Composition</a>.</p>
          
       </section>
       <section class="example">
@@ -88,7 +88,7 @@
     						or edit. For more information on using resource strings through binding,
     						see <a href="https://msdn.microsoft.com/en-us/library/dd882554%28VS.95%29.aspx">Localizing
     						XAML topic on MSDN</a>. </p>
-            <pre xml:space="preserve"> &lt;Application.Resources&gt;
+            <pre> &lt;Application.Resources&gt;
   &lt;resx:Resources x:Key="UIResourceStrings" /&gt;
  &lt;/Application.Resources&gt;
   ...
@@ -115,8 +115,8 @@
             <li> Use a verification tool that is capable of showing the full automation
     						tree, and an object’s name text alternative as part of the tree.
     						(For example, use UIAVerify or Silverlight Spy; see Resources links.) </li>
-            <li> Check that the <code class="prop">AutomationProperties.Name</code> appears
-    							as the <code class="prop">Name</code> value for identification in the automation
+            <li> Check that the <code>AutomationProperties.Name</code> appears
+    							as the <code>Name</code> value for identification in the automation
     							tree, whenever a composite control that has both text and non-text
     							elements is encountered. </li>
          </ol>
@@ -133,7 +133,7 @@
             <li> Engage the screen reader. With focus inside the Silverlight content
     						area, press TAB to focus to a composite control where both text and
     						non-text elements are present. </li>
-            <li> Check that the <code class="prop">Name</code> as applied to the control
+            <li> Check that the <code>Name</code> as applied to the control
     							instance, along with the class name of the control, is read by the
     							screen reader. </li>
          </ol>
