@@ -345,7 +345,7 @@ export default function (data) {
         advisory: [
           "Enabling user agents to find the version of the content that best fits their needs",
           'Using semantics to identify important features (e.g., <code>coga-simplification="simplest"</code>)',
-          "Using <code>required</code> or <code>aria-invalid</code> and <code>aria-required</code> to programmatically identify required fields and/or those with validation errors",
+          "Using <code>required</code>, or the combination of <code>aria-required</code> and <code>aria-invalid</code>, to programmatically identify required fields and/or those with validation errors",
         ],
       },
 
