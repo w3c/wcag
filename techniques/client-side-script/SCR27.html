@@ -21,140 +21,42 @@
       <p>The menu is a list of links using the device-independent onclick event to trigger scripts which re-order the content. The content is re-ordered in the Document Object Model (DOM), not just visually, so that it is in the correct order for all devices. </p>
    </section><section id="examples"><h2>Examples</h2>
       <section class="example">
-         
-            <p>This example does up and down reordering. This approach can also be used for two-dimensional reordering by adding left and right options.</p>
-            <p>The components in this example are list items in an unordered list. Unordered lists are a very good semantic model for sets of similar items, like these components. The menu approach can also be used for other types of groupings.</p>
-            <p>The modules are list items, and each module, in addition to content in <code>div</code> elements, contains a menu represented as a nested list.</p>
-         
-<pre><code class="language-html">&lt;ul id="swapper"&gt;
-    &lt;li id="black"&gt;
-      &lt;div class="module"&gt;
-        &lt;div class="module_header"&gt;
-          &lt;!-- menu link --&gt;
-          &lt;a href="#" onclick="ToggleMenu(event);"&gt;menu&lt;/a&gt;
-          &lt;!-- menu --&gt;
-          &lt;ul class="menu"&gt;
-            &lt;li&gt;&lt;a href="#" onclick="OnMenuClick(event)" 
-              onkeypress="OnMenuKeypress(event);"&gt;up&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href="#" onclick="OnMenuClick(event)" 
-              onkeypress="OnMenuKeypress(event);"&gt;down&lt;/a&gt;&lt;/li&gt;
-          &lt;/ul&gt;
-        &lt;/div&gt;
-      &lt;div class="module_body"&gt;
-        Text in the black module
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  ...
-&lt;/ul&gt;</code></pre>
-         
-            <p>Since we've covered the showing and hiding of menus in the simple tree samples, we'll focus here just on the code that swaps the modules. Once we harmonize the events and cancel the default link action, we go to work. First, we set a bunch of local variables for the elements with which we'll be working: the menu, the module to be reordered, the menuLink. Then, after checking the reorder direction, we try to grab the node to swap. If we find one, we then call <code>swapNode()</code> to swap our two modules, and <code>PositionElement()</code> to move the absolutely-positioned menu along with the module, and then set focus back on the menu item which launched the whole thing.</p>
-         
-<pre><code class="language-javascript">function MoveNode(evt,dir){
-  
-  HarmonizeEvent(evt);
-  evt.preventDefault();
+        <p>This example does up and down reordering. This approach can also be used for two-dimensional reordering by adding left and right options.</p>
+        <p>The components in this example are list items in an unordered list. Unordered lists are a very good semantic model for sets of similar items. The menu approach can also be used for other types of groupings.</p>
+        <p>In this example, the menu is always visible. This is a good approach for components that are not too numerous, as it allows users to see the options without having to open a menu.</p>
+
+<pre><code class="language-javascript">const list = document.getElementById('myList');
+
+// Attach a single event listener to the whole list
+list.addEventListener('click', function (e) {
     
-  var src = evt.target;
-  var menu = src.parentNode.parentNode;
-  var module = menu.parentNode.parentNode.parentNode;
-  var menuLink = module.getElementsByTagName("a")[0];
-  var swap = null;
-  
-  switch(dir){
-    case 'up': {
-      swap = module.previousSibling;
-      while (swap &amp;&amp; swap.nodeType != 1){
-        swap = swap.previousSibling;
-      }
-        break;
-    }
-    case 'down': {
-      swap = module.nextSibling;
-      while (swap &amp;&amp; swap.nodeType != 1){
-        swap = swap.nextSibling;
-      }
-        break;
-    }
+  // Ensure the click came from a button
+  if (e.target.tagName !== 'BUTTON') return;
+
+  // Get the &lt;li&gt that contains the clicked button
+  const li = e.target.closest('li');
+
+  // Move up: insert the clicked &lt;li&gt before its previous sibling
+  if (e.target.classList.contains('up') && li.previousElementSibling) {
+    li.parentNode.insertBefore(li, li.previousElementSibling);
   }
-  if (swap &amp;&amp; swap.tagName == node.tagName){
-    module.swapNode(swap);
-    PositionElement(menu,menuLink,false,true);
+
+  // Move down: insert the next sibling before the clicked &lt;li&gt
+  if (e.target.classList.contains('down') && li.nextElementSibling) {
+    li.parentNode.insertBefore(li.nextElementSibling, li);
   }
-  src.focus();
-}</code></pre>
-         
-            <p>The <abbr title="Cascading Style Sheets">CSS</abbr> for the node swap is not much different than that of our previous tree samples, with some size and color adjustment for the modules and the small menu.</p>
-         
-<pre><code class="language-css">ul#swapper {
-  list-item-style:none;
-  margin:0px;
-  padding:0px;
-}
-
-ul#swapper li {
-  border:1px solid black;
-  height:5em;
-  list-style:none;
-  margin:1em;
-  padding:0;
-  width:15em;
-}
-
-ul#swapper li a {
-  color:white;
-  font-size:90%;
-  text-decoration:none;
-}
-    
-ul#swapper li div.module_header {
-  padding:0 0.2em;
-  text-align:right;
-}
-
-ul#swapper li div.module_body {
-  padding:0.2em;
-}
-    
-ul#swapper ul.menu {
-  background-color:#eeeeee; 
-  border:1px solid gray;
-  display:none;
-  height:auto;
-  list-style:none;
-  margin:0;
-  padding:0;
-  position:absolute;
-  text-align:left;
-}
-
-ul#swapper ul.menu li {
-  border:none;
-  font-weight:normal;
-  height:auto;
-  margin:0;
-  text-align:left;
-  width:5em;
-}
-
-ul#swapper ul.menu li a {
-  color:black;
-  display:block;
-  padding:0 0.1em;
-  text-decoration:none;
-  width:100%;
-}</code></pre>
-      </section>
+});</code></pre>
    </section>
+   Working example of this code: <a href="../working-examples/script-reorder-list-buttons/"><!--file included in commit-->Reorder list with buttons</a>
    <section id="tests">
     <h2>Tests</h2>
     <section class="procedure">
       <h3>Procedure</h3>
       <ol>
         <li>Find all components which can be reordered via drag and drop.</li>
-        <li>Check that there is also a mechanism to reorder them using menus build of lists of links.</li>
+        <li>Check that there is also a mechanism to reorder them using menus containing buttons, or other appropriate controls.</li>
         <li>Check that the menus are contained within the re-orderable items in the DOM.</li>
-        <li>Check that scripts for reordering are triggered only from the onclick event of links.</li>
+        <li>Check that scripts for reordering are triggered only from the onclick event of the menu controls.</li>
         <li>Check that items are reordered in the DOM, not only visually.</li>
       </ol>
     </section>
@@ -165,5 +67,6 @@ ul#swapper ul.menu li a {
       </ul>
     </section>
   </section>
+
 </body>
 </html>
