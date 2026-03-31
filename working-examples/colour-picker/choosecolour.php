@@ -31,12 +31,13 @@ if ($_POST)
 	setcookie("forecolour", $strForecolour, time() + (3600 * 24 * 365), "/");
 }
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+<!DOCTYPE html> 
 <html lang="en">
 <head>
-	<title>Colour Picker - Choose Colour</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<link href="style.css" rel="stylesheet" type="text/css">
+	<meta charset="utf-8">
+	<title>Colour Picker - Choose Colour | WCAG 2</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="style.css" rel="stylesheet">
 <?php
 // Set style block
 echo "\t<style type=\"text/css\">body, legend, a{ color: " . htmlspecialchars($strForecolour) . "; background: " . htmlspecialchars($strBackcolour) . ";}</style>\n";
