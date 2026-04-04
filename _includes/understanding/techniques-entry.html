@@ -1,0 +1,15 @@
+{%- comment -%}
+Handles formatting for a single technique (no `using` or `and` handling).
+Expected input:
+- technique = technique object or shorthand
+{%- endcomment -%}
+
+{% assign techniqueObj = technique | expand-technique %}
+{%- if techniqueObj.prefix %}{{ techniqueObj.prefix }} {% endif -%}
+{%- if techniqueObj.id -%}
+  {%- capture techniqueLink %}{{ techniqueObj.id | linkTechniques }}{% endcapture -%}
+  {{ techniqueLink }}
+{%- elsif techniqueObj.title -%}
+  {{ techniqueObj.title }}
+{%- endif -%}
+{%- if techniqueObj.suffix %} {{ techniqueObj.suffix }}{% endif -%}

@@ -1,5 +1,5 @@
-<!DOCTYPE html><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Providing User Instructions With AutomationProperties.HelpText in
-    			Silverlight</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></link></head><body><h1>Providing User Instructions With AutomationProperties.HelpText in
+<!DOCTYPE html><html lang="en"><head><title>Providing User Instructions With AutomationProperties.HelpText in
+    			Silverlight</title><link rel="stylesheet" type="text/css" href="../../css/sources.css" class="remove"></head><body><h1>Providing User Instructions With AutomationProperties.HelpText in
     			Silverlight</h1><section class="meta"><p class="id">ID: SL19</p><p class="technology">Technology: silverlight</p><p class="type">Type: Technique</p></section><section id="applicability"><h2>When to Use</h2>
       <ul id="silverlight.applicability.general">
          <li> Microsoft Silverlight, versions 3 and greater </li>
@@ -11,26 +11,26 @@
     				original non-text content when a short text alternative is not sufficient,
     				and to show the practice of storing that information in a dedicated
     				property of the Silverlight-supported UI Automation support system.
-    				The technique can also be used on text controls (such as <code class="obj">TextBox</code>),
+    				The technique can also be used on text controls (such as <code>TextBox</code>),
     				for cases where the control text itself does not provide enough context
     				to suggest an appropriate user action. </p>
-      <p>The relevant UI Automation property is named <code class="prop">HelpText</code>,
+      <p>The relevant UI Automation property is named <code>HelpText</code>,
     				to connote its possible usage to provide imperative instructions for
     				interactive elements. However, the same property can instead be used
-    				for long text alternatives for nontext objects. The Silverlight API <code class="prop">AutomationProperties.HelpText</code> directly
-    				sets <code class="prop">HelpText</code> in the UI Automation tree. The properties
+    				for long text alternatives for non-text objects. The Silverlight API <code>AutomationProperties.HelpText</code> directly
+    				sets <code>HelpText</code> in the UI Automation tree. The properties
     				in the UI Automation tree are reported to assistive technologies, when
     				the assistive technology implements behavior that acts as a UI Automation
     				client. </p>
       <p>
-         <code class="prop">AutomationProperties.HelpText</code> can be set in code,
+         <code>AutomationProperties.HelpText</code> can be set in code,
     				but is most typically set as an attribute in XAML that defines a Silverlight
     				UI. </p>
-      <p>The same information as is present in <code class="prop">AutomationProperties.HelpText</code> could
+      <p>The same information as is present in <code>AutomationProperties.HelpText</code> could
     				also be useful to sighted users. In this case, the same text could
     				be displayed in a Silverlight <a href="https://msdn.microsoft.com/en-us/library/system.windows.controls.tooltip%28VS.95%29.aspx">ToolTip</a> control.
-    				The reason that application authors should use both <code class="prop">AutomationProperties.HelpText</code> AND <code class="obj">Tooltip</code> in
-    				conjunction is because the <code class="obj">Tooltip</code> information is
+    				The reason that application authors should use both <code>AutomationProperties.HelpText</code> AND <code>Tooltip</code> in
+    				conjunction is because the <code>Tooltip</code> information is
     				not introduced into the runtime accessibility framework information
     				set. This is because a tooltip is transient and not conventionally
     				focusable. In Silverlight programming, a useful technique for sharing
@@ -44,13 +44,13 @@
          <h3>Applying a long text alternative for an Image with XAML</h3>
          
             <p>To introduce the necessary information to Silverlight XAML for an
-    						application UI definition, specify the <code class="prop">AutomationProperties.HelpText</code> attribute
-    						on the <code class="obj">Image</code> element. The value provided for the attribute
+    						application UI definition, specify the <code>AutomationProperties.HelpText</code> attribute
+    						on the <code>Image</code> element. The value provided for the attribute
     						is a meaningful long text alternative for the image content. The value
-    						of <code class="prop">AutomationProperties.HelpText</code> should augment rather
-    						than duplicate <code class="prop">AutomationProperties.Name</code>, which is
+    						of <code>AutomationProperties.HelpText</code> should augment rather
+    						than duplicate <code>AutomationProperties.Name</code>, which is
     						also typically specified to provide accessibility support for an image. </p>
-            <pre xml:space="preserve"> &lt;Image
+            <pre> &lt;Image
    Height="400" Width="600"
    Source="/office.png"
    AutomationProperties.Name="Diagram of standard office layout"
@@ -63,13 +63,13 @@ door, and one file cabinet against the same wall as the door."/&gt;
       <section class="example">
          <h3>Using HelpText as form instructions</h3>
          
-            <p>This example provides instructions for two form fields by using both <code class="obj">Tooltip</code> and <code class="prop">AutomationProperties.HelpText</code>.
+            <p>This example provides instructions for two form fields by using both <code>Tooltip</code> and <code>AutomationProperties.HelpText</code>.
     						The strings used for these purposes are shared to both methodologies
     						by defining the strings as resources and binding to them. In this example,
     						the form submission does not perform client-side validation (although
     						server-side validation following a data round trip might still exist). </p>
             <p>The following is the XAML UI: </p>
-            <pre xml:space="preserve">&lt;UserControl xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" 
+            <pre>&lt;UserControl xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" 
    x:Class="HelpTextAndToolTip.MainPage"
    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -118,7 +118,7 @@ door, and one file cabinet against the same wall as the door."/&gt;
 &lt;/UserControl&gt;
 </pre>
             <p>The following is the resource definition in app.xaml: </p>
-            <pre xml:space="preserve">       &lt;ResourceDictionary&gt;
+            <pre>       &lt;ResourceDictionary&gt;
            &lt;resources:Resource1 x:Key="TooltipStrings"/&gt;
        &lt;/ResourceDictionary&gt;
        </pre>
@@ -148,8 +148,8 @@ door, and one file cabinet against the same wall as the door."/&gt;
     						tree, and an object’s long text alternative as part of the tree.
     						(For example, use UIAVerify or Silverlight Spy; see Resources links.) </li>
             <li> Focus an element that is known to have a long text alternative.
-    							Check that the <code class="prop">AutomationProperties.HelpText</code> as applied to
-    							individual UI elements appears as the <code class="prop">HelpText</code> or <code class="prop">acc_Help</code> value
+    							Check that the <code>AutomationProperties.HelpText</code> as applied to
+    							individual UI elements appears as the <code>HelpText</code> or <code>acc_Help</code> value
     							in the automation tree. </li>
          </ol>
       </section>

@@ -31,15 +31,22 @@ jobs:
           fi
       - name: Check for changes to legacy files
         run: |
-          if test $(git diff origin/${{ github.base_ref }} --numstat | egrep -c '\s(conformance-challenges|requirements|wcag20)/') -gt 0; then
-            echo "::notice title=Legacy files modified::PRs should not change files under conformance-challenges/, requirements/, or wcag20/"
+          if test $(git diff origin/${{ github.base_ref }} --numstat | egrep -c '\s(conformance-challenges|requirements)/') -gt 0; then
+            echo "::notice title=Legacy files modified::PRs should not change files under conformance-challenges/ or requirements/"
             echo "CHECK_FAILED=1" >> "$GITHUB_ENV"
           fi
       - name: Check for isolation of changes to TR space or informative docs
         run: |
-          if test $(git diff origin/${{ github.base_ref }} --numstat | grep -c '\sguidelines/') -gt 0 &&
-          test $(git diff origin/${{ github.base_ref }} --numstat | grep -vc '\sguidelines/') -gt 0; then
+          if test $(git diff origin/${{ github.base_ref }} --numstat | egrep -c '\sguidelines/|\sscript/') -gt 0 &&
+          test $(git diff origin/${{ github.base_ref }} --numstat | egrep -vc '\sguidelines/|\sscript/') -gt 0; then
             echo "::notice title=Mixed TR and informative docs changes::Please submit changes to TR space separately from changes to informative docs."
+            echo "CHECK_FAILED=1" >> "$GITHUB_ENV"
+          fi
+      - name: Check TypeScript
+        run: |
+          npm ci
+          if test $(npx tsc | wc -l) -gt 0; then
+            echo '::notice title=Branch contains TypeScript errors::Run `npm run check` locally for details.'
             echo "CHECK_FAILED=1" >> "$GITHUB_ENV"
           fi
       - name: Reflect status
