@@ -759,7 +759,7 @@ export default function (data) {
           },
           { and: ["G91", "semantically indicating links"], using: ["PDF11", "PDF13"] },
         ],
-        advisory: ["H2", "H80"],
+        advisory: ["H2", "H80", "G201", "SCR24"],
         failure: ["F63", "F89"],
       },
 
@@ -782,6 +782,7 @@ export default function (data) {
           Headings and labels must be programmatically determined,
           per <a href="info-and-relationships">Success Criterion 1.3.1</a>.
         `,
+        advisory: ["G201", "SCR24"],
       },
 
       "focus-visible": {
@@ -816,7 +817,7 @@ export default function (data) {
             using: ["PDF11", "PDF13"],
           },
         ],
-        advisory: ["H2", "H33"],
+        advisory: ["H2", "H33", "G201", "SCR24"],
         failure: ["F84", "F89"],
       },
 
@@ -1038,7 +1039,6 @@ export default function (data) {
           A change of content is not always a <a>change of context</a>.
           This success criterion is automatically met if changes in content are not also changes of context.
         `,
-        advisory: ["G200", "G201"],
         failure: ["F55"],
       },
 
@@ -1056,7 +1056,6 @@ export default function (data) {
           A change of content is not always a <a>change of context</a>.
           This success criterion is automatically met if changes in content are not also changes of context.
         `,
-        advisory: ["G201"],
         failure: ["F36", "F37"],
       },
 
@@ -1129,7 +1128,7 @@ export default function (data) {
             techniques: ["SCR19"],
           },
         ],
-        advisory: ["G200"],
+        advisory: ["G201"],
         failure: ["F60", "F61", "F9", "F22", "F52", "F40", "F41"],
       },
 
