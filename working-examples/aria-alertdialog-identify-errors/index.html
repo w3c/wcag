@@ -4,34 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Using aria-alertdialog to Identify Errors | WCAG 2</title>
-	<script>
-	document.addEventListener('DOMContentLoaded', function() {
-		const triggerButton = document.getElementById('trigger-alertdialog');
-		const main = document.querySelector('main');
-		const modalBackdrop = document.getElementById('modal-backdrop');
-		const ariaDialog = document.querySelector('[role="alertdialog"]');
-		const dialogButton = ariaDialog.querySelector('button');
-		let lastFocus;
-
-		triggerButton.addEventListener('click', function() {
-			lastFocus = document.activeElement;
-			main.inert = true;
-			modalBackdrop.hidden = false;
-			ariaDialog.hidden = false;
-			dialogButton.focus();
-		});
-
-		// Close dialog on button click
-		ariaDialog.querySelectorAll('button').forEach(function(button) {
-			button.addEventListener('click', function() {
-				main.inert = false;
-				modalBackdrop.hidden = true;
-				ariaDialog.hidden = true;
-				lastFocus.focus();
-			});
-		});
-	});
-	</script>
 	<style>
 		body {
 			background: #fff;
@@ -49,14 +21,6 @@
 			border: 1px solid #000;
 			color: #fff;
 			font: inherit;
-		}
-
-		#modal-backdrop {
-			position: fixed;
-			inset: 0;
-			z-index: 2;
-			background-color: #000;
-			opacity: 0.5;
 		}
 
 		[role=alertdialog] {
@@ -88,13 +52,12 @@
 	<main>
 		<h1>Using <code>aria-alertdialog</code> to Identify Errors</h1>
 		<p>This example shows how <code>role="alertdialog"</code> can be used to notify someone they have entered invalid information.</p>
-		<button id="trigger-alertdialog" type="button">Trigger Alertdialog</button>
+		<button command="show-modal" commandfor="date-alert" id="trigger-alertdialog" type="button">Trigger Alertdialog</button>
 	</main>
-	<div id="modal-backdrop" hidden></div>
-	<div aria-modal="true" role="alertdialog" aria-labelledby="alert-heading" hidden>
+	<dialog aria-labelledby="alert-heading" id="date-alert" role="alertdialog">
 		<h1 id="alert-heading">Error</h1>
 		<p>Employee's Birth Date is after their hire date. Please verify the birth date and hire date.</p>
-		<button type="button">Return to page and correct error</button>
-	</div>
+		<button command="close" commandfor="date-alert" type="button">Return to page and correct error</button>
+	</dialog>
 </body>
 </html>
