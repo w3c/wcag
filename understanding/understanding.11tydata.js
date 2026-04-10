@@ -772,7 +772,7 @@ export default function (data) {
             usingQuantity: "two or more",
           },
         ],
-        advisory: ["PDF2"],
+        advisory: ["PDF2","H99"],
       },
 
       "headings-and-labels": {
