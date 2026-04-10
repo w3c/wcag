@@ -267,7 +267,9 @@ export class CustomLiquid extends Liquid {
               $el.prepend(`<h3>${exampleText}</h3>`);
             }
           });
-        } else if (isUnderstanding) {
+        }
+        
+        if (isUnderstanding || isTechniques) {
           // Add numbers to figcaptions
           $("figcaption").each((i, el) => {
             const $el = $(el);
