@@ -49,12 +49,14 @@
 
 				<h4>Boundaries</h4>
 
-				<p>This success criterion does not require that controls have a visual boundary indicating the hit area, but if the visual indicator of the control is the only way to identify the control, then that indicator must have sufficient contrast. If text (or an icon) within a button or placeholder text inside a text input is visible and there is no visual indication of the hit area then the success criterion is passed. If a button with text also has a colored border, since the border does not provide the only indication there is no contrast requirement beyond the text contrast (<a href="contrast-minimum">1.4.3 Contrast (Minimum)</a>). Note that for people with cognitive disabilities it is recommended to delineate the boundary of controls to aid in the recognition of controls and therefore the completion of activities.</p>
+				<p>This success criterion does not require that controls have a visual boundary indicating the hit area. If a control has visible content (such as text or a sufficiently contrasting icon), which helps users identify the presence of the control, then a border or other indication of the overall boundary of the hit area is not required, as is therefore not subject to non-text contrast requirements. Having a visual boundary indicating the hit area is only required when there is not other visual way to identify the presence of the control – and in those cases, the boundary must have sufficient non-text contrast in order to pass this success criterion.</p>
+				<p class="note">Even when a control does not need to have a visual boundary indicating its hit area, it will still need to have a sufficiently contrasting focus indication.</p>
+				<p class="note">For people with cognitive disabilities it is recommended as a best practice to delineate the boundary of all controls, even those that have visible content, to aid in the recognition of controls and the completion of activities.</p>
 
 				<figure id="figure-buttons-no-visual-indicator">
 					{% include "./img/1.4.11-ntc-minimal-button.svg" %}
 					<figcaption>
-						<strong>Pass:</strong> A button without a visual boundary, and the same button with a focus indicator that is a defined visual boundary of grey (<code>#949494</code>) adjacent to white.</figcaption>
+						<strong>Pass:</strong> A button without a visual boundary – the button's text is sufficient to indicate the presence of the control; the same button, when focused, still has a sufficiently contrasting focus indicator (grey <code>#949494</code> against white, with a contrast ratio of 3:1)</figcaption>
 				</figure>
 
 				<h4>Adjacent colors</h4>
@@ -302,11 +304,14 @@
 							<td>{% include "./img/1.4.11-ntc-checkbox-example5.svg" %}</td>
 						</tr>
 						<tr>
-							<th>Text input - subtle border and customized caret</th>
-							<td>The text input's border color (<code>#CCC</code>) has contrast lower than 3:1 against its adjacent white background. Additionally, the caret / cursor has been given a customized light-blue color (<code>#00C7FD</code>) which has a contrast lower than 3:1 against the interior white background color of the input.</td>
-							<td>
-								<img src="img/contrast-text-input-custom-caret.png" alt="A text input with a light gray border and a light blue caret." width="375">
-							</td>
+							<th>Text input - low contrast customized caret as only focus indication</th>
+							<td>The only focus indication provided by the input is the customized caret / cursor; the light-blue color (<code>#00C7FD</code>) has a contrast lower than 3:1 against the interior white background color of the input, so the focus indication fails this criterion.</td>
+							<td>{% include "./img/1.4.11-ntc-text-input-custom-caret-fail.svg" %}</td>
+						</tr>
+						<tr>
+							<th>Text input - no label or other indication, low contrast border</th>
+							<td>The text input lacks any form of label to hint at its presence. The border color (<code>#AAA</code>) has contrast lower than 3:1 against its adjacent white background. As the border here is required to identify the presence of the input, it must have sufficient contrast to pass this criterion.</td>
+							<td>{% include "./img/1.4.11-ntc-text-input-low-contrast-border-no-label-fail.svg" %}</td>
 						</tr>
 					</table>
 
