@@ -31,13 +31,14 @@ if ($_POST)
 	setcookie("backcolour", $strBackcolour, time() + (3600 * 24 * 365), "/");
 	setcookie("forecolour", $strForecolour, time() + (3600 * 24 * 365), "/");
 }
-?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+?><!DOCTYPE html> 
 <html lang="en">
 <head>
-	<title>Colour Picker</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<script type="text/javascript" src="colourpicker.js"></script>
-	<link href="style.css" rel="stylesheet" type="text/css">
+	<meta charset="utf-8">
+	<title>Colour Picker | WCAG 2</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="colourpicker.js"></script>
+	<link href="style.css" rel="stylesheet">
 <?php
 // Set style block
 echo "\t<style type=\"text/css\">body, legend, a{ color: " . htmlspecialchars($strForecolour) . "; background: " . htmlspecialchars($strBackcolour) . ";}</style>\n";
@@ -53,7 +54,7 @@ echo "\t<style type=\"text/css\">body, legend, a{ color: " . htmlspecialchars($s
 	<input type="text" value="<?php echo htmlspecialchars($strForecolour); ?>" id="foreground" name="foreground">
 </div>
 <div>
-	<label for="background">Backgound: <a href="choosecolour.php#background" id="backlink">pick<span class="context"> a foreground colour</span></a></label>
+	<label for="background">Background: <a href="choosecolour.php#background" id="backlink">pick<span class="context"> a foreground colour</span></a></label>
 	<input type="text" value="<?php echo htmlspecialchars($strBackcolour); ?>" id="background" name="background">
 </div>
 </fieldset>

@@ -15,7 +15,7 @@ export const techniqueToUnderstandingLinkSelector = [
  * Resolves information for top-level understanding pages;
  * ported from generate-structure-xml.xslt
  */
-export async function getUnderstandingDocs(version: WcagVersion): Promise<DocNode[]> {
+export function getUnderstandingDocs(version: WcagVersion): DocNode[] {
   const decimalVersion = resolveDecimalVersion(version);
   return [
     {
