@@ -279,7 +279,9 @@ export class CustomLiquid extends Liquid {
               .first()
               .prepend(`<span>Figure ${i + 1}.</span> `);
           });
+        }
 
+        if (isUnderstanding) {
           // Remove spurious copy-pasted content in 2.5.3 that doesn't belong there
           if ($("section#benefits").length > 1) $("section#benefits").first().remove();
           // Prevent pages from nesting Benefits inside Intent (old issue that has been fixed)
