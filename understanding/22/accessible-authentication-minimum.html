@@ -22,17 +22,21 @@
 
         <p>The purpose of this success criterion is to ensure there is an accessible, easy-to-use, and secure method for users to authenticate when logging into an existing account. As the most prevalent form of authentication, websites commonly rely on usernames and passwords to log in. However, memorizing a username and password places a very high or impossible burden upon people with certain cognitive disabilities, as do additional steps often added to authentication processes. For instance, the need to transcribe a one-time verification code or requiring a puzzle to be solved.</p>
 
-        <p>While websites can use the recognition of objects or of non-text content provided by the user to meet this Success Criterion, such techniques do not fully support the cognitive accessibility community and should be avoided if possible. Refer to <a href="accessible-authentication-enhanced">Accessible Authentication (Enhanced)</a> for guidance to be more inclusive and accessible.</p>
+        <p>While websites can use the recognition of objects or of non-text content provided by the user to meet this success criterion, such techniques do not fully support the cognitive accessibility community and should be avoided if possible. Refer to <a href="accessible-authentication-enhanced">Accessible Authentication (Enhanced)</a> for guidance to be more inclusive and accessible.</p>
 
         <p>This success criterion is focused on authentication of existing users. It does <em>not</em> cover creation of a username or initiation of an account.  For many websites, establishing an initial username and credentials may not differ greatly from logging in with that username. The techniques used to satisfy this criterion (particularly allowing pasting into inputs and not relying on transcription) can also reduce the cognitive burden in account creation. However, the focus of the success criterion is on reducing the ongoing need for users to recall previously supplied information each time they log in or otherwise authenticate to an account.</p>
-      
+
         <section id="cog-fun-tests">
             <h3>Cognitive Function Tests</h3>
             
             <p>Remembering a site-specific password is a <a>cognitive function test</a>. Such tests are known to be problematic for many people with cognitive disabilities. Whether it is remembering random strings of characters, or a pattern gesture to perform on a touch screen, cognitive function tests will exclude some people. When a cognitive function test is used, at least one other authentication method must be available which is not a cognitive function test.</p>
 
+            <p>Some <abbr title="Completely Automated Public Turing test to tell Computers and Humans Apart">CAPTCHA</abbr> systems have an audio alternative of the visible text. If the user needs to transcribe this audio, it cannot be used to meet the Alternative exception.</p>
 
-            <p>Some <abbr title="Completely Automated Public Turing test to tell Computers and Humans Apart">CAPTCHA</abbr> systems have an audio alternative of the visible text. If the user needs to transcribe this audio, it cannot be used to meet the Alternative exception.</p>            
+            <figure id="text-captcha-with-audio-alternative">
+                <img src="img/accessible-authentication-text-captcha-with-audio-alternative.png" alt="An image with distorted text, with instructions 'Type the characters above' and a text input; in addition, there is a headphone icon below the text field, with a mouse pointer over it and a tooltip 'Audio alternative'">
+                <figcaption>A CAPTCHA with distorted text, asking users to type in the characters, with an "Audio alternative" button below the text field.</figcaption>
+            </figure>
 
             <p>If there is more than one step in the authentication process, such as with multi-factor authentication, all steps need to comply with this success criterion to pass. There needs to be a path through authentication that does not rely on cognitive function tests.</p>
 
@@ -49,34 +53,61 @@
             <p>Most knowledge-based authentication methods rely on a cognitive function test, so mechanisms to assist users must be available. When authentication relies on performing an action on a separate device, it should be possible to complete the action without the need to transcribe information. It may not be possible to know what device-based authentication methods are available to a user; offering a choice of methods can allow them to choose the path that most suits them.</p>
         </section>
 
-        <section id="auth-approaches">
-            <h3>Authentication Approaches</h3>
-            <p>Websites can employ username (or email) and password inputs as an authentication method if the author enables the user agent (browsers and third-party password managers) to fill in the fields automatically. Generally, if the login form meets <a href="identify-input-purpose">Success Criterion 1.3.5 Input Purpose</a>, and the form controls have an appropriate accessible name in accordance with <a href="name-role-value">Success Criterion 4.1.2 Name, Role, Value</a>, the user agent should be able to reliably recognize the fields and automatically fill them in. However, if the user agent is actively blocked from filling in the fields (for instance, by a script), then the page would not pass this criterion because it prevents the mechanism from working.</p>
+        <section id="login-forms">
+            <h3>Login forms</h3>
+
+            <p>Websites can use username (or email) and password inputs as an authentication method if the author enables the user agent (browser) and any third-party password managers to fill in the fields. Generally, if the login form meets <a href="identify-input-purpose">Success Criterion 1.3.5 Input Purpose</a>, and the form controls have an appropriate accessible name in accordance with <a href="name-role-value">Success Criterion 4.1.2 Name, Role, Value</a>, user agents and password managers should be able to reliably recognize the fields and automatically fill them in.</p>
+
+            <figure id="password-prevents-pasting">
+                <img src="img/accessible-authentication-password-prevents-pasting.png" alt="A password input, showing a red error message 'Function not allowed, please type password manually.">
+                <figcaption>A password entry field that prevents pasting, showing an error message advising the user to type the password manually.</figcaption>
+            </figure>
+
+            <p>However, if user agents and password managers are actively blocked from filling in the fields (for instance, by a script that prevents form fields from being automatically populated), or users are prevented from <a href="#copy-paste">copy and paste</a> operations (as they may rely on standalone/external third party password managers), then the page would fail this criterion unless an alternative is provided.</p>
         </section>
 
         <section id="copy-paste">
             <h3>Copy and paste</h3>
-            <p>Copy and paste can be relied on to avoid transcription. Users can copy their login credentials from a local source (such as a standalone third-party password manager) and paste it into the username and password fields on a login form, or into a web-based command line interfaces asking for a password. Blocking people from pasting into authentication fields, or using a different format between the copied text and the input field (for example, "Enter the 3rd, 4th, and 6th character of your password"), would force the user to transcribe information and therefore fail this criterion, unless another method is available.</p>
+
+            <p>Copy and paste can be relied on to avoid transcription. Users can copy their login credentials from a local source (such as a standalone third-party password manager) and paste it into the username and password fields on a login form, or into a web-based command line interfaces asking for a password.</p>
+
+            <figure id="totp-multiple-fields">
+                <img src="img/accessible-authentication-totp-multiple-fields.png" alt="A two-factor authentication form, asking the user to 'Enter the code generated by your authentication app'. The user is presented with 6 individual input fields. The first input is filled in with a digit, the focus caret is on the empty second input">
+                <figcaption>A time-based one-time password (TOTP) challenge that requires users to enter each digit of the 6-digit code into separate input fields – trying to paste the entire code only fills in one digit in the first input.</figcaption>
+            </figure>
+
+            <figure id="passnumber-digits">
+                <img src="img/accessible-authentication-passnumber-digits.png" alt="An instruction 'Please enter the following numbers from your passnumber:', followed by three input fields marked '1st', '3rd', and '5th'">
+                <figcaption>A passnumber entry form, asking users to enter specific digits (the first, third, and fifth digit) of their passnumber.</figcaption>
+            </figure>
+
+            <p>Blocking people from pasting into authentication fields (see the example in <a href="#login-forms">login forms</a>), or using a different format between the copied text and the input field (for example, "Enter the 1st, 3rd, and 5th character of your password"), would force the user to transcribe information and therefore fail this criterion, unless another method is available.</p>
         </section>
 
         <section id="two-factor-authentication">
             <h3>Two-factor authentication systems (verification codes)</h3>
-            <p>Beyond usernames and passwords, some sites may use two-factor authentication, asking the user to enter a verification code (also called a passcode or one-time password). A service that requires <em>manual</em> transcription of a verification code is not compliant. As with usernames and passwords, it must be possible for a user to at least paste the code (such as from a standalone third-party password manager, text message application, or software-based security key), or to allow user agents to fill in the fields automatically.</p>
+            <p>Beyond usernames and passwords, some sites may use two-factor authentication, asking the user to enter a verification code (also called a passcode or one-time password). A service that requires <em>manual</em> transcription of a verification code is not compliant. As with usernames and passwords, it must be possible for a user to at least paste the code (such as from a standalone third-party password manager, text message application, or software-based security key), and to allow user agents to fill in the fields automatically.</p>
             <p>There are scenarios where a verification code must be received or generated on a secondary device. For example, authenticating in a web browser on a laptop requires a verification code that is sent as an SMS text message to a mobile phone. However, in most cases, it is possible for the code to then be sent directly to the primary device, where it can then be copied and pasted (for example, by copying the code on the secondary device and emailing it to the primary device, or through the use of a shared cross-device clipboard where copying content on the secondary device makes it available to paste on the primary device). Evaluating whether or not the code can be seamlessly transferred from the secondary device to the primary device is <em>outside of the scope</em> for this success criterion. For the purpose of evaluating web content that relies on authentication using these types of secondary device systems, it is assumed that provisions are in place that make the code available in the user's clipboard. Evaluating this criterion therefore only requires verification that the web content does allow pasting the clipboard content in the related authentication challenge field.</p>
-            <p>Note that two-factor systems that do not rely on codes &#8212; including hardware authentication devices (such as YubiKey), secondary applications (either on the same primary device, or on a secondary device) that expect the user to confirm that it is indeed them trying to log in, and authentication methods provided by the user's operating system (such as Windows Hello, or Touch ID/Face ID on macOS and iOS) &#8212; are <em>not</em> a <a>cognitive function test</a>.</p>
+            <p>Note that two-factor systems that do not rely on codes – including hardware authentication devices (such as YubiKey), secondary applications (either on the same primary device, or on a secondary device) that expect the user to confirm that it is indeed them trying to log in, and authentication methods provided by the user's operating system (such as Windows Hello, or Touch ID/Face ID on macOS and iOS) – are <em>not</em> a <a>cognitive function test</a>.</p>
         </section>
 
         <section id="object-recognition">
             <h3>Object Recognition</h3>
-            <p>If a <a href="https://www.w3.org/TR/turingtest/">CAPTCHA</a> is used as part of an authentication process, there must be a method that does not include a cognitive function test, unless it meets the exception. If the test is based on something the website has set such as remembering or transcribing a word, or recognizing a picture the website provided, that would be a cognitive functional test. Recognizing objects, or a picture the user has provided is a cognitive function test; however, it is excepted at the AA level.</p>
+
+            <p>If a <a href="https://www.w3.org/TR/turingtest/">CAPTCHA</a> is used as part of an authentication process, there must be a method that does not include a cognitive function test, unless it meets the exception. If the test is based on something the website has set such as remembering or transcribing a word, or recognizing a picture the website provided, that would be a cognitive functional test. While recognizing objects, or a picture the user has previously provided, are cognitive function tests, these are excepted in this criterion at AA level. However, these cases are <em>not</em> excepted in <a href="accessible-authentication-enhanced">Success Criterion 3.3.9 Accessible Authentication (Enhanced)</a> at AAA level.</p>
+
+            <figure id="captcha-object-recognition">
+                <img src="img/accessible-authentication-captcha-object-recognition.png" alt="'Select all images with cars', followed by a grid of images, some of which contain cars">
+                <figcaption>An example of a CAPTCHA where users are asked to recognize common objects – in this case, selecting all images that contain a car.</figcaption>
+            </figure>
 
             <p>An object in this context means the general English definition ("a material thing that can be seen and touched") and can include vehicles and animals. If the test goes beyond recognition (e.g. multiply the number cats by the number of dogs), that does not meet the exception.</p>
 
             <p>Some forms of object recognition may require an understanding of a particular culture. For example, taxis can appear differently in different locales. This is an issue for many people, including people with disabilities, but it is not considered an accessibility-specific issue.</p>
 
-        <p>Some CAPTCHAs and cognitive function tests used for authentication may only appear in certain situations, such as when ad blockers are present, or after repeated incorrect password entry. This criterion applies when these tests are used regardless of whether they are used every time or only triggered by specific scenarios.</p>
+            <p>Some CAPTCHAs and cognitive function tests used for authentication may only appear in certain situations, such as when ad blockers are present, or after repeated incorrect password entry. This criterion applies when these tests are used regardless of whether they are used every time or only triggered by specific scenarios.</p>
 
-        <p>There are a number of technologies that can be employed to prevent scripted abuse of the authentication process.</p>
+            <p>There are a number of technologies that can be employed to prevent scripted abuse of the authentication process.</p>
 
             <ul>
                 <li><a href="https://www.ietf.org/archive/id/draft-private-access-tokens-01.html#name-rate-limited-access">1.1.1. Rate-limited Access</a></li>
@@ -96,7 +127,31 @@
 
         <section id="hiding-content">
             <h3>Hiding characters</h3>
+
             <p>Another factor that can contribute to cognitive load is hiding characters when typing. Although this criterion requires that users do not have to type in (transcribe) a password, there are scenarios where that is necessary such as creating a password to be saved by a password manager. Providing a feature to optionally show a password can improve the chance of success for some people with cognitive disabilities or those who have difficulties with accurately typing.</p>
+
+            <figure id="toggle-visibility">
+                <img src="img/accessible-authentication-toggle-visibility.png" alt="A password field, showing hidden characters as dots, with an eye icon button next to it">
+                <figcaption>A password field that hides the entered text by default, with a button next to it to toggle the display to show the password in clear text.</figcaption>
+            </figure>
+        </section>
+
+        <section id="other-cognitive-tests">
+            <h3>Other types of cognitive tests</h3>
+
+            <p>There are many variations of cognitive tests – from solving simple mathematical equations, to visual puzzles.</p>
+
+            <figure id="math-captcha">
+                <img src="img/accessible-authentication-math-captcha.png" alt="A text entry field with a text label: 108 + 52">
+                <figcaption>A mathematical CAPTCHA, asking the user to enter the result of an equation.</figcaption>
+            </figure>
+
+            <figure id="walrus-logic-puzzle">
+                <img src="img/accessible-authentication-walrus-logic-puzzle.png" alt="'Let's do a quick security check' box. The box contains an image of a stylised hand pointing in a particular direction, and the picture of a 3D model of a walrus, with left and right buttons that are used to visually rotate the model. The instructions read: 'Use the arrows to rotate the animal to face in the direction of the hand.'">
+                <figcaption>A visual logic puzzle – the user is asked to rotate the 3D model of a walrus to match a given direction.</figcaption>
+            </figure>
+
+            <p>These types of cognitive tests are <em>not</em> excepted. In order to satisfy the requirements of this criterion, an alternative authentication method that does not involve a cognitive test must be provided.</p>
         </section>
 
 
