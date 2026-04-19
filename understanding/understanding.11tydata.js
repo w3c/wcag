@@ -252,6 +252,7 @@ export default function (data) {
                 title:
                   "Making information and relationships conveyed through presentation programmatically determinable",
                 using: [
+                  "ARIA26",
                   "G138",
                   "H51",
                   "PDF6",
@@ -759,7 +760,7 @@ export default function (data) {
           },
           { and: ["G91", "semantically indicating links"], using: ["PDF11", "PDF13"] },
         ],
-        advisory: ["H2", "H80"],
+        advisory: ["H2", "H80", "G201", "SCR24"],
         failure: ["F63", "F89"],
       },
 
@@ -772,7 +773,7 @@ export default function (data) {
             usingQuantity: "two or more",
           },
         ],
-        advisory: ["PDF2"],
+        advisory: ["PDF2","H99"],
       },
 
       "headings-and-labels": {
@@ -782,6 +783,7 @@ export default function (data) {
           Headings and labels must be programmatically determined,
           per <a href="info-and-relationships">Success Criterion 1.3.1</a>.
         `,
+        advisory: ["G201", "SCR24"],
       },
 
       "focus-visible": {
@@ -792,7 +794,7 @@ export default function (data) {
 
       location: {
         // 2.4.8
-        sufficient: ["G65", "G63", "G128", "G127"],
+        sufficient: ["G65", "G63", "G128", "ARIA26", "G127"],
         advisory: ["PDF14", "PDF17"],
       },
 
@@ -816,7 +818,7 @@ export default function (data) {
             using: ["PDF11", "PDF13"],
           },
         ],
-        advisory: ["H2", "H33"],
+        advisory: ["H2", "H33", "G201", "SCR24"],
         failure: ["F84", "F89"],
       },
 
@@ -1038,7 +1040,6 @@ export default function (data) {
           A change of content is not always a <a>change of context</a>.
           This success criterion is automatically met if changes in content are not also changes of context.
         `,
-        advisory: ["G200", "G201"],
         failure: ["F55"],
       },
 
@@ -1056,7 +1057,6 @@ export default function (data) {
           A change of content is not always a <a>change of context</a>.
           This success criterion is automatically met if changes in content are not also changes of context.
         `,
-        advisory: ["G201"],
         failure: ["F36", "F37"],
       },
 
@@ -1129,7 +1129,7 @@ export default function (data) {
             techniques: ["SCR19"],
           },
         ],
-        advisory: ["G200"],
+        advisory: ["G201"],
         failure: ["F60", "F61", "F9", "F22", "F52", "F40", "F41"],
       },
 
@@ -1372,7 +1372,7 @@ export default function (data) {
               "Situation C: If a status message conveys information on the progress of a process:",
             techniques: [
               "ARIA23",
-              'Using <code>role="progressbar"</code> (future link)',
+              "ARIA25",
               {
                 and: ["ARIA22", "G193"],
                 andConjunction: "in combination with",
@@ -1381,9 +1381,7 @@ export default function (data) {
           },
         ],
         advisory: [
-          "Using aria-live regions with chat clients (future link)",
           'Using aria-live regions to support <a href="content-on-hover-or-focus">1.4.13 Content on Hover or Focus</a> (future link)',
-          'Using <code>role="marquee"</code> (future link)',
           'Using <code>role="timer"</code> (future link)',
           {
             id: "ARIA18",
