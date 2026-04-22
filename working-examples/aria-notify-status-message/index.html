@@ -76,6 +76,11 @@
         padding: 0.5rem 1rem;
       }
 
+      #feature-detect-warning {
+        color: #ED0000;
+        font-weight: bold;
+      }
+
       .visually-hidden {
         block-size: 1px;
         border: 0;
@@ -95,6 +100,8 @@
       <a href="../../techniques/aria/ARIA27.html">technique ARIA27</a>.
     </p>
 
+    <p id="feature-detect-warning">Your browser does not support <code>ariaNotify</code>.</p>
+
     <div class="upload-container">
       <p id="upload-progress-label">Uploading document: <strong>report.pdf</strong></p>
       <div
@@ -111,6 +118,10 @@
 
     <script>
       (() => {
+        if ("ariaNotify" in document) {
+          document.getElementById("feature-detect-warning").setAttribute('hidden','hidden');
+        }
+
         const progressBar = document.getElementById("upload-progress");
         const startButton = document.getElementById("start-upload");
         const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
