@@ -125,8 +125,7 @@ export class CustomLiquid extends Liquid {
     // Filter out Liquid calls for computed data and includes themselves
     if (
       filepath &&
-      !filepath.includes("_includes/") &&
-      !filepath.includes("errata/") &&
+      (filepath.includes("techniques/") || filepath.includes("understanding/")) &&
       isHtmlFileContent(html)
     ) {
       const isIndex = indexPattern.test(filepath);
@@ -339,11 +338,14 @@ export class CustomLiquid extends Liquid {
     // html contains markup after Liquid tags/includes have been processed
     const html = (await super.render(templates, scope, options)).toString();
     if (!isHtmlFileContent(html) || !scope || scope.page.url === false) return html;
-    if (scope.page.inputPath.includes("errata/")) return this.renderErrata(html);
+
+    const inputPath = scope.page.inputPath;
+    if (inputPath.includes("errata/")) return this.renderErrata(html);
+    if (!inputPath.includes("techniques/") && !inputPath.includes("understanding/")) return html;
 
     const $ = load(html);
 
-    if (indexPattern.test(scope.page.inputPath)) {
+    if (indexPattern.test(inputPath)) {
       // Remove empty list items due to obsolete technique link removal
       if (scope.isTechniques) $("ul.toc-wcag-docs li:empty").remove();
 
@@ -453,7 +455,7 @@ export class CustomLiquid extends Liquid {
           .replace(/\s*\n+\s*/, " ");
         const term = this.termsMap[name];
         if (!term) {
-          console.warn(`${scope.page.inputPath}: Term not found: ${name}`);
+          console.warn(`${inputPath}: Term not found: ${name}`);
           return;
         }
         // Return standardized name for Key Terms definition lists
@@ -580,7 +582,7 @@ export class CustomLiquid extends Liquid {
     });
 
     // We don't need to do any more processing for index/about pages other than stripping comments
-    if (indexPattern.test(scope.page.inputPath)) return stripHtmlComments($.html());
+    if (indexPattern.test(inputPath)) return stripHtmlComments($.html());
 
     // Handle new-in-version content
     $("[class^='wcag']").each((_, el) => {
@@ -625,7 +627,7 @@ export class CustomLiquid extends Liquid {
                 wcag20BiblioReferences.push(code);
                 return `[<a href="#${code}">${code}</a>]`;
               }
-              console.warn(`${scope.page.inputPath}: Unresolved biblio ref: ${code}`);
+              console.warn(`${inputPath}: Unresolved biblio ref: ${code}`);
               return substring;
             })
           );
