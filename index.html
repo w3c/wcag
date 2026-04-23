@@ -1,6 +1,4 @@
 ---js
-// Same condition used for copying guidelines assets in eleventy.config.ts
-const includeGuidelines = process.env.COMMIT_REF && !process.env.WCAG_MODE;
 const repoUrl = process.env.REPOSITORY_URL;
 const prNumber = process.env.REVIEW_ID;
 ---
@@ -21,11 +19,14 @@ const prNumber = process.env.REVIEW_ID;
 		<ul>
       <li><a href="errata/21.html">Errata for 2.1</a>
       <li><a href="errata/22.html">Errata for 2.2</a>
-      {% if includeGuidelines -%}
+      {% if isNetlifyPreview -%}
         <li><a href="guidelines/">Guidelines</a></li>
       {%- endif %}
 			<li><a href="techniques/">Techniques</a></li>
 			<li><a href="understanding/">Understanding Docs</a></li>
+      {% if eleventy.env.runMode != "build" or isNetlifyPreview -%}
+        <li><a href="working-examples/">Working Examples</a></li>
+      {%- endif %}
 		</ul>
 	</body>
 </html>
