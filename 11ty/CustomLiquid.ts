@@ -498,10 +498,10 @@ export class CustomLiquid extends Liquid {
           for (const name of termNames) {
             const term = this.termsMap[name]; // Already verified existence in the earlier loop
             let termBody = term.definition;
-            if (scope.errata[term.id]) {
+            if (scope.errata[term.trId]) {
               termBody += `
                 <p><strong>Errata:</strong></p>
-                <ul>${scope.errata[term.id].map((erratum) => `<li>${erratum}</li>`)}</ul>
+                <ul>${scope.errata[term.trId].map((erratum) => `<li>${erratum}</li>`)}</ul>
                 <p><a href="https://www.w3.org/WAI/WCAG${scope.version}/errata/">View all errata</a></p>
               `;
             }
