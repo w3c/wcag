@@ -59,7 +59,8 @@
 </aside>
 
 <main id="main" class="standalone-resource__main">
-<h1><span>Technique ARIA19:</span>Using ARIA role=alert or Live Regions to Identify Errors</h1>
+  
+<h1><span>Technique ARIA19:</span>Using ARIA <code>role=alert</code> or Live Regions to Identify Errors</h1>
 
 
 
@@ -97,7 +98,8 @@
 </section>
 	
 
-<section id="description"><h2>Description</h2>
+
+  <section id="description"><h2>Description</h2>
       <p>The purpose of this technique is to notify Assistive Technologies (AT) when an input error occurs. The <code>aria-live</code> attribute makes it possible for an AT (such as a screen reader) to be notified when error messages are injected into a Live Region container. The content within the <code>aria-live</code> region is automatically read by the AT, without the AT having to focus on the place where the text is displayed.
 </p>
       <p>There are also a number of <a href="https://www.w3.org/TR/wai-aria/#live_region_roles">special case live region roles</a> which can be used instead of applying live region properties directly.</p>
@@ -105,40 +107,70 @@
       <section class="example" id="example-1-injecting-error-messages-into-a-container-with-role-alert-already-present-in-the-dom">
          <h3>Example 1: Injecting error messages into a container with role=alert already present in the DOM</h3>
          
-            <p>The following example uses role=alert which is equivalent to using aria-live=assertive.
-</p>
-            <p>In the example there is an empty error message container element with aria-atomic=true and an aria-live property or alert role present in the DOM on page load. The error container must be present in the DOM on page load for the error message to be spoken by most screen readers. aria-atomic=true is necessary to make Voiceover on iOS read the error messages after more than one invalid submission. 
-</p>
-            <p>jQuery is used to test if the inputs are empty on submit and inject error messages into the live region containers if so. Each time a new submit is attempted the previous error messages are removed from the container and new error messages injected.
-</p>
-<pre><code class="language-javascript hljs">$(<span class="hljs-variable language_">document</span>).<span class="hljs-title function_">ready</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) {
-  $(<span class="hljs-string">'#signup'</span>).<span class="hljs-title function_">submit</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
-    $(<span class="hljs-string">'#errors'</span>).<span class="hljs-title function_">html</span>(<span class="hljs-string">''</span>);
-    <span class="hljs-keyword">if</span> ($(<span class="hljs-string">'#first'</span>).<span class="hljs-title function_">val</span>() === <span class="hljs-string">''</span>) {
-      $(<span class="hljs-string">'#errors'</span>).<span class="hljs-title function_">append</span>(<span class="hljs-string">'&lt;p&gt;Please enter your first name.&lt;/p&gt;'</span>);
-    }
-    <span class="hljs-keyword">if</span> ($(<span class="hljs-string">'#last'</span>).<span class="hljs-title function_">val</span>() === <span class="hljs-string">''</span>) {
-      $(<span class="hljs-string">'#errors'</span>).<span class="hljs-title function_">append</span>(<span class="hljs-string">'&lt;p&gt;Please enter your last name.&lt;/p&gt;'</span>);
-    } 
-    <span class="hljs-keyword">if</span> ($(<span class="hljs-string">'#email'</span>).<span class="hljs-title function_">val</span>() === <span class="hljs-string">''</span>) {
-      $(<span class="hljs-string">'#errors'</span>).<span class="hljs-title function_">append</span>(<span class="hljs-string">'&lt;p&gt;Please enter your email address.&lt;/p&gt;'</span>);
-    }
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-  });
+            <p>The following example uses role=alert which is equivalent to using <code>aria-live=assertive</code>.</p>
+            <p>In the example there is an empty error message container element with <code>aria-atomic=true</code> and an aria-live property or alert role present in the DOM on page load. The error container must be present in the DOM on page load for the error message to be spoken by most screen readers. <code>aria-atomic=true</code> is necessary to make Voiceover on iOS read the error messages after more than one invalid submission.</p>
+            <p>JavaScript is used to test if the inputs are empty on submit and inject error messages into the live region containers if so. Each time a new submit is attempted the previous error messages are removed from the container and new error messages injected.</p>
+
+<pre><code class="language-javascript hljs"><span class="hljs-comment">// Get the form element</span>
+<span class="hljs-keyword">const</span> form = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'signup'</span>);
+
+<span class="hljs-comment">// Listen for when the form is submitted</span>
+form.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'submit'</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) {
+
+<span class="hljs-comment">// Stop the form from actually submitting (so we can check it first)</span>
+event.<span class="hljs-title function_">preventDefault</span>();
+
+<span class="hljs-comment">// Get references to the input fields</span>
+<span class="hljs-keyword">const</span> firstNameInput = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'first'</span>);
+<span class="hljs-keyword">const</span> lastNameInput = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'last'</span>);
+<span class="hljs-keyword">const</span> emailInput = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'email'</span>);
+
+<span class="hljs-comment">// Get the element where we'll show error messages</span>
+<span class="hljs-keyword">const</span> errorsContainer = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'errors'</span>);
+
+<span class="hljs-comment">// Create an empty array to collect error messages</span>
+<span class="hljs-keyword">const</span> errorMessages = [];
+
+<span class="hljs-comment">// Check if first name is empty</span>
+<span class="hljs-keyword">if</span> (firstNameInput.<span class="hljs-property">value</span> === <span class="hljs-string">''</span>) {
+  errorMessages.<span class="hljs-title function_">push</span>(<span class="hljs-string">'&lt;li&gt;Please enter your first name.&lt;/li&gt;'</span>);
+}
+
+<span class="hljs-comment">// Check if last name is empty</span>
+<span class="hljs-keyword">if</span> (lastNameInput.<span class="hljs-property">value</span> === <span class="hljs-string">''</span>) {
+  errorMessages.<span class="hljs-title function_">push</span>(<span class="hljs-string">'&lt;li&gt;Please enter your last name.&lt;/li&gt;'</span>);
+}
+
+<span class="hljs-comment">// Check if email is empty</span>
+<span class="hljs-keyword">if</span> (emailInput.<span class="hljs-property">value</span> === <span class="hljs-string">''</span>) {
+  errorMessages.<span class="hljs-title function_">push</span>(<span class="hljs-string">'&lt;li&gt;Please enter your email address.&lt;/li&gt;'</span>);
+}
+
+<span class="hljs-comment">// Clear the errors container first</span>
+<span class="hljs-comment">// (This helps screen readers notice when new content appears)</span>
+errorsContainer.<span class="hljs-property">innerHTML</span> = <span class="hljs-string">''</span>;
+
+<span class="hljs-comment">// Wait 500 milliseconds, then show the errors</span>
+<span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-comment">// If there are any errors, wrap them in a list and display them</span>
+  <span class="hljs-keyword">if</span> (errorMessages.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>) {
+    errorsContainer.<span class="hljs-property">innerHTML</span> = <span class="hljs-string">'&lt;ul&gt;'</span> + errorMessages.<span class="hljs-title function_">join</span>(<span class="hljs-string">''</span>) + <span class="hljs-string">'&lt;/ul&gt;'</span>;
+  }
+}, <span class="hljs-number">500</span>);
 });</code></pre>
 <pre><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"signup"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"signup"</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"errors"</span> <span class="hljs-attr">role</span>=<span class="hljs-string">"alert"</span> <span class="hljs-attr">aria-atomic</span>=<span class="hljs-string">"true"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"first"</span>&gt;</span>First Name (required)<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"first"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"first"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"first"</span>&gt;</span>First Name (required)<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">autocomplete</span>=<span class="hljs-string">"given-name"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"first"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"first"</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"last"</span>&gt;</span>Last Name (required)<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"last"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"last"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"last"</span>&gt;</span>Last Name (required)<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">autocomplete</span>=<span class="hljs-string">"family-name"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"last"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"last"</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"email"</span>&gt;</span>Email (required)<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"email"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"email"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"email"</span>&gt;</span>Email (required)<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">autocomplete</span>=<span class="hljs-string">"email"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"email"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"email"</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"submit"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"Submit"</span>&gt;</span>
@@ -157,9 +189,6 @@
         <li>
           <a href="https://www.w3.org/WAI/ARIA/apg/">WAI-ARIA Authoring Practices Guide</a>
         </li>
-        <li>
-        	<a href="https://www.paciellogroup.com/blog/2012/06/html5-accessibility-chops-aria-rolealert-browser-support/">HTML5 Accessibility Chops: ARIA role=alert browser support</a>
-        </li>
         <li> 
           <a href="https://www.w3.org/TR/wai-aria/#aria-describedby">WAI-ARIA, Supported States and Properties, aria-describedby</a>
         </li>
@@ -175,9 +204,9 @@
 <section id="tests"><h2>Tests</h2>
       <section class="procedure" id="procedure"><h3>Procedure</h3>
          <ol>
-            <li>Determine that an empty error container with <code>role=alert</code> or <code>aria-live=assertive</code> attribute is present in the DOM at page load.</li>
-            <li> Trigger the error that causes the content in the live region to appear or update.</li>
-            <li> Determine that the error message was injected into the already present error container.</li>
+            <li>Determine that an empty error container with <code>role=alert</code> or <code>aria-live=assertive</code> attribute is present in the DOM (Document Object Model). at page load.</li>
+            <li>Trigger the error that causes the content in the live region to appear or update.</li>
+            <li>Determine that the error message was injected into the already present error container.</li>
          </ol>
       </section>
       <section class="results" id="expected-results">
@@ -219,7 +248,7 @@
 <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
   <div class="inner" style="grid-column: 2 / 8">
     <p>
-      <strong>Date:</strong> Updated 10 April 2026.
+      <strong>Date:</strong> Updated 27 April 2026.
       <a href="https://github.com/w3c/wcag/commits/main/techniques/aria/ARIA19.html">View this page's revision history.</a></p>
     <p><strong>Developed by</strong>
       <a href="https://www.w3.org/groups/wg/ag/participants">Accessibility Guidelines Working Group (AG WG) Participants</a>
