@@ -9,7 +9,7 @@ import { basename } from "path";
 
 import type { GlobalData } from "eleventy.config";
 
-import { biblioPattern, getBiblio, getXmlBiblio } from "./biblio";
+import { biblioPattern, getBiblio, getWcag20Biblio } from "./biblio";
 import { flattenDom, load, type CheerioAnyNode } from "./cheerio";
 import { getAcknowledgementsForVersion, type TermsMap } from "./guidelines";
 import { resolveTechniqueIdFromHref, understandingToTechniqueLinkSelector } from "./techniques";
@@ -23,7 +23,7 @@ const techniquesPattern = /\btechniques\//;
 const understandingPattern = /\bunderstanding\//;
 
 const biblio = await getBiblio();
-const xmlBiblio = await getXmlBiblio();
+const wcag20Biblio = await getWcag20Biblio();
 const termLinkSelector = "a:not([href])";
 
 /** Generates {% include "foo.html" %} directives from 1 or more basenames */
@@ -125,8 +125,7 @@ export class CustomLiquid extends Liquid {
     // Filter out Liquid calls for computed data and includes themselves
     if (
       filepath &&
-      !filepath.includes("_includes/") &&
-      !filepath.includes("errata/") &&
+      (filepath.includes("techniques/") || filepath.includes("understanding/")) &&
       isHtmlFileContent(html)
     ) {
       const isIndex = indexPattern.test(filepath);
@@ -143,12 +142,13 @@ export class CustomLiquid extends Liquid {
       $(".remove, link[href$='editors.css'], section#meta, section.meta").remove();
 
       if ($("p.instructions").length > 0) {
-        console.error(`${filepath} contains a <p class="instructions"> element.\n` +
-          "  This suggests that a template was copied and not fully filled out.\n" +
-          "  If the paragraph has been modified and should be retained, remove the class.\n" +
-          "  Otherwise, if the corresponding section has been updated, remove the paragraph."
+        console.error(
+          `${filepath} contains a <p class="instructions"> element.\n` +
+            "  This suggests that a template was copied and not fully filled out.\n" +
+            "  If the paragraph has been modified and should be retained, remove the class.\n" +
+            "  Otherwise, if the corresponding section has been updated, remove the paragraph."
         );
-        throw new Error("Instructions paragraph found; please resolve.")
+        throw new Error("Instructions paragraph found; please resolve.");
       }
 
       // Add charset to pages that forgot it
@@ -271,7 +271,10 @@ export class CustomLiquid extends Liquid {
           $("figcaption").each((i, el) => {
             const $el = $(el);
             if (!$el.find("p").length) $el.wrapInner("<p></p>");
-            $el.find("p").first().prepend(`<span>Figure ${i + 1}.</span> `);
+            $el
+              .find("p")
+              .first()
+              .prepend(`<span>Figure ${i + 1}.</span> `);
           });
 
           // Remove spurious copy-pasted content in 2.5.3 that doesn't belong there
@@ -335,11 +338,14 @@ export class CustomLiquid extends Liquid {
     // html contains markup after Liquid tags/includes have been processed
     const html = (await super.render(templates, scope, options)).toString();
     if (!isHtmlFileContent(html) || !scope || scope.page.url === false) return html;
-    if (scope.page.inputPath.includes("errata/")) return this.renderErrata(html);
+
+    const inputPath = scope.page.inputPath;
+    if (inputPath.includes("errata/")) return this.renderErrata(html);
+    if (!inputPath.includes("techniques/") && !inputPath.includes("understanding/")) return html;
 
     const $ = load(html);
 
-    if (indexPattern.test(scope.page.inputPath)) {
+    if (indexPattern.test(inputPath)) {
       // Remove empty list items due to obsolete technique link removal
       if (scope.isTechniques) $("ul.toc-wcag-docs li:empty").remove();
 
@@ -374,9 +380,7 @@ export class CustomLiquid extends Liquid {
           .replace(/^th(e|is) (technique|failure)s? (is )?/i, "")
           .replace(/^general( technique|ly applicable)?(\.|$).*$/i, "all technologies")
           .replace(/^appropriate to use for /i, "")
-          .replace(/^use this technique on /i, "")
-          // Work around redundant sentences (e.g. F105)
-          .replace(/\.\s+This technique relates to Success Criterion [\d\.]+\d[^\.]+\.$/, "");
+          .replace(/^use this technique on /i, "");
         if (customApplicability) {
           const appliesPattern = /^(?:appli(?:es|cable)|relates) (to|when(?:ever)?)\s*/i;
           const rephrasedApplicability = customApplicability.replace(appliesPattern, "");
@@ -451,7 +455,7 @@ export class CustomLiquid extends Liquid {
           .replace(/\s*\n+\s*/, " ");
         const term = this.termsMap[name];
         if (!term) {
-          console.warn(`${scope.page.inputPath}: Term not found: ${name}`);
+          console.warn(`${inputPath}: Term not found: ${name}`);
           return;
         }
         // Return standardized name for Key Terms definition lists
@@ -496,10 +500,10 @@ export class CustomLiquid extends Liquid {
           for (const name of termNames) {
             const term = this.termsMap[name]; // Already verified existence in the earlier loop
             let termBody = term.definition;
-            if (scope.errata[term.id]) {
+            if (scope.errata[term.trId]) {
               termBody += `
                 <p><strong>Errata:</strong></p>
-                <ul>${scope.errata[term.id].map((erratum) => `<li>${erratum}</li>`)}</ul>
+                <ul>${scope.errata[term.trId].map((erratum) => `<li>${erratum}</li>`)}</ul>
                 <p><a href="https://www.w3.org/WAI/WCAG${scope.version}/errata/">View all errata</a></p>
               `;
             }
@@ -578,7 +582,7 @@ export class CustomLiquid extends Liquid {
     });
 
     // We don't need to do any more processing for index/about pages other than stripping comments
-    if (indexPattern.test(scope.page.inputPath)) return stripHtmlComments($.html());
+    if (indexPattern.test(inputPath)) return stripHtmlComments($.html());
 
     // Handle new-in-version content
     $("[class^='wcag']").each((_, el) => {
@@ -611,7 +615,7 @@ export class CustomLiquid extends Liquid {
 
     // Link biblio references
     if (scope.isUnderstanding) {
-      const xmlBiblioReferences: string[] = [];
+      const wcag20BiblioReferences: string[] = [];
       $("p").each((_, el) => {
         const $el = $(el);
         const html = $el.html();
@@ -619,11 +623,11 @@ export class CustomLiquid extends Liquid {
           $el.html(
             html.replace(biblioPattern, (substring, code) => {
               if (biblio[code]?.href) return `[<a href="${biblio[code].href}">${code}</a>]`;
-              if (code in xmlBiblio) {
-                xmlBiblioReferences.push(code);
+              if (code in wcag20Biblio) {
+                wcag20BiblioReferences.push(code);
                 return `[<a href="#${code}">${code}</a>]`;
               }
-              console.warn(`${scope.page.inputPath}: Unresolved biblio ref: ${code}`);
+              console.warn(`${inputPath}: Unresolved biblio ref: ${code}`);
               return substring;
             })
           );
@@ -631,10 +635,12 @@ export class CustomLiquid extends Liquid {
       });
 
       // Populate references section, or remove if unused
-      if (xmlBiblioReferences.length) {
-        for (const ref of uniq(xmlBiblioReferences).sort()) {
+      if (wcag20BiblioReferences.length) {
+        for (const ref of uniq(wcag20BiblioReferences).sort()) {
           $("section#references dl").append(
-            `\n      <dt id="${ref}">${ref}</dt><dd>${xmlBiblio[ref]}</dd>`
+            `\n      <dt id="${ref}">${ref}</dt><dd>${
+              wcag20Biblio[ref as keyof typeof wcag20Biblio]
+            }</dd>`
           );
         }
       } else $("section#references").remove();
