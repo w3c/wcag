@@ -1,0 +1,38 @@
+{%- comment -%}
+Expected input:
+- type = sufficient, advisory, or failure, corresponding to the Techniques subsection to list
+
+Also references global guideline and associatedTechniques data.
+{%- endcomment -%}
+
+{% # Reference associatedTechniques via filename (not remapped for older versions) %}
+{%- assign assocEntry = associatedTechniques[page.fileSlug] -%}
+{%- if assocEntry[type][0].techniques -%}
+  {% # Top-level array contains sections/situations, not techniques %}
+  {%- for section in assocEntry[type] -%}
+    {%- assign titleStart = section.title | lstrip | slice: 0, 10 -%}
+    {%- assign isSituation = titleStart == "Situation " -%}
+
+    {%- if forloop.first and isSituation and type == "sufficient" -%}
+      {% include "understanding/intro/sufficient-situation.html" %}
+    {%- endif -%}
+
+    {%- comment -%}
+      Auto-generate ID for situations, but not for sections.
+      In the latter case, CustomLiquid will auto-generate IDs instead.
+    {%- endcomment -%}
+    <section {% if isSituation -%}
+      id="{{ guideline.id }}-situation-{{ forloop.index0 }}"
+    {%- endif %}>
+      <h4>{{ section.title }}</h4>
+      {% include "understanding/techniques-list.html", techniques: section.techniques, groups: section.groups %}
+      {% for group in section.groups %}
+        <p id="{{ group.id }}"><strong>{{ group.title }}</strong>:</p>
+        {% include "understanding/techniques-list.html", techniques: group.techniques %}
+      {% endfor %}
+      {%- if section.note -%}{% include "note.html", note: section.note %}{% endif -%}
+    </section>
+  {%- endfor -%}
+{%- else -%}
+  {% include "understanding/techniques-list.html", techniques: assocEntry[type] %}
+{%- endif -%}

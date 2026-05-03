@@ -1,0 +1,12 @@
+{%- comment -%}
+Expected input:
+- note = Text or HTML containing note text.
+If note begins with an HTML element, it will be rendered inside of a div;
+otherwise, it will be treated as flow content and rendered inside of a p.
+{%- endcomment -%}
+{%- assign strippedNote = note | strip %}
+{%- assign noteStart = strippedNote | slice: 0 -%}
+{%- capture noteTag %}{% if noteStart == "<" %}div{% else %}p{% endif %}{% endcapture %}
+<{{ noteTag }} class="note">
+  {{ strippedNote }}
+</{{ noteTag }}>

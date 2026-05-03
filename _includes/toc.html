@@ -1,0 +1,38 @@
+{% if isTechniques %}
+  {% for technology in technologies %}
+    {%- if techniques[technology].size == 0 -%}{%- continue -%}{%- endif -%}
+    {%- assign technologyTitle = technologyTitles[technology] -%}
+    <h2 id="{{ technology }}">{{ technologyTitle }}<span class="permalink"><a href="#{{ technology }}" aria-label="Permalink for {{ technologyTitle }}" title="Permalink for {{ technologyTitle }}"><span>§</span></a></span></h2>
+
+    <ul class="toc-wcag-docs">
+      {% for technique in techniques[technology] %}
+      <li>{{ technique.id | linkTechniques }}</li>
+      {% endfor %}
+    </ul>
+  {% endfor %}
+{% elsif isUnderstanding %}
+  {%- # See 11ty/guidelines.ts for typings -%}
+  {% for principle in principles %}
+  <section id="{{ principle.id }}">
+    <h2>{{ principle.name }}</h2>
+    {% for guideline in principle.guidelines %}
+      <section id="{{ guideline.id }}">
+        <h3><a href="{{ guideline.id }}"><span class="secno">{{ guideline.num }} </span>{{ guideline.name }}</a></h3>
+        <ul>
+        {% for criterion in guideline.successCriteria %}
+          <li><a href="{{ criterion.id }}"><span class="secno">{{ criterion.num }} </span>{{ criterion.name }}</a></li>
+        {% endfor %}
+        </ul>
+      </section>
+    {% endfor %}
+  </section>
+  {% endfor %}
+  <section id="other">
+    <h2>Other Understanding documents</h2>
+    <ul class="toc-wcag-docs">
+    {% for doc in understandingDocs %}
+      <li><a href="{{ doc.id }}">{{ doc.name }}</a></li>
+    {% endfor %}
+    </ul>
+  </section>
+{% endif %}
