@@ -535,7 +535,7 @@ export default function (data) {
           {
             title:
               "Situation A: Color is used to identify user interface components or used to identify user interface component states",
-            techniques: ["G195", "G174","C40"],
+            techniques: ["G195", "G174", "C40"],
           },
           {
             title: "Situation B: Color is required to understand graphical content",
