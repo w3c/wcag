@@ -1376,6 +1376,7 @@ export default function (data) {
                 and: ["ARIA22", "G193"],
                 andConjunction: "in combination with",
               },
+              "ARIA27",
             ],
           },
         ],
