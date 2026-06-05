@@ -117,6 +117,9 @@ export default async function (eleventyConfig: any) {
   // See https://www.11ty.dev/docs/dates/#setting-a-content-date-in-front-matter
   eleventyConfig.addGlobalData("date", `${process.env.WCAG_MODE ? "git " : ""}Last Modified`);
 
+  const isNetlifyPreview = !!process.env.COMMIT_REF && !process.env.WCAG_MODE;
+  eleventyConfig.addGlobalData("isNetlifyPreview", isNetlifyPreview);
+
   // eleventyComputed data is assigned here rather than in 11tydata files;
   // we have access to typings here, and can keep the latter fully static.
   eleventyConfig.addGlobalData("eleventyComputed", {
@@ -168,7 +171,9 @@ export default async function (eleventyConfig: any) {
     "understanding/20/accessibility-support-documenting.html",
     "understanding/20/seizures.html",
   ];
-  eleventyConfig.addPreprocessor("ignore-html", "html", ({ page }: GlobalData) => {
+  eleventyConfig.addPreprocessor("ignore-html", "html", ({ eleventy, page }: GlobalData) => {
+    if (page.filePathStem === "/working-examples/index")
+      return eleventy.env.runMode === "build" && !isNetlifyPreview ? false : undefined;
     if (
       !page.filePathStem.startsWith("/errata/") &&
       !page.filePathStem.startsWith("/techniques/") &&
@@ -198,10 +203,10 @@ export default async function (eleventyConfig: any) {
     "understanding/*/img/*": "understanding/img", // Intentionally flatten
   });
 
-  eleventyConfig.addPassthroughCopy("working-examples/**");
-  // working-examples is in .eleventyignore to avoid processing as templates,
+  eleventyConfig.addPassthroughCopy("working-examples/*/**");
+  // working-examples is ignored to avoid processing as templates,
   // but should still be included as a watch target to pick up changes in dev
-  eleventyConfig.watchIgnores.add("!working-examples/**");
+  eleventyConfig.watchIgnores.add("!working-examples/*/**");
 
   eleventyConfig.on("eleventy.before", async ({ runMode }: EleventyEvent) => {
     // Clear the _site folder before builds intended for the W3C site,
@@ -224,8 +229,8 @@ export default async function (eleventyConfig: any) {
     );
 
     // Output guidelines/index.html and dependencies for PR runs (not for GH Pages or W3C site)
-    const sha = process.env.COMMIT_REF; // Read environment variable exposed by Netlify
-    if (sha && !process.env.WCAG_MODE) {
+    if (isNetlifyPreview) {
+      const sha = process.env.COMMIT_REF!;
       await mkdir(join(dir.output, "guidelines"), { recursive: true });
       await copyFile(
         join(dir.input, "guidelines", "guidelines.css"),
