@@ -38,58 +38,71 @@
 			<p>The rationale for some of these conventions is explained in <a href="../../Techniques/general/G162">G162: Positioning labels to maximize predictability of relationships</a>.</p>
 			<p>It is important to bias towards treating only the adjacent text as a label because liberal interpretations of what constitutes a text label can jeopardize the value of this success criterion (SC) by lessening predictability. Isolating the label to the single string in close proximity to the component makes it easier for developers, testers, and end users to identify the label targeted for evaluation in this SC. Predictable interpretation of labeling allows users of speech recognition technologies to interact with the element via its conventionally positioned label, and allows users of screen reading technologies to enjoy consistency between the nearby visible label and the announced name of the component.</p>
 			<p>Note that placeholder text within an input field is not considered an appropriate means of providing a label. The <a href="https://html.spec.whatwg.org/multipage/input.html#the-placeholder-attribute">HTML Standard</a> states <q>The placeholder attribute should not be used as an alternative to a <code>label</code>.</q> However, it is worth noting that "label" in that statement is in code brackets and links to the <code>label</code> element. For the purposes of this Label in Name Success Criterion, "label" is not used in such a programmatic sense but is simply referring to a text string in close visual proximity to a component. As such, in the absence of any other nearby text string (as described in the preceding list), if an input contains placeholder text, such text may be a candidate for Label in Name. This is supported both through the accessible name calculation (discussed later) and from the practical sense that where a visible label is not otherwise provided, it is likely that a speech-input user may attempt to use the placeholder text value as a means of interacting with the input.</p>
+
 			<section>
 				<h3>Text labels "express something in human language"</h3>
-				<section>
 
-<h4>Symbolic text characters</h4>
-<p>For the purposes of this SC, text should not be considered a visible label if it is used in a symbolic manner, rather than directly <q>expressing something in human language</q> as per the definition of <a>text</a> in WCAG. For example, <a href="images-of-text">1.4.5 Images of Text</a> describes considerations for "symbolic text characters." In the images of text example "B", "I", and "ABC" appear on icons in a text editor, where they are meant to symbolize the functions for Bold, Italics, and Spelling, respectively. In such a case, the accessible name should be the function the button serves (e.g., "Spell check" or "Check spelling"), not the visible symbolic characters. A similar text editor is shown in the figure below.</p>
-<figure id="figure-RTE-github">
-	<img alt="Icons for transforming text, including heading, bold, italic, quote, code, and link, along with icons for ordered and unordered lists and other controls" src="img/rich-text-editor-detail.png">
-	<figcaption>A detail of the rich text editor in Github, showing a variety of unlabeled icons, including icons resembling text characters.</figcaption>
-</figure>
-<p>Likewise, where an author has used a greater-than symbol (">") to mimic the appearance of the right-facing arrow, the text does not convey something in human language. It is a symbol, in this scenario likely meant to mimic the icons used for a "Play" button or a "Next" arrow.</p>
-</section>
+				<section>
+					<h4>Symbolic text characters</h4>
+					<p>For the purposes of this SC, text should not be considered a visible label if it is used in a symbolic manner, rather than directly <q>expressing something in human language</q> as per the definition of <a>text</a> in WCAG. For example, <a href="images-of-text">1.4.5 Images of Text</a> describes considerations for "symbolic text characters." In the images of text example "B", "I", and "ABC" appear on icons in a text editor, where they are meant to symbolize the functions for Bold, Italics, and Spelling, respectively. In such a case, the accessible name should be the function the button serves (e.g., "Spell check" or "Check spelling"), not the visible symbolic characters. A similar text editor is shown in the figure below.</p>
+					<figure id="figure-RTE-github">
+						<img alt="Icons for transforming text, including heading, bold, italic, quote, code, and link, along with icons for ordered and unordered lists and other controls" src="img/2.5.3-rich-text-editor-detail.png">
+						<figcaption>A detail of the rich text editor in Github, showing a variety of unlabeled icons, including icons resembling text characters.</figcaption>
+					</figure>
+					<p>Likewise, where an author has used a greater-than symbol (">") to mimic the appearance of the right-facing arrow, the text does not convey something in human language. It is a symbol, in this scenario likely meant to mimic the icons used for a "Play" button or a "Next" arrow.</p>
+				</section>
 				
 				<section>
           <h4>Punctuation and capitalization</h4>
-          <p>The use of punctuation and capitalization in labels <em>may</em> also be considered optional for the same reason. For example, the colon conventionally added at the end of input labels does not express something in human language, and capitals on the first letter of each word in a label do not normally alter the words' meaning. This is particularly relevant in the context of this SC, since it is primarily aimed at users of speech recognition; capitals and most punctuation are frequently ignored when a user speaks a label as a means of interacting with a control.</p>
+          <p>This criterion is primarily aimed at users of speech recognition / voice control. Capitalization (upper- or lowercase) and most punctuation are generally ignored when a user speaks a label as a means of interacting with a control. For this reason, differences in capitalization and punctuation are not relevant when evaluating this criterion.</p>
+          <p>In the following example, while it is certainly not an error to include the colon and capitalization in the accessible name, a computed name of "first name" is considered equivalent to "First Name:" and passes the requirements of this criterion.<br>
+          <figure id="figure-input-firstname">
+						<img alt="" src="img/2.5.3-punctuation-capitalisation-firstname.png">
+						<figcaption>A text input with a label of "First Name:" above it.</figcaption>
+					</figure>
+<pre><code class="language-html">&lt;p&gt;First Name:&lt;/p&gt;
+&lt;input type="text" … aria-label="first name"&gt;</code></pre>
 
-          <p>While it is certainly not an error to include the colon and capitalization in the accessible name, a computed name of "First name" should not be considered a failure of "First Name:".<br>
-          <label for="firstname">First Name: </label><input id="firstname" type="text" name="firstname"><br>
-          Likewise, "Next…" visibly shown on a button could have "Next" as the accessible name.<br>
-          <input type="submit" value="Next...">. When in doubt, where a meaningful visible label exists, match the string exactly for the accessible name.</p>
+          <p>Likewise, in the following example, while the visible label for the button is "Next…", having "Next" as the accessible name passes.</p>
+					<figure id="figure-button-next">
+						<img alt="" src="img/2.5.3-punctuation-capitalisation-next.png">
+						<figcaption>A large button labelled "Next…".</figcaption>
+					</figure>
+					<pre><code class="language-html">&lt;button … aria-label="Next"&gt;Next…&lt;/button&gt;</code></pre>
+
+					<p class="note">There are situations where capitalization can impact meaning – for instance, where the use of uppercase letters indicates an abbreviation. While in the context of speech recognition / voice control this won't matter, the difference may be relevant for screen reader users. As a best practice, while normatively this success criterion is "case-insensitive", it's still recommended that authors match the case/capitalization of the visible label and the accessible name in these cases.</p>
 				</section>
 				
-      <section>
-        <h4>Mathematical expressions and formulae</h4>
-        <p>Mathematical expressions are an exception to the previous subsection about symbolic characters. Math symbols can be used as labels; for example "11&#215;3=33" and "A>B" convey meaning.<br>
-
-            <input type="radio" name="equation" id="answer1" value="A&gt;B"><label for="answer1">A&gt;B</label>
-            <input type="radio" name="equation" id="answer2" value="11&#215;3=33"><label for="answer2">11&#215;3=33</label>
-            </p>
-        	<p>The label should not be overwritten in the accessible name, and substitutions of words where a formula is used should be avoided since there are multiple ways to express the same equation. For example, making the name "eleven multiplied by three is equivalent to thirty-three" might mean a user who said "eleven times three equals thirty-three" may not match. It is best to leave the formulas as used in the label and count on the user's familiarity with their speech software to achieve a match. Further, converting a mathematical formula label into an accessible name that is a spelled-out equivalent may create issues for translation. The name should match the label's formula text. Note that a consideration for authors is to use the proper symbol in the formula. For instance 11x3 (with a lower or upper case letter X), 11*3 (with the asterisk symbol), and 11&#215;3 (with the <code>&amp;</code>times<code>;</code> symbol) are all easy for sighted users to interpret as meaning the same formula, but may not all be matched to "11 times 3" by the speech recognition software. The proper operator symbol (in this case the times symbol) should be used.</p>
+				<section>
+					<h4>Mathematical expressions and formulae</h4>
+					<p>Mathematical expressions are an exception to the previous subsection about symbolic characters. Math symbols can be used as labels; for example "A>B" and "11&#215;3=33" and convey meaning.</p>
+          <figure id="figure-radio-mathematical">
+						<img alt="" src="img/2.5.3-mathematical.png">
+						<figcaption>Two radio buttons – the first labelled "A>B", the second labelled "11&#215;3=33".</figcaption>
+					</figure>
+					<p>The label should not be overwritten in the accessible name, and substitutions of words where a formula is used should be avoided since there are multiple ways to express the same equation. For example, making the name "eleven multiplied by three is equivalent to thirty-three" might mean a user who said "eleven times three equals thirty-three" may not match. It is best to leave the formulas as used in the label and count on the user's familiarity with their speech software to achieve a match. Further, converting a mathematical formula label into an accessible name that is a spelled-out equivalent may create issues for translation. The name should match the label's formula text. Note that a consideration for authors is to use the proper symbol in the formula. For instance <code>11x3</code> (with a lower or upper case letter "X"), <code>11*3</code> (with the asterisk symbol), and <code>11&#215;3</code> (with the <code>&amp;times;</code> symbol) are all easy for sighted users to interpret as meaning the same formula, but may not all be matched to "11 times 3" by speech recognition / voice control software. The proper operator symbol (in this case the <code>&amp;times;</code> symbol) should be used.</p>
 				</section>
 			</section>
-			<section>
 
- <h3>Accessible Name and Description Computation specification</h3>
- <p>It is important to understand how the accessible name is derived. The <a href="https://www.w3.org/TR/accname-1.1/">Accessible Name and Description Computation 1.1</a> and the <a href="https://w3c.github.io/html-aam/#accessible-name-and-description-computation">HTML Accessibility API Mappings 1.0</a> describe how the accessible name is computed, including which attributes are considered in its calculation, and in what order of preference. If a component has multiple possible attribute values that could be used for its accessible name, only the most preferred of those values will be computed. None of the other, less preferred values will be part of the name. For the most part, existing established programmatic relationships between labels and controls are reinforced by the specification.</p>
- <p>Other text displayed on the screen that is correctly coded to meet <a href="info-and-relationships">1.3.1 Info and Relationships</a> is <strong>not</strong> normally factored into the calculation for the accessible name of a UI component without author intervention (via ARIA labeling techniques). The most common of these are:</p>
-	<ul>
-		<li>headings and instructions</li>
-<li>group labels for sets of components (i.e., used with <code>legend</code>/<code>fieldset</code> or with role of <code>group</code> or <code>radiogroup</code>)</li>
-</ul>
-<p>Such textual information may constitute part of the component's <em>description</em>. So from both a programmatic viewpoint, and from the conservative tactic of only considering a label to be "adjacent text," neither headings, instructions, nor group 'labels' should normally be considered <strong>labels</strong> for the purpose of this success criterion.</p>
- <p>It is important to note that the specification allows authors to override the name calculated through native semantics. Both <code>aria-label</code> and <code>aria-labelledby</code> take precedence in the name calculation, overriding the visible text as the accessible name even when the visible text label is programmatically associated with the control. For this reason, when a visible label already exists, <code>aria-label</code> should be avoided or used carefully, and <code>aria-labelledby</code> should be used as a supplement with care.</p>
-<p>Finally, <code>aria-describedby</code> is not included in the Accessible Name computation (instead it is part of the Accessible Description computation). By convention, text associated with a control through <code>aria-describedby</code> is announced immediately after the accessible name by screen readers. Therefore, the context of headings, instructions, and group labels can be provided through the accessible description to assist users of screen readers without affecting the experience of those who navigate using speech recognition software.</p>
-</section>
-<h4>Text in parentheses</h4>
-	<section>
-		<p>Note: The term "parenthetical" in this section is describing text that literally appears within a set of round brackets (). It is not used in the more abstract sense of "information related to".</p>
-	<p>It is important to mention parenthetical text in labels in the context of accessible name versus description. In common usage, text in parentheses is considered secondary but relevant to meaning. Users of speech recognition would not typically announce text in parentheses as part of the input name. For that reason, parenthetical text may be optionally considered a description and left out of the accessible name.</p>
-	<p>However, where parenthetical information provides important context, such as indication of a required field or limitations on what is allowed for input, this information must be provided programmatically in some other way to the user if that information is not included as part of the accessible name. For example, "Name (required)" and "Date (YYYY-MM-DD)" could accept "Name" and "Date" as the accessible names. However, in order to pass <a href="info-and-relationships">1.3.1 Info and Relationships</a>, authors would need to programmatically surface both the required state and the limit on the allowed data formatting (in this example, eight integers fitting the YYYY-MM-DD pattern). The "required" state could be surfaced through the HTML <code>required</code> attribute or by using <code>aria-required="true"</code>. The allowed data formatting could be surfaced by being referenced using the <code>aria-describedby</code> attribute.</p>
-		</section>
+			<section>
+				<h3>Accessible Name and Description Computation specification</h3>
+				<p>It is important to understand how the accessible name is derived. The <a href="https://www.w3.org/TR/accname-1.1/">Accessible Name and Description Computation 1.1</a> and the <a href="https://w3c.github.io/html-aam/#accessible-name-and-description-computation">HTML Accessibility API Mappings 1.0</a> describe how the accessible name is computed, including which attributes are considered in its calculation, and in what order of preference. If a component has multiple possible attribute values that could be used for its accessible name, only the most preferred of those values will be computed. None of the other, less preferred values will be part of the name. For the most part, existing established programmatic relationships between labels and controls are reinforced by the specification.</p>
+				<p>Other text displayed on the screen that is correctly coded to meet <a href="info-and-relationships">1.3.1 Info and Relationships</a> is <strong>not</strong> normally factored into the calculation for the accessible name of a UI component without author intervention (via ARIA labeling techniques). The most common of these are:</p>
+				<ul>
+					<li>headings and instructions</li>
+					<li>group labels for sets of components (i.e., used with <code>legend</code>/<code>fieldset</code> or with role of <code>group</code> or <code>radiogroup</code>)</li>
+				</ul>
+				<p>Such textual information may constitute part of the component's <em>description</em>. So from both a programmatic viewpoint, and from the conservative tactic of only considering a label to be "adjacent text," neither headings, instructions, nor group 'labels' should normally be considered <strong>labels</strong> for the purpose of this success criterion.</p>
+				<p>It is important to note that the specification allows authors to override the name calculated through native semantics. Both <code>aria-label</code> and <code>aria-labelledby</code> take precedence in the name calculation, overriding the visible text as the accessible name even when the visible text label is programmatically associated with the control. For this reason, when a visible label already exists, <code>aria-label</code> should be avoided or used carefully, and <code>aria-labelledby</code> should be used as a supplement with care.</p>
+				<p>Finally, <code>aria-describedby</code> is not included in the Accessible Name computation (instead it is part of the Accessible Description computation). By convention, text associated with a control through <code>aria-describedby</code> is announced immediately after the accessible name by screen readers. Therefore, the context of headings, instructions, and group labels can be provided through the accessible description to assist users of screen readers without affecting the experience of those who navigate using speech recognition software.</p>
+			</section>
+
+			<section>
+				<h4>Text in parentheses</h4>
+				<p>Note: The term "parenthetical" in this section is describing text that literally appears within a set of round brackets (). It is not used in the more abstract sense of "information related to".</p>
+				<p>It is important to mention parenthetical text in labels in the context of accessible name versus description. In common usage, text in parentheses is considered secondary but relevant to meaning. Users of speech recognition would not typically announce text in parentheses as part of the input name. For that reason, parenthetical text may be optionally considered a description and left out of the accessible name.</p>
+				<p>However, where parenthetical information provides important context, such as indication of a required field or limitations on what is allowed for input, this information must be provided programmatically in some other way to the user if that information is not included as part of the accessible name. For example, "Name (required)" and "Date (YYYY-MM-DD)" could accept "Name" and "Date" as the accessible names. However, in order to pass <a href="info-and-relationships">1.3.1 Info and Relationships</a>, authors would need to programmatically surface both the required state and the limit on the allowed data formatting (in this example, eight integers fitting the YYYY-MM-DD pattern). The "required" state could be surfaced through the HTML <code>required</code> attribute or by using <code>aria-required="true"</code>. The allowed data formatting could be surfaced by being referenced using the <code>aria-describedby</code> attribute.</p>
+			</section>
 		</section>
 
 		<section id="benefits">
