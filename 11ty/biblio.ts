@@ -12,6 +12,7 @@ export const biblioPattern = /\[\[\??([\w-]+)\]\]/g;
 // Resolve necessary aliases locally rather than requiring an extra round trip to specref
 const aliases = {
   "css3-values": "css-values-3",
+  pointerevents: "pointerevents4",
 };
 
 /** Compiles URLs from local biblio + specref for linking in Understanding documents. */
