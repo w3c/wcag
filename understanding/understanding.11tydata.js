@@ -534,12 +534,36 @@ export default function (data) {
         sufficient: [
           {
             title:
-              "Situation A: Color is used to identify user interface components or used to identify user interface component states",
-            techniques: ["G195", "G174"],
+              "Situation A: Color is used to identify user interface components",
+            techniques: [
+              {
+                title: "Identifying user interface components",
+                using: ["G174"],
+                usingQuantity: "",
+              }
+            ],
           },
           {
-            title: "Situation B: Color is required to understand graphical content",
-            techniques: ["G207", "G209"],
+            title:
+              "Situation B: Color is used to identify a user interface component's focus state",
+            techniques: [
+              {
+                title: "Identifying a user interface component's focus state",
+                using: ["G195", "C40"],
+                usingQuantity: "",
+              }
+            ],
+          },
+          {
+            title:
+              "Situation C: Color is required to understand graphical content",
+            techniques: [
+              {
+                title: "Making graphical content understandable",
+                using: ["G207", "G209"],
+                usingQuantity: "",
+              }
+            ],
           },
         ],
         failure: ["F78"],
