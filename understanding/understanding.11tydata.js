@@ -578,6 +578,7 @@ export default function (data) {
             id: "G90",
             using: ["SCR20", "SCR35", "SCR2"],
           },
+          "SCR41",
         ],
         advisory: [
           {
@@ -1051,6 +1052,7 @@ export default function (data) {
           },
           "G13",
           "SCR19",
+          "SCR41",
         ],
         sufficientNote: `
           A change of content is not always a <a>change of context</a>.
