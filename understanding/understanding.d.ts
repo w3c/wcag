@@ -44,7 +44,7 @@ export type UnderstandingAssociatedTechniqueArray = UnderstandingAssociatedTechn
 
 /** An associated technique that has already been run through expandTechniqueToObject */
 export type ResolvedUnderstandingAssociatedTechnique = Exclude<
-  UnderstandingAssociatedTechniqueArray[number],
+  UnderstandingAssociatedTechniqueArrayElement,
   string
 >;
 
@@ -78,8 +78,12 @@ export type UnderstandingAssociatedTechniqueSection =
 
 /** Object defining various types of techniques for a success criterion */
 interface UnderstandingAssociatedTechniques {
-  advisory?: UnderstandingAssociatedTechniqueArray;
-  failure?: UnderstandingAssociatedTechniqueArray;
+  advisory?: (
+    | string
+    | UnderstandingAssociatedTechniqueEntry
+    | UnderstandingAssociatedTechniqueConjunction
+  )[];
+  failure?: (string | UnderstandingAssociatedTechniqueEntry)[];
   sufficient?: UnderstandingAssociatedTechniqueSection[] | UnderstandingAssociatedTechniqueArray;
   sufficientIntro?: string;
   sufficientNote?: string;
