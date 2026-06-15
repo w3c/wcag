@@ -413,6 +413,7 @@ main table svg[role*="image"],
 figure svg[role*="image"] {
     display: block;
     max-inline-size: 100%;
+	block-size: auto;
 }
 
 figcaption {
@@ -432,6 +433,85 @@ figcaption {
 	@supports (display:grid) {
 		#site-header {
 			padding-left: 0;
+		}
+	}
+}
+
+.figure-collection {
+	--inline-size-specimen: 28ch;
+	container: figure-collection / inline-size;
+
+	&[ data-specimen-size="small" ] {
+		--inline-size-specimen: 16ch;
+	}
+}
+
+@container figure-collection (min-width: 64ch) {
+	article {
+		display: grid;
+		grid-template-columns: var(--inline-size-specimen) 1fr;
+		grid-template-rows: max-content auto;
+		grid-template-areas:
+			"specimen heading"
+			"specimen caption";
+		column-gap: 1rem;
+		padding-inline-end: 1rem;
+		border-block-start: 1px solid var(--line-grey);
+		border-inline: 1px solid var(--line-grey);
+		background-color: white;
+
+		&:last-child {
+			border-block-end: 1px solid var(--line-grey);
+		}
+	}
+
+	h5 {
+		grid-area: heading;
+		margin-block: 0.75rem 0;
+		font-size: 1.2rem;
+	}
+
+	.specimen {
+		grid-area: specimen;
+		display: flex;
+		align-self: stretch;
+		align-items: start;
+		justify-content: center;
+		padding: 1rem;
+		border-inline-end: 1px solid var(--line-grey);
+		background-color: white;
+
+		svg,
+		img {
+			border: 0;
+		}
+	}
+
+	figure {
+		display: contents;
+
+		/*
+			TODO: Is `display: contents` still too dangerous for this use case?
+			If so, replace with the subgrid layout below.
+		*/
+		/*
+		grid-column: 1 / -1;
+		grid-row: 1 / -1;
+		display: grid;
+		replace with subgrid approach below.rid;
+		replace with subgrid approach below.;
+		margin: 0;
+		border-inline-start: 0;
+		padding-inline-start: 0;
+		*/
+	}
+
+	figcaption {
+		grid-area: caption;
+		margin-block: 0.5rem;
+
+		p {
+			margin-block: 0.5rem;
 		}
 	}
 }
