@@ -16,8 +16,7 @@ interface UnderstandingAssociatedTechniqueUsingMixin {
 }
 
 interface UnderstandingAssociatedTechniqueEntryWithUsing
-  extends UnderstandingAssociatedTechniqueEntry,
-    UnderstandingAssociatedTechniqueUsingMixin {}
+  extends UnderstandingAssociatedTechniqueEntry, UnderstandingAssociatedTechniqueUsingMixin {}
 
 interface UnderstandingAssociatedTechniqueConjunction {
   and: Array<string | UnderstandingAssociatedTechniqueEntry>;
@@ -25,8 +24,7 @@ interface UnderstandingAssociatedTechniqueConjunction {
 }
 
 interface UnderstandingAssociatedTechniqueConjunctionWithUsing
-  extends UnderstandingAssociatedTechniqueConjunction,
-    UnderstandingAssociatedTechniqueUsingMixin {}
+  extends UnderstandingAssociatedTechniqueConjunction, UnderstandingAssociatedTechniqueUsingMixin {}
 
 /** Represents either type of associated technique entry that contains `using` */
 export type UnderstandingAssociatedTechniqueParent =
@@ -52,8 +50,7 @@ interface UnderstandingAssociatedTechniqueSectionBase {
   title: string;
   note?: string;
 }
-interface UnderstandingAssociatedTechniqueSectionWithoutGroups
-  extends UnderstandingAssociatedTechniqueSectionBase {
+interface UnderstandingAssociatedTechniqueSectionWithoutGroups extends UnderstandingAssociatedTechniqueSectionBase {
   techniques: UnderstandingAssociatedTechniqueArray;
   groups?: never; // Needed to form discriminated union between with/without
 }
@@ -62,8 +59,7 @@ export interface UnderstandingAssociatedTechniqueGroup {
   title: string;
   techniques: UnderstandingAssociatedTechniqueArray;
 }
-interface UnderstandingAssociatedTechniqueSectionWithGroups
-  extends UnderstandingAssociatedTechniqueSectionBase {
+interface UnderstandingAssociatedTechniqueSectionWithGroups extends UnderstandingAssociatedTechniqueSectionBase {
   groups: UnderstandingAssociatedTechniqueGroup[];
   // Restrict techniques to types without `using` when paired with `groups`
   techniques: Array<
