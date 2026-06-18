@@ -561,8 +561,8 @@ export default function (data) {
         ],
         failure: [
           "F95",
-          "Failure to make content dismissible without moving pointer hover or keyboard focus (Potential future technique)",
-          "Failure to meet by content on hover or focus not remaining visible until dismissed or invalid (Potential future technique)",
+          "F114",
+          "F115",
         ],
       },
 
