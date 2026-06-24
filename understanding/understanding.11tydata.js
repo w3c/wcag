@@ -345,7 +345,7 @@ export default function (data) {
         advisory: [
           "Enabling user agents to find the version of the content that best fits their needs",
           'Using semantics to identify important features (e.g., <code>coga-simplification="simplest"</code>)',
-          "Using <code>aria-invalid</code> and <code>aria-required</code>",
+          "Using <code>required</code>, or the combination of <code>aria-required</code> and <code>aria-invalid</code>, to programmatically identify required fields and/or those with validation errors",
         ],
       },
 
@@ -772,7 +772,7 @@ export default function (data) {
             usingQuantity: "two or more",
           },
         ],
-        advisory: ["PDF2","H99"],
+        advisory: ["PDF2", "H99"],
       },
 
       "headings-and-labels": {
@@ -892,8 +892,7 @@ export default function (data) {
 
       "target-size-enhanced": {
         // 2.5.5
-        sufficient: [
-          "C44"],
+        sufficient: ["C44"],
         advisory: ["Ensuring inline links provide sufficiently large activation target"],
         failure: [
           "Failure of Success Criterion 2.5.5 due to target being less than 44 by 44 CSS pixels",
@@ -1376,6 +1375,7 @@ export default function (data) {
                 and: ["ARIA22", "G193"],
                 andConjunction: "in combination with",
               },
+              "ARIA27",
             ],
           },
         ],
