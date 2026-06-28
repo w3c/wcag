@@ -61,6 +61,7 @@ function resolveRelevantTermsMap() {
 
 // Declare static global data up-front so we can build typings from it
 const globalData = {
+  trUrl: `https://www.w3.org/TR/WCAG${version}/`,
   version,
   versionDecimal: resolveDecimalVersion(version),
   errata: process.env.WCAG_VERSION ? await getErrataForVersion(version) : {},
