@@ -772,7 +772,7 @@ export default function (data) {
             usingQuantity: "two or more",
           },
         ],
-        advisory: ["PDF2","H99"],
+        advisory: ["PDF2", "H99"],
       },
 
       "headings-and-labels": {
@@ -892,8 +892,7 @@ export default function (data) {
 
       "target-size-enhanced": {
         // 2.5.5
-        sufficient: [
-          "C44"],
+        sufficient: ["C44"],
         advisory: ["Ensuring inline links provide sufficiently large activation target"],
         failure: [
           "Failure of Success Criterion 2.5.5 due to target being less than 44 by 44 CSS pixels",
