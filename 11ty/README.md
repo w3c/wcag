@@ -5,8 +5,7 @@ XSLT-based build process using Eleventy.
 
 ## Usage
 
-Make sure you have Node.js installed. This has primarily been tested with v20,
-the current LTS at time of writing.
+Make sure you have Node.js installed. See the top-level `.nvmrc` for the current supported version.
 
 If you use [`fnm`](https://github.com/Schniz/fnm) or [`nvm`](https://github.com/nvm-sh/nvm) to manage multiple Node.js versions,
 you can switch to the recommended version by typing `fnm use` or `nvm use`
