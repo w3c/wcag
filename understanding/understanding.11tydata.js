@@ -1151,7 +1151,7 @@ export default function (data) {
             techniques: ["SCR19"],
           },
         ],
-        advisory: ["G201"],
+        advisory: ["G200","G201"],
         failure: ["F60", "F61", "F9", "F22", "F52", "F40", "F41"],
       },
 
