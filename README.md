@@ -15,15 +15,12 @@ See also: [WCAG 2 Style Guide](https://github.com/w3c/wcag/wiki/WCAG-2-style-gui
 
 ## File Structure
 
-WCAG 2.0 was maintained in a different file structure than subsequent versions of WCAG. Source files for WCAG 2.0 are in the wcag20 folder and exists primarily for archival purposes. Do not edit content in that folder.
-
 Content for WCAG 2.1 and later is organized according to the file structure below. The WCAG repository contains source and auxiliary files for WCAG 2, Understanding WCAG 2, and eventually techniques. It also contains auxiliary files that support automated formatting of the document. To facilitate multi-party editing, each success criterion is in a separate file, consisting of a HTML fragment that can be included into the main guidelines. Key files include:
 
 * `guidelines/index.html` - the main guidelines file
 * `guidelines/sc/{version}/*.html` - files for each success criterion
 * `guidelines/terms/{version}/*.html` - files for each definition
 * `understanding/{version}/*.html` - understanding files for each success criterion
-* `wcag20/` was used by a previous version of WCAG, so anything ending .xml is no longer used, *do not update*.
 
 Where `{version}` is "20", content came from WCAG 2.0. "21" is used for content introduced in WCAG 2.1, "22" for WCAG 2.2, etc.
 
@@ -66,7 +63,7 @@ Success criteria use a simple structure of HTML elements, with a few class attri
 
 Note you do not provide the SC number. Numbers will be assigned, and most likely automatically generated, later.
 
-Values you provide are described below. Refer to [Success Criterion 2.2.1](https://www.w3.org/TR/WCAG20/#time-limits-required-behaviors) for an example of each of these pieces of content.
+Values you provide are described below. Refer to [Success Criterion 2.2.1](https://www.w3.org/TR/WCAG22/#timing-adjustable) for an example of each of these pieces of content.
 
 <dl>
 	<dt>{SC Handle}</dt>
@@ -131,7 +128,7 @@ Techniques should include brief code examples to demonstrate how to author conte
 
 Cross references to other techniques may be provided where useful. Generally they should be provided in the "Related Techniques" section but can be provided elsewhere. Use a relative link to reference the technique, `{Technique ID}` if the same technology, or `../{Technology}/{Technique ID}` otherwise. If the technique is still under development and does not have a formal ID, reference the path to the development file. If the technique is under development in a different branch, use an absolute URI to the rawgit version of the technique.
 
-Cross references to guidelines and success criteria should use a relative URI to the *Understanding* page for that item. Cross references to other parts of the guidelines should use an absolute URI to the guidelines as published on the W3C TR page, a URI beginning with `https://www.w3.org/TR/WCAG22/#`. Note that references to guidelines or success criteria to which techniques relate are added by the generator upon publication based on information in the Understanding documents, so redundant links to those is not normally needed or advised.
+Cross references to guidelines and success criteria should use a relative URI to the *Understanding* page for that item, e.g. `../../Understanding/{sc-name}`. Cross references to other parts of the guidelines should use an absolute URI to the guidelines as published on the W3C TR page; this can take advantage of a build system variable by beginning the href value with `{{ trUrl }}#` (with the curly braces verbatim). Note that references to guidelines or success criteria to which techniques relate are added by the generator upon publication based on information in the Understanding documents, so redundant links to those is not normally needed or advised.
 
 ### Create Techniques
 
@@ -178,7 +175,7 @@ Obsolete techniques should not be removed from the repository. Instead, they can
 ---
 obsoleteSince: 22
 obsoleteMessage: |
-  This failure relates to 4.1.1: Parsing, which was removed as of WCAG 2.2.
+  This failure relates to 4.1.1 Parsing, which was removed as of WCAG 2.2.
 ---
 ```
 
