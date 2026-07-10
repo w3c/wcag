@@ -651,7 +651,7 @@ export class CustomLiquid extends Liquid {
     }
 
     const slugify = slugifyWithCounter();
-    const slugifyOptions: SlugifyOptions = { decamelize: false };
+    const slugifyOptions: SlugifyOptions = { decamelize: false, transliterate: false };
 
     // Allow autogenerating missing top-level section IDs in understanding docs,
     // but don't pick up incorrectly-nested sections in some techniques pages (e.g. H91)
