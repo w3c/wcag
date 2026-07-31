@@ -345,7 +345,7 @@ export default function (data) {
         advisory: [
           "Enabling user agents to find the version of the content that best fits their needs",
           'Using semantics to identify important features (e.g., <code>coga-simplification="simplest"</code>)',
-          "Using <code>aria-invalid</code> and <code>aria-required</code>",
+          "Using <code>required</code>, or the combination of <code>aria-required</code> and <code>aria-invalid</code>, to programmatically identify required fields and/or those with validation errors",
         ],
       },
 
@@ -534,12 +534,36 @@ export default function (data) {
         sufficient: [
           {
             title:
-              "Situation A: Color is used to identify user interface components or used to identify user interface component states",
-            techniques: ["G195", "G174"],
+              "Situation A: Color is used to identify user interface components",
+            techniques: [
+              {
+                title: "Identifying user interface components",
+                using: ["G174"],
+                usingQuantity: "",
+              }
+            ],
           },
           {
-            title: "Situation B: Color is required to understand graphical content",
-            techniques: ["G207", "G209"],
+            title:
+              "Situation B: Color is used to identify a user interface component's focus state",
+            techniques: [
+              {
+                title: "Identifying a user interface component's focus state",
+                using: ["G195", "C40"],
+                usingQuantity: "",
+              }
+            ],
+          },
+          {
+            title:
+              "Situation C: Color is required to understand graphical content",
+            techniques: [
+              {
+                title: "Making graphical content understandable",
+                using: ["G207", "G209"],
+                usingQuantity: "",
+              }
+            ],
           },
         ],
         failure: ["F78"],
@@ -772,7 +796,7 @@ export default function (data) {
             usingQuantity: "two or more",
           },
         ],
-        advisory: ["PDF2","H99"],
+        advisory: ["PDF2", "H99"],
       },
 
       "headings-and-labels": {
@@ -892,8 +916,7 @@ export default function (data) {
 
       "target-size-enhanced": {
         // 2.5.5
-        sufficient: [
-          "C44"],
+        sufficient: ["C44"],
         advisory: ["Ensuring inline links provide sufficiently large activation target"],
         failure: [
           "Failure of Success Criterion 2.5.5 due to target being less than 44 by 44 CSS pixels",
@@ -1128,7 +1151,7 @@ export default function (data) {
             techniques: ["SCR19"],
           },
         ],
-        advisory: ["G201"],
+        advisory: ["G200","G201"],
         failure: ["F60", "F61", "F9", "F22", "F52", "F40", "F41"],
       },
 
@@ -1376,6 +1399,7 @@ export default function (data) {
                 and: ["ARIA22", "G193"],
                 andConjunction: "in combination with",
               },
+              "ARIA27",
             ],
           },
         ],

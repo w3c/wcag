@@ -1,18 +1,9 @@
 var respecConfig = {
-	// embed RDFa data in the output
-	trace:  true,
-	useExperimentalStyles: true,
-	doRDFa: '1.1',
-	includePermalinks: true,
-	permalinkEdge:     true,
-	permalinkHide:     false,
-	tocIntroductory: true,
 	// specification status (e.g., WD, LC, NOTE, etc.). If in doubt use ED.
 	specStatus:           "ED",
 	//crEnd:                "2012-04-30",
 	//perEnd:               "2013-07-23",
 	publishDate:          "2024-12-12",
-	diffTool:             "http://www.aptest.com/standards/htmldiff/htmldiff.pl",
 	
 	// the specifications short name, as in https://www.w3.org/TR/short-name/
 	shortName:            "WCAG22",
