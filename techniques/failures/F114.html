@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="en"><head><title>Failure of Success Criterion 1.4.11 due to focus indicator being obscured by a semi-opaque overlay</title><link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove"></head><body><h1>Failure of Success Criterion 1.4.11 due to focus indicator being obscured by a semi-opaque overlay</h1><section class="meta"><p class="id">ID: F114</p><p class="technology">Technology: failures</p><p class="type">Type: Failure</p></section><section id="applicability"><h2>When to Use</h2>
+      <p>Any technology that supports semi-transparent overlays (such as CSS with opacity or rgba colors) and focus indicators.</p>
+   </section><section id="description"><h2>Description</h2>
+      <p>This describes the failure condition that occurs when a focus indicator is positioned behind a semi-opaque overlay (such as a lightbox, modal, or other translucent content), resulting in the focus indicator's contrast being reduced below the 3:1 ratio required by Success Criterion 1.4.11 Non-text Contrast.</p>
+      <p>Focus indicators are visual cues that show which element currently has keyboard focus. When these indicators appear behind semi-transparent content, the overlay reduces the perceived contrast between the focus indicator and its background, making it harder or impossible for users with low vision to perceive the focus indicator.</p>
+      <p>This failure occurs even if the component itself is not entirely obscured, as the reduced contrast of the focus indicator violates the non-text contrast requirements.</p>
+   </section><section id="examples"><h2>Examples</h2>
+      <section class="example">
+         <p>A webpage uses a semi-transparent dark overlay to dim the background content when displaying a modal dialog. When keyboard users tab through the background content, the focus indicators (such as outline borders) appear dimmed because they are rendered behind the overlay, reducing their contrast below 3:1.</p>
+         <p>Here is example CSS that creates a semi-opaque overlay:</p>
+<pre xml:space="preserve"><code class="language-css">.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+  z-index: 1000;
+}
+
+.focused-element {
+  outline: 2px solid #ffffff; /* White focus outline */
+}</code></pre>
+         <p>When the overlay is present and an element receives focus, the white outline appears behind the semi-transparent black overlay. The effective contrast of the white outline against the dimmed background may be insufficient, failing 1.4.11.</p>
+         <ul class="working-example">
+            <li><a href="../../working-examples/css-focus-obscured-overlay/">Example of focus indicator obscured by overlay</a></li>
+         </ul>
+      </section>
+   </section><section id="tests"><h2>Tests</h2>
+      <section class="procedure"><h3>Procedure</h3>
+         <ol>
+            <li>Navigate through the page using keyboard navigation to move focus to each interactive element.</li>
+            <li>Check if any semi-opaque overlays or translucent content appear that could cover focus indicators.</li>
+            <li>For each element receiving focus while obscured by the overlay, measure the contrast ratio of the item with focus or its focus indicator.</li>
+            <li>Use a color contrast analyzer to measure the contrast between the focus indicator and the background as it appears through the overlay.</li>
+         </ol>
+      </section>
+      <section class="results"><h3>Expected Results</h3>
+         <ul>
+            <li>If the contrast ratio of any focus indicator, when obscured by a semi-opaque overlay, is less than 3:1, then this failure condition applies and the content fails this Success Criterion.</li>
+         </ul>
+      </section>
+   </section><section id="related"><h2>Related Techniques</h2><ul>
+      <li><a href="../css/C40">C40</a>: Creating a lightbox that can be closed with the Escape key</li>
+      <li><a href="../general/G195">G195</a>: Using an author-supplied, highly visible focus indicator</li>
+   </ul></section><section id="resources"><h2>Resources</h2></section>
+</body></html>

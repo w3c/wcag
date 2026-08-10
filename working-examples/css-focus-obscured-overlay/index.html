@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Failure: Focus indicator obscured by semi-opaque overlay</title>
+    <style>
+
+    /* Reflow Styling */
+
+    .row {
+      width: 100%;
+      display: flex;
+      flex-flow: row wrap;
+    }
+
+    .row-nested {
+      width: calc(100% + 2rem);
+      margin: 0 -1rem 1rem -1rem;
+    }
+
+    .col {
+      padding: 1rem;
+      flex: 0 1 100%;
+    }
+
+    @media all and (min-width: 576px) {
+      .col-panel {
+        flex: 0 1 50%;
+        padding-bottom: 0.25rem;
+      }
+    }
+
+    @media all and (min-width: 992px) {
+      main {
+        flex: 0 1 66.333333%;
+      }
+      aside {
+        flex: 0 1 33.333333%;
+        margin-top: 0;
+      }
+    }
+
+    /* Content Styling */
+
+    html {
+      box-sizing: border-box;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: inherit;
+    }
+
+    body {
+      font: 1rem/1.5 system-ui, "Segoe UI", Roboto, Helvetica, sans-serif;
+      background-color: #fafafc;
+      margin: 0;
+    }
+
+    a:hover {
+      text-decoration: none;
+    }
+
+    h1, h2, h3 {
+      color: #005a6a;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin: 0;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-top: 0;
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      margin-top: 0;
+    }
+
+    header {
+      background-color: #005a9c;
+      margin-top: 1rem;
+    }
+
+    header nav ul {
+      list-style: none;
+    }
+
+    header nav ul li {
+      display: inline;
+      padding: 0 0.25rem;
+    }
+
+    nav {
+      position: relative;
+      border-top: 1px solid #005a9c;
+      border-bottom: 1px solid #005a9c;
+      background-color: #003366;
+      margin: 0 -1rem -1rem -1rem;
+    }
+
+    nav ul {
+      padding-left: 1rem;
+    }
+
+    a {
+      color: #ffffff;
+    }
+
+    main {
+      background: #ffffff;
+      padding-bottom: 0;
+    }
+
+    aside {
+      border-left: 1px solid #dddddd;
+    }
+
+    footer {
+      color: #ffffff;
+      background-color: #3b3b3b;
+      border-top:1px solid #dddddd;
+    }
+
+    .logo {
+      width: 90px;
+      vertical-align: middle;
+      margin: 0 .5rem 1rem 0;
+    }
+
+    .panel {
+      background-color: #fafafc;
+      border: 1px solid #ddd;
+      padding: 1rem;
+    }
+
+    /* Failure Example Specific Styles */
+
+    .form-field {
+      margin-bottom: 1rem;
+    }
+
+    .form-field label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    .form-field input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #666;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+
+    .form-field input:focus {
+      outline: 2px solid #0066cc;
+      outline-offset: 2px;
+    }
+
+    .button-group {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .btn {
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      margin: 0 0.5rem;
+    }
+
+    .btn:focus {
+      outline: 2px solid #0066cc;
+      outline-offset: 2px;
+    }
+
+    .btn:hover {
+      background-color: #e0e0e0;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: none;
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      background: white;
+      padding: 2em;
+      border-radius: 8px;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .modal .btn {
+      display: block;
+      margin: 1em auto 0;
+      width: auto;
+    }
+
+    .instructions {
+      background-color: #e6f3ff;
+      border: 1px solid #0066cc;
+      padding: 1em;
+      margin: 1em 0;
+      border-radius: 4px;
+    }
+
+    .failure-note {
+      background-color: #ffe6e6;
+      border: 1px solid #cc0000;
+      padding: 1em;
+      margin: 1em 0;
+      border-radius: 4px;
+    }
+
+    </style>
+
+  </head>
+
+  <body class="row">
+
+    <header class="col">
+      <a href="http://w3.org/"><img alt="W3C" class="logo" src="https://www.w3.org/WAI/assets/images/w3c.svg">Failure Example</a>
+      <nav>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Techniques</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="col">
+      <h1>Failure Example: Focus Indicator Obscured by Semi-Opaque Overlay</h1>
+
+      <div class="instructions">
+        <p><strong>Instructions:</strong></p>
+        <ol>
+          <li>Use the Tab key to navigate through the form controls below.</li>
+          <li>Notice the blue focus outline on each control.</li>
+          <li>Click the "Open Modal" button to show the overlay.</li>
+          <li>With the overlay visible, use Tab to navigate through the background controls.</li>
+          <li>Observe how the focus indicators are now dimmed by the semi-transparent overlay.</li>
+        </ol>
+      </div>
+
+      <div class="failure-note">
+        <p><strong>Failure:</strong> When the semi-opaque overlay is present, the contrast of the focus indicators (blue outline) is reduced below the 3:1 ratio required by SC 1.4.11 Non-text Contrast, making them difficult to perceive for users with low vision.</p>
+      </div>
+
+      <div class="row row-nested">
+        <div class="col col-panel">
+          <div class="panel">
+            <h2>Form Controls</h2>
+            <form>
+              <div class="form-field">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name">
+              </div>
+
+              <div class="form-field">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email">
+              </div>
+
+              <div class="button-group">
+                <button type="button" onclick="openModal()" class="btn">Open Modal</button>
+                <button type="submit" class="btn">Submit Form</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col col-panel">
+          <div class="panel">
+            <h2>Additional Information</h2>
+            <p>This example demonstrates how semi-opaque overlays can obscure focus indicators, violating SC 1.4.11 Non-text Contrast.</p>
+            <p>The modal overlay uses <code>rgba(0, 0, 0, 0.7)</code> which creates a dark semi-transparent layer over the content. When keyboard users navigate through the form controls behind this overlay, the blue focus indicators become difficult to see due to reduced contrast.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="col">
+      <h2>Footer</h2>
+      <p>This is a working example for WCAG Technique F114.</p>
+    </footer>
+
+    <div class="overlay" id="overlay">
+      <div class="modal">
+        <h2>Modal Dialog</h2>
+        <p>This is a modal dialog with a semi-transparent overlay behind it.</p>
+        <p>The background controls are still focusable, but their focus indicators are obscured.</p>
+        <button onclick="closeModal()" class="btn">Close Modal</button>
+      </div>
+    </div>
+
+    <script>
+      function openModal() {
+        document.getElementById('overlay').classList.add('show');
+      }
+
+      function closeModal() {
+        document.getElementById('overlay').classList.remove('show');
+      }
+
+      // Allow closing with Escape key
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+          closeModal();
+        }
+      });
+    </script>
+  </body>
+</html>
