@@ -51,6 +51,8 @@ export async function getBiblio() {
 const wcag20Refs = {
   "ANSI-HFES-100-1988":
     "ANSI/HFS 100-1988, American National Standard for Human Factors Engineering of Visual Display Terminal Workstations, Section 6, pp. 17-20.",
+  "ANSI-HFES-100-2007":
+    "ANSI/HFS 100-2007, American National Standard for Human Factors Engineering of Visual Display Terminal Workstations, Section 7.",
   ARDITI:
     "Arditi, A. (2002). Effective color contrast: designing for people with partial sight and color deficiencies. New York, Arlene R. Gordon Research Institute, Lighthouse International.",
   "ARDITI-FAYE":
@@ -71,6 +73,8 @@ const wcag20Refs = {
     "IEC/4WD 61966-2-1: Colour Measurement and Management in Multimedia Systems and Equipment - Part 2.1: Default Colour Space - sRGB. May 5, 1998.",
   "ISO-9241-3":
     "ISO 9241-3, Ergonomic requirements for office work with visual display terminals (VDTs) - Part 3: Visual display requirements. Amendment 1.",
+  "ISO-TR-9241-311-2022":
+    "ISO/TR 9241-311:2022, Ergonomics of human-system interaction - Part 311: Application of ISO 9241-307: LCD screens for workstations",
   "I18N-CHAR-ENC":
     "\n" +
     '"Tutorial: Character sets & encodings in XHTML, HTML and CSS," R. Ishida, ed., This tutorial is available at http://www.w3.org/International/tutorials/tutorial-char-enc/. \n',
