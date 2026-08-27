@@ -566,7 +566,7 @@ export default function (data) {
             ],
           },
         ],
-        failure: ["F78"],
+        failure: ["F78", "F114"],
       },
 
       "text-spacing": {
