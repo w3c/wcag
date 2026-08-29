@@ -36,7 +36,7 @@ export default function (data) {
               {
                 id: "text-equiv-all-situation-b-longtext",
                 title: "Long text alternative techniques for Situation B",
-                techniques: ["ARIA15", "G73", "G74", "G92", "H53"],
+                techniques: ["ARIA15", "G73", "G74", "G92", "G227", "H53"],
               },
             ],
           },
