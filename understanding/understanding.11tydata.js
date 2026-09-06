@@ -1036,7 +1036,7 @@ export default function (data) {
           Some sites may decide to do both or other combinations.
           No technique will help all users who have difficulty.
           So different techniques are provided as sufficient techniques here for authors trying to make their sites more accessible.
-          Any numbered technique or combination above can be used by a particular site and it is considered sufficient by the Working Group.
+          Any technique or combination above can be used by a particular site and it is considered sufficient by the Working Group.
         `,
       },
 
