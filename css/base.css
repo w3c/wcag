@@ -395,6 +395,18 @@ blockquote p:last-of-type::after {
   margin-left: 0;
 }
 
+blockquote p:last-of-type {
+	margin-bottom: inherit;
+}
+
+blockquote > p:last-of-type {
+	margin-bottom: 0;
+}
+
+blockquote > p:last-of-type + * {
+	margin-top: 1em;
+}
+
 /* overrides for restyled figures and captions */
 
 figure {
@@ -407,6 +419,7 @@ figure img,
 figure video,
 figure svg {
 	border: 1px solid var(--line-grey);
+	box-sizing: border-box;
 }
 
 main table svg[role*="image"],
@@ -531,4 +544,22 @@ pre {
     background: #ebebeb;
     padding: 0 0.25em;
     display: inline-block;
+}
+
+/* avoid focus outline "hugging" container */
+dfn:focus {
+    outline-offset: 0.25em;
+}
+:is(main,aside,section,div):focus {
+    outline-offset: 0.75em;
+}
+
+[id][tabindex="-1"]:is(main,aside,section,div) {
+  > :first-child {
+    padding-block-start: 0.5em;
+  }
+
+  > :last-child {
+    padding-block-end: 0.5em;
+  }
 }
