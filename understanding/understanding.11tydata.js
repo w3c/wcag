@@ -586,7 +586,7 @@ export default function (data) {
         failure: [
           "F95",
           "F114",
-          "F115",
+          "Failure to meet by content on hover or focus not remaining visible until dismissed or invalid (Potential future technique)",
         ],
       },
 
