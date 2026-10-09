@@ -580,12 +580,11 @@ export default function (data) {
         // 1.4.13
         sufficient: [
           "SCR39",
-          'ARIA: Using role="tooltip" (Potential future technique)',
           "CSS: Using hover and focus pseudo classes (Potential future technique)",
         ],
         failure: [
           "F95",
-          "Failure to make content dismissible without moving pointer hover or keyboard focus (Potential future technique)",
+          "F114",
           "Failure to meet by content on hover or focus not remaining visible until dismissed or invalid (Potential future technique)",
         ],
       },
