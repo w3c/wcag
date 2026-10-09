@@ -1,9 +1,10 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+<!DOCTYPE html> 
 <html lang="en">
 <head>
-	<title>Colour picker persistence</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<link href="style.css" rel="stylesheet" type="text/css">
+	<meta charset="utf-8">
+	<title>Colour picker persistence | WCAG 2</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="style.css" rel="stylesheet">
 <?php
 // Get the foreground colour
 if (strlen($_COOKIE["forecolour"]) == 4)

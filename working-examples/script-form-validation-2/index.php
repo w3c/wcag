@@ -68,12 +68,12 @@
 			$strError = "<h2>$iErrorCount Errors in Submission</h2>\n" . $strError;
 	}
 ?>
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">	
-	<title>Form Validation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">	
+	<title>Form Validation | WCAG 2</title>
 	<link href="css/validate.css" rel="stylesheet">
 	<script src="scripts/validate.js"></script>
 </head>
