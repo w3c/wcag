@@ -580,7 +580,6 @@ export default function (data) {
         // 1.4.13
         sufficient: [
           "SCR39",
-          'ARIA: Using role="tooltip" (Potential future technique)',
           "CSS: Using hover and focus pseudo classes (Potential future technique)",
         ],
         failure: [
