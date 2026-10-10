@@ -35,14 +35,25 @@
          monochrome displays and browsers will be unable to access information that is presented
          only in color.
       </p>
-
-      <p>Examples of information conveyed by color differences: “required fields are red",
-         “error is shown in red", and “Mary's sales are in red, Tom's are in blue". Examples
-         of indications of an action include: using color to indicate that a link will open
-         in a new window or that a database entry has been updated successfully. An example
-         of prompting a response would be: using highlighting on form fields to indicate that
-         a required field had been left blank.
-      </p>
+ 
+      <p>Examples of common failures include:</p>
+      <ul>
+        <li>
+            <strong>Information conveyed by color differences:</strong> 
+            <ul>
+                <li>required fields are only identified by changing their existing border to a red color;</li>
+                <li>the type of transaction is only visually distinguished by using different foreground colors: red for debits and green for credits;</li>
+                <li>subway lines are visually distinguished solely by employing various filled colors;</li>
+                <li>using color alone to indicate that a database entry has been updated successfully;</li>
+                <li>using subtle color highlighting on form fields to prompt for a response on required fields that have been left blank.</li>
+        <li><strong>Distinguishing a visual element:</strong>
+            <ul>
+                <li>text links are only distinguished from surrounding text using a subtle text color difference (with a contrast difference that is less than 3:1);</li>
+                <li>for a series of toggle buttons, the pressed and unpressed buttons are only visually indicated by a subtle difference in color;</li>
+                <li>the interactive element that currently has focus is only distinguished by changing the color of the element's existing background or border.</li>
+         </ul>
+     </li>
+     <p>However, particularly in the case of state/focus indication, note that if the visual indicator was not previously present, this does not count as a change in color. For instance, if a focused element has a new border, or a new solid background shape, that was not there in its unfocused state, this does not count as a change of color alone, since the indicator was not present to begin with.</p>
 
       <div class="note">
          <p>This should not in any way discourage the use of color on a page, or even color coding if it is complemented by other visual indication.</p>
@@ -91,25 +102,51 @@
       </div>
 
       <div class="note">
+        <p>Most user agents provide users with a color-only cue that a link has been previously activated by them ("visited"). However, several technical constraints result in authors having very limited control over these color-only indications of visited links.  The technical constraints are as follows:</p>
+        
+        <ul>
+           <li> 
+              User agents constrain the exposure of a link's visited state due to <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Privacy_and_the_:visited_selector">privacy concerns</a>. Author queries to user agents will indicate all links have not been visited.
+           </li>
+           <li>
+              Any available information on the visited state of a link would be inaccurate since it is both user and browser-dependent. Even if an author could accurately get information on previously activated links by a certain user, the author would be constrained to the current browser's preserved history, and would be unable to determine if the user had visited the page using a different browser (or if the history was not preserved, either from cache clearing or use of private sessions).
+           </li>
+           <li>
+              Authors can <em>only</em> use color to modify the <code>:visited</code> CSS pseudoclass style. The technology constrains any non-color styling. Due to palette limitations, an author cannot use color alone to achieve 3:1 contrast between link and non-link text as well as between visited and unvisited links while also achieving 4.5:1 contrast for all link and non-link text.
+           </li>
+           <li>
+              Authors also cannot set the visited state of links. The anchor element does not include a "visited" attribute; therefore the author has no ability to alter the state through an attribute setting. As such, authors cannot achieve <a href="info-and-relationships">1.3.1 Info and Relationships</a> or
+              <a href="name-role-value">4.1.2 Name, Role, Value</a> in regard to visited links.
+           </li>
+        </ul>
+     </div>
+        
+     <div class="note">
+         <p>Note that particularly in the case of focus indication, this criterion is likely to overlap with
+            other, more specific criteria, such as
+            <a href="focus-appearance">2.4.11 Focus Appearance</a> (new in WCAG 2.2), which will have further requirements.
+         </p>
+     </div>
+      
+     <div class="note">
          <p>Most user agents provide users with a color-only cue that a link has been previously activated by them ("visited"). However, several technical constraints result in authors having very limited control over these color-only indications of visited links.  The technical constraints are as follows:</p>
-         <ul>
-            <li>
-               User agents constrain the exposure of a link's visited state due to <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Privacy_and_the_:visited_selector">privacy concerns</a>. Author queries to user agents will indicate all links have not been visited.
-            </li>
-            <li>
-               Any available information on the visited state of a link would be inaccurate since it is both user and browser-dependent. Even if an author could accurately get information on previously activated links by a certain user, the author would be constrained to the current browser's preserved history, and would be unable to determine if the user had visited the page using a different browser (or if the history was not preserved, either from cache clearing or use of private sessions).
-            </li>
-            <li>
-               Authors can <em>only</em> use color to modify the <code>:visited</code> CSS pseudoclass style. The technology constrains any non-color styling. Due to palette limitations, an author cannot use color alone to achieve 3:1 contrast between link and non-link text as well as between visited and unvisited links while also achieving 4.5:1 contrast for all link and non-link text.
-            </li>
-            <li>
-               Authors also cannot set the visited state of links. The anchor element does not include a "visited" attribute; therefore the author has no ability to alter the state through an attribute setting. As such, authors cannot achieve <a href="info-and-relationships">1.3.1 Info and Relationships</a> or
-               <a href="name-role-value">4.1.2 Name, Role, Value</a> in regard to visited links.
-            </li>
-         </ul>
-
+            <ul>
+               <li> 
+                  User agents constrain the exposure of a link's visited state due to <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Privacy_and_the_:visited_selector">privacy concerns</a>. Author queries to user agents will indicate all links have not been visited.
+               </li>
+               <li>
+                  Any available information on the visited state of a link would be inaccurate since it is both user and browser-dependent. Even if an author could accurately get information on previously activated links by a certain user, the author would be constrained to the current browser's preserved history, and would be unable to determine if the user had visited the page using a different browser (or if the history was not preserved, either from cache clearing or use of private sessions).
+               </li>
+               <li>
+                  Authors can <em>only</em> use color to modify the <code>:visited</code> CSS pseudoclass style. The technology constrains any non-color styling. Due to palette limitations, an author cannot use color alone to achieve 3:1 contrast between link and non-link text as well as between visited and unvisited links while also achieving 4.5:1 contrast for all link and non-link text.
+               </li>
+               <li>
+                  Authors also cannot set the visited state of links. The anchor element does not include a "visited" attribute; therefore the author has no ability to alter the state through an attribute setting. As such, authors cannot achieve <a href="info-and-relationships">1.3.1 Info and Relationships</a> or
+                  <a href="name-role-value">4.1.2 Name, Role, Value</a> in regard to visited links.
+               </li>            
+            </ul>
          <p>For these reasons, setting or conveying a link's visited status is not an author responsibility. Where color alone distinguishes between visited and unvisited links, it does not result in a failure of this Success Criterion, even where the contrast between the two link colors is below 3:1. Note that authors must continue to ensure that all text links meet contrast minimums against the page background (SC 1.4.3).</p>
-      </div>
+     </div>
    </section>
    <section id="benefits">
       <h2>Benefits of Use of Color</h2>
@@ -119,12 +156,7 @@
          <li>Users with color vision deficiency who cannot distinguish between certain colors
             benefit when information conveyed by color is available in other visual ways.
          </li>
-         <li>People using limited color monochrome displays may be unable to access
-            color-dependent information.
-         </li>
-         <li>Users who have problems distinguishing between colors can look or listen for text
-            cues.
-         </li>
+         <li>Users who have problems distinguishing between colors can look for other visual cues.</li>
       </ul>
    </section>
    <section id="examples">
@@ -132,16 +164,26 @@
       <dl>
          <dt>A form that uses color and text to indicate required fields</dt>
          <dd>A form contains both required and optional fields. Instructions at the top of the
-               form explain that required fields are labeled with red text and also with an icon.
-               Users who cannot perceive the difference between the optional field labels and the
-               red labels for the required fields will still be able to see the icon next to the
-               red labels.</dd>
+             form explain that required fields are labeled with red text and also with an icon.
+             Users who cannot perceive the difference between the optional field labels and the
+             red labels for the required fields will still be able to see the icon next to the
+             red labels.</dd>             
          <dt>An examination</dt>
          <dd>Students view an SVG image of a chemical compound and identify the chemical elements
-               present based <strong>both</strong> on the colors used, as well as numbers next to each
-               element. A legend shows the color and number for each type of element. Sighted users who
-               cannot perceive all the color differences can still understand the image by relying on
-               the numbers.</dd>
+             present based <strong>both</strong> on the colors used, as well as numbers next to each
+             element. A legend shows the color and number for each type of element. Sighted users who
+             cannot perceive all the color differences can still understand the image by relying on
+             the numbers.</dd>
+         <dt>A series of toggle buttons</dt>
+         <dd>Users are presented with a series of toggle buttons that can be turned on or off. Visually,
+             when a toggle button is turned on, it not only has a different background color, but is
+             also styled to appear "pressed", with a distinctive inner shadow. Alternatively, toggles that
+             are turned on could have an extra "ticked" icon to distinguish them from toggles that are
+             turned off.</dd>
+         <dt>Focus indication</dt>
+         <dd>When an interactive control (like a button, toggle, or checkbox) receives focus, its background color
+             changes. In addition to this, an extra outline (which was not present in the control's unfocused state)
+             appears around the control.</dd>
       </dl>
    </section>
    <section id="resources">
