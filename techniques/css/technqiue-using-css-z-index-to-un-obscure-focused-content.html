@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<title>Using CSS z-index to un-obscure focused content</title>
+	</head>
+	<body>
+		<h1>Using CSS <code>z-index</code> to un-obscure focused content</h1>
+		<section id="applicability">
+			<h2>When to Use</h2>
+			<p>Use this technique as a last-resort to un-obscure focusable user interface components. This technique will typically be useful when content (typically <a href="https://html.spec.whatwg.org/multipage/dom.html#flow-content">flow content</a>) is obscured by pop-over elements.</p>
+            <p>Examples of persistent elements which may partially obscure content include:</p>
+            <ul>
+                <li>cookie consent banners</li>
+                <li>expanded menus</li>
+                <li>quick escape safety features</li>
+                <li>chatbot windows</li>
+            </ul>
+			<p>This technique can be used for all technologies that support Cascading Style Sheets (CSS).</p>
+		</section>
+		<section id="description">
+			<h2>Description</h2>
+			<p>The objective of this technique is to ensure that focusable user interface components (such as links, buttons, and form fields) are always fully visible when focused. This includes cases where, when not receiving focus, the same user interface component is partially or completely obscured by other in-page elements.</p>
+			<p>This un-obscuring of focused components is achieved by applying a high CSS <code>z-index</code> value to the user interface component when it receives focus. The applied <code>z-index</code> value must be higher than the <code>z-index</code> values of all elements that might partially or fully obscure the focused user interface component.</p>
+            <h3>Setting the CSS properties</h3>
+            <p>This technique requires careful selection of which portions of content should receive the <code>z-index</code> property. If there is a chatbot button that can only obscure content in a sidebar, then only apply this technique to that sidebar.</p>
+            <p>Most scenarios can be solved by setting three CSS properties on the sections of the page which are overlapped by a pop-over element:</p>
+            <ol>
+                <li><code>z-index</code></li>
+                <li><code>position</code>, to </li>
+                <li><code>background-color</code>, to improve readability</li>
+            </ol>
+            <p>The <code>z-index</code> property must be set. The position properly only needs to be set for focusable components in the section which do not already have position values. The background-color property is only necessary for focusable elements which lack an existing background.</p>
+            <p>Set the <code>z-index</code> to a value higher than all other elements which may obscure the focusable components.</p>
+		</section>
+		<section id="examples">
+			<h2>Examples</h2>
+            <p>Here are examples of four different use-cases, paired with four variations of CSS property needs.</p>
+            <section class="example" id="example-1">
+                <h3>Example 1: focusable content with CSS <code>background</code> and <code>position</code> properties</h3>
+                <p>This example is modelled on a "quick escape" tool which can at times obscure a sidebar navigation area. It sets a <code>z-index</code> value for HTML <code>&lt;a&gt;</code> links within the navigation sidebar.</p>
+                <p>For this example, we will say the "quick escape" safety feature has a <code>z-index</code> value of "1", and that it's a controlled value that is unlikely to change. Because of the stability of the <code>z-index</code> value, a relatively low value of "2" is enough to achieve the desired effect and un-obscure focused content.</p>
+<pre><code class="language-css">.sidebar-navigation a:focus {
+  z-index: 2;
+}</code></pre>
+            </section>
+            <section class="example" id="example-2">
+                <h3>Example 2: Focusable content which lacks a CSS <code>background</code> property</h3>
+                <p>This example is modelled on a chatbot window which pops over body content, potentially obscuring multiple focusable user interface components. The body content area has a white background. It expands on Example 1, demonstrating how to un-obscure focusable content when some of the content may lack a pre-set background. A distinct <code>background</code> property which provides good contrast with any text or image within the focusable content is essential to the success of this technique, in order to ensure the focused content is perceivable once unobscured.</p>
+                <p>For this example, we will say the current highest <code>z-index</code> value on the page is "9999", but that it's an uncontrolled value introduced by an external tool or plugin (in this case, a third-party chatbot pop-over). Because of the instability of the <code>z-index</code> values on the page, a universally-high value of "infinity" is one method to consistently achieve the desired effect.</p>
+<pre><code class="language-css">.body-content :focus {
+  z-index: calc(infinity);
+  background-color: white;
+}</code></pre>
+            </section>
+            <section class="example" id="example-3">
+                <h3>Example 3: Focusable content which lacks a CSS <code>position</code> property</h3>
+                <p>This example is modelled on a cookie consent banner which, at times, covers up portions of the footer. The footer content area has a "white" background.</p>
+                <p>This expands on "Example 1", demonstrating how to un-obscure focusable content when some of the content may lack a CSS <code>position</code>. Great care should be taken when setting a <code>position</code> value for an entire section of content, such as for all elements within a footer. This may override existing <code>position</code> properties. Setting a <code>position</code> value is essential to the success of this technique, because <code>z-index</code> only affects positioned elements.</p>
+                <p>For this example, we will say the current highest <code>z-index</code> value on the page is "1000000", and that it's an uncontrolled value introduced by an external tool or plugin (in this case, a third-party cookie consent banner). Because of the instability of the <code>z-index</code> values on the page, a universally-high value of "infinity" is one method to consistently achieve the desired effect. Additionally, in this example, some of the footer's focusable content already has set <code>z-index</code> values, which will need to be overridden.</p>
+<pre><code class="language-css">footer :focus {
+  z-index: calc(infinity) !important;
+  position: relative;
+}</code></pre>
+            </section>
+            <section class="example" id="example-4">
+                <h3>Example 4: Focusable content which lacks consistent CSS <code>background</code> and <code>position</code> properties</h3>
+                <p>This example is modelled on a large menu that doesn't close when unfocused. The menu pops over header links, as well as body and sidebar content. It can potentially obscure a large variety of focusable user interface components. The obscured content areas include several elements which lack a <code>position</code> or <code>background</code> property, as well as some elements with specific <code>background</code> and z-index values.</p>
+                <p>For this example, we will say the menu pop-over has a <code>z-index</code> value of "80", and that it's a controlled value that is unlikely to change. However, since the focusable content in this example has a variety of <code>background</code> and <code>z-index</code> values, care must be taken when setting those properties.</p>
+<pre><code class="language-css">header a:focus {
+  z-index: 81 !important;
+  position: relative;
+  background-color: green;
+}
+.body-content :focus {
+  z-index: 81 !important;
+  position: relative;
+  background-color: white;
+}
+.sidebar-navigation :focus {
+  z-index: 81 !important;
+  position: relative;
+  background-color: pink;
+}</code></pre>
+            </section>
+        </section>
+		<section id="tests">
+			<h2>Tests</h2>
+			<section class="test-procedure">
+				<h3>Procedure</h3>
+                <p>This test procedure was written for HTML content displayed within browsers. It may not reflect the test procedure for all technologies that support Cascading Style Sheets (CSS).</p>
+				<ol>
+					<li>Use keyboard tabbing to navigate through and visually examine all focusable user interface components.</li>
+                    <li>Identify areas of focusable content which, in certain circumstances, are partially or fully obscured by pop-over elements.</li>
+                    <li>Use browser inspection tools or examine stylesheets to determine the highest z-index value of elements that are obscuring the focusable content.</li>
+                    <li>Examine all obscured focusable user interface components to determine if they have pre-set z-index, <code>position</code> or <code>background</code> properties.</li>
+                    <li>Create CSS selectors to carefully target the obscured focusable content elements and areas.</li>
+                    <li>Add CSS z-index, <code>position</code> and <code>background</code> (including <code>background-color</code>) properties, to achieve the desired effect, with a reasonable level of precision and minimal overrides.</li>
+					<li>Implement the new CSS.</li>
+                    <li>Check the results by using keyboard tabbing to navigate through and visually examining all focusable user interface components.</li>
+					<li>Ensure that all focusable user interface components are now fully unobscured when focused.</li>
+                    <li>Ensure that new bugs or visual issues are introduced by the added <code>background</code> and <code>position</code> properties.</li>
+				</ol>
+			</section>
+			<section class="test-results">
+				<h3>Expected Results</h3>
+				<ul>
+					<li>When unfocused, there are no visual changes compared the initial starting point before new CSS was added.</li>
+                    <li>When focused, all focusable user interface components are fully visible and unobscured by pop-over elements.</li>
+                    <li>When focused, no elements experience layout shift due to a changed <code>position</code> property.</li>
+                    <li>When focused, no elements experience a decrease in readability due to changes in contrast between text or images and their backgrounds.</li>
+				</ul>
+			</section>
+		</section>
+		<section id="related">
+			<h2>Related Techniques</h2>
+			<ul>
+				<li><a href="C43.html">C43</a></li>
+			</ul>
+		</section>
+		<section id="resources">
+			<h2>Resources</h2>
+			<ul>
+				<li><a href="https://drafts.csswg.org/css2/#z-index">W3C - The CSS <code>z-index</code> property</a></li>
+                <li><a href="https://www.w3.org/TR/css-position-3/#position-property">W3C - The CSS <code>position</code> property</a></li>
+                <li><a href="https://www.w3.org/TR/css-backgrounds-3/#the-background">W3C - The CSS <code>background</code> properties</a></li>
+			</ul>
+		</section>
+	</body>
+</html>
