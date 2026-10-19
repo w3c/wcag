@@ -1167,15 +1167,15 @@ export default function (data) {
           {
             title:
               "Situation A: If a form contains fields for which information from the user is mandatory.",
-            techniques: ["G83", "ARIA21", "SCR18", "PDF5"],
+            techniques: ["G83", "SCR18", "PDF5"],
           },
           {
             title:
               "Situation B: If information provided by the user is required to be in a specific data format or of certain values.",
-            techniques: ["ARIA18", "ARIA19", "ARIA21", "G84", "G85", "SCR18", "SCR32", "PDF22"],
+            techniques: ["ARIA18", "G84", "G85", "SCR18", "SCR32", "PDF22"],
           },
         ],
-        advisory: ["G139", "G199", "ARIA2"],
+        advisory: ["G139", "G199"],
       },
 
       "labels-or-instructions": {
