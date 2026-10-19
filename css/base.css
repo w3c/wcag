@@ -115,17 +115,42 @@ dt div {
 	padding-top: 0;
 }
 
+/* two styles of notes:
+    * inside a success criterion box, it looks the same as notes in the normative spec
+		* otherwise, the style is similar, but much more subdued colour-wise
+*/
+
 .note {
-	padding: 0em 1em;
-  margin-bottom: 1em;
-}
-.note-title {
-	font-weight: bold;
-  margin: 0;
+	padding: .5em 1em;
+	border: 1px solid;
+	border-left: .5em solid;
+	page-break-inside: avoid;
+	margin: 1em auto;
+	border-color: #72afd7;
+	border-color: var(--w3c-powder-blue);
+	background: #f2f2f2;
+  background-color: var(--off-white);
+	color: black;
+	overflow: auto;
 }
 
-.note p {
-  margin-top: 0;
+.note::before, .note > .marker {
+	/* similar colours to the SC box itself */
+	text-transform: uppercase;
+  padding-right: 1em;
+	color: #005a6a;
+  color: var(--wai-green);
+}
+
+#success-criterion .note {
+	/* same as the normative specification */
+	border-color: #52e052;
+	background: #e9fbe9;
+}
+
+#success-criterion .note::before,
+#success-criterion .note > .marker {
+	color: hsl(120, 70%, 22%);
 }
 
 :is(aside, div).example .example-title {
@@ -370,6 +395,18 @@ blockquote p:last-of-type::after {
   margin-left: 0;
 }
 
+blockquote p:last-of-type {
+	margin-bottom: inherit;
+}
+
+blockquote > p:last-of-type {
+	margin-bottom: 0;
+}
+
+blockquote > p:last-of-type + * {
+	margin-top: 1em;
+}
+
 /* overrides for restyled figures and captions */
 
 figure {
@@ -382,12 +419,14 @@ figure img,
 figure video,
 figure svg {
 	border: 1px solid var(--line-grey);
+	box-sizing: border-box;
 }
 
 main table svg[role*="image"],
 figure svg[role*="image"] {
     display: block;
     max-inline-size: 100%;
+	block-size: auto;
 }
 
 figcaption {
@@ -411,6 +450,85 @@ figcaption {
 	}
 }
 
+.figure-collection {
+	--inline-size-specimen: 28ch;
+	container: figure-collection / inline-size;
+
+	&[ data-specimen-size="small" ] {
+		--inline-size-specimen: 16ch;
+	}
+}
+
+@container figure-collection (min-width: 64ch) {
+	article {
+		display: grid;
+		grid-template-columns: var(--inline-size-specimen) 1fr;
+		grid-template-rows: max-content auto;
+		grid-template-areas:
+			"specimen heading"
+			"specimen caption";
+		column-gap: 1rem;
+		padding-inline-end: 1rem;
+		border-block-start: 1px solid var(--line-grey);
+		border-inline: 1px solid var(--line-grey);
+		background-color: white;
+
+		&:last-child {
+			border-block-end: 1px solid var(--line-grey);
+		}
+	}
+
+	h5 {
+		grid-area: heading;
+		margin-block: 0.75rem 0;
+		font-size: 1.2rem;
+	}
+
+	.specimen {
+		grid-area: specimen;
+		display: flex;
+		align-self: stretch;
+		align-items: start;
+		justify-content: center;
+		padding: 1rem;
+		border-inline-end: 1px solid var(--line-grey);
+		background-color: white;
+
+		svg,
+		img {
+			border: 0;
+		}
+	}
+
+	figure {
+		display: contents;
+
+		/*
+			TODO: Is `display: contents` still too dangerous for this use case?
+			If so, replace with the subgrid layout below.
+		*/
+		/*
+		grid-column: 1 / -1;
+		grid-row: 1 / -1;
+		display: grid;
+		replace with subgrid approach below.rid;
+		replace with subgrid approach below.;
+		margin: 0;
+		border-inline-start: 0;
+		padding-inline-start: 0;
+		*/
+	}
+
+	figcaption {
+		grid-area: caption;
+		margin-block: 0.5rem;
+
+		p {
+			margin-block: 0.5rem;
+		}
+	}
+}
+
 /* preformatted blocks - generally contain code element */
 
 pre {
@@ -426,4 +544,22 @@ pre {
     background: #ebebeb;
     padding: 0 0.25em;
     display: inline-block;
+}
+
+/* avoid focus outline "hugging" container */
+dfn:focus {
+    outline-offset: 0.25em;
+}
+:is(main,aside,section,div):focus {
+    outline-offset: 0.75em;
+}
+
+[id][tabindex="-1"]:is(main,aside,section,div) {
+  > :first-child {
+    padding-block-start: 0.5em;
+  }
+
+  > :last-child {
+    padding-block-end: 0.5em;
+  }
 }

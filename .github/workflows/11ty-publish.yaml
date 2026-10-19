@@ -11,17 +11,19 @@ jobs:
   main:
     name: deploy (11ty)
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Checkout gh-pages
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: gh-pages
           path: _site
           token: ${{ secrets.W3CGRUNTBOT_TOKEN }}
       - name: Install Node.js and dependencies
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           cache: npm
           node-version-file: '.nvmrc'
@@ -33,9 +35,8 @@ jobs:
           npm run build
           cp guidelines/guidelines.css guidelines/relative-luminance.html _site/guidelines/22
           curl https://www.w3.org/publications/spec-generator/?type=respec"&"url=https://raw.githubusercontent.com/$GITHUB_REPOSITORY/refs/heads/main/guidelines/index.html -o _site/guidelines/22/index.html -f  --retry 3
-          curl https://www.w3.org/publications/spec-generator/?type=respec"&"url=https://raw.githubusercontent.com/$GITHUB_REPOSITORY/refs/heads/main/requirements/22/index.html -o _site/requirements/22/index.html -f  --retry 3
       - name: Push
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           repository: _site
           branch: gh-pages
