@@ -1,8 +1,6 @@
 import compact from "lodash-es/compact";
-import { mkdirp } from "mkdirp";
-import { rimraf } from "rimraf";
 
-import { copyFile, writeFile } from "fs/promises";
+import { copyFile, mkdir, rm, writeFile } from "fs/promises";
 import { join } from "path";
 
 import { CustomLiquid } from "11ty/CustomLiquid";
@@ -63,6 +61,7 @@ function resolveRelevantTermsMap() {
 
 // Declare static global data up-front so we can build typings from it
 const globalData = {
+  trUrl: `https://www.w3.org/TR/WCAG${version}/`,
   version,
   versionDecimal: resolveDecimalVersion(version),
   errata: process.env.WCAG_VERSION ? await getErrataForVersion(version) : {},
@@ -119,6 +118,9 @@ export default async function (eleventyConfig: any) {
   // See https://www.11ty.dev/docs/dates/#setting-a-content-date-in-front-matter
   eleventyConfig.addGlobalData("date", `${process.env.WCAG_MODE ? "git " : ""}Last Modified`);
 
+  const isNetlifyPreview = !!process.env.COMMIT_REF && !process.env.WCAG_MODE;
+  eleventyConfig.addGlobalData("isNetlifyPreview", isNetlifyPreview);
+
   // eleventyComputed data is assigned here rather than in 11tydata files;
   // we have access to typings here, and can keep the latter fully static.
   eleventyConfig.addGlobalData("eleventyComputed", {
@@ -170,7 +172,9 @@ export default async function (eleventyConfig: any) {
     "understanding/20/accessibility-support-documenting.html",
     "understanding/20/seizures.html",
   ];
-  eleventyConfig.addPreprocessor("ignore-html", "html", ({ page }: GlobalData) => {
+  eleventyConfig.addPreprocessor("ignore-html", "html", ({ eleventy, page }: GlobalData) => {
+    if (page.filePathStem === "/working-examples/index")
+      return eleventy.env.runMode === "build" && !isNetlifyPreview ? false : undefined;
     if (
       !page.filePathStem.startsWith("/errata/") &&
       !page.filePathStem.startsWith("/techniques/") &&
@@ -200,15 +204,16 @@ export default async function (eleventyConfig: any) {
     "understanding/*/img/*": "understanding/img", // Intentionally flatten
   });
 
-  eleventyConfig.addPassthroughCopy("working-examples/**");
-  // working-examples is in .eleventyignore to avoid processing as templates,
+  eleventyConfig.addPassthroughCopy("working-examples/*/**");
+  // working-examples is ignored to avoid processing as templates,
   // but should still be included as a watch target to pick up changes in dev
-  eleventyConfig.watchIgnores.add("!working-examples/**");
+  eleventyConfig.watchIgnores.add("!working-examples/*/**");
 
   eleventyConfig.on("eleventy.before", async ({ runMode }: EleventyEvent) => {
     // Clear the _site folder before builds intended for the W3C site,
     // to avoid inheriting dev-only files from previous runs
-    if (runMode === "build" && process.env.WCAG_MODE === "publication") await rimraf("_site");
+    if (runMode === "build" && process.env.WCAG_MODE === "publication")
+      await rm("_site", { recursive: true });
   });
 
   let hasDisplayedGuidance = false;
@@ -225,9 +230,9 @@ export default async function (eleventyConfig: any) {
     );
 
     // Output guidelines/index.html and dependencies for PR runs (not for GH Pages or W3C site)
-    const sha = process.env.COMMIT_REF; // Read environment variable exposed by Netlify
-    if (sha && !process.env.WCAG_MODE) {
-      await mkdirp(join(dir.output, "guidelines"));
+    if (isNetlifyPreview) {
+      const sha = process.env.COMMIT_REF!;
+      await mkdir(join(dir.output, "guidelines"), { recursive: true });
       await copyFile(
         join(dir.input, "guidelines", "guidelines.css"),
         join(dir.output, "guidelines", "guidelines.css")
@@ -237,9 +242,9 @@ export default async function (eleventyConfig: any) {
         join(dir.output, "guidelines", "relative-luminance.html")
       );
 
-      const url = `https://raw.githack.com/${GH_ORG}/${GH_REPO}/${sha}/guidelines/index.html?isPreview=true`;
+      const url = `https://raw.githubusercontent.com/${GH_ORG}/${GH_REPO}/${sha}/guidelines/index.html?isPreview=true`;
       const processedGuidelines = await fetchText(
-        `https://labs.w3.org/spec-generator/?type=respec&url=${encodeURIComponent(url)}`
+        `https://www.w3.org/publications/spec-generator/?type=respec&url=${encodeURIComponent(url)}`
       );
       await writeFile(`${dir.output}/guidelines/index.html`, processedGuidelines);
     }
@@ -379,7 +384,7 @@ export default async function (eleventyConfig: any) {
           const urlBase = this.page.filePathStem.startsWith("/understanding/")
             ? ""
             : baseUrls.understanding;
-          const label = `${guideline.num}: ${guideline.name}`;
+          const label = `${guideline.num} ${guideline.name}`;
           return `<a href="${urlBase}${id}">${label}</a>`;
         })
         .join("\nand\n");

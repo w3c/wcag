@@ -111,7 +111,7 @@
     					to apply the "Focused" state, the control author handles
     					the <a href="https://msdn.microsoft.com/en-us/library/system.windows.uielement.gotfocus%28VS.95%29.aspx">GotFocus
     						event</a>. Rather than handle the event directly, the more common pattern
-    					is to override a virtual method that acts as a prewired event handler, <a href="https://msdn.microsoft.com/en-us/library/system.windows.controls.control.ongotfocus%28v=VS.95%29.aspx">OnGotFocus</a>.
+    					is to override a virtual method that acts as a pre-wired event handler, <a href="https://msdn.microsoft.com/en-us/library/system.windows.controls.control.ongotfocus%28v=VS.95%29.aspx">OnGotFocus</a>.
     					The centralized logic for visual state changes is the method <a href="https://msdn.microsoft.com/en-us/library/dd991369%28v=vs.110%29.aspx">GoToState</a>,
     					with one of the parameters to pass representing the XAML name of the
     					correct state to load from the XAML templates. Examples for all of
@@ -154,7 +154,7 @@
     						edge is defined by the "FocusVisual" element in the composition,
     						and is initially Visibility=Collapsed (the expected visual state prior
     						to being focused). </p>
-            <pre xml:space="preserve">&lt;ResourceDictionary
+            <pre>&lt;ResourceDictionary
    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
    xmlns:local="clr-namespace:FocusVisualCustomControl"
@@ -188,7 +188,7 @@
     						keyframes for hard transition between Visible and Collapsed, targeting
     						the element "FocusVisual" in the composition shown in the
     						previous XAML. </p>
-            <pre xml:space="preserve">                       &lt;VisualStateManager.VisualStateGroups&gt;
+            <pre>                       &lt;VisualStateManager.VisualStateGroups&gt;
                            &lt;VisualStateGroup x:Name="FocusStates"&gt;
                                &lt;VisualState x:Name="Unfocused"/&gt;
                                &lt;VisualState x:Name="Focused"&gt;
@@ -214,7 +214,7 @@
     						of reverting to the default state, which in the case of this design
     						is intentional. Alternatively, authors could make specific template
     						changes that revert any animation that applied to the focused state. </p>
-            <pre xml:space="preserve">       protected override void OnGotFocus(RoutedEventArgs e)
+            <pre>       protected override void OnGotFocus(RoutedEventArgs e)
        {
            base.OnGotFocus(e);
            VisualStateManager.GoToState(this, "Focused", false);

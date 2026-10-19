@@ -399,7 +399,7 @@ export async function getTechniquesByTechnology(guidelines: FlatGuidelinesMap) {
       technology,
       title,
       titleHtml,
-      truncatedTitle: title.replace(/\s*\n[\s\S]*\n\s*/, " … "),
+      truncatedTitle: title.trim().replace(/\s*\n[\s\S]*\n\s*/, " … "),
     });
   }
 
