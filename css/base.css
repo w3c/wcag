@@ -564,11 +564,17 @@ dfn:focus {
   }
 }
 
-/* when printing, open details/summary disclosures */
+/* When printing, open details/summary disclosures */
 
 @media (print) {
-  details::details-content {
+  	/* Undo a "fix" for Firefox 130 from WAI styles */
+	details:not([open])>summary~* {
+    display: block !important;
+	}
+	
+	details::details-content {
     content-visibility: visible;
     height: auto !important;
   }
+
 }
