@@ -312,7 +312,7 @@ export class CustomLiquid extends Liquid {
           $(understandingToTechniqueLinkSelector).each((_, el) => expandTechniqueLink($(el)));
 
           // Add key terms and references by default, to be removed in #parse if not needed
-          $body.append(generateIncludeWithParams("dl-section", { title: "Key Terms" }));
+          $body.append(generateIncludeWithParams("dl-section", { title: "Key Terms", intro: "<p>Normative definitions from the specification used for this criterion.</p>" }));
           $body.append(generateIncludeWithParams("dl-section", { title: "References" }));
         }
 
