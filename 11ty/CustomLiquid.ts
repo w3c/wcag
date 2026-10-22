@@ -311,8 +311,8 @@ export class CustomLiquid extends Liquid {
           // Expand techniques links to always include title
           $(understandingToTechniqueLinkSelector).each((_, el) => expandTechniqueLink($(el)));
 
-          // Add key terms and references by default, to be removed in #parse if not needed
-          $body.append(generateIncludeWithParams("dl-section", { title: "Key Terms", intro: "<p>Definitions from the specification referenced in this page.</p>" }));
+          // Add glossary and references by default, to be removed in #parse if not needed
+          $body.append(generateIncludeWithParams("dl-section", { title: "Glossary", intro: "<p>Definitions from the specification referenced in this page.</p>" }));
           $body.append(generateIncludeWithParams("dl-section", { title: "References" }));
         }
 
@@ -464,7 +464,7 @@ export class CustomLiquid extends Liquid {
           console.warn(`${inputPath}: Term not found: ${name}`);
           return;
         }
-        // Return standardized name for Key Terms definition lists
+        // Return standardized name for Glossary definition lists
         return term.name;
       };
 
@@ -477,7 +477,7 @@ export class CustomLiquid extends Liquid {
             .attr("target", "terms");
         });
       } else if (scope.isUnderstanding) {
-        const $termsList = $("section#key-terms dl");
+        const $glossaryList = $("section#glossary dl");
         const extractTermNames = ($links: CheerioAnyNode) =>
           compact(uniq($links.toArray().map((el) => extractTermName($(el)))));
 
@@ -497,7 +497,7 @@ export class CustomLiquid extends Liquid {
             }
           }
 
-          // Iterate over sorted names to populate alphabetized Key Terms definition list
+          // Iterate over sorted names to populate alphabetized Glossary definition list
           termNames.sort((a, b) => {
             if (a.toLowerCase() < b.toLowerCase()) return -1;
             if (a.toLowerCase() > b.toLowerCase()) return 1;
@@ -513,7 +513,7 @@ export class CustomLiquid extends Liquid {
                 <p><a href="https://www.w3.org/WAI/WCAG${scope.version}/errata/">View all errata</a></p>
               `;
             }
-            $termsList.append(`\n      <dt id="${term.id}">${term.name}</dt><dd>${termBody}</dd>`);
+            $glossaryList.append(`\n      <dt id="${term.id}">${term.name}</dt><dd>${termBody}</dd>`);
           }
 
           // Iterate over non-href links once more in now-expanded document to add hrefs
@@ -523,7 +523,7 @@ export class CustomLiquid extends Liquid {
           });
         } else {
           // No terms: remove skeleton that was placed in #parse
-          $("section#key-terms").remove();
+          $("section#glossary").remove();
         }
       }
 
@@ -539,8 +539,8 @@ export class CustomLiquid extends Liquid {
           .remove();
 
         // Prepend guidelines base URL to non-dfn anchor links in guidelines-derived content
-        // (including both the guideline/SC box at the top and Key Terms at the bottom)
-        $("#guideline, #success-criterion, #key-terms")
+        // (including both the guideline/SC box at the top and Glossary at the bottom)
+        $("#guideline, #success-criterion, #glossary")
           .find("a[href^='#']:not([href^='#dfn-'])")
           .each((_, el) => {
             el.attribs.href = scope.guidelinesUrl + el.attribs.href;
@@ -569,14 +569,14 @@ export class CustomLiquid extends Liquid {
 			</div>`);
     });
 
-    // Add header to example sections in Key Terms (aside) and Conformance (div)
+    // Add header to example sections in Glossary (aside) and Conformance (div)
     $("aside.example, div.example").each((_, el) => {
       const $el = $(el);
       $el.prepend(`<p class="example-title marker">Example</p>`);
     });
 
     // Perform second pass over notes/examples, to number when there are multiple in one section or dd
-    $("#key-terms dd, #success-criterion").each((_, containerEl) => {
+    $("#glossary dd, #success-criterion").each((_, containerEl) => {
       for (const selector of [".example-title", ".note-title"]) {
         const $titles = $(containerEl).find(selector);
         if ($titles.length > 1) {
