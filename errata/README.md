@@ -42,7 +42,7 @@ Each erratum should be in the following format
 ```
 
 Adhering to this format is important, as any entries under the latest published version will also be
-parsed for inclusion within Guideline/SC boxes and Key Terms definitions within Understanding pages.
+parsed for inclusion within Guideline/SC boxes and Glossary definitions within Understanding pages.
 (Newlines are insignificant and are suggested for source code readability.)
 
 Each piece of this format is further explained in the subsections below.
