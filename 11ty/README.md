@@ -1,12 +1,15 @@
 # Eleventy Infrastructure for WCAG Techniques and Understanding
 
-This subdirectory contains ES Modules re-implementing pieces of the
-XSLT-based build process using Eleventy.
+This subdirectory contains ES Modules implementing the build process for the
+informative documents (Techniques and Understanding).
+It uses Eleventy, LiquidJS, and Cheerio to reimplement the previous XSLT-based build process.
+
+Note that the content under the `guidelines` folder does _not_ depend on this subdirectory
+or any of the commands listed here.
 
 ## Usage
 
-Make sure you have Node.js installed. This has primarily been tested with v20,
-the current LTS at time of writing.
+Make sure you have Node.js installed. See the top-level `.nvmrc` for the current supported version.
 
 If you use [`fnm`](https://github.com/Schniz/fnm) or [`nvm`](https://github.com/nvm-sh/nvm) to manage multiple Node.js versions,
 you can switch to the recommended version by typing `fnm use` or `nvm use`
