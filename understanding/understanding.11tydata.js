@@ -320,7 +320,7 @@ export default function (data) {
       "sensory-characteristics": {
         // 1.3.3
         sufficient: ["G96"],
-        failure: ["F14", "F26"],
+        failure: ["F13", "F14", "F26"],
       },
 
       orientation: {
