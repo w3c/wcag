@@ -499,7 +499,7 @@ export default function (data) {
         failure: ["F24", "F88"],
       },
 
-      "images-of-text-no-exception": {
+      "images-of-text-enhanced": {
         // 1.4.9
         sufficient: ["C22", "C30", "G140", "PDF7"],
         advisory: ["C12", "C13", "C14", "C8", "C6"],
