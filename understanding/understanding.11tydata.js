@@ -320,7 +320,7 @@ export default function (data) {
       "sensory-characteristics": {
         // 1.3.3
         sufficient: ["G96"],
-        failure: ["F14", "F26"],
+        failure: ["F13", "F14", "F26"],
       },
 
       orientation: {
@@ -534,12 +534,36 @@ export default function (data) {
         sufficient: [
           {
             title:
-              "Situation A: Color is used to identify user interface components or used to identify user interface component states",
-            techniques: ["G195", "G174"],
+              "Situation A: Color is used to identify user interface components",
+            techniques: [
+              {
+                title: "Identifying user interface components",
+                using: ["G174"],
+                usingQuantity: "",
+              }
+            ],
           },
           {
-            title: "Situation B: Color is required to understand graphical content",
-            techniques: ["G207", "G209"],
+            title:
+              "Situation B: Color is used to identify a user interface component's focus state",
+            techniques: [
+              {
+                title: "Identifying a user interface component's focus state",
+                using: ["G195", "C40"],
+                usingQuantity: "",
+              }
+            ],
+          },
+          {
+            title:
+              "Situation C: Color is required to understand graphical content",
+            techniques: [
+              {
+                title: "Making graphical content understandable",
+                using: ["G207", "G209"],
+                usingQuantity: "",
+              }
+            ],
           },
         ],
         failure: ["F78"],
@@ -556,12 +580,11 @@ export default function (data) {
         // 1.4.13
         sufficient: [
           "SCR39",
-          'ARIA: Using role="tooltip" (Potential future technique)',
           "CSS: Using hover and focus pseudo classes (Potential future technique)",
         ],
         failure: [
           "F95",
-          "Failure to make content dismissible without moving pointer hover or keyboard focus (Potential future technique)",
+          "F114",
           "Failure to meet by content on hover or focus not remaining visible until dismissed or invalid (Potential future technique)",
         ],
       },
@@ -1012,7 +1035,7 @@ export default function (data) {
           Some sites may decide to do both or other combinations.
           No technique will help all users who have difficulty.
           So different techniques are provided as sufficient techniques here for authors trying to make their sites more accessible.
-          Any numbered technique or combination above can be used by a particular site and it is considered sufficient by the Working Group.
+          Any technique or combination above can be used by a particular site and it is considered sufficient by the Working Group.
         `,
       },
 
@@ -1127,7 +1150,7 @@ export default function (data) {
             techniques: ["SCR19"],
           },
         ],
-        advisory: ["G201"],
+        advisory: ["G200","G201"],
         failure: ["F60", "F61", "F9", "F22", "F52", "F40", "F41"],
       },
 
@@ -1143,15 +1166,15 @@ export default function (data) {
           {
             title:
               "Situation A: If a form contains fields for which information from the user is mandatory.",
-            techniques: ["G83", "ARIA21", "SCR18", "PDF5"],
+            techniques: ["G83", "SCR18", "PDF5"],
           },
           {
             title:
               "Situation B: If information provided by the user is required to be in a specific data format or of certain values.",
-            techniques: ["ARIA18", "ARIA19", "ARIA21", "G84", "G85", "SCR18", "SCR32", "PDF22"],
+            techniques: ["ARIA18", "G84", "G85", "SCR18", "SCR32", "PDF22"],
           },
         ],
-        advisory: ["G139", "G199", "ARIA2"],
+        advisory: ["G139", "G199"],
       },
 
       "labels-or-instructions": {
