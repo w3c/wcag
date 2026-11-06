@@ -106,7 +106,7 @@ Files are populated with a template that provides the expected structure. Leave 
 
 Note that associated techniques are no longer defined within each understanding page; they are now defined in the `associatedTechniques` field in `understanding/understanding.11tydata.js`. See [Associated Techniques Data](11ty/README.md#associated-techniques-data) for more information.
 
-Understanding files are referenced from the relevant Success Criterion on the WCAG specification; these links are put in by the script.
+Understanding files are referenced from the relevant success criterion on the WCAG specification; these links are put in by the script.
 
 The formal publication location for Understanding pages is currently https://www.w3.org/WAI/WCAG22/Understanding/. This content is updated as needed; and may be automated.
 
