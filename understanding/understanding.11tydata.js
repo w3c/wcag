@@ -898,6 +898,7 @@ export default function (data) {
           "F111",
           "Accessible name contains the visible label text, but the words of the visible label are not in the same order as they are in the visible label text (Potential future technique)",
           "Accessible name contains the visible label text, but one or more other words are interspersed in the label (Potential future technique)",
+          "<li>Failure due to an input using placeholder text as its only visible label (Potential future technique)</li>"          
         ],
       },
 
