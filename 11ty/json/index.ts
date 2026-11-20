@@ -64,7 +64,7 @@ const altIds: Record<string, string> = {
   "contrast-enhanced": "visual-audio-contrast7",
   "low-or-no-background-audio": "visual-audio-contrast-noaudio",
   "visual-presentation": "visual-audio-contrast-visual-presentation",
-  "images-of-text-no-exception": "visual-audio-contrast-text-images",
+  "images-of-text-enhanced": "visual-audio-contrast-text-images",
   operable: "operable",
   "keyboard-accessible": "keyboard-operation",
   keyboard: "keyboard-operation-keyboard-operable",
