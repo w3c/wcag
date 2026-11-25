@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Guarding keyboard event handlers against IME composition</title>
+		<link rel="stylesheet" type="text/css" href="../../css/editors.css" class="remove">
+	</head>
+	<body>
+		<h1>Guarding keyboard event handlers against IME composition</h1>
+		<section id="meta">
+			<h2>Metadata</h2>
+			<p id="sc">SC 2.1.1 Keyboard, SC 3.2.2 On Input</p>
+			<p id="type">sufficient</p>
+		</section>
+		<section id="applicability">
+			<h2>Applicability</h2>
+			<p>Web pages that use JavaScript <code>keydown</code> or <code>keyup</code> event handlers to trigger actions on interactive elements.</p>
+		</section>
+		<section id="description">
+			<h2>Description</h2>
+			<p>The objective of this technique is to ensure that <code>keydown</code> and <code>keyup</code> event handlers do not unintentionally trigger application actions during Input Method Editor (IME) composition.</p>
+			<p>An IME allows users to enter characters not directly available on their keyboard, such as Chinese, Japanese, and Korean characters. During composition, keys like <kbd>Enter</kbd>, <kbd>Tab</kbd>, and <kbd>Escape</kbd> are used to control the IME (for example, confirming a candidate character), but they also fire <code>keydown</code> events on the page. If an event handler does not account for this, it may incorrectly execute application actions — such as submitting a form — while the user is still composing. This can violate SC 2.1.1 (keyboard shortcuts collide with IME controls) and SC 3.2.2 (unexpected change of context from input intended solely for the IME).</p>
+			<p>The <code>KeyboardEvent.isComposing</code> property is <code>true</code> during IME composition. Checking this property at the start of a handler lets developers skip application logic while the user is composing. Some older versions of Safari have a bug where <code>isComposing</code> is <code>false</code> on the final confirmation keypress; additionally checking <code>event.keyCode === 229</code> provides a reliable cross-browser guard.</p>
+			<p>Alternatively, for form submission specifically, using the <code>submit</code> event is inherently IME-safe because the browser only fires it after composition is complete.</p>
+		</section>
+		<section id="examples">
+			<h2>Examples</h2>
+			<section class="example">
+				<h3>Guarding a <code>keydown</code> handler with <code>isComposing</code></h3>
+				<p>In this example, a <code>keydown</code> event listener is attached to a text input. The handler checks <code>event.isComposing</code> and the Safari-compatibility fallback <code>event.keyCode === 229</code> before triggering form submission when <kbd>Enter</kbd> is pressed. This ensures that pressing <kbd>Enter</kbd> to confirm an IME candidate does not accidentally submit the form.</p>
+				<pre><code class="language-javascript">const inputElement = document.querySelector("input");
+
+inputElement.addEventListener("keydown", (event) => {
+  if (event.isComposing || event.keyCode === 229) return;
+  if (event.key === "Enter") submit();
+});</code></pre>
+			</section>
+			<section class="example">
+				<h3>Using the <code>submit</code> event instead of <code>keydown</code></h3>
+				<p>The <code>submit</code> event on a <code>form</code> element is inherently IME-safe. The browser fires <code>submit</code> only after IME composition has ended, so this approach avoids the issue entirely for form submission scenarios.</p>
+				<pre><code class="language-javascript">const formElement = document.querySelector("form");
+
+formElement.addEventListener("submit", (event) => {
+  event.preventDefault();
+  submit();
+});</code></pre>
+			</section>
+		</section>
+		<section id="tests">
+			<h2>Tests</h2>
+			<section class="test-procedure">
+				<h3>Procedure</h3>
+				<p>For each <code>keydown</code> or <code>keyup</code> event handler that executes an action when a specific key (such as <kbd>Enter</kbd>, <kbd>Tab</kbd>, or <kbd>Escape</kbd>) is pressed on an input element:</p>
+				<ol>
+					<li>Enable an IME for a language that requires composition (for example, Japanese, Chinese, or Korean).</li>
+					<li>Focus the input element.</li>
+					<li>Begin IME composition by typing a sequence that produces candidate characters.</li>
+					<li>While IME composition is active, press <kbd>Enter</kbd> (or the key targeted by the handler) to confirm an IME candidate.</li>
+					<li>Check that the application-level action (for example, form submission) was <strong>not</strong> triggered.</li>
+					<li>End the IME session and press the same key again without an active IME composition.</li>
+					<li>Check that the application-level action <strong>is</strong> triggered.</li>
+				</ol>
+			</section>
+			<section class="test-results">
+				<h3>Expected Results</h3>
+				<ul>
+					<li>Checks #5 and #7 are true.</li>
+				</ul>
+			</section>
+		</section>
+		<section id="related">
+			<h2>Related Techniques</h2>
+			<ul>
+				<li><a href="../html/H32">H32: Providing submit buttons</a></li>
+				<li><a href="../html/H84">H84: Using a button with a select element to perform an action</a></li>
+				<li><a href="../general/G202">G202: Ensuring keyboard control for all functionality</a></li>
+			</ul>
+		</section>
+		<section id="resources">
+			<h2>Resources</h2>
+			<ul>
+				<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/keydown_event#keydown_events_with_ime">MDN: keydown events with IME</a></li>
+				<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/isComposing">MDN: KeyboardEvent.isComposing</a></li>
+				<li><a href="https://bugs.webkit.org/show_bug.cgi?id=165004">WebKit Bug 165004: compositionend fires before keydown in Safari</a></li>
+			</ul>
+		</section>
+	</body>
+</html>
